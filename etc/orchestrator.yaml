@@ -1,0 +1,44 @@
+websocket_port: 3031
+http_port: 3032
+
+rooms:
+  - scenario: Le Digimiam
+    room: room 1
+    channel: digimiam1
+    rules: digimiam_rules.json
+    storage:
+      class: justrelax.storage.null.DoNothingStorage
+    cams:
+      - name: Cam 1
+        url: http://192.168.0.3:80
+      - name: Cam 2
+        url: http://192.168.0.3:80
+      - name: Cam 3
+        url: http://192.168.0.3:80
+      - name: Cam 4
+        url: http://192.168.0.3:80
+      - name: Cam 5
+        url: http://192.168.0.3:80
+      - name: Cam 6
+        url: http://192.168.0.3:80
+  - scenario: Le Digimiam
+    room: room 2
+    channel: digimiam2
+    rules: digimiam_rules.json
+    storage:
+      class: justrelax.storage.null.DoNothingStorage
+    cams:
+      - name: Cam 1
+        url: http://192.168.0.3:80
+      - name: Cam 2
+        url: http://192.168.0.3:80
+      - name: Cam 3
+        url: http://192.168.0.3:80
+      - name: Cam 4
+        url: http://192.168.0.3:80
+      - name: Cam 5
+        url: http://192.168.0.3:80
+      - name: Cam 6
+        url: http://192.168.0.3:80
+
+logging: logging.yaml

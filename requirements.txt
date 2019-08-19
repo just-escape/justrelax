@@ -1,0 +1,6 @@
+mock
+twisted
+autobahn
+klein
+PyYAML
+RPi.GPIO

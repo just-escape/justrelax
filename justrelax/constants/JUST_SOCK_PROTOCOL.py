@@ -1,0 +1,24 @@
+EVENT_CHANNEL = 'channel'
+EVENT_TYPE = 'type'
+EVENT_CONTENT = 'content'
+EVENT_ARGUMENTS = 'arguments'
+
+EVENT_TYPE_I_AM = 'IAM'
+EVENT_TYPE_MESSAGE = 'MSG'
+EVENT_TYPE_TIC_TAC = 'TIC'
+EVENT_TYPE_RECORD = 'REC'
+EVENT_TYPE_RESET = 'CLR'
+
+I_AM_CLIENT_TYPE = 'client_type'
+I_AM_NAME = 'name'
+I_AM_CHANNEL = 'channel'
+
+RECORD_ID = 'id'
+RECORD_TICKS = 'ticks'
+RECORD_LABEL = 'label'
+
+CLIENT_NODE = '$node'
+CLIENT_ADMIN = '$admin'
+CLIENT_TYPES = {CLIENT_NODE, CLIENT_ADMIN}
+
+SERVER = '$server'

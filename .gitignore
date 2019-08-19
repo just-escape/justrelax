@@ -1,0 +1,10 @@
+db.sqlite3
+
+build
+dist
+__pycache__/
+*.egg-info/
+
+twisted/plugins/dropin.cache
+
+.idea

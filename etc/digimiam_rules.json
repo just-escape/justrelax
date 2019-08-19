@@ -1,0 +1,142 @@
+{
+  "admin": {
+    "categories": [
+      {
+        "name": "Cluster 1",
+        "subcategories": [
+          {
+            "name": "Red LED",
+            "actions": [
+              {
+                "name": "switch_red_led_on",
+                "icon": "far fa-sun"
+              },
+              {
+                "name": "switch_red_led_off",
+                "icon": "fas fa-power-off"
+              }
+            ]
+          },
+          {
+            "name": "Green LED",
+            "actions": [
+              {
+                "name": "switch_green_led_on",
+                "icon": "far fa-sun"
+              },
+              {
+                "name": "switch_green_led_off",
+                "icon": "fas fa-power-off"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Cluster 2",
+        "subcategories": [
+          {
+            "name": "Yellow LED",
+            "actions": [
+              {
+                "name": "switch_yellow_led_on",
+                "icon": "far fa-sun"
+              },
+              {
+                "name": "switch_yellow_led_off",
+                "icon": "fas fa-power-off"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "actions": {
+    "start_red_and_green_led_hint_alarm": {
+      "start_alarm": "red_and_green_led_hint_alarm",
+      "ticks": 10,
+      "record": "ALM RG LED 10'"
+    },
+    "cancel_red_and_green_led_hint_alarm": {
+      "cancel_alarm": "red_and_green_led_hint_alarm"
+    },
+    "switch_red_led_on": {
+      "send_to": "red_led",
+      "message": "on",
+      "record": "Red LED on"
+    },
+    "switch_red_led_off": {
+      "send_to": "red_led",
+      "message": "off",
+      "record": "Red LED off"
+    },
+    "switch_green_led_on": {
+      "send_to": "green_led",
+      "message": "on",
+      "record": "Green LED on"
+    },
+    "switch_green_led_off": {
+      "send_to": "green_led",
+      "message": "off",
+      "record": "Green LED off"
+    },
+    "switch_yellow_led_on": {
+      "send_to": "yellow_led",
+      "message": "on",
+      "record": "Yellow LED on"
+    },
+    "switch_yellow_led_off": {
+      "send_to": "yellow_led",
+      "message": "off",
+      "record": "Yellow LED off"
+    }
+  },
+  "conditions": {
+    "button_is_being_pressed": [
+      {
+        "left": {"context": "from"},
+        "operator": "=",
+        "right": "button"
+      },
+      {
+        "left": {"context": "message"},
+        "operator": "=",
+        "right": "press"
+      }
+    ]
+  },
+  "rules": {
+    "press_button": {
+      "conditions": {"condition": "button_is_being_pressed"},
+      "actions": {
+        "action": [
+          "switch_yellow_led_on",
+          "cancel_red_and_green_led_hint_alarm"
+        ]
+      }
+    }
+  },
+  "alarms": {
+    "red_and_green_led_hint_alarm": {
+      "actions": {
+        "action": [
+          "switch_red_led_on",
+          "switch_green_led_on"
+        ]
+      }
+    }
+  },
+  "start_actions": {
+    "action": [
+      "start_red_and_green_led_hint_alarm"
+    ]
+  },
+  "reset_actions": {
+    "action": [
+      "switch_red_led_off",
+      "switch_green_led_off",
+      "switch_yellow_led_off"
+    ]
+  }
+}
