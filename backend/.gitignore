@@ -6,5 +6,6 @@ __pycache__/
 *.egg-info/
 
 twisted/plugins/dropin.cache
+twistd.pid
 
 .idea
