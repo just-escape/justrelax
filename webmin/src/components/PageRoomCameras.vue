@@ -45,7 +45,6 @@ export default {
   },
   computed: {
     cams: function() {
-      console.log(this.room.cams)
       return this.room.cams
     },
     getCamClasses: function() {

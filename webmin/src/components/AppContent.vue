@@ -40,5 +40,6 @@ header {
 
 main {
   overflow: hidden;
+  padding-bottom: 10rem;
 }
 </style>
