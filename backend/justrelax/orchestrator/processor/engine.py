@@ -1,16 +1,15 @@
 import uuid
 import json
-import string
-from random import choice
 from datetime import datetime
 
 from twisted.internet.task import LoopingCall
 
-
 from justrelax.common.utils import ensure_iterable
-from justrelax.constants import JSON_RULES_BUILTINS as JR
-from justrelax.constants import STORAGE_RECORDS as SR
-from justrelax.constants import JUST_SOCK_PROTOCOL as P
+from justrelax.common.constants import JUST_SOCK_PROTOCOL as P
+from justrelax.orchestrator.services import Services
+from justrelax.orchestrator.constants import RULES as JR
+from justrelax.orchestrator.storage.models import MessageDirections
+from justrelax.orchestrator.manager.session import SessionManager
 
 
 class UndefinedAction(Exception):
@@ -18,21 +17,14 @@ class UndefinedAction(Exception):
 
 
 class RulesProcessor:
-    def __init__(self, service, scenario, room, channel, rules, storage, cams):
-        super(RulesProcessor, self).__init__()
-
-        self.service = service
-        self.scenario = scenario
-        self.room = room
+    def __init__(self, room_id, channel, rules):
+        self.room_id = room_id
         self.channel = channel
+        self.rules = json.loads(rules) if rules else {}
 
-        self.rules = self.load_rules(rules)
-
-        # unique id of the game session
-        self.session_id = self.get_new_session_id()
-        self.recording_session = False
+        # session_id
+        self.sid = None
         self.first_start = True
-        self.halt_date = 0
 
         self.ticks = 0
         self.tick_loop = LoopingCall(self.tick)
@@ -55,31 +47,14 @@ class RulesProcessor:
         self.halt_actions = self.rules.get(JR.HALT_ACTIONS, {})
         self.reset_actions = self.rules.get(JR.RESET_ACTIONS, {})
 
-        self.storage = storage
-        self.cams = cams
+        self.sm = SessionManager()
 
-    def get_config(self):
-        config = {
-            "scenario": self.scenario,
-            "room": self.room,
-            "channel": self.channel,
-            "rules": self.rules,
+    def get_live_data(self):
+        live_data = {
             "ticks": self.ticks,
             "records": self.records,
-            "cams": self.cams,
         }
-        return config
-
-    @staticmethod
-    def load_rules(json_rules_path):
-        with open(json_rules_path, "r") as f:
-            rules = json.load(f)
-        return rules
-
-    @staticmethod
-    def get_new_session_id():
-        chars = string.ascii_letters + string.digits
-        return "".join([choice(chars) for _ in range(6)])
+        return live_data
 
     def get_is_running(self):
         return self.tick_loop.running
@@ -93,54 +68,60 @@ class RulesProcessor:
         for alarm in self.alarms:
             context[JR.CONTEXT_ALARM_NAME] = alarm
 
-            self.alarms[alarm] -= 1
+            self.alarms[alarm]["ticks"] -= 1
 
-            if self.alarms[alarm] > 0:
+            if self.alarms[alarm]["ticks"] > 0:
                 continue
 
             to_pop.append(alarm)
 
             conditions = self.alarm_definitions[alarm].get(JR.CONDITIONS, [True])
             if not self.compute_value(conditions):
-                self.record(SR.PROCESS_ALARM, alarm_name=alarm, executed_actions=False)
-                self.storage.commit()
+                if self.sid is not None:
+                    self.sm.process_alarm(
+                        alarm_id=self.alarms[alarm]["id"],
+                        executed_actions=False,
+                    )
+                    self.sm.commit()
                 continue
 
             actions = self.alarm_definitions[alarm].get(JR.ACTIONS, [])
             self.process_actions(actions)
 
-            self.record(SR.PROCESS_ALARM, alarm_name=alarm, executed_actions=True)
-            self.storage.commit()
+            if self.sid is not None:
+                self.sm.process_alarm(
+                    alarm_id=self.alarms[alarm]["id"],
+                    executed_actions=True,
+                )
+                self.sm.commit()
 
         for key in to_pop:
             self.alarms.pop(key)
 
     def tick(self):
         self.ticks += 1
-        self.service.send_beat(self.channel, self.ticks)
+        Services.just_sock.factory.send_beat(self.room_id, self.ticks)
         self.process_alarms()
 
-    def run_room(self):
+    def run_room(self, n_players):
         if not self.tick_loop.running:
             if self.first_start:
-                self.record(
-                    SR.NEW_SESSION,
-                    channel=self.channel,
-                    scenario_name=self.scenario,
-                    room_name=self.room,
-                    n_players="X",
+                created_session = self.sm.create_session(
+                    room_id=self.room_id,
+                    n_players=n_players,
+                    start_date=datetime.utcnow(),
                 )
+                self.sm.commit()
+                self.sid = created_session.id
                 self.first_start = False
 
                 self.process_actions(self.start_actions)
 
             self.tick_loop.start(1)
-            self.recording_session = True
 
     def halt_room(self):
         if self.tick_loop.running:
             self.tick_loop.stop()
-            self.halt_date = datetime.utcnow()
 
             self.process_actions(self.halt_actions)
 
@@ -150,13 +131,17 @@ class RulesProcessor:
 
             self.reset_vars(self.variable_definitions)
             self.alarms = {}
-            self.record(SR.END_OF_SESSION)
-            self.session_id = self.get_new_session_id()
+            if self.sid is not None:
+                self.sm.end_session(
+                    sid=self.sid,
+                    date=datetime.utcnow(),
+                    ticks=self.ticks,
+                )
+                self.sid = None
             self.first_start = True
-            self.recording_session = False
             self.ticks = 0
             self.records = []
-            self.service.send_reset(self.channel)
+            Services.just_sock.factory.send_reset(self.room_id)
 
     def reset_vars(self, variables):
         for name, var in variables.items():
@@ -216,13 +201,16 @@ class RulesProcessor:
             JR.CONTEXT_MESSAGE: message,
         }
 
-        self.record(
-            SR.MESSAGE,
-            direction=SR.DIRECTION_IN,
-            node_name=from_,
-            message=message
-        )
-        self.storage.commit()
+        if self.sid is not None:
+            self.sm.create_message(
+                sid=self.sid,
+                direction=MessageDirections.from_node,
+                node_name=from_,
+                message=message,
+                date=datetime.utcnow(),
+                ticks=self.ticks,
+            )
+            self.sm.commit()
 
         for rule_name, rule_definition in self.rule_definitions.items():
             context[JR.CONTEXT_RULE_NAME] = rule_name
@@ -231,12 +219,17 @@ class RulesProcessor:
             if not self.process_conditions(conditions, context=context):
                 continue
 
-            self.record(SR.PROCESS_RULE_ACTIONS, rule_name=rule_name)
+            if self.sid is not None:
+                self.sm.create_rule(
+                    sid=self.sid,
+                    name=rule_name,
+                    date=datetime.utcnow(),
+                    ticks=self.ticks,
+                )
+                self.sm.commit()
 
             actions = rule_definition.get(JR.ACTIONS, [])
             self.process_actions(actions, context=context)
-
-            self.storage.commit()
 
     def process_conditions(self, conditions, context=None):
         res = []
@@ -284,23 +277,38 @@ class RulesProcessor:
 
     def _process_action_action(self, action, context=None):
         defined_action = self.action_definitions[action]
-        self.record(SR.PROCESS_ACTION, action_name=action)
+
+        if self.sid is not None:
+            self.sm.create_action(
+                sid=self.sid,
+                name=action,
+                date=datetime.utcnow(),
+                ticks=self.ticks,
+            )
+            self.sm.commit()
+
         self.process_actions(defined_action, context=context)
-        self.storage.commit()
 
     def process_send_action(self, action, context=None):
         for to in ensure_iterable(action[JR.ACTION_SEND_TO]):
             computed_to = self.compute_value(to, context=context)
             for message in ensure_iterable(action[JR.ACTION_SEND_TO_MESSAGE]):
                 computed_message = self.compute_value(message, context=context)
-                self.service.send_to_node(computed_to, self.channel, computed_message)
-                self.record(
-                    SR.MESSAGE,
-                    direction=SR.DIRECTION_OUT,
-                    node_name=computed_to,
-                    message=computed_message
+                Services.just_sock.factory.send_to_node(
+                    computed_to,
+                    self.channel,
+                    computed_message
                 )
-                self.storage.commit()
+                if self.sid is not None:
+                    self.sm.create_message(
+                        sid=self.sid,
+                        direction=MessageDirections.to_node,
+                        node_name=computed_to,
+                        message=computed_message,
+                        date=datetime.utcnow(),
+                        ticks=self.ticks,
+                    )
+                    self.sm.commit()
 
     def process_set_action(self, action, context=None):
         value = self.compute_value(action[JR.ACTION_SET_VALUE], context=context)
@@ -316,17 +324,36 @@ class RulesProcessor:
             alarm = self.alarm_definitions.get(computed_name, None)
             if alarm:
                 if computed_name not in self.alarms:
-                    self.alarms[computed_name] = ticks
-                    self.record(SR.START_ALARM, alarm_name=computed_name, duration_ticks=ticks)
-                    self.storage.commit()
+                    if self.sid is not None:
+                        created_alarm = self.sm.create_alarm(
+                            sid=self.sid,
+                            name=computed_name,
+                            duration=ticks,
+                            start_date=datetime.utcnow(),
+                            start_ticks=self.ticks,
+                        )
+                        self.sm.commit()
+                        alarm_id = created_alarm.id
+                    else:
+                        alarm_id = 0
+
+                    self.alarms[computed_name] = {
+                        "id": alarm_id,
+                        "ticks": ticks,
+                    }
 
     def process_cancel_alarm_action(self, action, context=None):
         for name in ensure_iterable(action[JR.ACTION_CANCEL_ALARM]):
             computed_name = self.compute_value(name, context=context)
-            remaining_ticks = self.alarms.pop(computed_name, None)
-            if remaining_ticks is not None:
-                self.record(SR.CANCEL_ALARM, alarm_name=computed_name)
-                self.storage.commit()
+            alarm = self.alarms.pop(computed_name, None)
+            if alarm is not None:
+                if self.sid is not None:
+                    self.sm.cancel_alarm(
+                        alarm_id=alarm["id"],
+                        cancellation_date=datetime.utcnow(),
+                        cancellation_ticks=self.ticks,
+                    )
+                    self.sm.commit()
 
     def process_record_action(self, action, context=None):
         computed_label = self.compute_value(action[JR.ACTION_RECORD], context=context)
@@ -336,15 +363,12 @@ class RulesProcessor:
             P.RECORD_LABEL: computed_label,
         }
         self.records.append(record)
-        self.service.send_record(self.channel, record)
-        # TODO: storage
-
-    def record(self, record_type, **kwargs):
-        if self.recording_session:
-            date = self.halt_date if record_type == SR.END_OF_SESSION else datetime.utcnow()
-            getattr(self.storage, SR.MAPPING[record_type])(
-                sid=self.session_id,
-                date=date,
+        Services.just_sock.factory.send_record(self.room_id, record)
+        if self.sid is not None:
+            self.sm.create_record(
+                sid=self.sid,
+                label=computed_label,
+                date=datetime.utcnow(),
                 ticks=self.ticks,
-                **kwargs,
             )
+            self.sm.commit()

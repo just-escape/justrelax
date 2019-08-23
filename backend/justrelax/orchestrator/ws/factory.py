@@ -1,7 +1,8 @@
 from autobahn.twisted.websocket import WebSocketServerFactory
 
-from justrelax.orchestrator.ws.protocol import JustSockServerProtocol
 from justrelax.common.logging import logger
+from justrelax.orchestrator.services import Services
+from justrelax.orchestrator.ws.protocol import JustSockServerProtocol
 
 
 class JustSockServerFactory(WebSocketServerFactory):
@@ -28,20 +29,21 @@ class JustSockServerFactory(WebSocketServerFactory):
         if not self.nodes[(node.name, node.channel,)]:
             self.nodes.pop((node.name, node.channel,), None)
 
-    def process_message(self, name, channel, message):
-        self.service.process_message(name, channel, message)
+    @staticmethod
+    def process_message(name, channel, message):
+        Services.just_process.process_message(name, channel, message)
 
-    def send_beat(self, channel, ticks):
+    def send_beat(self, room_id, ticks):
         for admin in self.admins:
-            admin.send_beat(channel, ticks)
+            admin.send_beat(room_id, ticks)
 
-    def send_record(self, channel, record):
+    def send_record(self, room_id, record):
         for admin in self.admins:
-            admin.send_record(channel, record)
+            admin.send_record(room_id, record)
 
-    def send_reset(self, channel):
+    def send_reset(self, room_id):
         for admin in self.admins:
-            admin.send_reset(channel)
+            admin.send_reset(room_id)
 
     def send_to_node(self, name, channel, message):
         nodes = self.nodes.get((name, channel,), [])

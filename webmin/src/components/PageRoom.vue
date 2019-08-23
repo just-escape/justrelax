@@ -13,10 +13,10 @@
       <AppContentTitle class="mr-5">
         {{ title }}
       </AppContentTitle>
-      <RoomStartStop :channel="room.channel" class="my-auto"/>
+      <RoomStartStop :roomId="room.id" class="my-auto"/>
     </div>
     <div class="d-flex flex-row" slot="header-right">
-      <TicksClock :ticks="room.ticks" :displayZero="false" class="size-25 big-noodle mr-3"/>
+      <TicksClock :ticks="room.liveData.ticks" :displayZero="false" class="size-25 big-noodle mr-3"/>
       <AppNotificationButton class="my-auto"/>
     </div>
 
@@ -53,13 +53,13 @@ export default {
   },
   computed: {
     room() {
-      var id = parseInt(this.id, 10)
-      if (Number.isNaN(id)) {
+      var room_id = parseInt(this.room_id, 10)
+      if (Number.isNaN(room_id)) {
         return null
       }
 
-      if (roomStore.state.rooms && roomStore.state.rooms.length >= id && id >= 1) {
-        return roomStore.state.rooms[id - 1]
+      if (roomStore.state.rooms && roomStore.state.rooms[room_id] != undefined) {
+        return roomStore.state.rooms[room_id]
       } else {
         return null
       }
@@ -67,13 +67,13 @@ export default {
     title() {
       var title = this.room.scenario
 
-      if (this.room.room) {
-        title = title + " - " + this.room.room
+      if (this.room.cardinal) {
+        title = title + " - " + this.room.cardinal
       }
 
       return title
     }
   },
-  props: ['id']
+  props: ['room_id']
 }
 </script>

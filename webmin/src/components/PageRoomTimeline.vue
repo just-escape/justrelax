@@ -161,7 +161,7 @@ export default {
       return graduations
     },
     records: function() {
-      var r = this.room.records
+      var r = this.room.liveData.records
         .filter(r => this.axisX1 <= this.getXFromTicks(r.ticks) && this.getXFromTicks(r.ticks) <= this.axisX2)
       return r
     },

@@ -1,4 +1,5 @@
 EVENT_CHANNEL = 'channel'
+EVENT_ROOM_ID = 'room_id'
 EVENT_TYPE = 'type'
 EVENT_CONTENT = 'content'
 EVENT_ARGUMENTS = 'arguments'

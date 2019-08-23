@@ -24,18 +24,18 @@ export default {
   },
   methods: {
     run: function () {
-      roomStore.dispatch('runRoom', this.channel)
+      roomStore.dispatch('runRoom', this.roomId)
       notificationStore.dispatch('displayNotification', 'Room started')
     },
     halt: function () {
-      roomStore.dispatch('haltRoom', this.channel)
+      roomStore.dispatch('haltRoom', this.roomId)
       notificationStore.dispatch('displayNotification', 'Room halted')
     },
     reset: function () {
-      roomStore.dispatch('resetRoom', this.channel)
+      roomStore.dispatch('resetRoom', this.roomId)
       notificationStore.dispatch('displayNotification', 'Room reset')
     }
   },
-  props: ['channel']
+  props: ['roomId']
 }
 </script>

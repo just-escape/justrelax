@@ -8,10 +8,12 @@ from twisted.plugin import IPlugin
 from twisted.application import service
 
 from justrelax.common.logging import init_logging
-from justrelax.common.utils import abs_path_if_not_abs, import_string
+from justrelax.common.utils import abs_path_if_not_abs
+from justrelax.orchestrator.manager.room import RoomManager
+from justrelax.orchestrator.storage.session import DataBaseAccess
+from justrelax.orchestrator.services import Services
 from justrelax.orchestrator.ws.service import JustSockServerService
 from justrelax.orchestrator.http.service import JustRestService
-from justrelax.constants import ORCHESTRATOR
 from justrelax.orchestrator.processor.service import JustProcessService
 
 
@@ -38,17 +40,20 @@ def absolutify(config, config_path):
 
     config["logging"] = abs_path_if_not_abs(config["logging"], config_dir)
 
-    for room in config["rooms"]:
-        room["rules"] = abs_path_if_not_abs(room["rules"], config_dir)
 
-        if "db_file" in room["storage"]:
-            db_file = room["storage"]["db_file"]
-            room["storage"]["db_file"] = abs_path_if_not_abs(db_file, config_dir)
+def init_storage_engine(storage_config):
+    if "protocol" not in storage_config:
+        return
 
+    kwargs = {
+        "protocol": storage_config["protocol"]
+    }
 
-def classify(config):
-    for room in config["rooms"]:
-        room["storage"]["class"] = import_string(room["storage"]["class"])
+    for key in ["user", "password", "host", "port", "base"]:
+        if key in storage_config:
+            kwargs[key] = storage_config[key]
+
+    DataBaseAccess.init_engine(**kwargs)
 
 
 @implementer(service.IServiceMaker, IPlugin)
@@ -68,22 +73,25 @@ class OrchestratorServiceMaker(object):
             config["http_port"] = options["http-port"]
 
         absolutify(config, options["config"])
-        classify(config)
 
         init_logging(config["logging"])
 
-        parent_service = service.MultiService()
+        if "storage" in config:
+            init_storage_engine(config["storage"])
 
-        just_sock = JustSockServerService(port=config["websocket_port"])
-        just_sock.setName(ORCHESTRATOR.SERVICE_JUST_SOCK)
-        just_sock.setServiceParent(parent_service)
+        rm = RoomManager()
+        rooms = rm.get_all()
+
+        just_sock = JustSockServerService(config["websocket_port"])
+        just_sock.setServiceParent(Services.parent_service)
+        Services.just_sock = just_sock
 
         just_rest = JustRestService(config["http_port"])
-        just_rest.setName(ORCHESTRATOR.SERVICE_JUST_REST)
-        just_rest.setServiceParent(parent_service)
+        just_rest.setServiceParent(Services.parent_service)
+        Services.just_rest = just_rest
 
-        just_process = JustProcessService(config["rooms"])
-        just_process.setName(ORCHESTRATOR.SERVICE_JUST_PROCESS)
-        just_process.setServiceParent(parent_service)
+        just_process = JustProcessService(rooms)
+        just_process.setServiceParent(Services.parent_service)
+        Services.just_process = just_process
 
-        return parent_service
+        return Services.parent_service

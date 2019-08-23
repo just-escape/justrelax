@@ -4,3 +4,6 @@ autobahn
 klein
 PyYAML
 RPi.GPIO
+sqlalchemy
+marshmallow-sqlalchemy
+psycopg2

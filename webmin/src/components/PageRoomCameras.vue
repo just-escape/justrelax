@@ -1,76 +1,109 @@
 <template>
   <div>
     <h2 class="big-noodle text-jaffa text-center">Cameras</h2>
-    <div class="container-fluid">
-      <div v-if="focusCam" class="row">
+    <div v-if="displayCameras" class="container-fluid">
+      <div v-if="focusCamera" class="row">
         <div class="col text-center px-0">
           <div class="position-absolute text-center w-100">
-            {{ focusCam.name }}
+            {{ focusCamera.name }}
           </div>
           <img
             @click="collapseFocus()"
             class="bordered pointer"
-            :src="focusCam.url"
+            :src="focusCamera.url"
           >
         </div>
       </div>
 
       <div class="row">
         <div
-          v-for="(cam, index) in cams"
-          :key="cam.id"
-          :class="getCamClasses"
+          v-for="(camera, index) in cameras"
+          :key="camera.id"
+          :class="getCameraClasses"
         >
           <div class="position-absolute text-center w-100">
-            {{ cam.name }}
+            {{ camera.name }}
           </div>
           <img
             @click="focus(index)"
             class="img-fluid pointer"
-            :src="cam.url"
+            :src="camera.url"
           >
         </div>
       </div>
+    </div>
+    <div v-else class="container-fluid text-center">
+      Fetching...
     </div>
   </div>
 </template>
 
 <script>
+import justRestAPI from '@/store/justRestService.js'
+
 export default {
   name: 'PageRoomCameras',
   data: function() {
     return {
-      focusCamIndex: -1,
+      focusCameraIndex: -1,
+      displayCameras: false,
+      cameras: [],
     }
   },
   computed: {
-    cams: function() {
-      return this.room.cams
-    },
-    getCamClasses: function() {
+    getCameraClasses: function() {
       var classes = ['px-0', 'bordered']
-      if (this.focusCam) {
+      if (this.focusCamera) {
         classes.push('col')
       } else {
         classes.push('col-4')
       }
       return classes
     },
-    focusCam: function() {
-      if (this.focusCamIndex < 0) {
+    focusCamera: function() {
+      if (this.focusCameraIndex < 0) {
         return undefined
       } else {
-        return this.cams[this.focusCamIndex]
+        return this.cameras[this.focusCameraIndex]
       }
     },
   },
   methods: {
-    focus: function(camIndex) {
-      this.focusCamIndex = camIndex
+    focus: function(cameraIndex) {
+      this.focusCameraIndex = cameraIndex
     },
     collapseFocus: function() {
-      this.focusCamIndex = -1
-    }
+      this.focusCameraIndex = -1
+    },
+    toggleDisplayCameras: function() {
+      this.displayCameras = !this.displayCameras
+    },
+    filterCameras: function(response) {
+      if (response.data.success) {
+        var cameras = response.data.content
+        cameras.map(function(camera) {
+          if (this.room.cameras.includes(camera.id)) {
+            this.cameras.push(camera)
+          }
+        }, this)
+      } else {
+        // eslint-disable-next-line
+        console.error(response.data.error)
+      }
+    },
+  },
+  mounted() {
+    justRestAPI.get('/cameras')
+      .then(
+        this.filterCameras
+      )
+      .catch(function (error) {
+        // eslint-disable-next-line
+        console.error(error)
+      })
+      .finally(
+        this.toggleDisplayCameras
+      )
   },
   props: ['room']
 }

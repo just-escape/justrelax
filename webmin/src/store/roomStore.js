@@ -6,59 +6,97 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    rooms: null,
+    rooms: {},
   },
   mutations: {
     setRooms (state, rooms) {
-      state.rooms = rooms
+      for (var i = 0 ; i < rooms.length ; i++) {
+        Vue.set(state.rooms, rooms[i].id, rooms[i])
+      }
     },
-    setClock (state, {channel, ticks}) {
+    setRoomLiveData (state, {roomId, liveData}) {
       if (!state.rooms) {
         // eslint-disable-next-line
         console.error("No room to update")
         return
       }
 
-      for (var i = 0 ; i < state.rooms.length ; i++) {
-        if (state.rooms[i].channel == channel) {
-          state.rooms[i].ticks = ticks
-        }
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found here")
+      } else {
+        state.rooms[roomId].liveData = liveData
       }
     },
-    addRecord (state, {channel, record}) {
+    setClock (state, {roomId, ticks}) {
+      if (!state.rooms) {
+        // eslint-disable-next-line
+        console.error("No room to update")
+        return
+      }
+
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found")
+      } else {
+        state.rooms[roomId].liveData.ticks = ticks
+      }
+    },
+    addRecord (state, {roomId, record}) {
       if (!state.rooms) {
         // eslint-disable-next-line
         console.error("No room to add record to")
         return
       }
 
-      for (var i = 0 ; i < state.rooms.length ; i++) {
-        if (state.rooms[i].channel == channel) {
-          state.rooms[i].records.push(record)
-        }
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found")
+      } else {
+        state.rooms[roomId].liveData.records.push(record)
       }
     },
-    processReset (state, channel) {
+    processReset (state, roomId) {
       if (!state.rooms) {
         // eslint-disable-next-line
         console.error("No room to add record to")
         return
       }
-      for (var i = 0 ; i < state.rooms.length ; i++) {
-        if (state.rooms[i].channel == channel) {
-          state.rooms[i].records = []
-          state.rooms[i].ticks = 0
-        }
+
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found")
+      } else {
+        state.rooms[roomId].liveData.ticks = 0
+        state.rooms[roomId].liveData.records = []
       }
     }
   },
   actions: {
     fetchRooms (context) {
       var rooms = []
-      justRestAPI.get('/get_rooms')
+      justRestAPI.get('/rooms')
         .then(function (response) {
           if (response.data.success) {
             rooms = response.data.content
+            rooms.map(function(room) {
+              room.liveData = {"ticks": 0, "records": []}
+              justRestAPI.get('/rooms/' + room.id + '/get_live_data')
+                .then(function (response) {
+                  if (response.data.success) {
+                    var roomId = room.id
+                    var liveData = response.data.content
+                    context.commit('setRoomLiveData', {roomId, liveData})
+                  } else {
+                    // eslint-disable-next-line
+                    console.error(response.data.error)
+                  }
+                })
+                .catch(function (error) {
+                  // eslint-disable-next-line
+                  console.error(error)
+                })
+            })
           } else {
             // eslint-disable-next-line
             console.error(response.data.error)
@@ -72,35 +110,30 @@ export default new Vuex.Store({
           context.commit('setRooms', rooms)
         })
     },
-    runRoom (context, channel) {
+    runRoom (context, roomId) {
       var formData = new FormData()
-      formData.append('channel', channel)
-      justRestAPI.post('/run_room', formData)
+      formData.append('n_players', 0)
+      justRestAPI.post('/rooms/' + roomId + '/run', formData)
     },
-    haltRoom (context, channel) {
+    haltRoom (context, roomId) {
+      justRestAPI.post('/rooms/' + roomId + '/halt')
+    },
+    resetRoom (context, roomId) {
+      justRestAPI.post('/rooms/' + roomId + '/reset')
+    },
+    beat(context, {roomId, ticks}) {
+      context.commit('setClock', {roomId, ticks})
+    },
+    addRecord(context, {roomId, record}) {
+      context.commit('addRecord', {roomId, record})
+    },
+    processReset(context, roomId) {
+      context.commit('processReset', roomId)
+    },
+    processAction(context, {roomId, action}) {
       var formData = new FormData()
-      formData.append('channel', channel)
-      justRestAPI.post('/halt_room', formData)
-    },
-    resetRoom (context, channel) {
-      var formData = new FormData()
-      formData.append('channel', channel)
-      justRestAPI.post('/reset_room', formData)
-    },
-    beat(context, {channel, ticks}) {
-      context.commit('setClock', {channel, ticks})
-    },
-    addRecord(context, {channel, record}) {
-      context.commit('addRecord', {channel, record})
-    },
-    processReset(context, channel) {
-      context.commit('processReset', channel)
-    },
-    processAction(context, {channel, action}) {
-      var formData = new FormData()
-      formData.append('channel', channel)
       formData.append('name', action)
-      justRestAPI.post('/process_action', formData)
+      justRestAPI.post('/rooms/' + roomId + '/action', formData)
     }
   }
 })

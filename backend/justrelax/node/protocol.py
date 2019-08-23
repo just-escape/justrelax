@@ -2,7 +2,7 @@ import json
 
 from autobahn.twisted.websocket import WebSocketClientProtocol
 
-from justrelax.constants import JUST_SOCK_PROTOCOL as P
+from justrelax.common.constants import JUST_SOCK_PROTOCOL as P
 from justrelax.common.logging import logger
 
 

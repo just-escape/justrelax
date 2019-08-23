@@ -8,7 +8,7 @@
         class="col-3"
       >
         <PageRoomActionCard
-          :channel="room.channel"
+          :roomId="room.id"
           :header="category.name"
           :subcategories="category.subcategories"
         />

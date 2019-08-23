@@ -9,18 +9,18 @@
       </div>
     </div>
     <b-collapse id="collapse-rooms" visible>
-      <ul v-if="rooms" class="list-unstyled mb-0">
+      <ul v-if="displayRooms" class="list-unstyled mb-0">
         <li
-          v-for="(r, rIndex) in rooms"
+          v-for="r in rooms"
           :key="r.id"
           class="bgc-dark"
         >
-          <a :href="'/rooms/' + (rIndex + 1)">
+          <a :href="'/rooms/' + r.id">
             <div class="p-3 pl-4 d-flex flex-row justify-content-between">
               <span>
-                {{ r.scenario }}<span v-if="r.room"> - {{ r.room }}</span>
+                {{ r.scenario }}<span v-if="r.cardinal"> - {{ r.cardinal }}</span>
               </span>
-              <TicksClock :ticks="r.ticks" :displayZero="false"/>
+              <TicksClock :ticks="r.liveData.ticks" :displayZero="false"/>
             </div>
           </a>
         </li>
@@ -48,6 +48,9 @@ export default {
   computed: {
     rooms() {
       return roomStore.state.rooms
+    },
+    displayRooms() {
+      return !(Object.entries(this.rooms).length === 0 && this.rooms.constructor === Object)
     }
   }
 }

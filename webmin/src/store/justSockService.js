@@ -29,15 +29,15 @@ const justSockService = new Vuex.Store({
     SOCKET_ONMESSAGE (state, message) {
       state.messages.push(message.data)
       var event = JSON.parse(message.data)
-      var channel = event.channel
+      var roomId = event.room_id
       if (event.type == 'TIC') {
         var ticks = event.content
-        roomStore.dispatch('beat', {channel, ticks})
+        roomStore.dispatch('beat', {roomId, ticks})
       } else if (event.type == 'REC') {
         var record = event.content
-        roomStore.dispatch('addRecord', {channel, record})
+        roomStore.dispatch('addRecord', {roomId, record})
       } else if (event.type == 'CLR') {
-        roomStore.dispatch('processReset', channel)
+        roomStore.dispatch('processReset', roomId)
       }
     },
     SOCKET_RECONNECT (state, count) {

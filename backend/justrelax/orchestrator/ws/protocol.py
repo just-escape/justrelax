@@ -3,7 +3,7 @@ import json
 from autobahn.twisted.websocket import WebSocketServerProtocol
 
 from justrelax.common.logging import logger
-from justrelax.constants import JUST_SOCK_PROTOCOL as P
+from justrelax.common.constants import JUST_SOCK_PROTOCOL as P
 from justrelax.common.validation import validate_node_name, validate_channel
 
 
@@ -118,11 +118,11 @@ class JustSockServerProtocol(WebSocketServerProtocol):
             identifier = self.peer
         else:
             if self.client_type == P.CLIENT_ADMIN:
-                channel = event[P.EVENT_CHANNEL]
+                at = "<room id={}>".format(event[P.EVENT_ROOM_ID])
             else:
-                channel = self.channel
+                at = self.channel
 
-            identifier = "{}@{}".format(self.name, channel)
+            identifier = "{}@{}".format(self.name, at)
 
         if to_server:
             from_ = identifier
@@ -138,8 +138,8 @@ class JustSockServerProtocol(WebSocketServerProtocol):
         logger.info("[{} > {}] {} {}".format(from_, to, type_, content))
 
     def process_i_am_event(self, event):
-        # event content is P.CLIENT_NODE or P.CLIENT_ADMIN, thanks to validate_event
-        self.client_type = event[P.EVENT_CONTENT]
+        # P.CLIENT_NODE or P.CLIENT_ADMIN, thanks to validate_event
+        self.client_type = event[P.EVENT_CONTENT][P.I_AM_CLIENT_TYPE]
 
         if event[P.EVENT_CONTENT][P.I_AM_CLIENT_TYPE] == P.CLIENT_NODE:
             self.name = event[P.EVENT_CONTENT][P.I_AM_NAME]
@@ -149,34 +149,32 @@ class JustSockServerProtocol(WebSocketServerProtocol):
             self.name = P.CLIENT_ADMIN
             self.factory.register_admin(self)
 
-    def send_message(self, message, channel=None):
+    def send_message(self, message):
         event = {
             P.EVENT_TYPE: P.EVENT_TYPE_MESSAGE,
             P.EVENT_CONTENT: message,
         }
-        if channel:
-            event[P.EVENT_CHANNEL] = channel
         self.send_json(event)
 
-    def send_beat(self, channel, ticks):
+    def send_beat(self, room_id, ticks):
         event = {
-            P.EVENT_CHANNEL: channel,
+            P.EVENT_ROOM_ID: room_id,
             P.EVENT_TYPE: P.EVENT_TYPE_TIC_TAC,
             P.EVENT_CONTENT: ticks
         }
         self.send_json(event)
 
-    def send_record(self, channel, record):
+    def send_record(self, room_id, record):
         event = {
-            P.EVENT_CHANNEL: channel,
+            P.EVENT_ROOM_ID: room_id,
             P.EVENT_TYPE: P.EVENT_TYPE_RECORD,
             P.EVENT_CONTENT: record,
         }
         self.send_json(event)
 
-    def send_reset(self, channel):
+    def send_reset(self, room_id):
         event = {
-            P.EVENT_CHANNEL: channel,
+            P.EVENT_ROOM_ID: room_id,
             P.EVENT_TYPE: P.EVENT_TYPE_RESET,
         }
         self.send_json(event)

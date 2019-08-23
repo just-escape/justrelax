@@ -11,7 +11,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {path: '/', component: PageHome},
-  {path: '/rooms/:id', component: PageRoom, props: true},
+  {path: '/rooms/:room_id', component: PageRoom, props: true},
   {path: '/scores', component: PageScore},
   {path: '/stats', component: PageStats},
   {path: '/editor', component: PageEditor},

@@ -52,12 +52,12 @@ export default {
       return classes
     },
     processAction (action) {
-      var channel = this.channel
-      roomStore.dispatch('processAction', {channel, action})
+      var roomId = this.roomId
+      roomStore.dispatch('processAction', {roomId, action})
     }
   },
   props: [
-    'channel',
+    'roomId',
     'header',
     'subcategories',
   ]
