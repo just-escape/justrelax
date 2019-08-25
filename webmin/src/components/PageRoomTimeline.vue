@@ -166,7 +166,7 @@ export default {
       return r
     },
     currentTimeX: function() {
-      return this.room.ticks * this.pxPerTick
+      return this.room.liveData.ticks * this.pxPerTick
     },
     getXFromTicks: function() {
       return function(ticks) {
