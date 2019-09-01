@@ -9,7 +9,7 @@
           </div>
           <img
             @click="collapseFocus()"
-            class="bordered pointer"
+            class="border-deepdark pointer"
             :src="focusCamera.url"
           >
         </div>
@@ -17,7 +17,7 @@
 
       <div class="row">
         <div
-          v-for="(camera, index) in cameras"
+          v-for="(camera, index) in room.cameras"
           :key="camera.id"
           :class="getCameraClasses"
         >
@@ -39,18 +39,19 @@
 </template>
 
 <script>
-import justRestAPI from '@/store/justRestService.js'
+import roomStore from '@/store/roomStore.js'
 
 export default {
-  name: 'PageRoomCameras',
+  name: 'PageLiveCameras',
   data: function() {
     return {
       focusCameraIndex: -1,
-      displayCameras: false,
-      cameras: [],
     }
   },
   computed: {
+    displayCameras: function() {
+      return this.room.cameras != undefined
+    },
     getCameraClasses: function() {
       var classes = ['px-0', 'bordered']
       if (this.focusCamera) {
@@ -78,42 +79,15 @@ export default {
     toggleDisplayCameras: function() {
       this.displayCameras = !this.displayCameras
     },
-    filterCameras: function(response) {
-      if (response.data.success) {
-        var cameras = response.data.content
-        cameras.map(function(camera) {
-          if (this.room.cameras.includes(camera.id)) {
-            this.cameras.push(camera)
-          }
-        }, this)
-      } else {
-        // eslint-disable-next-line
-        console.error(response.data.error)
-      }
-    },
   },
   mounted() {
-    justRestAPI.get('/cameras')
-      .then(
-        this.filterCameras
-      )
-      .catch(function (error) {
-        // eslint-disable-next-line
-        console.error(error)
-      })
-      .finally(
-        this.toggleDisplayCameras
-      )
+    roomStore.dispatch('fetchCameras', this.room.id)
   },
   props: ['room']
 }
 </script>
 
 <style scoped>
-.bordered {
-  border: 1px #2e2e2e solid;
-}
-
 .z-1 {
   z-index: 1;
 }

@@ -34,7 +34,7 @@ import ButtonJaffa from '@/components/ButtonJaffa.vue'
 import roomStore from '@/store/roomStore.js'
 
 export default {
-  name: 'PageRoomActionCard',
+  name: 'PageLiveActionCard',
   components: {
     ButtonJaffa
   },

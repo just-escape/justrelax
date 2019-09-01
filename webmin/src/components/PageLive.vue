@@ -21,9 +21,9 @@
     </div>
 
     <div slot="main">
-      <PageRoomCameras :room="room" class="mb-4"/>
-      <PageRoomTimeline :room="room" class="mb-4"/>
-      <PageRoomActions :room="room"/>
+      <PageLiveCameras :room="room" class="mb-4"/>
+      <PageLiveTimeline :room="room" class="mb-4"/>
+      <PageLiveActions :room="room"/>
     </div>
   </AppContent>
 </template>
@@ -34,32 +34,32 @@ import AppContentTitle from '@/components/AppContentTitle.vue'
 import AppNotificationButton from '@/components/AppNotificationButton.vue'
 import TicksClock from '@/components/TicksClock.vue'
 import RoomStartStop from '@/components/RoomStartStop.vue'
-import PageRoomCameras from '@/components/PageRoomCameras.vue'
-import PageRoomTimeline from '@/components/PageRoomTimeline.vue'
-import PageRoomActions from '@/components/PageRoomActions.vue'
+import PageLiveCameras from '@/components/PageLiveCameras.vue'
+import PageLiveTimeline from '@/components/PageLiveTimeline.vue'
+import PageLiveActions from '@/components/PageLiveActions.vue'
 import roomStore from '@/store/roomStore.js'
 
 export default {
-  name: 'PageRoom',
+  name: 'PageLive',
   components: {
     AppContent,
     AppContentTitle,
     AppNotificationButton,
     TicksClock,
     RoomStartStop,
-    PageRoomCameras,
-    PageRoomTimeline,
-    PageRoomActions,
+    PageLiveCameras,
+    PageLiveTimeline,
+    PageLiveActions,
   },
   computed: {
     room() {
-      var room_id = parseInt(this.room_id, 10)
-      if (Number.isNaN(room_id)) {
+      var roomId = parseInt(this.roomId, 10)
+      if (Number.isNaN(roomId)) {
         return null
       }
 
-      if (roomStore.state.rooms && roomStore.state.rooms[room_id] != undefined) {
-        return roomStore.state.rooms[room_id]
+      if (roomStore.state.rooms && roomStore.state.rooms[roomId] != undefined) {
+        return roomStore.state.rooms[roomId]
       } else {
         return null
       }
@@ -74,6 +74,6 @@ export default {
       return title
     }
   },
-  props: ['room_id']
+  props: ['roomId']
 }
 </script>

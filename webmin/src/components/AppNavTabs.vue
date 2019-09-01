@@ -3,17 +3,8 @@
     <li>
       <AppNavTab :url="'/'" :icon="'fas fa-home'" :label="'Home'"/>
     </li>
-    <li>
-      <AppNavTabRoom/>
-    </li>
-    <li>
-      <AppNavTab :url="'/scores'" :icon="'far fa-id-card'" :label="'Scores'"/>
-    </li>
-    <li>
-      <AppNavTab :url="'/stats'" :icon="'far fa-chart-bar'" :label="'Statistics'"/>
-    </li>
-    <li>
-      <AppNavTab :url="'/editor'" :icon="'far fa-file-code'" :label="'Editor'"/>
+    <li v-for="room in rooms" :key="room.id">
+      <AppNavTabRoom :room="room"/>
     </li>
   </ul>
 </template>
@@ -21,13 +12,19 @@
 <script>
 import AppNavTab from '@/components/AppNavTab.vue'
 import AppNavTabRoom from '@/components/AppNavTabRoom.vue'
+import roomStore from '@/store/roomStore.js'
 
 export default {
   name: 'AppNavTabs',
   components: {
     AppNavTab,
-    AppNavTabRoom
-  }
+    AppNavTabRoom,
+  },
+  computed: {
+    rooms: function() {
+      return roomStore.state.rooms
+    }
+  },
 }
 </script>
 

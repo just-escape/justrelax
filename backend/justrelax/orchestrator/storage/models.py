@@ -186,6 +186,7 @@ class Record(Base):
 class RoomSchema(ModelSchema):
     class Meta:
         model = Room
+        exclude = ["cameras"]
 
 
 class CameraSchema(ModelSchema):

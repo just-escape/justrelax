@@ -1,33 +1,29 @@
 <template>
   <div>
     <div class="d-flex flex-row justify-content-between p-3">
-      <span>
-        <i class="text-jaffa fas fa-door-open fa-fw fa-lg mr-3"></i>Rooms
-      </span>
       <div>
-        <CollapseChevron v-b-toggle="'collapse-rooms'"/>
+        <a :href="'/rooms/' + room.id + '/live'">
+          <i class="text-jaffa fas fa-door-open fa-fw fa-lg mr-3"></i>{{ getDisplayName }}
+        </a>
+      </div>
+      <div class="d-flex flex-row">
+        <TicksClock class="mr-2" :ticks="room.liveData.ticks" :displayZero="false"/>
+        <CollapseChevron class="align-self-center" v-b-toggle="'collapse-rooms-' + room.id"/>
       </div>
     </div>
-    <b-collapse id="collapse-rooms" visible>
-      <ul v-if="displayRooms" class="list-unstyled mb-0">
-        <li
-          v-for="r in rooms"
-          :key="r.id"
-          class="bgc-dark"
-        >
-          <a :href="'/rooms/' + r.id">
-            <div class="p-3 pl-4 d-flex flex-row justify-content-between">
-              <span>
-                {{ r.scenario }}<span v-if="r.cardinal"> - {{ r.cardinal }}</span>
-              </span>
-              <TicksClock :ticks="r.liveData.ticks" :displayZero="false"/>
-            </div>
-          </a>
+    <b-collapse :id="'collapse-rooms-' + room.id" :visible="isVisible">
+      <ul class="list-unstyled mb-0">
+        <li class="bgc-dark">
+          <AppNavTab :url="'/rooms/' + room.id + '/scores'" :icon="'far fa-id-card'" :label="'Scores'"/>
         </li>
-      </ul>
-      <ul v-else class="list-unstyled mb-0">
-        <li class="font-italic p-3 pl-4 bgc-dark">
-          No rooms available
+        <li class="bgc-dark">
+          <AppNavTab :url="'/rooms/' + room.id + '/stats'" :icon="'far fa-chart-bar'" :label="'Statistics'"/>
+        </li>
+        <li class="bgc-dark">
+          <AppNavTab :url="'/rooms/' + room.id + '/editor'" :icon="'far fa-file-code'" :label="'Editor'"/>
+        </li>
+        <li class="bgc-dark">
+          <AppNavTab :url="'/rooms/' + room.id + '/settings'" :icon="'fas fa-cog'" :label="'Settings'"/>
         </li>
       </ul>
     </b-collapse>
@@ -35,24 +31,27 @@
 </template>
 
 <script>
+import AppNavTab from '@/components/AppNavTab.vue'
 import CollapseChevron from '@/components/CollapseChevron.vue'
 import TicksClock from '@/components/TicksClock.vue'
-import roomStore from '@/store/roomStore.js'
+import { getRoomDisplayName } from '@/helper/room.js'
 
 export default {
   name: 'AppNavTabRoom',
   components: {
     CollapseChevron,
-    TicksClock
+    TicksClock,
+    AppNavTab,
   },
   computed: {
-    rooms() {
-      return roomStore.state.rooms
+    getDisplayName: function() {
+      return getRoomDisplayName(this.room)
     },
-    displayRooms() {
-      return !(Object.entries(this.rooms).length === 0 && this.rooms.constructor === Object)
-    }
-  }
+    isVisible: function() {
+      return this.$route.params.roomId == this.room.id
+    },
+  },
+  props: ["room"],
 }
 </script>
 

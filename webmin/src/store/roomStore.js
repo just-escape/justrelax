@@ -14,6 +14,48 @@ export default new Vuex.Store({
         Vue.set(state.rooms, rooms[i].id, rooms[i])
       }
     },
+    setScenario (state, {roomId, scenario}) {
+      if (!state.rooms) {
+        // eslint-disable-next-line
+        console.error("No room to update")
+        return
+      }
+
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found")
+      } else {
+        state.rooms[roomId].scenario = scenario
+      }
+    },
+    setCardinal (state, {roomId, cardinal}) {
+      if (!state.rooms) {
+        // eslint-disable-next-line
+        console.error("No room to update")
+        return
+      }
+
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found")
+      } else {
+        state.rooms[roomId].cardinal = cardinal
+      }
+    },
+    setChannel (state, {roomId, channel}) {
+      if (!state.rooms) {
+        // eslint-disable-next-line
+        console.error("No room to update")
+        return
+      }
+
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found")
+      } else {
+        state.rooms[roomId].channel = channel
+      }
+    },
     setRoomLiveData (state, {roomId, liveData}) {
       if (!state.rooms) {
         // eslint-disable-next-line
@@ -23,7 +65,7 @@ export default new Vuex.Store({
 
       if (state.rooms[roomId] == undefined) {
         // eslint-disable-next-line
-        console.error("Room not found here")
+        console.error("Room not found")
       } else {
         state.rooms[roomId].liveData = liveData
       }
@@ -45,7 +87,7 @@ export default new Vuex.Store({
     addRecord (state, {roomId, record}) {
       if (!state.rooms) {
         // eslint-disable-next-line
-        console.error("No room to add record to")
+        console.error("No room to update")
         return
       }
 
@@ -59,7 +101,7 @@ export default new Vuex.Store({
     processReset (state, roomId) {
       if (!state.rooms) {
         // eslint-disable-next-line
-        console.error("No room to add record to")
+        console.error("No room to update")
         return
       }
 
@@ -70,6 +112,74 @@ export default new Vuex.Store({
         state.rooms[roomId].liveData.ticks = 0
         state.rooms[roomId].liveData.records = []
       }
+    },
+    setCameras (state, {roomId, cameras}) {
+      if (!state.rooms) {
+        // eslint-disable-next-line
+        console.error("No room to update")
+        return
+      }
+
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found")
+      } else {
+        state.rooms[roomId].cameras = cameras
+      }
+    },
+    setCameraName (state, {roomId, cameraIndex, name}) {
+      if (!state.rooms) {
+        // eslint-disable-next-line
+        console.error("No room to update")
+        return
+      }
+
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found")
+        return
+      }
+
+      if (state.rooms[roomId].cameras == undefined) {
+        // eslint-disable-next-line
+        console.error("Cameras have not been fetched")
+        return
+      }
+
+      if (state.rooms[roomId].cameras[cameraIndex] == undefined) {
+        // eslint-disable-next-line
+        console.error("Camera index " + cameraIndex + " does not exist")
+        return
+      }
+
+      state.rooms[roomId].cameras[cameraIndex].name = name
+    },
+    setCameraURL (state, {roomId, cameraIndex, url}) {
+      if (!state.rooms) {
+        // eslint-disable-next-line
+        console.error("No room to update")
+        return
+      }
+
+      if (state.rooms[roomId] == undefined) {
+        // eslint-disable-next-line
+        console.error("Room not found")
+        return
+      }
+
+      if (state.rooms[roomId].cameras == undefined) {
+        // eslint-disable-next-line
+        console.error("Cameras have not been fetched")
+        return
+      }
+
+      if (state.rooms[roomId].cameras[cameraIndex] == undefined) {
+        // eslint-disable-next-line
+        console.error("Camera index " + cameraIndex + " does not exist")
+        return
+      }
+
+      state.rooms[roomId].cameras[cameraIndex].url = url
     }
   },
   actions: {
@@ -80,6 +190,7 @@ export default new Vuex.Store({
           if (response.data.success) {
             rooms = response.data.content
             rooms.map(function(room) {
+              room.cameras = undefined
               room.liveData = {"ticks": 0, "records": []}
               justRestAPI.get('/rooms/' + room.id + '/get_live_data')
                 .then(function (response) {
@@ -108,6 +219,25 @@ export default new Vuex.Store({
         })
         .finally(function () {
           context.commit('setRooms', rooms)
+        })
+    },
+    fetchCameras (context, roomId) {
+      var cameras = []
+      justRestAPI.get('/rooms/' + roomId + '/cameras')
+        .then(function (response) {
+          if (response.data.success) {
+            cameras = response.data.content
+          } else {
+            // eslint-disable-next-line
+            console.error(response.data.error)
+          }
+        })
+        .catch(function (error) {
+          // eslint-disable-next-line
+          console.error(error)
+        })
+        .finally(function () {
+          context.commit('setCameras', {roomId, cameras})
         })
     },
     runRoom (context, roomId) {

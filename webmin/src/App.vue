@@ -84,6 +84,10 @@ body {
   color: #f38d40;
 }
 
+.text-grey {
+  color: #949497;
+}
+
 .h-75px {
   height: 75px;
 }
@@ -130,5 +134,26 @@ a:hover {
 
 .top-0 {
   top: 0;
+}
+
+input.form-control, select.form-control, textarea.form-control, .input-group > .input-group-append > .input-group-text {
+    background: transparent;
+    border-color: #f38d40;
+    color: #f8f9fa;
+}
+
+input.form-control:focus, select.form-control:focus, textarea.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(243, 141, 64, 0.25);
+    background-color: transparent;
+    border-color: #f38d40;
+    color: #f8f9fa;
+}
+
+input.form-control::placeholder {
+    color: #949497;
+}
+
+.border-deepdark {
+  border: 1px #2e2e2e solid;
 }
 </style>

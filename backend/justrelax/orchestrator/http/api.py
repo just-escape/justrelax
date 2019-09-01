@@ -280,8 +280,8 @@ class App:
         return json.dumps(response)
 
     @staticmethod
-    @app.route("/cameras", methods=["GET"])
-    def get_cameras(request):
+    @app.route("/rooms/<int:id_>/cameras", methods=["GET"])
+    def get_cameras(request, id_):
         request.setHeader('Content-Type', 'application/json')
         request.setHeader('Access-Control-Allow-Origin', '*')
 
@@ -289,7 +289,7 @@ class App:
 
         try:
             cm = CameraManager()
-            cameras = cm.get_all()
+            cameras = cm.get_all_from_room_id(id_)
             camera_dicts = [c.as_dict() for c in cameras]
         except Exception as e:
             response["success"] = False

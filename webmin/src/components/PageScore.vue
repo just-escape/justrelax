@@ -16,6 +16,7 @@ export default {
   components: {
     AppContent,
     AppContentTitle
-  }
+  },
+  props: ['roomId']
 }
 </script>

@@ -1,10 +1,11 @@
 <template>
   <AppContent>
     <AppContentTitle slot="header-left">
-      Home
+      Settings
     </AppContentTitle>
     <div slot="main">
-      <PageHomeRooms/>
+      <PageSettingsGeneral class="mb-5"/>
+      <PageSettingsCameras/>
     </div>
   </AppContent>
 </template>
@@ -12,14 +13,17 @@
 <script>
 import AppContent from '@/components/AppContent.vue'
 import AppContentTitle from '@/components/AppContentTitle.vue'
-import PageHomeRooms from '@/components/PageHomeRooms.vue'
+import PageSettingsGeneral from '@/components/PageSettingsGeneral.vue'
+import PageSettingsCameras from '@/components/PageSettingsCameras.vue'
 
 export default {
-  name: 'PageHome',
+  name: 'PageSettings',
   components: {
     AppContent,
     AppContentTitle,
-    PageHomeRooms,
-  }
+    PageSettingsGeneral,
+    PageSettingsCameras,
+  },
+  props: ['roomId']
 }
 </script>

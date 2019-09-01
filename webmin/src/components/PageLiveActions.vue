@@ -7,7 +7,7 @@
         :key="category.id"
         class="col-3"
       >
-        <PageRoomActionCard
+        <PageLiveActionCard
           :roomId="room.id"
           :header="category.name"
           :subcategories="category.subcategories"
@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import PageRoomActionCard from '@/components/PageRoomActionCard.vue'
+import PageLiveActionCard from '@/components/PageLiveActionCard.vue'
 
 export default {
-  name: 'PageRoomActions',
+  name: 'PageLiveActions',
   components: {
-    PageRoomActionCard
+    PageLiveActionCard
   },
   props: ['room']
 }

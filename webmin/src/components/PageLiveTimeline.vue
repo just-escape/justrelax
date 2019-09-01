@@ -98,7 +98,7 @@ import ButtonJaffa from '@/components/ButtonJaffa.vue'
 import TicksClock from '@/components/TicksClock.vue'
 
 export default {
-  name: 'PageRoomTimeline',
+  name: 'PageLiveTimeline',
   components: {
     ButtonJaffa,
     TicksClock,
