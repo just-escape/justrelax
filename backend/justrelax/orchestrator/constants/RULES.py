@@ -46,6 +46,8 @@ CONTEXT_MESSAGE = "message"
 CONTEXT_RULE_NAME = "rule_name"
 CONTEXT_ALARM_NAME = "alarm_name"
 
+OBJECT = "object"
+
 OperatorMapping = namedtuple("OperatorMapping", ["py_operator", "n_operands"])
 OPERATORS = {
     "+": OperatorMapping(operator.add, 2),

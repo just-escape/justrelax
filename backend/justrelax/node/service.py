@@ -5,11 +5,12 @@ from justrelax.node.factory import JustSockNodeClientFactory
 
 
 class JustSockNodeClientService(internet.TCPClient):
-    def __init__(self, host, port, name, channel, *args, **kwargs):
+    def __init__(self, host, port, name, channel, media, *args, **kwargs):
         self.host = host
         self.port = port
 
         self.factory = JustSockNodeClientFactory(self, name, channel)
+        self.media = media
 
         super(JustSockNodeClientService, self).__init__(host, port, self.factory, *args, **kwargs)
 

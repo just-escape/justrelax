@@ -79,4 +79,5 @@ class NodeServiceMaker(object):
             port=config["port"],
             name=config["name"],
             channel=config["channel"],
+            media=config["media"],
         )

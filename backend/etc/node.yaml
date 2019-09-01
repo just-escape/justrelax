@@ -5,4 +5,8 @@ class: justrelax.node.led.LEDNode
 name: red_led
 channel: digimiam1
 
+media:
+  base_url:
+  directory: /tmp
+
 logging: logging.yaml

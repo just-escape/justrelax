@@ -7,3 +7,4 @@ RPi.GPIO
 sqlalchemy
 marshmallow-sqlalchemy
 psycopg2
+simpleaudio

@@ -15,9 +15,6 @@ class LEDNode(JustSockNodeClientService):
         LED_ON = "on"
         LED_OFF = "off"
 
-    def __init__(self, *args, **kwargs):
-        super(LEDNode, self).__init__(*args, **kwargs)
-
     def start(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.PIN, GPIO.OUT)

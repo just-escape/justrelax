@@ -154,6 +154,11 @@ class RulesProcessor:
         if not isinstance(expression, dict):
             return expression
 
+        if JR.OBJECT in expression:
+            for key, value in expression[JR.OBJECT].items():
+                expression[JR.OBJECT][key] = self.compute_value(value, context=context)
+            return expression[JR.OBJECT]
+
         if JR.CONTEXT in expression:
             key = self.compute_value(expression[JR.CONTEXT], context=context)
             return context.get(key, None)

@@ -19,9 +19,6 @@ class ButtonNode(JustSockNodeClientService):
         PRESS = 'press'
         RELEASE = 'release'
 
-    def __init__(self, *args, **kwargs):
-        super(ButtonNode, self).__init__(*args, **kwargs)
-
     def listen(self, stop_event):
         pin = self.PIN
         last_state = 0
