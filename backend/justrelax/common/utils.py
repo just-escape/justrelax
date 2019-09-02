@@ -36,3 +36,11 @@ def import_string(path):
     except AttributeError as err:
         raise ImportError("'{}' not found in '{}'".format(
             class_name, module)) from err
+
+
+def human_readable_size(num, suffix='B'):
+    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
+        if abs(num) < 1024.0:
+            return "{:3.1f} {}{}".format(num, unit, suffix)
+        num /= 1024.0
+    return "{:.1f} {}{}".format(num, 'Y', suffix)

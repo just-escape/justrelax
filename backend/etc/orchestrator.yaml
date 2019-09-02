@@ -9,4 +9,6 @@ storage:
   port: 5432
   base: justrelax
 
+media_directory: /tmp
+
 logging: logging.yaml

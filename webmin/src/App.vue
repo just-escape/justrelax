@@ -142,6 +142,30 @@ input.form-control, select.form-control, textarea.form-control, .input-group > .
     color: #f8f9fa;
 }
 
+.custom-file-label {
+  background: transparent;
+  border-color: #f38d40;
+  color: #949497;
+}
+
+.custom-file-label::after {
+  color: #f38d40;
+  background-color: transparent;
+}
+
+.custom-file-input:hover {
+  cursor: pointer;
+}
+
+.custom-file-label:focus, .custom-file-input:focus {
+  outline-color: transparent;
+}
+
+.custom-file-input:focus ~ .custom-file-label {
+  box-shadow: none;
+  border-color: #f38d40;
+}
+
 input.form-control:focus, select.form-control:focus, textarea.form-control:focus {
     box-shadow: 0 0 0 0.2rem rgba(243, 141, 64, 0.25);
     background-color: transparent;
@@ -155,5 +179,24 @@ input.form-control::placeholder {
 
 .border-deepdark {
   border: 1px #2e2e2e solid;
+}
+
+table {
+  width: auto;
+}
+
+thead {
+  background-color: #2e2e2e;
+  color: #f38d40;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #3c3c3e;
+  color: #f8f9fa;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: transparent;
+  color: #f8f9fa;
 }
 </style>

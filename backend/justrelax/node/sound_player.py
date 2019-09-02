@@ -1,4 +1,6 @@
 import os
+
+import requests
 from simpleaudio import WaveObject
 
 from justrelax.node.service import JustSockNodeClientService
@@ -33,6 +35,24 @@ class SoundPlayer(JustSockNodeClientService):
 
     def play(self, sound_file):
         logger.info("Playing sound")
-        sound_path = os.path.join(self.media.directory, sound_file)
+        sound_path = os.path.join(self.media['directory'], sound_file)
+        if not os.path.isfile(sound_path):
+            success = self.download_sound(sound_file, sound_path)
+            if not success:
+                return
         wave_obj = WaveObject.from_wave_file(sound_path)
         wave_obj.play()
+
+    def download_sound(self, sound_file, sound_path):
+        url = "{}{}".format(self.media['base_url'], sound_file)
+        logger.info("Downloading sound {} at {}".format(sound_file, url))
+        response = requests.get(url)
+        if response.status_code != 200:
+            logger.error("Error downloading sound ({} - {}): skipping".format(
+                response.status_code, response.text))
+            return False
+
+        with open(sound_path, 'w+') as f:
+            f.write(response.text)
+
+        return True

@@ -8,3 +8,4 @@ sqlalchemy
 marshmallow-sqlalchemy
 psycopg2
 simpleaudio
+requests

@@ -9,6 +9,7 @@ from twisted.application import service
 
 from justrelax.common.logging import init_logging
 from justrelax.common.utils import abs_path_if_not_abs
+from justrelax.orchestrator import conf
 from justrelax.orchestrator.manager.room import RoomManager
 from justrelax.orchestrator.storage.session import DataBaseAccess
 from justrelax.orchestrator.services import Services
@@ -32,12 +33,16 @@ class Options(usage.Options):
         ],
         ["websocket-port", "w", None, "Port number to listen on"],
         ["http-port", "t", None, "Port number to listen on"],
+        ["media-directory", "m", None, "Root directory serving media files"],
     ]
 
 
 def absolutify(config, config_path):
     config_dir = os.path.dirname(config_path)
 
+    if "media_directory" in config:
+        config["media_directory"] = abs_path_if_not_abs(
+            config["media_directory"], config_dir)
     config["logging"] = abs_path_if_not_abs(config["logging"], config_dir)
 
 
@@ -72,12 +77,18 @@ class OrchestratorServiceMaker(object):
         if options["http-port"] is not None:
             config["http_port"] = options["http-port"]
 
+        if options["media-directory"] is not None:
+            config["media_directory"] = options["media-directory"]
+
         absolutify(config, options["config"])
 
         init_logging(config["logging"])
 
         if "storage" in config:
             init_storage_engine(config["storage"])
+
+        if "media_directory" in config:
+            conf.MEDIA_DIRECTORY = config["media_directory"]
 
         rm = RoomManager()
         rooms = rm.get_all()
