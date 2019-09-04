@@ -2,7 +2,7 @@
   "admin": {
     "categories": [
       {
-        "name": "Cluster 1",
+        "name": "Cluster 0",
         "subcategories": [
           {
             "name": "Red LED",
@@ -49,6 +49,61 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Sound",
+        "subcategories": [
+          {
+            "name": "Rear right",
+            "actions": [
+              {
+                "name": "play_rear_right",
+                "icon": "fas fa-volume-up"
+              }
+            ]
+          },
+          {
+            "name": "Rear left",
+            "actions": [
+              {
+                "name": "play_rear_left",
+                "icon": "fas fa-volume-up"
+              }
+            ]
+          },
+          {
+            "name": "Front center",
+            "actions": [
+              {
+                "name": "play_front_center",
+                "icon": "fas fa-volume-up"
+              }
+            ]
+          },
+          {
+            "name": "Side left",
+            "actions": [
+              {
+                "name": "play_side_left",
+                "icon": "fas fa-volume-up"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Video",
+        "subcategories": [
+          {
+            "name": "Water drop",
+            "actions": [
+              {
+                "name": "play_drop_video",
+                "icon": "fas fa-film"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -90,6 +145,31 @@
       "send_to": "yellow_led",
       "message": "off",
       "record": "Yellow LED off"
+    },
+    "play_rear_right": {
+      "send_to": "sound_player",
+      "message": {"object": {"type": "play", "sound": "Rear_Right.wav"}},
+      "record": "Sound"
+    },
+    "play_rear_left": {
+      "send_to": "sound_player",
+      "message": {"object": {"type": "play", "sound": "Rear_Left.wav"}},
+      "record": "Sound"
+    },
+    "play_front_center": {
+      "send_to": "sound_player",
+      "message": {"object": {"type": "play", "sound": "Front_Center.wav"}},
+      "record": "Sound"
+    },
+    "play_side_left": {
+      "send_to": "sound_player",
+      "message": {"object": {"type": "play", "sound": "Side_Left.wav"}},
+      "record": "Sound"
+    },
+    "play_drop_video": {
+      "send_to": "video_player",
+      "message": {"object": {"type": "play", "video": "drop.avi"}},
+      "record": "Video"
     }
   },
   "conditions": {

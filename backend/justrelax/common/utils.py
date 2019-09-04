@@ -1,5 +1,8 @@
 import os
+import requests
 from importlib import import_module
+
+from justrelax.common.logging import logger
 
 
 def ensure_iterable(x):
@@ -44,3 +47,17 @@ def human_readable_size(num, suffix='B'):
             return "{:3.1f} {}{}".format(num, unit, suffix)
         num /= 1024.0
     return "{:.1f} {}{}".format(num, 'Y', suffix)
+
+
+def download_file(url, path):
+    logger.info("Downloading file at {}".format(url))
+    response = requests.get(url)
+    if response.status_code != 200:
+        logger.error("Error downloading file ({} - {}): skipping".format(
+            response.status_code, response.text))
+        return False
+
+    with open(path, 'w+') as f:
+        f.write(response.text)
+
+    return True
