@@ -6,7 +6,6 @@
 
 <script>
 import LightSynchronizer from './components/LightSynchronizer.vue'
-// import roomStore from '@/store/roomStore.js'
 
 export default {
   name: 'app',
@@ -14,7 +13,6 @@ export default {
     LightSynchronizer
   },
   mounted() {
-    // roomStore.dispatch('fetchRooms')
     this.$connect()
   }
 }

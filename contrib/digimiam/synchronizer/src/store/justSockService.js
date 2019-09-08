@@ -47,7 +47,7 @@ const justSockService = new Vuex.Store({
     },
     sendToGateway (state, message) {
       Vue.prototype.$socket.send(message)
-    },  
+    },
   },
   actions: {
     sendToGateway (context, message) {
