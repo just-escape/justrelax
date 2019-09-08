@@ -5,7 +5,7 @@
       <div
         v-for="category in room.rules.admin.categories"
         :key="category.id"
-        class="col-3"
+        class="col-3 mb-4"
       >
         <PageLiveActionCard
           :roomId="room.id"
