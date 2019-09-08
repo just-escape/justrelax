@@ -104,6 +104,102 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Synchronizer",
+        "subcategories": [
+          {
+            "name": "Red",
+            "actions": [
+              {
+                "name": "light_1_on",
+                "icon": "fas fa-toggle-on"
+              },
+              {
+                "name": "light_1_off",
+                "icon": "fas fa-toggle-off"
+              }
+            ]
+          },
+          {
+            "name": "Orange",
+            "actions": [
+              {
+                "name": "light_2_on",
+                "icon": "fas fa-toggle-on"
+              },
+              {
+                "name": "light_2_off",
+                "icon": "fas fa-toggle-off"
+              }
+            ]
+          },
+          {
+            "name": "Yellow",
+            "actions": [
+              {
+                "name": "light_3_on",
+                "icon": "fas fa-toggle-on"
+              },
+              {
+                "name": "light_3_off",
+                "icon": "fas fa-toggle-off"
+              }
+            ]
+          },
+          {
+            "name": "Green",
+            "actions": [
+              {
+                "name": "light_4_on",
+                "icon": "fas fa-toggle-on"
+              },
+              {
+                "name": "light_4_off",
+                "icon": "fas fa-toggle-off"
+              }
+            ]
+          },
+          {
+            "name": "Cyan",
+            "actions": [
+              {
+                "name": "light_5_on",
+                "icon": "fas fa-toggle-on"
+              },
+              {
+                "name": "light_5_off",
+                "icon": "fas fa-toggle-off"
+              }
+            ]
+          },
+          {
+            "name": "Blue",
+            "actions": [
+              {
+                "name": "light_6_on",
+                "icon": "fas fa-toggle-on"
+              },
+              {
+                "name": "light_6_off",
+                "icon": "fas fa-toggle-off"
+              }
+            ]
+          },
+          {
+            "name": "Purple",
+            "actions": [
+              {
+                "name": "light_7_on",
+                "icon": "fas fa-toggle-on"
+              },
+              {
+                "name": "light_7_off",
+                "icon": "fas fa-toggle-off"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -170,6 +266,62 @@
       "send_to": "video_player",
       "message": {"object": {"type": "play", "video": "drop.avi"}},
       "record": "Video"
+    },
+    "light_1_on": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 1, "activated": true}}
+    },
+    "light_1_off": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 1, "activated": false}}
+    },
+    "light_2_on": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 2, "activated": true}}
+    },
+    "light_2_off": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 2, "activated": false}}
+    },
+    "light_3_on": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 3, "activated": true}}
+    },
+    "light_3_off": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 3, "activated": false}}
+    },
+    "light_4_on": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 4, "activated": true}}
+    },
+    "light_4_off": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 4, "activated": false}}
+    },
+    "light_5_on": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 5, "activated": true}}
+    },
+    "light_5_off": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 5, "activated": false}}
+    },
+    "light_6_on": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 6, "activated": true}}
+    },
+    "light_6_off": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 6, "activated": false}}
+    },
+    "light_7_on": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 7, "activated": true}}
+    },
+    "light_7_off": {
+      "send_to": "synchronizer",
+      "message": {"object": {"light": 7, "activated": false}}
     }
   },
   "conditions": {
