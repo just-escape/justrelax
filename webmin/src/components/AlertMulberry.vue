@@ -1,7 +1,23 @@
 <template>
   <b-alert show>
-    <button class="ml-3 close" @click="$emit('close')">×</button>
-    <slot></slot>
+    <div class="d-flex flex-row">
+      <div class="mr-3">
+        <i class="fas fa-exclamation"></i>
+      </div>
+      <div class="w-100">
+        <div class="d-flex justify-content-between">
+          <div class="font-weight-bold">
+            Something went wrong
+          </div>
+          <button class="d-flex align-items-center ml-3 close" @click="$emit('close')">
+            <small><i class="fas fa-times"></i></small>
+          </button>
+        </div>
+        <div class="text-grey">
+          <slot></slot>
+        </div>
+      </div>
+    </div>
   </b-alert>
 </template>
 
@@ -16,6 +32,7 @@ export default {
   color: #cb4299;
   background-color: #3c3c3e;
   border-color: #cb4299;
+  padding: 0.5rem 0.75rem;
 }
 
 .close {

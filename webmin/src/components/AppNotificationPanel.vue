@@ -1,23 +1,30 @@
 <template>
   <div :class="'notification-panel width-300px' + collapsePanel">
-    <div class="container-fluid border-left-dark pt-2 width-300px h-100">
+    <div class="container-fluid border-left-dark pt-2 padding-bottom-10rem width-300px h-100">
       <h2 class="big-noodle text-center">Notifications</h2>
-      <AlertMulberry v-for="n in notifications" :key="n.id" @close="clear(n.id)">
-        {{ n.content }}
-      </AlertMulberry>
+      <div v-for="n in notifications" :key="n.id">
+        <AlertMulberry v-if="n.type == 'error'" @close="clear(n.id)">
+          {{ n.message }}
+        </AlertMulberry>
+        <AlertJaffa v-else @close="clear(n.id)">
+          {{ n.message }}
+        </AlertJaffa>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import AlertMulberry from '@/components/AlertMulberry.vue'
+import AlertJaffa from '@/components/AlertJaffa.vue'
 import preferenceStore from '@/store/preferenceStore.js'
 import notificationStore from '@/store/notificationStore.js'
 
 export default {
   name: 'AppNotificationPanel',
   components: {
-    AlertMulberry
+    AlertMulberry,
+    AlertJaffa,
   },
   computed: {
     notifications() {

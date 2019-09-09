@@ -199,4 +199,8 @@ thead {
   background-color: transparent;
   color: #f8f9fa;
 }
+
+.padding-bottom-10rem {
+  padding-bottom: 10rem;
+}
 </style>

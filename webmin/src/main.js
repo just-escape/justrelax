@@ -15,7 +15,9 @@ import App from '@/App.vue'
 Vue.use(VueAxios, axios)
 Vue.use(VueNativeSock, 'ws://localhost:3031', {
   store: justSockService,
-  connectManually: true
+  connectManually: true,
+  reconnection: true,
+  reconnectionDelay: 10000,
 })
 Vue.use(VueAnime)
 Vue.use(BootstrapVue)

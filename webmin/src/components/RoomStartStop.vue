@@ -25,15 +25,15 @@ export default {
   methods: {
     run: function () {
       roomStore.dispatch('runRoom', this.roomId)
-      notificationStore.dispatch('displayNotification', 'Room started')
+      notificationStore.dispatch('pushNotification', 'Room started')
     },
     halt: function () {
       roomStore.dispatch('haltRoom', this.roomId)
-      notificationStore.dispatch('displayNotification', 'Room halted')
+      notificationStore.dispatch('pushNotification', 'Room halted')
     },
     reset: function () {
       roomStore.dispatch('resetRoom', this.roomId)
-      notificationStore.dispatch('displayNotification', 'Room reset')
+      notificationStore.dispatch('pushNotification', 'Room reset')
     }
   },
   props: ['roomId']

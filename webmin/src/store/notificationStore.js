@@ -9,11 +9,12 @@ export default new Vuex.Store({
     notificationIndexer: 0
   },
   mutations: {
-    displayNotification (state, content) {
+    pushNotification (state, {type, message}) {
       state.notifications.push(
         {
           "id": state.notificationIndexer,
-          "content": content
+          "message": message,
+          "type": type,
         }
       )
       state.notificationIndexer = state.notificationIndexer + 1
@@ -27,8 +28,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    displayNotification (context, content) {
-      context.commit('displayNotification', content)
+    pushNotification (context, message) {
+      var type = 'info'
+      context.commit('pushNotification', {type, message})
+    },
+    pushError (context, message) {
+      var type = 'error'
+      context.commit('pushNotification', {type, message})
     },
     clearNotification (context, id) {
       context.commit('clearNotification', id)

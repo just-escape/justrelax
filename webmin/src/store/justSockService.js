@@ -1,33 +1,25 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import roomStore from '@/store/roomStore.js'
+import notificationStore from '@/store/notificationStore.js'
 
 Vue.use(Vuex);
 
 const justSockService = new Vuex.Store({
-  state: {
-    isConnected: false,
-    messages: [],
-    sentMessages: [],
-    reconnectError: false,
-  },
   mutations: {
     SOCKET_ONOPEN (state, event) {
-      state.isConnected = true
       Vue.prototype.$socket = event.currentTarget
       Vue.prototype.$socket.send(JSON.stringify({"type": "IAM", "content": {"client_type": "$admin"}}))
     },
+    // eslint-disable-next-line
     SOCKET_ONCLOSE (state, event) {
-      // eslint-disable-next-line
-      console.error(state, event)
-      state.isConnected = false
+      notificationStore.dispatch('pushError', 'Websocket connection lost')
     },
+    // eslint-disable-next-line
     SOCKET_ONERROR (state, event) {
-      // eslint-disable-next-line
-      console.error(state, event)
+      notificationStore.dispatch('pushError', 'Websocket error')
     },
     SOCKET_ONMESSAGE (state, message) {
-      state.messages.push(message.data)
       var event = JSON.parse(message.data)
       var roomId = event.room_id
       if (event.type == 'TIC') {
@@ -40,15 +32,16 @@ const justSockService = new Vuex.Store({
         roomStore.dispatch('processReset', roomId)
       }
     },
+    // eslint-disable-next-line
     SOCKET_RECONNECT (state, count) {
-      // eslint-disable-next-line
-      console.info(state, count)
+      notificationStore.dispatch('pushError', 'Attempting reconnection to websocket (' + count + ')')
     },
+    // eslint-disable-next-line
     SOCKET_RECONNECT_ERROR (state) {
-      state.reconnectError = true
+      notificationStore.dispatch('pushError', 'Websocket reconnection error')
     },
+    // eslint-disable-next-line
     sendToGateway (state, message) {
-      state.sentMessages.push(message)
       Vue.prototype.$socket.send(message)
     },  
   },

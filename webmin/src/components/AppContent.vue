@@ -11,7 +11,7 @@
       </div>
     </header>
     <main class="d-flex flex-row h-100">
-      <div class="container-fluid pt-2">
+      <div class="container-fluid padding-bottom-10rem pt-2">
         <slot name="main"></slot>
       </div>
       <AppNotificationPanel/>
@@ -40,6 +40,5 @@ header {
 
 main {
   overflow: hidden;
-  padding-bottom: 10rem;
 }
 </style>
