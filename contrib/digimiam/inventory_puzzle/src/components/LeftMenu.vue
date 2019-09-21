@@ -6,6 +6,8 @@
     <div class="content d-flex flex-column">
       <h1 class="text-right mb-3">DIGIMIAM FOOD SUPPLIES</h1>
       <Widgets class="mb-3"/>
+      <Charts class="mb-3"/>
+      <Bars class="mb-3"/>
       <Logs/>
     </div>
   </div>
@@ -13,13 +15,17 @@
 
 <script>
 import Widgets from '@/components/Widgets.vue'
+import Charts from '@/components/Charts.vue'
+import Bars from '@/components/Bars.vue'
 import Logs from '@/components/Logs.vue'
 
 export default {
   name: 'LeftMenu',
   components: {
-    Logs,
     Widgets,
+    Charts,
+    Bars,
+    Logs,
   },
 }
 </script>
@@ -37,6 +43,7 @@ export default {
   height: 100%; /*calc(100% - 50px + 13px);*/
   background-color: rgba(00, 45, 64, 0.5);
   padding: 10px;
+  padding-bottom: 40px;
   color: #ffffff;
 }
 

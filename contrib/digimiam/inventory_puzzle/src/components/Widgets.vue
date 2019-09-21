@@ -23,7 +23,7 @@ export default {
           name: 'Temp.',
           label: 'ok',
           icon: ['fas', 'fa-thermometer-quarter'],
-          gauge: 0.18,
+          gauge: 0.37,
           shadowAngle: 50,
           shadowCycle: 7000,
           error: false,

@@ -1,22 +1,24 @@
 <template>
-  <div class="logs-box d-flex flex-grow-1 w-100 position-relative">
-    <div class="logs-top-left-corner"></div>
-    <div class="logs-top-right-corner"></div>
-    <div class="logs-bottom-right-corner"></div>
-    <div class="logs w-100">
-      <ul class="list-unstyled mb-0" id="scroll-bar">
-        <li v-for="(log, index) in logs" :key="log.id" class="mb-2">
-          <span v-if="log.level == 'warning'" class="warning">Warning: </span>
-          <span v-else-if="log.level == 'info'" class="info">Info: </span>
-          <span v-html="log.displayedMessage"></span>
-          <span
-            v-if="index == lastIndex"
-            :style="{
-              opacity: fullBlockOpacity,
-            }"
-          >&#9608;</span>
-        </li>
-      </ul>
+  <div class="d-flex flex-grow-1 flex-column">
+    <div class="logs-box d-flex flex-grow-1 w-100 position-relative mb-1">
+      <div class="logs-top-left-corner"></div>
+      <div class="logs-top-right-corner"></div>
+      <div class="logs-bottom-right-corner"></div>
+      <div class="logs w-100">
+        <ul class="list-unstyled mb-0" id="scroll-bar">
+          <li v-for="(log, index) in logs" :key="log.id" class="mb-2">
+            <span v-if="log.level == 'warning'" class="warning">Warning: </span>
+            <span v-else-if="log.level == 'info'" class="info">Info: </span>
+            <span v-html="log.displayedMessage"></span>
+            <span
+              v-if="index == lastIndex"
+              :style="{
+                opacity: fullBlockOpacity,
+              }"
+            >&#9608;</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -67,6 +69,10 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  font-size: 14px;
+}
+
 .logs-box {
   margin-bottom: 30px;
   padding: 5px;
