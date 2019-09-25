@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex flex-grow-1 flex-column">
-    <div class="logs-box d-flex flex-grow-1 w-100 position-relative mb-1">
-      <div class="logs-top-left-corner"></div>
-      <div class="logs-top-right-corner"></div>
-      <div class="logs-bottom-right-corner"></div>
+    <div class="logs-box d-flex flex-grow-1 w-100 position-relative mb-0">
+      <div class="corner top-left"></div>
+      <div class="corner top-right"></div>
+      <div class="corner bottom-right"></div>
       <div class="logs w-100">
         <ul class="list-unstyled mb-0" id="scroll-bar">
           <li v-for="(log, index) in logs" :key="log.id" class="mb-2">
@@ -117,43 +117,69 @@ export default {
   background-color: #00d1b6;
 }
 
-.logs-top-left-corner {
+.corner {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  filter: drop-shadow(0px 0px 1px rgba(0, 209, 182, 0.75));
+}
+
+.corner.top-left {
+  top: 0;
+  left: 0;
+}
+
+.corner.top-right {
+  top: 0;
+  right: 0;
+}
+
+.corner.bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.corner::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
-  height: 20px;
-  width: 20px;
-  border-left: 5px solid #00d1b6;
-  border-top: 5px solid #00d1b6;
-}
-
-.logs-top-right-corner {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 20px;
-  width: 20px;
-  border-right: 5px solid #00d1b6;
-  border-top: 5px solid #00d1b6;
-}
-
-.logs-bottom-left-corner {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  border-left: 5px solid #00d1b6;
-  border-bottom: 5px solid #00d1b6;
-}
-
-.logs-bottom-right-corner {
-  position: absolute;
   bottom: 0;
   right: 0;
-  height: 20px;
-  width: 20px;
-  border-right: 5px solid #00d1b6;
-  border-bottom: 5px solid #00d1b6;
+  background-color: #00d1b6;
+}
+
+.corner.top-left::before {
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% 5px,
+    5px 5px,
+    5px 100%,
+    0px 100%
+  );
+}
+
+.corner.top-right::before {
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% 100%,
+    calc(100% - 5px) 100%,
+    calc(100% - 5px) 5px,
+    5px 5px,
+    0px 5px
+  );
+}
+
+.corner.bottom-right::before {
+  clip-path: polygon(
+    calc(100% - 5px) 0%,
+    100% 0%,
+    100% 100%,
+    0% 100%,
+    0% calc(100% - 5px),
+    calc(100% - 5px) calc(100% - 5px)
+  );
 }
 </style>

@@ -53,6 +53,7 @@ export default {
 <style scoped>
 .block {
   margin-top: 3px;
+  margin-left: 3px;
   padding: 1px;
 }
 

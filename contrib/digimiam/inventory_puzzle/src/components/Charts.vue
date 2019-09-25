@@ -105,7 +105,7 @@ export default {
       return {'x': x, 'y': y}
     },
     variation: function(valueIndex) {
-      // between -20.0% and +20.0% 
+      // between -20.0% and +20.0%
       var newVariation = Math.floor(Math.random() * 400 - 200) / 10
 
       if (newVariation != 0) {
