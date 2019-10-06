@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import store from '@/store/store.js'
+import LightStore from '@/store/LightStore.js'
+import LogStore from '@/store/LogStore.js'
 
 Vue.use(Vuex);
 
@@ -32,9 +33,15 @@ const justSockService = new Vuex.Store({
     SOCKET_ONMESSAGE (state, message) {
       var event = JSON.parse(message.data)
       var content = event.content
-      var lightId = content.light
-      var activated = content.activated
-      store.commit('processEvent', {lightId, activated})
+      if (content.type == 'log') {
+        var logLevel = content.level
+        var logMessage = content.message
+        LogStore.commit('processEventLog', {logLevel, logMessage})
+      } else {
+        var lightId = content.light
+        var activated = content.activated
+        LightStore.commit('processEvent', {lightId, activated})
+      }
     },
     SOCKET_RECONNECT (state, count) {
       // eslint-disable-next-line

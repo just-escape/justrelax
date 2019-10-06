@@ -13,6 +13,7 @@ Vue.use(VueNativeSock, 'ws://localhost:3031', {
   store: justSockService,
   connectManually: true
 })
+Vue.use(require('vue-moment'))
 Vue.use(VueAnime)
 Vue.use(BootstrapVue)
 

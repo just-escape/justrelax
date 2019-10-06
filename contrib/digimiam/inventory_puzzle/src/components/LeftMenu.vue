@@ -1,7 +1,6 @@
 <template>
   <div class="frame position-relative">
     <div class="h1-background-ribbon"></div>
-    <div class="top-left-corner"></div>
     <div class="content d-flex flex-column">
       <h1 class="text-right mb-3">DIGIMIAM FOOD SUPPLIES</h1>
       <Widgets class="mb-3"/>
@@ -52,22 +51,12 @@ export default {
   height: 34px;
   width: calc(100% - 6px - 10px);
   border-bottom: 1px solid #00d1b6;
-  clip-path: polygon(100% 0%, 100% 100%, 0% 100%, calc(40px - 4px) 0%);
+  clip-path: polygon(100% 0%, 100% 100%, -1px 100%, calc(40px - 4px) 0%);
 }
 
 .content h1 {
   font-size: 18px;
   color: #ffffff;
   z-index: 21;
-}
-
-.top-left-corner {
-  position: absolute;
-  top: 11px;
-  left: 5px;
-  display: block;
-  border: 20px solid #00d1b6;
-  border-bottom-color: transparent;
-  border-right-color: transparent;
 }
 </style>
