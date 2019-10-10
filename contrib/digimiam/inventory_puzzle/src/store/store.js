@@ -18,7 +18,6 @@ var store = new Vuex.Store({
         top: 0,
         width: 150,
         height: 300,
-        dragging: false,
         verticalDrag: true,
         horizontalDrag: false,
         zIndex: 10,
@@ -29,7 +28,6 @@ var store = new Vuex.Store({
         top: 0,
         width: 300,
         height: 150,
-        dragging: false,
         verticalDrag: false,
         horizontalDrag: true,
         zIndex: 10,
@@ -40,7 +38,6 @@ var store = new Vuex.Store({
         top: 300,
         width: 300,
         height: 150,
-        dragging: false,
         verticalDrag: false,
         horizontalDrag: true,
         zIndex: 10,
@@ -51,7 +48,6 @@ var store = new Vuex.Store({
         top: 450,
         width: 150,
         height: 150,
-        dragging: false,
         verticalDrag: true,
         horizontalDrag: true,
         zIndex: 10,
@@ -96,7 +92,7 @@ var store = new Vuex.Store({
         if (state.blocks[state.dragging].horizontalDrag === true) {
           if (deltaX > 0) {
             // going right
-            var firstObstacleLeft = state.tableHeight
+            var firstObstacleLeft = state.tableWidth
             var draggedBlockRight = state.blocks[state.dragging].left + state.blocks[state.dragging].width
 
             for (i = 0 ; i < state.blocks.length ; i++) {
@@ -147,7 +143,7 @@ var store = new Vuex.Store({
 
         if (state.blocks[state.dragging].verticalDrag === true) {
           if (deltaY > 0) {
-            // going bottom
+            // going down
             var firstObstacleTop = state.tableHeight
             var draggedBlockBottom = state.blocks[state.dragging].top + state.blocks[state.dragging].height
 
@@ -170,7 +166,7 @@ var store = new Vuex.Store({
 
             state.blocks[state.dragging].top = Math.min(state.blocks[state.dragging].top + deltaY, firstObstacleTop - state.blocks[state.dragging].height)
           } else if (deltaY < 0) {
-            // going top
+            // going up
             var firstObstacleBottom = 0 // 0 is the top border
             var futureDraggedBlockTop = state.blocks[state.dragging].top + deltaY
 
