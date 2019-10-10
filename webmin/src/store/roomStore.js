@@ -235,6 +235,14 @@ export default new Vuex.Store({
       var formData = new FormData()
       formData.append('name', action)
       justRestAPI.post('/rooms/' + roomId + '/action', formData)
+        .then(function (response) {
+          if (!response.data.success) {
+            notificationStore.dispatch('pushError', 'Error while processing action: ' + response.data.error)
+          }
+        })
+        .catch(function (error) {
+          notificationStore.dispatch('pushError', 'Error while processing action: ' + error)
+        })
     }
   }
 })
