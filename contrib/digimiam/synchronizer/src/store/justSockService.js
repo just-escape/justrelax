@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 const justSockService = new Vuex.Store({
   mutations: {
+    // eslint-disable-next-line
     SOCKET_ONOPEN (state, event) {
       Vue.prototype.$socket = event.currentTarget
       Vue.prototype.$socket.send(
@@ -37,10 +38,10 @@ const justSockService = new Vuex.Store({
         var logLevel = content.level
         var logMessage = content.message
         LogStore.commit('processEventLog', {logLevel, logMessage})
-      } else {
-        var lightId = content.light
+      } else if (content.type == 'sensor') {
+        var sensorId = content['sensor_id']
         var activated = content.activated
-        LightStore.commit('processEvent', {lightId, activated})
+        LightStore.dispatch('toggleSensor', {sensorId, activated})
       }
     },
     SOCKET_RECONNECT (state, count) {
@@ -52,6 +53,7 @@ const justSockService = new Vuex.Store({
       // eslint-disable-next-line
       console.error("Reconnect error")
     },
+    // eslint-disable-next-line
     sendToGateway (state, message) {
       Vue.prototype.$socket.send(message)
     },

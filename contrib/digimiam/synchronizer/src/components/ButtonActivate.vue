@@ -1,7 +1,7 @@
 <template>
-  <ButtonBlue>
-    <div class="d-flex flex-row">
-      <span class="align-self-center mr-2">DISPLAY</span>
+  <ButtonBlue class="btn-block">
+    <div class="d-flex flex-row justify-content-center">
+      <span class="align-self-center mr-2">ACTIVATE</span>
       <img src="@/assets/img/hologram.svg" height="22px">
     </div>
   </ButtonBlue>
@@ -13,7 +13,7 @@ import ButtonBlue from '@/components/ButtonBlue.vue'
 export default {
   name: 'ButtonDisplay',
   components: {
-    ButtonBlue
+    ButtonBlue,
   },
 }
 </script>

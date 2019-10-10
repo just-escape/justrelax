@@ -13,7 +13,7 @@
       filter="url(#glowing-more)"
     />
     <path
-      d="M150 110 L 300 200"
+      :d="get"
       stroke="#00f1d6"
       stroke-width="6"
       filter="url(#glowing-more)"
@@ -29,7 +29,16 @@
 </template>
 
 <script>
+import LightStore from '@/store/LightStore.js'
+
 export default {
-  name: 'LightContainerGenerator.vue'
+  name: 'LightContainerGenerator.vue',
+  computed: {
+    get: function() {
+      var x = LightStore.state.generatorWireX
+      var y = LightStore.state.generatorWireY
+      return 'M150 110 L ' + x + ' ' + y
+    }
+  }
 }
 </script>

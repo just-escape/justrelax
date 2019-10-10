@@ -235,19 +235,19 @@
 </template>
 
 <script>
-import LightStore2 from '@/store/LightStore2.js'
+import LightStore from '@/store/LightStore.js'
 
 export default {
   name: 'LightContainerGradients',
   computed: {
     colorDefault: function() {
-      return LightStore2.state.colorDefault
+      return LightStore.state.colorDefault
     },
     colorActivation: function() {
-      return LightStore2.state.colorActivation
+      return LightStore.state.colorActivation
     },
     colorValidated: function() {
-      return LightStore2.state.colorValidated
+      return LightStore.state.colorValidated
     },
   }
 }

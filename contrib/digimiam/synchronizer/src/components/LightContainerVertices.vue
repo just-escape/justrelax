@@ -7,17 +7,11 @@
       :points="getVerticeHexagon(v)"
       :filter="'url(#' + v.glowing + ')'"
     />
-    <text
-      v-for="(v, vKey) in vertices" :key="v.id"
-      :x="v.x - 5"
-      :y="v.y"
-      font-size="10"
-    >{{vKey}}</text>
   </g>
 </template>
 
 <script>
-import LightStore2 from '@/store/LightStore2.js'
+import LightStore from '@/store/LightStore.js'
 
 export default {
   name: 'LightContainerVertices',
@@ -58,7 +52,7 @@ export default {
       }
     },
     vertices: function() {
-      return LightStore2.state.vertices
+      return LightStore.state.vertices
     },
   },
 }

@@ -1,8 +1,7 @@
 <template>
-  <div class="d-flex flex-row justify-content-between glowing-container">
-    <LightContainerTmpControls/>
+  <div class="glowing-container">
     <div>
-      <svg viewBox="0 0 800 400">
+      <svg viewBox="0 0 600 400">
         <LightContainerDefs/>
 
         <LightContainerGenerator/>
@@ -16,22 +15,20 @@
 <script>
 import LightContainerDefs from '@/components/LightContainerDefs.vue'
 import LightContainerGenerator from '@/components/LightContainerGenerator.vue'
-import LightContainerTmpControls from '@/components/LightContainerTmpControls.vue'
 import LightContainerEdges from '@/components/LightContainerEdges.vue'
 import LightContainerVertices from '@/components/LightContainerVertices.vue'
-import LightStore2 from '@/store/LightStore2.js'
+import LightStore from '@/store/LightStore.js'
 
 export default {
   name: 'LightContainer',
   components: {
     LightContainerDefs,
     LightContainerGenerator,
-    LightContainerTmpControls,
     LightContainerEdges,
     LightContainerVertices,
   },
   mounted() {
-    LightStore2.dispatch('init')
+    LightStore.dispatch('init')
   }
 }
 </script>
@@ -39,6 +36,5 @@ export default {
 <style scoped>
 svg {
   height: 400px;
-  width: 800px;
 }
 </style>

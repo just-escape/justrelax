@@ -1,137 +1,119 @@
 <template>
-  <div class="d-flex justify-content-center">
-    <div class="vgraduation vg-0"></div>
-    <div class="vgraduation vg-33"></div>
-    <div class="vgraduation vg-66"></div>
-    <div class="vgraduation vg-100"></div>
-    <div class="graduation-bar"></div>
+  <div class="d-flex h-100 d-flex flex-column mx-3">
+    <div class="selector-frame glowing-container position-relative w-100 h-100 mb-3">
+      <div class="synthetic">Synthetic</div>
+      <div class="organic">Organic</div>
+      <div class="yummy-yummy">Yummy yummy</div>
+      <div class="yummy">Yummy</div>
 
-    <div class="graduation-label gl-0">Label 0</div>
-    <div class="graduation-label gl-33">Label 33</div>
-    <div class="graduation-label gl-66">Label 66</div>
-    <div class="graduation-label gl-100">Label 100</div>
+      <MealToken
+        v-for="(t, tokenIndex) in tokens"
+        :key="t.id"
+        :tokenIndex="tokenIndex"
+      />
 
-    <input
-      type="range" min="0" max="3"
-      v-model="meal[mealComponent]"
-      @change="onMealSelectorChange(mealIndex)"
-    >
+      <div v-for="row in selectableAreas" :key="row.id">
+        <div v-for="col in row" :key="col.id" class="selectable-area" :style="{top: col.top, left: col.left}">
+        </div>
+      </div>
+    </div>
+
+    <div class="text-underline button-like-frame text-center generator-matrix-title">
+      DISH GENERATOR MATRIX
+    </div>
   </div>
 </template>
 
 <script>
+import MealToken from '@/components/MealToken.vue'
 import MenuStore from '@/store/MenuStore.js'
 
 export default {
-  name: 'MealSelector',
+  name: 'MealSelectors2',
+  components: {
+    MealToken,
+  },
+  data: function() {
+    return {
+      selectableAreas: [
+        [{top: "8%", left: "8%"}, {top: "8%", left: "31%"}, {top: "8%", left: "54%"}, {top: "8%", left: "77%"}],
+        [{top: "31%", left: "8%"}, {top: "31%", left: "31%"}, {top: "31%", left: "54%"}, {top: "31%", left: "77%"}],
+        [{top: "54%", left: "8%"}, {top: "54%", left: "31%"}, {top: "54%", left: "54%"}, {top: "54%", left: "77%"}],
+        [{top: "77%", left: "8%"}, {top: "77%", left: "31%"}, {top: "77%", left: "54%"}, {top: "77%", left: "77%"}],
+      ],
+    }
+  },
   computed: {
-    meal: function() {
-      return MenuStore.state.selectedMeals[this.mealIndex]
+    tokens: function() {
+      return MenuStore.state.tokens
     },
   },
-  methods: {
-    onMealSelectorChange: function(mealIndex) {
-      MenuStore.commit('onMealSelectionChange', mealIndex)
-    },
-  },
-  props: ['mealComponent', 'mealIndex']
 }
 </script>
 
 <style scoped>
-input[type=range] {
-  /* Hides the slider so that custom slider can be made */
-  -webkit-appearance: none;
-  /* Otherwise white in Chrome */
-  background: transparent;
-}
 
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 20px;
-  width: 10px;
-  border-radius: 3px;
-  background: #00d1b6;
-  cursor: pointer;
-  box-shadow: 0px 0px 14px -6px rgba(0, 209, 182, 1);
-  z-index: 2;
-}
-
-input[type=range]:focus {
-  /* Removes the blue border. */
-  outline: none;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-  /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-  margin-top: 7px;
-  height: 20px;
-  cursor: pointer;
-}
-
-.graduations {
+.synthetic {
   position: absolute;
+  text-align: right;
+  right: 0;
+  bottom: calc(-14px - 5px);
+  line-height: 1;
+  font-size: 14px;
 }
 
-.vgraduation {
+.organic {
   position: absolute;
-  top: 10px;
-  height: 14px;
-  border-left: 2px solid #00d1b6;
-  border-radius: 1px;
-  z-index: 0;
+  text-align: left;
+  left: 0;
+  bottom: calc(-14px - 5px);
+  line-height: 1;
+  font-size: 14px;
 }
 
-.vg-0 {
-  left: calc(15px + 4px); /* bootstrap col margin + cursor center */
-}
-
-.vg-33 {
-  left: calc(15px + 50px); /* bootstrap col margin + 33% offset */
-}
-
-.vg-66 {
-  right: calc(15px + 50px); /* bootstrap col margin + 33% offset */
-}
-
-.vg-100 {
-  right: calc(15px + 4px); /* bootstrap col margin + cursor center */
-}
-
-.graduation-bar {
+.yummy {
   position: absolute;
-  left: calc(15px + 4px); /* bootstrap col margin + cursor center */
-  top: 16px;
-  width: calc(100% - 2 * 15px - 2 * 4px); /* bootstrap col margin - cursor center */
-  border-top: 2px solid rgba(0, 209, 182, 0.4);
-  border-radius: 1px;
-  z-index: 0;
+  bottom: 0;
+  left: calc(-14px - 3px);
+  writing-mode: tb-rl;
+  transform: rotate(180deg);
+  line-height: 1;
+  font-size: 14px;
 }
 
-.graduation-label {
+.yummy-yummy {
   position: absolute;
-  font-size: 10px;
-  transform: rotate(-45deg);
-  top: -19px;
-  white-space: nowrap;
+  top: 0;
+  left: calc(-14px - 3px);
+  writing-mode: tb-rl;
+  transform: rotate(180deg);
+  line-height: 1;
+  font-size: 14px;
 }
 
-/* manual tuning */
-.gl-0 {
-  left: 4px;
-  top: -17px;
+.selectable-area {
+  position: absolute;
+  border: 1px dotted rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 14px -8px rgba(255, 255, 255, 1);
+  height: 15%;
+  width: 15%;
 }
 
-.gl-33 {
-  left: 50px;
+.selector-frame {
+  height: 439px;
+  width: 100%;
+  background:
+    linear-gradient(to right, transparent 15%, rgba(0, 150, 150, 0.09) 70%),
+    linear-gradient(to top, transparent 15%, rgba(0, 150, 150, 0.09) 70%);
 }
 
-.gl-66 {
-  left: 100px;
+/* The same padding than on buttons */
+.button-like-frame {
+  padding: 0.375rem 0.75rem;
+  height: 36px;
 }
 
-.gl-100 {
-  left: 146px;
-  top: -21px; /* I don't understand why */
+.generator-matrix-title {
+  color: rgba(0, 209, 182, 0.7);
 }
 </style>

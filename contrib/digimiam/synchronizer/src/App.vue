@@ -1,21 +1,48 @@
 <template>
-  <div id="app" class="d-flex justify-content-center h-100">
-    <div class="global-container d-flex flex-column">
-      <TopModules class="mt-3 mb-4"/>
-      <MenuSelector/>
+  <div
+    id="app"
+    @mousemove="mousemove"
+    @mouseup="mouseup"
+    @mouseleave="mouseleave"
+    class="d-flex justify-content-center h-100"
+  >
+    <div class="global-container row py-3">
+      <div class="col-9">
+        <div class="d-flex flex-column">
+          <LightPuzzle class="h-402px mb-4"/>
+          <MenuPuzzle class="h-492px"/>
+        </div>
+      </div>
+      <div class="col-3">
+        <Logs/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import TopModules from '@/components/TopModules.vue'
-import MenuSelector from '@/components/MenuSelector.vue'
+import LightPuzzle from '@/components/LightPuzzle.vue'
+import MenuPuzzle from '@/components/MenuPuzzle.vue'
+import Logs from '@/components/Logs.vue'
+import MenuStore from '@/store/MenuStore.js'
 
 export default {
   name: 'app',
   components: {
-    TopModules,
-    MenuSelector,
+    Logs,
+    LightPuzzle,
+    MenuPuzzle,
+  },
+  methods: {
+    mousemove: function(event) {
+      MenuStore.commit('appMousemove', event)
+    },
+    mouseup: function() {
+      MenuStore.commit('appMouseup')
+    },
+    mouseleave: function() {
+      MenuStore.commit('appMouseleave')
+    },
   },
   mounted() {
     this.$connect()
@@ -54,7 +81,6 @@ export default {
   top: 0;
   opacity: 0.3;
   z-index: -1;
-
 }
 
 #app::after {
@@ -77,13 +103,20 @@ export default {
 }
 
 .global-container {
-  height: 956px;
-  width: 1206px;
-  border: 3px solid #00d1b6;
+  height: 950px;
+  width: 1200px;
 }
 
 .glowing-container {
   border: 1px solid #00d1b6;
   box-shadow: 0px 0px 14px -6px rgba(0, 209, 182, 1);
+}
+
+.h-402px {
+  height: 402px;
+}
+
+.h-492px {
+  height: 492px;
 }
 </style>

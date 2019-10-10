@@ -1,74 +1,35 @@
 <template>
   <div class="position-relative h-100">
-    <!--<div class="connection-point display-display"></div>
-    <div class="connection-point display-menu"></div>
-    <div class="connection-point activate-activate"></div>
-    <div class="connection-point activate-menu"></div>-->
-
-    <div class="d-flex flex-column justify-content-between h-100">
-      <div class="menu-container px-2 pb-1 text-center position-relative">
+    <div class="d-flex flex-column h-100">
+      <div class="menu-container px-2 pb-1 text-center position-relative mb-3 h-100">
         <div class="menu-frame"></div>
         <div class="menu-background"></div>
-        <div class="menu-title-ribbon mb-2 text-right p-2">DIGIMIAM MENU</div>
+        <div class="menu-title-ribbon mb-2 text-right p-2">
+          DIGIMIAM MENU
+        </div>
         <div class="date text-right mb-4">
             {{ date }}
         </div>
-        <div
-          v-for="(meal, mealIndex) in selectedMeals"
-          :key="meal.id"
-          class="ml-2"
-          :class="{'mb-5': !isLastMeal(mealIndex), 'mb-3': isLastMeal(mealIndex)}"
-        >
-          <div class="meal-name text-left mb-1">
-            {{ meal.name }}
-            <sup v-if="meal.label" class="meal-name-label">
-              {{ meal.label }}
-            </sup>
-          </div>
-          <div class="d-flex flex-row justify-content-between meal-line">
-            <span v-if="meal.configuredOnce === false" class="font-italic text-orange">
-              ## Error ##
-            </span>
-            <span v-else class="font-italic">
-              {{ dishes[meal.firstComponent][meal.secondComponent] }}
-            </span>
-            <span class="underline-dots flex-grow-1 mx-1">
-            </span>
-            <span class="price">
-              <span v-if="meal.configuredOnce === false" class="text-orange">??</span>
-              <span v-else>15</span>
-              neoF
-            </span>
-          </div>
-        </div>
+        
       </div>
 
-      <div class="d-flex flex-row justify-content-between mx-2 mb-3">
-        <div class="position-relative">
-          <div class="glowing-wire left-wire"></div>
-          <div class="glowing-wire right-wire"></div>
-          <ButtonDisplay></ButtonDisplay>
-        </div>
-        <div class="position-relative">
-          <div class="glowing-wire left-wire"></div>
-          <div class="glowing-wire right-wire"></div>
-          <ButtonBlue>ACTIVATE</ButtonBlue>
-        </div>
+      <div class="position-relative mx-2">
+        <div class="glowing-wire left-wire"></div>
+        <div class="glowing-wire right-wire"></div>
+        <ButtonActivate class="btn-block"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ButtonBlue from '@/components/ButtonBlue.vue'
-import ButtonDisplay from '@/components/ButtonDisplay.vue'
+import ButtonActivate from '@/components/ButtonActivate.vue'
 import MenuStore from '@/store/MenuStore.js'
 
 export default {
   name: 'MenuDisplay',
   components: {
-    ButtonBlue,
-    ButtonDisplay,
+    ButtonActivate,
   },
   computed: {
     date: function() {
@@ -76,7 +37,7 @@ export default {
       date.setFullYear(2080)
       return this.$moment(date).format('LL')
     },
-    selectedMeals: function() {
+    /*selectedMeals: function() {
       return MenuStore.state.selectedMeals
     },
     isLastMeal: function() {
@@ -86,7 +47,7 @@ export default {
     },
     dishes: function() {
       return MenuStore.state.dishes
-    },
+    },*/
   },
 }
 </script>
@@ -127,8 +88,8 @@ export default {
     calc(100% + 10px) -10px,
     calc(100% + 10px) calc(100% + 10px),
     -10px calc(100% + 6px),
-    -10px calc(43px - 6px - 6px),
-    calc(43px + 3px - 6px) -10px,
+    -10px calc(43px - 7px - 6px),
+    calc(43px + 2px - 6px) -10px,
     calc(100% - 1px) -10px,
     calc(100% - 1px) 9px,
     calc(43px + 1px) 9px,
@@ -151,8 +112,8 @@ export default {
     100% 0%,
     100% 100%,
     0% 100%,
-    0% calc(43px - 6px),
-    calc(43px + 3px) 0%,
+    0% calc(43px - 7px),
+    calc(43px + 2px) 0%,
     calc(100% - 1px) 0%,
     calc(100% - 1px) 9px,
     calc(43px + 1px) 9px,
@@ -205,10 +166,9 @@ export default {
 
 .glowing-wire {
   position: absolute;
-  /* meal module height - menu card height - button height - margin buttons/bottom */
-  height: calc(510px - 439px - 36px - 16px);
+  height: 16px;
   width: 1px;
-  top: calc(-1 * (510px - 439px - 36px - 16px));
+  bottom: 36px;
   border-left: 1px solid #00d1b6;
   box-shadow: 1px 0px 3px 0.01px rgba(0, 209, 182, 0.7);
 }
@@ -219,36 +179,5 @@ export default {
 
 .right-wire {
   right: 20%;
-}
-
-.connection-point {
-  position: absolute;
-  height: 6px;
-  width: 6px;
-  background-color: #00d1b6;
-  border-radius: 50%;
-  z-index: 10;
-}
-
-.display-display {
-  /* margin + button height - height / 2 (for centering) */
-  bottom: calc(15px + 36px - 3px);
-  left: 40px; /* random value */
-}
-
-.display-menu {
-  bottom: 1px;
-  left: 1px;
-}
-
-.activate-activate {
-  /* margin + button height - height / 2 (for centering) */
-  bottom: calc(15px + 36px - 3px);
-  right: 45px; /* random value */
-}
-
-.activate-menu {
-  bottom: 1px;
-  right: 1px;
 }
 </style>
