@@ -1,4 +1,4 @@
-# inventory_puzzle
+# inventory
 
 ## Project setup
 ```

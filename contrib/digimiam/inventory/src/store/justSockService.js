@@ -15,7 +15,7 @@ const justSockService = new Vuex.Store({
             "content": {
               "client_type": "$node",
               "channel": "digimiam1",
-              "name": "inventory_puzzle",
+              "name": "inventory",
             }
           }
         )
