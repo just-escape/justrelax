@@ -167,7 +167,7 @@ export default new Vuex.Store({
             state.selectableAreas[i].left <= cursorPercentX &&
             cursorPercentX <= state.selectableAreas[i].left + state.selectableAreaWidth &&
             state.selectableAreas[i].top <= cursorPercentY &&
-            cursorPercentY <= state.selectableAreas[i].top + state.selectableAreaHeight 
+            cursorPercentY <= state.selectableAreas[i].top + state.selectableAreaHeight
           ) {
             state.menuItems[state.dragging].dish = state.selectableAreas[i].dish
             state.menuItems[state.dragging].price = state.selectableAreas[i].price
