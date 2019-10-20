@@ -1,8 +1,8 @@
 <template>
   <div
     id="app"
-    @mousemove="mousemove"
-    @mouseup="mouseup"
+    v-touch:moving="moving"
+    v-touch:end="tapEnd"
     @mouseleave="mouseleave"
     class="d-flex justify-content-center h-100"
   >
@@ -34,17 +34,21 @@ export default {
     MenuPuzzle,
   },
   methods: {
-    mousemove: function(event) {
-      MenuStore.commit('appMousemove', event)
+    moving: function(event) {
+      MenuStore.commit('appMoving', event)
     },
-    mouseup: function() {
-      MenuStore.commit('appMouseup')
+    tapEnd: function() {
+      MenuStore.commit('appTapEnd')
     },
     mouseleave: function() {
       MenuStore.commit('appMouseleave')
     },
   },
   mounted() {
+    // Disable longtap (right click) menu to appear
+    window.oncontextmenu = function() {
+      return false;
+    }
     this.$connect()
   }
 }

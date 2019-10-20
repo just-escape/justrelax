@@ -66,6 +66,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .monitor-unit {
   width: 40px;

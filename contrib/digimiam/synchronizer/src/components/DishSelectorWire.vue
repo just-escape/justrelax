@@ -9,7 +9,7 @@
 import MenuStore from '@/store/MenuStore.js'
 
 export default {
-  name: 'MealTokenWire',
+  name: 'DishSelectorWire',
   data: function() {
     return {
       thicknessNoPx: 1,
@@ -17,16 +17,16 @@ export default {
   },
   computed: {
     x1: function() {
-      return this.token.cursorLeft + this.token.cursorWidth / 2
+      return this.item.cursorLeft + this.item.cursorWidth / 2
     },
     y1: function() {
-      return this.token.cursorTop + this.token.cursorHeight / 2
+      return this.item.cursorTop + this.item.cursorHeight / 2
     },
     x2: function() {
-      return this.token.wireX2
+      return this.item.wireX2
     },
     y2: function() {
-      return this.token.wireY2
+      return this.item.wireY2
     },
     left: function() {
       return ((this.x1 + this.x2) / 2) - (this.widthNoPx / 2) + 'px'
@@ -54,13 +54,13 @@ export default {
       return 'rotate(' + angle + 'deg)'
     },
     zIndex: function() {
-      return this.token.zIndex
+      return this.item.selectorZIndex
     },
-    token: function() {
-      return MenuStore.state.tokens[this.tokenIndex]
+    item: function() {
+      return MenuStore.state.menuItems[this.itemIndex]
     },
   },
-  props: ['tokenIndex'],
+  props: ['itemIndex'],
 }
 </script>
 

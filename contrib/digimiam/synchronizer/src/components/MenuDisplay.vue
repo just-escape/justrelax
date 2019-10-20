@@ -1,19 +1,24 @@
 <template>
   <div class="position-relative h-100">
     <div class="d-flex flex-column h-100">
-      <div class="menu-container px-2 pb-1 text-center position-relative mb-3 h-100">
+      <div class="menu-container px-2 pb-1 position-relative mb-3 h-100">
         <div class="menu-frame"></div>
         <div class="menu-background"></div>
         <div class="menu-title-ribbon mb-2 text-right p-2">
           DIGIMIAM MENU
         </div>
-        <div class="date text-right mb-4">
+        <div class="date text-right mb-5">
             {{ date }}
         </div>
-        
+
+        <MenuItem
+          v-for="(item, itemIndex) in menuItems"
+          :key="item.id"
+          :itemIndex="itemIndex"
+        />
       </div>
 
-      <div class="position-relative mx-2">
+      <div class="position-relative">
         <div class="glowing-wire left-wire"></div>
         <div class="glowing-wire right-wire"></div>
         <ButtonActivate class="btn-block"/>
@@ -24,12 +29,14 @@
 
 <script>
 import ButtonActivate from '@/components/ButtonActivate.vue'
+import MenuItem from '@/components/MenuItem.vue'
 import MenuStore from '@/store/MenuStore.js'
 
 export default {
   name: 'MenuDisplay',
   components: {
     ButtonActivate,
+    MenuItem,
   },
   computed: {
     date: function() {
@@ -37,17 +44,9 @@ export default {
       date.setFullYear(2080)
       return this.$moment(date).format('LL')
     },
-    /*selectedMeals: function() {
-      return MenuStore.state.selectedMeals
-    },
-    isLastMeal: function() {
-      return function(mealIndex) {
-        return MenuStore.state.selectedMeals.length - 1 == mealIndex
-      }
-    },
-    dishes: function() {
-      return MenuStore.state.dishes
-    },*/
+    menuItems: function() {
+      return MenuStore.state.menuItems
+    }
   },
 }
 </script>
@@ -145,23 +144,6 @@ export default {
 
 .date {
   font-size: 10px;
-}
-
-.meal-name {
-  font-size: 18px;
-}
-
-.meal-name-label {
-  font-size: 12px;
-}
-
-.meal-line {
-  line-height: 1;
-}
-
-.underline-dots {
-  border-bottom: 1px dotted #ffffff;
-  margin-bottom: 3px;
 }
 
 .glowing-wire {

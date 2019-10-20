@@ -6,53 +6,54 @@
       <div class="yummy-yummy">Yummy yummy</div>
       <div class="yummy">Yummy</div>
 
-      <MealToken
-        v-for="(t, tokenIndex) in tokens"
-        :key="t.id"
-        :tokenIndex="tokenIndex"
+      <DishSelector
+        v-for="(item, itemIndex) in menuItems"
+        :key="item.id"
+        :itemIndex="itemIndex"
       />
 
-      <div v-for="row in selectableAreas" :key="row.id">
-        <div v-for="col in row" :key="col.id" class="selectable-area" :style="{top: col.top, left: col.left}">
-        </div>
+      <div
+        v-for="area in selectableAreas" :key="area.id"
+        class="selectable-area"
+        :style="{top: area.top + '%', left: area.left + '%', height: selectableAreaHeight, width: selectableAreaWidth}">
       </div>
     </div>
 
-    <div class="text-underline button-like-frame text-center generator-matrix-title">
-      DISH GENERATOR MATRIX
+    <div class="d-flex flex-row justify-content-center">
+      <div class="button-like-frame generator-matrix-title">
+        DISH GENERATOR MATRIX
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import MealToken from '@/components/MealToken.vue'
+import DishSelector from '@/components/DishSelector.vue'
 import MenuStore from '@/store/MenuStore.js'
 
 export default {
-  name: 'MealSelectors2',
+  name: 'DishMatrix',
   components: {
-    MealToken,
-  },
-  data: function() {
-    return {
-      selectableAreas: [
-        [{top: "8%", left: "8%"}, {top: "8%", left: "31%"}, {top: "8%", left: "54%"}, {top: "8%", left: "77%"}],
-        [{top: "31%", left: "8%"}, {top: "31%", left: "31%"}, {top: "31%", left: "54%"}, {top: "31%", left: "77%"}],
-        [{top: "54%", left: "8%"}, {top: "54%", left: "31%"}, {top: "54%", left: "54%"}, {top: "54%", left: "77%"}],
-        [{top: "77%", left: "8%"}, {top: "77%", left: "31%"}, {top: "77%", left: "54%"}, {top: "77%", left: "77%"}],
-      ],
-    }
+    DishSelector,
   },
   computed: {
-    tokens: function() {
-      return MenuStore.state.tokens
+    selectableAreas: function() {
+      return MenuStore.state.selectableAreas
+    },
+    selectableAreaWidth: function() {
+      return MenuStore.state.selectableAreaWidth + '%'
+    },
+    selectableAreaHeight: function() {
+      return MenuStore.state.selectableAreaHeight + '%'
+    },
+    menuItems: function() {
+      return MenuStore.state.menuItems
     },
   },
 }
 </script>
 
 <style scoped>
-
 .synthetic {
   position: absolute;
   text-align: right;
@@ -60,6 +61,7 @@ export default {
   bottom: calc(-14px - 5px);
   line-height: 1;
   font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .organic {
@@ -69,6 +71,7 @@ export default {
   bottom: calc(-14px - 5px);
   line-height: 1;
   font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .yummy {
@@ -79,6 +82,7 @@ export default {
   transform: rotate(180deg);
   line-height: 1;
   font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .yummy-yummy {
@@ -89,14 +93,13 @@ export default {
   transform: rotate(180deg);
   line-height: 1;
   font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .selectable-area {
   position: absolute;
   border: 1px dotted rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 14px -8px rgba(255, 255, 255, 1);
-  height: 15%;
-  width: 15%;
 }
 
 .selector-frame {
@@ -114,6 +117,8 @@ export default {
 }
 
 .generator-matrix-title {
-  color: rgba(0, 209, 182, 0.7);
+  color: rgba(255, 255, 255, 0.65);
+  background-color: rgba(00, 45, 80, 0.6);
+  border: 1px solid rgba(0, 209, 182, 0.55);
 }
 </style>

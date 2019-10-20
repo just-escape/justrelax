@@ -1,7 +1,7 @@
 <template>
   <div 
     class="cursor"
-    @mousedown="mousedown"
+    v-touch:start="tapStart"
     :style="{top: top, left: left, zIndex: zIndex, height: height, width: width}"
   ></div>
 </template>
@@ -10,33 +10,33 @@
 import MenuStore from '@/store/MenuStore.js'
 
 export default {
-  name: 'MealTokenCursor',
+  name: 'DishSelectorCursor',
   computed: {
     top: function() {
-      return this.token.cursorTop + 'px'
+      return this.item.cursorTop + 'px'
     },
     left: function() {
-      return this.token.cursorLeft + 'px'
+      return this.item.cursorLeft + 'px'
     },
     zIndex: function() {
-      return this.token.zIndex
+      return this.item.selectorZIndex
     },
     width: function() {
-      return this.token.cursorWidth + 'px'
+      return this.item.cursorWidth + 'px'
     },
     height: function() {
-      return this.token.cursorHeight + 'px'
+      return this.item.cursorHeight + 'px'
     },
-    token: function() {
-      return MenuStore.state.tokens[this.tokenIndex]
+    item: function() {
+      return MenuStore.state.menuItems[this.itemIndex]
     },
   },
   methods: {
-    mousedown: function() {
-      MenuStore.commit('tokenMousedown', this.tokenIndex)
+    tapStart: function() {
+      MenuStore.commit('appTapStart', this.itemIndex)
     },
   },
-  props: ['tokenIndex'],
+  props: ['itemIndex'],
 }
 </script>
 
