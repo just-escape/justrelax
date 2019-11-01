@@ -13,7 +13,8 @@ var store = new Vuex.Store({
     lastMouseY: null,
     blocks: [
       {
-        color: "#c53500",
+        color: "#a02b00",
+        backgroundPosition: "25% 75%",
         left: 0,
         top: 0,
         width: 150,
@@ -23,7 +24,8 @@ var store = new Vuex.Store({
         zIndex: 10,
       },
       {
-        color: "#c53500",
+        color: "#a02b00",
+        backgroundPosition: "75% 25%",
         left: 300,
         top: 0,
         width: 300,
@@ -33,7 +35,8 @@ var store = new Vuex.Store({
         zIndex: 10,
       },
       {
-        color: "#c53500",
+        color: "#a02b00",
+        backgroundPosition: "50% 75%",
         left: 0,
         top: 300,
         width: 300,
@@ -43,7 +46,8 @@ var store = new Vuex.Store({
         zIndex: 10,
       },
       {
-        color: "#c53500",
+        color: "#a02b00",
+        backgroundPosition: "32% 0%",
         left: 450,
         top: 450,
         width: 150,

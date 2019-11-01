@@ -15,6 +15,7 @@
         class="inner-block"
         :style="{
           backgroundColor: color,
+          'background-position': backgroundPosition,
           boxShadow: boxshadow
         }"
       ></div>
@@ -44,6 +45,7 @@ export default {
     "width",
     "height",
     "color",
+    "backgroundPosition",
     "zIndex",
     "shadowWidth",
   ]
@@ -61,5 +63,6 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 4px;
+  background-image: url('~@/assets/img/rust.png');
 }
 </style>

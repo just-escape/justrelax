@@ -10,6 +10,7 @@
         :width="block.width"
         :height="block.height"
         :color="block.color"
+        :backgroundPosition="block.backgroundPosition"
         :zIndex="block.zIndex"
         :shadowWidth="shadowWidth"
       />
@@ -67,7 +68,7 @@ export default {
     }).add({
       shadowWidth: 25,
     }).add({
-      shadowWidth: 10,
+      shadowWidth: 15,
     })
   },
 }
