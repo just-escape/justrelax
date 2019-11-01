@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+
+import i18n from '@/locales.js'
+import router from '@/router.js'
 import store from '@/store/store.js'
 
 Vue.use(Vuex);
@@ -30,10 +33,29 @@ const justSockService = new Vuex.Store({
       console.error(state, event)
     },
     SOCKET_ONMESSAGE (state, message) {
-      var event = JSON.parse(message.data)
-      if (event.type == 'MSG') {
-        var content = event.content
-        store.commit('processEvent', content)
+      var msg = JSON.parse(message.data)
+      if (msg.type != 'MSG') {
+        return
+      }
+
+      var content = msg.content
+      if (content.type == 'reset') {
+        // Reload page
+        router.go()
+      } else if (content.type == 'l10n') {
+        if (content.lang == 'fr') {
+          if (i18n.locale != 'fr') {
+            router.push({path: '/', query: {'lang': 'fr'}})
+          }
+          i18n.locale = 'fr'
+        } else {
+          if (i18n.locale != 'en') {
+            router.push({path: '/', query: {'lang': 'en'}})
+          }
+          i18n.locale = 'en'
+        }
+      } else if (content.type == 'log') {
+        store.commit('processLog', content)
       }
     },
     SOCKET_RECONNECT (state, count) {

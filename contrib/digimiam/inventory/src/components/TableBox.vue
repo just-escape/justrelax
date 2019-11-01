@@ -3,10 +3,10 @@
     <div class="polygon-border"></div>
     <img class="img-fluid" src="@/assets/img/apple.png">
     <div class="text-center">
-      <span class="text-teal">Name: </span><span class="text-white">{{ name }}</span>
+      <span class="text-teal">{{ $t('name') }} </span><span class="text-white">{{ $t(name) }}</span>
     </div>
     <div class="text-center">
-      <span class="text-teal">Weight: </span><span class="text-white">10kg</span>
+      <span class="text-teal">{{ $t('weight') }} </span><span class="text-white">10kg</span>
     </div>
   </div>
 </template>

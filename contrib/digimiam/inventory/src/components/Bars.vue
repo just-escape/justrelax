@@ -36,7 +36,7 @@
       </g>
     </svg>
     <div class="title text-center">
-      Nutrient market rates
+      {{ $t('nutrient_market_rates') }}
     </div>
   </div>
 </template>
@@ -50,7 +50,7 @@ export default {
         {
           x: 6,
           percent: 50,
-          label: 'prote.',
+          label: this.$t('protein'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',
@@ -58,7 +58,7 @@ export default {
         {
           x: 22,
           percent: 70,
-          label: 'proto.',
+          label: this.$t('protoid'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',
@@ -66,7 +66,7 @@ export default {
         {
           x: 38,
           percent: 70,
-          label: 'lip.',
+          label: this.$t('lipid'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',
@@ -74,7 +74,7 @@ export default {
         {
           x: 54,
           percent: 27,
-          label: 'gluc.',
+          label: this.$t('glucid'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',
@@ -82,7 +82,7 @@ export default {
         {
           x: 70,
           percent: 89,
-          label: 'mine.',
+          label: this.$t('mineral'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',
@@ -90,7 +90,7 @@ export default {
         {
           x: 86,
           percent: 10,
-          label: 'vit.',
+          label: this.$t('vitamin'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',
@@ -98,7 +98,7 @@ export default {
         {
           x: 102,
           percent: 29,
-          label: 'a-ox.',
+          label: this.$t('antioxidant'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',

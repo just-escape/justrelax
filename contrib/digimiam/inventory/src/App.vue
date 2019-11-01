@@ -1,40 +1,12 @@
 <template>
-  <div
-    id="app"
-    @mousemove="mousemove"
-    @mouseup="mouseup"
-    @mouseleave="mouseleave"
-    class="h-100 justify-content-center d-flex position-relative"
-  >
-    <BackgroundLines/>
-    <div class="padding-top-10px">
-      <Container/>
-    </div>
+  <div id="app" class="h-100">
+    <router-view/>
   </div>
 </template>
 
 <script>
-import BackgroundLines from '@/components/BackgroundLines.vue'
-import Container from '@/components/Container.vue'
-import store from '@/store/store.js'
-
 export default {
   name: 'app',
-  components: {
-    BackgroundLines,
-    Container,
-  },
-  methods: {
-    mousemove: function(event) {
-      store.commit('appMousemove', event)
-    },
-    mouseup: function() {
-      store.commit('appMouseup')
-    },
-    mouseleave: function() {
-      store.commit('appMouseleave')
-    },
-  },
   mounted() {
     this.$connect()
   }

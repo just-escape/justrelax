@@ -7,13 +7,13 @@
       <foreignObject
         width="100%"
         height="100%"
-        x="-13"
+        :x="$i18n.locale == 'fr' ? '-13' : '-17'"
         y="21"
         transform="rotate(-90 -5 20)"
       >
         <body xmlns="http://www.w3.org/1999/xhtml" class="bg-transparent">
           <div class="label">
-            kcal.h<sup>-1</sup>.hab<sup>-1</sup>
+            {{ $t('kcal_unit') }}.{{ $t('h_unit') }}<sup>-1</sup>.{{ $t('inhab_unit') }}<sup>-1</sup>
           </div>
         </body>
       </foreignObject>
@@ -26,7 +26,7 @@
       >
         <body xmlns="http://www.w3.org/1999/xhtml" class="bg-transparent">
           <div class="label">
-            age
+            {{ $t('age') }}
           </div>
         </body>
       </foreignObject>
@@ -45,7 +45,7 @@
       />
     </svg>
     <div class="title text-center">
-      Feeling of hunger (Lille)
+      {{ $t('feeling_of_hunger') }}
     </div>
   </div>
 </template>

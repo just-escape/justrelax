@@ -11,11 +11,11 @@
       <WidgetGauge :fill="data.gauge" :anime="data.anime"/>
       <div class="h-100 box-content d-flex flex-column text-center justify-content-center pt-2">
         <i :class="data.icon" class="mb-1"></i>
-        <span>{{ data.label }}</span>
+        <span>{{ $t(data.label) }}</span>
       </div>
     </div>
     <div class="box-label text-center">
-      {{ data.name }}
+      {{ $t(data.name) }}
     </div>
   </div>
 </template>

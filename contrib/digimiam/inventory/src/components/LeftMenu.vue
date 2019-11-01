@@ -2,7 +2,7 @@
   <div class="frame position-relative">
     <div class="h1-background-ribbon"></div>
     <div class="content d-flex flex-column">
-      <h1 class="text-right mb-3">DIGIMIAM FOOD SUPPLIES</h1>
+      <h1 class="text-right mb-3">{{ $t("digimiam_food_stocks") }}</h1>
       <Widgets class="mb-3"/>
       <Charts class="mb-3"/>
       <Bars class="mb-3"/>

@@ -60,12 +60,12 @@ var store = new Vuex.Store({
     dragging: null,
     zIndexCounter: 10,
     articles: [
-      [{name: "apple"}, {name: "orange"}, {name: "raisins"}, {name: "leek"}, {name: "raisins"}, {name: "leek"}],
-      [{name: "pear"}, {name: "lemon"}, {name: "strawberry"}, {name: "fish"}, {name: "raisins"}, {name: "leek"}],
-      [{name: "protob"}, {name: "rice"}, {name: "water"}, {name: "grains"}, {name: "raisins"}, {name: "leek"}],
-      [{name: "powder"}, {name: "pill"}, {name: "milk"}, {name: "coffee"}, {name: "raisins"}, {name: "leek"}],
-      [{name: "protob"}, {name: "rice"}, {name: "water"}, {name: "grains"}, {name: "raisins"}, {name: "leek"}],
-      [{name: "powder"}, {name: "pill"}, {name: "milk"}, {name: "coffee"}, {name: "raisins"}, {name: "leek"}],
+      [{name: "apple"}, {name: "orange"}, {name: "grapes"}, {name: "leek"}, {name: "grapes"}, {name: "leek"}],
+      [{name: "pear"}, {name: "lemon"}, {name: "strawberry"}, {name: "fish"}, {name: "grapes"}, {name: "leek"}],
+      [{name: "protob"}, {name: "rice"}, {name: "water"}, {name: "grains"}, {name: "grapes"}, {name: "leek"}],
+      [{name: "powder"}, {name: "pill"}, {name: "milk"}, {name: "coffee"}, {name: "grapes"}, {name: "leek"}],
+      [{name: "protob"}, {name: "rice"}, {name: "water"}, {name: "grains"}, {name: "grapes"}, {name: "leek"}],
+      [{name: "powder"}, {name: "pill"}, {name: "milk"}, {name: "coffee"}, {name: "grapes"}, {name: "leek"}],
     ],
     logs: [],
     carriageReturns: 0,
@@ -199,17 +199,15 @@ var store = new Vuex.Store({
       }
     },
     // eslint-disable-next-line
-    processEvent (state, event) {
-      if (event.type == 'log') {
-        state.logs.push({
-          level: event.level,
-          message: event.message,
-          displayedMessage: '',
-          displayedChars: -1,
-        })
-        state.carriageReturns += 1
-        updateDisplayedMessages()
-      }
+    processLog (state, log) {
+      state.logs.push({
+        level: log.level,
+        message: log.message,
+        displayedMessage: '',
+        displayedChars: -1,
+      })
+      state.carriageReturns += 1
+      updateDisplayedMessages()
     },
     blockMousedown (state, id) {
       state.dragging = id

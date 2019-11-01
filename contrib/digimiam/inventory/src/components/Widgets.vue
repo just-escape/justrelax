@@ -20,7 +20,7 @@ export default {
     return {
       measures: [
         {
-          name: 'Temp.',
+          name: 'temperature',
           label: 'ok',
           icon: ['fas', 'fa-thermometer-quarter'],
           gauge: 0.37,
@@ -29,7 +29,7 @@ export default {
           error: false,
         },
         {
-          name: 'Humidity',
+          name: 'humidity',
           label: 'ok',
           icon: ['fas', 'fa-tint'],
           gauge: 0.18,
@@ -38,7 +38,7 @@ export default {
           error: false,
         },
         {
-          name: 'Stocks',
+          name: 'stocks',
           label: 'error',
           icon: ['fas', 'fa-tags'],
           gauge: 0.89,
