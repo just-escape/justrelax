@@ -101,6 +101,9 @@ export default {
     priceLabel: function() {
       return MenuStore.state.menuItems[this.itemIndex].price
     },
+    cursorPosition: function() {
+      return MenuStore.state.menuItems[this.itemIndex].cursorLeft + '-' + MenuStore.state.menuItems[this.itemIndex].cursorTop
+    },
   },
   methods: {
     glitchAnimation: function() {
@@ -223,6 +226,10 @@ export default {
         }
       }
 
+      if (this[data].remainingScrambleAnimations == -1) {
+        var startAnimation = true
+      }
+
       this[data].remainingScrambleAnimations = 50
       this[data].arrayPlusMinusCharProba = 0.1
 
@@ -231,16 +238,17 @@ export default {
         this[data].array[i].finalChar = false
       }
 
-      if (this[data].remainingScrambleAnimations > -1) {
-        if (this[data + 'Label'] === null) {
-          if (this[data].colorAnimationReverse === false) {
-            this[data].colorAnimationReverse = true
-            this[data].colorAnimation.reverse()
-          }
-          if (this[data].colorAnimation.progress > 0) {
-            this[data].colorAnimation.play()
-          }
+      if (this[data + 'Label'] === null) {
+        if (this[data].colorAnimationReverse === false) {
+          this[data].colorAnimationReverse = true
+          this[data].colorAnimation.reverse()
         }
+        if (this[data].colorAnimation.progress > 0) {
+          this[data].colorAnimation.play()
+        }
+      }
+
+      if (startAnimation) {
         this.scrambleAnimation(data)
       }
     },
@@ -350,6 +358,12 @@ export default {
       } else {
         this.priceColor = 'yellow'
         this.scrambleTo('price', newValue)
+      }
+    },
+    cursorPosition: function() {
+      if (this.dishLabel === null) {
+        this.scrambleTo('dish', '## Error ##')
+        this.scrambleTo('price', '??')
       }
     },
   },
