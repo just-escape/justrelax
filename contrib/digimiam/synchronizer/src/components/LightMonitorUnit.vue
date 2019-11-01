@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <svg :viewBox="'0 0 ' + boxWidth + ' ' + boxHeight">
       <defs>
         <filter id="mu-glowing" x="-50" y="-50" width="150" height="150">

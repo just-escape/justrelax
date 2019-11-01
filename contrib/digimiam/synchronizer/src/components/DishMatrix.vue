@@ -98,16 +98,16 @@ export default {
 
 .selectable-area {
   position: absolute;
-  border: 1px dotted rgba(255, 255, 255, 0.7);
-  box-shadow: 0px 0px 14px -8px rgba(255, 255, 255, 1);
+  /*border: 1px dotted rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 14px -8px rgba(255, 255, 255, 1);*/
 }
 
 .selector-frame {
   height: 439px;
   width: 100%;
   background:
-    linear-gradient(to right, transparent 15%, rgba(0, 150, 150, 0.09) 70%),
-    linear-gradient(to top, transparent 15%, rgba(0, 150, 150, 0.09) 70%);
+    linear-gradient(to right, transparent 20%, rgba(0, 150, 150, 0.09) 80%),
+    linear-gradient(to top, transparent 20%, rgba(0, 150, 150, 0.09) 80%);
 }
 
 /* The same padding than on buttons */

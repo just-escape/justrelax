@@ -96,6 +96,7 @@ export default {
     1px calc(100% - 1px),
     calc(100% - 1px) calc(100% - 1px)
   );
+  z-index: 1;
 }
 
 .menu-frame::before {
@@ -139,11 +140,11 @@ export default {
     0px calc(43px - 9px),
     43px 0px
   );
-  z-index: -1;
 }
 
 .date {
   font-size: 10px;
+  z-index: 11;
 }
 
 .glowing-wire {

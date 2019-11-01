@@ -4,19 +4,24 @@
     @mousemove="mousemove"
     @mouseup="mouseup"
     @mouseleave="mouseleave"
-    class="h-100 justify-content-center d-flex"
+    class="h-100 justify-content-center d-flex position-relative"
   >
-    <Container/>
+    <BackgroundLines/>
+    <div class="padding-top-10px">
+      <Container/>
+    </div>
   </div>
 </template>
 
 <script>
+import BackgroundLines from '@/components/BackgroundLines.vue'
 import Container from '@/components/Container.vue'
 import store from '@/store/store.js'
 
 export default {
   name: 'app',
   components: {
+    BackgroundLines,
     Container,
   },
   methods: {
@@ -45,7 +50,7 @@ export default {
 
 #app {
   font-family: 'Code New Roman', 'sans-serif';
-  padding-top: 10px;
+  background: radial-gradient(ellipse at center, #03181f, rgb(3, 26, 34));
   position: relative;
   display: block;
   -webkit-user-select: none;
@@ -56,28 +61,8 @@ export default {
   user-select: none;
 }
 
-#app::before {
-  content: "";
-  background: url('./assets/img/background-grid.png');
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  top: 0;
-  opacity: 0.3;
-  z-index: -1;
-
-}
-
-#app::after {
-  content: "";
-  background-color: #03181f;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  top: 0;
-  z-index: -2;
+.padding-top-10px {
+  padding-top: 10px;
 }
 
 .text-teal {

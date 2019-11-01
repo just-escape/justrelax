@@ -4,9 +4,10 @@
     v-touch:moving="moving"
     v-touch:end="tapEnd"
     @mouseleave="mouseleave"
-    class="d-flex justify-content-center h-100"
+    class="d-flex justify-content-center position-relative h-100"
   >
-    <div class="global-container row py-3">
+    <BackgroundLines/>
+    <div class="padding-top-10px global-container row py-3">
       <div class="col-9">
         <div class="d-flex flex-column">
           <LightPuzzle class="h-402px mb-4"/>
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+import BackgroundLines from '@/components/BackgroundLines.vue'
 import LightPuzzle from '@/components/LightPuzzle.vue'
 import MenuPuzzle from '@/components/MenuPuzzle.vue'
 import Logs from '@/components/Logs.vue'
@@ -29,6 +31,7 @@ import MenuStore from '@/store/MenuStore.js'
 export default {
   name: 'app',
   components: {
+    BackgroundLines,
     Logs,
     LightPuzzle,
     MenuPuzzle,
@@ -64,7 +67,6 @@ export default {
 #app {
   font-family: 'Code New Roman', 'sans-serif';
   color: #ffffff;
-  padding-top: 10px;
   position: relative;
   display: block;
   -webkit-user-select: none;
@@ -75,27 +77,19 @@ export default {
   user-select: none;
 }
 
-#app::before {
-  content: "";
-  background: url('./assets/img/background-grid.png');
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  top: 0;
-  opacity: 0.3;
-  z-index: -1;
+.padding-top-10px {
+  padding-top: 10px;
 }
 
-#app::after {
+#app::before {
   content: "";
-  background-color: #03181f;
+  background: radial-gradient(ellipse at center, #03181f, rgb(3, 26, 34));
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
   top: 0;
-  z-index: -2;
+  z-index: -1;
 }
 
 .text-teal {
