@@ -34,7 +34,7 @@ export default {
       store.commit('appMouseleave')
     },
   },
-  mounted() {
+  created() {
     var lang = this.$route.query.lang
     if (lang === undefined || lang == 'fr') {
       this.$i18n.locale = 'fr'
