@@ -8,10 +8,10 @@
         <div class="h-100">
           <div class="menu-frame"></div>
           <div class="menu-background"></div>
-          
+
           <div class="d-flex flex-row h-100">
             <div class="title-ribbon pb-2 pl-3 d-flex align-items-end">
-              <div class="title">DEVICES SYNCHRONIZATION</div>
+              <div class="title">{{ $t('devices_synchronization') }}</div>
             </div>
             <LightPuzzleMenuContent class="h-100"/>
           </div>
@@ -20,7 +20,7 @@
       <div class="position-relative">
         <div class="glowing-wire center-wire"></div>
 
-        <ButtonBlue class="lh-13">START MANUAL SYNCHRONIZATION</ButtonBlue>
+        <ButtonBlue class="lh-13">{{ $t('start_manual_synchronization') }}</ButtonBlue>
       </div>
     </div>
   </div>

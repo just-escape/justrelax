@@ -17,27 +17,27 @@
 </template>
 
 <script>
-import LightStore from '@/store/LightStore.js'
+import lightStore from '@/store/lightStore.js'
 
 export default {
   name: 'LightContainerEdges',
   computed: {
     horizontalEdges: function() {
       var horizontalEdges = {}
-      for (var eId in LightStore.state.edges) {
-        var direction = LightStore.state.edges[eId].getDirection()
+      for (var eId in lightStore.state.edges) {
+        var direction = lightStore.state.edges[eId].getDirection()
         if (direction == 'left-right' || direction == 'right-left') {
-          horizontalEdges[eId] = LightStore.state.edges[eId]
+          horizontalEdges[eId] = lightStore.state.edges[eId]
         }
       }
       return horizontalEdges
     },
     diagonalEdges: function() {
       var diagonalEdges = {}
-      for (var eId in LightStore.state.edges) {
-        var direction = LightStore.state.edges[eId].getDirection()
+      for (var eId in lightStore.state.edges) {
+        var direction = lightStore.state.edges[eId].getDirection()
         if (!(direction == 'left-right' || direction == 'right-left')) {
-          diagonalEdges[eId] = LightStore.state.edges[eId]
+          diagonalEdges[eId] = lightStore.state.edges[eId]
         }
       }
       return diagonalEdges
@@ -46,24 +46,24 @@ export default {
       return function(edge) {
         var offset = 4
 
-        var topLeftX = LightStore.state.vertices[edge.getVertice1()].x
-        var topLeftY = LightStore.state.vertices[edge.getVertice1()].y - offset
-        var topRightX = LightStore.state.vertices[edge.getVertice2()].x
-        var topRightY = LightStore.state.vertices[edge.getVertice2()].y - offset
-        var bottomRightX = LightStore.state.vertices[edge.getVertice2()].x
-        var bottomRightY = LightStore.state.vertices[edge.getVertice2()].y + offset
-        var bottomLeftX = LightStore.state.vertices[edge.getVertice1()].x
-        var bottomLeftY = LightStore.state.vertices[edge.getVertice1()].y + offset
+        var topLeftX = lightStore.state.vertices[edge.getVertice1()].x
+        var topLeftY = lightStore.state.vertices[edge.getVertice1()].y - offset
+        var topRightX = lightStore.state.vertices[edge.getVertice2()].x
+        var topRightY = lightStore.state.vertices[edge.getVertice2()].y - offset
+        var bottomRightX = lightStore.state.vertices[edge.getVertice2()].x
+        var bottomRightY = lightStore.state.vertices[edge.getVertice2()].y + offset
+        var bottomLeftX = lightStore.state.vertices[edge.getVertice1()].x
+        var bottomLeftY = lightStore.state.vertices[edge.getVertice1()].y + offset
 
         return topLeftX + ',' + topLeftY + ' ' + topRightX + ',' + topRightY + ' ' + bottomRightX + ',' + bottomRightY + ' ' + bottomLeftX + ',' + bottomLeftY
       }
     },
     getDiagonalEdgePoints: function() {
       return function(edge) {
-        var x1 = LightStore.state.vertices[edge.getVertice1()].x
-        var y1 = LightStore.state.vertices[edge.getVertice1()].y
-        var x2 = LightStore.state.vertices[edge.getVertice2()].x
-        var y2 = LightStore.state.vertices[edge.getVertice2()].y
+        var x1 = lightStore.state.vertices[edge.getVertice1()].x
+        var y1 = lightStore.state.vertices[edge.getVertice1()].y
+        var x2 = lightStore.state.vertices[edge.getVertice2()].x
+        var y2 = lightStore.state.vertices[edge.getVertice2()].y
 
         return 'M' + x1 + ' ' + y1 + ' L ' + x2 + ' ' + y2
       }
@@ -71,7 +71,7 @@ export default {
     getEdgeColor: function() {
       return function(edge) {
         if (edge.validated) {
-          return LightStore.state.colorValidated
+          return lightStore.state.colorValidated
         }
 
         if (edge.activated) {

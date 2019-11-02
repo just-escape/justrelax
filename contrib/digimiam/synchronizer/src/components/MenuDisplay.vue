@@ -5,7 +5,7 @@
         <div class="menu-frame"></div>
         <div class="menu-background"></div>
         <div class="menu-title-ribbon mb-2 text-right p-2">
-          DIGIMIAM MENU
+          {{ $t('digimiam_menu') }}
         </div>
         <div class="date text-right mb-5">
             {{ date }}
@@ -30,7 +30,8 @@
 <script>
 import ButtonActivate from '@/components/ButtonActivate.vue'
 import MenuItem from '@/components/MenuItem.vue'
-import MenuStore from '@/store/MenuStore.js'
+import menuStore from '@/store/menuStore.js'
+import l10nStore from '@/store/l10nStore.js'
 
 export default {
   name: 'MenuDisplay',
@@ -38,16 +39,35 @@ export default {
     ButtonActivate,
     MenuItem,
   },
-  computed: {
-    date: function() {
-      var date = new Date()
-      date.setFullYear(2080)
-      return this.$moment(date).format('LL')
-    },
-    menuItems: function() {
-      return MenuStore.state.menuItems
+  data() {
+    return {
+      date: undefined
     }
   },
+  computed: {
+    lang: function() {
+      return l10nStore.state.lang
+    },
+    menuItems: function() {
+      return menuStore.state.menuItems
+    }
+  },
+  methods: {
+    refreshDate: function() {
+      var date = new Date()
+      date.setFullYear(2080)
+      this.$moment.locale(this.lang)
+      this.date = this.$moment(date).format('LL')
+    }
+  },
+  watch: {
+    lang: function() {
+      this.refreshDate()
+    }
+  },
+  mounted() {
+    this.refreshDate()
+  }
 }
 </script>
 

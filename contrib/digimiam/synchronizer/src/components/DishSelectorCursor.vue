@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import MenuStore from '@/store/MenuStore.js'
+import menuStore from '@/store/menuStore.js'
 
 export default {
   name: 'DishSelectorCursor',
@@ -28,12 +28,12 @@ export default {
       return this.item.cursorHeight + 'px'
     },
     item: function() {
-      return MenuStore.state.menuItems[this.itemIndex]
+      return menuStore.state.menuItems[this.itemIndex]
     },
   },
   methods: {
     tapStart: function() {
-      MenuStore.commit('appTapStart', this.itemIndex)
+      menuStore.commit('appTapStart', this.itemIndex)
     },
   },
   props: ['itemIndex'],

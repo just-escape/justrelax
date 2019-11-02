@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import MenuStore from '@/store/MenuStore.js'
+import menuStore from '@/store/menuStore.js'
 
 export default {
   name: 'DishSelectorWire',
@@ -57,7 +57,7 @@ export default {
       return this.item.selectorZIndex
     },
     item: function() {
-      return MenuStore.state.menuItems[this.itemIndex]
+      return menuStore.state.menuItems[this.itemIndex]
     },
   },
   props: ['itemIndex'],

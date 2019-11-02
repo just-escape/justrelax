@@ -53,7 +53,8 @@
 </template>
 
 <script>
-import MenuStore from '@/store/MenuStore.js'
+import menuStore from '@/store/menuStore.js'
+import l10nStore from '@/store/l10nStore.js'
 
 export default {
   name: 'MenuItem',
@@ -96,13 +97,16 @@ export default {
       return 'dish' + this.itemIndex
     },
     dishLabel: function() {
-      return MenuStore.state.menuItems[this.itemIndex].dish
+      return menuStore.state.menuItems[this.itemIndex].dish
     },
     priceLabel: function() {
-      return MenuStore.state.menuItems[this.itemIndex].price
+      return menuStore.state.menuItems[this.itemIndex].price
     },
     cursorPosition: function() {
-      return MenuStore.state.menuItems[this.itemIndex].cursorLeft + '-' + MenuStore.state.menuItems[this.itemIndex].cursorTop
+      return menuStore.state.menuItems[this.itemIndex].cursorLeft + '-' + menuStore.state.menuItems[this.itemIndex].cursorTop
+    },
+    lang: function() {
+      return l10nStore.state.lang
     },
   },
   methods: {
@@ -345,10 +349,10 @@ export default {
     dishLabel: function(newValue) {
       if (newValue === null) {
         this.dishColor = 'orangered'
-        this.scrambleTo('dish', '## Error ##')
+        this.scrambleTo('dish', this.$('hashtag_hashtag_error'))
       } else {
         this.dishColor = 'yellow'
-        this.scrambleTo('dish', newValue)
+        this.scrambleTo('dish', this.$t(newValue))
       }
     },
     priceLabel: function(newValue) {
@@ -362,8 +366,15 @@ export default {
     },
     cursorPosition: function() {
       if (this.dishLabel === null) {
-        this.scrambleTo('dish', '## Error ##')
+        this.scrambleTo('dish', this.$t('hashtag_hashtag_error'))
         this.scrambleTo('price', '??')
+      }
+    },
+    lang: function() {
+      if (this.dishLabel === null) {
+        this.scrambleTo('dish', this.$t('hashtag_hashtag_error'))
+      } else {
+        this.scrambleTo('dish', this.$t(this.dishLabel))
       }
     },
   },
@@ -388,7 +399,7 @@ export default {
     })
 
     this.glitchAnimation()
-    this.scrambleTo('dish', '## Error ##')
+    this.scrambleTo('dish', this.$t('hashtag_hashtag_error'))
     this.scrambleTo('price', '??')
   },
   props: ['itemIndex']

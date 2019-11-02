@@ -1,7 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import LightStore from '@/store/LightStore.js'
-import LogStore from '@/store/LogStore.js'
+
+import i18n from '@/locales.js'
+import router from '@/router.js'
+
+import l10nStore from '@/store/l10nStore.js'
+import lightStore from '@/store/lightStore.js'
+import logStore from '@/store/logStore.js'
 
 Vue.use(Vuex);
 
@@ -32,16 +37,37 @@ const justSockService = new Vuex.Store({
       console.error(state, event)
     },
     SOCKET_ONMESSAGE (state, message) {
-      var event = JSON.parse(message.data)
-      var content = event.content
-      if (content.type == 'log') {
+      var msg = JSON.parse(message.data)
+      if (msg.type != 'MSG') {
+        return
+      }
+
+      var content = msg.content
+      if (content.type == 'reset') {
+        // Reload page
+        router.go()
+      } else if (content.type == 'l10n') {
+        if (content.lang == 'fr') {
+          if (i18n.locale != 'fr') {
+            router.push({path: '/', query: {'lang': 'fr'}})
+          }
+          i18n.locale = 'fr'
+          l10nStore.commit('setLang', 'fr')
+        } else {
+          if (i18n.locale != 'en') {
+            router.push({path: '/', query: {'lang': 'en'}})
+          }
+          i18n.locale = 'en'
+          l10nStore.commit('setLang', 'en')
+        }
+      } else if (content.type == 'log') {
         var logLevel = content.level
         var logMessage = content.message
-        LogStore.commit('processEventLog', {logLevel, logMessage})
+        logStore.commit('processEventLog', {logLevel, logMessage})
       } else if (content.type == 'sensor') {
         var sensorId = content['sensor_id']
         var activated = content.activated
-        LightStore.dispatch('toggleSensor', {sensorId, activated})
+        lightStore.dispatch('toggleSensor', {sensorId, activated})
       }
     },
     SOCKET_RECONNECT (state, count) {

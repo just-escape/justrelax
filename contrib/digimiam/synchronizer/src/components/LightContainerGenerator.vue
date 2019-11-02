@@ -29,14 +29,14 @@
 </template>
 
 <script>
-import LightStore from '@/store/LightStore.js'
+import lightStore from '@/store/lightStore.js'
 
 export default {
   name: 'LightContainerGenerator.vue',
   computed: {
     get: function() {
-      var x = LightStore.state.generatorWireX
-      var y = LightStore.state.generatorWireY
+      var x = lightStore.state.generatorWireX
+      var y = lightStore.state.generatorWireY
       return 'M150 110 L ' + x + ' ' + y
     }
   }

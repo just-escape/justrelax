@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex h-100 d-flex flex-column mx-3">
     <div class="selector-frame glowing-container position-relative w-100 h-100 mb-3">
-      <div class="synthetic">Synthetic</div>
-      <div class="organic">Organic</div>
-      <div class="yummy-yummy">Yummy yummy</div>
-      <div class="yummy">Yummy</div>
+      <div class="synthetic">{{ $t('synthetic') }}</div>
+      <div class="organic">{{ $t('organic') }}</div>
+      <div class="yummy-yummy">{{ $t('yummy_yummy') }}</div>
+      <div class="yummy">{{ $t('yummy') }}</div>
 
       <DishSelector
         v-for="(item, itemIndex) in menuItems"
@@ -21,7 +21,7 @@
 
     <div class="d-flex flex-row justify-content-center">
       <div class="button-like-frame generator-matrix-title">
-        DISH GENERATOR MATRIX
+        {{ $t('dish_generator_matrix') }}
       </div>
     </div>
   </div>
@@ -29,7 +29,7 @@
 
 <script>
 import DishSelector from '@/components/DishSelector.vue'
-import MenuStore from '@/store/MenuStore.js'
+import menuStore from '@/store/menuStore.js'
 
 export default {
   name: 'DishMatrix',
@@ -38,16 +38,16 @@ export default {
   },
   computed: {
     selectableAreas: function() {
-      return MenuStore.state.selectableAreas
+      return menuStore.state.selectableAreas
     },
     selectableAreaWidth: function() {
-      return MenuStore.state.selectableAreaWidth + '%'
+      return menuStore.state.selectableAreaWidth + '%'
     },
     selectableAreaHeight: function() {
-      return MenuStore.state.selectableAreaHeight + '%'
+      return menuStore.state.selectableAreaHeight + '%'
     },
     menuItems: function() {
-      return MenuStore.state.menuItems
+      return menuStore.state.menuItems
     },
   },
 }

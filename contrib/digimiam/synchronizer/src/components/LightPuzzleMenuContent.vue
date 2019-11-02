@@ -37,7 +37,7 @@
 
 <script>
 import LightMonitorUnit from '@/components/LightMonitorUnit.vue'
-import LightStore from '@/store/LightStore.js'
+import lightStore from '@/store/lightStore.js'
 
 export default {
   name: 'LightPuzzleMenuContent',
@@ -46,22 +46,22 @@ export default {
   },
   computed: {
     yellowSensor: function() {
-      return LightStore.state.sensors.yellow
+      return lightStore.state.sensors.yellow
     },
     pinkSensor: function() {
-      return LightStore.state.sensors.pink
+      return lightStore.state.sensors.pink
     },
     orangeSensor: function() {
-      return LightStore.state.sensors.orange
+      return lightStore.state.sensors.orange
     },
     greenSensor: function() {
-      return LightStore.state.sensors.green
+      return lightStore.state.sensors.green
     },
     blueSensor: function() {
-      return LightStore.state.sensors.blue
+      return lightStore.state.sensors.blue
     },
     purpleSensor: function() {
-      return LightStore.state.sensors.purple
+      return lightStore.state.sensors.purple
     },
   }
 }

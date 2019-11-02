@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import LightStore from '@/store/LightStore.js'
+import lightStore from '@/store/lightStore.js'
 
 export default {
   name: 'LightContainerVertices',
@@ -52,7 +52,7 @@ export default {
       }
     },
     vertices: function() {
-      return LightStore.state.vertices
+      return lightStore.state.vertices
     },
   },
 }

@@ -17,7 +17,7 @@ import LightContainerDefs from '@/components/LightContainerDefs.vue'
 import LightContainerGenerator from '@/components/LightContainerGenerator.vue'
 import LightContainerEdges from '@/components/LightContainerEdges.vue'
 import LightContainerVertices from '@/components/LightContainerVertices.vue'
-import LightStore from '@/store/LightStore.js'
+import lightStore from '@/store/lightStore.js'
 
 export default {
   name: 'LightContainer',
@@ -28,7 +28,7 @@ export default {
     LightContainerVertices,
   },
   mounted() {
-    LightStore.dispatch('init')
+    lightStore.dispatch('init')
   }
 }
 </script>

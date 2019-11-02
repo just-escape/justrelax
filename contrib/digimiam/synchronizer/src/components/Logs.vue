@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import LogStore from '@/store/LogStore.js'
+import logStore from '@/store/logStore.js'
 
 export default {
   name: 'Logs',
@@ -38,10 +38,10 @@ export default {
   },
   computed: {
     carriageReturns: function() {
-      return LogStore.state.carriageReturns
+      return logStore.state.carriageReturns
     },
     logs: function() {
-      return LogStore.state.logs.filter(function(log) { return log.displayedChars >= 0})
+      return logStore.state.logs.filter(function(log) { return log.displayedChars >= 0})
     },
     lastIndex: function() {
       return this.logs.length - 1
