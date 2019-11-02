@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import justSockService from '@/store/justSockService.js'
-import router from '@/router/index'
+import router from '@/router/index.js'
 
 import App from '@/App.vue'
 
