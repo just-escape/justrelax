@@ -7,18 +7,14 @@
           <div>
             Password, password, what's the password... today?
           </div>
-          <div class="text-center">
-            <div class="input-group">
-              <input v-model="password" :type="inputType" class="form-control"/>
-              <div class="input-group-append">
-                <span
-                  @mousedown="revealPassword"
-                  @mouseup="hidePassword"
-                  class="input-group-text"
-                >
-                  <i class="fas fa-eye"></i>
-                </span>
-              </div>
+          <div class="text-center position-relative">
+            <input v-model="password" :type="inputType" class="form-control pr-34px"/>
+            <div
+              @mousedown="revealPassword"
+              @mouseup="hidePassword"
+              class="position-absolute d-flex align-items-center eye"
+            >
+              <i class="px-2 fas fa-eye"></i>
             </div>
           </div>
           <div class="text-right">
@@ -78,34 +74,41 @@ export default {
 .window {
   width: 600px;
   height: 300px;
-  border: 4px solid #00d1b6;
-  border-top: 9px solid #00d1b6;
-  box-shadow: 0px 0px 14px -6px rgba(0, 209, 182, 1);
+  border: 4px solid orangered;
+  border-top: 9px solid orangered;
+  box-shadow: 0px 0px 14px -6px rgba(255, 69, 0, 1);
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fd7e14;
 }
 
 .window-title {
+  color: orangered;
   position: absolute;
-  background-color: rgba(00, 45, 64, 0.6);
-  border-bottom: 1px solid #00d1b6;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid orangered;
 }
 
 input {
   background: transparent;
-  border-color: #00d1b6;
-  color: #ffffff;
-  border-radius: 0;
+  border-color: #fd7e14;
+  color: #fd7e14;
 }
 
 input:focus {
-  box-shadow: 0 0 14px -6px rgba(0, 209, 182, 1);
+  box-shadow: 0 0 14px -6px rgba(255, 69, 0, 1);
   background-color: transparent;
-  border-color: #00d1b6;
+  border-color: #fd7e14;
   color: #ffffff;
 }
 
-.input-group-text {
-  background: transparent;
-  border-color: #00d1b6;
-  color: #00d1b6;
+.pr-34px {
+  padding-right: 34px;
+}
+
+.eye {
+  right: 0;
+  top: 0;
+  bottom: 0;
+  color: #fd7e14;
 }
 </style>

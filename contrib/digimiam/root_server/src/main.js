@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueNativeSock from 'vue-native-websocket'
 import VueAnime from 'vue-animejs'
+import * as VueThreejs from 'vue-threejs'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -14,6 +15,7 @@ Vue.use(VueNativeSock, 'ws://localhost:3031', {
   connectManually: true
 })
 Vue.use(VueAnime)
+Vue.use(VueThreejs)
 Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
