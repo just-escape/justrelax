@@ -1,27 +1,29 @@
 <template>
-  <div id="app" class="d-flex justify-content-center position-relative h-100">
-    <Background/>
-    <PasswordWindow/>
+  <div id="app" class="h-100">
+    <router-view/>
   </div>
 </template>
 
 <script>
-import Background from './components/Background.vue'
-import PasswordWindow from './components/PasswordWindow.vue'
-
 export default {
   name: 'app',
-  components: {
-    Background,
-    PasswordWindow,
-  },
   mounted() {
+    // Disable longtap (right click) menu to appear
+    window.oncontextmenu = function() {
+      return false
+    }
     this.$connect()
   },
 }
 </script>
 
 <style>
+@font-face {
+    font-family: "Code New Roman";
+    font-style: normal;
+    src: url('./assets/webfonts/code-new-roman.woff2') format('woff2');
+}
+
 #app {
   font-family: 'Code New Roman', 'sans-serif';
   color: orangered;

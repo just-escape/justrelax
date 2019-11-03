@@ -2,10 +2,10 @@
   <div class="global-container glowing-container">
     <div class="d-flex flex-row justify-content-center align-items-center h-100">
       <div class="window position-relative">
-        <div class="window-title py-1 px-2 w-100">PASSWORD</div>
+        <div class="window-title py-1 px-2 w-100">{{ $t('password') }}</div>
         <div class="d-flex flex-column justify-content-between pt-5 pb-3 px-2 h-100">
           <div>
-            Password, password, what's the password... today?
+            {{ $t('this_operation_requires_a_password') }}
           </div>
           <div class="text-center position-relative">
             <input v-model="password" :type="inputType" class="form-control pr-34px"/>
@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="text-right">
-            <ButtonBlue @click="checkPassword">Unlock</ButtonBlue>
+            <ButtonBlue @click="checkPassword">{{ $t('continue') }}</ButtonBlue>
           </div>
         </div>
       </div>
