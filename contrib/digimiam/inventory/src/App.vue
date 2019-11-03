@@ -8,6 +8,10 @@
 export default {
   name: 'app',
   mounted() {
+    // Disable longtap (right click) menu to appear
+    window.oncontextmenu = function() {
+      return false
+    }
     this.$connect()
   }
 }
