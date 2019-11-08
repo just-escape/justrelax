@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="global-container glowing-container">
     Hey
   </div>
 </template>
