@@ -109,14 +109,14 @@
         "name": "Synchronizer",
         "subcategories": [
           {
-            "name": "Red",
+            "name": "Pink",
             "actions": [
               {
-                "name": "light_1_on",
+                "name": "light_pink_on",
                 "icon": "fas fa-toggle-on"
               },
               {
-                "name": "light_1_off",
+                "name": "light_pink_off",
                 "icon": "fas fa-toggle-off"
               }
             ]
@@ -125,11 +125,11 @@
             "name": "Orange",
             "actions": [
               {
-                "name": "light_2_on",
+                "name": "light_orange_on",
                 "icon": "fas fa-toggle-on"
               },
               {
-                "name": "light_2_off",
+                "name": "light_orange_off",
                 "icon": "fas fa-toggle-off"
               }
             ]
@@ -138,11 +138,11 @@
             "name": "Yellow",
             "actions": [
               {
-                "name": "light_3_on",
+                "name": "light_yellow_on",
                 "icon": "fas fa-toggle-on"
               },
               {
-                "name": "light_3_off",
+                "name": "light_yellow_off",
                 "icon": "fas fa-toggle-off"
               }
             ]
@@ -151,24 +151,11 @@
             "name": "Green",
             "actions": [
               {
-                "name": "light_4_on",
+                "name": "light_green_on",
                 "icon": "fas fa-toggle-on"
               },
               {
-                "name": "light_4_off",
-                "icon": "fas fa-toggle-off"
-              }
-            ]
-          },
-          {
-            "name": "Cyan",
-            "actions": [
-              {
-                "name": "light_5_on",
-                "icon": "fas fa-toggle-on"
-              },
-              {
-                "name": "light_5_off",
+                "name": "light_green_off",
                 "icon": "fas fa-toggle-off"
               }
             ]
@@ -177,11 +164,11 @@
             "name": "Blue",
             "actions": [
               {
-                "name": "light_6_on",
+                "name": "light_blue_on",
                 "icon": "fas fa-toggle-on"
               },
               {
-                "name": "light_6_off",
+                "name": "light_blue_off",
                 "icon": "fas fa-toggle-off"
               }
             ]
@@ -190,12 +177,88 @@
             "name": "Purple",
             "actions": [
               {
-                "name": "light_7_on",
+                "name": "light_purple_on",
                 "icon": "fas fa-toggle-on"
               },
               {
-                "name": "light_7_off",
+                "name": "light_purple_off",
                 "icon": "fas fa-toggle-off"
+              }
+            ]
+          },
+          {
+            "name": "System",
+            "actions": [
+              {
+                "name": "reset_synchronizer",
+                "icon": "fas fa-redo-alt"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Inventory",
+        "subcategories": [
+          {
+            "name": "Logs",
+            "actions": [
+              {
+                "name": "short_info",
+                "icon": "far fa-comment"
+              },
+              {
+                "name": "long_info",
+                "icon": "far fa-comments"
+              },
+              {
+                "name": "short_warning",
+                "icon": "fas fa-comment"
+              },
+              {
+                "name": "long_warning",
+                "icon": "fas fa-comments"
+              }
+            ]
+          },
+          {
+            "name": "System",
+            "actions": [
+              {
+                "name": "reset_inventory",
+                "icon": "fas fa-redo-alt"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Root server",
+        "subcategories": [
+          {
+            "name": "System",
+            "actions": [
+              {
+                "name": "reset_root_server",
+                "icon": "fas fa-redo-alt"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "System",
+        "subcategories": [
+          {
+            "name": "Localization",
+            "actions": [
+              {
+                "name": "localize_fr",
+                "icon": "fas fa-frog"
+              },
+              {
+                "name": "localize_en",
+                "icon": "fas fa-flag-usa"
               }
             ]
           }
@@ -267,61 +330,89 @@
       "message": {"object": {"type": "play", "video": "drop.avi"}},
       "record": "Video"
     },
-    "light_1_on": {
+    "light_pink_on": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 1, "activated": true}}
+      "message": {"object": {"type": "sensor", "sensor_id": "pink", "activated": true}}
     },
-    "light_1_off": {
+    "light_pink_off": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 1, "activated": false}}
+      "message": {"object": {"type": "sensor", "sensor_id": "pink", "activated": false}}
     },
-    "light_2_on": {
+    "light_orange_on": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 2, "activated": true}}
+      "message": {"object": {"type": "sensor", "sensor_id": "orange", "activated": true}}
     },
-    "light_2_off": {
+    "light_orange_off": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 2, "activated": false}}
+      "message": {"object": {"type": "sensor", "sensor_id": "orange", "activated": false}}
     },
-    "light_3_on": {
+    "light_yellow_on": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 3, "activated": true}}
+      "message": {"object": {"type": "sensor", "sensor_id": "yellow", "activated": true}}
     },
-    "light_3_off": {
+    "light_yellow_off": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 3, "activated": false}}
+      "message": {"object": {"type": "sensor", "sensor_id": "yellow", "activated": false}}
     },
-    "light_4_on": {
+    "light_green_on": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 4, "activated": true}}
+      "message": {"object": {"type": "sensor", "sensor_id": "green", "activated": true}}
     },
-    "light_4_off": {
+    "light_green_off": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 4, "activated": false}}
+      "message": {"object": {"type": "sensor", "sensor_id": "green", "activated": false}}
     },
-    "light_5_on": {
+    "light_blue_on": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 5, "activated": true}}
+      "message": {"object": {"type": "sensor", "sensor_id": "blue", "activated": true}}
     },
-    "light_5_off": {
+    "light_blue_off": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 5, "activated": false}}
+      "message": {"object": {"type": "sensor", "sensor_id": "blue", "activated": false}}
     },
-    "light_6_on": {
+    "light_purple_on": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 6, "activated": true}}
+      "message": {"object": {"type": "sensor", "sensor_id": "purple", "activated": true}}
     },
-    "light_6_off": {
+    "light_purple_off": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 6, "activated": false}}
+      "message": {"object": {"type": "sensor", "sensor_id": "purple", "activated": false}}
     },
-    "light_7_on": {
+    "reset_synchronizer": {
       "send_to": "synchronizer",
-      "message": {"object": {"light": 7, "activated": true}}
+      "message": {"object": {"type": "reset"}}
     },
-    "light_7_off": {
-      "send_to": "synchronizer",
-      "message": {"object": {"light": 7, "activated": false}}
+    "short_info": {
+      "send_to": "inventory",
+      "message": {"object":  {"type": "log", "level": "info", "locale": "short_info"}}
+    },
+    "long_info": {
+      "send_to": "inventory",
+      "message": {"object":  {"type": "log", "level": "info", "locale": "long_info"}}
+    },
+    "short_warning": {
+      "send_to": "inventory",
+      "message": {"object":  {"type": "log", "level": "warning", "locale": "short_warning"}}
+    },
+    "long_warning": {
+      "send_to": "inventory",
+      "message": {"object":  {"type": "log", "level": "warning", "locale": "long_warning"}}
+    },
+    "reset_inventory": {
+      "send_to": "inventory",
+      "message": {"object": {"type": "reset"}}
+    },
+    "reset_root_server": {
+      "send_to": "root_server",
+      "message": {"object": {"type": "reset"}}
+    },
+    "localize_fr": {
+      "send_to": ["inventory", "synchronizer", "root_server"],
+      "message": {"object":  {"type":  "l10n", "lang": "fr"}}
+    },
+    "localize_en": {
+      "send_to": ["inventory", "synchronizer", "root_server"],
+      "message": {"object":  {"type":  "l10n", "lang": "en"}}
     }
   },
   "conditions": {
