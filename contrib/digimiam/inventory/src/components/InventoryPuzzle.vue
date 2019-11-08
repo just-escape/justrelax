@@ -32,10 +32,10 @@
 <script>
 import DraggableBlock from '@/components/DraggableBlock.vue'
 import TableBox from '@/components/TableBox.vue'
-import store from '@/store/store.js'
+import blockStore from '@/store/blockStore.js'
 
 export default {
-  name: 'InventaryPuzzle',
+  name: 'InventoryPuzzle',
   components: {
     DraggableBlock,
     TableBox,
@@ -43,20 +43,25 @@ export default {
   data: function() {
     return {
       shadowWidth: 10,
+      articles: [
+        [{name: "apple"}, {name: "orange"}, {name: "grapes"}, {name: "leek"}, {name: "grapes"}, {name: "leek"}],
+        [{name: "pear"}, {name: "lemon"}, {name: "strawberry"}, {name: "fish"}, {name: "grapes"}, {name: "leek"}],
+        [{name: "protob"}, {name: "rice"}, {name: "water"}, {name: "grains"}, {name: "grapes"}, {name: "leek"}],
+        [{name: "powder"}, {name: "pill"}, {name: "milk"}, {name: "coffee"}, {name: "grapes"}, {name: "leek"}],
+        [{name: "protob"}, {name: "rice"}, {name: "water"}, {name: "grains"}, {name: "grapes"}, {name: "leek"}],
+        [{name: "powder"}, {name: "pill"}, {name: "milk"}, {name: "coffee"}, {name: "grapes"}, {name: "leek"}],
+      ]
     }
   },
   computed: {
     blocks: function() {
-      return store.state.blocks
+      return blockStore.state.blocks
     },
     blockHeight: function() {
-      return store.state.tableHeight / store.state.articles[0].length
+      return blockStore.state.tableHeight / this.articles.length
     },
     blockWidth: function() {
-      return store.state.tableWidth / store.state.articles[0].length
-    },
-    articles: function() {
-      return store.state.articles
+      return blockStore.state.tableWidth / this.articles.length
     },
   },
   mounted: function() {

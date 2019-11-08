@@ -15,7 +15,7 @@
 <script>
 import BackgroundLines from '@/components/BackgroundLines.vue'
 import Container from '@/components/Container.vue'
-import store from '@/store/store.js'
+import blockStore from '@/store/blockStore.js'
 
 export default {
   name: 'PageRoot',
@@ -25,13 +25,13 @@ export default {
   },
   methods: {
     mousemove: function(event) {
-      store.commit('appMousemove', event)
+      blockStore.commit('appMousemove', event)
     },
     mouseup: function() {
-      store.commit('appMouseup')
+      blockStore.commit('appMouseup')
     },
     mouseleave: function() {
-      store.commit('appMouseleave')
+      blockStore.commit('appMouseleave')
     },
   },
   created() {

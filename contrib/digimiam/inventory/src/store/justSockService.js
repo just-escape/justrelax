@@ -3,9 +3,9 @@ import Vuex from 'vuex'
 
 import i18n from '@/locales.js'
 import router from '@/router.js'
-import store from '@/store/store.js'
+import logStore from '@/store/logStore.js'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const justSockService = new Vuex.Store({
   mutations: {
@@ -55,7 +55,7 @@ const justSockService = new Vuex.Store({
           i18n.locale = 'en'
         }
       } else if (content.type == 'log') {
-        store.commit('processLog', content)
+        logStore.commit('processLog', content)
       }
     },
     SOCKET_RECONNECT (state, count) {

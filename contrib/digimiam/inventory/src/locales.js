@@ -42,6 +42,14 @@ const locales = {
     milk: 'milk',
     coffee: 'coffee',
     grains: 'grains',
+    warning: 'Warning:',
+    info: 'Info:',
+    log: {
+      short_info: 'Duis aute irure dolor in reprehenderit.',
+      long_info: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      short_warning: 'Cillum dolore eu fugiat nulla pariatur.',
+      long_warning: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    },
   },
   fr: {
     digimiam_food_stocks: 'STOCKS DU DIGIMIAM',
@@ -53,7 +61,7 @@ const locales = {
     kcal_unit: 'kcal',
     h_unit: 'h',
     inhab_unit: 'hab',
-    age: 'age',
+    age: 'âge',
     feeling_of_hunger: 'Sensation de faim (Lille)',
     nutrient_market_rates: 'Cours des nutriments',
     protein: 'proté.',
@@ -81,6 +89,14 @@ const locales = {
     milk: 'lait',
     coffee: 'café',
     grains: 'graines',
+    warning: 'Attention:',
+    info: 'Info:',
+    log: {
+      short_info: 'Cillum dolore eu fugiat nulla pariatur.',
+      long_info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      short_warning: 'Duis aute irure dolor in reprehenderit.',
+      long_warning: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
   }
 }
 

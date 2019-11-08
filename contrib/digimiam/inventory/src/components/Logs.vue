@@ -7,8 +7,8 @@
       <div class="logs w-100">
         <ul class="list-unstyled mb-0" id="scroll-bar">
           <li v-for="(log, index) in logs" :key="log.id" class="mb-2">
-            <span v-if="log.level == 'warning'" class="warning">Warning: </span>
-            <span v-else-if="log.level == 'info'" class="info">Info: </span>
+            <span v-if="log.level == 'warning'" class="warning">{{ $t('warning') }}&nbsp;</span>
+            <span v-else-if="log.level == 'info'" class="info">{{ $t('info') }}&nbsp;</span>
             <span v-html="log.displayedMessage"></span>
             <span
               v-if="index == lastIndex"
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import store from '@/store/store.js'
+import logStore from '@/store/logStore.js'
 
 export default {
   name: 'Logs',
@@ -34,11 +34,11 @@ export default {
     }
   },
   computed: {
-    carriageReturns: function() {
-      return store.state.carriageReturns
+    lang: function() {
+      return this.$i18n.locale
     },
     logs: function() {
-      return store.state.logs.filter(function(log) { return log.displayedChars >= 0})
+      return logStore.state[this.lang].logs.filter(function(log) { return log.displayedChars >= 0 })
     },
     lastIndex: function() {
       return this.logs.length - 1
@@ -51,9 +51,12 @@ export default {
     }
   },
   watch: {
-    carriageReturns: function() {
+    lang: function() {
+      this.scrollBottom()
+    },
+    logs: function() {
       setTimeout(this.scrollBottom, 10)
-    }
+    },
   },
   mounted: function() {
     this.$anime({
@@ -76,6 +79,7 @@ export default {
 .logs-box {
   margin-bottom: 30px;
   padding: 5px;
+  max-height: 396px;
 }
 
 .logs {
@@ -84,6 +88,7 @@ export default {
   padding-bottom: 8px;
   padding-right: 4px;
   max-height: 800px;
+  font-family: "monospace";
 }
 
 .logs ul {

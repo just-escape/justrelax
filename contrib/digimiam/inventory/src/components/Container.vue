@@ -1,6 +1,6 @@
 <template>
   <div class="position-relative" :style="{'height': height + 'px', 'width': width + 'px'}">
-    <InventaryPuzzle class="puzzle"/>
+    <InventoryPuzzle class="puzzle"/>
     <LeftMenu class="left-menu"/>
     <div class="main-frame"></div>
     <div class="main-frame-background"></div>
@@ -8,24 +8,24 @@
 </template>
 
 <script>
-import InventaryPuzzle from '@/components/InventaryPuzzle.vue'
+import InventoryPuzzle from '@/components/InventoryPuzzle.vue'
 import LeftMenu from '@/components/LeftMenu.vue'
-import store from '@/store/store.js'
+import blockStore from '@/store/blockStore.js'
 
 export default {
   name: 'Container',
   components: {
-    InventaryPuzzle,
+    InventoryPuzzle,
     LeftMenu,
   },
   computed: {
     height: function() {
       // 6 is the margin
-      return store.state.tableHeight + 50 + 6
+      return blockStore.state.tableHeight + 50 + 6
     },
     width: function() {
       // 6 is the margin
-      return store.state.tableWidth + 300 + 6
+      return blockStore.state.tableWidth + 300 + 6
     },
   },
 }

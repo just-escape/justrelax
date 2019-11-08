@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import store from '@/store/store.js'
+import blockStore from '@/store/blockStore.js'
 
 export default {
   name: 'DraggableBlock',
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     mousedown: function() {
-      store.commit('blockMousedown', this.id)
+      blockStore.commit('blockMousedown', this.id)
     },
   },
   props: [
