@@ -8,7 +8,7 @@ import l10nStore from '@/store/l10nStore.js'
 import lightStore from '@/store/lightStore.js'
 import logStore from '@/store/logStore.js'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const justSockService = new Vuex.Store({
   mutations: {

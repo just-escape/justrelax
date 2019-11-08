@@ -31,7 +31,6 @@
 import ButtonActivate from '@/components/ButtonActivate.vue'
 import MenuItem from '@/components/MenuItem.vue'
 import menuStore from '@/store/menuStore.js'
-import l10nStore from '@/store/l10nStore.js'
 
 export default {
   name: 'MenuDisplay',
@@ -46,7 +45,7 @@ export default {
   },
   computed: {
     lang: function() {
-      return l10nStore.state.lang
+      return this.i18n.locale
     },
     menuItems: function() {
       return menuStore.state.menuItems

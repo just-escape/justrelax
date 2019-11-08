@@ -54,7 +54,6 @@
 
 <script>
 import menuStore from '@/store/menuStore.js'
-import l10nStore from '@/store/l10nStore.js'
 
 export default {
   name: 'MenuItem',
@@ -106,7 +105,7 @@ export default {
       return menuStore.state.menuItems[this.itemIndex].cursorLeft + '-' + menuStore.state.menuItems[this.itemIndex].cursorTop
     },
     lang: function() {
-      return l10nStore.state.lang
+      return this.$i18n.locale
     },
   },
   methods: {

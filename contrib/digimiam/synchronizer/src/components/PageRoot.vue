@@ -26,7 +26,6 @@ import LightPuzzle from '@/components/LightPuzzle.vue'
 import MenuPuzzle from '@/components/MenuPuzzle.vue'
 import Logs from '@/components/Logs.vue'
 import menuStore from '@/store/menuStore.js'
-import l10nStore from '@/store/l10nStore.js'
 
 export default {
   name: 'PageRoot',
@@ -51,10 +50,8 @@ export default {
     var lang = this.$route.query.lang
     if (lang === undefined || lang == 'fr') {
       this.$i18n.locale = 'fr'
-      l10nStore.commit('setLang', 'fr')
     } else {
       this.$i18n.locale = 'en'
-      l10nStore.commit('setLang', 'en')
     }
   }
 }
