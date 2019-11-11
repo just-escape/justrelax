@@ -53,16 +53,7 @@ export default {
   },
   computed: {
     room() {
-      var roomId = parseInt(this.roomId, 10)
-      if (Number.isNaN(roomId)) {
-        return null
-      }
-
-      if (roomStore.state.rooms && roomStore.state.rooms[roomId] != undefined) {
-        return roomStore.state.rooms[roomId]
-      } else {
-        return null
-      }
+      return roomStore.getters.room(this.roomId)
     },
     title() {
       var title = this.room.scenario

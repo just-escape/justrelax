@@ -9,6 +9,22 @@ export default new Vuex.Store({
   state: {
     rooms: {},
   },
+  getters: {
+    room (state) {
+      return function (roomId) {
+        var parsedRoomId = parseInt(roomId, 10)
+        if (Number.isNaN(parsedRoomId)) {
+          return null
+        }
+
+        if (state.rooms && state.rooms[parsedRoomId] != undefined) {
+          return state.rooms[parsedRoomId]
+        } else {
+          return null
+        }
+      }
+    }
+  },
   mutations: {
     setRooms (state, rooms) {
       for (var i = 0 ; i < rooms.length ; i++) {
@@ -157,7 +173,7 @@ export default new Vuex.Store({
       }
 
       state.rooms[roomId].cameras[cameraIndex].url = url
-    }
+    },
   },
   actions: {
     fetchRooms (context) {
@@ -221,6 +237,21 @@ export default new Vuex.Store({
     },
     resetRoom (context, roomId) {
       justRestAPI.post('/rooms/' + roomId + '/reset')
+    },
+    updateRules (context, {roomId, rules}) {
+      var formData = new FormData()
+      formData.append('rules', rules)
+      justRestAPI.post('/rooms/' + roomId + '/rules', formData)
+        .then(function (response) {
+          if (response.data.success) {
+            notificationStore.dispatch('pushNotification', 'Rules updated with success')
+          } else {
+            notificationStore.dispatch('pushError', 'Error while updating rules: ' + response.data.error)
+          }
+        })
+        .catch(function (error) {
+          notificationStore.dispatch('pushError', 'Error while updating rules: ' + error)
+        })
     },
     beat(context, {roomId, ticks}) {
       context.commit('setClock', {roomId, ticks})
