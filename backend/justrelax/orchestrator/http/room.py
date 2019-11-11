@@ -1,5 +1,6 @@
 import json
 
+from justrelax.common.logging import logger
 from justrelax.orchestrator.http.core import app
 from justrelax.orchestrator.http.utils import get_arg
 from justrelax.orchestrator.services import Services
@@ -22,6 +23,7 @@ def get_rooms(request):
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
         response["content"] = room_dicts
@@ -42,6 +44,7 @@ def get_room(request, id_):
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
         response["content"] = room.as_dict()
@@ -68,6 +71,7 @@ def create_room(request):
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
         response["content"] = room.as_dict()
@@ -75,7 +79,7 @@ def create_room(request):
     return json.dumps(response)
 
 
-@app.route("/rooms/<int:id_>", methods=['PUT', 'PATCH'])
+@app.route("/rooms/<int:id_>", methods=['POST'])
 def update_room(request, id_):
     request.setHeader('Content-Type', 'application/json')
     request.setHeader('Access-Control-Allow-Origin', '*')
@@ -86,7 +90,6 @@ def update_room(request, id_):
         'scenario',
         'cardinal',
         'channel',
-        'rules',
     ]
 
     updates = {}
@@ -102,9 +105,33 @@ def update_room(request, id_):
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
         response["content"] = room.as_dict()
+
+    return json.dumps(response)
+
+
+@app.route("/rooms/<int:id_>/rules", methods=['POST'])
+def update_room_rules(request, id_):
+    request.setHeader('Content-Type', 'application/json')
+    request.setHeader('Access-Control-Allow-Origin', '*')
+
+    response = {}
+
+    rules = get_arg(request, 'rules')
+
+    try:
+        rm = RoomManager()
+        rm.update_rules(id_, rules)
+        rm.commit()
+    except Exception as e:
+        response["success"] = False
+        response["error"] = str(e)
+        logger.exception()
+    else:
+        response["success"] = True
 
     return json.dumps(response)
 
@@ -123,6 +150,7 @@ def delete_room(request, id_):
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
 
@@ -142,6 +170,7 @@ def get_room_live_data(request, id_):
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
         response["content"] = live_data
@@ -164,6 +193,7 @@ def run_room(request, id_):
         response["success"] = False
         response["error"] = "n_players ({}) must be an int".format(
             n_players)
+        logger.exception()
     else:
         try:
             processor = Services.just_process.get_processor(id_)
@@ -171,6 +201,7 @@ def run_room(request, id_):
         except Exception as e:
             response["success"] = False
             response["error"] = str(e)
+            logger.exception()
         else:
             response["success"] = True
 
@@ -192,6 +223,7 @@ def set_n_players(request, id_):
         response["success"] = False
         response["error"] = "n_players ({}) must be an int".format(
             n_players)
+        logger.exception()
     else:
         try:
             processor = Services.just_process.get_processor(id_)
@@ -199,6 +231,7 @@ def set_n_players(request, id_):
         except Exception as e:
             response["success"] = False
             response["error"] = str(e)
+            logger.exception()
         else:
             response["success"] = True
 
@@ -218,6 +251,7 @@ def halt_room(request, id_):
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
 
@@ -237,6 +271,7 @@ def reset_room(request, id_):
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
 
@@ -258,9 +293,11 @@ def process_action(request, id_):
     except UndefinedAction as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
 
@@ -281,6 +318,7 @@ def get_cameras(request, id_):
     except Exception as e:
         response["success"] = False
         response["error"] = str(e)
+        logger.exception()
     else:
         response["success"] = True
         response["content"] = camera_dicts

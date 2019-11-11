@@ -22,5 +22,8 @@ class RoomManager(Manager):
     def update(self, id_, updates):
         pass
 
+    def update_rules(self, id_, rules):
+        self.session.query(Room).filter_by(id=id_).update({Room.rules: rules})
+
     def delete(self, id_):
         pass
