@@ -1,0 +1,16 @@
+server {
+	server_name _;
+
+	listen 80;
+	listen [::]:80;
+
+	root /opt/justrelax/contrib/digimiam/root_server/dist;
+	index index.html;
+
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to index to support
+                # vue-router history mode.
+		try_files $uri $uri/ /index.html;
+	}
+}
