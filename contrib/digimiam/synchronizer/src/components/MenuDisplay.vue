@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     lang: function() {
-      return this.i18n.locale
+      return this.$i18n.locale
     },
     menuItems: function() {
       return menuStore.state.menuItems

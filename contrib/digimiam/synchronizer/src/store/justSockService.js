@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 import i18n from '@/locales.js'
 import router from '@/router.js'
 
-import l10nStore from '@/store/l10nStore.js'
 import lightStore from '@/store/lightStore.js'
 import logStore from '@/store/logStore.js'
 
@@ -52,13 +51,11 @@ const justSockService = new Vuex.Store({
             router.push({path: '/', query: {'lang': 'fr'}})
           }
           i18n.locale = 'fr'
-          l10nStore.commit('setLang', 'fr')
         } else {
           if (i18n.locale != 'en') {
             router.push({path: '/', query: {'lang': 'en'}})
           }
           i18n.locale = 'en'
-          l10nStore.commit('setLang', 'en')
         }
       } else if (content.type == 'log') {
         var logLevel = content.level
