@@ -2,10 +2,12 @@ db.sqlite3
 
 build
 dist
+venv
+log
 __pycache__/
 *.egg-info/
 
 twisted/plugins/dropin.cache
-twistd.pid
+*.pid
 
 .idea
