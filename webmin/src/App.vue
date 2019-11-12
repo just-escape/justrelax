@@ -1,18 +1,18 @@
 <template>
   <div id="app" class="d-flex flex-row flex-grow-1">
-    <AppNav class="flex-shrink-0"></AppNav>
+    <Nav class="flex-shrink-0"></Nav>
 
     <router-view class="bgc-softdark flex-grow-1"></router-view>
   </div>
 </template>
 
 <script>
-import AppNav from '@/components/AppNav.vue'
+import Nav from '@/components/nav/Nav.vue'
 import roomStore from '@/store/roomStore.js'
 
 export default {
   name: 'App',
-  components: {AppNav},
+  components: {Nav},
   mounted() {
     roomStore.dispatch('fetchRooms')
     this.$connect()

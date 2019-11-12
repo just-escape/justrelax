@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import PageHome from '@/components/PageHome.vue'
-import PageEditor from '@/components/PageEditor.vue'
-import PageLive from '@/components/PageLive.vue'
-import PageScore from '@/components/PageScore.vue'
-import PageStats from '@/components/PageStats.vue'
-import PageSettings from '@/components/PageSettings.vue'
-import PageMedia from '@/components/PageMedia.vue'
+import PageHome from '@/components/home/PageHome.vue'
+import PageEditor from '@/components/editor/PageEditor.vue'
+import PageLive from '@/components/live/PageLive.vue'
+import PageScore from '@/components/score/PageScore.vue'
+import PageStats from '@/components/stats/PageStats.vue'
+import PageSettings from '@/components/settings/PageSettings.vue'
+import PageMedia from '@/components/media/PageMedia.vue'
 
 Vue.use(VueRouter)
 
