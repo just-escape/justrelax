@@ -6,7 +6,10 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <SlickList v-model="items">
+          <div class="d-flex flex-column">
+            <Action v-for="a in actions" :key="a.index" :action="a"/>
+          </div>
+          <!--<SlickList v-model="items">
             <SlickItem
               v-for="(item, index) in items"
               :index="index"
@@ -14,7 +17,7 @@
             >
               {{ item }}
             </SlickItem>
-          </SlickList>
+          </SlickList>-->
         </div>
       </div>
     </div>
@@ -22,11 +25,15 @@
 </template>
 
 <script>
-import { SlickList, SlickItem } from 'vue-slicksort'
+// import { SlickList, SlickItem } from 'vue-slicksort'
+import Action from "@/components/editor/Action.vue"
 
 export default {
   name: 'TabRulesActions',
   components: {
+    Action,
+  },
+  /*components: {
     SlickList,
     SlickItem,
   },
@@ -34,6 +41,9 @@ export default {
     return {
       items: [1, 2, 3]
     }
+  },*/
+  props: {
+    actions: Array,
   }
 }
 </script>

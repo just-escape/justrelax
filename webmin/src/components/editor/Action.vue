@@ -1,14 +1,14 @@
 <template>
   <div>
-    alarms
+    {{ action }}
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TabAlarms',
-  components: {
-
-  },
+  name: "Action",
+  props: {
+    action: Object,
+  }
 }
 </script>

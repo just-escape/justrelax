@@ -9,6 +9,7 @@
 <script>
 import Nav from '@/components/nav/Nav.vue'
 import roomStore from '@/store/roomStore.js'
+import 'vue-select/dist/vue-select.css'
 
 export default {
   name: 'App',
@@ -126,6 +127,10 @@ a:hover {
 
 .size-25 {
   font-size: 2.5rem;
+}
+
+.size-15 {
+  font-size: 1.5rem;
 }
 
 .lh-15 {

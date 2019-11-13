@@ -1,14 +1,14 @@
 <template>
   <div>
-    actions
+    {{ condition }}
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TabActions',
-  components: {
-
-  },
+  name: "Condition",
+  props: {
+    condition: Object,
+  }
 }
 </script>

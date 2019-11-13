@@ -6,47 +6,29 @@
     <div slot="main" v-if="!room">
       Room not found
     </div>
-    <div slot="main" v-else>
-      <b-tabs content-class="mt-3">
-        <b-tab>
+    <div slot="main" class="h-100" v-else>
+      <b-tabs class="h-100" content-class="h-100 mt-3">
+        <b-tab class="h-100">
           <template v-slot:title>
-            <i class="fas fa-list"></i> Rules
+            <i class="fas fa-list fa-fw"></i> Rules
           </template>
           <TabRules/>
         </b-tab>
         <b-tab>
           <template v-slot:title>
-            <i class="fas fa-stopwatch"></i> Alarms
+            <i class="far fa-file-excel fa-fw"></i> Variables
           </template>
-          <TabAlarms/>
+          <TabVariables/>
         </b-tab>
         <b-tab>
           <template v-slot:title>
-            <i class="fas fa-play"></i> Actions
-          </template>
-          <TabActions/>
-        </b-tab>
-        <b-tab>
-          <template v-slot:title>
-            <i class="fas fa-question"></i> Conditions
-          </template>
-          <TabConditions/>
-        </b-tab>
-        <b-tab>
-          <template v-slot:title>
-            <i class="far fa-handshake"></i> Hooks
-          </template>
-          <TabHooks/>
-        </b-tab>
-        <b-tab>
-          <template v-slot:title>
-            <i class="fas fa-table"></i> Admin
+            <i class="fas fa-table fa-fw"></i> Admin
           </template>
           <TabAdmin/>
         </b-tab>
         <b-tab>
           <template v-slot:title>
-            <i class="far fa-edit"></i> Text
+            <i class="far fa-edit fa-fw"></i> Text
           </template>
 
           <button class="btn-block" @click="updateRules">Save</button>
@@ -66,12 +48,9 @@
 <script>
 import AppContent from '@/components/common/AppContent.vue'
 import AppContentTitle from '@/components/common/AppContentTitle.vue'
-import TabActions from '@/components/editor/TabActions.vue'
-import TabAdmin from '@/components/editor/TabAdmin.vue'
-import TabAlarms from '@/components/editor/TabAlarms.vue'
-import TabConditions from '@/components/editor/TabConditions.vue'
-import TabHooks from '@/components/editor/TabHooks.vue'
 import TabRules from '@/components/editor/TabRules.vue'
+import TabVariables from '@/components/editor/TabVariables.vue'
+import TabAdmin from '@/components/editor/TabAdmin.vue'
 import roomStore from '@/store/roomStore.js'
 import rulesStore from '@/store/rulesStore.js'
 
@@ -80,12 +59,9 @@ export default {
   components: {
     AppContent,
     AppContentTitle,
-    TabActions,
-    TabAdmin,
-    TabAlarms,
-    TabConditions,
-    TabHooks,
     TabRules,
+    TabVariables,
+    TabAdmin,
   },
   data() {
     return {
@@ -107,6 +83,68 @@ export default {
   watch: {
     room: function(newValue) {
       var rules = newValue.rules
+      rules = [
+        {
+          name: "press_button",
+          index: 0,
+          triggers: [
+            {
+              id: 1,
+              index: 0,
+              type: "incoming_message",
+            }
+          ],
+          conditions: [
+            {
+              id: 3,
+              index: 0,
+              name: "condition 1",
+            },
+          ],
+          actions: [
+            {
+              id: 1,
+              index: 0,
+              name: "switch_yellow_led_on",
+            },
+            {
+              id: 2,
+              index: 1,
+              name: "cancel_red_and_green_led_hint_alarm"
+            },
+          ]
+        },
+        {
+          name: "press_button2",
+          index: 1,
+          triggers: [
+            {
+              id: 1,
+              index: 0,
+              type: "incoming_message2",
+            }
+          ],
+          conditions: [
+            {
+              id: 3,
+              index: 0,
+              name: "condition 2",
+            },
+          ],
+          actions: [
+            {
+              id: 1,
+              index: 0,
+              name: "switch_yellow_led_on2",
+            },
+            {
+              id: 2,
+              index: 1,
+              name: "cancel_red_and_green_led_hint_alarm2"
+            },
+          ]
+        }
+      ]
       rulesStore.commit('loadRules', rules)
       this.rules = JSON.stringify(rules)
     }
