@@ -299,21 +299,24 @@ class RulesProcessor:
             computed_to = self.compute_value(to, context=context)
             for message in ensure_iterable(action[JR.ACTION_SEND_TO_MESSAGE]):
                 computed_message = self.compute_value(message, context=context)
-                Services.just_sock.factory.send_to_node(
-                    computed_to,
-                    self.channel,
-                    computed_message
-                )
-                if self.sid is not None:
-                    self.sm.create_message(
-                        sid=self.sid,
-                        direction=MessageDirections.to_node,
-                        node_name=computed_to,
-                        message=computed_message,
-                        date=datetime.utcnow(),
-                        ticks=self.ticks,
-                    )
-                    self.sm.commit()
+                self.send_message(computed_to, computed_message)
+
+    def send_message(self, to, message):
+        Services.just_sock.factory.send_to_node(
+            to,
+            self.channel,
+            message
+        )
+        if self.sid is not None:
+            self.sm.create_message(
+                sid=self.sid,
+                direction=MessageDirections.to_node,
+                node_name=to,
+                message=message,
+                date=datetime.utcnow(),
+                ticks=self.ticks,
+            )
+            self.sm.commit()
 
     def process_set_action(self, action, context=None):
         value = self.compute_value(action[JR.ACTION_SET_VALUE], context=context)

@@ -304,6 +304,34 @@ def process_action(request, id_):
     return json.dumps(response)
 
 
+@app.route("/rooms/<int:id_>/send_message", methods=["POST"])
+def process_send_message(request, id_):
+    request.setHeader('Content-Type', 'application/json')
+    request.setHeader('Access-Control-Allow-Origin', '*')
+
+    response = {}
+
+    to = get_arg(request, 'to')
+    content = get_arg(request, 'content')
+    is_json = get_arg(request, 'json')
+
+    try:
+        if is_json:
+            content = json.loads(content)
+        processor = Services.just_process.get_processor(id_)
+        computed_to = processor.compute_value(to)
+        computed_content = processor.compute_value(content)
+        processor.send_message(computed_to, computed_content)
+    except Exception as e:
+        response["success"] = False
+        response["error"] = str(e)
+        logger.exception()
+    else:
+        response["success"] = True
+
+    return json.dumps(response)
+
+
 @app.route("/rooms/<int:id_>/cameras", methods=["GET"])
 def get_cameras(request, id_):
     request.setHeader('Content-Type', 'application/json')
