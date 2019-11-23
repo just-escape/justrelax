@@ -8,3 +8,6 @@ Type=forking
 ExecStart=/opt/justrelax/backend/venv/bin/twistd --pidfile=/opt/justrelax/backend/justrelax.backend.pid --logger=justrelax.common.logging.DisableTwistdLogs -o orchestrator -c /opt/justrelax/backend/etc/orchestrator.yaml
 
 TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
