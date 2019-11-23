@@ -74,10 +74,16 @@ class NodeServiceMaker(object):
 
         init_logging(config["logging"])
 
+        if "service_params" in config:
+            service_params = config["service_params"]
+        else:
+            service_params = {}
+
         return config["class"](
             host=config["host"],
             port=config["port"],
             name=config["name"],
             channel=config["channel"],
             media=config["media"],
+            service_params=service_params,
         )
