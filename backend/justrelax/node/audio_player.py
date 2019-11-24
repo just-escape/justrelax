@@ -92,6 +92,64 @@ class TrackHandler(VolumeFaderMixin):
         self.player.audio_set_volume(volume)
 
 
+class LoopingTrackHandler(TrackHandler):
+    def __init__(self, audio_path, loop_a, loop_b, initial_volume=0, global_volume=None):
+        super(LoopingTrackHandler, self).__init__(
+            audio_path,
+            initial_volume=initial_volume,
+            global_volume=global_volume,
+        )
+        self.loop_a = loop_a
+        self.loop_b = loop_b
+        self.looping_task = None
+
+    def play(self):
+        if not self.player.is_playing():
+            player_time = self.player.get_time()
+            if player_time == -1:
+                self._play()
+            else:
+                self._resume()
+
+    def _play(self):
+        self.player.play()
+        self.looping_task = reactor.callLater(self.loop_b, self.go_to_loop_a)
+
+    def go_to_loop_a(self):
+        self.looping_task = reactor.callLater(self.loop_b - self.loop_a, self.go_to_loop_a)
+        self.player.set_time(int(self.loop_a * 1000))
+
+    def pause(self):
+        if not self.player.can_pause():
+            # not playing (at the beginning or after a stop)
+            return
+
+        if self.player.is_playing():
+            self._pause()
+        else:
+            self._resume()
+
+    def _pause(self):
+        try:
+            self.looping_task.cancel()
+        except Exception as e:
+            logger.warning("Could not cancel looping task (reason={})".format(e))
+        self.player.pause()
+
+    def _resume(self):
+        current_time = self.player.get_time() / 1000
+        time_before_loop = self.loop_b - current_time
+        self.player.pause()
+        self.looping_task = reactor.callLater(time_before_loop, self.go_to_loop_a)
+
+    def stop(self):
+        try:
+            self.looping_task.cancel()
+        except Exception as e:
+            logger.warning("Could not cancel looping task (reason={})".format(e))
+        self.player.stop()
+
+
 class AudioPlayer(JustSockNodeClientService):
     EASE_MAPPING = {
         'easeInSine': pytweening.easeInSine,
@@ -127,7 +185,7 @@ class AudioPlayer(JustSockNodeClientService):
     }
 
     class COMMANDS:
-        ACTION = "action2"
+        ACTION = "action"
 
         TRACK_ID = "track_id"
         DELAY = "delay"
@@ -145,11 +203,21 @@ class AudioPlayer(JustSockNodeClientService):
         self.tracks = {}
         self.global_volume = GlobalVolume(initial_volume=100)
         for track in self.service_params['tracks']:
-            handler = TrackHandler(
-                audio_path=track['path'],
-                initial_volume=70,
-                global_volume=self.global_volume,
-            )
+            mode = track.get('mode', 'one_shot')
+            if mode == 'loop':
+                handler = LoopingTrackHandler(
+                    audio_path=track['path'],
+                    loop_a=track['loop_a'],
+                    loop_b=track['loop_b'],
+                    initial_volume=70,
+                    global_volume=self.global_volume,
+                )
+            else:
+                handler = TrackHandler(
+                    audio_path=track['path'],
+                    initial_volume=70,
+                    global_volume=self.global_volume,
+                )
             self.tracks[track['id']] = handler
 
         # Factorisation
