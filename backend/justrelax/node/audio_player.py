@@ -187,6 +187,9 @@ class AudioPlayer(JustSockNodeClientService):
     class COMMANDS:
         ACTION = "action"
 
+        ACTION_PLAY_SOUND = "play_sound"
+        SOUND_ID = "sound_id"
+
         TRACK_ID = "track_id"
         DELAY = "delay"
 
@@ -200,8 +203,9 @@ class AudioPlayer(JustSockNodeClientService):
         EASE = "ease"
 
     def start(self):
-        self.tracks = {}
         self.global_volume = GlobalVolume(initial_volume=100)
+
+        self.tracks = {}
         for track in self.service_params['tracks']:
             mode = track.get('mode', 'one_shot')
             if mode == 'loop':
@@ -219,6 +223,17 @@ class AudioPlayer(JustSockNodeClientService):
                     global_volume=self.global_volume,
                 )
             self.tracks[track['id']] = handler
+
+        self.sounds = {}
+        for sound in self.service_params['sounds']:
+            media = vlc.Media(sound['path'])
+            media.parse()
+            # / 1000 because we will be interested by the value in seconds
+            duration = media.get_duration() / 1000
+            self.sounds[sound['id']] = {
+                'path': sound['path'],
+                'duration': duration,
+            }
 
         # Factorisation
         self.play_pause_stop = {
@@ -271,6 +286,16 @@ class AudioPlayer(JustSockNodeClientService):
 
             reactor.callLater(delay, getattr(track, action['method']))
 
+        elif message[self.COMMANDS.ACTION] == self.COMMANDS.ACTION_PLAY_SOUND:
+            if self.COMMANDS.SOUND_ID not in message:
+                logger.error("Play sound action has no sound_id: skipping")
+                return
+
+            sound_id = message[self.COMMANDS.SOUND_ID]
+            logger.info("Playing sound id={}".format(sound_id))
+
+            reactor.callLater(delay, self.play_sound, sound_id)
+
         elif message[self.COMMANDS.ACTION] == self.COMMANDS.ACTION_SET_VOLUME:
             if self.COMMANDS.VOLUME not in message:
                 logger.error("Set volume action has not volume: skipping")
@@ -286,6 +311,22 @@ class AudioPlayer(JustSockNodeClientService):
         else:
             logger.debug("Unknown command type '{}': skipping".format(
                 message[self.COMMANDS.ACTION]))
+
+    def play_sound(self, sound_id):
+        sound = self.sounds.get(sound_id, None)
+        if sound is None:
+            logger.error("Unknown sound id={}: aborting".format(sound_id))
+            return
+
+        player = vlc.MediaPlayer(sound['path'])
+        player.audio_set_volume(int(self.global_volume.current_volume))
+        player.play()
+
+        def free_player():
+            player.release()
+
+        # Add 0.1 seconds by precaution
+        reactor.callLater(sound['duration'] + 0.1, free_player)
 
     def set_volume(self, delay, volume, track_id=None, duration=0, ease='easeInOutSine'):
         if not isinstance(volume, int):
