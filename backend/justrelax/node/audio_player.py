@@ -107,46 +107,65 @@ class LoopingTrackHandler(TrackHandler):
         if not self.player.is_playing():
             player_time = self.player.get_time()
             if player_time == -1:
+                logger.debug('Player has not been started yet')
                 self._play()
             else:
+                logger.debug('Player had already been started')
                 self._resume()
+        else:
+            logger.debug('Player is already playing: nothing to do')
 
     def _play(self):
+        logger.debug('Playing track')
         self.player.play()
+        logger.debug('Scheduling going to loop_a in {} seconds'.format(self.loop_b))
         self.looping_task = reactor.callLater(self.loop_b, self.go_to_loop_a)
 
     def go_to_loop_a(self):
-        self.looping_task = reactor.callLater(self.loop_b - self.loop_a, self.go_to_loop_a)
+        time_before_loop = self.loop_b - self.loop_a
+        logger.debug('Scheduling going to loop_a in {} seconds'.format(time_before_loop))
+        self.looping_task = reactor.callLater(time_before_loop, self.go_to_loop_a)
+
+        logger.debug('Setting player time to {}'.format(self.loop_a))
         self.player.set_time(int(self.loop_a * 1000))
 
     def pause(self):
         if not self.player.can_pause():
-            # not playing (at the beginning or after a stop)
+            # at the beginning or after a stop
+            logger.debug('Player cannot be paused: nothing to do')
             return
 
         if self.player.is_playing():
+            logger.debug('Player is playing: pausing')
             self._pause()
         else:
+            logger.debug('Player is playing: resuming')
             self._resume()
 
     def _pause(self):
         try:
+            logger.debug('Cancelling looping task')
             self.looping_task.cancel()
         except Exception as e:
             logger.warning("Could not cancel looping task (reason={})".format(e))
+        logger.debug('Pausing player')
         self.player.pause()
 
     def _resume(self):
+        logger.debug('Resuming')
         current_time = self.player.get_time() / 1000
         time_before_loop = self.loop_b - current_time
         self.player.pause()
+        logger.debug('Scheduling going to loop_a in {} seconds'.format(time_before_loop))
         self.looping_task = reactor.callLater(time_before_loop, self.go_to_loop_a)
 
     def stop(self):
         try:
+            logger.debug('Cancelling looping task')
             self.looping_task.cancel()
         except Exception as e:
             logger.warning("Could not cancel looping task (reason={})".format(e))
+        logger.debug('Stopping player')
         self.player.stop()
 
 
