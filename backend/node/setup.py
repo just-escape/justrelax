@@ -10,7 +10,7 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node",
         version="0.1",
-        packages=["justrelax.node", "twisted.plugins"],
+        packages=["justrelax.node"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

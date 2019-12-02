@@ -169,7 +169,7 @@ class LoopingTrackHandler(TrackHandler):
         self.player.stop()
 
 
-class AudioPlayer(JustSockNodeClientService):
+class Jukebox(JustSockNodeClientService):
     EASE_MAPPING = {
         'easeInSine': pytweening.easeInSine,
         'easeOutSine': pytweening.easeOutSine,
@@ -225,7 +225,7 @@ class AudioPlayer(JustSockNodeClientService):
         self.global_volume = GlobalVolume(initial_volume=100)
 
         self.tracks = {}
-        for track in self.service_params['tracks']:
+        for track in self.node_params.get('tracks', []):
             mode = track.get('mode', 'one_shot')
             if mode == 'loop':
                 handler = LoopingTrackHandler(
@@ -244,7 +244,7 @@ class AudioPlayer(JustSockNodeClientService):
             self.tracks[track['id']] = handler
 
         self.sounds = {}
-        for sound in self.service_params['sounds']:
+        for sound in self.node_params.get('sounds', []):
             media = vlc.Media(sound['path'])
             media.parse()
             # / 1000 because we will be interested by the value in seconds

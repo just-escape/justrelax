@@ -8,82 +8,71 @@ from twisted.plugin import IPlugin
 from twisted.application.service import IServiceMaker
 
 from justrelax.common.logging import init_logging
-from justrelax.common.utils import abs_path_if_not_abs, import_string
-from justrelax.common.validation import validate_node_name, validate_channel
-
-
-def check_config_path(path):
-    if path is None:
-        raise ValueError("--config (-c) argument is mandatory")
-    return path
-
-
-def check_node_name(name):
-    if not validate_node_name(name):
-        raise ValueError("Name must be an alphanumeric string")
-    return name
-
-
-def check_channel(channel):
-    if not validate_channel(channel):
-        raise ValueError("Channel must be an alphanumeric string")
-    return channel
 
 
 class Options(usage.Options):
     optParameters = [
         [
             "config", "c", None,
-            "YAML configuration file (node.yaml)",
-            check_config_path
+            "YAML configuration file",
         ],
-        ["host", "h", None, "The hostname to connect to"],
-        ["port", "p", None, "The port number to connect to"],
-        ["name", "n", None, "Node name", check_node_name],
-        ["channel", "l", None, "Channel to push/subscribe on", check_channel],
-        ["class", "s", None, "Node implementation class"]
     ]
 
 
-def absolutify(config, config_path):
-    config_dir = os.path.dirname(config_path)
-    config["logging"] = abs_path_if_not_abs(config["logging"], config_dir)
+def get_config_dict(options, etc_filename):
+    if options['config']:
+        with open(options["config"], "rt") as f:
+            config = yaml.safe_load(f.read())
+        return config
 
-
-def classify(config):
-    config["class"] = import_string(config["class"])
+    try:
+        with open(os.path.join('/etc/justrelax', etc_filename), 'rt') as f:
+            config = yaml.safe_load(f.read())
+    except Exception:
+        return {}
+    else:
+        return config
 
 
 @implementer(IServiceMaker, IPlugin)
-class NodeServiceMaker(object):
-    tapname = "node"
-    description = "Launch a node."
+class AbstractNodeServiceMaker(object):
+    tapname = "abstract_node"
+    description = ""
     options = Options
 
+    service = None
+
+    def get_config(self, options):
+        # default
+        config = {
+            "host": "localhost",
+            "port": 3031,
+            "name": "node",
+            "channel": "channel",
+            "node_params": {},
+            "logging": None,
+        }
+
+        etc_filename = self.service.__name__.lower()
+        parsed_config = get_config_dict(options, etc_filename)
+
+        config.update(parsed_config)
+        return config
+
+    def init_logging(self, logging_config):
+        if logging_config:
+            init_logging(logging_config)
+
     def makeService(self, options):
-        with open(options["config"], "rt") as f:
-            config = yaml.safe_load(f.read())
+        if self.service is None:
+            # The implementer decorator is a lie. The goal is to keep
+            # plugins lightweight.
+            raise NotImplementedError(
+                "This is an abstract plugin. Subclass it and overload "
+                "the service attribute")
 
-        overloadables = ("host", "port", "class", "channel", "name",)
-        for key in overloadables:
-            if options[key] is not None:
-                config[key] = options[key]
+        config = self.get_config(options)
+        logging_config = config.pop("logging")
+        self.init_logging(logging_config)
 
-        absolutify(config, options["config"])
-        classify(config)
-
-        init_logging(config["logging"])
-
-        if "service_params" in config:
-            service_params = config["service_params"]
-        else:
-            service_params = {}
-
-        return config["class"](
-            host=config["host"],
-            port=config["port"],
-            name=config["name"],
-            channel=config["channel"],
-            media=config["media"],
-            service_params=service_params,
-        )
+        return self.service(**config)

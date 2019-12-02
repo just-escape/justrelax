@@ -1,4 +1,3 @@
-import os
 import yaml
 
 from zope.interface import implementer
@@ -8,7 +7,6 @@ from twisted.plugin import IPlugin
 from twisted.application import service
 
 from justrelax.common.logging import init_logging
-from justrelax.common.utils import abs_path_if_not_abs
 from justrelax.orchestrator import conf
 from justrelax.orchestrator.manager.room import RoomManager
 from justrelax.orchestrator.storage.session import DataBaseAccess
@@ -27,7 +25,7 @@ class Options(usage.Options):
     ]
 
 
-def get_config(options):
+def get_config_dict(options):
     if options['config']:
         with open(options["config"], "rt") as f:
             config = yaml.safe_load(f.read())
@@ -64,7 +62,7 @@ class OrchestratorServiceMaker(object):
     options = Options
 
     def makeService(self, options):
-        config = get_config(options)
+        config = get_config_dict(options)
 
         config["websocket_port"] = options.get("websocket-port", 3031)
         config["http_port"] = options.get("http-port", 3032)
