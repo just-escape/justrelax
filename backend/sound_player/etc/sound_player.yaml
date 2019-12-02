@@ -1,0 +1,7 @@
+host: localhost
+port: 3031
+
+name: sound_player
+channel: digimiam1
+
+logging: null
