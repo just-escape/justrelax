@@ -1,0 +1,7 @@
+host: localhost
+port: 3031
+
+name: button
+channel: digimiam1
+
+logging: null

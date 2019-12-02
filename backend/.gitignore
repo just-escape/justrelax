@@ -7,7 +7,7 @@ log
 __pycache__/
 *.egg-info/
 
-twisted/plugins/dropin.cache
+dropin.cache
 *.pid
 
 .idea

@@ -1,10 +1,5 @@
-justrelax_common
 autobahn
-mock
 klein
-RPi.GPIO
 sqlalchemy
 marshmallow-sqlalchemy
 psycopg2
-simpleaudio
-python-vlc
