@@ -11,8 +11,8 @@ if __name__ == '__main__':
         name="justrelax_orchestrator",
         version="0.1",
         packages=["justrelax.orchestrator", "twisted.plugins"],
-        scripts=[],
         install_requires=get_requirements(),
+        zip_safe=False,
     )
 
     try:

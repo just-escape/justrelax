@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 def get_requirements():
@@ -10,7 +10,7 @@ if __name__ == '__main__':
     setup(
         name="justrelax_common",
         version="0.1",
-        packages=find_packages(),
-        scripts=[],
+        packages=["justrelax.common"],
         install_requires=get_requirements(),
+        zip_safe=False,
     )
