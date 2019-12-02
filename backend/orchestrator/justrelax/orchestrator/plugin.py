@@ -18,32 +18,28 @@ from justrelax.orchestrator.http.service import JustRestService
 from justrelax.orchestrator.processor.service import JustProcessService
 
 
-def check_config_path(path):
-    if path is None:
-        raise ValueError("--config (-c) argument is mandatory")
-    return path
-
-
 class Options(usage.Options):
     optParameters = [
         [
             "config", "c", None,
             "YAML configuration file (orchestrator.yaml)",
-            check_config_path
         ],
-        ["websocket-port", "w", None, "Port number to listen on"],
-        ["http-port", "t", None, "Port number to listen on"],
-        ["media-directory", "m", None, "Root directory serving media files"],
     ]
 
 
-def absolutify(config, config_path):
-    config_dir = os.path.dirname(config_path)
-
-    if "media_directory" in config:
-        config["media_directory"] = abs_path_if_not_abs(
-            config["media_directory"], config_dir)
-    config["logging"] = abs_path_if_not_abs(config["logging"], config_dir)
+def get_config(options):
+    if options['config']:
+        with open(options["config"], "rt") as f:
+            config = yaml.safe_load(f.read())
+        return config
+    
+    try:
+        with open('/etc/justrelax/orchestrator.yaml', 'rt') as f:
+            config = yaml.safe_load(f.read())
+    except FileNotFoundError:
+        return {}
+    else:
+        return config
 
 
 def init_storage_engine(storage_config):
@@ -68,30 +64,24 @@ class OrchestratorServiceMaker(object):
     options = Options
 
     def makeService(self, options):
-        with open(options["config"], "rt") as f:
-            config = yaml.safe_load(f.read())
+        config = get_config(options)
 
-        if options["websocket-port"] is not None:
-            config["websocket_port"] = options["websocket-port"]
+        config["websocket_port"] = options.get("websocket-port", 3031)
+        config["http_port"] = options.get("http-port", 3032)
+        config["media_directory"] = options.get("media-directory", "/tmp")
 
-        if options["http-port"] is not None:
-            config["http_port"] = options["http-port"]
-
-        if options["media-directory"] is not None:
-            config["media_directory"] = options["media-directory"]
-
-        absolutify(config, options["config"])
-
-        init_logging(config["logging"])
+        if "logging" in config and config["logging"]:
+            init_logging(config["logging"])
 
         if "storage" in config:
             init_storage_engine(config["storage"])
+            rm = RoomManager()
+            rooms = rm.get_all()
+        else:
+            rooms = []
 
         if "media_directory" in config:
             conf.MEDIA_DIRECTORY = config["media_directory"]
-
-        rm = RoomManager()
-        rooms = rm.get_all()
 
         just_sock = JustSockServerService(config["websocket_port"])
         just_sock.setServiceParent(Services.parent_service)

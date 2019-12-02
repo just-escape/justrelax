@@ -1,4 +1,5 @@
 justrelax_common
+autobahn
 mock
 klein
 RPi.GPIO
