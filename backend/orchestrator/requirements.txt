@@ -1,12 +1,9 @@
+justrelax_common
 mock
-twisted
-autobahn
 klein
-PyYAML
 RPi.GPIO
 sqlalchemy
 marshmallow-sqlalchemy
 psycopg2
 simpleaudio
-requests
 python-vlc

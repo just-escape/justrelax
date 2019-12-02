@@ -1,0 +1,4 @@
+justrelax_node
+pyalsaaudio
+pytweening
+python-vlc

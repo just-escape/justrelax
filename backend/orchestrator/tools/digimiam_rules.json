@@ -263,10 +263,256 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Audio",
+        "subcategories": [
+          {
+            "name": "Track 3.5",
+            "actions": [
+              {
+                "name": "play_track35",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track35",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track35",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_high_track35",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_medium_track35",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_low_track35",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 5",
+            "actions": [
+              {
+                "name": "play_track5",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track5",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track5",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_high_track5",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_medium_track5",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_low_track5",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 6.1",
+            "actions": [
+              {
+                "name": "play_track61",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track61",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track61",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_high_track61",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_medium_track61",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_low_track61",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 7",
+            "actions": [
+              {
+                "name": "play_track7",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track7",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track7",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_high_track7",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_medium_track7",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_low_track7",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Global volume",
+            "actions": [
+              {
+                "name": "volume_high_global",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_medium_global",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_low_global",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   "actions": {
+    "play_track35": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": 3.5}}
+    },
+    "pause_track35": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": 3.5}}
+    },
+    "stop_track35": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": 3.5}}
+    },
+    "volume_high_track35": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 3.5, "volume": 100, "duration": 8000}}
+    },
+    "volume_medium_track35": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 3.5, "volume": 70, "duration": 8000}}
+    },
+    "volume_low_track35": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 3.5, "volume": 0, "duration": 8000}}
+    },
+    "play_track5": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": 5}}
+    },
+    "pause_track5": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": 5}}
+    },
+    "stop_track5": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": 5}}
+    },
+    "volume_high_track5": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 5, "volume": 100, "duration": 8000}}
+    },
+    "volume_medium_track5": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 5, "volume": 70, "duration": 8000}}
+    },
+    "volume_low_track5": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 5, "volume": 0, "duration": 8000}}
+    },
+    "play_track61": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": 6.1}}
+    },
+    "pause_track61": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": 6.1}}
+    },
+    "stop_track61": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": 6.1}}
+    },
+    "volume_high_track61": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 6.1, "volume": 100, "duration": 8000}}
+    },
+    "volume_medium_track61": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 6.1, "volume": 70, "duration": 8000}}
+    },
+    "volume_low_track61": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 6.1, "volume": 0, "duration": 8000}}
+    },
+    "play_track7": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": 7}}
+    },
+    "pause_track7": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": 7}}
+    },
+    "stop_track7": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": 7}}
+    },
+    "volume_high_track7": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 7, "volume": 100, "duration": 8000}}
+    },
+    "volume_medium_track7": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 7, "volume": 70, "duration": 8000}}
+    },
+    "volume_low_track7": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": 7, "volume": 0, "duration": 8000}}
+    },
+    "volume_high_global": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "volume": 100, "duration": 8000}}
+    },
+    "volume_medium_global": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "volume": 70, "duration": 8000}}
+    },
+    "volume_low_global": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "volume": 0, "duration": 8000}}
+    },
     "start_red_and_green_led_hint_alarm": {
       "start_alarm": "red_and_green_led_hint_alarm",
       "ticks": 10,

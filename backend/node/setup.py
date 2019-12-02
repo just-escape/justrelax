@@ -1,3 +1,5 @@
+import os
+import sys
 from setuptools import setup
 
 
@@ -7,10 +9,12 @@ def get_requirements():
 
 
 if __name__ == '__main__':
+    sys.path.append(os.path.expanduser(os.path.dirname(__file__)))
+
     setup(
-        name="justrelax",
+        name="justrelax_node",
         version="0.1",
-        packages=["justrelax", "twisted.plugins"],
+        packages=["justrelax.node", "twisted.plugins"],
         scripts=[],
         install_requires=get_requirements(),
     )

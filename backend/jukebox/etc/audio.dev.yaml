@@ -1,0 +1,12 @@
+host: localhost
+port: 3031
+
+class: justrelax.node.jukebox.audio_player.AudioPlayer
+name: audio
+channel: digimiam1
+
+media:
+  base_url:
+  directory: /home/jbb
+
+logging: logging.yaml

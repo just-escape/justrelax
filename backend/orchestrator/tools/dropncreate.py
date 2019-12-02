@@ -8,7 +8,7 @@ from justrelax.orchestrator.storage.models import Base, Room, Camera
 
 if __name__ == '__main__':
     engine = create_engine(
-        'postgresql://justrelax:justrelax@localhost:5432/justrelax')
+        'postgresql://justrelax:justrelaxlalalalala@localhost:5432/justrelax')
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
