@@ -10,14 +10,7 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_jukebox",
         version="0.1",
-        packages=["justrelax.node.jukebox", "twisted/plugins"],
+        packages=["justrelax.node.jukebox", "twisted.plugins"],
         install_requires=get_requirements(),
         zip_safe=False,
     )
-
-    try:
-        from twisted.plugin import IPlugin, getPlugins  # NOQA: E402
-    except ImportError:
-        pass
-    else:
-        list(getPlugins(IPlugin))

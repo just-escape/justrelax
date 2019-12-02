@@ -8,9 +8,9 @@ def get_requirements():
 
 if __name__ == '__main__':
     setup(
-        name="justrelax_orchestrator",
+        name="justrelax_node_echo",
         version="0.1",
-        packages=["justrelax.orchestrator", "twisted.plugins"],
+        packages=["justrelax.node.echo", "twisted.plugins"],
         install_requires=get_requirements(),
         zip_safe=False,
     )
