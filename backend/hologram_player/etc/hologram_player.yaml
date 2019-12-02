@@ -1,0 +1,20 @@
+host: localhost
+port: 3031
+
+name: hologram_player
+channel: digimiam1
+
+node_params:
+  video_path: /path/to/video.mp4
+  default_chapter: chapter1
+  chapters:
+    - id: chapter1
+      start: 0
+      loop_a: 1
+      loop_b: 2
+    - id: chapter2
+      start: 3
+      loop_a: 4
+      loop_b: 5
+
+logging: null
