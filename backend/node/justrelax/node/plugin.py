@@ -69,7 +69,7 @@ class AbstractNodeServiceMaker(object):
             # plugins lightweight.
             raise NotImplementedError(
                 "This is an abstract plugin. Subclass it and overload "
-                "the service attribute")
+                "the service attribute.")
 
         config = self.get_config(options)
         logging_config = config.pop("logging")
