@@ -1,6 +1,6 @@
 from twisted.application import internet
 
-from justrelax.common.logging import logger
+from justrelax.common.logging_utils import logger
 from justrelax.node.factory import JustSockNodeClientFactory
 
 

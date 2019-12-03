@@ -2,7 +2,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 
 from autobahn.twisted.websocket import WebSocketClientFactory
 
-from justrelax.common.logging import logger
+from justrelax.common.logging_utils import logger
 from justrelax.node.protocol import JustSockNodeClientProtocol
 
 

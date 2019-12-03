@@ -1,6 +1,6 @@
 from autobahn.twisted.websocket import WebSocketServerFactory
 
-from justrelax.common.logging import logger
+from justrelax.common.logging_utils import logger
 from justrelax.orchestrator.services import Services
 from justrelax.orchestrator.ws.protocol import JustSockServerProtocol
 

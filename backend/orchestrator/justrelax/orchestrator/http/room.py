@@ -1,6 +1,6 @@
 import json
 
-from justrelax.common.logging import logger
+from justrelax.common.logging_utils import logger
 from justrelax.orchestrator.http.core import app
 from justrelax.orchestrator.http.utils import get_arg
 from justrelax.orchestrator.services import Services

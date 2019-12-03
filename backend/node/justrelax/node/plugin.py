@@ -7,7 +7,7 @@ from twisted.python import usage
 from twisted.plugin import IPlugin
 from twisted.application.service import IServiceMaker
 
-from justrelax.common.logging import init_logging
+from justrelax.common.logging_utils import init_logging
 
 
 class Options(usage.Options):

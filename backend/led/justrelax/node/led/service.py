@@ -5,7 +5,7 @@ except RuntimeError:
     GPIO = MagicMock()
 
 from justrelax.node.service import JustSockNodeClientService
-from justrelax.common.logging import logger
+from justrelax.common.logging_utils import logger
 
 
 class Led(JustSockNodeClientService):

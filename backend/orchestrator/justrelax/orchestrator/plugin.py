@@ -6,7 +6,7 @@ from twisted.python import usage
 from twisted.plugin import IPlugin
 from twisted.application import service
 
-from justrelax.common.logging import init_logging
+from justrelax.common.logging_utils import init_logging
 from justrelax.orchestrator import conf
 from justrelax.orchestrator.manager.room import RoomManager
 from justrelax.orchestrator.storage.session import DataBaseAccess

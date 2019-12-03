@@ -1,6 +1,6 @@
 import os
 
-from justrelax.common.logging import logger
+from justrelax.common.logging_utils import logger
 from justrelax.common.utils import download_file
 from justrelax.node.service import JustSockNodeClientService
 

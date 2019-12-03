@@ -2,7 +2,7 @@ import vlc
 
 from twisted.internet import reactor
 
-from justrelax.common.logging import logger
+from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockNodeClientService
 
 

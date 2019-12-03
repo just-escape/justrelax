@@ -2,7 +2,7 @@ import os
 import requests
 from importlib import import_module
 
-from justrelax.common.logging import logger
+from justrelax.common.logging_utils import logger
 
 
 def ensure_iterable(x):

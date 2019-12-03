@@ -1,4 +1,5 @@
 import yaml
+import logging
 import logging.config
 
 from zope.interface import implementer

@@ -3,7 +3,7 @@ import json
 from autobahn.twisted.websocket import WebSocketClientProtocol
 
 from justrelax.common.constants import JUST_SOCK_PROTOCOL as P
-from justrelax.common.logging import logger
+from justrelax.common.logging_utils import logger
 
 
 class JustSockNodeClientProtocol(WebSocketClientProtocol):
@@ -80,7 +80,7 @@ class JustSockNodeClientProtocol(WebSocketClientProtocol):
             return False, "Event has no content"
 
         if event[P.EVENT_TYPE] != P.EVENT_TYPE_MESSAGE:
-            return False, "Only message events are handled"
+            return False, "Only message events are handled"
 
         return True, None
 
