@@ -3,7 +3,6 @@ from justrelax.node.echo import Echo
 
 
 class ServiceMaker(AbstractNodeServiceMaker):
-    tapname = "echo"
     service = Echo
 
 

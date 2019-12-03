@@ -3,7 +3,6 @@ from justrelax.node.led import Led
 
 
 class ServiceMaker(AbstractNodeServiceMaker):
-    tapname = "led"
     service = Led
 
 

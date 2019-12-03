@@ -36,19 +36,34 @@ def get_config_dict(options, etc_filename):
 
 @implementer(IServiceMaker, IPlugin)
 class AbstractNodeServiceMaker(object):
-    tapname = "abstract_node"
-    description = ""
     options = Options
 
     service = None
+
+    @property
+    def tapname(self):
+        try:
+            return self.service.__name__.lower()
+        except Exception:
+            return "abstract_node"
+
+    @property
+    def description(self):
+        return "A {} node.".format(self.tapname)
+
+    def get_default_node_name(self):
+        try:
+            return self.service.__name__.lower()
+        except Exception:
+            return "node"
 
     def get_config(self, options):
         # default
         config = {
             "host": "localhost",
             "port": 3031,
-            "name": "node",
-            "channel": "channel",
+            "name": self.get_default_node_name(),
+            "channel": "digimiam1",
             "node_params": {},
             "logging": None,
         }
@@ -58,10 +73,6 @@ class AbstractNodeServiceMaker(object):
 
         config.update(parsed_config)
         return config
-
-    def init_logging(self, logging_config):
-        if logging_config:
-            init_logging(logging_config)
 
     def makeService(self, options):
         if self.service is None:
@@ -73,6 +84,6 @@ class AbstractNodeServiceMaker(object):
 
         config = self.get_config(options)
         logging_config = config.pop("logging")
-        self.init_logging(logging_config)
+        init_logging(logging_config)
 
         return self.service(**config)

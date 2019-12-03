@@ -34,16 +34,17 @@ logger = Logger
 
 
 def init_logging(config_path):
-    try:
+    if config_path is not None:
         with open(config_path, "rt") as f:
             config = yaml.safe_load(f.read())
         logging.config.dictConfig(config)
-    except Exception:
-        logging.basicConfig(level=logging.INFO)
-        logger.exception(
-            "Could not load logging configuration in {}: using default "
-            "configuration"
+    else:
+        logging.basicConfig(
+            format="[%(asctime)s][%(levelname)s] %(message)s",
+            datefmt="%Y-%m-%dT%H:%M:%S%z",
+            level=logging.INFO,
         )
+
     observer = log.PythonLoggingObserver()
     observer.start()
 

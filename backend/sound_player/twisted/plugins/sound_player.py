@@ -3,7 +3,6 @@ from justrelax.node.sound_player import SoundPlayer
 
 
 class ServiceMaker(AbstractNodeServiceMaker):
-    tapname = "sound_player"
     service = SoundPlayer
 
 

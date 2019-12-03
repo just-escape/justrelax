@@ -3,7 +3,6 @@ from justrelax.node.button import Button
 
 
 class ServiceMaker(AbstractNodeServiceMaker):
-    tapname = "button"
     service = Button
 
 
