@@ -1,16 +1,28 @@
 <template>
-  <div>
-    <HelloWorld/>
+  <div class="container-fluid d-flex flex-column h-100">
+    <Header/>
+    <div class="row flex-grow-1">
+      <div class="col-9 pt-3 pb-4" style="background-color: white">
+        <LeftPanel/>
+      </div>
+      <div class="col-3 pt-3 pb-4" style="background-color: white">
+        <RightPanel/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld.vue'
+import Header from '@/components/Header.vue'
+import LeftPanel from '@/components/LeftPanel.vue'
+import RightPanel from '@/components/RightPanel.vue'
 
 export default {
   name: 'PageRoot',
   components: {
-    HelloWorld,
+    Header,
+    LeftPanel,
+    RightPanel,
   },
   created() {
     var lang = this.$route.query.lang

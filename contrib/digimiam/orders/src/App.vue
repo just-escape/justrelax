@@ -24,36 +24,25 @@ export default {
     src: url('./assets/webfonts/code-new-roman.woff2') format('woff2');
 }
 
+@font-face {
+    font-family: "Equinox";
+    font-style: normal;
+    src: url('./assets/webfonts/equinox-regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: "Gotham";
+    font-style: normal;
+    src: url('./assets/webfonts/gotham-book.otf') format('otf');
+}
+
 #app {
-  font-family: 'Code New Roman', 'sans-serif';
-  color: #ffffff;
-  padding-top: 10px;
+  font-family: 'Gotham', 'sans-serif';
+  color: #222;
+  background-color: wheat;
   position: relative;
   display: block;
   user-select: none;
-}
-
-#app::before {
-  content: "";
-  background: url('./assets/img/background-grid.png');
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  top: 0;
-  opacity: 0.3;
-  z-index: -1;
-}
-
-#app::after {
-  content: "";
-  background-color: #03181f;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  top: 0;
-  z-index: -2;
 }
 
 .text-teal {
@@ -65,12 +54,35 @@ export default {
 }
 
 .glowing-container {
-  border: 1px solid #00d1b6;
-  box-shadow: 0px 0px 14px -6px rgba(0, 209, 182, 1);
+  /*border: 1px solid #00d1b6;*/
+  border: 1px solid black;
+  /*box-shadow: 0px 0px 14px -6px rgba(0, 209, 182, 1);*/
+  box-shadow: 0px 0px 14px -6px black;
 }
 
-.global-container {
-  height: 950px;
-  width: 1200px;
+.lh-1 {
+  line-height: 1;
+}
+
+.underline-dots {
+  border-bottom: 1px dotted black;
+  margin-bottom: 3px;
+}
+
+.underline-dots-white {
+  border-bottom: 1px dotted white;
+  margin-bottom: 3px;
+}
+
+.text-white {
+  color: white;
+}
+
+.shadow-box-primary {
+  box-shadow: 1px 1px 5px var(--primary);
+}
+
+.orderable-category {
+  font-size: 1.2rem;
 }
 </style>
