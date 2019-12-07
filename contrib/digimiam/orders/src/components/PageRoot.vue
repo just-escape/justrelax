@@ -2,10 +2,10 @@
   <div class="container-fluid d-flex flex-column h-100">
     <Header/>
     <div class="row flex-grow-1">
-      <div class="col-9 pt-3 pb-4" style="background-color: white">
+      <div class="col-9 bg-light pt-3 pb-4">
         <LeftPanel/>
       </div>
-      <div class="col-3 pt-3 pb-4" style="background-color: white">
+      <div class="col-3 bg-light pt-3 pb-4">
         <RightPanel/>
       </div>
     </div>

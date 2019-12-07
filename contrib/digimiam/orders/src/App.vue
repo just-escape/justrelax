@@ -58,6 +58,10 @@ export default {
   line-height: 1;
 }
 
+.lh-13 {
+  line-height: 1.3;
+}
+
 .underline-dots {
   border-bottom: 1px dotted black;
   margin-bottom: 3px;
@@ -72,8 +76,8 @@ export default {
   color: white;
 }
 
-.shadow-box-primary {
-  box-shadow: 1px 1px 5px var(--primary);
+.shadow-box-dark {
+  box-shadow: 1px 1px 5px var(--dark);
 }
 
 .orderable-category {

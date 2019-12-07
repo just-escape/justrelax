@@ -10,9 +10,9 @@ export default {
 
 <style scoped>
 .background-image {
-  height: 200px;
+  height: 150px;
   background-image: url("~@/assets/rawfood.webp");
-  background-position: 0px -200px;
+  background-position: 0px -150px;
   background-size: cover;
 }
 </style>

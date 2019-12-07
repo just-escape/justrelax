@@ -3,10 +3,13 @@
     <div class="d-flex flex-row justify-content-between">
       <div class="align-self-end">
         <b-btn-group>
-          <b-btn variant="info" size="md">
+          <UnclickableButton>
+            <img class="lang" src="@/assets/lang.svg">
+          </UnclickableButton>
+          <b-btn variant="info">
             Français
           </b-btn>
-          <b-btn variant="info" size="md">
+          <b-btn variant="info">
             English
           </b-btn>
         </b-btn-group>
@@ -21,7 +24,19 @@
 </template>
 
 <script>
+import UnclickableButton from "@/components/UnclickableButton.vue"
+
 export default {
-  name: "LeftPanelButtons"
+  name: "LeftPanelButtons",
+  components: {
+    UnclickableButton,
+  },
 }
 </script>
+
+<style scoped>
+.lang {
+  height: 20px;
+  width: auto;
+}
+</style>

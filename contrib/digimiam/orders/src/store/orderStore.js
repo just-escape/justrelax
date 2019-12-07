@@ -22,7 +22,7 @@ var store = new Vuex.Store({
         quantity: 0,
         price: 10,
       },
-      maroilles: {
+      moules: {
         quantity: 0,
         price: 10,
       },
@@ -41,6 +41,22 @@ var store = new Vuex.Store({
       boisson3: {
         quantity: 0,
         price: 10,
+      },
+      sauce1: {
+        quantity: 0,
+        price: 0.5,
+      },
+      sauce2: {
+        quantity: 0,
+        price: 0.5,
+      },
+      sauce3: {
+        quantity: 0,
+        price: 0.5,
+      },
+      sauce4: {
+        quantity: 0,
+        price: 0.5,
       },
     },
     maxQuantity: 9,
