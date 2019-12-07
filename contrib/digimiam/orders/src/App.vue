@@ -25,12 +25,6 @@ export default {
 }
 
 @font-face {
-    font-family: "Equinox";
-    font-style: normal;
-    src: url('./assets/webfonts/equinox-regular.woff') format('woff');
-}
-
-@font-face {
     font-family: "Gotham";
     font-style: normal;
     src: url('./assets/webfonts/gotham-book.otf') format('otf');

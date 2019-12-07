@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column justify-content-between h-100">
-    <div class="d-flex flex-column h-100">
+    <div class="d-flex flex-column flex-grow-1">
       <div class="mb-3">
         <Marmitron/>
       </div>
