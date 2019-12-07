@@ -12,7 +12,7 @@
         <div class="text-right">
           <b-btn-group>
             <b-btn @click="minusOne" class="lh-1" variant="outline-primary"><i class="fa fa-minus"></i></b-btn>
-            <b-btn variant="outline-primary">{{ quantity }}</b-btn>
+            <UnclickableButton>{{ quantity }}</UnclickableButton>
             <b-btn @click="plusOne" class="lh-1" variant="outline-primary"><i class="fa fa-plus"></i></b-btn>
           </b-btn-group>
         </div>
@@ -22,10 +22,14 @@
 </template>
 
 <script>
+import UnclickableButton from '@/components/UnclickableButton.vue'
 import orderStore from '@/store/orderStore.js'
 
 export default {
   name: "OrderableItem",
+  components: {
+    UnclickableButton,
+  },
   computed: {
     quantity: function() {
       return orderStore.state.items[this.itemId].quantity
