@@ -62,6 +62,17 @@ var store = new Vuex.Store({
     maxQuantity: 9,
     minQuantity: 0,
   },
+  getters: {
+    isCartEmpty (state) {
+      for (var itemId in state.items) {
+        if (state.items[itemId].quantity > state.minQuantity) {
+          return false
+        }
+      }
+
+      return true
+    }
+  },
   mutations: {
     plusOne (state, itemId) {
       state.items[itemId].quantity = Math.min(state.maxQuantity, state.items[itemId].quantity + 1)
