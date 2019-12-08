@@ -3,19 +3,19 @@
     <div class="d-flex flex-row justify-content-between">
       <div class="align-self-end">
         <b-btn-group>
-          <UnclickableButton>
+          <UnclickableDarkButton>
             <img class="lang" src="@/assets/lang.svg">
-          </UnclickableButton>
-          <b-btn variant="info">
+          </UnclickableDarkButton>
+          <b-btn @click="setLocale('fr')" variant="info">
             Français
           </b-btn>
-          <b-btn variant="info">
+          <b-btn @click="setLocale('en')" variant="info">
             English
           </b-btn>
         </b-btn-group>
       </div>
       <div>
-        <b-btn variant="outline-primary" size="lg">
+        <b-btn @click="resetOrder" variant="outline-primary" size="lg">
           Reset order
         </b-btn>
       </div>
@@ -24,12 +24,24 @@
 </template>
 
 <script>
-import UnclickableButton from "@/components/UnclickableButton.vue"
+import UnclickableDarkButton from "@/components/UnclickableDarkButton.vue"
+import orderStore from '@/store/orderStore.js'
+import router from '@/router.js'
+import i18n from '@/locales.js'
 
 export default {
   name: "LeftPanelButtons",
   components: {
-    UnclickableButton,
+    UnclickableDarkButton,
+  },
+  methods: {
+    setLocale: function(lang) {
+      router.push({path: '/', query: {'lang': lang}})
+      i18n.locale = lang
+    },
+    resetOrder: function() {
+      orderStore.commit('resetOrder')
+    },
   },
 }
 </script>

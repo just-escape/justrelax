@@ -68,7 +68,12 @@ var store = new Vuex.Store({
     },
     minusOne (state, itemId) {
       state.items[itemId].quantity = Math.max(state.minQuantity, state.items[itemId].quantity - 1)
-    }
+    },
+    resetOrder (state) {
+      for (var itemId in state.items) {
+        state.items[itemId].quantity = state.minQuantity
+      }
+    },
   }
 })
 

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'UnclickableButton',
+  name: 'UnclickableDarkButton',
   props: {
     'size': {
       default: "md"

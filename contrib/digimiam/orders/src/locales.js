@@ -17,7 +17,7 @@ const locales = {
     moules_desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed.',
     gaufresque: 'Gaufresque',
     gaufresque_desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed.',
-    boisson1: 'Eau synthétique',
+    boisson1: 'Synthetic water',
     boisson1_desc: 'Une délicieuse eau reconstituée plus douce que le crystal.',
     boisson2: 'Eau houblonnée',
     boisson2_desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed.',
