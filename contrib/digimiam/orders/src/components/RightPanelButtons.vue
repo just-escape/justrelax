@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-row">
     <div class="mr-3">
-      <PulsatingPrimaryButton @click="popUp" size="lg" :pulse="pulse" :disabled="isCartEmpty">
+      <PulsatingPrimaryButton @click="attemptOrder" size="lg" :pulse="pulse" :disabled="isCartEmpty">
         Passer commande
       </PulsatingPrimaryButton>
     </div>
@@ -39,7 +39,7 @@ export default {
   computed: {
     isCartEmpty: function() {
       return orderStore.getters.isCartEmpty
-    }
+    },
   },
   methods: {
     startPulse: function() {
@@ -47,9 +47,8 @@ export default {
         this.pulse = true
       }
     },
-    popUp: function() {
-      // eslint-disable-next-line
-      console.log('popUp')
+    attemptOrder: function() {
+      orderStore.commit('attemptOrder')
     },
   },
   watch: {

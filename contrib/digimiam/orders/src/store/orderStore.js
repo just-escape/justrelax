@@ -61,6 +61,7 @@ var store = new Vuex.Store({
     },
     maxQuantity: 9,
     minQuantity: 0,
+    attemptedOrder: false,
   },
   getters: {
     isCartEmpty (state) {
@@ -84,6 +85,9 @@ var store = new Vuex.Store({
       for (var itemId in state.items) {
         state.items[itemId].quantity = state.minQuantity
       }
+    },
+    attemptOrder (state) {
+      state.attemptedOrder = true
     },
   }
 })

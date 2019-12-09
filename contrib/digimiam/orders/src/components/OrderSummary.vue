@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex flex-column h-100">
     <div class="d-flex flex-row rounded bg-dark shadow-box-dark">
-      <Neons class="ml-2"/>
+      <NeonsPrimary class="ml-2"/>
       <h2 class="text-center text-white mx-3 py-1 mb-0">ORDER SUMMARY</h2>
-      <Neons class="mr-2"/>
+      <NeonsPrimary class="mr-2"/>
     </div>
     <div class="flex-grow-1 pt-2 px-3">
       <ul class="list-unstyled mb-0">
@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import Neons from '@/components/Neons.vue'
+import NeonsPrimary from '@/components/NeonsPrimary.vue'
 import OrderSummaryItem from '@/components/OrderSummaryItem.vue'
 import orderStore from '@/store/orderStore.js'
 
 export default {
   name: "OrderSummary",
   components: {
-    Neons,
+    NeonsPrimary,
     OrderSummaryItem,
   },
   computed: {

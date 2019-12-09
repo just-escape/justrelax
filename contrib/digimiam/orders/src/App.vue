@@ -80,7 +80,7 @@ export default {
   box-shadow: 1px 1px 5px var(--dark);
 }
 
-.orderable-category {
+.size-12 {
   font-size: 1.2rem;
 }
 </style>

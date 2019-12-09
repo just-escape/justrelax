@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "Neons"
+  name: "NeonsPrimary"
 }
 </script>
 
