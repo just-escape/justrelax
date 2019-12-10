@@ -1,3 +1,5 @@
 twisted
 autobahn
 PyYAML
+alsaaudio
+pytweening

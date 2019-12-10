@@ -5,7 +5,7 @@ from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockNodeClientService
-from justrelax.node.jukebox.core import EASE_MAPPING, MasterVolume
+from justrelax.node.common.volume import EASE_MAPPING, MasterVolume
 from justrelax.node.jukebox.vlc_player import VLCSelfReleasingTrackHandler
 from justrelax.node.jukebox.vlc_player import VLCLoopingTrackHandler
 from justrelax.node.jukebox.pyglet_player import PygletTrackHandler
@@ -65,14 +65,14 @@ class Jukebox(JustSockNodeClientService):
                 loop_a = track['loop_a']
                 loop_b = track['loop_b']
                 handler = looping_track_handler(
-                    track_path=path,
+                    media_path=path,
                     loop_a=loop_a,
                     loop_b=loop_b,
                     initial_volume=volume,
                 )
             else:
                 handler = track_handler(
-                    track_path=path,
+                    media_path=path,
                     initial_volume=volume,
                 )
             self.tracks[id_] = handler

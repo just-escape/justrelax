@@ -4,4 +4,11 @@ port: 3031
 name: sound_player
 channel: digimiam1
 
+node_params:
+  master_volume: 80
+  default_volume: 50
+  sounds:
+    - id: sound
+      path: /path/to/sound.wav
+
 logging: null

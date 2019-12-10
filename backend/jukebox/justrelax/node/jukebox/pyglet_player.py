@@ -3,15 +3,16 @@ import pyglet
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.jukebox.core import VolumeFaderMixin, TrackPlayerMixin
+from justrelax.node.common.volume import VolumeFaderMixin
+from justrelax.node.jukebox.core import TrackPlayerMixin
 
 
 class PygletTrackHandler(VolumeFaderMixin, TrackPlayerMixin):
-    def __init__(self, track_path, initial_volume=100, *args, **kwargs):
+    def __init__(self, media_path, initial_volume=100, *args, **kwargs):
         VolumeFaderMixin.__init__(self, initial_volume=initial_volume)
         TrackPlayerMixin.__init__(self)
 
-        self.track = pyglet.media.load(track_path, streaming=False)
+        self.track = pyglet.media.load(media_path, streaming=False)
         self.new_player()
 
     def new_player(self):
@@ -45,9 +46,9 @@ class PygletTrackHandler(VolumeFaderMixin, TrackPlayerMixin):
 
 
 class PygletLoopingTrackHandler(PygletTrackHandler):
-    def __init__(self, track_path, loop_a, loop_b,  *args, **kwargs):
+    def __init__(self, media_path, loop_a, loop_b,  *args, **kwargs):
         super(PygletLoopingTrackHandler, self).__init__(
-            track_path, *args, **kwargs)
+            media_path, *args, **kwargs)
         self.loop_a = loop_a
         self.loop_b = loop_b
         self.looping_task = None

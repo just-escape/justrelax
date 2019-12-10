@@ -1,4 +1,2 @@
-pyalsaaudio
-pytweening
 python-vlc
 pyglet
