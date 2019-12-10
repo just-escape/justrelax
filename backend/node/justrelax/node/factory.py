@@ -42,7 +42,15 @@ class JustSockNodeClientFactory(WebSocketClientFactory, ReconnectingClientFactor
         ReconnectingClientFactory.clientConnectionFailed(self, connector, reason)
 
     def send_message(self, message):
-        self.protocol.send_message(message)
+        try:
+            self.protocol.send_message(message)
+        except Exception:
+            logger.error("Error while trying to send message={}".format(message))
+            logger.exception()
 
     def process_message(self, message):
-        self.service.process_message(message)
+        try:
+            self.service.process_message(message)
+        except Exception:
+            logger.error("Error while trying to process message={}".format(message))
+            logger.exception()
