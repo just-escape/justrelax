@@ -1,0 +1,20 @@
+host: localhost
+port: 3031
+
+name: jukebox
+channel: digimiam1
+
+node_params:
+  master_volume: 80
+  default_volume: 50
+  player: vlc
+  tracks:
+    - id: one_shot_track
+      path: /path/to/track.wav
+    - id: looping_track
+      path: /path/to/track.wav
+      mode: loop
+      loop_a: 3.75
+      loop_b: 11.25
+
+logging: null

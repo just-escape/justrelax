@@ -1,213 +1,20 @@
-import time
-
-import vlc
-import pytweening
+import pyglet
 
 from twisted.internet import reactor
+from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockNodeClientService
-
-
-class VolumeFaderMixin:
-    def __init__(self, initial_volume=0, update_frequency=0.01):
-        self.current_volume = initial_volume
-        self.target_volume = initial_volume
-
-        self.update_frequency = update_frequency
-
-    def fade_volume(self, volume, duration=0, ease=pytweening.easeInOutSine):
-        if duration == 0:
-            self.current_volume += volume
-            self.target_volume += volume
-            self.set_volume()
-        else:
-            self._fade_volume(volume, duration, ease=ease)
-
-    def _fade_volume(self, volume, duration, ease=pytweening.easeInOutSine):
-        t_start = time.time()
-        current_volume_diff = 0
-        target_volume_diff = volume - self.target_volume
-        self.target_volume = self.target_volume + target_volume_diff
-
-        def update():
-            now = time.time()
-            progression = (now - t_start) * 1000 / duration
-
-            nonlocal current_volume_diff
-            if progression < 1:
-                eased_progression = ease(progression)
-                reactor.callLater(self.update_frequency, update)
-            else:
-                eased_progression = 1
-
-            new_volume_diff = target_volume_diff * eased_progression - current_volume_diff
-            self.current_volume += new_volume_diff
-            current_volume_diff += new_volume_diff
-
-            self.set_volume()
-
-        reactor.callLater(self.update_frequency, update)
-
-    def set_volume(self):
-        pass
-
-
-class GlobalVolume(VolumeFaderMixin):
-    def __init__(self, initial_volume):
-        super(GlobalVolume, self).__init__(initial_volume=initial_volume)
-        self.track_handlers = []
-
-    def set_volume(self):
-        for th in self.track_handlers:
-            th.set_volume()
-
-
-class TrackHandler(VolumeFaderMixin):
-    def __init__(self, audio_path, initial_volume=0, global_volume=None):
-        if global_volume:
-            self.global_volume = global_volume
-        else:
-            self.global_volume = GlobalVolume(initial_volume=100)
-        self.global_volume.track_handlers.append(self)
-
-        self.player = vlc.MediaPlayer(audio_path)
-
-        super(TrackHandler, self).__init__(initial_volume=initial_volume)
-
-        self.set_volume()
-
-    def play(self):
-        self.player.play()
-
-    def pause(self):
-        self.player.pause()
-
-    def stop(self):
-        self.player.stop()
-
-    def set_volume(self):
-        volume = int(
-            self.global_volume.current_volume * self.current_volume / 100)
-        self.player.audio_set_volume(volume)
-
-
-class LoopingTrackHandler(TrackHandler):
-    def __init__(self, audio_path, loop_a, loop_b, initial_volume=0, global_volume=None):
-        super(LoopingTrackHandler, self).__init__(
-            audio_path,
-            initial_volume=initial_volume,
-            global_volume=global_volume,
-        )
-        self.loop_a = loop_a
-        self.loop_b = loop_b
-        self.looping_task = None
-
-    def play(self):
-        if not self.player.is_playing():
-            player_time = self.player.get_time()
-            if player_time == -1:
-                logger.debug('Player has not been started yet')
-                self._play()
-            else:
-                logger.debug('Player had already been started')
-                self._resume()
-        else:
-            logger.debug('Player is already playing: nothing to do')
-
-    def _play(self):
-        logger.debug('Playing track')
-        self.player.play()
-        logger.debug('Scheduling going to loop_a in {} seconds'.format(self.loop_b))
-        self.looping_task = reactor.callLater(self.loop_b, self.go_to_loop_a)
-
-    def go_to_loop_a(self):
-        time_before_loop = self.loop_b - self.loop_a
-        logger.debug('Scheduling going to loop_a in {} seconds'.format(time_before_loop))
-        self.looping_task = reactor.callLater(time_before_loop, self.go_to_loop_a)
-
-        logger.debug('Setting player time to {}'.format(self.loop_a))
-        self.player.set_time(int(self.loop_a * 1000))
-
-    def pause(self):
-        if not self.player.can_pause():
-            # at the beginning or after a stop
-            logger.debug('Player cannot be paused: nothing to do')
-            return
-
-        if self.player.is_playing():
-            logger.debug('Player is playing: pausing')
-            self._pause()
-        else:
-            logger.debug('Player is playing: resuming')
-            self._resume()
-
-    def _pause(self):
-        try:
-            logger.debug('Cancelling looping task')
-            self.looping_task.cancel()
-        except Exception as e:
-            logger.warning("Could not cancel looping task (reason={})".format(e))
-        logger.debug('Pausing player')
-        self.player.pause()
-
-    def _resume(self):
-        logger.debug('Resuming')
-        current_time = self.player.get_time() / 1000
-        time_before_loop = self.loop_b - current_time
-        self.player.pause()
-        logger.debug('Scheduling going to loop_a in {} seconds'.format(time_before_loop))
-        self.looping_task = reactor.callLater(time_before_loop, self.go_to_loop_a)
-
-    def stop(self):
-        try:
-            logger.debug('Cancelling looping task')
-            self.looping_task.cancel()
-        except Exception as e:
-            logger.warning("Could not cancel looping task (reason={})".format(e))
-        logger.debug('Stopping player')
-        self.player.stop()
+from justrelax.node.jukebox.core import EASE_MAPPING, MasterVolume
+from justrelax.node.jukebox.vlc_player import VLCSelfReleasingTrackHandler
+from justrelax.node.jukebox.vlc_player import VLCLoopingTrackHandler
+from justrelax.node.jukebox.pyglet_player import PygletTrackHandler
+from justrelax.node.jukebox.pyglet_player import PygletLoopingTrackHandler
 
 
 class Jukebox(JustSockNodeClientService):
-    EASE_MAPPING = {
-        'easeInSine': pytweening.easeInSine,
-        'easeOutSine': pytweening.easeOutSine,
-        'easeInOutSine': pytweening.easeInOutSine,
-        'easeInCubic': pytweening.easeInCubic,
-        'easeOutCubic': pytweening.easeOutCubic,
-        'easeInOutCubic': pytweening.easeInOutCubic,
-        'easeInQuint': pytweening.easeInQuint,
-        'easeOutQuint': pytweening.easeOutQuint,
-        'easeInOutQuint': pytweening.easeInOutQuint,
-        'easeInCirc': pytweening.easeInCirc,
-        'easeOutCirc': pytweening.easeOutCirc,
-        'easeInOutCirc': pytweening.easeInOutCirc,
-        'easeInElastic': pytweening.easeInElastic,
-        'easeOutElastic': pytweening.easeOutElastic,
-        'easeInOutElastic': pytweening.easeInOutElastic,
-        'easeInQuad': pytweening.easeInQuad,
-        'easeOutQuad': pytweening.easeOutQuad,
-        'easeInOutQuad': pytweening.easeInOutQuad,
-        'easeInQuart': pytweening.easeInQuart,
-        'easeOutQuart': pytweening.easeOutQuart,
-        'easeInExpo': pytweening.easeInExpo,
-        'easeOutExpo': pytweening.easeOutExpo,
-        'easeInOutExpo': pytweening.easeInOutExpo,
-        'easeInBack': pytweening.easeInBack,
-        'easeOutBack': pytweening.easeOutBack,
-        'easeInOutBack': pytweening.easeInOutBack,
-        'easeInBounce': pytweening.easeInBounce,
-        'easeOutBounce': pytweening.easeOutBounce,
-        'easeInOutBounce': pytweening.easeInOutBounce,
-        'linear': pytweening.linear,
-    }
-
     class COMMANDS:
         ACTION = "action"
-
-        ACTION_PLAY_SOUND = "play_sound"
-        SOUND_ID = "sound_id"
 
         TRACK_ID = "track_id"
         DELAY = "delay"
@@ -222,37 +29,53 @@ class Jukebox(JustSockNodeClientService):
         EASE = "ease"
 
     def start(self):
-        self.global_volume = GlobalVolume(initial_volume=100)
+        initial_master_volume = self.node_params.get('master_volume', None)
+        default_initial_volume = self.node_params.get('default_volume', 100)
+
+        player = self.node_params.get('player', 'vlc')
+        if player == 'vlc':
+            track_handler = VLCSelfReleasingTrackHandler
+            looping_track_handler = VLCLoopingTrackHandler
+        elif player == 'pyglet':
+            track_handler = PygletTrackHandler
+            looping_track_handler = PygletLoopingTrackHandler
+            loop = LoopingCall(self.pyglet_loop)
+            loop.start(1 / 30)
+        else:
+            raise ValueError(
+                "Bad player value ({}). Possible values are vlc or "
+                "pyglet.".format(player))
+
+        try:
+            self.master_volume = MasterVolume(initial_volume=initial_master_volume)
+        except Exception:
+            logger.exception()
+            logger.warning(
+                "Unable to initialize the master volume controller. Further "
+                "actions on the master volume will be ignored.")
+            self.master_volume = None
 
         self.tracks = {}
         for track in self.node_params.get('tracks', []):
+            id_ = track['id']
+            path = track['path']
+            volume = track.get('volume', default_initial_volume)
             mode = track.get('mode', 'one_shot')
             if mode == 'loop':
-                handler = LoopingTrackHandler(
-                    audio_path=track['path'],
-                    loop_a=track['loop_a'],
-                    loop_b=track['loop_b'],
-                    initial_volume=70,
-                    global_volume=self.global_volume,
+                loop_a = track['loop_a']
+                loop_b = track['loop_b']
+                handler = looping_track_handler(
+                    track_path=path,
+                    loop_a=loop_a,
+                    loop_b=loop_b,
+                    initial_volume=volume,
                 )
             else:
-                handler = TrackHandler(
-                    audio_path=track['path'],
-                    initial_volume=70,
-                    global_volume=self.global_volume,
+                handler = track_handler(
+                    track_path=path,
+                    initial_volume=volume,
                 )
-            self.tracks[track['id']] = handler
-
-        self.sounds = {}
-        for sound in self.node_params.get('sounds', []):
-            media = vlc.Media(sound['path'])
-            media.parse()
-            # / 1000 because we will be interested by the value in seconds
-            duration = media.get_duration() / 1000
-            self.sounds[sound['id']] = {
-                'path': sound['path'],
-                'duration': duration,
-            }
+            self.tracks[id_] = handler
 
         # Factorisation
         self.play_pause_stop = {
@@ -272,6 +95,10 @@ class Jukebox(JustSockNodeClientService):
                 'method': 'stop',
             },
         }
+
+    def pyglet_loop(self):
+        pyglet.clock.tick()
+        pyglet.app.platform_event_loop.dispatch_posted_events()
 
     def process_message(self, message):
         logger.debug("Processing message '{}'".format(message))
@@ -305,16 +132,6 @@ class Jukebox(JustSockNodeClientService):
 
             reactor.callLater(delay, getattr(track, action['method']))
 
-        elif message[self.COMMANDS.ACTION] == self.COMMANDS.ACTION_PLAY_SOUND:
-            if self.COMMANDS.SOUND_ID not in message:
-                logger.error("Play sound action has no sound_id: skipping")
-                return
-
-            sound_id = message[self.COMMANDS.SOUND_ID]
-            logger.info("Playing sound id={}".format(sound_id))
-
-            reactor.callLater(delay, self.play_sound, sound_id)
-
         elif message[self.COMMANDS.ACTION] == self.COMMANDS.ACTION_SET_VOLUME:
             if self.COMMANDS.VOLUME not in message:
                 logger.error("Set volume action has not volume: skipping")
@@ -331,22 +148,6 @@ class Jukebox(JustSockNodeClientService):
             logger.debug("Unknown command type '{}': skipping".format(
                 message[self.COMMANDS.ACTION]))
 
-    def play_sound(self, sound_id):
-        sound = self.sounds.get(sound_id, None)
-        if sound is None:
-            logger.error("Unknown sound id={}: aborting".format(sound_id))
-            return
-
-        player = vlc.MediaPlayer(sound['path'])
-        player.audio_set_volume(int(self.global_volume.current_volume))
-        player.play()
-
-        def free_player():
-            player.release()
-
-        # Add 0.1 seconds by precaution
-        reactor.callLater(sound['duration'] + 0.1, free_player)
-
     def set_volume(self, delay, volume, track_id=None, duration=0, ease='easeInOutSine'):
         if not isinstance(volume, int):
             logger.error('Volume must be an int (received={}): aborting'.format(volume))
@@ -360,7 +161,7 @@ class Jukebox(JustSockNodeClientService):
             logger.error('Duration must be an int (received={}): aborting'.format(duration))
             return
 
-        if ease not in self.EASE_MAPPING:
+        if ease not in EASE_MAPPING:
             logger.error('Unknown easing function (received={}): aborting'.format(ease))
             return
 
@@ -369,11 +170,16 @@ class Jukebox(JustSockNodeClientService):
 
         duration = max(0, duration)
 
-        ease = self.EASE_MAPPING[ease]
+        ease = EASE_MAPPING[ease]
 
         if track_id is None:
-            callable_ = self.global_volume.fade_volume
+            if self.master_volume is None:
+                logger.error("Master volume has not been initialized properly: skipping")
+                callable_ = None
+            else:
+                callable_ = self.master_volume.fade_volume
         else:
             callable_ = self.tracks[track_id].fade_volume
 
-        reactor.callLater(delay, callable_, volume, duration, ease)
+        if callable_:
+            reactor.callLater(delay, callable_, volume, duration, ease)
