@@ -10,6 +10,10 @@
   "dependencies": {
     "bootstrap-vue": "^2.0.4",
     "core-js": "^3.1.2",
+    "three": "^0.111.0",
+    "three-controls": "^1.0.1",
+    "three-css3drenderer": "^1.0.1",
+    "tween.js": "^16.6.0",
     "vue": "^2.6.10",
     "vue-animejs": "^2.1.1",
     "vue-i18n": "^8.15.1",

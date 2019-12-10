@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column h-100">
+  <div class="d-flex flex-column flex-grow-1">
     <div class="d-flex flex-row rounded bg-dark shadow-box-dark">
       <NeonsPrimary class="ml-2"/>
       <h2 class="text-center text-white mx-3 py-1 mb-0">ORDER SUMMARY</h2>
