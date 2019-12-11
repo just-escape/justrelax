@@ -268,6 +268,117 @@
         "name": "Audio",
         "subcategories": [
           {
+            "name": "Track 1",
+            "actions": [
+              {
+                "name": "play_track1",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track1",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track1",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_100_track1",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_75_track1",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_50_track1",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track1",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track1",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 2",
+            "actions": [
+              {
+                "name": "play_track2",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track2",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track2",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_100_track2",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_75_track2",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_50_track2",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track2",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track2",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 3",
+            "actions": [
+              {
+                "name": "play_track3",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track3",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track3",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_100_track3",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_75_track3",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_50_track3",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track3",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track3",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
             "name": "Track 3.5",
             "actions": [
               {
@@ -283,15 +394,60 @@
                 "icon": "fas fa-undo-alt"
               },
               {
-                "name": "volume_high_track35",
+                "name": "volume_100_track35",
                 "icon": "fas fa-volume-up"
               },
               {
-                "name": "volume_medium_track35",
+                "name": "volume_75_track35",
                 "icon": "fas fa-volume-down"
               },
               {
-                "name": "volume_low_track35",
+                "name": "volume_50_track35",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track35",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track35",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 4",
+            "actions": [
+              {
+                "name": "play_track4",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track4",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track4",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_100_track4",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_75_track4",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_50_track4",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track4",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track4",
                 "icon": "fas fa-volume-off"
               }
             ]
@@ -312,15 +468,23 @@
                 "icon": "fas fa-undo-alt"
               },
               {
-                "name": "volume_high_track5",
+                "name": "volume_100_track5",
                 "icon": "fas fa-volume-up"
               },
               {
-                "name": "volume_medium_track5",
+                "name": "volume_75_track5",
                 "icon": "fas fa-volume-down"
               },
               {
-                "name": "volume_low_track5",
+                "name": "volume_50_track5",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track5",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track5",
                 "icon": "fas fa-volume-off"
               }
             ]
@@ -341,15 +505,97 @@
                 "icon": "fas fa-undo-alt"
               },
               {
-                "name": "volume_high_track61",
+                "name": "volume_100_track61",
                 "icon": "fas fa-volume-up"
               },
               {
-                "name": "volume_medium_track61",
+                "name": "volume_75_track61",
                 "icon": "fas fa-volume-down"
               },
               {
-                "name": "volume_low_track61",
+                "name": "volume_50_track61",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track61",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track61",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 6.2",
+            "actions": [
+              {
+                "name": "play_track62",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track62",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track62",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_100_track62",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_75_track62",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_50_track62",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track62",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track62",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 6.3",
+            "actions": [
+              {
+                "name": "play_track63",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track63",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track63",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_100_track63",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_75_track63",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_50_track63",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track63",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track63",
                 "icon": "fas fa-volume-off"
               }
             ]
@@ -370,32 +616,159 @@
                 "icon": "fas fa-undo-alt"
               },
               {
-                "name": "volume_high_track7",
+                "name": "volume_100_track7",
                 "icon": "fas fa-volume-up"
               },
               {
-                "name": "volume_medium_track7",
+                "name": "volume_75_track7",
                 "icon": "fas fa-volume-down"
               },
               {
-                "name": "volume_low_track7",
+                "name": "volume_50_track7",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track7",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track7",
                 "icon": "fas fa-volume-off"
               }
             ]
           },
           {
-            "name": "Global volume",
+            "name": "Track 8",
             "actions": [
               {
-                "name": "volume_high_global",
+                "name": "play_track8",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track8",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track8",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_100_track8",
                 "icon": "fas fa-volume-up"
               },
               {
-                "name": "volume_medium_global",
+                "name": "volume_75_track8",
                 "icon": "fas fa-volume-down"
               },
               {
-                "name": "volume_low_global",
+                "name": "volume_50_track8",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track8",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track8",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 9.1",
+            "actions": [
+              {
+                "name": "play_track91",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track91",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track91",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_100_track91",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_75_track91",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_50_track91",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track91",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track91",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Track 9.2",
+            "actions": [
+              {
+                "name": "play_track92",
+                "icon": "fas fa-play"
+              },
+              {
+                "name": "pause_track92",
+                "icon": "fas fa-pause"
+              },
+              {
+                "name": "stop_track92",
+                "icon": "fas fa-undo-alt"
+              },
+              {
+                "name": "volume_100_track92",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_75_track92",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_50_track92",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_track92",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_track92",
+                "icon": "fas fa-volume-off"
+              }
+            ]
+          },
+          {
+            "name": "Master volume",
+            "actions": [
+              {
+                "name": "volume_100_master",
+                "icon": "fas fa-volume-up"
+              },
+              {
+                "name": "volume_75_master",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_50_master",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_25_master",
+                "icon": "fas fa-volume-down"
+              },
+              {
+                "name": "volume_0_master",
                 "icon": "fas fa-volume-off"
               }
             ]
@@ -405,113 +778,441 @@
     ]
   },
   "actions": {
+    "play_track1": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": "track1"}}
+    },
+    "pause_track1": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": "track1"}}
+    },
+    "stop_track1": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": "track1"}}
+    },
+    "volume_100_track1": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track1", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_track1": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track1", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_track1": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track1", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track1": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track1", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track1": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track1", "volume": 0, "duration": 5000}}
+    },
+    "play_track2": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": "track2"}}
+    },
+    "pause_track2": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": "track2"}}
+    },
+    "stop_track2": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": "track2"}}
+    },
+    "volume_100_track2": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track2", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_track2": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track2", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_track2": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track2", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track2": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track2", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track2": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track2", "volume": 0, "duration": 5000}}
+    },
+    "play_track3": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": "track3"}}
+    },
+    "pause_track3": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": "track3"}}
+    },
+    "stop_track3": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": "track3"}}
+    },
+    "volume_100_track3": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track3", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_track3": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track3", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_track3": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track3", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track3": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track3", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track3": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track3", "volume": 0, "duration": 5000}}
+    },
     "play_track35": {
       "send_to": "audio",
-      "message": {"object": {"action": "play", "track_id": 3.5}}
+      "message": {"object": {"action": "play", "track_id": "track35"}}
     },
     "pause_track35": {
       "send_to": "audio",
-      "message": {"object": {"action": "pause", "track_id": 3.5}}
+      "message": {"object": {"action": "pause", "track_id": "track35"}}
     },
     "stop_track35": {
       "send_to": "audio",
-      "message": {"object": {"action": "stop", "track_id": 3.5}}
+      "message": {"object": {"action": "stop", "track_id": "track35"}}
     },
-    "volume_high_track35": {
+    "volume_100_track35": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 3.5, "volume": 100, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track35", "volume": 100, "duration": 5000}}
     },
-    "volume_medium_track35": {
+    "volume_75_track35": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 3.5, "volume": 70, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track35", "volume": 75, "duration": 5000}}
     },
-    "volume_low_track35": {
+    "volume_50_track35": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 3.5, "volume": 0, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track35", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track35": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track35", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track35": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track35", "volume": 0, "duration": 5000}}
+    },
+    "play_track4": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": "track4"}}
+    },
+    "pause_track4": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": "track4"}}
+    },
+    "stop_track4": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": "track4"}}
+    },
+    "volume_100_track4": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track4", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_track4": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track4", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_track4": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track4", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track4": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track4", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track4": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track4", "volume": 0, "duration": 5000}}
     },
     "play_track5": {
       "send_to": "audio",
-      "message": {"object": {"action": "play", "track_id": 5}}
+      "message": {"object": {"action": "play", "track_id": "track5"}}
     },
     "pause_track5": {
       "send_to": "audio",
-      "message": {"object": {"action": "pause", "track_id": 5}}
+      "message": {"object": {"action": "pause", "track_id": "track5"}}
     },
     "stop_track5": {
       "send_to": "audio",
-      "message": {"object": {"action": "stop", "track_id": 5}}
+      "message": {"object": {"action": "stop", "track_id": "track5"}}
     },
-    "volume_high_track5": {
+    "volume_100_track5": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 5, "volume": 100, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track5", "volume": 100, "duration": 5000}}
     },
-    "volume_medium_track5": {
+    "volume_75_track5": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 5, "volume": 70, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track5", "volume": 75, "duration": 5000}}
     },
-    "volume_low_track5": {
+    "volume_50_track5": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 5, "volume": 0, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track5", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track5": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track5", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track5": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track5", "volume": 0, "duration": 5000}}
     },
     "play_track61": {
       "send_to": "audio",
-      "message": {"object": {"action": "play", "track_id": 6.1}}
+      "message": {"object": {"action": "play", "track_id": "track61"}}
     },
     "pause_track61": {
       "send_to": "audio",
-      "message": {"object": {"action": "pause", "track_id": 6.1}}
+      "message": {"object": {"action": "pause", "track_id": "track61"}}
     },
     "stop_track61": {
       "send_to": "audio",
-      "message": {"object": {"action": "stop", "track_id": 6.1}}
+      "message": {"object": {"action": "stop", "track_id": "track61"}}
     },
-    "volume_high_track61": {
+    "volume_100_track61": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 6.1, "volume": 100, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track61", "volume": 100, "duration": 5000}}
     },
-    "volume_medium_track61": {
+    "volume_75_track61": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 6.1, "volume": 70, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track61", "volume": 75, "duration": 5000}}
     },
-    "volume_low_track61": {
+    "volume_50_track61": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 6.1, "volume": 0, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track61", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track61": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track61", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track61": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track61", "volume": 0, "duration": 5000}}
+    },
+    "play_track62": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": "track62"}}
+    },
+    "pause_track62": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": "track62"}}
+    },
+    "stop_track62": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": "track62"}}
+    },
+    "volume_100_track62": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track62", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_track62": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track62", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_track62": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track62", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track62": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track62", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track62": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track62", "volume": 0, "duration": 5000}}
+    },
+    "play_track63": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": "track1"}}
+    },
+    "pause_track63": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": "track1"}}
+    },
+    "stop_track63": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": "track1"}}
+    },
+    "volume_100_track63": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track63", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_track63": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track63", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_track63": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track63", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track63": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track63", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track63": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track63", "volume": 0, "duration": 5000}}
     },
     "play_track7": {
       "send_to": "audio",
-      "message": {"object": {"action": "play", "track_id": 7}}
+      "message": {"object": {"action": "play", "track_id": "track7"}}
     },
     "pause_track7": {
       "send_to": "audio",
-      "message": {"object": {"action": "pause", "track_id": 7}}
+      "message": {"object": {"action": "pause", "track_id": "track7"}}
     },
     "stop_track7": {
       "send_to": "audio",
-      "message": {"object": {"action": "stop", "track_id": 7}}
+      "message": {"object": {"action": "stop", "track_id": "track7"}}
     },
-    "volume_high_track7": {
+    "volume_100_track7": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 7, "volume": 100, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track7", "volume": 100, "duration": 5000}}
     },
-    "volume_medium_track7": {
+    "volume_75_track7": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 7, "volume": 70, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track7", "volume": 75, "duration": 5000}}
     },
-    "volume_low_track7": {
+    "volume_50_track7": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "track_id": 7, "volume": 0, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track7", "volume": 50, "duration": 5000}}
     },
-    "volume_high_global": {
+    "volume_25_track7": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "volume": 100, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track7", "volume": 25, "duration": 5000}}
     },
-    "volume_medium_global": {
+    "volume_0_track7": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "volume": 70, "duration": 8000}}
+      "message": {"object": {"action": "set_volume", "track_id": "track7", "volume": 0, "duration": 5000}}
     },
-    "volume_low_global": {
+    "play_track8": {
       "send_to": "audio",
-      "message": {"object": {"action": "set_volume", "volume": 0, "duration": 8000}}
+      "message": {"object": {"action": "play", "track_id": "track8"}}
+    },
+    "pause_track8": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": "track8"}}
+    },
+    "stop_track8": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": "track8"}}
+    },
+    "volume_100_track8": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track8", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_track8": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track8", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_track8": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track8", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track8": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track8", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track8": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track8", "volume": 0, "duration": 5000}}
+    },
+    "play_track91": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": "track91"}}
+    },
+    "pause_track91": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": "track91"}}
+    },
+    "stop_track91": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": "track91"}}
+    },
+    "volume_100_track91": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track91", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_track91": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track91", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_track91": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track91", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track91": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track91", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track91": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track91", "volume": 0, "duration": 5000}}
+    },
+    "play_track92": {
+      "send_to": "audio",
+      "message": {"object": {"action": "play", "track_id": "track92"}}
+    },
+    "pause_track92": {
+      "send_to": "audio",
+      "message": {"object": {"action": "pause", "track_id": "track92"}}
+    },
+    "stop_track92": {
+      "send_to": "audio",
+      "message": {"object": {"action": "stop", "track_id": "track92"}}
+    },
+    "volume_100_track92": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track92", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_track92": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track92", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_track92": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track92", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_track92": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track92", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_track92": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "track_id": "track92", "volume": 0, "duration": 5000}}
+    },
+    "volume_100_master": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "volume": 100, "duration": 5000}}
+    },
+    "volume_75_master": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "volume": 75, "duration": 5000}}
+    },
+    "volume_50_master": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "volume": 50, "duration": 5000}}
+    },
+    "volume_25_master": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "volume": 25, "duration": 5000}}
+    },
+    "volume_0_master": {
+      "send_to": "audio",
+      "message": {"object": {"action": "set_volume", "volume": 0, "duration": 5000}}
     },
     "start_red_and_green_led_hint_alarm": {
       "start_alarm": "red_and_green_led_hint_alarm",
