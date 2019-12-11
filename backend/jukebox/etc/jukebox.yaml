@@ -6,7 +6,7 @@ channel: digimiam1
 
 node_params:
   master_volume: 80
-  default_track_volume: 50
+  default_volume: 50
   player: vlc
   tracks:
     - id: one_shot_track
