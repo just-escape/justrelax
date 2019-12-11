@@ -85,8 +85,8 @@ class VolumeFaderMixin:
 
 
 class MasterVolume(VolumeFaderMixin):
-    def __init__(self, initial_volume=None):
-        self.mixer = alsaaudio.Mixer()
+    def __init__(self, initial_volume=None, mixer=''):
+        self.mixer = alsaaudio.Mixer(mixer)
 
         if initial_volume is None:
             volume = self.mixer.getvolume()

@@ -25,6 +25,7 @@ class SoundPlayer(JustSockNodeClientService):
 
     def start(self):
         initial_master_volume = self.node_params.get('master_volume', None)
+        master_volume_mixer = self.node_params.get('mixer', '')
         default_initial_volume = self.node_params.get('default_volume', 100)
 
         player = self.node_params.get('player', 'pyglet')
@@ -41,7 +42,10 @@ class SoundPlayer(JustSockNodeClientService):
                 "pyglet.".format(player))
 
         try:
-            self.master_volume = MasterVolume(initial_volume=initial_master_volume)
+            self.master_volume = MasterVolume(
+                initial_volume=initial_master_volume,
+                mixer=master_volume_mixer,
+            )
         except Exception:
             logger.exception()
             logger.warning(
