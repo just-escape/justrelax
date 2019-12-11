@@ -23,7 +23,7 @@ class PygletTrackHandler(VolumeFaderMixin, TrackPlayerMixin):
         self.set_volume()
 
     def on_player_eos(self):
-        self.new_player()
+        self.stop()
 
     def _play(self):
         TrackPlayerMixin._play(self)

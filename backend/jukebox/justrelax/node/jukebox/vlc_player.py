@@ -12,6 +12,7 @@ class VLCTrackHandler(VolumeFaderMixin, TrackPlayerMixin):
         VolumeFaderMixin.__init__(self, initial_volume=initial_volume)
         TrackPlayerMixin.__init__(self)
 
+        self.player = None
         self.track = vlc.Media(media_path)
         self.track.parse()
 
@@ -24,6 +25,7 @@ class VLCTrackHandler(VolumeFaderMixin, TrackPlayerMixin):
     def release_player(self):
         logger.debug("Releasing player")
         self.player.release()
+        self.player = None
 
     def _play(self):
         self.new_player()
@@ -44,7 +46,8 @@ class VLCTrackHandler(VolumeFaderMixin, TrackPlayerMixin):
         self.release_player()
 
     def set_volume(self):
-        self.player.audio_set_volume(int(self.current_volume))
+        if self.player:
+            self.player.audio_set_volume(int(self.current_volume))
 
 
 class VLCSelfReleasingTrackHandler(VLCTrackHandler):
@@ -54,7 +57,7 @@ class VLCSelfReleasingTrackHandler(VLCTrackHandler):
 
     def schedule_release_task(self, time):
         logger.debug("Scheduling player release in {} seconds".format(time))
-        self.release_task = reactor.callLater(time, self.release_player)
+        self.release_task = reactor.callLater(time, self.stop)
 
     def cancel_release_task(self):
         logger.debug('Cancelling release task')
