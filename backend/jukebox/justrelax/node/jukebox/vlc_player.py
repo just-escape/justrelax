@@ -3,14 +3,14 @@ import vlc
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.jukebox.core import TrackPlayerMixin
+from justrelax.node.common.media import MediaPlayerMixin
 from justrelax.node.common.volume import VolumeFaderMixin
 
 
-class VLCTrackHandler(VolumeFaderMixin, TrackPlayerMixin):
+class VLCTrackHandler(VolumeFaderMixin, MediaPlayerMixin):
     def __init__(self, media_path, initial_volume=0, *args, **kwargs):
         VolumeFaderMixin.__init__(self, initial_volume=initial_volume)
-        TrackPlayerMixin.__init__(self)
+        MediaPlayerMixin.__init__(self)
 
         self.player = None
         self.track = vlc.Media(media_path)
@@ -29,19 +29,19 @@ class VLCTrackHandler(VolumeFaderMixin, TrackPlayerMixin):
 
     def _play(self):
         self.new_player()
-        TrackPlayerMixin._play(self)
+        MediaPlayerMixin._play(self)
         self.player.play()
 
     def _resume(self):
-        TrackPlayerMixin._resume(self)
+        MediaPlayerMixin._resume(self)
         self.player.play()
 
     def _pause(self):
-        TrackPlayerMixin._pause(self)
+        MediaPlayerMixin._pause(self)
         self.player.pause()
 
     def _stop(self):
-        TrackPlayerMixin._stop(self)
+        MediaPlayerMixin._stop(self)
         self.player.stop()
         self.release_player()
 

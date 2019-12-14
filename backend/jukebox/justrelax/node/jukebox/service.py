@@ -138,7 +138,7 @@ class Jukebox(JustSockNodeClientService):
 
         elif message[self.COMMANDS.ACTION] == self.COMMANDS.ACTION_SET_VOLUME:
             if self.COMMANDS.VOLUME not in message:
-                logger.error("Set volume action has not volume: skipping")
+                logger.error("Set volume action has no volume: skipping")
                 return
 
             volume = message[self.COMMANDS.VOLUME]
