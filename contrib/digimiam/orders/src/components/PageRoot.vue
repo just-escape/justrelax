@@ -1,44 +1,22 @@
 <template>
   <div class="position-relative h-100">
-    <div class="container-fluid d-flex flex-column h-100">
-      <div class="row h-100">
-        <div class="col-4">
-          <Selector class="row h-100"/>
-        </div>
-        <div class="col-5">
-          <Marmitron class="mb-5"/>
-        </div>
-        <div class="col-3">
-          <RightPanel/>
-        </div>
-      </div>
-    </div>
-    <!--<div class="container-fluid d-flex flex-column h-100">
-      <Header/>
-      <div class="row flex-grow-1">
-        <div class="col-9 bg-light pt-3 pb-4">
-          <LeftPanel/>
-        </div>
-        <div class="col-3 bg-light pt-3 pb-4">
-          <RightPanel/>
-        </div>
-      </div>
-    </div>
-    <WarningMessage class="top-0 position-absolute h-100 w-100"/>-->
+    <Scene class="position-absolute"/>
+    <ItemSelector class="position-absolute h-100"/>
+    <OrderSummary class="position-absolute order-summary"/>
   </div>
 </template>
 
 <script>
-import Marmitron from '@/components/Marmitron.vue'
-import RightPanel from '@/components/RightPanel.vue'
-import Selector from '@/components/Selector.vue'
+import Scene from '@/components/Scene.vue'
+import ItemSelector from '@/components/ItemSelector.vue'
+import OrderSummary from '@/components/OrderSummary.vue'
 
 export default {
   name: 'PageRoot',
   components: {
-    Marmitron,
-    RightPanel,
-    Selector,
+    Scene,
+    ItemSelector,
+    OrderSummary,
   },
   created() {
     var lang = this.$route.query.lang
@@ -52,7 +30,9 @@ export default {
 </script>
 
 <style scoped>
-.top-0 {
-  top: 0;
+.order-summary {
+  bottom: 10px;
+  right: 10px;
+  width: 500px;
 }
 </style>

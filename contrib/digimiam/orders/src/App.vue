@@ -19,15 +19,9 @@ export default {
 
 <style>
 @font-face {
-    font-family: "Code New Roman";
-    font-style: normal;
-    src: url('./assets/webfonts/code-new-roman.woff2') format('woff2');
-}
-
-@font-face {
-    font-family: "Gotham";
-    font-style: normal;
-    src: url('./assets/webfonts/gotham-book.otf') format('otf');
+  font-family: "Gotham";
+  font-style: normal;
+  src: url('./assets/webfonts/gotham-book.woff') format('woff');
 }
 
 #app {
@@ -80,7 +74,7 @@ export default {
   box-shadow: 1px 1px 5px var(--dark);
 }
 
-.size-12 {
-  font-size: 1.2rem;
+.size-11rem {
+  font-size: 1.1rem;
 }
 </style>
