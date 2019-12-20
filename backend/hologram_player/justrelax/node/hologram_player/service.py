@@ -7,7 +7,7 @@ from justrelax.node.service import JustSockNodeClientService
 
 
 class HologramPlayer(JustSockNodeClientService):
-    class COMMANDS:
+    class PROTOCOL:
         COMMAND_TYPE = "type"
         SELECT = "select"
         CHAPTER_ID = "chapter_id"
@@ -35,19 +35,19 @@ class HologramPlayer(JustSockNodeClientService):
             logger.debug("Unknown message: skipping")
             return
 
-        if self.COMMANDS.COMMAND_TYPE not in message:
+        if self.PROTOCOL.COMMAND_TYPE not in message:
             logger.debug("Message has no command type: skipping")
             return
 
-        if message[self.COMMANDS.COMMAND_TYPE] == self.COMMANDS.SELECT:
-            if self.COMMANDS.CHAPTER_ID not in message:
+        if message[self.PROTOCOL.COMMAND_TYPE] == self.PROTOCOL.SELECT:
+            if self.PROTOCOL.CHAPTER_ID not in message:
                 logger.debug("Select command has no chapter id: skipping")
                 return
 
-            self.lock_chapter(message[self.COMMANDS.CHAPTER_ID])
+            self.lock_chapter(message[self.PROTOCOL.CHAPTER_ID])
         else:
             logger.debug("Unknown command type '{}': skipping".format(
-                message[self.COMMANDS.COMMAND_TYPE]))
+                message[self.PROTOCOL.COMMAND_TYPE]))
 
     def lock_chapter(self, chapter_id):
         logger.info("Locking on chapter id={}".format(chapter_id))

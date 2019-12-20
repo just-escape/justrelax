@@ -10,7 +10,7 @@ from justrelax.node.common.volume import EASE_MAPPING, MasterVolume
 
 
 class SoundPlayer(JustSockNodeClientService):
-    class COMMANDS:
+    class PROTOCOL:
         ACTION = "action"
 
         SOUND_ID = "sound_id"
@@ -86,21 +86,21 @@ class SoundPlayer(JustSockNodeClientService):
             logger.debug("Unknown message: skipping")
             return
 
-        if self.COMMANDS.ACTION not in message:
+        if self.PROTOCOL.ACTION not in message:
             logger.debug("Message has no action: skipping")
             return
 
-        delay = message.get(self.COMMANDS.DELAY, 0)
+        delay = message.get(self.PROTOCOL.DELAY, 0)
         if not isinstance(delay, (int, float)):
             logger.error("Delay must be int or float (received={}): skipping".format(delay))
             return
 
-        if message[self.COMMANDS.ACTION] == self.COMMANDS.ACTION_PLAY:
-            if self.COMMANDS.SOUND_ID not in message:
+        if message[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_PLAY:
+            if self.PROTOCOL.SOUND_ID not in message:
                 logger.error("Play action has no sound_id: skipping")
                 return
 
-            sound_id = message[self.COMMANDS.SOUND_ID]
+            sound_id = message[self.PROTOCOL.SOUND_ID]
             logger.info("Playing sound id={}".format(sound_id))
 
             sound = self.sounds.get(sound_id, None)
@@ -110,20 +110,20 @@ class SoundPlayer(JustSockNodeClientService):
 
             reactor.callLater(delay, self.sound_player, sound)
 
-        elif message[self.COMMANDS.ACTION] == self.COMMANDS.ACTION_SET_VOLUME:
-            if self.COMMANDS.VOLUME not in message:
+        elif message[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_VOLUME:
+            if self.PROTOCOL.VOLUME not in message:
                 logger.error("Set volume action has not volume: skipping")
                 return
 
-            volume = message[self.COMMANDS.VOLUME]
-            duration = message.get(self.COMMANDS.DURATION, 0)
-            ease = message.get(self.COMMANDS.EASE, 'easeInOutSine')
+            volume = message[self.PROTOCOL.VOLUME]
+            duration = message.get(self.PROTOCOL.DURATION, 0)
+            ease = message.get(self.PROTOCOL.EASE, 'easeInOutSine')
 
             self.set_volume(delay, volume, duration, ease)
 
         else:
             logger.debug("Unknown command type '{}': skipping".format(
-                message[self.COMMANDS.ACTION]))
+                message[self.PROTOCOL.ACTION]))
 
     def pyglet_play_sound(self, sound):
         player = pyglet.media.Player()

@@ -15,7 +15,7 @@ from justrelax.node.service import JustSockNodeClientService
 class Button(JustSockNodeClientService):
     PIN = 14
 
-    class COMMANDS:
+    class PROTOCOL:
         PRESS = 'press'
         RELEASE = 'release'
 
@@ -31,7 +31,7 @@ class Button(JustSockNodeClientService):
 
             if state != last_state:
                 last_state = state
-                message = self.COMMANDS.PRESS if state == 1 else self.COMMANDS.RELEASE
+                message = self.PROTOCOL.PRESS if state == 1 else self.PROTOCOL.RELEASE
                 reactor.callFromThread(self.factory.send_message, message)
 
             time.sleep(0.1)

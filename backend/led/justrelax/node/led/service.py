@@ -11,7 +11,7 @@ from justrelax.common.logging_utils import logger
 class Led(JustSockNodeClientService):
     PIN = None
 
-    class COMMANDS:
+    class PROTOCOL:
         LED_ON = "on"
         LED_OFF = "off"
 
@@ -26,9 +26,9 @@ class Led(JustSockNodeClientService):
 
     def process_message(self, message):
         logger.debug("Processing message '{}'".format(message))
-        if message == self.COMMANDS.LED_ON:
+        if message == self.PROTOCOL.LED_ON:
             GPIO.output(self.PIN, True)
-        elif message == self.COMMANDS.LED_OFF:
+        elif message == self.PROTOCOL.LED_OFF:
             GPIO.output(self.PIN, False)
         else:
             logger.debug("Unknown message: skipping")

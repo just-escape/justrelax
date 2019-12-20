@@ -13,7 +13,7 @@ from justrelax.node.music_player.pyglet_player import PygletLoopingTrackPlayer
 
 
 class MusicPlayer(JustSockNodeClientService):
-    class COMMANDS:
+    class PROTOCOL:
         ACTION = "action"
 
         TRACK_ID = "track_id"
@@ -83,17 +83,17 @@ class MusicPlayer(JustSockNodeClientService):
 
         # Factorisation
         self.play_pause_stop = {
-            self.COMMANDS.ACTION_PLAY: {
+            self.PROTOCOL.ACTION_PLAY: {
                 'verb': 'Play',
                 'ing': 'Playing',
                 'method': 'play',
             },
-            self.COMMANDS.ACTION_PAUSE: {
+            self.PROTOCOL.ACTION_PAUSE: {
                 'verb': 'Pause',
                 'ing': 'Pausing',
                 'method': 'pause',
             },
-            self.COMMANDS.ACTION_STOP: {
+            self.PROTOCOL.ACTION_STOP: {
                 'verb': 'Stop',
                 'ing': 'Stopping',
                 'method': 'stop',
@@ -110,23 +110,23 @@ class MusicPlayer(JustSockNodeClientService):
             logger.error("Unknown message: skipping")
             return
 
-        if self.COMMANDS.ACTION not in message:
+        if self.PROTOCOL.ACTION not in message:
             logger.error("Message has no action: skipping")
             return
 
-        delay = message.get(self.COMMANDS.DELAY, 0)
+        delay = message.get(self.PROTOCOL.DELAY, 0)
         if not isinstance(delay, (int, float)):
             logger.error("Delay must be int or float (received={}): skipping".format(delay))
             return
 
-        if message[self.COMMANDS.ACTION] in self.play_pause_stop:
-            action = self.play_pause_stop[message[self.COMMANDS.ACTION]]
+        if message[self.PROTOCOL.ACTION] in self.play_pause_stop:
+            action = self.play_pause_stop[message[self.PROTOCOL.ACTION]]
 
-            if self.COMMANDS.TRACK_ID not in message:
+            if self.PROTOCOL.TRACK_ID not in message:
                 logger.error("{} action has no track_id: skipping".format(action['verb']))
                 return
 
-            track_id = message[self.COMMANDS.TRACK_ID]
+            track_id = message[self.PROTOCOL.TRACK_ID]
             logger.info("{} track id={}".format(action['ing'], track_id))
 
             track = self.tracks.get(track_id, None)
@@ -136,21 +136,21 @@ class MusicPlayer(JustSockNodeClientService):
 
             reactor.callLater(delay, getattr(track, action['method']))
 
-        elif message[self.COMMANDS.ACTION] == self.COMMANDS.ACTION_SET_VOLUME:
-            if self.COMMANDS.VOLUME not in message:
+        elif message[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_VOLUME:
+            if self.PROTOCOL.VOLUME not in message:
                 logger.error("Set volume action has no volume: skipping")
                 return
 
-            volume = message[self.COMMANDS.VOLUME]
-            track_id = message.get(self.COMMANDS.TRACK_ID, None)
-            duration = message.get(self.COMMANDS.DURATION, 0)
-            ease = message.get(self.COMMANDS.EASE, 'easeInOutSine')
+            volume = message[self.PROTOCOL.VOLUME]
+            track_id = message.get(self.PROTOCOL.TRACK_ID, None)
+            duration = message.get(self.PROTOCOL.DURATION, 0)
+            ease = message.get(self.PROTOCOL.EASE, 'easeInOutSine')
 
             self.set_volume(delay, volume, track_id, duration, ease)
 
         else:
             logger.debug("Unknown command type '{}': skipping".format(
-                message[self.COMMANDS.ACTION]))
+                message[self.PROTOCOL.ACTION]))
 
     def set_volume(self, delay, volume, track_id=None, duration=0, ease='easeInOutSine'):
         if not isinstance(volume, int):
