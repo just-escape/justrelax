@@ -19,9 +19,9 @@ export default {
 
 <style>
 @font-face {
-    font-family: "Code New Roman";
-    font-style: normal;
-    src: url('./assets/webfonts/code-new-roman.woff2') format('woff2');
+  font-family: "Code New Roman";
+  font-style: normal;
+  src: url('./assets/webfonts/code-new-roman.woff2') format('woff2');
 }
 
 #app {
@@ -43,7 +43,7 @@ export default {
 
 #app::before {
   content: "";
-  background: radial-gradient(ellipse at center, #03181f, rgb(3, 26, 34));
+  background: rgb(3, 26, 34);
   position: absolute;
   right: 0;
   bottom: 0;
