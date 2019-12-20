@@ -7,7 +7,7 @@ from justrelax.node.common.media import MediaPlayerMixin
 from justrelax.node.common.volume import VolumeFaderMixin
 
 
-class PygletTrackHandler(VolumeFaderMixin, MediaPlayerMixin):
+class PygletTrackPlayer(VolumeFaderMixin, MediaPlayerMixin):
     def __init__(self, media_path, initial_volume=100, *args, **kwargs):
         VolumeFaderMixin.__init__(self, initial_volume=initial_volume)
         MediaPlayerMixin.__init__(self)
@@ -45,9 +45,9 @@ class PygletTrackHandler(VolumeFaderMixin, MediaPlayerMixin):
         self.player.volume = self.current_volume / 100
 
 
-class PygletLoopingTrackHandler(PygletTrackHandler):
+class PygletLoopingTrackPlayer(PygletTrackPlayer):
     def __init__(self, media_path, loop_a, loop_b,  *args, **kwargs):
-        super(PygletLoopingTrackHandler, self).__init__(
+        super(PygletLoopingTrackPlayer, self).__init__(
             media_path, *args, **kwargs)
         self.loop_a = loop_a
         self.loop_b = loop_b
@@ -72,19 +72,19 @@ class PygletLoopingTrackHandler(PygletTrackHandler):
             logger.warning("Could not cancel looping task (reason={})".format(e))
 
     def _play(self):
-        super(PygletLoopingTrackHandler, self)._play()
+        super(PygletLoopingTrackPlayer, self)._play()
         self.schedule_looping_task(self.loop_b)
 
     def _resume(self):
-        super(PygletLoopingTrackHandler, self)._resume()
+        super(PygletLoopingTrackPlayer, self)._resume()
         current_time = self.player.time
         time_before_loop = self.loop_b - current_time
         self.schedule_looping_task(time_before_loop)
 
     def _pause(self):
-        super(PygletLoopingTrackHandler, self)._pause()
+        super(PygletLoopingTrackPlayer, self)._pause()
         self.cancel_looping_task()
 
     def _stop(self):
-        super(PygletLoopingTrackHandler, self)._stop()
+        super(PygletLoopingTrackPlayer, self)._stop()
         self.cancel_looping_task()

@@ -8,9 +8,9 @@ def get_requirements():
 
 if __name__ == '__main__':
     setup(
-        name="justrelax_node_jukebox",
+        name="justrelax_node_music_player",
         version="0.1",
-        packages=["justrelax.node.jukebox", "twisted.plugins"],
+        packages=["justrelax.node.music_player", "twisted.plugins"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

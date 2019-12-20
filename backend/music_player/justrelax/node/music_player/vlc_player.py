@@ -7,7 +7,7 @@ from justrelax.node.common.media import MediaPlayerMixin
 from justrelax.node.common.volume import VolumeFaderMixin
 
 
-class VLCTrackHandler(VolumeFaderMixin, MediaPlayerMixin):
+class VLCTrackPlayer(VolumeFaderMixin, MediaPlayerMixin):
     def __init__(self, media_path, initial_volume=0, *args, **kwargs):
         VolumeFaderMixin.__init__(self, initial_volume=initial_volume)
         MediaPlayerMixin.__init__(self)
@@ -50,9 +50,9 @@ class VLCTrackHandler(VolumeFaderMixin, MediaPlayerMixin):
             self.player.audio_set_volume(int(self.current_volume))
 
 
-class VLCSelfReleasingTrackHandler(VLCTrackHandler):
+class VLCSelfReleasingTrackPlayer(VLCTrackPlayer):
     def __init__(self, *args, **kwargs):
-        super(VLCSelfReleasingTrackHandler, self).__init__(*args, **kwargs)
+        super(VLCSelfReleasingTrackPlayer, self).__init__(*args, **kwargs)
         self.release_task = None
 
     def schedule_release_task(self, time):
@@ -67,29 +67,29 @@ class VLCSelfReleasingTrackHandler(VLCTrackHandler):
             logger.warning("Could not cancel release task (reason={})".format(e))
 
     def _play(self):
-        super(VLCSelfReleasingTrackHandler, self)._play()
+        super(VLCSelfReleasingTrackPlayer, self)._play()
         # Add 0.1 seconds before release by precaution
         time_before_release = 0.1 + self.track.get_duration() / 1000
         self.schedule_release_task(time_before_release)
 
     def _resume(self):
-        super(VLCSelfReleasingTrackHandler, self)._resume()
+        super(VLCSelfReleasingTrackPlayer, self)._resume()
         current_time = self.player.get_time()
         time_before_release = 0.1 + (self.track.get_duration() - current_time) / 1000
         self.schedule_release_task(time_before_release)
 
     def _pause(self):
-        super(VLCSelfReleasingTrackHandler, self)._pause()
+        super(VLCSelfReleasingTrackPlayer, self)._pause()
         self.cancel_release_task()
 
     def _stop(self):
-        super(VLCSelfReleasingTrackHandler, self)._stop()
+        super(VLCSelfReleasingTrackPlayer, self)._stop()
         self.cancel_release_task()
 
 
-class VLCLoopingTrackHandler(VLCTrackHandler):
+class VLCLoopingTrackPlayer(VLCTrackPlayer):
     def __init__(self, media_path, loop_a, loop_b, *args, **kwargs):
-        super(VLCLoopingTrackHandler, self).__init__(
+        super(VLCLoopingTrackPlayer, self).__init__(
             media_path, *args, **kwargs)
         self.loop_a = loop_a
         self.loop_b = loop_b
@@ -114,19 +114,19 @@ class VLCLoopingTrackHandler(VLCTrackHandler):
             logger.warning("Could not cancel looping task (reason={})".format(e))
 
     def _play(self):
-        super(VLCLoopingTrackHandler, self)._play()
+        super(VLCLoopingTrackPlayer, self)._play()
         self.schedule_looping_task(self.loop_b)
 
     def _resume(self):
-        super(VLCLoopingTrackHandler, self)._resume()
+        super(VLCLoopingTrackPlayer, self)._resume()
         current_time = self.player.get_time() / 1000
         time_before_loop = self.loop_b - current_time
         self.schedule_looping_task(time_before_loop)
 
     def _pause(self):
-        super(VLCLoopingTrackHandler, self)._pause()
+        super(VLCLoopingTrackPlayer, self)._pause()
         self.cancel_looping_task()
 
     def _stop(self):
-        super(VLCLoopingTrackHandler, self)._stop()
+        super(VLCLoopingTrackPlayer, self)._stop()
         self.cancel_looping_task()

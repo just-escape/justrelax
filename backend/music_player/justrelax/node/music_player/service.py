@@ -6,13 +6,13 @@ from twisted.internet.task import LoopingCall
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockNodeClientService
 from justrelax.node.common.volume import EASE_MAPPING, MasterVolume
-from justrelax.node.jukebox.vlc_player import VLCSelfReleasingTrackHandler
-from justrelax.node.jukebox.vlc_player import VLCLoopingTrackHandler
-from justrelax.node.jukebox.pyglet_player import PygletTrackHandler
-from justrelax.node.jukebox.pyglet_player import PygletLoopingTrackHandler
+from justrelax.node.music_player.vlc_player import VLCSelfReleasingTrackPlayer
+from justrelax.node.music_player.vlc_player import VLCLoopingTrackPlayer
+from justrelax.node.music_player.pyglet_player import PygletTrackPlayer
+from justrelax.node.music_player.pyglet_player import PygletLoopingTrackPlayer
 
 
-class Jukebox(JustSockNodeClientService):
+class MusicPlayer(JustSockNodeClientService):
     class COMMANDS:
         ACTION = "action"
 
@@ -35,11 +35,11 @@ class Jukebox(JustSockNodeClientService):
 
         player = self.node_params.get('player', 'vlc')
         if player == 'vlc':
-            track_handler = VLCSelfReleasingTrackHandler
-            looping_track_handler = VLCLoopingTrackHandler
+            track_handler = VLCSelfReleasingTrackPlayer
+            looping_track_handler = VLCLoopingTrackPlayer
         elif player == 'pyglet':
-            track_handler = PygletTrackHandler
-            looping_track_handler = PygletLoopingTrackHandler
+            track_handler = PygletTrackPlayer
+            looping_track_handler = PygletLoopingTrackPlayer
             loop = LoopingCall(self.pyglet_loop)
             loop.start(1 / 30)
         else:
