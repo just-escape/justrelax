@@ -138,8 +138,8 @@ export default {
 
 <style scoped>
 #meal-container {
-  transform: translateY(-50px);
   width: 570px;
+  height: 294px;
   padding-left: 30px;
   overflow-x: hidden;
   /* scroll-snap-type: y mandatory; */

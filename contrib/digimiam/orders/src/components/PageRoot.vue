@@ -1,7 +1,7 @@
 <template>
   <div class="position-relative h-100">
     <Scene class="position-absolute"/>
-    <ItemSelector class="position-absolute h-100"/>
+    <ItemSelector class="position-absolute"/>
     <OrderSummary class="position-absolute order-summary"/>
   </div>
 </template>
@@ -31,8 +31,9 @@ export default {
 
 <style scoped>
 .order-summary {
-  bottom: 10px;
-  right: 10px;
+  bottom: 0px;
+  right: 0px;
   width: 500px;
+  height: 294px;
 }
 </style>

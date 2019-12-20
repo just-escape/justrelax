@@ -1,24 +1,24 @@
 <template>
-  <div class="d-flex flex-column flex-grow-1 bg-dark rounded overflow-hidden p-3">
+  <div class="d-flex flex-column flex-grow-1 rounded overflow-hidden p-4">
 
-    <div class="d-flex flex-row align-items-center mb-2">
+    <div class="d-flex flex-row justify-content-end align-items-end mb-2 px-2">
+      <div class="text-orange text-right pr-3">
+        <div class="font-weight-bold">Cart is full</div>
+        <div class="small">Confirm or reset your order</div>
+      </div>
       <div class="w-50">
         <b-btn block variant="outline-info py-2" @click="trashbin">RESET ORDER</b-btn>
       </div>
-      <div class="text-orange pl-3">
-        <div class="font-weight-bold pr-3">Cart is full</div>
-        <div class="small">Confirm or reset your order</div>
-      </div>
     </div>
 
-    <div class="d-flex flex-row align-items-center mb-4">
-      <div class="w-50">
-        <OrderConfirmButton :pulse="true">CONFIRM ORDER</OrderConfirmButton>
-      </div>
-      <div class="text-white pl-3">
+    <div class="d-flex flex-row justify-content-end align-items-center mb-4 px-2">
+      <div class="text-white pr-3">
         <div class="d-flex flex-row font-weight-bold">
           <div>Total: {{ totalPrice }} nF</div>
         </div>
+      </div>
+      <div class="w-50">
+        <OrderConfirmButton :pulse="true">CONFIRM ORDER</OrderConfirmButton>
       </div>
     </div>
 
