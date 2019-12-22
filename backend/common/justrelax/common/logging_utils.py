@@ -43,7 +43,7 @@ def init_logging(config_path):
         logging.basicConfig(
             format="[%(asctime)s][%(levelname)s] %(message)s",
             datefmt="%Y-%m-%dT%H:%M:%S%z",
-            level=logging.INFO,
+            level=logging.DEBUG,
         )
 
     observer = log.PythonLoggingObserver()
