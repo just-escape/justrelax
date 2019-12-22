@@ -1036,15 +1036,15 @@
     },
     "play_track63": {
       "send_to": "audio",
-      "message": {"object": {"action": "play", "track_id": "track1"}}
+      "message": {"object": {"action": "play", "track_id": "track63"}}
     },
     "pause_track63": {
       "send_to": "audio",
-      "message": {"object": {"action": "pause", "track_id": "track1"}}
+      "message": {"object": {"action": "pause", "track_id": "track63"}}
     },
     "stop_track63": {
       "send_to": "audio",
-      "message": {"object": {"action": "stop", "track_id": "track1"}}
+      "message": {"object": {"action": "stop", "track_id": "track63"}}
     },
     "volume_100_track63": {
       "send_to": "audio",
@@ -1360,6 +1360,10 @@
     "localize_en": {
       "send_to": ["inventory", "synchronizer", "root_server"],
       "message": {"object":  {"type":  "l10n", "lang": "en"}}
+    },
+    "forward_to_lights": {
+      "send_to": ["lights"],
+      "message": {"context": "message"}
     }
   },
   "conditions": {
@@ -1374,6 +1378,13 @@
         "operator": "=",
         "right": "press"
       }
+    ],
+    "from_load_cell": [
+      {
+        "left": {"context":  "from"},
+        "operator": "=",
+        "right": "load_cell"
+      }
     ]
   },
   "rules": {
@@ -1384,6 +1395,12 @@
           "switch_yellow_led_on",
           "cancel_red_and_green_led_hint_alarm"
         ]
+      }
+    },
+    "load_cell": {
+      "conditions": {"condition": "from_load_cell"},
+      "actions": {
+        "action": "forward_to_lights"
       }
     }
   },
