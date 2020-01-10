@@ -30,6 +30,9 @@ export default new Vuex.Store({
       }
       state.rules[ruleIndex].triggers.push(trigger)
     },
+    updateTrigger (state, {ruleIndex, trigger}) {
+      Vue.set(state.rules[ruleIndex].triggers, trigger.index, trigger)
+    },
     addCondition (state, ruleIndex) {
       let condition = {
         index: state.rules[ruleIndex].conditions.length,

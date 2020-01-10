@@ -45,7 +45,10 @@
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col">
-                <TabRulesTriggers :triggers="displayedRuleTriggers"/>
+                <TabRulesTriggers
+                  :triggers="displayedRuleTriggers"
+                  @updateTrigger="updateTrigger"
+                />
               </div>
             </div>
             <div class="row mb-2">
@@ -94,21 +97,21 @@ export default {
     },
     displayedRuleTriggers: function() {
       if (this.displayedRule === null) {
-        return null
+        return []
       } else {
         return this.displayedRule.triggers
       }
     },
     displayedRuleConditions: function() {
       if (this.displayedRule === null) {
-        return null
+        return []
       } else {
         return this.displayedRule.conditions
       }
     },
     displayedRuleActions: function() {
       if (this.displayedRule === null) {
-        return null
+        return []
       } else {
         return this.displayedRule.actions
       }
@@ -120,6 +123,10 @@ export default {
     },
     addTrigger: function() {
       rulesStore.commit('addTrigger', this.displayRuleIndex)
+    },
+    updateTrigger: function(trigger) {
+      let ruleIndex = this.displayRuleIndex
+      rulesStore.commit('updateTrigger', {ruleIndex, trigger})
     },
     addCondition: function() {
       rulesStore.commit('addCondition', this.displayRuleIndex)

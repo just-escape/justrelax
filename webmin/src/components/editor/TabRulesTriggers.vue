@@ -7,7 +7,12 @@
       <div class="row">
         <div class="col">
           <div class="d-flex flex-column">
-            <Trigger v-for="t in triggers" :key="t.index" :trigger="t"/>
+            <TriggerLine
+              v-for="t in triggers"
+              :key="t.index"
+              :trigger="t"
+              @updateTrigger="updateTrigger"
+            />
           </div>
         </div>
       </div>
@@ -16,12 +21,17 @@
 </template>
 
 <script>
-import Trigger from "@/components/editor/Trigger.vue"
+import TriggerLine from "@/components/editor/TriggerLine.vue"
 
 export default {
   name: 'TabRulesTriggers',
   components: {
-    Trigger,
+    TriggerLine,
+  },
+  methods: {
+    updateTrigger(trigger) {
+      this.$emit('updateTrigger', trigger)
+    }
   },
   props: {
     triggers: Array,
