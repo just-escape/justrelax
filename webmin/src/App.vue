@@ -89,6 +89,10 @@ body {
   color: #949497;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .h-75px {
   height: 75px;
 }

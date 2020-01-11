@@ -3,22 +3,22 @@
     <!-- <InlineSelect :options="options" :default="selected"/> -->
     <span v-b-modal="modalId" class="pointer">
       <span v-if="trigger.type == 'incoming_message'">
-        A message has been received.
+        A message has been received
       </span>
       <span v-else-if="trigger.type == 'timer_expired'">
-        A timer has expired.
+        A timer has expired
       </span>
       <span v-else-if="trigger.type == 'session_ticked'">
-        The session has ticked.
+        The session has ticked
       </span>
       <span v-else-if="trigger.type == 'session_started'">
-        The game session has started.
+        The game session has started
       </span>
       <span v-else-if="trigger.type == 'session_paused'">
-        The session has paused.
+        The session has paused
       </span>
       <span v-else-if="trigger.type == 'session_resumed'">
-        The session has resumed.
+        The session has resumed
       </span>
     </span>
 
