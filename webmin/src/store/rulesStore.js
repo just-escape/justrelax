@@ -26,7 +26,7 @@ export default new Vuex.Store({
     addTrigger (state, ruleIndex) {
       let trigger = {
         index: state.rules[ruleIndex].triggers.length,
-        type: "hey"
+        type: "incoming_message"
       }
       state.rules[ruleIndex].triggers.push(trigger)
     },
@@ -36,17 +36,22 @@ export default new Vuex.Store({
     addCondition (state, ruleIndex) {
       let condition = {
         index: state.rules[ruleIndex].conditions.length,
-        name: "new condition"
+        name: "condition 1"
       }
       state.rules[ruleIndex].conditions.push(condition)
+    },
+    updateCondition (state, {ruleIndex, condition}) {
+      Vue.set(state.rules[ruleIndex].conditions, condition.index, condition)
     },
     addAction (state, ruleIndex) {
       let action = {
         index: state.rules[ruleIndex].actions.length,
-        name: "new action"
+        name: "action 3"
       }
       state.rules[ruleIndex].actions.push(action)
-
+    },
+    updateAction (state, {ruleIndex, action}) {
+      Vue.set(state.rules[ruleIndex].actions, action.index, action)
     },
   },
 })

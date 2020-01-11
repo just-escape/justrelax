@@ -7,7 +7,12 @@
       <div class="row">
         <div class="col">
           <div class="d-flex flex-column">
-            <Action v-for="a in actions" :key="a.index" :action="a"/>
+            <ActionLine
+              v-for="a in actions"
+              :key="a.index"
+              :action="a"
+              @updateAction="updateAction"
+            />
           </div>
           <!--<SlickList v-model="items">
             <SlickItem
@@ -26,12 +31,12 @@
 
 <script>
 // import { SlickList, SlickItem } from 'vue-slicksort'
-import Action from "@/components/editor/Action.vue"
+import ActionLine from "@/components/editor/ActionLine.vue"
 
 export default {
   name: 'TabRulesActions',
   components: {
-    Action,
+    ActionLine,
   },
   /*components: {
     SlickList,
@@ -42,6 +47,11 @@ export default {
       items: [1, 2, 3]
     }
   },*/
+  methods: {
+    updateAction(condition) {
+      this.$emit('updateAction', condition)
+    },
+  },
   props: {
     actions: Array,
   }

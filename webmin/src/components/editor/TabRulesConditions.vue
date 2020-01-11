@@ -7,7 +7,12 @@
       <div class="row">
         <div class="col">
           <div class="d-flex flex-column">
-            <Condition v-for="c in conditions" :key="c.index" :condition="c"/>
+            <ConditionLine
+              v-for="c in conditions"
+              :key="c.index"
+              :condition="c"
+              @updateCondition="updateCondition"
+            />
           </div>
         </div>
       </div>
@@ -16,12 +21,17 @@
 </template>
 
 <script>
-import Condition from "@/components/editor/Condition.vue"
+import ConditionLine from "@/components/editor/ConditionLine.vue"
 
 export default {
   name: 'TabRulesConditions',
   components: {
-    Condition,
+    ConditionLine,
+  },
+  methods: {
+    updateCondition(condition) {
+      this.$emit('updateCondition', condition)
+    }
   },
   props: {
     conditions: Array,

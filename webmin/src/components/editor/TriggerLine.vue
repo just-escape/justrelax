@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <InlineSelect :options="options" :default="selected"/> -->
-    <span v-b-modal="modalId">
+    <span v-b-modal="modalId" class="pointer">
       <span v-if="trigger.type == 'incoming_message'">
         A message has been received.
       </span>

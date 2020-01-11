@@ -53,12 +53,18 @@
             </div>
             <div class="row mb-2">
               <div class="col">
-                <TabRulesConditions :conditions="displayedRuleConditions"/>
+                <TabRulesConditions
+                  :conditions="displayedRuleConditions"
+                  @updateCondition="updateCondition"
+                />
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <TabRulesActions :actions="displayedRuleActions"/>
+                <TabRulesActions
+                  :actions="displayedRuleActions"
+                  @updateAction="updateAction"
+                />
               </div>
             </div>
           </div>
@@ -131,8 +137,16 @@ export default {
     addCondition: function() {
       rulesStore.commit('addCondition', this.displayRuleIndex)
     },
+    updateCondition: function(condition) {
+      let ruleIndex = this.displayRuleIndex
+      rulesStore.commit('updateCondition', {ruleIndex, condition})
+    },
     addAction: function() {
       rulesStore.commit('addAction', this.displayRuleIndex)
+    },
+    updateAction: function(action) {
+      let ruleIndex = this.displayRuleIndex
+      rulesStore.commit('updateAction', {ruleIndex, action})
     },
   }
 }
