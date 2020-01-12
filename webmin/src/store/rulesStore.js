@@ -12,6 +12,30 @@ export default new Vuex.Store({
     startActions: {},
     resetActions: {},
     admin: {},
+    functions: {
+      arithmetic: {
+        operators: {
+          "+": "+",
+          "-": "-",
+          "*": "*",
+          "/": "/",
+        }
+      },
+      comparison: {
+        operators: {
+          "=": "equals to",
+          "!=": "not equals to",
+          ">": "greater than",
+          ">=": "greater than or equals to",
+          "<": "lower than",
+          "<=": "lower than or equals to",
+        }
+      },
+      booleanLogic: {
+        "and": "and",
+        "or": "or",
+      },
+    }
   },
   mutations: {
     loadRules (state, rules) {

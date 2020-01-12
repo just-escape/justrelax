@@ -1,6 +1,8 @@
 <template>
   <b-modal
     :id="modalId"
+    body-bg-variant="dark"
+    body-text-variant="light"
     @ok="ok"
     @hidden="$emit('hidden')"
   >
@@ -36,8 +38,109 @@
           >
             {{ v }}
           </option>
-          <option>Fonction 2</option>
         </select>
+
+        <div v-if="valueSource === 'function'">
+          <span v-if="value.function === 'arithmetic'">
+            <Argument
+              class="mr-1"
+              v-b-modal="getSubmodalId('left')"
+              :argument="tmpLeft"
+              :editable="true"
+              :lastEdited="lastEditedArgument == 'tmpLeft'"
+            />
+            <select v-model="arithmeticOperatorValue" class="mr-1">
+              <option v-for="(v, k) in arithmeticOperators" :key="k" :value="k">
+                {{ v }}
+              </option>
+            </select>
+            <Argument
+              v-b-modal="getSubmodalId('right')"
+              :argument="tmpRight"
+              :editable="true"
+              :lastEdited="lastEditedArgument == 'tmpRight'"
+            />
+
+            <ArgumentModal
+              :modalId="getSubmodalId('left')"
+              :argument="tmpLeft"
+              @updateArgument="(argument) => tmpLeft = argument"
+              @hidden="updateLastEditedArgument('tmpLeft')"
+            />
+            <ArgumentModal
+              :modalId="getSubmodalId('right')"
+              :argument="tmpRight"
+              @updateArgument="(argument) => tmpRight = argument"
+              @hidden="updateLastEditedArgument('tmpRight')"
+            />
+          </span>
+          <span v-else-if="value.function === 'comparison'">
+            <Argument
+              class="mr-1"
+              v-b-modal="getSubmodalId('left')"
+              :argument="tmpLeft"
+              :editable="true"
+              :lastEdited="lastEditedArgument == 'tmpLeft'"
+            />
+            <select v-model="comparisonOperatorValue" class="mr-1">
+              <option v-for="(v, k) in comparisonOperators" :key="k" :value="k">
+                {{ v }}
+              </option>
+            </select>
+            <Argument
+              v-b-modal="getSubmodalId('right')"
+              :argument="tmpRight"
+              :editable="true"
+              :lastEdited="lastEditedArgument == 'tmpRight'"
+            />
+
+            <ArgumentModal
+              :modalId="getSubmodalId('left')"
+              :argument="tmpLeft"
+              @updateArgument="(argument) => tmpLeft = argument"
+              @hidden="updateLastEditedArgument('tmpLeft')"
+            />
+            <ArgumentModal
+              :modalId="getSubmodalId('right')"
+              :argument="tmpRight"
+              @updateArgument="(argument) => tmpRight = argument"
+              @hidden="updateLastEditedArgument('tmpRight')"
+            />
+          </span>
+          <span v-else-if="value.function === 'booleanLogic'">
+            <Argument
+              class="mr-1"
+              v-b-modal="getSubmodalId('left')"
+              :argument="tmpLeft"
+              :editable="true"
+              :lastEdited="lastEditedArgument == 'tmpLeft'"
+            />
+            <select v-model="booleanLogicOperatorValue" class="mr-1">
+              <option v-for="(v, k) in booleanLogicOperators" :key="k" :value="k">
+                {{ v }}
+              </option>
+            </select>
+            <Argument
+              v-b-modal="getSubmodalId('right')"
+              :argument="tmpRight"
+              :editable="true"
+              :lastEdited="lastEditedArgument == 'tmpRight'"
+            />
+
+            <ArgumentModal
+              :modalId="getSubmodalId('left')"
+              :argument="tmpLeft"
+              @updateArgument="(argument) => tmpLeft = argument"
+              @hidden="updateLastEditedArgument('tmpLeft')"
+            />
+            <ArgumentModal
+              :modalId="getSubmodalId('right')"
+              :argument="tmpRight"
+              @updateArgument="(argument) => tmpRight = argument"
+              @hidden="updateLastEditedArgument('tmpRight')"
+            />
+          </span>
+        </div>
       </div>
     </div>
 
@@ -128,20 +231,26 @@
 </template>
 
 <script>
+import Argument from '@/components/editor/Argument.vue'
+import rulesStore from '@/store/rulesStore.js'
+
 export default {
   name: "ArgumentModal",
+  components: {
+    Argument,
+  },
   data() {
     return {
       tmpArgument: undefined,
       valueSource: "string",
       value: {
         variable: "var1",
-        function: "f1",
+        function: "arithmetic",
         object: undefined,
         list: undefined,
-        string: undefined,
-        integer: undefined,
-        real: undefined,
+        string: "hello",
+        integer: 1,
+        real: 1.50,
         special: "true",
       },
       variableValueOptions: {
@@ -150,43 +259,85 @@ export default {
         var3: "Variable 3",
       },
       functionValueOptions: {
-        f1: "Function 1",
-        f2: "Function 2",
-        f3: "Function 3",
+        arithmetic: "Arithmetic",
+        comparison: "Comparison",
+        booleanLogic: "Boolean logic",
       },
       specialValueOptions: {
         true: "True",
         false: "False",
         none: "None",
       },
+      arithmeticOperatorValue: "+",
+      comparisonOperatorValue: "=",
+      booleanLogicOperatorValue: "and",
+      tmpLeft: 1,
+      tmpRight: 2,
+      lastEditedArgument: undefined,
     }
+  },
+  computed: {
+    arithmeticOperators() {
+      return rulesStore.state.functions.arithmetic.operators
+    },
+    comparisonOperators() {
+      return rulesStore.state.functions.comparison.operators
+    },
+    booleanLogicOperators() {
+      return rulesStore.state.functions.booleanLogic.operators
+    },
   },
   methods: {
     ok: function() {
       let argument = undefined
-      if (this.valueSource == "special") {
-        if (this.value.special == "none") {
+      if (this.valueSource === "special") {
+        if (this.value.special === "none") {
           argument = null
-        } else if (this.value.special == "true") {
+        } else if (this.value.special === "true") {
           argument = true
-        } else if (this.value.special == "false") {
+        } else if (this.value.special === "false") {
           argument = false
         }
       } else if (["string", "integer", "real"].includes(this.valueSource)) {
         argument = this.value[this.valueSource]
-      } else if (this.valueSource == "list") {
+      } else if (this.valueSource === "list") {
         argument = []
-      } else if (this.valueSource == "object") {
+      } else if (this.valueSource === "object") {
         argument = {}
-      } else if (this.valueSource == "function") {
-        argument = this.value.function
-      } else if (this.valueSource == "variable") {
+      } else if (this.valueSource === "function") {
+        if (this.value.function === "arithmetic") {
+          argument = {
+            left: this.tmpLeft,
+            operator: this.arithmeticOperatorValue,
+            right: this.tmpRight,
+          }
+        } else if (this.value.function === "comparison") {
+          argument = {
+            left: this.tmpLeft,
+            operator: this.comparisonOperatorValue,
+            right: this.tmpRight,
+          }
+        } else if (this.value.function === "booleanLogic") {
+          argument = {
+            left: this.tmpLeft,
+            operator: this.booleanLogicOperatorValue,
+            right: this.tmpRight,
+          }
+        }
+      } else if (this.valueSource === "variable") {
         argument = this.value.variable
       }
       this.$emit('updateArgument', argument)
     },
+    getSubmodalId(suffix) {
+      return this.modalId + '-' + suffix
+    },
     setValueSource: function(value) {
       this.valueSource = value
+      this.lastEditedArgument = undefined
+    },
+    updateLastEditedArgument(argumentId) {
+      this.lastEditedArgument = argumentId
     },
   },
   created() {
@@ -208,6 +359,28 @@ export default {
     } else if (typeof this.argument === "string") {
       this.valueSource = "string"
       this.value.string = this.argument
+    } else if (typeof this.argument === "object") {
+      if (this.argument.operator !== undefined) {
+        if (Object.keys(this.arithmeticOperators).includes(this.argument.operator)) {
+          this.valueSource = "function"
+          this.value.function = "arithmetic"
+          this.arithmeticOperatorValue = this.argument.operator
+          this.tmpLeft = this.argument.left
+          this.tmpRight = this.argument.right
+        } else if (Object.keys(this.comparisonOperators).includes(this.argument.operator)) {
+          this.valueSource = "function"
+          this.value.function = "comparison"
+          this.comparisonOperatorValue = this.argument.operator
+          this.tmpLeft = this.argument.left
+          this.tmpRight = this.argument.right
+        } else if (Object.keys(this.booleanLogicOperators).includes(this.argument.operator)) {
+          this.valueSource = "function"
+          this.value.function = "booleanLogic"
+          this.booleanLogicOperatorValue = this.argument.operator
+          this.tmpLeft = this.argument.left
+          this.tmpRight = this.argument.right
+        }
+      }
     }
   },
   props: ["modalId", "argument"],
