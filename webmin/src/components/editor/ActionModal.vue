@@ -90,8 +90,8 @@ export default {
         this.lastEditedArgument = null
 
         if (this.tmpAction.name == 'switch_yellow_led_on') {
-          this.tmpAction.message = 'hello'
-          this.tmpAction.node_name = 'node'
+          this.$set(this.tmpAction, 'message', 'hello')
+          this.$set(this.tmpAction, 'node_name', 'node')
         }
       }
     }
@@ -110,7 +110,7 @@ export default {
     },
     updateArgument(argumentId, argument) {
       this.lastEditedArgument = argumentId
-      this.tmpAction[argumentId] = argument
+      this.$set(this.tmpAction, argumentId, argument)
     },
     updateLastEditedArgument(argumentId) {
       this.lastEditedArgument = argumentId
