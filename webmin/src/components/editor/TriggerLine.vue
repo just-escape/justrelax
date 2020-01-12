@@ -22,19 +22,19 @@
       </span>
     </span>
 
-    <TriggerModal @update="updateTrigger" :modalId="modalId" :trigger="trigger"/>
+    <ContextModal @update="updateTrigger" :modalId="modalId" :contextType="'trigger'" :content="trigger"/>
   </div>
 </template>
 
 <script>
-import TriggerModal from '@/components/editor/TriggerModal.vue'
+import ContextModal from '@/components/editor/ContextModal.vue'
 // import InlineSelect from "@/components/common/InlineSelect.vue"
 
 export default {
   name: "TriggerLine",
   components: {
     // InlineSelect,
-    TriggerModal,
+    ContextModal,
   },
   computed: {
     modalId: function() {

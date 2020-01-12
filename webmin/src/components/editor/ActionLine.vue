@@ -16,19 +16,19 @@
       </span>
     </span>
 
-    <ActionModal @update="updateAction" :modalId="modalId" :action="action"/>
+    <ContextModal @update="updateAction" :modalId="modalId" :contextType="'action'" :content="action"/>
   </div>
 </template>
 
 <script>
 import Argument from '@/components/editor/Argument.vue'
-import ActionModal from '@/components/editor/ActionModal.vue'
+import ContextModal from '@/components/editor/ContextModal.vue'
 
 export default {
   name: "ActionLine",
   components: {
     Argument,
-    ActionModal,
+    ContextModal,
   },
   computed: {
     modalId: function() {
