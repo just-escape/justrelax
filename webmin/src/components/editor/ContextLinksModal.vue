@@ -25,7 +25,7 @@ import Argument from '@/components/editor/Argument.vue'
 import ArgumentModal from '@/components/editor/ArgumentModal.vue'
 
 export default {
-  name: "Context",
+  name: "ContextLinksModal",
   components: {
     Argument,
     ArgumentModal,

@@ -382,6 +382,28 @@ export default new Vuex.Store({
   },
   mutations: {
     loadRules (state, rules) {
+      for (var i = 0 ; i < rules.length ; i++) {
+        for (var j = 0 ; j < rules[i].triggers.length ; j++) {
+          if (rules[i].triggers[j].name !== undefined) {
+            rules[i].triggers[j].type = rules[i].triggers[j].name
+            delete rules[i].triggers[j].name
+          }
+        }
+
+        for (var k = 0 ; k < rules[i].conditions.length ; k++) {
+          if (rules[i].conditions[k].name !== undefined) {
+            rules[i].conditions[k].type = rules[i].conditions[k].name
+            delete rules[i].conditions[k].name
+          }
+        }
+
+        for (var l = 0 ; l < rules[i].actions.length ; l++) {
+          if (rules[i].actions[l].name !== undefined) {
+            rules[i].actions[l].type = rules[i].actions[l].name
+            delete rules[i].actions[l].name
+          }
+        }
+      }
       state.rules = rules
       /*state.alarms = rules.alarms
       state.actions = rules.actions

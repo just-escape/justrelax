@@ -15,7 +15,7 @@
       </option>
     </select>
 
-    <ContextLinks
+    <ContextLinksModal
       :contextLinks="contentTypes[contentType].contextLinks"
       @updateArgument="updateArgument"
     />
@@ -23,13 +23,13 @@
 </template>
 
 <script>
-import ContextLinks from '@/components/editor/ContextLinks.vue'
+import ContextLinksModal from '@/components/editor/ContextLinksModal.vue'
 import rulesStore from '@/store/rulesStore.js'
 
 export default {
   name: "ActionModal",
   components: {
-    ContextLinks,
+    ContextLinksModal,
   },
   data() {
     return {

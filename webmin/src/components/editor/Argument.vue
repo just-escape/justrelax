@@ -42,7 +42,20 @@ export default {
       return "Undefined"
     }
   },
-  props: ["argument", "editable", "lastEdited"],
+  props: {
+    argument: {
+      type: [Object, Boolean, String, Number],
+      default: null,
+    },
+    editable: {
+      type: Boolean,
+      default: false,
+    },
+    lastEdited: {
+      type: Boolean,
+      default: false,
+    }
+  },
 }
 </script>
 

@@ -24,7 +24,7 @@
       <div class="row">
         <div class="col">
           <div class="d-flex flex-row mb-3">
-            <div class="mr-3 align-self-center">Name of the rule</div>
+            <div class="mr-3 align-self-center">{{ displayedRule.name }}</div>
 
             <b-button-group>
               <ButtonSmall class="position-relative" @click="addTrigger()">
@@ -45,25 +45,31 @@
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col">
-                <TabRulesTriggers
-                  :triggers="displayedRuleTriggers"
-                  @updateTrigger="updateTrigger"
+                <ContextParagraph
+                  :title="'Triggers'"
+                  :contextType="'trigger'"
+                  :lines="displayedRuleTriggers"
+                  @updateLine="updateTrigger"
                 />
               </div>
             </div>
             <div class="row mb-2">
               <div class="col">
-                <TabRulesConditions
-                  :conditions="displayedRuleConditions"
-                  @updateCondition="updateCondition"
+                <ContextParagraph
+                  :title="'Conditions'"
+                  :contextType="'condition'"
+                  :lines="displayedRuleConditions"
+                  @updateLine="updateCondition"
                 />
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <TabRulesActions
-                  :actions="displayedRuleActions"
-                  @updateAction="updateAction"
+                <ContextParagraph
+                  :title="'Actions'"
+                  :contextType="'action'"
+                  :lines="displayedRuleActions"
+                  @updateLine="updateAction"
                 />
               </div>
             </div>
@@ -76,18 +82,14 @@
 
 <script>
 import ButtonSmall from "@/components/common/ButtonSmall"
-import TabRulesTriggers from "./TabRulesTriggers"
-import TabRulesConditions from "./TabRulesConditions"
-import TabRulesActions from "./TabRulesActions"
+import ContextParagraph from "@/components/editor/ContextParagraph.vue"
 import rulesStore from "@/store/rulesStore.js"
 
 export default {
   name: 'TabRules',
   components: {
     ButtonSmall,
-    TabRulesTriggers,
-    TabRulesConditions,
-    TabRulesActions,
+    ContextParagraph,
   },
   data() {
     return {
