@@ -396,7 +396,96 @@ export default new Vuex.Store({
           ],
         },
       ]
-    }
+    },
+    functionTypes: [
+      {
+        name: 'arithmetic',
+        label: 'Arithmetic',
+        contextLinks: [
+          {
+            type: "argument",
+            argumentId: "left",
+            argument: 1,
+          },
+          {
+            type: "text",
+            text: " ",
+          },
+          {
+            type: "argument",
+            argumentId: "operator",
+            argument: "+",
+          },
+          {
+            type: "text",
+            text: " ",
+          },
+          {
+            type: "argument",
+            argumentId: "right",
+            argument: 2,
+          }
+        ],
+      },
+      {
+        name: 'comparison',
+        label: 'Comparison',
+        contextLinks: [
+          {
+            type: "argument",
+            argumentId: "left",
+            argument: 1,
+          },
+          {
+            type: "text",
+            text: " ",
+          },
+          {
+            type: "argument",
+            argumentId: "operator",
+            argument: ">",
+          },
+          {
+            type: "text",
+            text: " ",
+          },
+          {
+            type: "argument",
+            argumentId: "right",
+            argument: 2,
+          }
+        ],
+      },
+      {
+        name: 'booleanLogic',
+        label: 'Boolean logic',
+        contextLinks: [
+          {
+            type: "argument",
+            argumentId: "left",
+            argument: 1,
+          },
+          {
+            type: "text",
+            text: " ",
+          },
+          {
+            type: "argument",
+            argumentId: "operator",
+            argument: "and",
+          },
+          {
+            type: "text",
+            text: " ",
+          },
+          {
+            type: "argument",
+            argumentId: "right",
+            argument: 2,
+          }
+        ],
+      }
+    ],
   },
   mutations: {
     loadRules (state, rules) {

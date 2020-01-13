@@ -85,6 +85,7 @@ export default {
       for (var i = 0 ; i < this.contentTypes.length ; i++) {
         if (this.contentTypes[i].name === this.selectedContentType) {
           this.contextLinksBuffer = JSON.parse(JSON.stringify(this.contentTypes[i].contextLinks))
+          return
         }
       }
     },
