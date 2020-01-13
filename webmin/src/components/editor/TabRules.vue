@@ -2,7 +2,7 @@
   <div class="d-flex flex-row h-100">
     <div class="rules-list">
       <div class="d-flex flex-row mb-3">
-        <h2 class="big-noodle size-15 align-self-center mb-0 mr-3">Subrules</h2>
+        <h2 class="big-noodle size-15 align-self-center mb-0 mr-3">Rules</h2>
         <b-button-group>
           <ButtonSmall class="position-relative">
             <i class="far fa-file fa-fw"></i>
