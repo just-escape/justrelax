@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import rulesStore from '@/store/rulesStore.js'
-
 export default {
   name: "FormattedArgument",
   methods: {
@@ -29,13 +27,11 @@ export default {
         return argument
       } else if (typeof argument === "object") {
         if (argument.operator !== undefined) {
-          if (Object.keys(rulesStore.state.functions.arithmetic.operators).includes(argument.operator)) {
-            return '(' + this.format(argument.left) + ' ' + rulesStore.state.functions.arithmetic.operators[argument.operator] + ' ' + this.format(argument.right) + ')'
-          } else if (Object.keys(rulesStore.state.functions.comparison.operators).includes(argument.operator)) {
-            return '(' + this.format(argument.left) + ' ' + rulesStore.state.functions.comparison.operators[argument.operator] + ' ' + this.format(argument.right) + ')'
-          } else if (Object.keys(rulesStore.state.functions.booleanLogic.operators).includes(argument.operator)) {
-            return '(' + this.format(argument.left) + ' ' + rulesStore.state.functions.booleanLogic.operators[argument.operator] + ' ' + this.format(argument.right) + ')'
+          var formattedArgument = argument.operator + ' ' + this.format(argument.right)
+          if (argument.left !== undefined) {
+            formattedArgument = this.format(argument.left) + ' ' + formattedArgument
           }
+          return '(' + formattedArgument + ')'
         }
       }
 

@@ -5,7 +5,7 @@
       <span class="ml-2">Function :</span>
     </div>
     <div @focus="pushMyValue" class="col-9">
-      <select v-model="selectedFunction" @focus="selectedFunction = 'arithmetic'" class="w-100">
+      <select v-model="selectedFunction" @focus="selectedFunction = '+'" class="w-100">
         <option
           v-for="(label, value) in options"
           :key="value"
@@ -19,21 +19,6 @@
         :contextLinks="contextLinksBuffer"
         @updateArgument="updateArgument"
       />
-      <!--<select v-model="arithmeticOperatorValue" class="mr-1">
-        <option v-for="(v, k) in arithmeticOperators" :key="k" :value="k">
-          {{ v }}
-        </option>
-      </select>-->
-      <!--<select v-model="comparisonOperatorValue" class="mr-1">
-        <option v-for="(v, k) in comparisonOperators" :key="k" :value="k">
-          {{ v }}
-        </option>
-      </select>-->
-      <!--<select v-model="booleanLogicOperatorValue" class="mr-1">
-        <option v-for="(v, k) in booleanLogicOperators" :key="k" :value="k">
-          {{ v }}
-        </option>
-      </select>-->
     </div>
   </div>
 </template>
@@ -65,15 +50,6 @@ export default {
       }
       return options
     },
-    arithmeticOperators() {
-      return rulesStore.state.functions.arithmetic.operators
-    },
-    comparisonOperators() {
-      return rulesStore.state.functions.comparison.operators
-    },
-    booleanLogicOperators() {
-      return rulesStore.state.functions.booleanLogic.operators
-    },
     selectedFunction: {
       get() {
         return this.selectedFunction_
@@ -92,7 +68,9 @@ export default {
   },
   methods: {
     pushMyValue() {
-      var value = {}
+      var value = {
+        operator: this.selectedFunction,
+      }
       for (var i = 0 ; i < this.contextLinksBuffer.length ; i++) {
         if (this.contextLinksBuffer[i].type === "argument") {
           value[this.contextLinksBuffer[i].argumentId] = this.contextLinksBuffer[i].argument
@@ -122,20 +100,14 @@ export default {
   },
   created() {
     if (typeof this.parentArgument === "object") {
-      if (Object.keys(this.arithmeticOperators).includes(this.parentArgument.operator)) {
-        this.selectedFunction = "arithmetic"
-      } else if (Object.keys(this.comparisonOperators).includes(this.parentArgument.operator)) {
-        this.selectedFunction = "comparison"
-      } else if (Object.keys(this.booleanLogicOperators).includes(this.parentArgument.operator)) {
-        this.selectedFunction = "booleanLogic"
-      }
+      this.selectedFunction = this.parentArgument.operator
     }
 
     if (this.selectedFunction !== undefined) {
       this.initArguments()
       this.pushMyValue()
     } else {
-      this.selectedFunction = "arithmetic"
+      this.selectedFunction = "+"
     }
   }
 }

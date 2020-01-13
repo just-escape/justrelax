@@ -12,30 +12,6 @@ export default new Vuex.Store({
     startActions: {},
     resetActions: {},
     admin: {},
-    functions: {
-      arithmetic: {
-        operators: {
-          "+": "+",
-          "-": "-",
-          "*": "*",
-          "/": "/",
-        }
-      },
-      comparison: {
-        operators: {
-          "=": "equals to",
-          "!=": "not equals to",
-          ">": "greater than",
-          ">=": "greater than or equals to",
-          "<": "lower than",
-          "<=": "lower than or equals to",
-        }
-      },
-      booleanLogic: {
-        "and": "and",
-        "or": "or",
-      },
-    },
     contextTypes: {
       trigger: [
         {
@@ -399,8 +375,8 @@ export default new Vuex.Store({
     },
     functionTypes: [
       {
-        name: 'arithmetic',
-        label: 'Arithmetic',
+        name: '+',
+        label: 'Addition',
         contextLinks: [
           {
             type: "argument",
@@ -409,16 +385,7 @@ export default new Vuex.Store({
           },
           {
             type: "text",
-            text: " ",
-          },
-          {
-            type: "argument",
-            argumentId: "operator",
-            argument: "+",
-          },
-          {
-            type: "text",
-            text: " ",
+            text: " + ",
           },
           {
             type: "argument",
@@ -428,8 +395,8 @@ export default new Vuex.Store({
         ],
       },
       {
-        name: 'comparison',
-        label: 'Comparison',
+        name: '-',
+        label: 'Substraction',
         contextLinks: [
           {
             type: "argument",
@@ -438,16 +405,7 @@ export default new Vuex.Store({
           },
           {
             type: "text",
-            text: " ",
-          },
-          {
-            type: "argument",
-            argumentId: "operator",
-            argument: ">",
-          },
-          {
-            type: "text",
-            text: " ",
+            text: " - ",
           },
           {
             type: "argument",
@@ -457,8 +415,8 @@ export default new Vuex.Store({
         ],
       },
       {
-        name: 'booleanLogic',
-        label: 'Boolean logic',
+        name: '*',
+        label: 'Multiplication',
         contextLinks: [
           {
             type: "argument",
@@ -467,16 +425,107 @@ export default new Vuex.Store({
           },
           {
             type: "text",
-            text: " ",
+            text: " * ",
           },
           {
             type: "argument",
-            argumentId: "operator",
-            argument: "and",
+            argumentId: "right",
+            argument: 2,
+          }
+        ],
+      },
+      {
+        name: '/',
+        label: 'Division',
+        contextLinks: [
+          {
+            type: "argument",
+            argumentId: "left",
+            argument: 1,
           },
           {
             type: "text",
-            text: " ",
+            text: " / ",
+          },
+          {
+            type: "argument",
+            argumentId: "right",
+            argument: 2,
+          }
+        ],
+      },
+      {
+        name: '=',
+        label: 'Equals to',
+        contextLinks: [
+          {
+            type: "argument",
+            argumentId: "left",
+            argument: 1,
+          },
+          {
+            type: "text",
+            text: " = ",
+          },
+          {
+            type: "argument",
+            argumentId: "right",
+            argument: 2,
+          }
+        ],
+      },
+      {
+        name: '!=',
+        label: 'Not equals to',
+        contextLinks: [
+          {
+            type: "argument",
+            argumentId: "left",
+            argument: 1,
+          },
+          {
+            type: "text",
+            text: " != ",
+          },
+          {
+            type: "argument",
+            argumentId: "right",
+            argument: 2,
+          }
+        ],
+      },
+      {
+        name: 'and',
+        label: 'AND',
+        contextLinks: [
+          {
+            type: "argument",
+            argumentId: "left",
+            argument: 1,
+          },
+          {
+            type: "text",
+            text: " and ",
+          },
+          {
+            type: "argument",
+            argumentId: "right",
+            argument: 2,
+          }
+        ],
+      },
+      {
+        name: 'or',
+        label: 'OR',
+        contextLinks: [
+          {
+            type: "argument",
+            argumentId: "left",
+            argument: 1,
+          },
+          {
+            type: "text",
+            text: " or ",
           },
           {
             type: "argument",

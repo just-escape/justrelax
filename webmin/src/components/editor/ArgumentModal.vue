@@ -85,6 +85,7 @@ export default {
   },
   methods: {
     ok: function() {
+      console.log(this.argumentBuffer)
       this.$emit('updateArgument', this.argumentBuffer)
     },
     updateArgumentBuffer(source, value) {
