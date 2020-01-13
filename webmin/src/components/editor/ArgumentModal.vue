@@ -17,17 +17,17 @@
       @pushValue="(value) => updateArgumentBuffer('function', value)"
     />
 
-    <!--<ArgumentModalObject
+    <ArgumentModalObject
       :parentArgument="argument"
       :checked="selectedSource === 'object'"
       @pushValue="(value) => updateArgumentBuffer('object', value)"
     />
 
-    <ArgumentModalArray
+    <ArgumentModalList
       :parentArgument="argument"
-      :checked="selectedSource === 'array'"
-      @pushValue="(value) => updateArgumentBuffer('array', value)"
-    />-->
+      :checked="selectedSource === 'list'"
+      @pushValue="(value) => updateArgumentBuffer('list', value)"
+    />
 
     <ArgumentModalString
       :parentArgument="argument"
@@ -58,8 +58,8 @@
 <script>
 import ArgumentModalVariable from '@/components/editor/ArgumentModalVariable.vue'
 import ArgumentModalFunction from '@/components/editor/ArgumentModalFunction.vue'
-/*import ArgumentModalObject from '@/components/editor/ArgumentModalObject.vue'
-import ArgumentModalArray from '@/components/editor/ArgumentModalArray.vue'*/
+import ArgumentModalObject from '@/components/editor/ArgumentModalObject.vue'
+import ArgumentModalList from '@/components/editor/ArgumentModalList.vue'
 import ArgumentModalString from '@/components/editor/ArgumentModalString.vue'
 import ArgumentModalInteger from '@/components/editor/ArgumentModalInteger.vue'
 import ArgumentModalReal from '@/components/editor/ArgumentModalReal.vue'
@@ -70,8 +70,8 @@ export default {
   components: {
     ArgumentModalVariable,
     ArgumentModalFunction,
-    // ArgumentModalObject,
-    // ArgumentModalArray,
+    ArgumentModalObject,
+    ArgumentModalList,
     ArgumentModalString,
     ArgumentModalInteger,
     ArgumentModalReal,

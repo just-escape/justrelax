@@ -34,6 +34,27 @@ export default {
           return '(' + formattedArgument + ')'
         } else if (argument.variable !== undefined) {
           return argument.variable
+        } else if (argument.object !== undefined) {
+          var objectOutput = "{"
+          let keys = Object.keys(argument.object)
+          for (var i = 0 ; i < keys.length ; i++) {
+            objectOutput += this.format(keys[i]) + ": " + this.format(argument.object[keys[i]])
+            if (i !== keys.length - 1) {
+              objectOutput += ", "
+            }
+          }
+          objectOutput += "}"
+          return objectOutput
+        } else if (argument.list !== undefined) {
+          var listOutput = "["
+          for (var j = 0 ; j < argument.list.length ; j++) {
+            listOutput += this.format(argument.list[j])
+            if (j !== argument.list.length - 1) {
+              listOutput += ", "
+            }
+          }
+          listOutput += "]"
+          return listOutput
         }
       }
 
