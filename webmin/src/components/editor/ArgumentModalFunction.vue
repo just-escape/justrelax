@@ -55,13 +55,19 @@ export default {
         return this.selectedFunction_
       },
       set(value) {
+        // The first initialization doesn't push (this.selectedFunction_ is initially undefined)
+        let pushAfterUpdate = this.selectedFunction_ !== undefined
+
         this.selectedFunction_ = value
         for (var i = 0 ; i < this.functionTypes.length ; i++) {
           if (this.functionTypes[i].name === this.selectedFunction) {
             this.contextLinksBuffer = JSON.parse(JSON.stringify(this.functionTypes[i].contextLinks))
-            this.pushMyValue()
-            return
+            break
           }
+        }
+
+        if (pushAfterUpdate) {
+          this.pushMyValue()
         }
       },
     }
@@ -85,10 +91,10 @@ export default {
           this.contextLinksBuffer[i].argumentId === argumentId
         ) {
           this.contextLinksBuffer[i].argument = argument
-          this.pushMyValue()
-          return
+          break
         }
       }
+      this.pushMyValue()
     },
     initArguments() {
       for (var i = 0 ; i < this.contextLinksBuffer.length ; i++) {
@@ -99,16 +105,13 @@ export default {
     },
   },
   created() {
-    if (typeof this.parentArgument === "object") {
+    if (typeof this.parentArgument === "object" && this.parentArgument.operator !== undefined) {
       this.selectedFunction = this.parentArgument.operator
-    }
-
-    if (this.selectedFunction !== undefined) {
       this.initArguments()
       this.pushMyValue()
     } else {
       this.selectedFunction = "+"
     }
-  }
+  },
 }
 </script>

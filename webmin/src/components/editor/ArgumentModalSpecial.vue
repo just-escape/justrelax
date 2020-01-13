@@ -59,18 +59,8 @@ export default {
     }
   },
   created() {
-    var content = undefined
-
-    if (this.parentArgument === true) {
-      content = true
-    } else if (this.parentArgument === false) {
-      content = false
-    } else if (this.parentArgument === null) {
-      content = null
-    }
-
-    if (content !== undefined) {
-      this.contentBuffer = content
+    if ([true, false, null].includes(this.parentArgument)) {
+      this.contentBuffer = this.parentArgument
       this.pushMyValue()
     } else {
       this.contentBuffer = true

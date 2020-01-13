@@ -4,8 +4,8 @@
       <input type="radio" :checked="checked">
       <span class="ml-2">Variable :</span>
     </div>
-    <div @focus="pushMyValue" class="col-9">
-      <select v-model="value.variable" @focus="pushMyValue" class="w-100">
+    <div class="col-9">
+      <select v-model="selectedVariable" @focus="pushMyValue" class="w-100">
         <option
           v-for="(label, value) in options"
           :key="value"
@@ -19,11 +19,13 @@
 </template>
 
 <script>
+import argumentModalMixin from '@/components/editor/argumentModalXMixin.js'
+
 export default {
   name: "ArgumentModalVariable",
+  mixins: [argumentModalMixin],
   data() {
     return {
-      contentBuffer: "var1",
       options: {
         var1: "Variable 1",
         var2: "Variable 2",
@@ -32,27 +34,26 @@ export default {
     }
   },
   computed: {
-    selectedContent: {
+    selectedVariable: {
       get() {
-        return this.contentBuffer
+        return this.contentBuffer.variable
       },
       set(value) {
-        this.contentBuffer = value
+        this.contentBuffer = {
+          variable: value,
+        }
         this.pushMyValue()
       }
     },
   },
-  methods: {
-    pushMyValue() {
-      this.$emit('pushValue', this.contentBuffer)
+  created() {
+    if (typeof this.parentArgument === "object" && this.parentArgument.variable !== undefined) {
+      this.contentBuffer = this.parentArgument
+    } else {
+      this.contentBuffer = {
+        variable: Object.keys(this.options)[0]
+      }
     }
   },
-  created() {
-    // TODO
-  },
-  props: {
-    parentArgument: [Object, Boolean, String, Number],
-    checked: Boolean,
-  }
 }
 </script>

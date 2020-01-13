@@ -5,11 +5,11 @@
     body-text-variant="light"
     @ok="ok"
   >
-    <!--<ArgumentModalVariable
+    <ArgumentModalVariable
       :parentArgument="argument"
       :checked="selectedSource === 'variable'"
       @pushValue="(value) => updateArgumentBuffer('variable', value)"
-    />-->
+    />
 
     <ArgumentModalFunction
       :parentArgument="argument"
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-//import ArgumentModalVariable from '@/components/editor/ArgumentModalVariable.vue'
+import ArgumentModalVariable from '@/components/editor/ArgumentModalVariable.vue'
 import ArgumentModalFunction from '@/components/editor/ArgumentModalFunction.vue'
 /*import ArgumentModalObject from '@/components/editor/ArgumentModalObject.vue'
 import ArgumentModalArray from '@/components/editor/ArgumentModalArray.vue'*/
@@ -68,7 +68,7 @@ import ArgumentModalSpecial from '@/components/editor/ArgumentModalSpecial.vue'
 export default {
   name: "ArgumentModal",
   components: {
-    // ArgumentModalVariable,
+    ArgumentModalVariable,
     ArgumentModalFunction,
     // ArgumentModalObject,
     // ArgumentModalArray,
@@ -85,7 +85,6 @@ export default {
   },
   methods: {
     ok: function() {
-      console.log(this.argumentBuffer)
       this.$emit('updateArgument', this.argumentBuffer)
     },
     updateArgumentBuffer(source, value) {

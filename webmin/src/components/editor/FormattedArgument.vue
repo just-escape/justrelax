@@ -32,6 +32,8 @@ export default {
             formattedArgument = this.format(argument.left) + ' ' + formattedArgument
           }
           return '(' + formattedArgument + ')'
+        } else if (argument.variable !== undefined) {
+          return argument.variable
         }
       }
 
