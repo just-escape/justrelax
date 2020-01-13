@@ -50,7 +50,7 @@ export default {
   },
   data() {
     return {
-      selectedFunction: undefined,
+      selectedFunction_: undefined,
       contextLinksBuffer: [],
     }
   },
@@ -74,6 +74,21 @@ export default {
     booleanLogicOperators() {
       return rulesStore.state.functions.booleanLogic.operators
     },
+    selectedFunction: {
+      get() {
+        return this.selectedFunction_
+      },
+      set(value) {
+        this.selectedFunction_ = value
+        for (var i = 0 ; i < this.functionTypes.length ; i++) {
+          if (this.functionTypes[i].name === this.selectedFunction) {
+            this.contextLinksBuffer = JSON.parse(JSON.stringify(this.functionTypes[i].contextLinks))
+            this.pushMyValue()
+            return
+          }
+        }
+      },
+    }
   },
   methods: {
     pushMyValue() {
@@ -98,24 +113,12 @@ export default {
       }
     },
     initArguments() {
-      console.log(this.parentArgument)
       for (var i = 0 ; i < this.contextLinksBuffer.length ; i++) {
         if (this.contextLinksBuffer[i].type === "argument") {
           this.contextLinksBuffer[i].argument = this.parentArgument[this.contextLinksBuffer[i].argumentId]
         }
       }
     },
-  },
-  watch: {
-    selectedFunction() {
-      for (var i = 0 ; i < this.functionTypes.length ; i++) {
-        if (this.functionTypes[i].name === this.selectedFunction) {
-          this.contextLinksBuffer = JSON.parse(JSON.stringify(this.functionTypes[i].contextLinks))
-          this.pushMyValue()
-          return
-        }
-      }
-    }
   },
   created() {
     if (typeof this.parentArgument === "object") {
