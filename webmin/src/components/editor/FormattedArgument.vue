@@ -8,7 +8,7 @@
       'font-italic': !editable,
     }"
   >
-    <span>{{ formatArgument(argument) }}</span>
+    <span>{{ format(argument) }}</span>
   </span>
 </template>
 
@@ -16,9 +16,9 @@
 import rulesStore from '@/store/rulesStore.js'
 
 export default {
-  name: "Argument",
+  name: "FormattedArgument",
   methods: {
-    formatArgument(argument) {
+    format(argument) {
       if (argument === null) {
         return "None"
       } else if (argument === true) {
@@ -30,11 +30,11 @@ export default {
       } else if (typeof argument === "object") {
         if (argument.operator !== undefined) {
           if (Object.keys(rulesStore.state.functions.arithmetic.operators).includes(argument.operator)) {
-            return '(' + this.formatArgument(argument.left) + ' ' + rulesStore.state.functions.arithmetic.operators[argument.operator] + ' ' + this.formatArgument(argument.right) + ')'
+            return '(' + this.format(argument.left) + ' ' + rulesStore.state.functions.arithmetic.operators[argument.operator] + ' ' + this.format(argument.right) + ')'
           } else if (Object.keys(rulesStore.state.functions.comparison.operators).includes(argument.operator)) {
-            return '(' + this.formatArgument(argument.left) + ' ' + rulesStore.state.functions.comparison.operators[argument.operator] + ' ' + this.formatArgument(argument.right) + ')'
+            return '(' + this.format(argument.left) + ' ' + rulesStore.state.functions.comparison.operators[argument.operator] + ' ' + this.format(argument.right) + ')'
           } else if (Object.keys(rulesStore.state.functions.booleanLogic.operators).includes(argument.operator)) {
-            return '(' + this.formatArgument(argument.left) + ' ' + rulesStore.state.functions.booleanLogic.operators[argument.operator] + ' ' + this.formatArgument(argument.right) + ')'
+            return '(' + this.format(argument.left) + ' ' + rulesStore.state.functions.booleanLogic.operators[argument.operator] + ' ' + this.format(argument.right) + ')'
           }
         }
       }

@@ -31,13 +31,19 @@ export default {
       return this.contextType + '-' + this.content.index
     },
     contextLinks: function() {
-      var contextLinks = [...rulesStore.state.contextTypes[this.contextType][this.content.type].contextLinks]
-      for (var i = 0 ; i < contextLinks.length ; i++) {
-        if (contextLinks[i].type === "argument") {
-          contextLinks[i].argument = this.content[contextLinks[i].argumentId]
+      let contentTypes = rulesStore.state.contextTypes[this.contextType]
+      for (var i = 0 ; i < contentTypes.length ; i++) {
+        if (contentTypes[i].name === this.content.type) {
+          var contextLinks = JSON.parse(JSON.stringify(contentTypes[i].contextLinks))
+          for (var j = 0 ; j < contextLinks.length ; j++) {
+            if (contextLinks[j].type === "argument") {
+              contextLinks[j].argument = this.content[contextLinks[j].argumentId]
+            }
+          }
+          return contextLinks
         }
       }
-      return contextLinks
+      return [{type: "text", text: "error"}]
     },
   },
   methods: {

@@ -3,7 +3,7 @@
     <span v-for="(link, index) in contextLinks" :key="index">
       <span v-if="link.type === 'text'">{{ link.text }}</span>
       <span v-else-if="link.type === 'argument'">
-        <Argument
+        <FormattedArgument
           v-b-modal="getSubmodalId(link.argumentId)"
           :argument="link.argument"
           :editable="true"
@@ -12,7 +12,7 @@
         <ArgumentModal
           :modalId="getSubmodalId(link.argumentId)"
           :argument="link.argument"
-          @updateArgument="(argument) => $emit('updateArgument', link.argumentId, argument)"
+          @updateArgument="(argument) => updateArgument(link.argumentId, argument)"
           @hidden="updateLastEditedArgument(link.argumentId)"
         />
       </span>
@@ -21,13 +21,13 @@
 </template>
 
 <script>
-import Argument from '@/components/editor/Argument.vue'
+import FormattedArgument from '@/components/editor/FormattedArgument.vue'
 import ArgumentModal from '@/components/editor/ArgumentModal.vue'
 
 export default {
   name: "ContextLinksModal",
   components: {
-    Argument,
+    FormattedArgument,
     ArgumentModal,
   },
   data() {
@@ -38,6 +38,9 @@ export default {
   methods: {
     getSubmodalId(suffix) {
       return this.modalId + '-' + suffix
+    },
+    updateArgument(argumentId, argument) {
+      this.$emit('updateArgument', argumentId, argument)
     },
     updateLastEditedArgument(argumentId) {
       this.lastEditedArgumentId = argumentId

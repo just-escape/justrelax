@@ -37,8 +37,9 @@ export default new Vuex.Store({
       },
     },
     contextTypes: {
-      trigger: {
-        'incoming_message': {
+      trigger: [
+        {
+          name: 'incoming_message',
           label: 'Send message',
           contextLinks: [
             {
@@ -61,7 +62,8 @@ export default new Vuex.Store({
             },
           ],
         },
-        'timer_expired': {
+        {
+          name: 'timer_expired',
           label: 'Timer expired',
           contextLinks: [
             {
@@ -79,7 +81,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'session_ticked': {
+        {
+          name: 'session_ticked',
           label: 'Session tick',
           contextLinks: [
             {
@@ -97,7 +100,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'session_started': {
+        {
+          name: 'session_started',
           label: 'Session started',
           contextLinks: [
             {
@@ -115,7 +119,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'session_paused': {
+        {
+          name: 'session_paused',
           label: 'Session paused',
           contextLinks: [
             {
@@ -133,7 +138,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'session_resumed': {
+        {
+          name: 'session_resumed',
           label: 'Session resumed',
           contextLinks: [
             {
@@ -151,9 +157,10 @@ export default new Vuex.Store({
             }
           ],
         },
-      },
-      condition: {
-        'condition 1': {
+      ],
+      condition: [
+        {
+          name: 'condition 1',
           label: 'Boolean comparison',
           contextLinks: [
             {
@@ -172,7 +179,8 @@ export default new Vuex.Store({
             },
           ],
         },
-        'condition 2': {
+        {
+          name: 'condition 2',
           label: 'Integer comparison',
           contextLinks: [
             {
@@ -190,7 +198,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'condition 3': {
+        {
+          name: 'condition 3',
           label: 'Real comparison',
           contextLinks: [
             {
@@ -208,7 +217,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'condition 4': {
+        {
+          name: 'condition 4',
           label: 'String comparison',
           contextLinks: [
             {
@@ -226,7 +236,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'condition 5': {
+        {
+          name: 'condition 5',
           label: 'List comparison',
           contextLinks: [
             {
@@ -244,7 +255,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'condition 6': {
+        {
+          name: 'condition 6',
           label: 'Object comparison',
           contextLinks: [
             {
@@ -262,7 +274,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'condition 7': {
+        {
+          name: 'condition 7',
           label: 'Untyped comparison',
           contextLinks: [
             {
@@ -280,7 +293,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'condition 8': {
+        {
+          name: 'condition 8',
           label: 'and',
           contextLinks: [
             {
@@ -298,7 +312,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'condition 9': {
+        {
+          name: 'condition 9',
           label: 'or',
           contextLinks: [
             {
@@ -316,9 +331,10 @@ export default new Vuex.Store({
             }
           ],
         },
-      },
-      action: {
-        'action 3': {
+      ],
+      action: [
+        {
+          name: 'action 3',
           label: 'Send message',
           contextLinks: [
             {
@@ -341,7 +357,8 @@ export default new Vuex.Store({
             },
           ],
         },
-        'switch_yellow_led_on': {
+        {
+          name: 'switch_yellow_led_on',
           label: 'Integer comparison',
           contextLinks: [
             {
@@ -359,7 +376,8 @@ export default new Vuex.Store({
             }
           ],
         },
-        'cancel_red_and_green_led_hint_alarm': {
+        {
+          name: 'cancel_red_and_green_led_hint_alarm',
           label: 'Real comparison',
           contextLinks: [
             {
@@ -377,7 +395,7 @@ export default new Vuex.Store({
             }
           ],
         },
-      }
+      ]
     }
   },
   mutations: {

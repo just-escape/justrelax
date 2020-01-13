@@ -42,7 +42,7 @@
 
         <div v-if="valueSource === 'function'">
           <span v-if="value.function === 'arithmetic'">
-            <Argument
+            <FormattedArgument
               class="mr-1"
               v-b-modal="getSubmodalId('left')"
               :argument="tmpLeft"
@@ -54,7 +54,7 @@
                 {{ v }}
               </option>
             </select>
-            <Argument
+            <FormattedArgument
               v-b-modal="getSubmodalId('right')"
               :argument="tmpRight"
               :editable="true"
@@ -75,7 +75,7 @@
             />
           </span>
           <span v-else-if="value.function === 'comparison'">
-            <Argument
+            <FormattedArgument
               class="mr-1"
               v-b-modal="getSubmodalId('left')"
               :argument="tmpLeft"
@@ -87,7 +87,7 @@
                 {{ v }}
               </option>
             </select>
-            <Argument
+            <FormattedArgument
               v-b-modal="getSubmodalId('right')"
               :argument="tmpRight"
               :editable="true"
@@ -108,7 +108,7 @@
             />
           </span>
           <span v-else-if="value.function === 'booleanLogic'">
-            <Argument
+            <FormattedArgument
               class="mr-1"
               v-b-modal="getSubmodalId('left')"
               :argument="tmpLeft"
@@ -120,7 +120,7 @@
                 {{ v }}
               </option>
             </select>
-            <Argument
+            <FormattedArgument
               v-b-modal="getSubmodalId('right')"
               :argument="tmpRight"
               :editable="true"
@@ -231,13 +231,13 @@
 </template>
 
 <script>
-import Argument from '@/components/editor/Argument.vue'
+import FormattedArgument from '@/components/editor/FormattedArgument.vue'
 import rulesStore from '@/store/rulesStore.js'
 
 export default {
   name: "ArgumentModal",
   components: {
-    Argument,
+    FormattedArgument,
   },
   data() {
     return {
