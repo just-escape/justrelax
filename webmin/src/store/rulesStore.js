@@ -568,6 +568,17 @@ export default new Vuex.Store({
       state.resetActions = rules.reset_actions
       state.admin = rules.admin*/
     },
+    addRule (state) {
+      state.rules.push(
+        {
+          triggers: [],
+          conditions: [],
+          actions: [],
+          index: state.rules.length,
+          name: "Rule " + (state.rules.length + 1),
+        }
+      )
+    },
     addTrigger (state, ruleIndex) {
       let trigger = {
         index: state.rules[ruleIndex].triggers.length,

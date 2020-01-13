@@ -4,7 +4,7 @@
       <div class="d-flex flex-row mb-3">
         <h2 class="big-noodle size-15 align-self-center mb-0 mr-3">Rules</h2>
         <b-button-group>
-          <ButtonSmall class="position-relative">
+          <ButtonSmall class="position-relative" @click="addRule()">
             <i class="far fa-file fa-fw"></i>
             <i class="fas fa-plus bottom-right"></i>
           </ButtonSmall>
@@ -128,6 +128,9 @@ export default {
   methods: {
     displayRule: function(index) {
       this.displayRuleIndex = index
+    },
+    addRule: function() {
+      rulesStore.commit('addRule')
     },
     addTrigger: function() {
       rulesStore.commit('addTrigger', this.displayRuleIndex)
