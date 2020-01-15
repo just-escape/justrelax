@@ -9,37 +9,21 @@ export default new Vuex.Store({
   state: {
     variables: [],
     rules: [],
-    functions: {},
-    orderedFunctions: [],
-    contextTypes: {
+    templates: {
+      function: {},
       trigger: {},
       condition: {},
       action: {},
     },
-    orderedContextTypes: {},
+    orderedTemplates: {},
   },
   mutations: {
-    loadFixtures (state, fixtures) {
-      var i
-
-      state.orderedFunctions = fixtures.functions
-      for (i = 0 ; i < state.orderedFunctions.length ; i++) {
-        state.functions[state.orderedFunctions[i].name] = state.orderedFunctions[i]
-      }
-
-      state.orderedContextTypes.trigger = fixtures.trigger_types
-      for (i = 0 ; i < state.orderedContextTypes.trigger.length ; i++) {
-        state.contextTypes.trigger[state.orderedContextTypes.trigger[i].name] = state.orderedContextTypes.trigger[i]
-      }
-
-      state.orderedContextTypes.condition = fixtures.condition_types
-      for (i = 0 ; i < state.orderedContextTypes.condition.length ; i++) {
-        state.contextTypes.condition[state.orderedContextTypes.condition[i].name] = state.orderedContextTypes.condition[i]
-      }
-
-      state.orderedContextTypes.action = fixtures.action_types
-      for (i = 0 ; i < state.orderedContextTypes.action.length ; i++) {
-        state.contextTypes.action[state.orderedContextTypes.action[i].name] = state.orderedContextTypes.action[i]
+    loadTemplates (state, templates) {
+      for (var context of ['function', 'trigger', 'condition', 'action']) {
+        state.orderedTemplates[context] = templates[context]
+        for (var template of state.orderedTemplates[context]) {
+          state.templates[context][template.name] = template
+        }
       }
     },
     loadScenario (state, scenario) {
@@ -56,72 +40,35 @@ export default new Vuex.Store({
         }
       )
     },
-    addTrigger (state, ruleIndex) {
-      var values = {}
-      let links = state.orderedContextTypes.trigger[0].links
-      for (var i = 0 ; i < links.length ; i++) {
-        if (links[i].link_type === "argument") {
-          values[links[i].key] = links[i].default_value
+    addComponent (state, {ruleIndex, context}) {
+      var args = {}
+      for (var link of state.orderedTemplates[context][0].links) {
+        if (link.type === "argument") {
+          args[link.key] = link.default_value
         }
       }
 
-      let trigger = {
-        content_type: state.orderedContextTypes.trigger[0].name,
-        arguments: values,
+      let component = {
+        template: state.orderedTemplates[context][0].name,
+        arguments: args,
       }
 
-      state.rules[ruleIndex].triggers.push(trigger)
+      // + 's' is dirty
+      state.rules[ruleIndex][context + 's'].push(component)
     },
-    updateTrigger (state, {ruleIndex, triggerIndex, trigger}) {
-      Vue.set(state.rules[ruleIndex].triggers, triggerIndex, trigger)
-    },
-    addCondition (state, ruleIndex) {
-      var values = {}
-      let links = state.orderedContextTypes.condition[0].links
-      for (var i = 0 ; i < links.length ; i++) {
-        if (links[i].link_type === "argument") {
-          values[links[i].key] = links[i].default_value
-        }
-      }
-
-      let condition = {
-        content_type: state.orderedContextTypes.condition[0].name,
-        arguments: values,
-      }
-
-      state.rules[ruleIndex].conditions.push(condition)
-    },
-    updateCondition (state, {ruleIndex, conditionIndex, condition}) {
-      Vue.set(state.rules[ruleIndex].conditions, conditionIndex, condition)
-    },
-    addAction (state, ruleIndex) {
-      var values = {}
-      let links = state.orderedContextTypes.action[0].links
-      for (var i = 0 ; i < links.length ; i++) {
-        if (links[i].link_type === "argument") {
-          values[links[i].key] = links[i].default_value
-        }
-      }
-
-      let action = {
-        content_type: state.orderedContextTypes.action[0].name,
-        arguments: values,
-      }
-
-      state.rules[ruleIndex].actions.push(action)
-    },
-    updateAction (state, {ruleIndex, actionIndex, action}) {
-      Vue.set(state.rules[ruleIndex].actions, actionIndex, action)
+    updateComponent (state, {ruleIndex, context, componentIndex, component}) {
+      // + 's' is dirty
+      Vue.set(state.rules[ruleIndex][context + 's'], componentIndex, component)
     },
   },
   actions: {
-    loadFixtures(context) {
-      justRestAPI.get('/get_fixtures/')
+    loadTemplates(context) {
+      justRestAPI.get('/get_templates/')
         .then(function(response) {
-          context.commit('loadFixtures', response.data)
+          context.commit('loadTemplates', response.data)
         })
         .catch(function(error) {
-          notificationStore.dispatch('pushError', 'Error while fetching fixtures: ' + error)
+          notificationStore.dispatch('pushError', 'Error while fetching templates: ' + error)
         })
     },
     loadScenario(context) {

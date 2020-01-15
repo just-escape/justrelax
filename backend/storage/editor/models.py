@@ -12,7 +12,7 @@ VALUE_TYPES = (
     ('object', 'object'),
 )
 
-STRUCTURE_LINK_TYPES = (
+TEMPLATE_LINK_TYPES = (
     ('text', 'text'),
     ('argument', 'argument'),
 )
@@ -29,23 +29,23 @@ class Function(models.Model):
 class FunctionForm(forms.ModelForm):
     class Meta:
         model = Function
-        fields = ('category', 'index', 'name',)
+        fields = ('category', 'index', 'name', 'return_type',)
 
 
-class FunctionLink(models.Model):
+class FunctionTemplateLink(models.Model):
     function = models.ForeignKey(Function, on_delete=models.CASCADE)
 
     index = models.IntegerField()
-    link_type = models.CharField(
+    type = models.CharField(
         max_length=16,
-        choices=STRUCTURE_LINK_TYPES,
-        default=STRUCTURE_LINK_TYPES[0][0],
+        choices=TEMPLATE_LINK_TYPES,
+        default=TEMPLATE_LINK_TYPES[0][0],
     )
 
-    # relevant if link_type is text
+    # relevant if type is text
     text = models.CharField(max_length=128, null=True)
 
-    # relevant if link_type is value
+    # relevant if type is argument
     key = models.CharField(max_length=64, null=True)
     default_value = models.TextField(null=True, blank=True)
 
@@ -53,22 +53,22 @@ class FunctionLink(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['function', 'index'],
-                name='function_link_index',
+                name='function_index',
             ),
             models.UniqueConstraint(
                 fields=['function', 'key'],
-                name='function_link_key',
+                name='function_key',
             )
         ]
 
 
-class FunctionLinkForm(forms.ModelForm):
+class FunctionTemplateLinkForm(forms.ModelForm):
     class Meta:
-        model = FunctionLink
+        model = FunctionTemplateLink
         fields = (
             'function',
             'index',
-            'link_type',
+            'type',
             'text',
             'key',
             'default_value',
@@ -132,8 +132,8 @@ class RuleForm(forms.ModelForm):
         fields = ('s', 'index', 'name',)
 
 
-class ContentType(models.Model):
-    CONTEXT_TYPES = (
+class ComponentTemplate(models.Model):
+    CONTEXTS = (
         ('trigger', 'trigger'),
         ('condition', 'condition'),
         ('action', 'action'),
@@ -141,114 +141,114 @@ class ContentType(models.Model):
 
     index = models.IntegerField()
     name = models.CharField(max_length=64)
-    context_type = models.CharField(
-        max_length=16, choices=CONTEXT_TYPES, default=CONTEXT_TYPES[0][0])
+    context = models.CharField(
+        max_length=16, choices=CONTEXTS, default=CONTEXTS[0][0])
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['context_type', 'index'],
-                name='content_type_index',
+                fields=['context', 'index'],
+                name='context_index',
             ),
             models.UniqueConstraint(
-                fields=['context_type', 'name'],
-                name='content_type_name',
+                fields=['context', 'name'],
+                name='context_name',
             )
         ]
 
 
-class ContentTypeForm(forms.ModelForm):
+class ComponentTemplateForm(forms.ModelForm):
     class Meta:
-        model = ContentType
-        fields = ('index', 'name', 'context_type',)
+        model = ComponentTemplate
+        fields = ('index', 'name', 'context',)
 
 
-class ContentTypeLink(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+class ComponentTemplateLink(models.Model):
+    template = models.ForeignKey(ComponentTemplate, on_delete=models.CASCADE)
 
     index = models.IntegerField()
-    link_type = models.CharField(
+    type = models.CharField(
         max_length=16,
-        choices=STRUCTURE_LINK_TYPES,
-        default=STRUCTURE_LINK_TYPES[0][0],
+        choices=TEMPLATE_LINK_TYPES,
+        default=TEMPLATE_LINK_TYPES[0][0],
     )
 
-    # relevant if link_type is text
+    # relevant if type is text
     text = models.CharField(max_length=128, null=True)
 
-    # relevant if link_type is value
+    # relevant if type is argument
     key = models.CharField(max_length=64, null=True)
     default_value = models.TextField(null=True, blank=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['content_type', 'index'],
-                name='content_type_link_index',
+                fields=['template', 'index'],
+                name='template_index',
             ),
             models.UniqueConstraint(
-                fields=['content_type', 'key'],
-                name='content_type_link_key',
+                fields=['template', 'key'],
+                name='template_key',
             )
         ]
 
 
-class ContentTypeLinkForm(forms.ModelForm):
+class ComponentTemplateLinkForm(forms.ModelForm):
     class Meta:
-        model = ContentTypeLink
+        model = ComponentTemplateLink
         fields = (
-            'content_type',
+            'template',
             'index',
-            'link_type',
+            'type',
             'text',
             'key',
             'default_value',
         )
 
 
-class Context(models.Model):
+class Component(models.Model):
     rule = models.ForeignKey(Rule, on_delete=models.CASCADE)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    template = models.ForeignKey(ComponentTemplate, on_delete=models.CASCADE)
     index = models.IntegerField()
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['rule', 'index'],
-                name='context_index',
+                fields=['rule', 'template', 'index'],
+                name='rule_template_index',
             ),
         ]
 
 
-class ContextForm(forms.ModelForm):
+class ComponentForm(forms.ModelForm):
     class Meta:
-        model = Context
+        model = Component
         fields = (
             'rule',
-            'content_type',
+            'template',
             'index',
         )
 
 
-class ContextArgument(models.Model):
-    context = models.ForeignKey(Context, on_delete=models.CASCADE)
+class ComponentArgument(models.Model):
+    component = models.ForeignKey(Component, on_delete=models.CASCADE)
     key = models.CharField(max_length=64, null=True)
     value = models.TextField(null=True, blank=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['context', 'key'],
-                name='content_value_key',
+                fields=['component', 'key'],
+                name='component_key',
             ),
         ]
 
 
-class ContextArgumentForm(forms.ModelForm):
+class ComponentArgumentForm(forms.ModelForm):
     class Meta:
-        model = ContextArgument
+        model = ComponentArgument
         fields = (
-            'context',
+            'component',
             'key',
             'value',
         )

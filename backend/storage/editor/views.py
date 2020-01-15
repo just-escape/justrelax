@@ -1,8 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from editor.models import Function, FunctionLink, ContentType, ContentTypeLink
-from editor.models import Variable, VariableType, Rule, Context, ContextArgument
+from editor.models import Function, FunctionTemplateLink
+from editor.models import ComponentTemplate, ComponentTemplateLink
+from editor.models import Variable, VariableType
+from editor.models import Rule, Component, ComponentArgument
 
 
 def get_serialized_functions():
@@ -14,51 +16,51 @@ def get_serialized_functions():
             'name': f.name,
             'links': [],
         }
-        for fl in FunctionLink.objects.filter(function=f):
-            function_link = {
-                'link_type': fl.link_type,
+        for ftl in FunctionTemplateLink.objects.filter(function=f):
+            function_template_link = {
+                'type': ftl.type,
             }
-            if fl.link_type == 'text':
-                function_link['text'] = fl.text
-            elif fl.link_type == 'argument':
-                function_link['key'] = fl.key
-                function_link['default_value'] = fl.default_value
-            serialized_function['links'].append(function_link)
+            if ftl.type == 'text':
+                function_template_link['text'] = ftl.text
+            elif ftl.type == 'argument':
+                function_template_link['key'] = ftl.key
+                function_template_link['default_value'] = ftl.default_value
+            serialized_function['links'].append(function_template_link)
         functions.append(serialized_function)
 
     return functions
 
 
-def get_serialized_content_types(context_type):
-    content_types = []
-    for ct in ContentType.objects.filter(context_type=context_type):
-        content_type = {
+def get_serialized_component_templates(context):
+    component_templates = []
+    for ct in ComponentTemplate.objects.filter(context=context):
+        component_template = {
             'name': ct.name,
             'links': [],
         }
-        for ctl in ContentTypeLink.objects.filter(content_type=ct):
-            content_type_link = {
-                'link_type': ctl.link_type,
+        for ctl in ComponentTemplateLink.objects.filter(template=ct):
+            component_template_link = {
+                'type': ctl.type,
             }
-            if ctl.link_type == 'text':
-                content_type_link['text'] = ctl.text
-            elif ctl.link_type == 'argument':
-                content_type_link['key'] = ctl.key
-                content_type_link['default_value'] = ctl.default_value
-            content_type['links'].append(content_type_link)
+            if ctl.type == 'text':
+                component_template_link['text'] = ctl.text
+            elif ctl.type == 'argument':
+                component_template_link['key'] = ctl.key
+                component_template_link['default_value'] = ctl.default_value
+            component_template['links'].append(component_template_link)
 
-        content_types.append(content_type)
+        component_templates.append(component_template)
 
-    return content_types
+    return component_templates
 
 
 @api_view(['GET'])
-def get_fixtures(request):
+def get_templates(request):
     response = {
-        'functions': get_serialized_functions(),
-        'trigger_types': get_serialized_content_types('trigger'),
-        'condition_types': get_serialized_content_types('condition'),
-        'action_types': get_serialized_content_types('action'),
+        'function': get_serialized_functions(),
+        'trigger': get_serialized_component_templates('trigger'),
+        'condition': get_serialized_component_templates('condition'),
+        'action': get_serialized_component_templates('action'),
     }
 
     return Response(response)
@@ -81,19 +83,19 @@ def get_serialized_variables():
     return variables
 
 
-def get_serialized_contexts(rule, context_type):
-    contexts = []
-    for c in Context.objects.filter(rule=rule, content_type__context_type=context_type):
-        context = {
+def get_serialized_components(rule, context):
+    components = []
+    for c in Component.objects.filter(rule=rule, template__context=context):
+        component = {
             'id': c.id,
-            'content_type': c.content_type.name,
+            'template': c.template.name,
             'arguments': {},
         }
-        for ca in ContextArgument.objects.filter(context=c):
-            context[ca.key] = ca.value
-        contexts.append(context)
+        for ca in ComponentArgument.objects.filter(context=c):
+            component[ca.key] = ca.value
+        components.append(component)
 
-    return contexts
+    return components
 
 
 def get_serialized_rules():
@@ -102,9 +104,9 @@ def get_serialized_rules():
         rule = {
             'id': r.id,
             'name': r.name,
-            'triggers': get_serialized_contexts(r, 'trigger'),
-            'conditions': get_serialized_contexts(r, 'conditions'),
-            'actions': get_serialized_contexts(r, 'actions'),
+            'triggers': get_serialized_components(r, 'trigger'),
+            'conditions': get_serialized_components(r, 'condition'),
+            'actions': get_serialized_components(r, 'action'),
         }
         rules.append(rule)
     return rules

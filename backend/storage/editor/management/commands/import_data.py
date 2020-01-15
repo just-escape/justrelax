@@ -1,7 +1,9 @@
 from django.core.management.base import BaseCommand
 
-from editor.models import Function, FunctionLink, ContentType, ContentTypeLink
-from editor.models import Variable, VariableType, Rule, Context, ContextArgument
+from editor.models import Function, FunctionTemplateLink
+from editor.models import ComponentTemplate, ComponentTemplateLink
+from editor.models import Variable, VariableType
+from editor.models import Rule, Component, ComponentArgument
 
 
 FUNCTIONS = [
@@ -13,18 +15,18 @@ FUNCTIONS = [
         'links': [
             {
                 'index': 1,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'left',
                 'default_value': 1,
             },
             {
                 'index': 2,
-                'link_type': 'text',
+                'type': 'text',
                 'text': ' + ',
             },
             {
                 'index': 3,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'right',
                 'default_value': 1,
             },
@@ -38,18 +40,18 @@ FUNCTIONS = [
         'links': [
             {
                 'index': 1,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'left',
                 'default_value': 1,
             },
             {
                 'index': 2,
-                'link_type': 'text',
+                'type': 'text',
                 'text': ' - ',
             },
             {
                 'index': 3,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'right',
                 'default_value': 1,
             },
@@ -63,18 +65,18 @@ FUNCTIONS = [
         'links': [
             {
                 'index': 1,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'left',
                 'default_value': 1,
             },
             {
                 'index': 2,
-                'link_type': 'text',
+                'type': 'text',
                 'text': ' * ',
             },
             {
                 'index': 3,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'right',
                 'default_value': 1,
             },
@@ -88,18 +90,18 @@ FUNCTIONS = [
         'links': [
             {
                 'index': 1,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'left',
                 'default_value': 1,
             },
             {
                 'index': 2,
-                'link_type': 'text',
+                'type': 'text',
                 'text': ' / ',
             },
             {
                 'index': 3,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'right',
                 'default_value': 1,
             },
@@ -107,15 +109,15 @@ FUNCTIONS = [
     },
 ]
 
-CONTENT_TYPES = [
+COMPONENT_TEMPLATES = [
     {
         'index': 1000,
         'name': 'incoming_event',
-        'context_type': 'trigger',
+        'context': 'trigger',
         'links': [
             {
                 'index': 1,
-                'link_type': 'text',
+                'type': 'text',
                 'text': 'An event has been received',
             },
         ],
@@ -123,11 +125,11 @@ CONTENT_TYPES = [
     {
         'index': 1001,
         'name': 'session_tick',
-        'context_type': 'trigger',
+        'context': 'trigger',
         'links': [
             {
                 'index': 1,
-                'link_type': 'text',
+                'type': 'text',
                 'text': 'Each session tick',
             },
         ],
@@ -135,11 +137,11 @@ CONTENT_TYPES = [
     {
         'index': 1002,
         'name': 'session_start',
-        'context_type': 'trigger',
+        'context': 'trigger',
         'links': [
             {
                 'index': 1,
-                'link_type': 'text',
+                'type': 'text',
                 'text': 'The session has started',
             },
         ],
@@ -147,11 +149,11 @@ CONTENT_TYPES = [
     {
         'index': 1003,
         'name': 'session_pause',
-        'context_type': 'trigger',
+        'context': 'trigger',
         'links': [
             {
                 'index': 1,
-                'link_type': 'text',
+                'type': 'text',
                 'text': 'The session has paused',
             },
         ],
@@ -159,11 +161,11 @@ CONTENT_TYPES = [
     {
         'index': 1004,
         'name': 'session_resume',
-        'context_type': 'trigger',
+        'context': 'trigger',
         'links': [
             {
                 'index': 1,
-                'link_type': 'text',
+                'type': 'text',
                 'text': 'The session has resumed',
             },
         ],
@@ -171,16 +173,16 @@ CONTENT_TYPES = [
     {
         'index': 2000,
         'name': 'simple_condition',
-        'context_type': 'condition',
+        'context': 'condition',
         'links': [
             {
                 'index': 1,
-                'link_type': 'text',
+                'type': 'text',
                 'text': 'If ',
             },
             {
                 'index': 2,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'condition',
                 'default_value': True,
             },
@@ -189,22 +191,22 @@ CONTENT_TYPES = [
     {
         'index': 2001,
         'name': 'or',
-        'context_type': 'condition',
+        'context': 'condition',
         'links': [
             {
                 'index': 1,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'left',
                 'default_value': True,
             },
             {
                 'index': 2,
-                'link_type': 'text',
+                'type': 'text',
                 'text': ' or ',
             },
             {
                 'index': 3,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'right',
                 'default_value': True,
             },
@@ -213,22 +215,22 @@ CONTENT_TYPES = [
     {
         'index': 2002,
         'name': 'and',
-        'context_type': 'condition',
+        'context': 'condition',
         'links': [
             {
                 'index': 1,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'left',
                 'default_value': True,
             },
             {
                 'index': 2,
-                'link_type': 'text',
+                'type': 'text',
                 'text': ' and ',
             },
             {
                 'index': 3,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'right',
                 'default_value': True,
             },
@@ -237,27 +239,27 @@ CONTENT_TYPES = [
     {
         'index': 3000,
         'name': 'send_event',
-        'context_type': 'action',
+        'context': 'action',
         'links': [
             {
                 'index': 1,
-                'link_type': 'text',
+                'type': 'text',
                 'text': 'Send event ',
             },
             {
                 'index': 2,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'event',
                 'default_value': 'hello',
             },
             {
                 'index': 3,
-                'link_type': 'text',
+                'type': 'text',
                 'text': ' to node named ',
             },
             {
                 'index': 4,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'node_name',
                 'default_value': 'node',
             },
@@ -266,27 +268,27 @@ CONTENT_TYPES = [
     {
         'index': 3001,
         'name': 'set_variable',
-        'context_type': 'action',
+        'context': 'action',
         'links': [
             {
                 'index': 1,
-                'link_type': 'text',
+                'type': 'text',
                 'text': 'Set variable ',
             },
             {
                 'index': 2,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'variable_name',
                 'default_value': 'variable',
             },
             {
                 'index': 3,
-                'link_type': 'text',
+                'type': 'text',
                 'text': ' to value ',
             },
             {
                 'index': 4,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'value',
                 'default_value': 'value',
             },
@@ -295,16 +297,16 @@ CONTENT_TYPES = [
     {
         'index': 3002,
         'name': 'trigger_rule',
-        'context_type': 'action',
+        'context': 'action',
         'links': [
             {
                 'index': 1,
-                'link_type': 'text',
+                'type': 'text',
                 'text': 'Trigger rule named ',
             },
             {
                 'index': 2,
-                'link_type': 'argument',
+                'type': 'argument',
                 'key': 'rule_name',
                 'default_value': 'rule',
             },
@@ -333,7 +335,7 @@ VARIABLES = [
 class Command(BaseCommand):
     def handle(self, *args, **options):
         Function.objects.all().delete()
-        ContentType.objects.all().delete()
+        ComponentTemplate.objects.all().delete()
 
         Variable.objects.all().delete()
         Rule.objects.all().delete()
@@ -346,26 +348,26 @@ class Command(BaseCommand):
                 return_type=f['return_type'],
             )
             for link in f['links']:
-                FunctionLink.objects.create(
+                FunctionTemplateLink.objects.create(
                     function=created_function,
                     index=link['index'],
-                    link_type=link['link_type'],
+                    type=link['type'],
                     text=link.get('text', None),
                     key=link.get('key', None),
                     default_value=link.get('default_value', None),
                 )
 
-        for ct in CONTENT_TYPES:
-            created_content_type = ContentType.objects.create(
-                context_type=ct['context_type'],
+        for ct in COMPONENT_TEMPLATES:
+            created_component_template = ComponentTemplate.objects.create(
+                context=ct['context'],
                 index=ct['index'],
                 name=ct['name'],
             )
             for link in ct['links']:
-                ContentTypeLink.objects.create(
-                    content_type=created_content_type,
+                ComponentTemplateLink.objects.create(
+                    template=created_component_template,
                     index=link['index'],
-                    link_type=link['link_type'],
+                    type=link['type'],
                     text=link.get('text', None),
                     key=link.get('key', None),
                     default_value=link.get('default_value', None),
@@ -384,5 +386,5 @@ class Command(BaseCommand):
                     type=v_type,
                 )
 
-        Context
-        ContextArgument
+        Component
+        ComponentArgument

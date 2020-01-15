@@ -80,7 +80,7 @@ export default {
       roomStore.dispatch("updateRules", {roomId, rules})
     },
     loadEditorData() {
-      editorStore.dispatch('loadFixtures')
+      editorStore.dispatch('loadTemplates')
       editorStore.dispatch('loadScenario')
     }
   },

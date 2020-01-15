@@ -11,27 +11,27 @@
         step="0.01"
         @focus="pushMyValue"
         @input="pushMyValue"
-        v-model="contentBuffer"
+        v-model="valueBuffer"
       >
     </div>
   </div>
 </template>
 
 <script>
-import argumentModalXMixin from '@/components/editor/argumentModalXMixin.js'
+import valueModalMixin from '@/components/editor/valueModalMixin.js'
 
 export default {
-  name: "ArgumentModalReal",
-  mixins: [argumentModalXMixin],
+  name: "ValueModalReal",
+  mixins: [valueModalMixin],
   created() {
     if (
-      Number(this.parentArgument) === this.parentArgument &&
-      this.parentArgument % 1 !== 0
+      Number(this.parentValue) === this.parentValue &&
+      this.parentValue % 1 !== 0
     ) {
-      this.contentBuffer = this.parentArgument
+      this.valueBuffer = this.parentValue
       this.pushMyValue()
     } else {
-      this.contentBuffer = 1.50
+      this.valueBuffer = 1.50
     }
   },
 }

@@ -10,24 +10,24 @@
         type="number"
         @focus="pushMyValue"
         @input="pushMyValue"
-        v-model="contentBuffer"
+        v-model="valueBuffer"
       >
     </div>
   </div>
 </template>
 
 <script>
-import argumentModalXMixin from '@/components/editor/argumentModalXMixin.js'
+import valueModalMixin from '@/components/editor/valueModalMixin.js'
 
 export default {
-  name: "ArgumentModalInteger",
-  mixins: [argumentModalXMixin],
+  name: "ValueModalInteger",
+  mixins: [valueModalMixin],
   created() {
-    if (Number.isInteger(this.parentArgument)) {
-      this.contentBuffer = this.parentArgument
+    if (Number.isInteger(this.parentValue)) {
+      this.valueBuffer = this.parentValue
       this.pushMyValue()
     } else {
-      this.contentBuffer = 1
+      this.valueBuffer = 1
     }
   },
 }

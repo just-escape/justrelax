@@ -15,7 +15,7 @@
         </option>
       </select>
 
-      <ContextLinksModal
+      <TemplateEditable
         :modalId="modalId"
         :args="args"
         :links="links"
@@ -26,28 +26,28 @@
 </template>
 
 <script>
-import argumentModalXMixin from '@/components/editor/argumentModalXMixin.js'
+import valueModalMixin from '@/components/editor/valueModalMixin.js'
 import editorStore from '@/store/editorStore.js'
 
 export default {
-  name: "ArgumentModalFunction",
-  mixins: [argumentModalXMixin],
+  name: "ValueModalFunction",
+  mixins: [valueModalMixin],
   components: {
-    ContextLinksModal: () => import('@/components/editor/ContextLinksModal.vue'),
+    TemplateEditable: () => import('@/components/editor/TemplateEditable.vue'),
   },
   computed: {
     functions() {
-      return editorStore.state.functions
+      return editorStore.state.templates.function
     },
     orderedFunctions() {
-      return editorStore.state.orderedFunctions
+      return editorStore.state.orderedTemplates.function
     },
     selectedFunction: {
       get() {
-        return this.contentBuffer.operator
+        return this.valueBuffer.operator
       },
       set(value) {
-        this.contentBuffer.operator = value
+        this.valueBuffer.operator = value
         this.pushMyValue()
       },
     },
@@ -56,30 +56,27 @@ export default {
     },
     args() {
       // The 'operator' key is unnecessarily passed but whatever
-      return this.contentBuffer
+      return this.valueBuffer
     }
   },
   methods: {
-    updateArgument(argumentKey, argument) {
-      this.contentBuffer[argumentKey] = argument
+    updateArgument(key, value) {
+      this.valueBuffer[key] = value
       this.pushMyValue()
     },
   },
   created() {
-    if (typeof this.parentArgument === "object" && this.parentArgument.operator !== undefined) {
-      this.contentBuffer = JSON.parse(JSON.stringify(this.parentArgument))
+    if (typeof this.parentValue === "object" && this.parentValue.operator !== undefined) {
+      this.valueBuffer = JSON.parse(JSON.stringify(this.parentValue))
       this.pushMyValue()
     } else {
-      let default_function = this.orderedFunctions[0]
+      let defaultFunction = this.orderedFunctions[0]
 
-      this.contentBuffer = {
-        operator: default_function.name,
-      }
+      this.$set(this, 'valueBuffer', {operator: defaultFunction.name})
 
-      // Init arguments from default values
-      for (var i = 0 ; i < default_function.links.length ; i++) {
-        if (default_function.links[i].link_type === "argument") {
-          this.contentBuffer[default_function.links[i].key] = default_function.links[i].default_value
+      for (var link of defaultFunction.links) {
+        if (link.type === "argument") {
+          this.valueBuffer[link.key] = link.default_value
         }
       }
     }

@@ -17,18 +17,18 @@
 </template>
 
 <script>
-import argumentModalXMixin from '@/components/editor/argumentModalXMixin.js'
+import valueModalMixin from '@/components/editor/valueModalMixin.js'
 
 export default {
-  name: "ArgumentModalObject",
-  mixins: [argumentModalXMixin],
+  name: "ValueModalObject",
+  mixins: [valueModalMixin],
   computed: {
     object: {
       get() {
-        return JSON.stringify(this.contentBuffer.object)
+        return JSON.stringify(this.valueBuffer.object)
       },
       set(value) {
-        this.contentBuffer = {
+        this.valueBuffer = {
           object: JSON.parse(value),
         }
         this.pushMyValue()
@@ -36,10 +36,11 @@ export default {
     }
   },
   created() {
-    if (typeof this.parentArgument === "object" && this.parentArgument.object !== undefined) {
-      this.contentBuffer = this.parentArgument
+    if (typeof this.parentValue === "object" && this.parentValue.object !== undefined) {
+      this.valueBuffer = this.parentValue
+      this.pushMyValue()
     } else {
-      this.contentBuffer = {object: {}}
+      this.valueBuffer = {object: {}}
     }
   },
 }

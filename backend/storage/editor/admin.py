@@ -1,14 +1,14 @@
 from django.contrib import admin
 
 from editor.models import Function, FunctionForm
-from editor.models import FunctionLink, FunctionLinkForm
+from editor.models import FunctionTemplateLink, FunctionTemplateLinkForm
 from editor.models import Variable, VariableForm
 from editor.models import VariableType, VariableTypeForm
 from editor.models import Rule, RuleForm
-from editor.models import ContentType, ContentTypeForm
-from editor.models import ContentTypeLink, ContentTypeLinkForm
-from editor.models import Context, ContextForm
-from editor.models import ContextArgument, ContextArgumentForm
+from editor.models import ComponentTemplate, ComponentTemplateForm
+from editor.models import ComponentTemplateLink, ComponentTemplateLinkForm
+from editor.models import Component, ComponentForm
+from editor.models import ComponentArgument, ComponentArgumentForm
 
 
 class FunctionAdmin(admin.ModelAdmin):
@@ -17,19 +17,19 @@ class FunctionAdmin(admin.ModelAdmin):
     search_fields = ('category', 'name', 'return_type',)
 
 
-class FunctionLinkAdmin(admin.ModelAdmin):
-    form = FunctionLinkForm
+class FunctionTemplateLinkAdmin(admin.ModelAdmin):
+    form = FunctionTemplateLinkForm
     list_display = (
         'function',
         'index',
-        'link_type',
+        'type',
         'text',
         'key',
         'default_value',
     )
     search_fields = (
         'function__name',
-        'link_type',
+        'type',
         'text',
         'key',
         'default_value',
@@ -54,65 +54,66 @@ class RuleAdmin(admin.ModelAdmin):
     search_fields = ('s', 'name',)
 
 
-class ContentTypeAdmin(admin.ModelAdmin):
-    form = ContentTypeForm
-    list_display = ('index', 'name', 'context_type',)
-    search_fields = ('name', 'context_type',)
+class ComponentTemplateAdmin(admin.ModelAdmin):
+    form = ComponentTemplateForm
+    list_display = ('index', 'name', 'context',)
+    search_fields = ('name', 'context',)
 
 
-class ContentTypeLinkAdmin(admin.ModelAdmin):
-    form = ContentTypeLinkForm
+class ComponentTemplateLinkAdmin(admin.ModelAdmin):
+    form = ComponentTemplateLinkForm
     list_display = (
-        'content_type',
+        'template',
         'index',
-        'link_type',
+        'type',
         'text',
         'key',
         'default_value',
     )
     search_fields = (
-        'content_type__name',
-        'link_type',
+        'template__name',
+        'type',
         'text',
         'key',
         'default_value',
     )
 
 
-class ContextAdmin(admin.ModelAdmin):
-    form = ContextForm
+class ComponentAdmin(admin.ModelAdmin):
+    form = ComponentForm
     list_display = (
         'rule',
-        'content_type',
+        'template',
         'index',
     )
     search_fields = (
         'rule__name',
-        'content_type__context_type',
+        'template__context_type',
     )
 
 
-class ContextArgumentAdmin(admin.ModelAdmin):
-    form = ContextArgumentForm
+class ComponentArgumentAdmin(admin.ModelAdmin):
+    form = ComponentArgumentForm
     list_display = (
-        'context',
+        'component',
         'key',
         'value',
     )
     search_fields = (
-        'context__rule__name',
-        'context__rule__content_type__context_type',
+        'component__rule__name',
+        'component__template__name',
+        'component__template__context',
         'key',
         'value',
     )
 
 
 admin.site.register(Function, FunctionAdmin)
-admin.site.register(FunctionLink, FunctionLinkAdmin)
+admin.site.register(FunctionTemplateLink, FunctionTemplateLinkAdmin)
 admin.site.register(Variable, VariableAdmin)
 admin.site.register(VariableType, VariableTypeAdmin)
 admin.site.register(Rule, RuleAdmin)
-admin.site.register(ContentType, ContentTypeAdmin)
-admin.site.register(ContentTypeLink, ContentTypeLinkAdmin)
-admin.site.register(Context, ContextAdmin)
-admin.site.register(ContextArgument, ContextArgumentAdmin)
+admin.site.register(ComponentTemplate, ComponentTemplateAdmin)
+admin.site.register(ComponentTemplateLink, ComponentTemplateLinkAdmin)
+admin.site.register(Component, ComponentAdmin)
+admin.site.register(ComponentArgument, ComponentArgumentAdmin)

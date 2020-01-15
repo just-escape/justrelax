@@ -10,24 +10,24 @@
         class="w-100"
         @focus="pushMyValue"
         @input="pushMyValue"
-        v-model="contentBuffer"
+        v-model="valueBuffer"
       >
     </div>
   </div>
 </template>
 
 <script>
-import argumentModalXMixin from '@/components/editor/argumentModalXMixin.js'
+import valueModalMixin from '@/components/editor/valueModalMixin.js'
 
 export default {
-  name: "ArgumentModalString",
-  mixins: [argumentModalXMixin],
+  name: "ValueModalString",
+  mixins: [valueModalMixin],
   created() {
-    if (typeof this.parentArgument === "string") {
-      this.contentBuffer = this.parentArgument
+    if (typeof this.parentValue === "string") {
+      this.valueBuffer = this.parentValue
       this.pushMyValue()
     } else {
-      this.contentBuffer = "hello"
+      this.valueBuffer = "hello"
     }
   },
 }

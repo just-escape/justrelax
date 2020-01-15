@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import argumentModalMixin from '@/components/editor/argumentModalXMixin.js'
+import valueModalMixin from '@/components/editor/valueModalMixin.js'
 
 export default {
-  name: "ArgumentModalVariable",
-  mixins: [argumentModalMixin],
+  name: "ValueModalVariable",
+  mixins: [valueModalMixin],
   data() {
     return {
       options: {
@@ -36,10 +36,10 @@ export default {
   computed: {
     selectedVariable: {
       get() {
-        return this.contentBuffer.variable
+        return this.valueBuffer.variable
       },
       set(value) {
-        this.contentBuffer = {
+        this.valueBuffer = {
           variable: value,
         }
         this.pushMyValue()
@@ -47,10 +47,11 @@ export default {
     },
   },
   created() {
-    if (typeof this.parentArgument === "object" && this.parentArgument.variable !== undefined) {
-      this.contentBuffer = this.parentArgument
+    if (typeof this.parentValue === "object" && this.parentValue.variable !== undefined) {
+      this.valueBuffer = this.parentValue
+      this.pushMyValue()
     } else {
-      this.contentBuffer = {
+      this.valueBuffer = {
         variable: Object.keys(this.options)[0]
       }
     }

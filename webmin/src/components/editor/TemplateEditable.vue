@@ -1,19 +1,19 @@
 <template>
   <div>
     <span v-for="link in links" :key="link.key">
-      <span v-if="link.link_type === 'text'">{{ link.text }}</span>
-      <span v-else-if="link.link_type === 'argument'">
-        <FormattedArgument
+      <span v-if="link.type === 'text'">{{ link.text }}</span>
+      <span v-else-if="link.type === 'argument'">
+        <FormattedValue
           v-b-modal="getSubmodalId(link.key)"
-          :argument="args[link.key]"
+          :value="args[link.key]"
           :editable="true"
           :lastEdited="lastEditedArgumentKey === link.key"
         />
-        <ArgumentModal
+        <ValueModal
           :modalId="getSubmodalId(link.key)"
-          :argument="args[link.key]"
-          @updateArgument="(argument) => updateArgument(link.key, argument)"
-          @hidden="updateLastEditedArgumentKey(link.key)"
+          :value="args[link.key]"
+          @update="(value) => updateArgument(link.key, value)"
+          @hidden="updateLastEditedArgument(link.key)"
         />
       </span>
     </span>
@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import FormattedArgument from '@/components/editor/FormattedArgument.vue'
-import ArgumentModal from '@/components/editor/ArgumentModal.vue'
+import FormattedValue from '@/components/editor/FormattedValue.vue'
+import ValueModal from '@/components/editor/ValueModal.vue'
 
 export default {
-  name: "ContextLinksModal",
+  name: "TemplateEditable",
   components: {
-    FormattedArgument,
-    ArgumentModal,
+    FormattedValue,
+    ValueModal,
   },
   data() {
     return {
@@ -39,10 +39,10 @@ export default {
     getSubmodalId(suffix) {
       return this.modalId + '-' + suffix
     },
-    updateArgument(argumentKey, argument) {
-      this.$emit('updateArgument', argumentKey, argument)
+    updateArgument(key, value) {
+      this.$emit('updateArgument', key, value)
     },
-    updateLastEditedArgumentKey(argumentKey) {
+    updateLastEditedArgument(argumentKey) {
       this.lastEditedArgumentKey = argumentKey
     },
   },

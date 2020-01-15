@@ -30,15 +30,15 @@
             <div class="mr-3 align-self-center">{{ displayedRule.name }}</div>
 
             <b-button-group>
-              <ButtonSmall class="position-relative" @click="addTrigger()">
+              <ButtonSmall class="position-relative" @click="addComponent('trigger')">
                 <i class="fas fa-exclamation fa-fw"></i>
                 <i class="fas fa-plus bottom-right"></i>
               </ButtonSmall>
-              <ButtonSmall class="position-relative" @click="addCondition()">
+              <ButtonSmall class="position-relative" @click="addComponent('condition')">
                 <i class="fas fa-question fa-fw"></i>
                 <i class="fas fa-plus bottom-right"></i>
               </ButtonSmall>
-              <ButtonSmall class="position-relative" @click="addAction()">
+              <ButtonSmall class="position-relative" @click="addComponent('action')">
                 <i class="fas fa-play fa-fw"></i>
                 <i class="fas fa-plus bottom-right"></i>
               </ButtonSmall>
@@ -48,31 +48,31 @@
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col">
-                <ContextParagraph
+                <Context
                   :title="'Triggers'"
-                  :contextType="'trigger'"
-                  :lines="displayedRule.triggers"
-                  @updateLine="updateTrigger"
+                  :type="'trigger'"
+                  :components="displayedRule.triggers"
+                  @updateComponent="(index, c) => updateComponent('trigger', index, c)"
                 />
               </div>
             </div>
             <div class="row mb-2">
               <div class="col">
-                <ContextParagraph
+                <Context
                   :title="'Conditions'"
-                  :contextType="'condition'"
-                  :lines="displayedRule.conditions"
-                  @updateLine="updateCondition"
+                  :type="'condition'"
+                  :components="displayedRule.conditions"
+                  @updateComponent="(index, c) => updateComponent('condition', index, c)"
                 />
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <ContextParagraph
+                <Context
                   :title="'Actions'"
-                  :contextType="'action'"
-                  :lines="displayedRule.actions"
-                  @updateLine="updateAction"
+                  :type="'action'"
+                  :components="displayedRule.actions"
+                  @updateComponent="(index, c) => updateComponent('action', index, c)"
                 />
               </div>
             </div>
@@ -85,18 +85,18 @@
 
 <script>
 import ButtonSmall from "@/components/common/ButtonSmall"
-import ContextParagraph from "@/components/editor/ContextParagraph.vue"
+import Context from "@/components/editor/Context.vue"
 import editorStore from "@/store/editorStore.js"
 
 export default {
   name: 'TabRules',
   components: {
     ButtonSmall,
-    ContextParagraph,
+    Context,
   },
   data() {
     return {
-      displayRuleIndex: 0,
+      displayedRuleIndex: 0,
     }
   },
   computed: {
@@ -104,40 +104,27 @@ export default {
       return editorStore.state.rules
     },
     displayedRule: function() {
-      if (editorStore.state.rules[this.displayRuleIndex] === undefined) {
+      if (editorStore.state.rules[this.displayedRuleIndex] === undefined) {
         return null
       } else {
-        return editorStore.state.rules[this.displayRuleIndex]
+        return editorStore.state.rules[this.displayedRuleIndex]
       }
     },
   },
   methods: {
     displayRule: function(index) {
-      this.displayRuleIndex = index
+      this.displayedRuleIndex = index
     },
     addRule: function() {
       editorStore.commit('addRule')
     },
-    addTrigger: function() {
-      editorStore.commit('addTrigger', this.displayRuleIndex)
+    addComponent: function(context) {
+      let ruleIndex = this.displayedRuleIndex
+      editorStore.commit('addComponent', {ruleIndex, context})
     },
-    updateTrigger: function(triggerIndex, trigger) {
-      let ruleIndex = this.displayRuleIndex
-      editorStore.commit('updateTrigger', {ruleIndex, triggerIndex, trigger})
-    },
-    addCondition: function() {
-      editorStore.commit('addCondition', this.displayRuleIndex)
-    },
-    updateCondition: function(conditionIndex, condition) {
-      let ruleIndex = this.displayRuleIndex
-      editorStore.commit('updateCondition', {ruleIndex, conditionIndex, condition})
-    },
-    addAction: function() {
-      editorStore.commit('addAction', this.displayRuleIndex)
-    },
-    updateAction: function(actionIndex, action) {
-      let ruleIndex = this.displayRuleIndex
-      editorStore.commit('updateAction', {ruleIndex, actionIndex, action})
+    updateComponent: function(context, componentIndex, component) {
+      let ruleIndex = this.displayedRuleIndex
+      editorStore.commit('updateComponent', {ruleIndex, context, componentIndex, component})
     },
   }
 }
