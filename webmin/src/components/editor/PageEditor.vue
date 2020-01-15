@@ -52,7 +52,7 @@ import TabRules from '@/components/editor/TabRules.vue'
 import TabVariables from '@/components/editor/TabVariables.vue'
 import TabAdmin from '@/components/editor/TabAdmin.vue'
 import roomStore from '@/store/roomStore.js'
-import rulesStore from '@/store/rulesStore.js'
+import editorStore from '@/store/editorStore.js'
 
 export default {
   name: 'PageEditor',
@@ -78,76 +78,14 @@ export default {
       var roomId = this.roomId
       var rules = this.rules
       roomStore.dispatch("updateRules", {roomId, rules})
+    },
+    loadEditorData() {
+      editorStore.dispatch('loadFixtures')
+      editorStore.dispatch('loadScenario')
     }
   },
-  watch: {
-    room: function(newValue) {
-      var rules = newValue.rules
-      rules = [
-        {
-          name: "press_button",
-          index: 0,
-          triggers: [
-            {
-              id: 1,
-              index: 0,
-              type: "incoming_message",
-            }
-          ],
-          conditions: [
-            {
-              id: 3,
-              index: 0,
-              name: "condition 1",
-            },
-          ],
-          actions: [
-            {
-              id: 1,
-              index: 0,
-              name: "switch_yellow_led_on",
-            },
-            {
-              id: 2,
-              index: 1,
-              name: "cancel_red_and_green_led_hint_alarm"
-            },
-          ]
-        },
-        {
-          name: "press_button2",
-          index: 1,
-          triggers: [
-            {
-              id: 1,
-              index: 0,
-              type: "incoming_message2",
-            }
-          ],
-          conditions: [
-            {
-              id: 3,
-              index: 0,
-              name: "condition 2",
-            },
-          ],
-          actions: [
-            {
-              id: 1,
-              index: 0,
-              name: "switch_yellow_led_on2",
-            },
-            {
-              id: 2,
-              index: 1,
-              name: "cancel_red_and_green_led_hint_alarm2"
-            },
-          ]
-        }
-      ]
-      rulesStore.commit('loadRules', rules)
-      this.rules = JSON.stringify(rules)
-    }
+  created() {
+    this.loadEditorData()
   },
   props: ['roomId']
 }

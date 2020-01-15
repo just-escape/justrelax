@@ -3,14 +3,15 @@
     <ContextLinksLine
       v-b-modal="modalId"
       class="pointer"
-      :contextLinks="contextLinks"
+      :args="args"
+      :links="links"
     />
 
     <ContextModal
-      @update="updateContent"
+      @update="updateContext"
       :modalId="modalId"
       :contextType="contextType"
-      :content="content"
+      :context="context"
     />
   </div>
 </template>
@@ -18,7 +19,7 @@
 <script>
 import ContextLinksLine from '@/components/editor/ContextLinksLine.vue'
 import ContextModal from '@/components/editor/ContextModal.vue'
-import rulesStore from '@/store/rulesStore.js'
+import editorStore from '@/store/editorStore.js'
 
 export default {
   name: "ContextLine",
@@ -28,32 +29,23 @@ export default {
   },
   computed: {
     modalId: function() {
-      return this.contextType + '-' + this.content.index
+      return this.contextType + '-' + this.contextId
     },
-    contextLinks: function() {
-      let contentTypes = rulesStore.state.contextTypes[this.contextType]
-      for (var i = 0 ; i < contentTypes.length ; i++) {
-        if (contentTypes[i].name === this.content.type) {
-          var contextLinks = JSON.parse(JSON.stringify(contentTypes[i].contextLinks))
-          for (var j = 0 ; j < contextLinks.length ; j++) {
-            if (contextLinks[j].type === "argument") {
-              contextLinks[j].argument = this.content[contextLinks[j].argumentId]
-            }
-          }
-          return contextLinks
-        }
-      }
-      return [{type: "text", text: "error"}]
+    links: function() {
+      return editorStore.state.contextTypes[this.contextType][this.context.content_type].links
+    },
+    args: function() {
+      return this.context.arguments
     },
   },
   methods: {
-    updateContent: function(content) {
-      content.index = this.content.index
-      this.$emit('updateContent', content)
+    updateContext: function(context) {
+      this.$emit('updateContext', context)
     },
   },
   props: {
-    content: Object,
+    context: Object,
+    contextId: Number,
     contextType: String,
   }
 }

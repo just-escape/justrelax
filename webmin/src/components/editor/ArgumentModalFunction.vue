@@ -5,18 +5,20 @@
       <span class="ml-2">Function :</span>
     </div>
     <div @focus="pushMyValue" class="col-9">
-      <select v-model="selectedFunction" @focus="selectedFunction = '+'" class="w-100">
+      <select v-model="selectedFunction" @focus="pushMyValue" class="w-100">
         <option
-          v-for="(label, value) in options"
-          :key="value"
-          :value="value"
+          v-for="f in orderedFunctions"
+          :key="f.name"
+          :value="f.name"
         >
-          {{ label }}
+          {{ f.name }}
         </option>
       </select>
 
       <ContextLinksModal
-        :contextLinks="contextLinksBuffer"
+        :modalId="modalId"
+        :args="args"
+        :links="links"
         @updateArgument="updateArgument"
       />
     </div>
@@ -25,7 +27,7 @@
 
 <script>
 import argumentModalXMixin from '@/components/editor/argumentModalXMixin.js'
-import rulesStore from '@/store/rulesStore.js'
+import editorStore from '@/store/editorStore.js'
 
 export default {
   name: "ArgumentModalFunction",
@@ -33,85 +35,57 @@ export default {
   components: {
     ContextLinksModal: () => import('@/components/editor/ContextLinksModal.vue'),
   },
-  data() {
-    return {
-      selectedFunction_: undefined,
-      contextLinksBuffer: [],
-    }
-  },
   computed: {
-    functionTypes() {
-      return rulesStore.state.functionTypes
+    functions() {
+      return editorStore.state.functions
     },
-    options() {
-      var options = {}
-      for (var i = 0 ; i < this.functionTypes.length ; i++) {
-        options[this.functionTypes[i].name] = this.functionTypes[i].label
-      }
-      return options
+    orderedFunctions() {
+      return editorStore.state.orderedFunctions
     },
     selectedFunction: {
       get() {
-        return this.selectedFunction_
+        return this.contentBuffer.operator
       },
       set(value) {
-        // The first initialization doesn't push (this.selectedFunction_ is initially undefined)
-        let pushAfterUpdate = this.selectedFunction_ !== undefined
-
-        this.selectedFunction_ = value
-        for (var i = 0 ; i < this.functionTypes.length ; i++) {
-          if (this.functionTypes[i].name === this.selectedFunction) {
-            this.contextLinksBuffer = JSON.parse(JSON.stringify(this.functionTypes[i].contextLinks))
-            break
-          }
-        }
-
-        if (pushAfterUpdate) {
-          this.pushMyValue()
-        }
+        this.contentBuffer.operator = value
+        this.pushMyValue()
       },
+    },
+    links() {
+      return this.functions[this.selectedFunction].links
+    },
+    args() {
+      // The 'operator' key is unnecessarily passed but whatever
+      return this.contentBuffer
     }
   },
   methods: {
-    pushMyValue() {
-      var value = {
-        operator: this.selectedFunction,
-      }
-      for (var i = 0 ; i < this.contextLinksBuffer.length ; i++) {
-        if (this.contextLinksBuffer[i].type === "argument") {
-          value[this.contextLinksBuffer[i].argumentId] = this.contextLinksBuffer[i].argument
-        }
-      }
-      this.$emit('pushValue', value)
-    },
-    updateArgument(argumentId, argument) {
-      for (var i = 0 ; i < this.contextLinksBuffer.length ; i++) {
-        if (
-          this.contextLinksBuffer[i].type === "argument" &&
-          this.contextLinksBuffer[i].argumentId === argumentId
-        ) {
-          this.contextLinksBuffer[i].argument = argument
-          break
-        }
-      }
+    updateArgument(argumentKey, argument) {
+      this.contentBuffer[argumentKey] = argument
       this.pushMyValue()
-    },
-    initArguments() {
-      for (var i = 0 ; i < this.contextLinksBuffer.length ; i++) {
-        if (this.contextLinksBuffer[i].type === "argument") {
-          this.contextLinksBuffer[i].argument = this.parentArgument[this.contextLinksBuffer[i].argumentId]
-        }
-      }
     },
   },
   created() {
     if (typeof this.parentArgument === "object" && this.parentArgument.operator !== undefined) {
-      this.selectedFunction = this.parentArgument.operator
-      this.initArguments()
+      this.contentBuffer = JSON.parse(JSON.stringify(this.parentArgument))
       this.pushMyValue()
     } else {
-      this.selectedFunction = "+"
+      let default_function = this.orderedFunctions[0]
+
+      this.contentBuffer = {
+        operator: default_function.name,
+      }
+
+      // Init arguments from default values
+      for (var i = 0 ; i < default_function.links.length ; i++) {
+        if (default_function.links[i].link_type === "argument") {
+          this.contentBuffer[default_function.links[i].key] = default_function.links[i].default_value
+        }
+      }
     }
   },
+  props: {
+    modalId: String,
+  }
 }
 </script>

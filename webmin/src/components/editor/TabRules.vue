@@ -22,7 +22,10 @@
     </div>
     <div class="container-fluid">
       <div class="row">
-        <div class="col">
+        <div v-if="displayedRule === null" class="col">
+          Loading...
+        </div>
+        <div v-else class="col">
           <div class="d-flex flex-row mb-3">
             <div class="mr-3 align-self-center">{{ displayedRule.name }}</div>
 
@@ -48,7 +51,7 @@
                 <ContextParagraph
                   :title="'Triggers'"
                   :contextType="'trigger'"
-                  :lines="displayedRuleTriggers"
+                  :lines="displayedRule.triggers"
                   @updateLine="updateTrigger"
                 />
               </div>
@@ -58,7 +61,7 @@
                 <ContextParagraph
                   :title="'Conditions'"
                   :contextType="'condition'"
-                  :lines="displayedRuleConditions"
+                  :lines="displayedRule.conditions"
                   @updateLine="updateCondition"
                 />
               </div>
@@ -68,7 +71,7 @@
                 <ContextParagraph
                   :title="'Actions'"
                   :contextType="'action'"
-                  :lines="displayedRuleActions"
+                  :lines="displayedRule.actions"
                   @updateLine="updateAction"
                 />
               </div>
@@ -83,7 +86,7 @@
 <script>
 import ButtonSmall from "@/components/common/ButtonSmall"
 import ContextParagraph from "@/components/editor/ContextParagraph.vue"
-import rulesStore from "@/store/rulesStore.js"
+import editorStore from "@/store/editorStore.js"
 
 export default {
   name: 'TabRules',
@@ -98,30 +101,13 @@ export default {
   },
   computed: {
     rules: function() {
-      return rulesStore.state.rules
+      return editorStore.state.rules
     },
     displayedRule: function() {
-      return rulesStore.state.rules[this.displayRuleIndex]
-    },
-    displayedRuleTriggers: function() {
-      if (this.displayedRule === null) {
-        return []
+      if (editorStore.state.rules[this.displayRuleIndex] === undefined) {
+        return null
       } else {
-        return this.displayedRule.triggers
-      }
-    },
-    displayedRuleConditions: function() {
-      if (this.displayedRule === null) {
-        return []
-      } else {
-        return this.displayedRule.conditions
-      }
-    },
-    displayedRuleActions: function() {
-      if (this.displayedRule === null) {
-        return []
-      } else {
-        return this.displayedRule.actions
+        return editorStore.state.rules[this.displayRuleIndex]
       }
     },
   },
@@ -130,28 +116,28 @@ export default {
       this.displayRuleIndex = index
     },
     addRule: function() {
-      rulesStore.commit('addRule')
+      editorStore.commit('addRule')
     },
     addTrigger: function() {
-      rulesStore.commit('addTrigger', this.displayRuleIndex)
+      editorStore.commit('addTrigger', this.displayRuleIndex)
     },
-    updateTrigger: function(trigger) {
+    updateTrigger: function(triggerIndex, trigger) {
       let ruleIndex = this.displayRuleIndex
-      rulesStore.commit('updateTrigger', {ruleIndex, trigger})
+      editorStore.commit('updateTrigger', {ruleIndex, triggerIndex, trigger})
     },
     addCondition: function() {
-      rulesStore.commit('addCondition', this.displayRuleIndex)
+      editorStore.commit('addCondition', this.displayRuleIndex)
     },
-    updateCondition: function(condition) {
+    updateCondition: function(conditionIndex, condition) {
       let ruleIndex = this.displayRuleIndex
-      rulesStore.commit('updateCondition', {ruleIndex, condition})
+      editorStore.commit('updateCondition', {ruleIndex, conditionIndex, condition})
     },
     addAction: function() {
-      rulesStore.commit('addAction', this.displayRuleIndex)
+      editorStore.commit('addAction', this.displayRuleIndex)
     },
-    updateAction: function(action) {
+    updateAction: function(actionIndex, action) {
       let ruleIndex = this.displayRuleIndex
-      rulesStore.commit('updateAction', {ruleIndex, action})
+      editorStore.commit('updateAction', {ruleIndex, actionIndex, action})
     },
   }
 }

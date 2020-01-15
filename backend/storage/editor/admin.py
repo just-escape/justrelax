@@ -8,7 +8,7 @@ from editor.models import Rule, RuleForm
 from editor.models import ContentType, ContentTypeForm
 from editor.models import ContentTypeLink, ContentTypeLinkForm
 from editor.models import Context, ContextForm
-from editor.models import ContextValue, ContextValueForm
+from editor.models import ContextArgument, ContextArgumentForm
 
 
 class FunctionAdmin(admin.ModelAdmin):
@@ -92,8 +92,8 @@ class ContextAdmin(admin.ModelAdmin):
     )
 
 
-class ContextValueAdmin(admin.ModelAdmin):
-    form = ContextValueForm
+class ContextArgumentAdmin(admin.ModelAdmin):
+    form = ContextArgumentForm
     list_display = (
         'context',
         'key',
@@ -115,4 +115,4 @@ admin.site.register(Rule, RuleAdmin)
 admin.site.register(ContentType, ContentTypeAdmin)
 admin.site.register(ContentTypeLink, ContentTypeLinkAdmin)
 admin.site.register(Context, ContextAdmin)
-admin.site.register(ContextValue, ContextValueAdmin)
+admin.site.register(ContextArgument, ContextArgumentAdmin)

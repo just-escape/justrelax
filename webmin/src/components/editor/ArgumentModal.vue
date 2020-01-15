@@ -12,6 +12,7 @@
     />
 
     <ArgumentModalFunction
+      :modalId="modalId"
       :parentArgument="argument"
       :checked="selectedSource === 'function'"
       @pushValue="(value) => updateArgumentBuffer('function', value)"

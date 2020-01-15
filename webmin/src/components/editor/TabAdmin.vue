@@ -12,7 +12,6 @@
 
 <script>
 import PageEditorAdminCard from '@/components/editor/TabAdminCard.vue'
-import rulesStore from '@/store/rulesStore.js'
 
 export default {
   name: 'TabAdmin',
@@ -21,7 +20,7 @@ export default {
   },
   computed: {
     admin: function() {
-      return rulesStore.state.admin
+      return []
     }
   },
 }

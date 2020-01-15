@@ -18,13 +18,19 @@ export default {
   methods: {
     format(argument) {
       if (argument === null) {
-        return "None"
+        return "<Nothing>"
       } else if (argument === true) {
         return "True"
       } else if (argument === false) {
         return "False"
-      } else if (["string", "number"].includes(typeof argument)) {
+      } else if (typeof argument === "number") {
         return argument
+      } else if (typeof argument === "string") {
+        if (argument === "") {
+          return "<Empty string>"
+        } else {
+          return argument
+        }
       } else if (typeof argument === "object") {
         if (argument.operator !== undefined) {
           var formattedArgument = argument.operator + ' ' + this.format(argument.right)
@@ -58,7 +64,7 @@ export default {
         }
       }
 
-      return "Undefined"
+      return "<Error>"
     }
   },
   props: {

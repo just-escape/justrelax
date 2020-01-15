@@ -14,14 +14,14 @@ VALUE_TYPES = (
 
 STRUCTURE_LINK_TYPES = (
     ('text', 'text'),
-    ('value', 'value'),
+    ('argument', 'argument'),
 )
 
 
 class Function(models.Model):
-    category = models.CharField(max_length=64)
+    category = models.CharField(max_length=64, blank=True)
     index = models.IntegerField(unique=True)
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     return_type = models.CharField(
         choices=VALUE_TYPES, default=VALUE_TYPES[0][0], max_length=8)
 
@@ -46,7 +46,7 @@ class FunctionLink(models.Model):
     text = models.CharField(max_length=128, null=True)
 
     # relevant if link_type is value
-    key = models.CharField(max_length=64, null=True, unique=True)
+    key = models.CharField(max_length=64, null=True)
     default_value = models.TextField(null=True, blank=True)
 
     class Meta:
@@ -55,6 +55,10 @@ class FunctionLink(models.Model):
                 fields=['function', 'index'],
                 name='function_link_index',
             ),
+            models.UniqueConstraint(
+                fields=['function', 'key'],
+                name='function_link_key',
+            )
         ]
 
 
@@ -146,6 +150,10 @@ class ContentType(models.Model):
                 fields=['context_type', 'index'],
                 name='content_type_index',
             ),
+            models.UniqueConstraint(
+                fields=['context_type', 'name'],
+                name='content_type_name',
+            )
         ]
 
 
@@ -169,7 +177,7 @@ class ContentTypeLink(models.Model):
     text = models.CharField(max_length=128, null=True)
 
     # relevant if link_type is value
-    key = models.CharField(max_length=64, null=True, unique=True)
+    key = models.CharField(max_length=64, null=True)
     default_value = models.TextField(null=True, blank=True)
 
     class Meta:
@@ -178,6 +186,10 @@ class ContentTypeLink(models.Model):
                 fields=['content_type', 'index'],
                 name='content_type_link_index',
             ),
+            models.UniqueConstraint(
+                fields=['content_type', 'key'],
+                name='content_type_link_key',
+            )
         ]
 
 
@@ -218,7 +230,7 @@ class ContextForm(forms.ModelForm):
         )
 
 
-class ContextValue(models.Model):
+class ContextArgument(models.Model):
     context = models.ForeignKey(Context, on_delete=models.CASCADE)
     key = models.CharField(max_length=64, null=True)
     value = models.TextField(null=True, blank=True)
@@ -232,9 +244,9 @@ class ContextValue(models.Model):
         ]
 
 
-class ContextValueForm(forms.ModelForm):
+class ContextArgumentForm(forms.ModelForm):
     class Meta:
-        model = ContextValue
+        model = ContextArgument
         fields = (
             'context',
             'key',

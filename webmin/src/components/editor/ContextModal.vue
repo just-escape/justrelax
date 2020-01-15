@@ -5,18 +5,20 @@
     body-text-variant="light"
     @ok="ok"
   >
-    <select v-model="selectedContentType" class="mr-2">
+    <select v-model="selectedType" class="mr-2">
       <option
-        v-for="(label, value) in contentTypeOptions"
-        :key="value"
-        :value="value"
+        v-for="ct in orderedContentTypes"
+        :key="ct.name"
+        :value="ct.name"
       >
-        {{ label }}
+        {{ ct.name }}
       </option>
     </select>
 
     <ContextLinksModal
-      :contextLinks="contextLinksBuffer"
+      :args="args"
+      :links="links"
+      :modalId="modalId"
       @updateArgument="updateArgument"
     />
   </b-modal>
@@ -24,7 +26,7 @@
 
 <script>
 import ContextLinksModal from '@/components/editor/ContextLinksModal.vue'
-import rulesStore from '@/store/rulesStore.js'
+import editorStore from '@/store/editorStore.js'
 
 export default {
   name: "ActionModal",
@@ -33,71 +35,55 @@ export default {
   },
   data() {
     return {
-      selectedContentType: undefined,
-      contextLinksBuffer: [],
+      contextBuffer: {},
     }
   },
   computed: {
     contentTypes() {
-      return rulesStore.state.contextTypes[this.contextType]
+      return editorStore.state.contextTypes[this.contextType]
     },
-    contentTypeOptions() {
-      var options = {}
-      for (var i = 0 ; i < this.contentTypes.length ; i++) {
-        options[this.contentTypes[i].name] = this.contentTypes[i].label
+    orderedContentTypes() {
+      return editorStore.state.orderedContextTypes[this.contextType]
+    },
+    links() {
+      return this.contentTypes[this.contextBuffer.content_type].links
+    },
+    args() {
+      return this.contextBuffer.arguments
+    },
+    selectedType: {
+      get() {
+        return this.contextBuffer.content_type
+      },
+      set(value) {
+        this.contextBuffer.content_type = value
+
+        var args = {}
+        let links = this.contentTypes[value].links
+        for (var i = 0 ; i < links.length ; i++) {
+          if (links[i].link_type === "argument") {
+            args[links[i].key] = links[i].default_value
+          }
+        }
+        this.contextBuffer.arguments = args
       }
-      return options
     },
   },
   methods: {
     ok: function() {
-      var content = {
-        type: this.selectedContentType,
-      }
-      for (var i = 0 ; i < this.contextLinksBuffer.length ; i++) {
-        if (this.contextLinksBuffer[i].type === "argument") {
-          content[this.contextLinksBuffer[i].argumentId] = this.contextLinksBuffer[i].argument
-        }
-      }
-      this.$emit('update', content)
+      this.$emit('update', JSON.parse(JSON.stringify(this.contextBuffer)))
     },
-    updateArgument(argumentId, argument) {
-      for (var i = 0 ; i < this.contextLinksBuffer.length ; i++) {
-        if (
-          this.contextLinksBuffer[i].type === "argument" &&
-          this.contextLinksBuffer[i].argumentId === argumentId
-        ) {
-          this.contextLinksBuffer[i].argument = argument
-          return
-        }
-      }
-    },
-    initArguments() {
-      for (var i = 0 ; i < this.contextLinksBuffer.length ; i++) {
-        if (this.contextLinksBuffer[i].type === "argument") {
-          this.contextLinksBuffer[i].argument = this.content[this.contextLinksBuffer[i].argumentId]
-        }
-      }
-    },
-  },
-  watch: {
-    selectedContentType() {
-      for (var i = 0 ; i < this.contentTypes.length ; i++) {
-        if (this.contentTypes[i].name === this.selectedContentType) {
-          this.contextLinksBuffer = JSON.parse(JSON.stringify(this.contentTypes[i].contextLinks))
-          return
-        }
-      }
+    updateArgument(argumentKey, argument) {
+      this.contextBuffer.arguments[argumentKey] = argument
     },
   },
   created() {
-    this.selectedContentType = this.content.type
-    this.initArguments()
+    this.contextBuffer = JSON.parse(JSON.stringify(this.context))
   },
   props: {
     modalId: String,
     contextType: String,
-    content: Object,
+    context: Object,
   }
 }
 </script>

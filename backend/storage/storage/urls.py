@@ -15,7 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
+# from rest_framework.routers import SimpleRouter
+
+from editor.views import get_fixtures, get_scenario
+
+# router = SimpleRouter()
+# router.register(r'get_editor_data', RuleViewSet)
 
 urlpatterns = [
+    url('^get_fixtures/$', get_fixtures),
+    url('^get_scenario/$', get_scenario),
     path('admin/', admin.site.urls),
 ]

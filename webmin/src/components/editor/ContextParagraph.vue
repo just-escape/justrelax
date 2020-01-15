@@ -8,11 +8,12 @@
         <div class="col">
           <div class="d-flex flex-column">
             <ContextLine
-              v-for="l in lines"
-              :key="l.index"
-              :content="l"
+              v-for="(l, index) in lines"
+              :key="index"
+              :context="l"
+              :contextId="index"
               :contextType="contextType"
-              @updateContent="updateContent"
+              @updateContext="(c) => updateContext(index, c)"
             />
           </div>
         </div>
@@ -43,8 +44,8 @@ export default {
     }
   },
   methods: {
-    updateContent(content) {
-      this.$emit('updateLine', content)
+    updateContext(contextIndex, context) {
+      this.$emit('updateLine', contextIndex, context)
     }
   },
   props: {

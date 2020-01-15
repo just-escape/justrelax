@@ -1,19 +1,19 @@
 <template>
   <div>
-    <span v-for="(link, index) in contextLinks" :key="index">
-      <span v-if="link.type === 'text'">{{ link.text }}</span>
-      <span v-else-if="link.type === 'argument'">
+    <span v-for="link in links" :key="link.key">
+      <span v-if="link.link_type === 'text'">{{ link.text }}</span>
+      <span v-else-if="link.link_type === 'argument'">
         <FormattedArgument
-          v-b-modal="getSubmodalId(link.argumentId)"
-          :argument="link.argument"
+          v-b-modal="getSubmodalId(link.key)"
+          :argument="args[link.key]"
           :editable="true"
-          :lastEdited="lastEditedArgumentId === link.argumentId"
+          :lastEdited="lastEditedArgumentKey === link.key"
         />
         <ArgumentModal
-          :modalId="getSubmodalId(link.argumentId)"
-          :argument="link.argument"
-          @updateArgument="(argument) => updateArgument(link.argumentId, argument)"
-          @hidden="updateLastEditedArgument(link.argumentId)"
+          :modalId="getSubmodalId(link.key)"
+          :argument="args[link.key]"
+          @updateArgument="(argument) => updateArgument(link.key, argument)"
+          @hidden="updateLastEditedArgumentKey(link.key)"
         />
       </span>
     </span>
@@ -32,27 +32,29 @@ export default {
   },
   data() {
     return {
-      lastEditedArgumentId: undefined,
+      lastEditedArgumentKey: undefined,
     }
   },
   methods: {
     getSubmodalId(suffix) {
       return this.modalId + '-' + suffix
     },
-    updateArgument(argumentId, argument) {
-      this.$emit('updateArgument', argumentId, argument)
+    updateArgument(argumentKey, argument) {
+      this.$emit('updateArgument', argumentKey, argument)
     },
-    updateLastEditedArgument(argumentId) {
-      this.lastEditedArgumentId = argumentId
+    updateLastEditedArgumentKey(argumentKey) {
+      this.lastEditedArgumentKey = argumentKey
     },
   },
   watch: {
-    contextLinks() {
-      this.lastEditedArgumentId = undefined
+    links() {
+      this.lastEditedArgumentKey = undefined
     }
   },
   props: {
-    contextLinks: Array,
+    args: Object,
+    links: Array,
+    modalId: String,
   },
 }
 </script>

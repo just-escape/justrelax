@@ -1,9 +1,9 @@
 <template>
   <div>
-    <span v-for="(link, index) in contextLinks" :key="index">
-      <span v-if="link.type === 'text'">{{ link.text }}</span>
-      <span v-else-if="link.type === 'argument'">
-        <FormattedArgument :argument="link.argument"/>
+    <span v-for="(link, index) in links" :key="index">
+      <span v-if="link.link_type === 'text'">{{ link.text }}</span>
+      <span v-else-if="link.link_type === 'argument'">
+        <FormattedArgument :argument="args[link.key]"/>
       </span>
     </span>
   </div>
@@ -18,7 +18,8 @@ export default {
     FormattedArgument,
   },
   props: {
-    contextLinks: Array,
+    args: Object,
+    links: Array,
   },
 }
 </script>
