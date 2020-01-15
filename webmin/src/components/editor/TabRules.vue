@@ -15,7 +15,7 @@
         </b-button-group>
       </div>
       <div class="d-flex flex-column">
-        <div v-for="r in rules" :key="r.index" class="pointer" @click="displayRule(r.index)">
+        <div v-for="(r, index) in rules" :key="index" class="pointer" @click="displayRule(index)">
           <i class="far fa-file fa-fw"></i> {{ r.name }}
         </div>
       </div>
