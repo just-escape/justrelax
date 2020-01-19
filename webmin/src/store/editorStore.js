@@ -27,8 +27,8 @@ export default new Vuex.Store({
       }
     },
     loadScenario (state, scenario) {
-      state.rules = scenario.rules
-      state.variables = scenario.variables
+      Vue.set(state, 'variables', scenario.variables)
+      Vue.set(state, 'rules', scenario.rules)
     },
     addRule (state) {
       state.rules.push(
@@ -60,12 +60,19 @@ export default new Vuex.Store({
       // + 's' is dirty
       Vue.set(state.rules[ruleIndex][context + 's'], componentIndex, component)
     },
+    setVariables (state, variables) {
+      Vue.set(state, 'variables', variables)
+    },
   },
   actions: {
+    loadEditorData(context) {
+      context.dispatch('loadTemplates')
+    },
     loadTemplates(context) {
       justRestAPI.get('/get_templates/')
         .then(function(response) {
           context.commit('loadTemplates', response.data)
+          context.dispatch('loadScenario')
         })
         .catch(function(error) {
           notificationStore.dispatch('pushError', 'Error while fetching templates: ' + error)
@@ -84,5 +91,19 @@ export default new Vuex.Store({
           notificationStore.dispatch('pushError', 'Error while fetching scenario: ' + error)
         })
     },
+    save(context) {
+      var formData = new FormData()
+      formData.set('scenario_id', 36)
+      formData.set('rules', JSON.stringify(context.state.rules))
+      formData.set('variables', JSON.stringify(context.state.variables))
+      justRestAPI.post('/update_scenario/', formData)
+        .then(function(response) {
+          notificationStore.dispatch('pushNotification', 'Scenario saved with success!')
+          context.commit('loadScenario', response.data)
+        })
+        .catch(function(error) {
+          notificationStore.dispatch('pushError', 'Error while saving scenario: ' + error)
+        })
+    }
   },
 })

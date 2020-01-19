@@ -1,7 +1,14 @@
 <template>
   <AppContent>
-    <AppContentTitle slot="header-left">
-      Editor
+    <AppContentTitle class="d-flex flex-row" slot="header-left">
+      <AppContentTitle class="mr-5">
+        Editor
+      </AppContentTitle>
+      <b-button-group class="my-auto">
+        <ButtonJaffa @click="save()">
+          <i class="far fa-save fa-lg"></i>
+        </ButtonJaffa>
+      </b-button-group>
     </AppContentTitle>
     <div slot="main" v-if="!room">
       Room not found
@@ -46,6 +53,7 @@
 </template>
 
 <script>
+import ButtonJaffa from '@/components/common/ButtonJaffa.vue'
 import AppContent from '@/components/common/AppContent.vue'
 import AppContentTitle from '@/components/common/AppContentTitle.vue'
 import TabRules from '@/components/editor/TabRules.vue'
@@ -57,6 +65,7 @@ import editorStore from '@/store/editorStore.js'
 export default {
   name: 'PageEditor',
   components: {
+    ButtonJaffa,
     AppContent,
     AppContentTitle,
     TabRules,
@@ -80,9 +89,11 @@ export default {
       roomStore.dispatch("updateRules", {roomId, rules})
     },
     loadEditorData() {
-      editorStore.dispatch('loadTemplates')
-      editorStore.dispatch('loadScenario')
-    }
+      editorStore.dispatch('loadEditorData')
+    },
+    save() {
+      editorStore.dispatch('save')
+    },
   },
   created() {
     this.loadEditorData()

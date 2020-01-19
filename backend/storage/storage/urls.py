@@ -18,7 +18,7 @@ from django.urls import path
 from django.conf.urls import url
 # from rest_framework.routers import SimpleRouter
 
-from editor.views import get_templates, get_scenario
+from editor.views import get_templates, get_scenario, update_scenario
 
 # router = SimpleRouter()
 # router.register(r'get_editor_data', RuleViewSet)
@@ -26,5 +26,6 @@ from editor.views import get_templates, get_scenario
 urlpatterns = [
     url('^get_templates/$', get_templates),
     url('^get_scenario/$', get_scenario),
+    url('^update_scenario/$', update_scenario),
     path('admin/', admin.site.urls),
 ]
