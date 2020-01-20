@@ -14,8 +14,8 @@ import 'vue-select/dist/vue-select.css'
 export default {
   name: 'App',
   components: {Nav},
-  mounted() {
-    roomStore.dispatch('fetchRooms')
+  created() {
+    roomStore.dispatch('fetchScenarios')
     this.$connect()
   }
 }

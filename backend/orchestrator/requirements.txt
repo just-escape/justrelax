@@ -1,5 +1,0 @@
-autobahn
-klein
-sqlalchemy
-marshmallow-sqlalchemy
-psycopg2

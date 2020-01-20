@@ -7,13 +7,14 @@ from scenario.models import Camera, CameraForm
 
 class ScenarioAdmin(admin.ModelAdmin):
     form = ScenarioForm
-    list_display = ('name',)
+    list_display = ('index', 'name',)
     search_fields = ('name',)
 
 
 class RoomAdmin(admin.ModelAdmin):
     form = RoomForm
     list_display = (
+        'index',
         'scenario',
         'cardinal',
         'channel',
@@ -28,6 +29,7 @@ class RoomAdmin(admin.ModelAdmin):
 class CameraAdmin(admin.ModelAdmin):
     form = CameraForm
     list_display = (
+        'index',
         'name',
         'url',
         'room',

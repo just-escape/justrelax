@@ -29,7 +29,7 @@ const justSockService = new Vuex.Store({
         var record = event.content
         roomStore.dispatch('addRecord', {roomId, record})
       } else if (event.type == 'CLR') {
-        roomStore.dispatch('processReset', roomId)
+        roomStore.commit('processReset', roomId)
       }
     },
     // eslint-disable-next-line
@@ -42,14 +42,10 @@ const justSockService = new Vuex.Store({
     },
     // eslint-disable-next-line
     sendToGateway (state, message) {
-      Vue.prototype.$socket.send(message)
-    },  
+      let jsonMessage = JSON.stringify(message)
+      Vue.prototype.$socket.send(jsonMessage)
+    },
   },
-  actions: {
-    sendToGateway (context, message) {
-      context.commit('sendToGateway', message)
-    }
-  }
 })
 
 export default justSockService

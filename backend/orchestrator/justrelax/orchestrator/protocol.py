@@ -66,7 +66,14 @@ class JustSockServerProtocol(WebSocketServerProtocol):
 
                 self.factory.process_message(self.name, self.channel, message)
             elif self.client_type == P.CLIENT_ADMIN:
-                logger.warning("$admin messages not handled: ignoring")
+                room_id = event_dict[P.EVENT_ROOM_ID]
+
+                if event_dict[P.EVENT_TYPE] == P.EVENT_TYPE_RUN:
+                    self.factory.process_run_room(room_id)
+                elif event_dict[P.EVENT_TYPE] == P.EVENT_TYPE_HALT:
+                    self.factory.process_halt_room(room_id)
+                elif event_dict[P.EVENT_TYPE] == P.EVENT_TYPE_RESET:
+                    self.factory.process_reset_room(room_id)
 
             else:
                 self.process_i_am_event(event_dict)
@@ -77,14 +84,14 @@ class JustSockServerProtocol(WebSocketServerProtocol):
         except KeyError:
             return False, "Event has no type"
 
-        try:
-            content = event[P.EVENT_CONTENT]
-        except KeyError:
-            return False, "Event has no content"
-
         if not self.client_type:
             if event_type != P.EVENT_TYPE_I_AM:
                 return False, "Client type is not yet declared"
+
+            try:
+                content = event[P.EVENT_CONTENT]
+            except KeyError:
+                return False, "Event has no content"
 
             if type(content) != dict:
                 return False, "Expecting a dict content"
@@ -108,8 +115,16 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                 if not validate_channel(content[P.I_AM_CHANNEL]):
                     return False, "Channel must be alphanumeric"
         else:
-            if event_type != P.EVENT_TYPE_MESSAGE:
-                return False, "Expecting a message event"
+            if self.client_type == P.CLIENT_NODE:
+                if event_type != P.EVENT_TYPE_MESSAGE:
+                    return False, "Expecting a message event"
+            elif self.client_type == P.CLIENT_ADMIN:
+                if event_type not in P.HANDLED_ADMIN_EVENT_TYPES:
+                    return False, "Expecting a event type in {}".format(
+                        ", ".join(P.HANDLED_ADMIN_EVENT_TYPES))
+
+                if P.EVENT_ROOM_ID not in event:
+                    return False, "Event has no room id"
 
         return True, None
 

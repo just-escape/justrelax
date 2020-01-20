@@ -6,9 +6,6 @@
     <li v-for="room in rooms" :key="room.id">
       <TabRoom :room="room"/>
     </li>
-    <li>
-      <Tab :url="'/medias'" :icon="'fas fa-music'" :label="'Medias'"/>
-    </li>
   </ul>
 </template>
 

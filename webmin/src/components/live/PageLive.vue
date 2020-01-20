@@ -24,7 +24,7 @@
       <Cameras :room="room" class="mb-4"/>
       <Timeline :room="room" class="mb-4"/>
       <SendMessage :room="room" class="mb-4"/>
-      <Actions :room="room"/>
+      <!--<Actions :room="room"/>-->
     </div>
   </AppContent>
 </template>
@@ -38,7 +38,7 @@ import StartStop from '@/components/live/StartStop.vue'
 import Cameras from '@/components/live/Cameras.vue'
 import Timeline from '@/components/live/Timeline.vue'
 import SendMessage from '@/components/live/SendMessage.vue'
-import Actions from '@/components/live/Actions.vue'
+// import Actions from '@/components/live/Actions.vue'
 import roomStore from '@/store/roomStore.js'
 
 export default {
@@ -52,7 +52,7 @@ export default {
     Cameras,
     Timeline,
     SendMessage,
-    Actions,
+    // Actions,
   },
   computed: {
     room() {

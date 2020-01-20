@@ -1,14 +1,5 @@
 websocket_port: 3031
-http_port: 3032
 
-storage:
-  protocol: postgresql
-  user: justrelax
-  password: justrelax
-  host: localhost
-  port: 5432
-  base: justrelax
-
-media_directory: /tmp
+storage_url: http://localhost:8000
 
 logging: logging.yaml

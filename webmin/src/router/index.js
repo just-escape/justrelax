@@ -6,8 +6,7 @@ import PageEditor from '@/components/editor/PageEditor.vue'
 import PageLive from '@/components/live/PageLive.vue'
 import PageScore from '@/components/score/PageScore.vue'
 import PageStats from '@/components/stats/PageStats.vue'
-import PageSettings from '@/components/settings/PageSettings.vue'
-import PageMedia from '@/components/media/PageMedia.vue'
+// import PageSettings from '@/components/settings/PageSettings.vue'
 
 Vue.use(VueRouter)
 
@@ -17,8 +16,7 @@ const routes = [
   {path: '/rooms/:roomId/scores', component: PageScore, props: true},
   {path: '/rooms/:roomId/stats', component: PageStats, props: true},
   {path: '/rooms/:roomId/editor', component: PageEditor, props: true},
-  {path: '/rooms/:roomId/settings', component: PageSettings, props: true},
-  {path: '/medias', component: PageMedia},
+  // {path: '/rooms/:roomId/settings', component: PageSettings, props: true},
 ]
 
 export default new VueRouter({

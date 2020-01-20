@@ -62,52 +62,22 @@ export default {
   components: {
     ButtonJaffa,
   },
+  data() {
+    return {
+      scenario: undefined,
+      cardinal: undefined,
+      channel: undefined,
+    }
+  },
   computed: {
-    scenario: {
-      get: function() {
-        if (this.room) {
-          return this.room.scenario
-        } else {
-          return ""
-        }
-      },
-      set: function(value) {
-        var roomId = this.room.id
-        var scenario = value
-        roomStore.commit("setScenario", {roomId, scenario})
-      },
-    },
-    cardinal: {
-      get: function() {
-        if (this.room) {
-          return this.room.cardinal
-        } else {
-          return ""
-        }
-      },
-      set: function(value) {
-        var roomId = this.room.id
-        var cardinal = value
-        roomStore.commit("setCardinal", {roomId, cardinal})
-      },
-    },
-    channel: {
-      get: function() {
-        if (this.room) {
-          return this.room.channel
-        } else {
-          return ""
-        }
-      },
-      set: function(value) {
-        var roomId = this.room.id
-        var channel = value
-        roomStore.commit("setChannel", {roomId, channel})
-      },
-    },
     room: function() {
       return roomStore.state.rooms[this.$route.params.roomId]
     }
+  },
+  created() {
+    this.scenario = this.room.scenario
+    this.cardinal = this.room.cardinal
+    this.channel = this.room.channel
   },
 }
 </script>

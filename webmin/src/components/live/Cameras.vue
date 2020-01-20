@@ -80,7 +80,7 @@ export default {
       this.displayCameras = !this.displayCameras
     },
   },
-  mounted() {
+  created() {
     roomStore.dispatch('fetchCameras', this.room.id)
   },
   props: ['room']

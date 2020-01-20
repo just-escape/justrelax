@@ -1,5 +1,2 @@
-twisted
-autobahn
-PyYAML
 pyalsaaudio
 pytweening

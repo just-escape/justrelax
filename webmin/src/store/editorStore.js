@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import justRestAPI from '@/store/justRestService2.js'
+import justRestAPI from '@/store/justRestService.js'
 import notificationStore from '@/store/notificationStore.js'
 
 Vue.use(Vuex)

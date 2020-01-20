@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import justSockService from '@/store/justSockService.js'
 import justRestAPI from '@/store/justRestService.js'
 import notificationStore from '@/store/notificationStore.js'
 
@@ -7,7 +8,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    rooms: {},
+    rooms: [],
   },
   getters: {
     room (state) {
@@ -17,57 +18,27 @@ export default new Vuex.Store({
           return null
         }
 
-        if (state.rooms && state.rooms[parsedRoomId] != undefined) {
-          return state.rooms[parsedRoomId]
-        } else {
-          return null
+        for (var room of state.rooms) {
+          if (room.id === parsedRoomId) {
+            return room
+          }
         }
+
+        return null
       }
     }
   },
   mutations: {
-    setRooms (state, rooms) {
-      for (var i = 0 ; i < rooms.length ; i++) {
-        Vue.set(state.rooms, rooms[i].id, rooms[i])
+    addRooms (state, rooms) {
+      for (var room of rooms) {
+        room.liveData = {
+          ticks: 0,
+          records: [],
+        }
       }
+      Vue.set(state, 'rooms', rooms)
     },
-    setScenario (state, {roomId, scenario}) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No rooms to set scenario')
-        return
-      }
-
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to set scenario')
-      } else {
-        state.rooms[roomId].scenario = scenario
-      }
-    },
-    setCardinal (state, {roomId, cardinal}) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No rooms to set cardinal')
-        return
-      }
-
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to set cardinal')
-      } else {
-        state.rooms[roomId].cardinal = cardinal
-      }
-    },
-    setChannel (state, {roomId, channel}) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No rooms to set channel')
-        return
-      }
-
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to set channel')
-      } else {
-        state.rooms[roomId].channel = channel
-      }
-    },
-    setRoomLiveData (state, {roomId, liveData}) {
+    /*setRoomLiveData (state, {roomId, liveData}) {
       if (!state.rooms) {
         notificationStore.dispatch('pushError', 'No rooms to set live data')
         return
@@ -77,18 +48,6 @@ export default new Vuex.Store({
         notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to set live data')
       } else {
         state.rooms[roomId].liveData = liveData
-      }
-    },
-    setClock (state, {roomId, ticks}) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No rooms to set clock')
-        return
-      }
-
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to set clock')
-      } else {
-        state.rooms[roomId].liveData.ticks = ticks
       }
     },
     addRecord (state, {roomId, record}) {
@@ -102,155 +61,63 @@ export default new Vuex.Store({
       } else {
         state.rooms[roomId].liveData.records.push(record)
       }
+    },*/
+    setClock (state, {roomId, ticks}) {
+      for (var room of state.rooms) {
+        if (room.id === roomId) {
+          room.liveData.ticks = ticks
+        }
+      }
     },
     processReset (state, roomId) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No rooms to process reset')
-        return
-      }
-
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to process reset')
-      } else {
-        state.rooms[roomId].liveData.ticks = 0
-        state.rooms[roomId].liveData.records = []
+      for (var room of state.rooms) {
+        if (room.id === roomId) {
+          room.liveData.ticks = 0
+          room.liveData.records = []
+        }
       }
     },
     setCameras (state, {roomId, cameras}) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No room to set cameras')
-        return
+      for (var room of state.rooms) {
+        if (room.id === roomId) {
+          Vue.set(room, 'cameras', cameras)
+        }
       }
-
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to set cameras')
-      } else {
-        state.rooms[roomId].cameras = cameras
-      }
-    },
-    setCameraName (state, {roomId, cameraIndex, name}) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No rooms to set camera name')
-        return
-      }
-
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to set camera name')
-        return
-      }
-
-      if (state.rooms[roomId].cameras == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' has no cameras to set name')
-        return
-      }
-
-      if (state.rooms[roomId].cameras[cameraIndex] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' has no camera id=' + cameraIndex + ' to set name')
-        return
-      }
-
-      state.rooms[roomId].cameras[cameraIndex].name = name
-    },
-    setCameraURL (state, {roomId, cameraIndex, url}) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No rooms to set camera URL')
-        return
-      }
-
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to set camera URL')
-        return
-      }
-
-      if (state.rooms[roomId].cameras == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' has no cameras to set URL')
-        return
-      }
-
-      if (state.rooms[roomId].cameras[cameraIndex] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' has no camera id=' + cameraIndex + ' to set URL')
-        return
-      }
-
-      state.rooms[roomId].cameras[cameraIndex].url = url
     },
   },
   actions: {
-    fetchRooms (context) {
-      var rooms = []
-      justRestAPI.get('/rooms')
+    fetchScenarios (context) {
+      justRestAPI.get('/scenario/')
         .then(function (response) {
-          if (response.data.success) {
-            rooms = response.data.content
-            rooms.map(function(room) {
-              room.cameras = undefined
-              room.liveData = {"ticks": 0, "records": []}
-              justRestAPI.get('/rooms/' + room.id + '/get_live_data')
-                .then(function (response) {
-                  if (response.data.success) {
-                    var roomId = room.id
-                    var liveData = response.data.content
-                    context.commit('setRoomLiveData', {roomId, liveData})
-                  } else {
-                    notificationStore.dispatch('pushError', 'Error while fetching room live data: ' + response.data.error)
-                  }
-                })
-                .catch(function (error) {
-                  notificationStore.dispatch('pushError', 'Error while fetching room live data: ' + error)
-                })
-            })
-          } else {
-            notificationStore.dispatch('pushError', 'Error while fetching rooms: ' + response.data.error)
+          var scenarios = response.data
+          context.dispatch('fetchRooms', scenarios[0].id)
+        })
+        .catch(function (error) {
+          notificationStore.dispatch('pushError', 'Error while fetching scenarios: ' + error)
+        })
+    },
+    fetchRooms (context, scenarioId) {
+      justRestAPI.get('/room/?scenario=' + scenarioId)
+        .then(function (response) {
+          var rooms = response.data
+          for (var room of rooms) {
+            room.scenario = "Le digimiam"
           }
+          rooms.cameras = []
+          context.commit('addRooms', rooms)
         })
         .catch(function (error) {
           notificationStore.dispatch('pushError', 'Error while fetching rooms: ' + error)
         })
-        .finally(function () {
-          context.commit('setRooms', rooms)
-        })
     },
     fetchCameras (context, roomId) {
-      var cameras = []
-      justRestAPI.get('/rooms/' + roomId + '/cameras')
+      justRestAPI.get('/camera/?room=' + roomId)
         .then(function (response) {
-          if (response.data.success) {
-            cameras = response.data.content
-          } else {
-            notificationStore.dispatch('pushError', 'Error while fetching cameras: ' + response.data.error)
-          }
+          let cameras = response.data
+          context.commit('setCameras', {roomId, cameras})
         })
         .catch(function (error) {
           notificationStore.dispatch('pushError', 'Error while fetching cameras: ' + error)
-        })
-        .finally(function () {
-          context.commit('setCameras', {roomId, cameras})
-        })
-    },
-    runRoom (context, roomId) {
-      var formData = new FormData()
-      formData.append('n_players', 0)
-      justRestAPI.post('/rooms/' + roomId + '/run', formData)
-    },
-    haltRoom (context, roomId) {
-      justRestAPI.post('/rooms/' + roomId + '/halt')
-    },
-    resetRoom (context, roomId) {
-      justRestAPI.post('/rooms/' + roomId + '/reset')
-    },
-    updateRules (context, {roomId, rules}) {
-      var formData = new FormData()
-      formData.append('rules', rules)
-      justRestAPI.post('/rooms/' + roomId + '/rules', formData)
-        .then(function (response) {
-          if (response.data.success) {
-            notificationStore.dispatch('pushNotification', 'Rules updated with success')
-          } else {
-            notificationStore.dispatch('pushError', 'Error while updating rules: ' + response.data.error)
-          }
-        })
-        .catch(function (error) {
-          notificationStore.dispatch('pushError', 'Error while updating rules: ' + error)
         })
     },
     beat(context, {roomId, ticks}) {
@@ -259,9 +126,28 @@ export default new Vuex.Store({
     addRecord(context, {roomId, record}) {
       context.commit('addRecord', {roomId, record})
     },
-    processReset(context, roomId) {
-      context.commit('processReset', roomId)
+    runRoom (context, roomId) {
+      let message = {
+        room_id: roomId,
+        type: "RUN",
+      }
+      justSockService.commit('sendToGateway', message)
     },
+    haltRoom (context, roomId) {
+      let message = {
+        room_id: roomId,
+        type: "HALT",
+      }
+      justSockService.commit('sendToGateway', message)
+    },
+    resetRoom (context, roomId) {
+      let message = {
+        room_id: roomId,
+        type: "CLR",
+      }
+      justSockService.commit('sendToGateway', message)
+    },
+    /*
     processAction(context, {roomId, action}) {
       var formData = new FormData()
       formData.append('name', action)
@@ -289,6 +175,6 @@ export default new Vuex.Store({
       .catch(function (error) {
         notificationStore.dispatch('pushError', 'Error while sending message: ' + error)
       })
-    },
+    },*/
   },
 })

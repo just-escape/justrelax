@@ -7,29 +7,24 @@
         :key="room.id"
         class="col-4"
       >
-        <RoomRud :room="room"/>
-      </div>
-      <div class="col-4">
-        <RoomCreate/>
+        <RoomRead :room="room"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import RoomRud from '@/components/home/RoomRud.vue'
-import RoomCreate from '@/components/home/RoomCreate.vue'
+import RoomRead from '@/components/home/RoomRead.vue'
 import roomStore from '@/store/roomStore.js'
 
 export default {
   name: 'Rooms',
   components: {
-    RoomRud,
-    RoomCreate,
+    RoomRead,
   },
-  data: function() {
-    return {
-      rooms: roomStore.state.rooms
+  computed: {
+    rooms() {
+      return roomStore.state.rooms
     }
   },
 }

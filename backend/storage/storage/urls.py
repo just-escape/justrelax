@@ -15,15 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import url
-# from rest_framework.routers import SimpleRouter
+from django.conf.urls import url, include
+from rest_framework.routers import SimpleRouter
 
+from scenario.views import ScenarioView, RoomView, CameraView
+from session.views import SessionView, RecordView
 from editor.views import get_templates, get_scenario, update_scenario
 
-# router = SimpleRouter()
-# router.register(r'get_editor_data', RuleViewSet)
+router = SimpleRouter()
+router.register(r'scenario', ScenarioView)
+router.register(r'room', RoomView)
+router.register(r'camera', CameraView)
+router.register(r'session', SessionView)
+router.register(r'record', RecordView)
 
 urlpatterns = [
+    url('^', include(router.urls)),
     url('^get_templates/$', get_templates),
     url('^get_scenario/$', get_scenario),
     url('^update_scenario/$', update_scenario),

@@ -33,20 +33,6 @@
           </template>
           <TabAdmin/>
         </b-tab>
-        <b-tab>
-          <template v-slot:title>
-            <i class="far fa-edit fa-fw"></i> Text
-          </template>
-
-          <button class="btn-block" @click="updateRules">Save</button>
-          <textarea
-            style="background: #2e2e2e;"
-            class="rounded"
-            cols="100"
-            rows="30"
-            v-model="rules"
-          ></textarea>
-        </b-tab>
       </b-tabs>
     </div>
   </AppContent>
@@ -83,11 +69,6 @@ export default {
     },
   },
   methods: {
-    updateRules() {
-      var roomId = this.roomId
-      var rules = this.rules
-      roomStore.dispatch("updateRules", {roomId, rules})
-    },
     loadEditorData() {
       editorStore.dispatch('loadEditorData')
     },

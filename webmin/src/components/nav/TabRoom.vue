@@ -22,9 +22,9 @@
         <li class="bgc-dark">
           <Tab :url="'/rooms/' + room.id + '/editor'" :icon="'far fa-file-code'" :label="'Editor'"/>
         </li>
-        <li class="bgc-dark">
+        <!--<li class="bgc-dark">
           <Tab :url="'/rooms/' + room.id + '/settings'" :icon="'fas fa-cog'" :label="'Settings'"/>
-        </li>
+        </li>-->
       </ul>
     </b-collapse>
   </div>
@@ -51,7 +51,9 @@ export default {
       return this.$route.params.roomId == this.room.id
     },
   },
-  props: ["room"],
+  props: {
+    room: Object,
+  }
 }
 </script>
 
