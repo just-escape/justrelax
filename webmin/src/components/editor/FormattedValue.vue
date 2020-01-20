@@ -17,6 +17,7 @@ export default {
   name: "FormattedValue",
   methods: {
     format(value) {
+      // Null is not selectable on this interface
       if (value === null) {
         return "<Nothing>"
       } else if (value === true) {

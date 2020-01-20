@@ -48,10 +48,10 @@
       @pushValue="(newValue) => updateValueBuffer('real', newValue)"
     />
 
-    <ValueModalSpecial
+    <ValueModalBoolean
       :parentValue="value"
-      :checked="selectedSource === 'special'"
-      @pushValue="(newValue) => updateValueBuffer('special', newValue)"
+      :checked="selectedSource === 'boolean'"
+      @pushValue="(newValue) => updateValueBuffer('boolean', newValue)"
     />
   </b-modal>
 </template>
@@ -64,7 +64,7 @@ import ValueModalList from '@/components/editor/ValueModalList.vue'
 import ValueModalString from '@/components/editor/ValueModalString.vue'
 import ValueModalInteger from '@/components/editor/ValueModalInteger.vue'
 import ValueModalReal from '@/components/editor/ValueModalReal.vue'
-import ValueModalSpecial from '@/components/editor/ValueModalSpecial.vue'
+import ValueModalBoolean from '@/components/editor/ValueModalBoolean.vue'
 
 export default {
   name: "ValueModal",
@@ -76,7 +76,7 @@ export default {
     ValueModalString,
     ValueModalInteger,
     ValueModalReal,
-    ValueModalSpecial,
+    ValueModalBoolean,
   },
   data() {
     return {
