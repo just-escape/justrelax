@@ -1,6 +1,5 @@
 from twisted.application.service import Service
 
-from justrelax.orchestrator.constants import SERVICES
 from justrelax.orchestrator.processor.engine import RulesProcessor
 
 
