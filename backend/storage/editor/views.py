@@ -13,14 +13,14 @@ from editor.models import Rule, Component, ComponentArgument
 
 def get_serialized_functions():
     functions = []
-    for f in Function.objects.all():
+    for f in Function.objects.all().order_by('index'):
         serialized_function = {
             'category': f.category,
             'return_type': f.return_type,
             'name': f.name,
             'links': [],
         }
-        for ftl in FunctionTemplateLink.objects.filter(function=f):
+        for ftl in FunctionTemplateLink.objects.filter(function=f).order_by('index'):
             function_template_link = {
                 'type': ftl.type,
             }
@@ -37,12 +37,12 @@ def get_serialized_functions():
 
 def get_serialized_component_templates(context):
     component_templates = []
-    for ct in ComponentTemplate.objects.filter(context=context):
+    for ct in ComponentTemplate.objects.filter(context=context).order_by('index'):
         component_template = {
             'name': ct.name,
             'links': [],
         }
-        for ctl in ComponentTemplateLink.objects.filter(template=ct):
+        for ctl in ComponentTemplateLink.objects.filter(template=ct).order_by('index'):
             component_template_link = {
                 'type': ctl.type,
             }
@@ -72,7 +72,7 @@ def get_templates(request):
 
 def get_serialized_variables():
     variables = []
-    for v in Variable.objects.all():
+    for v in Variable.objects.all().order_by('index'):
         variable = {
             'id': v.id,
             'name': v.name,
@@ -80,7 +80,7 @@ def get_serialized_variables():
             'list': v.list,
             'types': [],
         }
-        for vt in VariableType.objects.filter(variable=v):
+        for vt in VariableType.objects.filter(variable=v).order_by('type'):
             variable['types'].append(vt.type)
         variables.append(variable)
 
@@ -89,7 +89,7 @@ def get_serialized_variables():
 
 def get_serialized_components(rule, context):
     components = []
-    for c in Component.objects.filter(rule=rule, template__context=context):
+    for c in Component.objects.filter(rule=rule, template__context=context).order_by('index'):
         component = {
             'id': c.id,
             'template': c.template.name,
@@ -104,7 +104,7 @@ def get_serialized_components(rule, context):
 
 def get_serialized_rules():
     rules = []
-    for r in Rule.objects.all():
+    for r in Rule.objects.all().order_by('index'):
         rule = {
             'id': r.id,
             'name': r.name,
