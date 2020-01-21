@@ -9,10 +9,10 @@ except RuntimeError:
 
 from twisted.internet import reactor
 
-from justrelax.node.service import JustSockNodeClientService
+from justrelax.node.service import JustSockClientService
 
 
-class Button(JustSockNodeClientService):
+class Button(JustSockClientService):
     PIN = 14
 
     class PROTOCOL:

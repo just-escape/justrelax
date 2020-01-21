@@ -4,7 +4,7 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockNodeClientService
+from justrelax.node.service import JustSockClientService
 from justrelax.node.common.volume import EASE_MAPPING, MasterVolume
 from justrelax.node.music_player.vlc_player import VLCSelfReleasingTrackPlayer
 from justrelax.node.music_player.vlc_player import VLCLoopingTrackPlayer
@@ -12,7 +12,7 @@ from justrelax.node.music_player.pyglet_player import PygletTrackPlayer
 from justrelax.node.music_player.pyglet_player import PygletLoopingTrackPlayer
 
 
-class MusicPlayer(JustSockNodeClientService):
+class MusicPlayer(JustSockClientService):
     class PROTOCOL:
         ACTION = "action"
 

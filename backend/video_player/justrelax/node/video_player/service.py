@@ -1,14 +1,14 @@
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockNodeClientService
+from justrelax.node.service import JustSockClientService
 from justrelax.node.video_player.vlc_player import VLCVideoPlayer
 from justrelax.node.video_player.vlc_player import VLCLoopingChapterVideoPlayer
 from justrelax.node.video_player.omx_player import OMXPlayer
 from justrelax.node.video_player.omx_player import OMXLoopingChapterVideoPlayer
 
 
-class VideoPlayer(JustSockNodeClientService):
+class VideoPlayer(JustSockClientService):
     class PROTOCOL:
         ACTION = "action"
 

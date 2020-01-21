@@ -2,7 +2,7 @@ import rospy
 
 from niryo_one_python_api.niryo_one_api import NiryoOne, TOOL_GRIPPER_1_ID
 
-from justrelax.node.service import JustSockNodeClientService
+from justrelax.node.service import JustSockClientService
 
 
 class Joint(object):
@@ -130,7 +130,7 @@ class NiryoOneController(NiryoOne):
         self.joc.set_joint_target(joint_id, target)
 
 
-class Niryo(JustSockNodeClientService):
+class Niryo(JustSockClientService):
     def __init__(self, name, channel, *args, **kwargs):
         super(Niryo, self).__init__(*args, **kwargs)
         rospy.init_node('{}@{}'.format(name, channel))

@@ -1,6 +1,6 @@
-from justrelax.node.service import JustSockNodeClientService
+from justrelax.node.service import JustSockClientService
 
 
-class Echo(JustSockNodeClientService):
+class Echo(JustSockClientService):
     def process_event(self, event):
         self.factory.send_event(event)

@@ -4,11 +4,11 @@ except RuntimeError:
     from mock import MagicMock
     GPIO = MagicMock()
 
-from justrelax.node.service import JustSockNodeClientService
+from justrelax.node.service import JustSockClientService
 from justrelax.common.logging_utils import logger
 
 
-class Led(JustSockNodeClientService):
+class Led(JustSockClientService):
     PIN = None
 
     class PROTOCOL:

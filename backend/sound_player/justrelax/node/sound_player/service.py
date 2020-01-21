@@ -5,11 +5,11 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockNodeClientService
+from justrelax.node.service import JustSockClientService
 from justrelax.node.common.volume import EASE_MAPPING, MasterVolume
 
 
-class SoundPlayer(JustSockNodeClientService):
+class SoundPlayer(JustSockClientService):
     class PROTOCOL:
         ACTION = "action"
 

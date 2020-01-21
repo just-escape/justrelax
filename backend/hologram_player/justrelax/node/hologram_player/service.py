@@ -3,10 +3,10 @@ import vlc
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockNodeClientService
+from justrelax.node.service import JustSockClientService
 
 
-class HologramPlayer(JustSockNodeClientService):
+class HologramPlayer(JustSockClientService):
     class PROTOCOL:
         COMMAND_TYPE = "type"
         SELECT = "select"

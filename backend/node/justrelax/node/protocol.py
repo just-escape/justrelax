@@ -6,9 +6,9 @@ from justrelax.common.constants import JUST_SOCK_PROTOCOL as P
 from justrelax.common.logging_utils import logger
 
 
-class JustSockNodeClientProtocol(WebSocketClientProtocol):
+class JustSockClientProtocol(WebSocketClientProtocol):
     def __init__(self, factory, name, channel):
-        super(JustSockNodeClientProtocol, self).__init__()
+        super(JustSockClientProtocol, self).__init__()
         self.factory = factory
         self.name = name
         self.channel = channel
