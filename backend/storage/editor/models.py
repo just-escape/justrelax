@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 
-# from scenario.models import Scenario
+from scenario.models import Room
 
 
 VALUE_TYPES = (
@@ -76,8 +76,7 @@ class FunctionTemplateLinkForm(forms.ModelForm):
 
 
 class Variable(models.Model):
-    # scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE)
-    s = models.CharField(max_length=64, default="s1")
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     index = models.IntegerField()
     name = models.CharField(max_length=64)
     init_value = models.TextField(null=True, blank=True)
@@ -86,12 +85,12 @@ class Variable(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['s', 'index'],
-                name='variable_index',
+                fields=['room', 'index'],
+                name='variable_room_index',
             ),
             models.UniqueConstraint(
-                fields=['s', 'name'],
-                name='variable_name',
+                fields=['room', 'name'],
+                name='variable_room_name',
             ),
         ]
 
@@ -99,7 +98,7 @@ class Variable(models.Model):
 class VariableForm(forms.ModelForm):
     class Meta:
         model = Variable
-        fields = ('s', 'index', 'name', 'init_value', 'list',)
+        fields = ('room', 'index', 'name', 'init_value', 'list',)
 
 
 class VariableType(models.Model):
@@ -115,21 +114,20 @@ class VariableTypeForm(forms.ModelForm):
 
 
 class Rule(models.Model):
-    # scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE)
-    s = models.CharField(max_length=64, default="s1")
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     index = models.IntegerField()
     name = models.CharField(max_length=64)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['s', 'index'], name='rule_index'),
+            models.UniqueConstraint(fields=['room', 'index'], name='rule_room_index'),
         ]
 
 
 class RuleForm(forms.ModelForm):
     class Meta:
         model = Rule
-        fields = ('s', 'index', 'name',)
+        fields = ('room', 'index', 'name',)
 
 
 class ComponentTemplate(models.Model):

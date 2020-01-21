@@ -20,9 +20,15 @@ class JustSockServerService(internet.TCPServer):
     def init_processors(self):
         scenarios = requests.get('{}/scenario/'.format(self.storage_url)).json()
         for s in scenarios:
-            rooms = requests.get('{}/room/'.format(self.storage_url), params={'scenario': s['id']}).json()
+            rooms = requests.get(
+                '{}/room/'.format(self.storage_url),
+                params={'room_id': s['id']},
+            ).json()
             for r in rooms:
-                scenario_rules = requests.get('{}/get_scenario/'.format(self.storage_url)).json()
+                scenario_rules = requests.get(
+                    '{}/get_scenario/'.format(self.storage_url),
+                    params={'room_id': r['id']},
+                ).json()
                 self.new_processor(
                     r['id'],
                     r['channel'],

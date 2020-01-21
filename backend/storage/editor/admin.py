@@ -38,8 +38,8 @@ class FunctionTemplateLinkAdmin(admin.ModelAdmin):
 
 class VariableAdmin(admin.ModelAdmin):
     form = VariableForm
-    list_display = ('s', 'index', 'name', 'init_value', 'list',)
-    search_fields = ('s', 'name', 'init_value', 'list',)
+    list_display = ('room', 'index', 'name', 'init_value', 'list',)
+    search_fields = ('name', 'init_value', 'list',)
 
 
 class VariableTypeAdmin(admin.ModelAdmin):
@@ -50,8 +50,8 @@ class VariableTypeAdmin(admin.ModelAdmin):
 
 class RuleAdmin(admin.ModelAdmin):
     form = RuleForm
-    list_display = ('s', 'index', 'name',)
-    search_fields = ('s', 'name',)
+    list_display = ('room', 'index', 'name',)
+    search_fields = ('name',)
 
 
 class ComponentTemplateAdmin(admin.ModelAdmin):

@@ -5,6 +5,7 @@ from django.db import transaction
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from scenario.models import Room
 from editor.models import Function, FunctionTemplateLink
 from editor.models import ComponentTemplate, ComponentTemplateLink
 from editor.models import Variable, VariableType
@@ -70,9 +71,9 @@ def get_templates(request):
     return Response(response)
 
 
-def get_serialized_variables():
+def get_serialized_variables(room):
     variables = []
-    for v in Variable.objects.all().order_by('index'):
+    for v in Variable.objects.filter(room=room).order_by('index'):
         variable = {
             'id': v.id,
             'name': v.name,
@@ -102,9 +103,9 @@ def get_serialized_components(rule, context):
     return components
 
 
-def get_serialized_rules():
+def get_serialized_rules(room):
     rules = []
-    for r in Rule.objects.all().order_by('index'):
+    for r in Rule.objects.filter(room=room).order_by('index'):
         rule = {
             'id': r.id,
             'name': r.name,
@@ -118,11 +119,12 @@ def get_serialized_rules():
 
 @api_view(['GET'])
 def get_scenario(request):
-    # scenario_id = int(request.GET.get('scenario_id'))
+    room_id = int(request.GET.get('room_id'))
+    room = Room.objects.get(id=room_id)
 
     response = {
-        'variables': get_serialized_variables(),
-        'rules': get_serialized_rules(),
+        'variables': get_serialized_variables(room),
+        'rules': get_serialized_rules(room),
     }
 
     return Response(response)
@@ -217,11 +219,11 @@ def update_components(rule, components, context):
     create_components(rule, components_to_create, context)
 
 
-def update_rules(rules):
+def update_rules(room, rules):
     rule_ids = {r.get('id', None) for r in rules}
     rule_ids.discard(None)
 
-    old_rules = Rule.objects.all()
+    old_rules = Rule.objects.filter(room=room)
     old_rule_ids = {r.id for r in old_rules}
 
     # Delete
@@ -255,6 +257,7 @@ def update_rules(rules):
     rules_to_create = [r for r in rules if r.get('id', None) not in ids_to_update]
     for rule in rules_to_create:
         new_rule = Rule(
+            room=room,
             name=rule['name'],
             index=rules.index(rule),
         )
@@ -280,11 +283,11 @@ def update_variable_types(variable, types):
         VariableType(variable=variable, type=type_).save()
 
 
-def update_variables(variables):
+def update_variables(room, variables):
     variable_ids = {v.get('id', None) for v in variables}
     variable_ids.discard(None)
 
-    old_variables = Variable.objects.all()
+    old_variables = Variable.objects.filter(room=room)
     old_variable_ids = {v.id for v in old_variables}
 
     # Delete
@@ -324,6 +327,7 @@ def update_variables(variables):
     variables_to_create = [v for v in variables if v.get('id', None) not in ids_to_update]
     for variable in variables_to_create:
         new_variable = Variable(
+            room=room,
             name=variable['name'],
             index=variables.index(variable),
             init_value=variable['init_value'],
@@ -341,17 +345,19 @@ def update_variables(variables):
 
 @api_view(['POST'])
 def update_scenario(request):
-    # scenario_id = int(request.POST.get('scenario_id'))
+    room_id = int(request.POST.get('room_id'))
     rules = json.loads(request.POST.get('rules'))
     variables = json.loads(request.POST.get('variables'))
 
     with transaction.atomic():
-        update_rules(rules)
-        update_variables(variables)
+        room = Room.objects.get(id=room_id)
 
-    response = {
-        'variables': get_serialized_variables(),
-        'rules': get_serialized_rules(),
-    }
+        update_rules(room, rules)
+        update_variables(room, variables)
+
+        response = {
+            'variables': get_serialized_variables(room),
+            'rules': get_serialized_rules(room),
+        }
 
     return Response(response)

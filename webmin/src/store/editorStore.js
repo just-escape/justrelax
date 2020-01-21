@@ -65,25 +65,21 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    loadEditorData(context) {
-      context.dispatch('loadTemplates')
+    loadEditorData(context, roomId) {
+      context.dispatch('loadTemplates', roomId)
     },
-    loadTemplates(context) {
+    loadTemplates(context, roomId) {
       justRestAPI.get('/get_templates/')
         .then(function(response) {
           context.commit('loadTemplates', response.data)
-          context.dispatch('loadScenario')
+          context.dispatch('loadScenario', roomId)
         })
         .catch(function(error) {
           notificationStore.dispatch('pushError', 'Error while fetching templates: ' + error)
         })
     },
-    loadScenario(context) {
-      justRestAPI.get('/get_scenario/', {
-        params: {
-          scenario_id: 36,
-        },
-      })
+    loadScenario(context, roomId) {
+      justRestAPI.get('/get_scenario/', {params: {room_id: roomId}})
         .then(function(response) {
           context.commit('loadScenario', response.data)
         })
@@ -91,11 +87,11 @@ export default new Vuex.Store({
           notificationStore.dispatch('pushError', 'Error while fetching scenario: ' + error)
         })
     },
-    save(context) {
+    save(context, roomId) {
       var formData = new FormData()
-      formData.set('scenario_id', 36)
-      formData.set('rules', JSON.stringify(context.state.rules))
-      formData.set('variables', JSON.stringify(context.state.variables))
+      formData.append('room_id', roomId)
+      formData.append('rules', JSON.stringify(context.state.rules))
+      formData.append('variables', JSON.stringify(context.state.variables))
       justRestAPI.post('/update_scenario/', formData)
         .then(function(response) {
           notificationStore.dispatch('pushNotification', 'Scenario saved with success!')

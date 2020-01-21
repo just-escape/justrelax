@@ -47,10 +47,10 @@ export default {
   },
   methods: {
     loadEditorData() {
-      editorStore.dispatch('loadEditorData')
+      editorStore.dispatch('loadEditorData', this.roomId)
     },
     save() {
-      editorStore.dispatch('save')
+      editorStore.dispatch('save', this.roomId)
     },
   },
   created() {
