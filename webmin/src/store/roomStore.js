@@ -160,21 +160,15 @@ export default new Vuex.Store({
         .catch(function (error) {
           notificationStore.dispatch('pushError', 'Error while processing action: ' + error)
         })
-    },
-    processSendMessage(context, {roomId, to, content, json}) {
-      let formData = new FormData()
-      formData.append('to', to)
-      formData.append('content', content)
-      formData.append('json', json)
-      justRestAPI.post('/rooms/' + roomId + '/send_message', formData)
-      .then(function (response) {
-        if (!response.data.success) {
-          notificationStore.dispatch('pushError', 'Error while sending message: ' + response.data.error)
-        }
-      })
-      .catch(function (error) {
-        notificationStore.dispatch('pushError', 'Error while sending message: ' + error)
-      })
     },*/
+    processSendEvent(context, {roomId, to, event}) {
+      let message = {
+        room_id: roomId,
+        message_type: "SEND_EVENT",
+        to: to,
+        event: event,
+      }
+      justSockService.commit('sendMessage', message)
+    },
   },
 })

@@ -74,6 +74,10 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                     self.factory.process_halt_room(room_id)
                 elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_RESET:
                     self.factory.process_reset_room(room_id)
+                elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_SEND_EVENT:
+                    to = message[P.SEND_EVENT_TO]
+                    event_to_send = message[P.EVENT]
+                    self.factory.process_send_event(room_id, to, event_to_send)
 
             else:
                 self.process_i_am_message(message)
@@ -118,6 +122,13 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                 if P.ROOM_ID not in message:
                     return False, "Message has no room id"
 
+                if message_type == P.MESSAGE_TYPE_SEND_EVENT:
+                    if P.EVENT not in message:
+                        return False, "Missing event argument"
+
+                    if P.SEND_EVENT_TO not in message:
+                        return False, "Missing to argument"
+
         return True, None
 
     def log_message(self, message, to_server=True):
@@ -142,6 +153,11 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                         P.RECORD_ID: message[P.RECORD_ID],
                         P.RECORD_TICKS: message[P.RECORD_TICKS],
                         P.RECORD_LABEL: message[P.RECORD_LABEL],
+                    }
+                elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_SEND_EVENT:
+                    body = {
+                        P.SEND_EVENT_TO: message[P.SEND_EVENT_TO],
+                        P.EVENT: message[P.EVENT],
                     }
 
             else:

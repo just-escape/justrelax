@@ -79,7 +79,7 @@ export default new Vuex.Store({
         })
     },
     loadScenario(context, roomId) {
-      justRestAPI.get('/get_scenario/', {params: {room_id: roomId}})
+      justRestAPI.get('/get_scenario/', {params: {room_id: roomId}})
         .then(function(response) {
           context.commit('loadScenario', response.data)
         })

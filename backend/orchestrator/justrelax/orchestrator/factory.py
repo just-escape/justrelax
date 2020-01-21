@@ -42,6 +42,10 @@ class JustSockServerFactory(WebSocketServerFactory):
     def process_reset_room(self, room_id):
         self.service.processors[room_id].reset_room()
 
+    def process_send_event(self, room_id, to, event):
+        channel = self.service.processors[room_id].channel
+        self.send_to_node(to, channel, event)
+
     def send_beat(self, room_id, ticks):
         for admin in self.admins:
             admin.send_beat(room_id, ticks)
