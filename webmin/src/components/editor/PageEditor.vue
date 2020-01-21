@@ -13,27 +13,8 @@
     <div slot="main" v-if="!room">
       Room not found
     </div>
-    <div slot="main" class="h-100" v-else>
-      <b-tabs class="h-100" content-class="h-100 mt-3">
-        <b-tab class="h-100">
-          <template v-slot:title>
-            <i class="fas fa-list fa-fw"></i> Rules
-          </template>
-          <TabRules/>
-        </b-tab>
-        <b-tab>
-          <template v-slot:title>
-            <i class="far fa-file-excel fa-fw"></i> Variables
-          </template>
-          <TabVariables/>
-        </b-tab>
-        <b-tab>
-          <template v-slot:title>
-            <i class="fas fa-table fa-fw"></i> Admin
-          </template>
-          <TabAdmin/>
-        </b-tab>
-      </b-tabs>
+    <div slot="main" class="mt-2 h-100" v-else>
+      <Rules/>
     </div>
   </AppContent>
 </template>
@@ -42,9 +23,7 @@
 import ButtonJaffa from '@/components/common/ButtonJaffa.vue'
 import AppContent from '@/components/common/AppContent.vue'
 import AppContentTitle from '@/components/common/AppContentTitle.vue'
-import TabRules from '@/components/editor/TabRules.vue'
-import TabVariables from '@/components/editor/TabVariables.vue'
-import TabAdmin from '@/components/editor/TabAdmin.vue'
+import Rules from '@/components/editor/Rules.vue'
 import roomStore from '@/store/roomStore.js'
 import editorStore from '@/store/editorStore.js'
 
@@ -54,9 +33,7 @@ export default {
     ButtonJaffa,
     AppContent,
     AppContentTitle,
-    TabRules,
-    TabVariables,
-    TabAdmin,
+    Rules,
   },
   data() {
     return {
@@ -82,5 +59,3 @@ export default {
   props: ['roomId']
 }
 </script>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
