@@ -74,10 +74,14 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                     self.factory.process_halt_room(room_id)
                 elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_RESET:
                     self.factory.process_reset_room(room_id)
-                elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_SEND_EVENT:
-                    to = message[P.SEND_EVENT_TO]
+                elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_SEND_EVENT_TO:
+                    node = message[P.SEND_EVENT_NODE]
                     event_to_send = message[P.EVENT]
-                    self.factory.process_send_event(room_id, to, event_to_send)
+                    self.factory.process_send_event_to(room_id, node, event_to_send)
+                elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_SEND_EVENT_AS:
+                    node = message[P.SEND_EVENT_NODE]
+                    event_to_send = message[P.EVENT]
+                    self.factory.process_send_event_as(room_id, node, event_to_send)
 
             else:
                 self.process_i_am_message(message)
@@ -122,12 +126,12 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                 if P.ROOM_ID not in message:
                     return False, "Message has no room id"
 
-                if message_type == P.MESSAGE_TYPE_SEND_EVENT:
+                if message_type in [P.MESSAGE_TYPE_SEND_EVENT_TO, P.MESSAGE_TYPE_SEND_EVENT_AS]:
                     if P.EVENT not in message:
                         return False, "Missing event argument"
 
-                    if P.SEND_EVENT_TO not in message:
-                        return False, "Missing to argument"
+                    if P.SEND_EVENT_NODE not in message:
+                        return False, "Missing node argument"
 
         return True, None
 
@@ -154,9 +158,9 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                         P.RECORD_TICKS: message[P.RECORD_TICKS],
                         P.RECORD_LABEL: message[P.RECORD_LABEL],
                     }
-                elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_SEND_EVENT:
+                elif message[P.MESSAGE_TYPE] in [P.MESSAGE_TYPE_SEND_EVENT_TO, P.MESSAGE_TYPE_SEND_EVENT_AS]:
                     body = {
-                        P.SEND_EVENT_TO: message[P.SEND_EVENT_TO],
+                        P.SEND_EVENT_NODE: message[P.SEND_EVENT_NODE],
                         P.EVENT: message[P.EVENT],
                     }
 

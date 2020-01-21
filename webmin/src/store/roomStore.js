@@ -161,11 +161,20 @@ export default new Vuex.Store({
           notificationStore.dispatch('pushError', 'Error while processing action: ' + error)
         })
     },*/
-    processSendEvent(context, {roomId, to, event}) {
+    processSendEventTo(context, {roomId, node, event}) {
       let message = {
         room_id: roomId,
-        message_type: "SEND_EVENT",
-        to: to,
+        message_type: "SEND_EVENT_TO",
+        node: node,
+        event: event,
+      }
+      justSockService.commit('sendMessage', message)
+    },
+    processSendEventAs(context, {roomId, node, event}) {
+      let message = {
+        room_id: roomId,
+        message_type: "SEND_EVENT_AS",
+        node: node,
         event: event,
       }
       justSockService.commit('sendMessage', message)
