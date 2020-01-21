@@ -50,7 +50,7 @@ export default new Vuex.Store({
         state.rooms[roomId].liveData = liveData
       }
     },
-    addRecord (state, {roomId, record}) {
+    addRecord (state, {roomId, recordId, recordTicks, recordLabel}) {
       if (!state.rooms) {
         notificationStore.dispatch('pushError', 'No rooms to add record')
         return
@@ -129,23 +129,23 @@ export default new Vuex.Store({
     runRoom (context, roomId) {
       let message = {
         room_id: roomId,
-        type: "RUN",
+        message_type: "RUN",
       }
-      justSockService.commit('sendToGateway', message)
+      justSockService.commit('sendMessage', message)
     },
     haltRoom (context, roomId) {
       let message = {
         room_id: roomId,
-        type: "HALT",
+        message_type: "HALT",
       }
-      justSockService.commit('sendToGateway', message)
+      justSockService.commit('sendMessage', message)
     },
     resetRoom (context, roomId) {
       let message = {
         room_id: roomId,
-        type: "CLR",
+        message_type: "RESET",
       }
-      justSockService.commit('sendToGateway', message)
+      justSockService.commit('sendMessage', message)
     },
     /*
     processAction(context, {roomId, action}) {

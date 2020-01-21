@@ -46,22 +46,22 @@ class JustSockServerFactory(WebSocketServerFactory):
         for admin in self.admins:
             admin.send_beat(room_id, ticks)
 
-    def send_record(self, room_id, record):
+    def send_record(self, room_id, record_id, ticks, label):
         for admin in self.admins:
-            admin.send_record(room_id, record)
+            admin.send_record(room_id, record_id, ticks, label)
 
     def send_reset(self, room_id):
         for admin in self.admins:
             admin.send_reset(room_id)
 
-    def send_to_node(self, name, channel, message):
+    def send_to_node(self, name, channel, event):
         nodes = self.nodes.get((name, channel,), [])
         if nodes:
             for node in nodes:
-                node.send_message(message)
+                node.send_event(event)
         else:
             logger.warning(
-                "Node {}@{} is not registered: skipping message".format(
+                "Node {}@{} is not registered: skipping event".format(
                     name, channel
                 )
             )

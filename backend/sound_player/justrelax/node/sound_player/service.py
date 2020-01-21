@@ -80,27 +80,27 @@ class SoundPlayer(JustSockNodeClientService):
         pyglet.clock.tick()
         pyglet.app.platform_event_loop.dispatch_posted_events()
 
-    def process_message(self, message):
-        logger.debug("Processing message '{}'".format(message))
-        if type(message) is not dict:
-            logger.debug("Unknown message: skipping")
+    def process_event(self, event):
+        logger.debug("Processing event '{}'".format(event))
+        if type(event) is not dict:
+            logger.debug("Unknown event: skipping")
             return
 
-        if self.PROTOCOL.ACTION not in message:
-            logger.debug("Message has no action: skipping")
+        if self.PROTOCOL.ACTION not in event:
+            logger.debug("Event has no action: skipping")
             return
 
-        delay = message.get(self.PROTOCOL.DELAY, 0)
+        delay = event.get(self.PROTOCOL.DELAY, 0)
         if not isinstance(delay, (int, float)):
             logger.error("Delay must be int or float (received={}): skipping".format(delay))
             return
 
-        if message[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_PLAY:
-            if self.PROTOCOL.SOUND_ID not in message:
+        if event[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_PLAY:
+            if self.PROTOCOL.SOUND_ID not in event:
                 logger.error("Play action has no sound_id: skipping")
                 return
 
-            sound_id = message[self.PROTOCOL.SOUND_ID]
+            sound_id = event[self.PROTOCOL.SOUND_ID]
             logger.info("Playing sound id={}".format(sound_id))
 
             sound = self.sounds.get(sound_id, None)
@@ -110,20 +110,20 @@ class SoundPlayer(JustSockNodeClientService):
 
             reactor.callLater(delay, self.sound_player, sound)
 
-        elif message[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_VOLUME:
-            if self.PROTOCOL.VOLUME not in message:
+        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_VOLUME:
+            if self.PROTOCOL.VOLUME not in event:
                 logger.error("Set volume action has not volume: skipping")
                 return
 
-            volume = message[self.PROTOCOL.VOLUME]
-            duration = message.get(self.PROTOCOL.DURATION, 0)
-            ease = message.get(self.PROTOCOL.EASE, 'easeInOutSine')
+            volume = event[self.PROTOCOL.VOLUME]
+            duration = event.get(self.PROTOCOL.DURATION, 0)
+            ease = event.get(self.PROTOCOL.EASE, 'easeInOutSine')
 
             self.set_volume(delay, volume, duration, ease)
 
         else:
             logger.debug("Unknown command type '{}': skipping".format(
-                message[self.PROTOCOL.ACTION]))
+                event[self.PROTOCOL.ACTION]))
 
     def pyglet_play_sound(self, sound):
         player = pyglet.media.Player()

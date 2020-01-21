@@ -14,18 +14,13 @@ const justSockService = new Vuex.Store({
     // eslint-disable-next-line
     SOCKET_ONOPEN (state, event) {
       Vue.prototype.$socket = event.currentTarget
-      Vue.prototype.$socket.send(
-        JSON.stringify(
-          {
-            "type": "IAM",
-            "content": {
-              "client_type": "$node",
-              "channel": "digimiam1",
-              "name": "synchronizer",
-            }
-          }
-        )
-      )
+      let iamMessage = {
+        message_type: "IAM",
+        client_type: "node",
+        channel: "digimiam1",
+        name: "synchronizer",
+      }
+      Vue.prototype.$socket.send(JSON.stringify(iamMessage))
     },
     SOCKET_ONCLOSE (state, event) {
       // eslint-disable-next-line
@@ -35,18 +30,18 @@ const justSockService = new Vuex.Store({
       // eslint-disable-next-line
       console.error(state, event)
     },
-    SOCKET_ONMESSAGE (state, message) {
-      var msg = JSON.parse(message.data)
-      if (msg.type != 'MSG') {
+    SOCKET_ONMESSAGE (state, rawMessage) {
+      let message = JSON.parse(rawMessage.data)
+      if (message.message_type != 'EVENT') {
         return
       }
 
-      var content = msg.content
-      if (content.type == 'reset') {
+      let event = message.event
+      if (event.type == 'reset') {
         // Reload page
         router.go()
-      } else if (content.type == 'l10n') {
-        if (content.lang == 'fr') {
+      } else if (event.type == 'l10n') {
+        if (event.lang == 'fr') {
           if (i18n.locale != 'fr') {
             router.push({path: '/', query: {'lang': 'fr'}})
           }
@@ -57,13 +52,13 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
-      } else if (content.type == 'log') {
-        var logLevel = content.level
-        var logMessage = content.message
+      } else if (event.type == 'log') {
+        let logLevel = event.level
+        let logMessage = event.message
         logStore.commit('processEventLog', {logLevel, logMessage})
-      } else if (content.type == 'sensor') {
-        var sensorId = content['sensor_id']
-        var activated = content.activated
+      } else if (event.type == 'sensor') {
+        let sensorId = event['sensor_id']
+        let activated = event.activated
         lightStore.dispatch('toggleSensor', {sensorId, activated})
       }
     },
@@ -76,16 +71,15 @@ const justSockService = new Vuex.Store({
       // eslint-disable-next-line
       console.error("Reconnect error")
     },
-    // eslint-disable-next-line
-    sendToGateway (state, message) {
-      Vue.prototype.$socket.send(message)
+    sendEvent (state, event) {
+      let message = {
+        message_type: "EVENT",
+        event: event,
+      }
+      let jsonMessage = JSON.stringify(message)
+      Vue.prototype.$socket.send(jsonMessage)
     },
   },
-  actions: {
-    sendToGateway (context, message) {
-      context.commit('sendToGateway', message)
-    }
-  }
 })
 
 export default justSockService

@@ -9,7 +9,11 @@ const justSockService = new Vuex.Store({
   mutations: {
     SOCKET_ONOPEN (state, event) {
       Vue.prototype.$socket = event.currentTarget
-      Vue.prototype.$socket.send(JSON.stringify({"type": "IAM", "content": {"client_type": "$admin"}}))
+      let iamMessage = {
+        message_type: "IAM",
+        client_type: "admin"
+      }
+      Vue.prototype.$socket.send(JSON.stringify(iamMessage))
     },
     // eslint-disable-next-line
     SOCKET_ONCLOSE (state, event) {
@@ -19,16 +23,18 @@ const justSockService = new Vuex.Store({
     SOCKET_ONERROR (state, event) {
       notificationStore.dispatch('pushError', 'Websocket error')
     },
-    SOCKET_ONMESSAGE (state, message) {
-      var event = JSON.parse(message.data)
-      var roomId = event.room_id
-      if (event.type == 'TIC') {
-        var ticks = event.content
+    SOCKET_ONMESSAGE (state, rawMessage) {
+      let message = JSON.parse(rawMessage.data)
+      let roomId = message.room_id
+      if (message.message_type == 'TIC') {
+        let ticks = message.ticks
         roomStore.dispatch('beat', {roomId, ticks})
-      } else if (event.type == 'REC') {
-        var record = event.content
-        roomStore.dispatch('addRecord', {roomId, record})
-      } else if (event.type == 'CLR') {
+      } else if (message.message_type == 'REC') {
+        let recordId = message.record_id
+        let recordTicks = message.ticks
+        let recordLabel = message.label
+        roomStore.dispatch('addRecord', {roomId, recordId, recordTicks, recordLabel})
+      } else if (message.message_type == 'RESET') {
         roomStore.commit('processReset', roomId)
       }
     },
@@ -41,7 +47,7 @@ const justSockService = new Vuex.Store({
       notificationStore.dispatch('pushError', 'Websocket reconnection error')
     },
     // eslint-disable-next-line
-    sendToGateway (state, message) {
+    sendMessage (state, message) {
       let jsonMessage = JSON.stringify(message)
       Vue.prototype.$socket.send(jsonMessage)
     },

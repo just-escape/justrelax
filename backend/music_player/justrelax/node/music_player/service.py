@@ -104,29 +104,29 @@ class MusicPlayer(JustSockNodeClientService):
         pyglet.clock.tick()
         pyglet.app.platform_event_loop.dispatch_posted_events()
 
-    def process_message(self, message):
-        logger.debug("Processing message '{}'".format(message))
-        if type(message) is not dict:
-            logger.error("Unknown message: skipping")
+    def process_event(self, event):
+        logger.debug("Processing event '{}'".format(event))
+        if type(event) is not dict:
+            logger.error("Unknown event: skipping")
             return
 
-        if self.PROTOCOL.ACTION not in message:
-            logger.error("Message has no action: skipping")
+        if self.PROTOCOL.ACTION not in event:
+            logger.error("Event has no action: skipping")
             return
 
-        delay = message.get(self.PROTOCOL.DELAY, 0)
+        delay = event.get(self.PROTOCOL.DELAY, 0)
         if not isinstance(delay, (int, float)):
             logger.error("Delay must be int or float (received={}): skipping".format(delay))
             return
 
-        if message[self.PROTOCOL.ACTION] in self.play_pause_stop:
-            action = self.play_pause_stop[message[self.PROTOCOL.ACTION]]
+        if event[self.PROTOCOL.ACTION] in self.play_pause_stop:
+            action = self.play_pause_stop[event[self.PROTOCOL.ACTION]]
 
-            if self.PROTOCOL.TRACK_ID not in message:
+            if self.PROTOCOL.TRACK_ID not in event:
                 logger.error("{} action has no track_id: skipping".format(action['verb']))
                 return
 
-            track_id = message[self.PROTOCOL.TRACK_ID]
+            track_id = event[self.PROTOCOL.TRACK_ID]
             logger.info("{} track id={}".format(action['ing'], track_id))
 
             track = self.tracks.get(track_id, None)
@@ -136,21 +136,21 @@ class MusicPlayer(JustSockNodeClientService):
 
             reactor.callLater(delay, getattr(track, action['method']))
 
-        elif message[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_VOLUME:
-            if self.PROTOCOL.VOLUME not in message:
+        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_VOLUME:
+            if self.PROTOCOL.VOLUME not in event:
                 logger.error("Set volume action has no volume: skipping")
                 return
 
-            volume = message[self.PROTOCOL.VOLUME]
-            track_id = message.get(self.PROTOCOL.TRACK_ID, None)
-            duration = message.get(self.PROTOCOL.DURATION, 0)
-            ease = message.get(self.PROTOCOL.EASE, 'easeInOutSine')
+            volume = event[self.PROTOCOL.VOLUME]
+            track_id = event.get(self.PROTOCOL.TRACK_ID, None)
+            duration = event.get(self.PROTOCOL.DURATION, 0)
+            ease = event.get(self.PROTOCOL.EASE, 'easeInOutSine')
 
             self.set_volume(delay, volume, track_id, duration, ease)
 
         else:
             logger.debug("Unknown command type '{}': skipping".format(
-                message[self.PROTOCOL.ACTION]))
+                event[self.PROTOCOL.ACTION]))
 
     def set_volume(self, delay, volume, track_id=None, duration=0, ease='easeInOutSine'):
         if not isinstance(volume, int):

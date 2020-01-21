@@ -29,25 +29,25 @@ class HologramPlayer(JustSockNodeClientService):
         if 'default_chapter' in self.service_params:
             self.lock_chapter(self.service_params['default_chapter'])
 
-    def process_message(self, message):
-        logger.debug("Processing message '{}'".format(message))
-        if type(message) is not dict:
-            logger.debug("Unknown message: skipping")
+    def process_event(self, event):
+        logger.debug("Processing event '{}'".format(event))
+        if type(event) is not dict:
+            logger.debug("Unknown event: skipping")
             return
 
-        if self.PROTOCOL.COMMAND_TYPE not in message:
-            logger.debug("Message has no command type: skipping")
+        if self.PROTOCOL.COMMAND_TYPE not in event:
+            logger.debug("Event has no command type: skipping")
             return
 
-        if message[self.PROTOCOL.COMMAND_TYPE] == self.PROTOCOL.SELECT:
-            if self.PROTOCOL.CHAPTER_ID not in message:
+        if event[self.PROTOCOL.COMMAND_TYPE] == self.PROTOCOL.SELECT:
+            if self.PROTOCOL.CHAPTER_ID not in event:
                 logger.debug("Select command has no chapter id: skipping")
                 return
 
-            self.lock_chapter(message[self.PROTOCOL.CHAPTER_ID])
+            self.lock_chapter(event[self.PROTOCOL.CHAPTER_ID])
         else:
             logger.debug("Unknown command type '{}': skipping".format(
-                message[self.PROTOCOL.COMMAND_TYPE]))
+                event[self.PROTOCOL.COMMAND_TYPE]))
 
     def lock_chapter(self, chapter_id):
         logger.info("Locking on chapter id={}".format(chapter_id))

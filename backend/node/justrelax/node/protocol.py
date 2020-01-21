@@ -24,7 +24,7 @@ class JustSockNodeClientProtocol(WebSocketClientProtocol):
 
         self.send_i_am_node()
 
-    def log_event(self, event, to_server=True):
+    def log_message(self, message, to_server=True):
         identifier = "{}@{}".format(self.name, self.channel)
 
         if to_server:
@@ -34,9 +34,9 @@ class JustSockNodeClientProtocol(WebSocketClientProtocol):
             from_ = P.SERVER
             to = identifier
 
-        type_ = event[P.EVENT_TYPE]
+        type_ = message[P.MESSAGE_TYPE]
 
-        content = event.get(P.EVENT_CONTENT, "")
+        content = message.get(P.EVENT, "")
 
         logger.info("[{} > {}] {} {}".format(from_, to, type_, content))
 
@@ -46,41 +46,41 @@ class JustSockNodeClientProtocol(WebSocketClientProtocol):
             return
 
         try:
-            unicode_event = payload.decode('utf8')
+            unicode_message = payload.decode('utf8')
         except UnicodeDecodeError:
             logger.exception("Cannot decode {}: ignoring".format(payload))
             return
 
         try:
-            event_dict = json.loads(unicode_event)
+            message = json.loads(unicode_message)
         except json.JSONDecodeError:
-            logger.exception("Cannot load {}: ignoring".format(unicode_event))
+            logger.exception("Cannot load {}: ignoring".format(unicode_message))
             return
 
-        ok, warning = self.validate_event(event_dict)
+        ok, warning = self.validate_message(message)
         if not ok:
-            logger.info("Received {}".format(event_dict))
+            logger.info("Received {}".format(message))
             logger.warning(warning)
             logger.info("Ignoring")
         else:
-            logger.debug("Received {}".format(event_dict))
-            self.log_event(event_dict, to_server=False)
-            self.factory.process_message(event_dict[P.EVENT_CONTENT])
+            logger.debug("Received {}".format(message))
+            self.log_message(message, to_server=False)
+            self.factory.process_event(message[P.EVENT])
 
     @staticmethod
-    def validate_event(event):
+    def validate_message(message):
         try:
-            event[P.EVENT_TYPE]
+            message[P.MESSAGE_TYPE]
         except KeyError:
-            return False, "Event has no type"
+            return False, "Message has no type"
+
+        if message[P.MESSAGE_TYPE] != P.MESSAGE_TYPE_EVENT:
+            return False, "Only event messages are handled"
 
         try:
-            event[P.EVENT_CONTENT]
+            message[P.EVENT]
         except KeyError:
-            return False, "Event has no content"
-
-        if event[P.EVENT_TYPE] != P.EVENT_TYPE_MESSAGE:
-            return False, "Only message events are handled"
+            return False, "Message has no event"
 
         return True, None
 
@@ -88,31 +88,29 @@ class JustSockNodeClientProtocol(WebSocketClientProtocol):
         logger.info("WebSocket connection closed: {}".format(reason))
 
     def send_i_am_node(self):
-        event = {
-            P.EVENT_TYPE: P.EVENT_TYPE_I_AM,
-            P.EVENT_CONTENT: {
-                P.I_AM_CLIENT_TYPE: P.CLIENT_NODE,
-                P.I_AM_NAME: self.name,
-                P.I_AM_CHANNEL: self.channel,
-            },
+        message = {
+            P.MESSAGE_TYPE: P.MESSAGE_TYPE_I_AM,
+            P.I_AM_CLIENT_TYPE: P.CLIENT_NODE,
+            P.I_AM_NAME: self.name,
+            P.I_AM_CHANNEL: self.channel,
         }
         logger.debug("Declaring as a node")
-        self.send_json(event)
+        self.send_json(message)
 
-    def send_message(self, message):
-        event = {
-            P.EVENT_TYPE: P.EVENT_TYPE_MESSAGE,
-            P.EVENT_CONTENT: message,
+    def send_event(self, event):
+        message = {
+            P.MESSAGE_TYPE: P.MESSAGE_TYPE_EVENT,
+            P.EVENT: event,
         }
-        logger.debug("Messaging the server: {}".format(message))
-        self.send_json(event)
+        logger.debug("Sending message to the server: {}".format(message))
+        self.send_json(message)
 
     def send_json(self, dict_):
         unicode_json = json.dumps(dict_, ensure_ascii=False)
         bytes_ = unicode_json.encode("utf8")
 
         logger.debug("Sending {}".format(dict_))
-        self.log_event(dict_, to_server=True)
+        self.log_message(dict_, to_server=True)
 
         self.sendMessage(bytes_)
 

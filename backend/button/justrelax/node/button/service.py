@@ -31,8 +31,8 @@ class Button(JustSockNodeClientService):
 
             if state != last_state:
                 last_state = state
-                message = self.PROTOCOL.PRESS if state == 1 else self.PROTOCOL.RELEASE
-                reactor.callFromThread(self.factory.send_message, message)
+                event = self.PROTOCOL.PRESS if state == 1 else self.PROTOCOL.RELEASE
+                reactor.callFromThread(self.factory.send_event, event)
 
             time.sleep(0.1)
 

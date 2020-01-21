@@ -150,8 +150,8 @@ class Niryo(JustSockNodeClientService):
     def start(self):
         self.noc.activate_motors()
 
-    def process_message(self, message):
-        self.factory.send_message(message)
+    def process_event(self, event):
+        self.factory.send_message(event)
         self.move_joint(JointsController.JOINT_1, )
 
     def stop(self):

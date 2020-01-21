@@ -4,6 +4,8 @@ from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockNodeClientService
 from justrelax.node.video_player.vlc_player import VLCVideoPlayer
 from justrelax.node.video_player.vlc_player import VLCLoopingChapterVideoPlayer
+from justrelax.node.video_player.omx_player import OMXPlayer
+from justrelax.node.video_player.omx_player import OMXLoopingChapterVideoPlayer
 
 
 class VideoPlayer(JustSockNodeClientService):
@@ -29,10 +31,10 @@ class VideoPlayer(JustSockNodeClientService):
 
             if mode == 'chapter_loop':
                 chapters = video['chapters']
-                player = VLCLoopingChapterVideoPlayer(
+                player = OMXLoopingChapterVideoPlayer(
                     media_path=path, chapters=chapters)
             else:
-                player = VLCVideoPlayer(media_path=path)
+                player = OMXPlayer(media_path=path)
 
             self.videos[id_] = player
 
@@ -55,29 +57,29 @@ class VideoPlayer(JustSockNodeClientService):
             },
         }
 
-    def process_message(self, message):
-        logger.debug("Processing message '{}'".format(message))
-        if type(message) is not dict:
-            logger.debug("Unknown message: skipping")
+    def process_event(self, event):
+        logger.debug("Processing event '{}'".format(event))
+        if type(event) is not dict:
+            logger.debug("Unknown event: skipping")
             return
 
-        if self.PROTOCOL.ACTION not in message:
-            logger.debug("Message has no action: skipping")
+        if self.PROTOCOL.ACTION not in event:
+            logger.debug("Event has no action: skipping")
             return
 
-        delay = message.get(self.PROTOCOL.DELAY, 0)
+        delay = event.get(self.PROTOCOL.DELAY, 0)
         if not isinstance(delay, (int, float)):
             logger.error("Delay must be int or float (received={}): skipping".format(delay))
             return
 
-        if message[self.PROTOCOL.ACTION] in self.play_pause_stop:
-            action = self.play_pause_stop[message[self.PROTOCOL.ACTION]]
+        if event[self.PROTOCOL.ACTION] in self.play_pause_stop:
+            action = self.play_pause_stop[event[self.PROTOCOL.ACTION]]
 
-            if self.PROTOCOL.VIDEO_ID not in message:
+            if self.PROTOCOL.VIDEO_ID not in event:
                 logger.error("{} action has no video_id: skipping".format(action['verb']))
                 return
 
-            video_id = message[self.PROTOCOL.VIDEO_ID]
+            video_id = event[self.PROTOCOL.VIDEO_ID]
             logger.info("{} video id={}".format(action['ing'], video_id))
 
             player = self.videos.get(video_id, None)
@@ -87,22 +89,22 @@ class VideoPlayer(JustSockNodeClientService):
 
             reactor.callLater(delay, getattr(player, action['method']))
 
-        elif message[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_CHAPTER:
-            if self.PROTOCOL.VIDEO_ID not in message:
+        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_CHAPTER:
+            if self.PROTOCOL.VIDEO_ID not in event:
                 logger.error("Set chapter action has no video_id: skipping")
                 return
 
-            video_id = message[self.PROTOCOL.VIDEO_ID]
+            video_id = event[self.PROTOCOL.VIDEO_ID]
             player = self.videos.get(video_id, None)
             if player is None:
                 logger.error("Unknown video id={}: aborting".format(video_id))
                 return
 
-            if self.PROTOCOL.CHAPTER_ID not in message:
+            if self.PROTOCOL.CHAPTER_ID not in event:
                 logger.error("Set chapter action has no chapter id: skipping")
                 return
 
-            chapter_id = message[self.PROTOCOL.CHAPTER_ID]
+            chapter_id = event[self.PROTOCOL.CHAPTER_ID]
             if chapter_id not in player.chapters:
                 logger.error("Video id={} has not chapter id={}: skipping".format(
                     video_id, chapter_id))
@@ -115,4 +117,4 @@ class VideoPlayer(JustSockNodeClientService):
 
         else:
             logger.debug("Unknown command type '{}': skipping".format(
-                message[self.PROTOCOL.ACTION]))
+                event[self.PROTOCOL.ACTION]))

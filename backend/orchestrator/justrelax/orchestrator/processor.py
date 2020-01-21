@@ -38,11 +38,11 @@ class RulesProcessor:
     def is_subscribed_to_channel(self, channel):
         return self.channel == channel
 
-    def send_message(self, to, message):
+    def send_event(self, to, event):
         self.factory.send_to_node(
             to,
             self.channel,
-            message
+            event
         )
 
     def get_ticks(self):
@@ -258,10 +258,8 @@ class RulesProcessor:
     #
     # def process_record_action(self, action, context=None):
     #     computed_label = self.compute_value(action[JR.ACTION_RECORD], context=context)
-    #     record = {
-    #         P.RECORD_ID: str(uuid.uuid4()),
-    #         P.RECORD_TICKS: self.ticks,
-    #         P.RECORD_LABEL: computed_label,
-    #     }
+    #     id = str(uuid.uuid4())
+    #     ticks = self.ticks
+    #     label = computed_label
     #     self.records.append(record)
-    #     self.factory.send_record(self.room_id, record)
+    #     self.factory.send_record(self.room_id, id_, ticks, label)
