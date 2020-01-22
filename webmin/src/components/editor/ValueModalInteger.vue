@@ -22,6 +22,11 @@ import valueModalMixin from '@/components/editor/valueModalMixin.js'
 export default {
   name: "ValueModalInteger",
   mixins: [valueModalMixin],
+  methods: {
+    pushMyValue() {
+      this.$emit('pushValue', Number(this.valueBuffer))
+    }
+  },
   created() {
     if (Number.isInteger(this.parentValue)) {
       this.valueBuffer = this.parentValue

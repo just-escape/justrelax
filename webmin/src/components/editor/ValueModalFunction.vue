@@ -44,10 +44,10 @@ export default {
     },
     selectedFunction: {
       get() {
-        return this.valueBuffer.operator
+        return this.valueBuffer.function
       },
       set(value) {
-        this.valueBuffer.operator = value
+        this.valueBuffer.function = value
         this.pushMyValue()
       },
     },
@@ -55,28 +55,28 @@ export default {
       return this.functions[this.selectedFunction].links
     },
     args() {
-      // The 'operator' key is unnecessarily passed but whatever
-      return this.valueBuffer
+      return this.valueBuffer.arguments
     }
   },
   methods: {
     updateArgument(key, value) {
-      this.valueBuffer[key] = value
+      this.$set(this.valueBuffer.arguments, key, value)
       this.pushMyValue()
     },
   },
   created() {
-    if (typeof this.parentValue === "object" && this.parentValue.operator !== undefined) {
+    if (typeof this.parentValue === "object" && this.parentValue.function !== undefined) {
       this.valueBuffer = JSON.parse(JSON.stringify(this.parentValue))
       this.pushMyValue()
     } else {
       let defaultFunction = this.orderedFunctions[0]
 
-      this.$set(this, 'valueBuffer', {operator: defaultFunction.name})
+      this.$set(this, 'valueBuffer', {function: defaultFunction.name})
 
+      this.valueBuffer.arguments = {}
       for (var link of defaultFunction.links) {
         if (link.type === "argument") {
-          this.valueBuffer[link.key] = link.default_value
+          this.valueBuffer.arguments[link.key] = link.default_value
         }
       }
     }

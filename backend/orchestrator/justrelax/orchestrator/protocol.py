@@ -136,54 +136,56 @@ class JustSockServerProtocol(WebSocketServerProtocol):
         return True, None
 
     def log_message(self, message, to_server=True):
-        body = ""
-        if not self.client_type:
-            identifier = self.peer
-
-            body = {
-                P.I_AM_CLIENT_TYPE: message[P.I_AM_CLIENT_TYPE],
-                P.I_AM_NAME: message.get(P.I_AM_NAME, ""),
-                P.I_AM_CHANNEL: message.get(P.I_AM_CHANNEL, ""),
-            }
-
-        else:
-            if self.client_type == P.CLIENT_ADMIN:
-                at = message[P.ROOM_ID]
-
-                if message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_TIC_TAC:
-                    body = message[P.TIC_TAC_TICKS]
-                elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_RECORD:
-                    body = {
-                        P.RECORD_ID: message[P.RECORD_ID],
-                        P.RECORD_TICKS: message[P.RECORD_TICKS],
-                        P.RECORD_LABEL: message[P.RECORD_LABEL],
-                    }
-                elif message[P.MESSAGE_TYPE] in [P.MESSAGE_TYPE_SEND_EVENT_TO, P.MESSAGE_TYPE_SEND_EVENT_AS]:
-                    body = {
-                        P.SEND_EVENT_NODE: message[P.SEND_EVENT_NODE],
-                        P.EVENT: message[P.EVENT],
-                    }
-
-            else:
-                at = self.channel
-                body = message[P.EVENT]
-
-            identifier = "{}@{}".format(self.name, at)
-
-        if to_server:
-            from_ = identifier
-            to = "$server"
-        else:
-            from_ = "$server"
-            to = identifier
-
-        type_ = message[P.MESSAGE_TYPE]
-
-        log = "[{} > {}] {}".format(from_, to, type_)
-        if body:
-            log += " {}".format(body)
-
-        logger.info(log)
+        # TODO: think of a more efficient way to achieve this
+        pass
+        # body = ""
+        # if not self.client_type:
+        #     identifier = self.peer
+        #
+        #     body = {
+        #         P.I_AM_CLIENT_TYPE: message[P.I_AM_CLIENT_TYPE],
+        #         P.I_AM_NAME: message.get(P.I_AM_NAME, ""),
+        #         P.I_AM_CHANNEL: message.get(P.I_AM_CHANNEL, ""),
+        #     }
+        #
+        # else:
+        #     if self.client_type == P.CLIENT_ADMIN:
+        #         at = message[P.ROOM_ID]
+        #
+        #         if message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_TIC_TAC:
+        #             body = message[P.TIC_TAC_TICKS]
+        #         elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_RECORD:
+        #             body = {
+        #                 P.RECORD_ID: message[P.RECORD_ID],
+        #                 P.RECORD_TICKS: message[P.RECORD_TICKS],
+        #                 P.RECORD_LABEL: message[P.RECORD_LABEL],
+        #             }
+        #         elif message[P.MESSAGE_TYPE] in [P.MESSAGE_TYPE_SEND_EVENT_TO, P.MESSAGE_TYPE_SEND_EVENT_AS]:
+        #             body = {
+        #                 P.SEND_EVENT_NODE: message[P.SEND_EVENT_NODE],
+        #                 P.EVENT: message[P.EVENT],
+        #             }
+        #
+        #     else:
+        #         at = self.channel
+        #         body = message[P.EVENT]
+        #
+        #     identifier = "{}@{}".format(self.name, at)
+        #
+        # if to_server:
+        #     from_ = identifier
+        #     to = "$server"
+        # else:
+        #     from_ = "$server"
+        #     to = identifier
+        #
+        # type_ = message[P.MESSAGE_TYPE]
+        #
+        # log = "[{} > {}] {}".format(from_, to, type_)
+        # if body:
+        #     log += " {}".format(body)
+        #
+        # logger.info(log)
 
     def process_i_am_message(self, message):
         # P.CLIENT_NODE or P.CLIENT_ADMIN, thanks to validate_message
@@ -203,6 +205,14 @@ class JustSockServerProtocol(WebSocketServerProtocol):
             P.EVENT: event,
         }
         self.send_json(message)
+
+    def send_notification(self, type_, message):
+        message_to_send = {
+            P.MESSAGE_TYPE: P.MESSAGE_TYPE_NOTIFICATION,
+            P.NOTIFICATION_TYPE: type_,
+            P.NOTIFICATION_MESSAGE: message,
+        }
+        self.send_json(message_to_send)
 
     def send_beat(self, room_id, ticks):
         message = {

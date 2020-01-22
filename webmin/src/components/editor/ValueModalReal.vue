@@ -23,6 +23,11 @@ import valueModalMixin from '@/components/editor/valueModalMixin.js'
 export default {
   name: "ValueModalReal",
   mixins: [valueModalMixin],
+  methods: {
+    pushMyValue() {
+      this.$emit('pushValue', Number(this.valueBuffer))
+    }
+  },
   created() {
     if (
       Number(this.parentValue) === this.parentValue &&

@@ -29,6 +29,10 @@ const justSockService = new Vuex.Store({
       if (message.message_type == 'TIC') {
         let ticks = message.ticks
         roomStore.dispatch('beat', {roomId, ticks})
+      } else if (message.message_type == 'NOTIFICATION') {
+        let type = message.notification_type
+        let notificationMessage = message.notification_message
+        notificationStore.commit('pushNotification', {type: type, message: notificationMessage})
       } else if (message.message_type == 'REC') {
         let recordId = message.record_id
         let recordTicks = message.ticks

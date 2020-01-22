@@ -173,7 +173,7 @@ def update_component_arguments(component, arguments):
 
     # Create
     arguments_to_create = {key: value for key, value in arguments.items() if key not in keys_to_update}
-    for key, value in arguments_to_create:
+    for key, value in arguments_to_create.items():
         ComponentArgument(
             component=component,
             key=key,

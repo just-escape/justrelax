@@ -31,7 +31,7 @@ class JustSockServerFactory(WebSocketServerFactory):
     def process_event(self, name, channel, event):
         for _, processor in self.service.processors.items():
             if processor.is_subscribed_to_channel(channel):
-                processor.process_event(name, event)
+                processor.on_event(name, event)
 
     def process_run_room(self, room_id):
         self.service.processors[room_id].run_room()
@@ -42,13 +42,17 @@ class JustSockServerFactory(WebSocketServerFactory):
     def process_reset_room(self, room_id):
         self.service.processors[room_id].reset_room()
 
-    def process_send_event_to(self, room_id, node, event):
+    def process_send_event_to(self, room_id, node_name, event):
         channel = self.service.processors[room_id].channel
-        self.send_to_node(node, channel, event)
+        self.send_to_node(node_name, channel, event)
 
-    def process_send_event_as(self, room_id, node, event):
-        channel = self.service.processors[room_id].channel
-        self.process_event(node, channel, event)
+    def process_send_event_as(self, room_id, node_name, event):
+        processor = self.service.processors[room_id]
+        processor.on_event(node_name, event)
+
+    def send_notification(self, type_, message):
+        for admin in self.admins:
+            admin.send_notification(type_, message)
 
     def send_beat(self, room_id, ticks):
         for admin in self.admins:

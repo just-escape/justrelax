@@ -33,12 +33,9 @@ export default {
           return value
         }
       } else if (typeof value === "object") {
-        if (value.operator !== undefined) {
-          var formattedValue = value.operator + ' ' + this.format(value.right)
-          if (value.left !== undefined) {
-            formattedValue = this.format(value.left) + ' ' + formattedValue
-          }
-          return '(' + formattedValue + ')'
+        if (value.function !== undefined) {
+          let formattedValue = value.function + '(' + this.format({object: value.arguments}) + ')'
+          return formattedValue
         } else if (value.variable !== undefined) {
           return value.variable
         } else if (value.object !== undefined) {

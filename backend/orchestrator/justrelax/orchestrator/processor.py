@@ -3,13 +3,7 @@ import uuid
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.common.utils import ensure_iterable
-from justrelax.common.constants import JUST_SOCK_PROTOCOL as P
-from justrelax.orchestrator import RULES as JR
-
-
-class UndefinedAction(Exception):
-    pass
+from justrelax.orchestrator import RULES as R
 
 
 class RulesProcessor:
@@ -21,66 +15,224 @@ class RulesProcessor:
         self.ticks = 0
         self.tick_loop = LoopingCall(self.tick)
 
-        # self.variable_definitions = self.rules.get(JR.VARIABLES, {})
-        # self.vars = {}
+        self.rule_definitions = rules
+        self.on_trigger_type_rules = {
+            'incoming_event': [],
+            'session_start': [],
+            'session_pause': [],
+            'session_resume': [],
+        }
+        self.init_rules()
+
+        self.variable_definitions = variables
+        self.variables = {}
+        self.init_variables()
+
+        self.condition_table = {
+            'simple_condition': self.condition_simple_condition,
+            'or': self.condition_or,
+            'and': self.condition_and,
+        }
+
+        self.action_table = {
+            'trigger_rule': self.action_trigger_rule,
+            'set_variable': self.action_set_variable,
+            'send_event': self.action_send_event,
+            'push_info_notification': self.action_push_info_notification,
+            'push_error_notification': self.action_push_error_notification,
+        }
+
+        self.function_table = {
+            '+': self.function_addition,
+            '-': self.function_substraction,
+            '*': self.function_multiplication,
+            '/': self.function_division,
+        }
+
         # self.system_vars = {
         #     JR.SYSTEM_VARIABLE_IS_RUNNING: self.get_is_running,
         #     JR.SYSTEM_VARIABLE_TICKS: self.get_ticks
         # }
-        # self.action_definitions = self.rules.get(JR.ACTIONS, {})
-        # self.condition_definitions = self.rules.get(JR.CONDITIONS, {})
-        # self.rule_definitions = self.rules.get(JR.RULES, {})
         # self.alarm_definitions = self.rules.get(JR.ALARMS, {})
         # self.alarms = {}
-        #
-        # self.records = []
+
+        self.records = []
 
     def is_subscribed_to_channel(self, channel):
         return self.channel == channel
 
     def send_event(self, to, event):
-        self.factory.send_to_node(
-            to,
-            self.channel,
-            event
-        )
-
-    def get_ticks(self):
-        return self.ticks
+        self.factory.send_to_node(to, self.channel, event)
 
     def tick(self):
         self.ticks += 1
         self.factory.send_beat(self.room_id, self.ticks)
         # self.process_alarms()
 
+    def init_rules(self):
+        for rule in self.rule_definitions:
+            for trigger in rule['triggers']:
+                if trigger['template'] in self.on_trigger_type_rules:
+                    self.on_trigger_type_rules[trigger['template']].append(rule)
+                else:
+                    self.on_trigger_type_rules[trigger['template']] = [rule]
+
+    def init_variables(self):
+        for variable in self.variables:
+            if variable['list']:
+                self.variables[variable['name']] = []
+            else:
+                self.variables[variable['name']] = variable['default_value']
+
     def run_room(self):
-        logger.info('Run')
         if not self.tick_loop.running:
             self.tick_loop.start(1)
+            if self.ticks == 0:
+                self.factory.send_notification('info', "Session started")
+                self.process_rules_from_trigger_type('session_start', {})
+            else:
+                self.factory.send_notification('info', "Session resumed")
+                self.process_rules_from_trigger_type('session_resume', {})
 
     def halt_room(self):
-        logger.info('Halt')
         if self.tick_loop.running:
             self.tick_loop.stop()
+            self.factory.send_notification('info', "Session paused")
+            self.process_rules_from_trigger_type('session_halt', {})
 
     def reset_room(self):
-        logger.info('Reset')
         if not self.tick_loop.running:
-            # self.reset_vars(self.variable_definitions)
-            # self.alarms = {}
+            self.init_variables()
             self.ticks = 0
-            # self.records = []
+            self.records = []
             self.factory.send_reset(self.room_id)
+            self.factory.send_notification('info', "Session reset")
 
-    # def get_live_data(self):
-    #     live_data = {
-    #         "ticks": self.ticks,
-    #         "records": self.records,
-    #     }
-    #     return live_data
+    def on_event(self, from_, event):
+        context = {
+            R.CONTEXT_TRIGGERING_EVENT_NODE_NAME: from_,
+            R.CONTEXT_TRIGGERING_EVENT: event,
+        }
 
-    # def get_is_running(self):
-    #     return self.tick_loop.running
+        self.process_rules_from_trigger_type('incoming_event', context)
+
+    def process_rules_from_trigger_type(self, trigger_type, context):
+        for rule in self.on_trigger_type_rules[trigger_type]:
+            try:
+                self.if_conditions_then_actions(
+                    rule['conditions'], rule['actions'], context)
+            except Exception:
+                message = "Error while processing rule {}".format(rule['name'])
+                self.factory.send_notification('error', message)
+                logger.exception()
+
+    def if_conditions_then_actions(self, conditions, actions, context):
+        if all([self.compute_condition(c, context) for c in conditions]):
+            for action in actions:
+                self.process_action(action, context)
+
+    def compute(self, value, context):
+        if not isinstance(value, dict):
+            return value
+
+        if "object" in value:
+            for key, value in value["object"].items():
+                value["object"][key] = self.compute(value, context)
+            return value["object"]
+
+        if "variable" in value:
+            variable_name = value["variable"]
+            return self.variables[variable_name]
+
+        if "function" in value:
+            function = self.function_table.get(value["function"], None)
+            if function is None:
+                raise ValueError('Unknown function {}'.format(value["function"]))
+            return function(value["arguments"], context)
+
+        return None
+
+    def function_addition(self, arguments, context):
+        computed_left = self.compute(arguments['left'], context)
+        computed_right = self.compute(arguments['right'], context)
+        return computed_left + computed_right
+
+    def function_substraction(self, arguments, context):
+        computed_left = self.compute(arguments['left'], context)
+        computed_right = self.compute(arguments['right'], context)
+        return computed_left - computed_right
+
+    def function_multiplication(self, arguments, context):
+        computed_left = self.compute(arguments['left'], context)
+        computed_right = self.compute(arguments['right'], context)
+        return computed_left * computed_right
+
+    def function_division(self, arguments, context):
+        computed_left = self.compute(arguments['left'], context)
+        computed_right = self.compute(arguments['right'], context)
+        return computed_left / computed_right
+
+    def compute_condition(self, condition, context):
+        condition_type = condition['template']
+        condition_method = self.condition_table.get(condition_type, None)
+
+        if condition_method is None:
+            raise ValueError('Unknown condition type {}'.format(condition_type))
+
+        return condition_method(condition['arguments'], context)
+
+    def condition_simple_condition(self, arguments, context):
+        return self.compute(arguments['condition'], context)
+
+    def condition_or(self, arguments, context):
+        return self.compute(arguments['left'], context) or self.compute(arguments['right'], context)
+
+    def condition_and(self, arguments, context):
+        return self.compute(arguments['left'], context) and self.compute(arguments['right'], context)
+
+    def process_action(self, action, context):
+        action_type = action['template']
+        action_method = self.action_table.get(action_type, None)
+
+        if action_method is None:
+            raise ValueError('Unknown action type {}'.format(action_type))
+
+        return action_method(action['arguments'], context)
+
+    def action_trigger_rule(self, arguments, context):
+        computed_rule_name = self.compute(arguments['rule_name'], context)
+        for rule in self.rule_definitions:
+            if rule['name'] == computed_rule_name:
+                conditions = rule['conditions']
+                actions = rule['actions']
+                self.if_conditions_then_actions(conditions, actions, context)
+                break
+
+    def action_set_variable(self, arguments, context):
+        computed_variable_name = self.compute(arguments['variable_name'], context)
+        computed_value = self.compute(arguments['value'], context)
+
+        self.variables[computed_variable_name] = computed_value
+
+    def action_send_event(self, arguments, context):
+        computed_to = self.compute(arguments['node_name'], context)
+        computed_event = self.compute(arguments['event'], context)
+        self.send_event(computed_to, computed_event)
+
+    def action_push_info_notification(self, arguments, context):
+        computed_message = self.compute(arguments['message'], context)
+        self.factory.send_notification('info', computed_message)
+
+    def action_push_error_notification(self, arguments, context):
+        computed_message = self.compute(arguments['message'], context)
+        self.factory.send_notification('error', computed_message)
+
+    def action_record(self, arguments, context):
+        computed_label = self.compute(arguments['label'], context)
+        id_ = str(uuid.uuid4())
+        ticks = self.ticks
+        self.records.append({'id': id_, 'ticks': ticks, 'label': computed_label})
+        self.factory.send_record(self.room_id, id_, ticks, computed_label)
 
     # def process_alarms(self):
     #     context = {}
@@ -103,139 +255,6 @@ class RulesProcessor:
     #
     #     for key in to_pop:
     #         self.alarms.pop(key)
-
-    # def reset_vars(self, variables):
-    #     for name, var in variables.items():
-    #         self.vars[name] = var[JR.VARIABLE_INIT_VALUE]
-    #
-    # def compute_value(self, expression, context=None):
-    #     if context is None:
-    #         context = {}
-    #
-    #     if not isinstance(expression, dict):
-    #         return expression
-    #
-    #     if JR.OBJECT in expression:
-    #         for key, value in expression[JR.OBJECT].items():
-    #             expression[JR.OBJECT][key] = self.compute_value(value, context=context)
-    #         return expression[JR.OBJECT]
-    #
-    #     if JR.CONTEXT in expression:
-    #         key = self.compute_value(expression[JR.CONTEXT], context=context)
-    #         return context.get(key, None)
-    #
-    #     if JR.VARIABLE in expression:
-    #         var = self.compute_value(expression[JR.VARIABLE], context=context)
-    #         return self.vars[var]
-    #
-    #     if JR.SYSTEM_VARIABLE in expression:
-    #         sys_var = self.compute_value(expression[JR.SYSTEM_VARIABLE], context=context)
-    #         return self.system_vars[sys_var]()
-    #
-    #     if JR.CONDITION in expression:
-    #         return self.process_conditions(
-    #             self.condition_definitions[expression[JR.CONDITION]],
-    #             context=context
-    #         )
-    #
-    #     if JR.OPERATION_OPERATOR in expression:
-    #         operator = expression[JR.OPERATION_OPERATOR]
-    #         py_operator, n_operands = JR.OPERATORS[operator]
-    #
-    #         left = self.compute_value(
-    #             expression.get(JR.OPERATION_LEFT, None),
-    #             context=context
-    #         )
-    #         right = self.compute_value(
-    #             expression.get(JR.OPERATION_RIGHT, None),
-    #             context=context
-    #         )
-    #
-    #         if n_operands == 1:
-    #             return py_operator(right)
-    #         else:
-    #             return py_operator(left, right)
-    #
-    #     return None
-
-    # def process_message(self, from_, message):
-    #     context = {
-    #         JR.CONTEXT_FROM: from_,
-    #         JR.CONTEXT_MESSAGE: message,
-    #     }
-    #
-    #     for rule_name, rule_definition in self.rule_definitions.items():
-    #         context[JR.CONTEXT_RULE_NAME] = rule_name
-    #         conditions = rule_definition.get(JR.CONDITIONS, [True])
-    #
-    #         if not self.process_conditions(conditions, context=context):
-    #             continue
-    #
-    #         actions = rule_definition.get(JR.ACTIONS, [])
-    #         self.process_actions(actions, context=context)
-    #
-    # def process_conditions(self, conditions, context=None):
-    #     res = []
-    #     for condition in ensure_iterable(conditions):
-    #         res.append(self.compute_value(condition, context=context))
-    #     return all(res)
-    #
-    # def process_action_from_name(self, action):
-    #     context = {
-    #         JR.CONTEXT_FROM: P.CLIENT_ADMIN
-    #     }
-    #
-    #     if action not in self.action_definitions:
-    #         raise UndefinedAction("Action '{}' is not defined".format(action))
-    #
-    #     self._process_action_action(action, context=context)
-    #
-    # def process_actions(self, actions, context=None):
-    #     if context is None:
-    #         context = {}
-    #
-    #     for action in ensure_iterable(actions):
-    #         if JR.ACTION in action:
-    #             self.process_action_action(action, context=context)
-    #
-    #         if JR.ACTION_SEND_TO in action:
-    #             self.process_send_action(action, context=context)
-    #
-    #         if JR.ACTION_SET in action:
-    #             self.process_set_action(action, context=context)
-    #
-    #         if JR.ACTION_START_ALARM in action:
-    #             self.process_start_alarm_action(action, context=context)
-    #
-    #         if JR.ACTION_CANCEL_ALARM in action:
-    #             self.process_cancel_alarm_action(action, context=context)
-    #
-    #         if JR.ACTION_RECORD in action:
-    #             self.process_record_action(action, context=context)
-    #
-    # def process_action_action(self, action, context=None):
-    #     for action_name in ensure_iterable(action[JR.ACTION]):
-    #         computed_name = self.compute_value(action_name, context=context)
-    #         self._process_action_action(computed_name, context=context)
-    #
-    # def _process_action_action(self, action, context=None):
-    #     defined_action = self.action_definitions[action]
-    #
-    #     self.process_actions(defined_action, context=context)
-    #
-    # def process_send_action(self, action, context=None):
-    #     for to in ensure_iterable(action[JR.ACTION_SEND_TO]):
-    #         computed_to = self.compute_value(to, context=context)
-    #         for message in ensure_iterable(action[JR.ACTION_SEND_TO_MESSAGE]):
-    #             computed_message = self.compute_value(message, context=context)
-    #             self.send_message(computed_to, computed_message)
-
-    # def process_set_action(self, action, context=None):
-    #     value = self.compute_value(action[JR.ACTION_SET_VALUE], context=context)
-    #     for name in ensure_iterable(action[JR.ACTION_SET_NAME]):
-    #         computed_name = self.compute_value(name, context=context)
-    #         self.vars[computed_name] = value
-    #
     # def process_start_alarm_action(self, action, context=None):
     #     ticks = self.compute_value(action[JR.ACTION_START_ALARM_TICKS], context=context)
     #     for name in ensure_iterable(action[JR.ACTION_START_ALARM]):
@@ -255,11 +274,3 @@ class RulesProcessor:
     #     for name in ensure_iterable(action[JR.ACTION_CANCEL_ALARM]):
     #         computed_name = self.compute_value(name, context=context)
     #         alarm = self.alarms.pop(computed_name, None)
-    #
-    # def process_record_action(self, action, context=None):
-    #     computed_label = self.compute_value(action[JR.ACTION_RECORD], context=context)
-    #     id = str(uuid.uuid4())
-    #     ticks = self.ticks
-    #     label = computed_label
-    #     self.records.append(record)
-    #     self.factory.send_record(self.room_id, id_, ticks, label)

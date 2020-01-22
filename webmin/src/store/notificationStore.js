@@ -29,11 +29,11 @@ export default new Vuex.Store({
   },
   actions: {
     pushNotification (context, message) {
-      var type = 'info'
+      let type = 'info'
       context.commit('pushNotification', {type, message})
     },
     pushError (context, message) {
-      var type = 'error'
+      let type = 'error'
       context.commit('pushNotification', {type, message})
     },
     clearNotification (context, id) {
