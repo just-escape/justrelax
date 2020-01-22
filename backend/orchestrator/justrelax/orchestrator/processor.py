@@ -1,4 +1,5 @@
 import uuid
+import requests
 
 from twisted.internet.task import LoopingCall
 
@@ -7,26 +8,25 @@ from justrelax.orchestrator import RULES as R
 
 
 class RulesProcessor:
-    def __init__(self, factory, room_id, channel, rules, variables):
+    def __init__(self, factory, storage_url, room_id, channel):
         self.factory = factory
+        self.storage_url = storage_url
         self.room_id = room_id
         self.channel = channel
 
         self.ticks = 0
         self.tick_loop = LoopingCall(self.tick)
 
-        self.rule_definitions = rules
+        self.rule_definitions = []
         self.on_trigger_type_rules = {
             'incoming_event': [],
             'session_start': [],
-            'session_pause': [],
+            'session_halt': [],
             'session_resume': [],
         }
-        self.init_rules()
 
-        self.variable_definitions = variables
+        self.variable_definitions = []
         self.variables = {}
-        self.init_variables()
 
         self.condition_table = {
             'simple_condition': self.condition_simple_condition,
@@ -58,6 +58,8 @@ class RulesProcessor:
 
         self.records = []
 
+        self.fetch_and_init_rules()
+
     def is_subscribed_to_channel(self, channel):
         return self.channel == channel
 
@@ -69,7 +71,18 @@ class RulesProcessor:
         self.factory.send_beat(self.room_id, self.ticks)
         # self.process_alarms()
 
-    def init_rules(self):
+    def fetch_and_init_rules(self):
+        scenario_rules = requests.get(
+            '{}/get_scenario/'.format(self.storage_url),
+            params={'room_id': self.room_id},
+        ).json()
+
+        self.rule_definitions = scenario_rules['rules']
+        self.variable_definitions = scenario_rules['variables']
+
+        for trigger_type in self.on_trigger_type_rules:
+            self.on_trigger_type_rules[trigger_type] = []
+
         for rule in self.rule_definitions:
             for trigger in rule['triggers']:
                 if trigger['template'] in self.on_trigger_type_rules:
@@ -77,12 +90,12 @@ class RulesProcessor:
                 else:
                     self.on_trigger_type_rules[trigger['template']] = [rule]
 
-    def init_variables(self):
-        for variable in self.variables:
+        self.variables = {}
+        for variable in self.variable_definitions:
             if variable['list']:
                 self.variables[variable['name']] = []
             else:
-                self.variables[variable['name']] = variable['default_value']
+                self.variables[variable['name']] = variable['init_value']
 
     def run_room(self):
         if not self.tick_loop.running:
@@ -102,11 +115,11 @@ class RulesProcessor:
 
     def reset_room(self):
         if not self.tick_loop.running:
-            self.init_variables()
-            self.ticks = 0
-            self.records = []
             self.factory.send_reset(self.room_id)
             self.factory.send_notification('info', "Session reset")
+            self.ticks = 0
+            self.records = []
+            self.fetch_and_init_rules()
 
     def on_event(self, from_, event):
         context = {

@@ -25,23 +25,16 @@ class JustSockServerService(internet.TCPServer):
                 params={'room_id': s['id']},
             ).json()
             for r in rooms:
-                scenario_rules = requests.get(
-                    '{}/get_scenario/'.format(self.storage_url),
-                    params={'room_id': r['id']},
-                ).json()
                 self.new_processor(
                     r['id'],
                     r['channel'],
-                    scenario_rules['rules'],
-                    scenario_rules['variables'],
                 )
 
-    def new_processor(self, room_id, channel, rules, variables):
+    def new_processor(self, room_id, channel):
         processor = RulesProcessor(
             factory=self.factory,
+            storage_url=self.storage_url,
             room_id=room_id,
             channel=channel,
-            rules=rules,
-            variables=variables,
         )
         self.processors[room_id] = processor
