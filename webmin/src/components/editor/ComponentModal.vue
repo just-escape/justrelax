@@ -4,6 +4,7 @@
     body-bg-variant="dark"
     body-text-variant="light"
     @ok="ok"
+    @show="show"
   >
     <select v-model="selectedTemplate" class="mr-2">
       <option
@@ -75,9 +76,15 @@ export default {
     updateArgument(key, value) {
       this.componentBuffer.arguments[key] = value
     },
+    show: function() {
+      this.reloadComponentBuffer()
+    },
+    reloadComponentBuffer: function() {
+      this.componentBuffer = JSON.parse(JSON.stringify(this.component))
+    },
   },
   created() {
-    this.componentBuffer = JSON.parse(JSON.stringify(this.component))
+    this.reloadComponentBuffer()
   },
   props: {
     modalId: String,
