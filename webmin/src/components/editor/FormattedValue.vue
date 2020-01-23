@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import editorStore from '@/store/editorStore.js'
+
 export default {
   name: "FormattedValue",
   methods: {
@@ -34,7 +36,15 @@ export default {
         }
       } else if (typeof value === "object") {
         if (value.function !== undefined) {
-          let formattedValue = value.function + '(' + this.format({object: value.arguments}) + ')'
+          var formattedValue = ""
+          let links = editorStore.state.templates.function[value.function].links
+          for (var link of links) {
+            if (link.type === 'text') {
+              formattedValue += link.text
+            } else if (link.type === 'argument') {
+              formattedValue += this.format(value.arguments[link.key])
+            }
+          }
           return formattedValue
         } else if (value.variable !== undefined) {
           return value.variable
