@@ -130,25 +130,24 @@ def get_scenario(request):
     return Response(response)
 
 
-def create_components(rule, components, context):
-    for index, component in enumerate(components):
-        template = ComponentTemplate.objects.get(
-            name=component['template'],
-            context=context,
-        )
-        new_component = Component(
-            rule=rule,
-            template=template,
-            index=index,
-        )
-        new_component.save()
+def create_component(rule, component, context, index):
+    template = ComponentTemplate.objects.get(
+        name=component['template'],
+        context=context,
+    )
+    new_component = Component(
+        rule=rule,
+        template=template,
+        index=index,
+    )
+    new_component.save()
 
-        for key, value in component['arguments'].items():
-            ComponentArgument(
-                component=new_component,
-                key=key,
-                value=json.dumps(value),
-            ).save()
+    for key, value in component['arguments'].items():
+        ComponentArgument(
+            component=new_component,
+            key=key,
+            value=json.dumps(value),
+        ).save()
 
 
 def update_component_arguments(component, arguments):
@@ -216,7 +215,8 @@ def update_components(rule, components, context):
 
     # Create
     components_to_create = [c for c in components if c.get('id', None) not in ids_to_update]
-    create_components(rule, components_to_create, context)
+    for component in components_to_create:
+        create_component(rule, component, context, components.index(component))
 
 
 def update_rules(room, rules):
@@ -263,9 +263,29 @@ def update_rules(room, rules):
         )
         new_rule.save()
 
-        create_components(new_rule, rule['triggers'], 'trigger')
-        create_components(new_rule, rule['conditions'], 'condition')
-        create_components(new_rule, rule['actions'], 'action')
+        for component in rule['triggers']:
+            create_component(
+                new_rule,
+                component,
+                'trigger',
+                rule['triggers'].index(component),
+            )
+
+        for component in rule['conditions']:
+            create_component(
+                new_rule,
+                component,
+                'condition',
+                rule['conditions'].index(component),
+            )
+
+        for component in rule['actions']:
+            create_component(
+                new_rule,
+                component,
+                'action',
+                rule['actions'].index(component),
+            )
 
 
 def update_variable_types(variable, types):

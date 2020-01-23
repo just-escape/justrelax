@@ -25,6 +25,9 @@ class Function(models.Model):
     return_type = models.CharField(
         choices=VALUE_TYPES, default=VALUE_TYPES[0][0], max_length=8)
 
+    def __str__(self):
+        return self.name
+
 
 class FunctionForm(forms.ModelForm):
     class Meta:
@@ -61,6 +64,9 @@ class FunctionTemplateLink(models.Model):
             )
         ]
 
+    def __str__(self):
+        return '{} template ({})'.format(self.function.name, self.index)
+
 
 class FunctionTemplateLinkForm(forms.ModelForm):
     class Meta:
@@ -94,6 +100,9 @@ class Variable(models.Model):
             ),
         ]
 
+    def __str__(self):
+        return '{} - {}'.format(self.room, self.name)
+
 
 class VariableForm(forms.ModelForm):
     class Meta:
@@ -105,6 +114,9 @@ class VariableType(models.Model):
     variable = models.ForeignKey(Variable, on_delete=models.CASCADE)
     type = models.CharField(
         choices=VALUE_TYPES, default=VALUE_TYPES[0][0], max_length=8)
+
+    def __str__(self):
+        return '{} - {}'.format(self.variable, self.type)
 
 
 class VariableTypeForm(forms.ModelForm):
@@ -122,6 +134,9 @@ class Rule(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['room', 'index'], name='rule_room_index'),
         ]
+
+    def __str__(self):
+        return '{} - {}'.format(self.room, self.name)
 
 
 class RuleForm(forms.ModelForm):
@@ -153,6 +168,9 @@ class ComponentTemplate(models.Model):
                 name='context_name',
             )
         ]
+
+    def __str__(self):
+        return '{} - {}'.format(self.context, self.name)
 
 
 class ComponentTemplateForm(forms.ModelForm):
@@ -190,6 +208,9 @@ class ComponentTemplateLink(models.Model):
             )
         ]
 
+    def __str__(self):
+        return "{} template ({})".format(self.template, self.index)
+
 
 class ComponentTemplateLinkForm(forms.ModelForm):
     class Meta:
@@ -217,6 +238,9 @@ class Component(models.Model):
             ),
         ]
 
+    def __str__(self):
+        return "{} - {}".format(self.rule, self.template)
+
 
 class ComponentForm(forms.ModelForm):
     class Meta:
@@ -240,6 +264,9 @@ class ComponentArgument(models.Model):
                 name='component_key',
             ),
         ]
+
+    def __str__(self):
+        return "{} - {}={}".format(self.component, self.key, self.value)
 
 
 class ComponentArgumentForm(forms.ModelForm):
