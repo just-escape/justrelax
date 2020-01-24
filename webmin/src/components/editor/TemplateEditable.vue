@@ -12,6 +12,8 @@
         <ValueModal
           :modalId="getSubmodalId(link.key)"
           :value="args[link.key]"
+          :inputType="link.value_type"
+          :predefinedChoices="link.predefined_choices"
           @update="(value) => updateArgument(link.key, value)"
           @hidden="updateLastEditedArgument(link.key)"
         />

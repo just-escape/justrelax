@@ -5,11 +5,14 @@ from scenario.models import Room
 
 
 VALUE_TYPES = (
+    ('string', 'string'),
     ('boolean', 'boolean'),
     ('integer', 'integer'),
     ('real', 'real'),
-    ('string', 'string'),
     ('object', 'object'),
+    ('predefined', 'predefined'),
+    ('variable', 'variable'),
+    ('special', 'special'),  # Special behavior on the interface
 )
 
 TEMPLATE_LINK_TYPES = (
@@ -23,7 +26,7 @@ class Function(models.Model):
     index = models.IntegerField(unique=True)
     name = models.CharField(max_length=64, unique=True)
     return_type = models.CharField(
-        choices=VALUE_TYPES, default=VALUE_TYPES[0][0], max_length=8)
+        choices=VALUE_TYPES, default=VALUE_TYPES[0][0], max_length=16)
 
     def __str__(self):
         return self.name
@@ -46,11 +49,13 @@ class FunctionTemplateLink(models.Model):
     )
 
     # relevant if type is text
-    text = models.CharField(max_length=128, null=True)
+    text = models.CharField(max_length=128, null=True, blank=True)
 
     # relevant if type is argument
     key = models.CharField(max_length=64, null=True)
+    value_type = models.CharField(choices=VALUE_TYPES, max_length=16, default=VALUE_TYPES[0][0])
     default_value = models.TextField(null=True, blank=True)
+    predefined_choices = models.TextField(null=True, blank=True)  # comma-separated values
 
     class Meta:
         constraints = [
@@ -77,7 +82,9 @@ class FunctionTemplateLinkForm(forms.ModelForm):
             'type',
             'text',
             'key',
+            'value_type',
             'default_value',
+            'predefined_choices',
         )
 
 
@@ -85,6 +92,7 @@ class Variable(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     index = models.IntegerField()
     name = models.CharField(max_length=64)
+    type = models.CharField(choices=VALUE_TYPES, default=VALUE_TYPES[0][0], max_length=16)
     init_value = models.TextField(null=True, blank=True)
     list = models.BooleanField(default=False)
 
@@ -107,22 +115,7 @@ class Variable(models.Model):
 class VariableForm(forms.ModelForm):
     class Meta:
         model = Variable
-        fields = ('room', 'index', 'name', 'init_value', 'list',)
-
-
-class VariableType(models.Model):
-    variable = models.ForeignKey(Variable, on_delete=models.CASCADE)
-    type = models.CharField(
-        choices=VALUE_TYPES, default=VALUE_TYPES[0][0], max_length=8)
-
-    def __str__(self):
-        return '{} - {}'.format(self.variable, self.type)
-
-
-class VariableTypeForm(forms.ModelForm):
-    class Meta:
-        model = VariableType
-        fields = ('variable', 'type',)
+        fields = ('room', 'index', 'name', 'type', 'init_value', 'list',)
 
 
 class Rule(models.Model):
@@ -190,11 +183,13 @@ class ComponentTemplateLink(models.Model):
     )
 
     # relevant if type is text
-    text = models.CharField(max_length=128, null=True)
+    text = models.CharField(max_length=128, null=True, blank=True)
 
     # relevant if type is argument
     key = models.CharField(max_length=64, null=True)
+    value_type = models.CharField(choices=VALUE_TYPES, max_length=16, default=VALUE_TYPES[0][0])
     default_value = models.TextField(null=True, blank=True)
+    predefined_choices = models.TextField(null=True, blank=True)  # comma-separated values
 
     class Meta:
         constraints = [
@@ -221,7 +216,9 @@ class ComponentTemplateLinkForm(forms.ModelForm):
             'type',
             'text',
             'key',
+            'value_type',
             'default_value',
+            'predefined_choices',
         )
 
 

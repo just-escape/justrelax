@@ -1,16 +1,20 @@
 VARIABLES = [
     {
-        'index': 1,
-        'name': 'variable',
+        'name': 'variable_string',
         'init_value': None,
         'list': False,
-        'types': ['boolean', 'integer', 'real', 'string', 'object'],
+        'type': 'string',
     },
     {
-        'index': 2,
-        'name': 'variable2',
+        'name': 'variable_string_2',
         'init_value': None,
         'list': False,
-        'types': ['boolean', 'integer', 'real', 'string', 'object'],
+        'type': 'string',
+    },
+    {
+        'name': 'variable_boolean',
+        'init_value': None,
+        'list': False,
+        'type': 'boolean',
     },
 ]

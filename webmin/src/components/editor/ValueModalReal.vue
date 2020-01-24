@@ -2,7 +2,7 @@
   <div class="row mb-3">
     <div @click="pushMyValue" class="d-flex align-items-center col-3">
       <input type="radio" :checked="checked">
-      <span class="ml-2">Real :</span>
+      <span class="ml-2">Real:</span>
     </div>
     <div class="col-9">
       <input
@@ -29,10 +29,7 @@ export default {
     }
   },
   created() {
-    if (
-      Number(this.parentValue) === this.parentValue &&
-      this.parentValue % 1 !== 0
-    ) {
+    if (typeof this.parentValue === "number") {
       this.valueBuffer = this.parentValue
       this.pushMyValue()
     } else {

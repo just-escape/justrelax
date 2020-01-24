@@ -44,7 +44,7 @@ export default new Vuex.Store({
       var args = {}
       for (var link of state.orderedTemplates[context][0].links) {
         if (link.type === "argument") {
-          args[link.key] = link.default_value
+          args[link.key] = JSON.parse(link.default_value)
         }
       }
 

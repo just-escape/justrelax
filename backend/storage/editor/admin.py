@@ -3,7 +3,6 @@ from django.contrib import admin
 from editor.models import Function, FunctionForm
 from editor.models import FunctionTemplateLink, FunctionTemplateLinkForm
 from editor.models import Variable, VariableForm
-from editor.models import VariableType, VariableTypeForm
 from editor.models import Rule, RuleForm
 from editor.models import ComponentTemplate, ComponentTemplateForm
 from editor.models import ComponentTemplateLink, ComponentTemplateLinkForm
@@ -25,7 +24,9 @@ class FunctionTemplateLinkAdmin(admin.ModelAdmin):
         'type',
         'text',
         'key',
+        'value_type',
         'default_value',
+        'predefined_choices',
     )
     search_fields = (
         'function__name',
@@ -38,14 +39,8 @@ class FunctionTemplateLinkAdmin(admin.ModelAdmin):
 
 class VariableAdmin(admin.ModelAdmin):
     form = VariableForm
-    list_display = ('room', 'index', 'name', 'init_value', 'list',)
-    search_fields = ('name', 'init_value', 'list',)
-
-
-class VariableTypeAdmin(admin.ModelAdmin):
-    form = VariableTypeForm
-    list_display = ('variable', 'type',)
-    search_fields = ('variable__name', 'type',)
+    list_display = ('room', 'index', 'name', 'type', 'init_value', 'list',)
+    search_fields = ('name', 'type', 'init_value', 'list',)
 
 
 class RuleAdmin(admin.ModelAdmin):
@@ -68,7 +63,9 @@ class ComponentTemplateLinkAdmin(admin.ModelAdmin):
         'type',
         'text',
         'key',
+        'value_type',
         'default_value',
+        'predefined_choices',
     )
     search_fields = (
         'template__name',
@@ -111,7 +108,6 @@ class ComponentArgumentAdmin(admin.ModelAdmin):
 admin.site.register(Function, FunctionAdmin)
 admin.site.register(FunctionTemplateLink, FunctionTemplateLinkAdmin)
 admin.site.register(Variable, VariableAdmin)
-admin.site.register(VariableType, VariableTypeAdmin)
 admin.site.register(Rule, RuleAdmin)
 admin.site.register(ComponentTemplate, ComponentTemplateAdmin)
 admin.site.register(ComponentTemplateLink, ComponentTemplateLinkAdmin)

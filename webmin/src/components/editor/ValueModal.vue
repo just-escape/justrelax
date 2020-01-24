@@ -5,50 +5,68 @@
     body-text-variant="light"
     @ok="ok"
   >
-    <ValueModalVariable
+    <ValueModalPredefined
+      v-if="inputType === 'predefined'"
+      :predefinedChoices="predefinedChoices"
       :parentValue="value"
+      :checked="selectedSource === 'predefined'"
+      @pushValue="(newValue) => updateValueBuffer('predefined', newValue)"
+    />
+
+    <ValueModalVariable
+      v-if="inputType !== 'predefined'"
+      :parentValue="value"
+      :inputType="inputType"
       :checked="selectedSource === 'variable'"
       @pushValue="(newValue) => updateValueBuffer('variable', newValue)"
     />
 
     <ValueModalFunction
+      v-if="inputType !== 'predefined'"
       :modalId="modalId"
       :parentValue="value"
+      :inputType="inputType"
       :checked="selectedSource === 'function'"
       @pushValue="(newValue) => updateValueBuffer('function', newValue)"
     />
 
-    <ValueModalObject
+    <!--<ValueModalObject
+      v-if="inputType === 'object'"
       :parentValue="value"
       :checked="selectedSource === 'object'"
       @pushValue="(newValue) => updateValueBuffer('object', newValue)"
     />
 
     <ValueModalList
+      v-if="inputType === 'list'"
       :parentValue="value"
       :checked="selectedSource === 'list'"
       @pushValue="(newValue) => updateValueBuffer('list', newValue)"
-    />
+    />-->
 
     <ValueModalString
+      v-if="inputType === 'string'"
       :parentValue="value"
       :checked="selectedSource === 'string'"
       @pushValue="(newValue) => updateValueBuffer('string', newValue)"
     />
 
     <ValueModalInteger
+      v-if="inputType === 'integer'"
       :parentValue="value"
       :checked="selectedSource === 'integer'"
       @pushValue="(newValue) => updateValueBuffer('integer', newValue)"
     />
 
     <ValueModalReal
+      v-if="inputType === 'real'"
       :parentValue="value"
       :checked="selectedSource === 'real'"
       @pushValue="(newValue) => updateValueBuffer('real', newValue)"
     />
 
     <ValueModalBoolean
+      v-if="inputType === 'boolean'"
       :parentValue="value"
       :checked="selectedSource === 'boolean'"
       @pushValue="(newValue) => updateValueBuffer('boolean', newValue)"
@@ -57,10 +75,11 @@
 </template>
 
 <script>
+import ValueModalPredefined from '@/components/editor/ValueModalPredefined.vue'
 import ValueModalVariable from '@/components/editor/ValueModalVariable.vue'
 import ValueModalFunction from '@/components/editor/ValueModalFunction.vue'
-import ValueModalObject from '@/components/editor/ValueModalObject.vue'
-import ValueModalList from '@/components/editor/ValueModalList.vue'
+// import ValueModalObject from '@/components/editor/ValueModalObject.vue'
+// import ValueModalList from '@/components/editor/ValueModalList.vue'
 import ValueModalString from '@/components/editor/ValueModalString.vue'
 import ValueModalInteger from '@/components/editor/ValueModalInteger.vue'
 import ValueModalReal from '@/components/editor/ValueModalReal.vue'
@@ -69,10 +88,11 @@ import ValueModalBoolean from '@/components/editor/ValueModalBoolean.vue'
 export default {
   name: "ValueModal",
   components: {
+    ValueModalPredefined,
     ValueModalVariable,
     ValueModalFunction,
-    ValueModalObject,
-    ValueModalList,
+    // ValueModalObject,
+    // ValueModalList,
     ValueModalString,
     ValueModalInteger,
     ValueModalReal,
@@ -96,6 +116,8 @@ export default {
   props: {
     modalId: String,
     value: [Object, Boolean, String, Number],
+    inputType: String,
+    predefinedChoices: Array,
   },
 }
 </script>

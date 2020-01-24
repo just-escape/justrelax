@@ -1,203 +1,399 @@
 COMPONENT_TEMPLATES = [
     {
-        'index': 1000,
         'name': 'incoming_event',
         'context': 'trigger',
         'links': [
             {
-                'index': 1,
                 'type': 'text',
                 'text': 'An event has been received',
             },
         ],
     },
     {
-        'index': 1001,
-        'name': 'session_tick',
+        'name': 'periodic_event',
         'context': 'trigger',
         'links': [
             {
-                'index': 1,
                 'type': 'text',
-                'text': 'Each session tick',
+                'text': 'Every ',
+            },
+            {
+                'type': 'argument',
+                'key': 'period',
+                'value_type': 'real',
+                'default_value': '1.00',
+            },
+            {
+                'type': 'text',
+                'text': ' second(s) of session time',
             },
         ],
     },
     {
-        'index': 1002,
         'name': 'session_start',
         'context': 'trigger',
         'links': [
             {
-                'index': 1,
                 'type': 'text',
                 'text': 'The session has started',
             },
         ],
     },
     {
-        'index': 1003,
         'name': 'session_pause',
         'context': 'trigger',
         'links': [
             {
-                'index': 1,
                 'type': 'text',
                 'text': 'The session has paused',
             },
         ],
     },
     {
-        'index': 1004,
         'name': 'session_resume',
         'context': 'trigger',
         'links': [
             {
-                'index': 1,
                 'type': 'text',
                 'text': 'The session has resumed',
             },
         ],
     },
     {
-        'index': 2000,
         'name': 'simple_condition',
         'context': 'condition',
         'links': [
             {
-                'index': 1,
                 'type': 'text',
                 'text': 'If ',
             },
             {
-                'index': 2,
                 'type': 'argument',
                 'key': 'condition',
-                'default_value': True,
+                'value_type': 'boolean',
+                'default_value': 'true',
             },
         ],
     },
     {
-        'index': 2001,
-        'name': 'or',
-        'context': 'condition',
-        'links': [
-            {
-                'index': 1,
-                'type': 'argument',
-                'key': 'left',
-                'default_value': True,
-            },
-            {
-                'index': 2,
-                'type': 'text',
-                'text': ' or ',
-            },
-            {
-                'index': 3,
-                'type': 'argument',
-                'key': 'right',
-                'default_value': True,
-            },
-        ],
-    },
-    {
-        'index': 2002,
-        'name': 'and',
-        'context': 'condition',
-        'links': [
-            {
-                'index': 1,
-                'type': 'argument',
-                'key': 'left',
-                'default_value': True,
-            },
-            {
-                'index': 2,
-                'type': 'text',
-                'text': ' and ',
-            },
-            {
-                'index': 3,
-                'type': 'argument',
-                'key': 'right',
-                'default_value': True,
-            },
-        ],
-    },
-    {
-        'index': 3000,
-        'name': 'send_event',
+        'name': 'send_event_simple',
         'context': 'action',
         'links': [
             {
-                'index': 1,
                 'type': 'text',
                 'text': 'Send event ',
             },
             {
-                'index': 2,
                 'type': 'argument',
                 'key': 'event',
-                'default_value': 'hello',
+                'value_type': 'string',
+                'default_value': '"hello"',
             },
             {
-                'index': 3,
                 'type': 'text',
                 'text': ' to node named ',
             },
             {
-                'index': 4,
                 'type': 'argument',
                 'key': 'node_name',
-                'default_value': 'node',
+                'value_type': 'string',
+                'default_value': '"node"',
             },
         ],
     },
     {
-        'index': 3001,
+        'name': 'send_event_complex',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Send event ',
+            },
+            {
+                'type': 'argument',
+                'key': 'event',
+                'value_type': 'object',
+                'default_value': '{"function": "last_created_object"}',
+            },
+            {
+                'type': 'text',
+                'text': ' to node named ',
+            },
+            {
+                'type': 'argument',
+                'key': 'node_name',
+                'value_type': 'string',
+                'default_value': '"node"',
+            },
+        ],
+    },
+    {
+        'name': 'push_notification',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Push an ',
+            },
+            {
+                'type': 'argument',
+                'key': 'type',
+                'value_type': 'predefined',
+                'predefined_choices': 'info,error',
+                'default_value': '"info"',
+            },
+            {
+                'type': 'text',
+                'text': ' notification with message ',
+            },
+            {
+                'type': 'argument',
+                'key': 'message',
+                'value_type': 'string',
+                'default_value': '"message"',
+            },
+        ],
+    },
+    {
         'name': 'set_variable',
         'context': 'action',
         'links': [
             {
-                'index': 1,
                 'type': 'text',
-                'text': 'Set variable ',
+                'text': 'Set value of variable ',
             },
             {
-                'index': 2,
                 'type': 'argument',
                 'key': 'variable_name',
-                'default_value': 'variable',
+                'value_type': 'variable',
+                'default_value': '""',
             },
             {
-                'index': 3,
                 'type': 'text',
-                'text': ' to value ',
+                'text': ' to ',
             },
             {
-                'index': 4,
                 'type': 'argument',
                 'key': 'value',
-                'default_value': 'value',
+                'value_type': 'special',
+                'default_value': 'null',
             },
         ],
     },
     {
-        'index': 3002,
+        'name': 'create_a_new_object',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Create a new object',
+            },
+        ],
+    },
+    {
+        'name': 'save_object_in_object',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Save ',
+            },
+            {
+                'type': 'argument',
+                'key': 'value',
+                'value_type': 'object',
+                'default_value': '{"function": "last_created_object"}',
+            },
+            {
+                'type': 'text',
+                'text': ' with key ',
+            },
+            {
+                'type': 'argument',
+                'key': 'key',
+                'value_type': 'string',
+                'default_value': '"key"',
+            },
+            {
+                'type': 'text',
+                'text': ' in object ',
+            },
+            {
+                'type': 'argument',
+                'key': 'object',
+                'value_type': 'object',
+                'default_value': '{"function": "last_created_object"}',
+            }
+        ],
+    },
+    {
+        'name': 'save_string_in_object',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Save ',
+            },
+            {
+                'type': 'argument',
+                'key': 'value',
+                'value_type': 'string',
+                'default_value': '"hello"',
+            },
+            {
+                'type': 'text',
+                'text': ' with key ',
+            },
+            {
+                'type': 'argument',
+                'key': 'key',
+                'value_type': 'string',
+                'default_value': '"key"',
+            },
+            {
+                'type': 'text',
+                'text': ' in object ',
+            },
+            {
+                'type': 'argument',
+                'key': 'object',
+                'value_type': 'object',
+                'default_value': '{"function": "last_created_object"}',
+            }
+        ],
+    },
+    {
+        'name': 'save_integer_in_object',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Save ',
+            },
+            {
+                'type': 'argument',
+                'key': 'value',
+                'value_type': 'integer',
+                'default_value': '1',
+            },
+            {
+                'type': 'text',
+                'text': ' with key ',
+            },
+            {
+                'type': 'argument',
+                'key': 'key',
+                'value_type': 'string',
+                'default_value': '"key"',
+            },
+            {
+                'type': 'text',
+                'text': ' in object ',
+            },
+            {
+                'type': 'argument',
+                'key': 'object',
+                'value_type': 'object',
+                'default_value': '{"function": "last_created_object"}',
+            }
+        ],
+    },
+    {
+        'name': 'save_real_in_object',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Save ',
+            },
+            {
+                'type': 'argument',
+                'key': 'value',
+                'value_type': 'real',
+                'default_value': '1.5',
+            },
+            {
+                'type': 'text',
+                'text': ' with key ',
+            },
+            {
+                'type': 'argument',
+                'key': 'key',
+                'value_type': 'string',
+                'default_value': '"key"',
+            },
+            {
+                'type': 'text',
+                'text': ' in object ',
+            },
+            {
+                'type': 'argument',
+                'key': 'object',
+                'value_type': 'object',
+                'default_value': '{"function": "last_created_object"}',
+            }
+        ],
+    },
+    {
+        'name': 'save_boolean_in_object',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Save ',
+            },
+            {
+                'type': 'argument',
+                'key': 'value',
+                'value_type': 'boolean',
+                'default_value': 'true',
+            },
+            {
+                'type': 'text',
+                'text': ' with key ',
+            },
+            {
+                'type': 'argument',
+                'key': 'key',
+                'value_type': 'string',
+                'default_value': '"key"',
+            },
+            {
+                'type': 'text',
+                'text': ' in object ',
+            },
+            {
+                'type': 'argument',
+                'key': 'object',
+                'value_type': 'object',
+                'default_value': '{"function": "last_created_object"}',
+            }
+        ],
+    },
+    {
         'name': 'trigger_rule',
         'context': 'action',
         'links': [
             {
-                'index': 1,
                 'type': 'text',
                 'text': 'Trigger rule named ',
             },
             {
-                'index': 2,
                 'type': 'argument',
                 'key': 'rule_name',
-                'default_value': 'rule',
+                'value_type': 'predefined',
+                'default_value': 'null',
+                'predefined_choices': '<rules>',
+            },
+        ],
+    },
+    {
+        'name': 'do_nothing',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Do nothing',
             },
         ],
     },

@@ -45,7 +45,7 @@ export default {
               formattedValue += this.format(value.arguments[link.key])
             }
           }
-          return formattedValue
+          return "(" + formattedValue + ")"
         } else if (value.variable !== undefined) {
           return value.variable
         } else if (value.object !== undefined) {

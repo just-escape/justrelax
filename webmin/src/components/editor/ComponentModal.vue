@@ -62,7 +62,7 @@ export default {
         var args = {}
         for (var link of this.templates[value].links) {
           if (link.type === "argument") {
-            args[link.key] = link.default_value
+            args[link.key] = JSON.parse(link.default_value)
           }
         }
         this.componentBuffer.arguments = args

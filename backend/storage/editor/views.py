@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from scenario.models import Room
 from editor.models import Function, FunctionTemplateLink
 from editor.models import ComponentTemplate, ComponentTemplateLink
-from editor.models import Variable, VariableType
+from editor.models import Variable
 from editor.models import Rule, Component, ComponentArgument
 
 
@@ -30,6 +30,11 @@ def get_serialized_functions():
             elif ftl.type == 'argument':
                 function_template_link['key'] = ftl.key
                 function_template_link['default_value'] = ftl.default_value
+                function_template_link['value_type'] = ftl.value_type
+                if ftl.predefined_choices:
+                    function_template_link['predefined_choices'] = ftl.predefined_choices.split(',')
+                else:
+                    function_template_link['predefined_choices'] = None
             serialized_function['links'].append(function_template_link)
         functions.append(serialized_function)
 
@@ -52,6 +57,11 @@ def get_serialized_component_templates(context):
             elif ctl.type == 'argument':
                 component_template_link['key'] = ctl.key
                 component_template_link['default_value'] = ctl.default_value
+                component_template_link['value_type'] = ctl.value_type
+                if ctl.predefined_choices:
+                    component_template_link['predefined_choices'] = ctl.predefined_choices.split(',')
+                else:
+                    component_template_link['predefined_choices'] = None
             component_template['links'].append(component_template_link)
 
         component_templates.append(component_template)
@@ -77,12 +87,10 @@ def get_serialized_variables(room):
         variable = {
             'id': v.id,
             'name': v.name,
+            'type': v.type,
             'init_value': v.init_value,
             'list': v.list,
-            'types': [],
         }
-        for vt in VariableType.objects.filter(variable=v).order_by('type'):
-            variable['types'].append(vt.type)
         variables.append(variable)
 
     return variables
@@ -288,21 +296,6 @@ def update_rules(room, rules):
             )
 
 
-def update_variable_types(variable, types):
-    old_types = {t.type for t in VariableType.objects.filter(variable=variable)}
-    new_types = {*types}
-
-    # Delete
-    types_to_delete = old_types - new_types
-    VariableType.objects.filter(
-        variable=variable, type__in=types_to_delete).delete()
-
-    # Create
-    types_to_create = new_types - old_types
-    for type_ in types_to_create:
-        VariableType(variable=variable, type=type_).save()
-
-
 def update_variables(room, variables):
     variable_ids = {v.get('id', None) for v in variables}
     variable_ids.discard(None)
@@ -325,6 +318,10 @@ def update_variables(room, variables):
             variable_to_update.name = variable['name']
             save = True
 
+        if variable_to_update.type != variable['type']:
+            variable_to_update.type = variable['type']
+            save = True
+
         if variable_to_update.index != variables.index(variable):
             variable_to_update.index = variables.index(variable)
             save = True
@@ -340,9 +337,6 @@ def update_variables(room, variables):
         if save:
             variable_to_update.save()
 
-        # Update types
-        update_variable_types(variable_to_update, variable['types'])
-
     # Create
     variables_to_create = [v for v in variables if v.get('id', None) not in ids_to_update]
     for variable in variables_to_create:
@@ -354,13 +348,6 @@ def update_variables(room, variables):
             list=variable['list'],
         )
         new_variable.save()
-
-        for type_ in variable['types']:
-            new_type = VariableType(
-                variable=new_variable,
-                type=type_,
-            )
-            new_type.save()
 
 
 @api_view(['POST'])

@@ -1,17 +1,17 @@
 <template>
   <div class="row mb-3">
-    <div @click="pushMyValue" class="d-flex align-items-center col-3">
-      <input type="radio" :checked="checked">
-      <span class="ml-2">Variable :</span>
+    <div @click="pushMyValueIfNotDisabled" class="d-flex align-items-center col-3">
+      <input id="test" :disabled="disabled" type="radio" :checked="checked">
+      <span :disabled="disabled" class="ml-2">Variable:</span>
     </div>
     <div class="col-9">
-      <select v-model="selectedVariable" @focus="pushMyValue" class="w-100">
+      <select v-model="selectedVariable" @focus="pushMyValueIfNotDisabled" :disabled="disabled" class="w-100">
         <option
-          v-for="(label, value) in options"
-          :key="value"
-          :value="value"
+          v-for="variable in variables"
+          :key="variable.name"
+          :value="variable.name"
         >
-          {{ label }}
+          {{ variable.name }}
         </option>
       </select>
     </div>
@@ -20,20 +20,24 @@
 
 <script>
 import valueModalMixin from '@/components/editor/valueModalMixin.js'
+import editorStore from '@/store/editorStore.js'
 
 export default {
   name: "ValueModalVariable",
   mixins: [valueModalMixin],
-  data() {
-    return {
-      options: {
-        var1: "Variable 1",
-        var2: "Variable 2",
-        var3: "Variable 3",
-      },
-    }
-  },
   computed: {
+    variables() {
+      let this_ = this
+      let filtered_variables = editorStore.state.variables.filter(
+        function(v) {
+          return v.type === this_.inputType
+        }
+      )
+      return filtered_variables
+    },
+    disabled() {
+      return this.variables.length === 0
+    },
     selectedVariable: {
       get() {
         return this.valueBuffer.variable
@@ -46,15 +50,31 @@ export default {
       }
     },
   },
+  methods: {
+    pushMyValueIfNotDisabled() {
+      if (!this.disabled) {
+        this.pushMyValue()
+      }
+    },
+  },
   created() {
     if (typeof this.parentValue === "object" && this.parentValue.variable !== undefined) {
-      this.valueBuffer = this.parentValue
+      this.valueBuffer = {variable: this.parentValue.variable}
       this.pushMyValue()
     } else {
-      this.valueBuffer = {
-        variable: Object.keys(this.options)[0]
+      if (!this.disabled) {
+        this.valueBuffer = {
+          variable: this.variables[0].name
+        }
+      } else {
+        this.valueBuffer = {
+          variable: "",
+        }
       }
     }
+  },
+  props: {
+    inputType: String,
   },
 }
 </script>
