@@ -12,17 +12,6 @@ FUNCTIONS = [
     },
     {
         'category': '',
-        'name': 'create_an_object',
-        'return_type': 'object',
-        'links': [
-            {
-                'type': 'text',
-                'text': 'Create an object',
-            },
-        ],
-    },
-    {
-        'category': '',
         'name': 'object_get_object',
         'return_type': 'object',
         'links': [
@@ -169,7 +158,18 @@ FUNCTIONS = [
     },
     {
         'category': '',
-        'name': 'triggering_event',
+        'name': 'triggering_event_simple',
+        'return_type': 'string',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Triggering event',
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'triggering_event_complex',
         'return_type': 'object',
         'links': [
             {
@@ -333,7 +333,7 @@ FUNCTIONS = [
                 'type': 'argument',
                 'key': 'operator',
                 'value_type': 'predefined',
-                'predefined_choices': 'is equal to,is not equal to,contains,does not contain',
+                'predefined_choices': 'is equal to,is not equal to,contains',
                 'default_value': '"is equal to"',
             },
             {
@@ -407,6 +407,23 @@ FUNCTIONS = [
             {
                 'type': 'text',
                 'text': ' ',
+            },
+            {
+                'type': 'argument',
+                'key': 'right',
+                'value_type': 'boolean',
+                'default_value': 'true',
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'boolean_not',
+        'return_type': 'boolean',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'not ',
             },
             {
                 'type': 'argument',
