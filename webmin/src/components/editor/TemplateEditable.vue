@@ -7,9 +7,11 @@
           v-b-modal="getSubmodalId(link.key)"
           :value="args[link.key]"
           :editable="true"
+          :editDisabled="link.value_type === 'disabled'"
           :lastEdited="lastEditedArgumentKey === link.key"
         />
         <ValueModal
+          v-if="link.value_type !== 'disabled'"
           :modalId="getSubmodalId(link.key)"
           :value="args[link.key]"
           :inputType="link.value_type"

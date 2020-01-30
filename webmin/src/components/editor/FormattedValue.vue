@@ -1,8 +1,9 @@
 <template>
   <span
     :class="{
-      pointer: editable,
-      'text-jaffa': editable,
+      pointer: editable && !editDisabled,
+      'text-jaffa': editable && !editDisabled,
+      'text-disabled': editDisabled,
       'text-underline': editable,
       'text-double': lastEdited,
       'font-italic': !editable,
@@ -47,8 +48,12 @@ export default {
           }
           return "(" + formattedValue + ")"
         } else if (value.variable !== undefined) {
-          return value.variable
-        } else if (value.object !== undefined) {
+          if (value.variable === null) {
+            return "<No variable>"
+          } else {
+            return value.variable
+          }
+        } /*else if (value.object !== undefined) {
           var objectOutput = "{"
           let keys = Object.keys(value.object)
           for (var i = 0 ; i < keys.length ; i++) {
@@ -69,7 +74,7 @@ export default {
           }
           listOutput += "]"
           return listOutput
-        }
+        }*/
       }
 
       return "<Error>"
@@ -84,6 +89,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    editDisabled: {
+      type: Boolean,
+      default: false,
+    },
     lastEdited: {
       type: Boolean,
       default: false,
@@ -95,5 +104,9 @@ export default {
 <style scoped>
 .text-double {
   text-decoration-style: double;
+}
+
+.text-disabled {
+  opacity: 0.5;
 }
 </style>

@@ -166,7 +166,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'variable_name',
                 'value_type': 'variable',
-                'default_value': '""',
+                'default_value': 'null',
             },
             {
                 'type': 'text',
@@ -175,7 +175,7 @@ COMPONENT_TEMPLATES = [
             {
                 'type': 'argument',
                 'key': 'value',
-                'value_type': 'special',
+                'value_type': 'disabled',
                 'default_value': 'null',
             },
         ],

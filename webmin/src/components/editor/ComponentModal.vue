@@ -62,7 +62,21 @@ export default {
         var args = {}
         for (var link of this.templates[value].links) {
           if (link.type === "argument") {
-            args[link.key] = JSON.parse(link.default_value)
+            if (link.value_type === "variable") {
+              // Determine the default value dynamically
+              if (editorStore.state.variables.length > 0) {
+                args[link.key] = {variable: editorStore.state.variables[0].name}
+              } else {
+                args[link.key] = {variable: null}
+              }
+            } else if (this.componentBuffer.template === 'set_variable' && link.key === 'value') {
+              // Hardcoded behavior for special case
+              let variable = this.getVariableFromName(args.variable_name.variable)
+              link.value_type = variable === null ? "disabled" : variable.type
+              args[link.key] = this.getDefaultValueFromValueType(link.value_type)
+            } else {
+              args[link.key] = JSON.parse(link.default_value)
+            }
           }
         }
         this.componentBuffer.arguments = args
@@ -75,12 +89,50 @@ export default {
     },
     updateArgument(key, value) {
       this.componentBuffer.arguments[key] = value
+
+      // Hardcoded behavior for special case
+      if (this.selectedTemplate === 'set_variable' && key === 'variable_name') {
+        let variable = this.getVariableFromName(value.variable)
+        for (var link of this.templates[this.selectedTemplate].links) {
+          if (link.key === 'value' && link.value_type !== variable.type) {
+            link.value_type = variable.type
+            this.componentBuffer.arguments.value = this.getDefaultValueFromValueType(variable.type)
+            return
+          }
+        }
+      }
     },
     show: function() {
       this.reloadComponentBuffer()
     },
     reloadComponentBuffer: function() {
       this.componentBuffer = JSON.parse(JSON.stringify(this.component))
+    },
+    getVariableFromName: function(variableName) {
+      for (var variable of editorStore.state.variables) {
+        if (variable.name === variableName) {
+          return variable
+        }
+      }
+      return null
+    },
+    getDefaultValueFromValueType: function(valueType) {
+      if (valueType === "string") {
+        return "hello"
+      } else if (valueType === "integer") {
+        return 1
+      } else if (valueType === "real") {
+        return 1.5
+      } else if (valueType === "boolean") {
+        return true
+      } else if (valueType === "object") {
+        return {function: "last_created_object"}
+      } else if (valueType === "disabled") {
+        return null
+      } else {
+        // Bad value type (data is corrupted)
+        return undefined
+      }
     },
   },
   created() {

@@ -27,13 +27,17 @@ export default {
   mixins: [valueModalMixin],
   computed: {
     variables() {
-      let this_ = this
-      let filtered_variables = editorStore.state.variables.filter(
-        function(v) {
-          return v.type === this_.inputType
-        }
-      )
-      return filtered_variables
+      if (this.inputType === 'variable') {
+        return editorStore.state.variables
+      } else {
+        let this_ = this
+        let filtered_variables = editorStore.state.variables.filter(
+          function(v) {
+            return v.type === this_.inputType
+          }
+        )
+        return filtered_variables
+      }
     },
     disabled() {
       return this.variables.length === 0

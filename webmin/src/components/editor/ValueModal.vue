@@ -6,7 +6,7 @@
     @ok="ok"
   >
     <ValueModalPredefined
-      v-if="inputType === 'predefined'"
+      v-if="displayPredefinedSelector"
       :predefinedChoices="predefinedChoices"
       :parentValue="value"
       :checked="selectedSource === 'predefined'"
@@ -14,7 +14,7 @@
     />
 
     <ValueModalVariable
-      v-if="inputType !== 'predefined'"
+      v-if="displayVariableSelector"
       :parentValue="value"
       :inputType="inputType"
       :checked="selectedSource === 'variable'"
@@ -22,7 +22,7 @@
     />
 
     <ValueModalFunction
-      v-if="inputType !== 'predefined'"
+      v-if="displayFunctionSelector"
       :modalId="modalId"
       :parentValue="value"
       :inputType="inputType"
@@ -45,28 +45,28 @@
     />-->
 
     <ValueModalString
-      v-if="inputType === 'string'"
+      v-if="displayStringSelector"
       :parentValue="value"
       :checked="selectedSource === 'string'"
       @pushValue="(newValue) => updateValueBuffer('string', newValue)"
     />
 
     <ValueModalInteger
-      v-if="inputType === 'integer'"
+      v-if="displayIntegerSelector"
       :parentValue="value"
       :checked="selectedSource === 'integer'"
       @pushValue="(newValue) => updateValueBuffer('integer', newValue)"
     />
 
     <ValueModalReal
-      v-if="inputType === 'real'"
+      v-if="displayRealSelector"
       :parentValue="value"
       :checked="selectedSource === 'real'"
       @pushValue="(newValue) => updateValueBuffer('real', newValue)"
     />
 
     <ValueModalBoolean
-      v-if="inputType === 'boolean'"
+      v-if="displayBooleanSelector"
       :parentValue="value"
       :checked="selectedSource === 'boolean'"
       @pushValue="(newValue) => updateValueBuffer('boolean', newValue)"
@@ -103,6 +103,29 @@ export default {
       valueBuffer: undefined,
       selectedSource: "string",
     }
+  },
+  computed: {
+    displayPredefinedSelector() {
+       return this.inputType === 'predefined'
+    },
+    displayVariableSelector() {
+      return this.inputType !== 'predefined' || this.inputType === 'variable'
+    },
+    displayFunctionSelector() {
+      return this.inputType !== 'predefined' && this.inputType !== 'variable'
+    },
+    displayStringSelector() {
+      return this.inputType === 'string'
+    },
+    displayIntegerSelector() {
+      return this.inputType === 'integer'
+    },
+    displayRealSelector() {
+      return this.inputType === 'real'
+    },
+    displayBooleanSelector() {
+      return this.inputType === 'boolean'
+    },
   },
   methods: {
     ok: function() {

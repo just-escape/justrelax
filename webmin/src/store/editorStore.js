@@ -15,7 +15,7 @@ export default new Vuex.Store({
       condition: {},
       action: {},
     },
-    orderedTemplates: {},
+    orderedTemplates: [],
   },
   mutations: {
     loadTemplates (state, templates) {

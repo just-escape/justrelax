@@ -12,7 +12,7 @@ VALUE_TYPES = (
     ('object', 'object'),
     ('predefined', 'predefined'),
     ('variable', 'variable'),
-    ('special', 'special'),  # Special behavior on the interface
+    ('disabled', 'disabled'),  # Special behavior on the interface
 )
 
 TEMPLATE_LINK_TYPES = (
