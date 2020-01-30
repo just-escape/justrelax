@@ -27,17 +27,17 @@ const justSockService = new Vuex.Store({
       let message = JSON.parse(rawMessage.data)
       let roomId = message.room_id
       if (message.message_type == 'TIC') {
-        let ticks = message.ticks
-        roomStore.dispatch('beat', {roomId, ticks})
+        let sessionTime = message.session_time
+        roomStore.dispatch('ticTac', {roomId, sessionTime})
       } else if (message.message_type == 'NOTIFICATION') {
         let type = message.notification_type
         let notificationMessage = message.notification_message
         notificationStore.commit('pushNotification', {type: type, message: notificationMessage})
       } else if (message.message_type == 'REC') {
         let recordId = message.record_id
-        let recordTicks = message.ticks
+        let recordSessionTime = message.session_time
         let recordLabel = message.label
-        roomStore.dispatch('addRecord', {roomId, recordId, recordTicks, recordLabel})
+        roomStore.dispatch('addRecord', {roomId, recordId, recordSessionTime, recordLabel})
       } else if (message.message_type == 'RESET') {
         roomStore.commit('processReset', roomId)
       }

@@ -12,6 +12,7 @@ VALUE_TYPES = (
     ('object', 'object'),
     ('predefined', 'predefined'),
     ('variable', 'variable'),
+    ('timer', 'timer'),
     ('disabled', 'disabled'),  # Special behavior on the interface
 )
 

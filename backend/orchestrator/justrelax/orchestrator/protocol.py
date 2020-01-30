@@ -214,20 +214,20 @@ class JustSockServerProtocol(WebSocketServerProtocol):
         }
         self.send_json(message_to_send)
 
-    def send_beat(self, room_id, ticks):
+    def send_tic_tac(self, room_id, session_time):
         message = {
             P.ROOM_ID: room_id,
             P.MESSAGE_TYPE: P.MESSAGE_TYPE_TIC_TAC,
-            P.TIC_TAC_TICKS: ticks
+            P.TIC_TAC_SESSION_TIME: session_time,
         }
         self.send_json(message)
 
-    def send_record(self, room_id, record_id, ticks, label):
+    def send_record(self, room_id, record_id, session_time, label):
         message = {
             P.ROOM_ID: room_id,
             P.MESSAGE_TYPE: P.MESSAGE_TYPE_RECORD,
             P.RECORD_ID: record_id,
-            P.RECORD_TICKS: ticks,
+            P.RECORD_SESSION_TIME: session_time,
             P.RECORD_LABEL: label,
         }
         self.send_json(message)

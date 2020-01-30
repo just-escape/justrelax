@@ -54,9 +54,9 @@ class JustSockServerFactory(WebSocketServerFactory):
         for admin in self.admins:
             admin.send_notification(type_, message)
 
-    def send_beat(self, room_id, ticks):
+    def send_tic_tac(self, room_id, session_time):
         for admin in self.admins:
-            admin.send_beat(room_id, ticks)
+            admin.send_tic_tac(room_id, session_time)
 
     def send_record(self, room_id, record_id, ticks, label):
         for admin in self.admins:

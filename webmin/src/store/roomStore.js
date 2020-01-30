@@ -32,7 +32,7 @@ export default new Vuex.Store({
     addRooms (state, rooms) {
       for (var room of rooms) {
         room.liveData = {
-          ticks: 0,
+          sessionTime: 0,
           records: [],
         }
       }
@@ -50,7 +50,7 @@ export default new Vuex.Store({
         state.rooms[roomId].liveData = liveData
       }
     },
-    addRecord (state, {roomId, recordId, recordTicks, recordLabel}) {
+    addRecord (state, {roomId, recordId, sessionTime, recordLabel}) {
       if (!state.rooms) {
         notificationStore.dispatch('pushError', 'No rooms to add record')
         return
@@ -62,17 +62,17 @@ export default new Vuex.Store({
         state.rooms[roomId].liveData.records.push(record)
       }
     },*/
-    setClock (state, {roomId, ticks}) {
+    setClock (state, {roomId, sessionTime}) {
       for (var room of state.rooms) {
         if (room.id === roomId) {
-          room.liveData.ticks = ticks
+          room.liveData.sessionTime = sessionTime
         }
       }
     },
     processReset (state, roomId) {
       for (var room of state.rooms) {
         if (room.id === roomId) {
-          room.liveData.ticks = 0
+          room.liveData.sessionTime = 0
           room.liveData.records = []
         }
       }
@@ -120,8 +120,8 @@ export default new Vuex.Store({
           notificationStore.dispatch('pushError', 'Error while fetching cameras: ' + error)
         })
     },
-    beat(context, {roomId, ticks}) {
-      context.commit('setClock', {roomId, ticks})
+    ticTac(context, {roomId, sessionTime}) {
+      context.commit('setClock', {roomId, sessionTime})
     },
     addRecord(context, {roomId, record}) {
       context.commit('addRecord', {roomId, record})

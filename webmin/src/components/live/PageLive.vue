@@ -16,7 +16,7 @@
       <StartStop :roomId="room.id" class="my-auto"/>
     </div>
     <div class="d-flex flex-row" slot="header-right">
-      <TicksClock :ticks="room.liveData.ticks" :displayZero="false" class="size-25 big-noodle mr-3"/>
+      <SessionTimeClock :sessionTime="room.liveData.sessionTime" :displayZero="false" class="size-25 big-noodle mr-3"/>
       <NotificationButton class="my-auto"/>
     </div>
 
@@ -33,7 +33,7 @@
 import AppContent from '@/components/common/AppContent.vue'
 import AppContentTitle from '@/components/common/AppContentTitle.vue'
 import NotificationButton from '@/components/notification/Button.vue'
-import TicksClock from '@/components/common/TicksClock.vue'
+import SessionTimeClock from '@/components/common/SessionTimeClock.vue'
 import StartStop from '@/components/live/StartStop.vue'
 import Cameras from '@/components/live/Cameras.vue'
 import Timeline from '@/components/live/Timeline.vue'
@@ -47,7 +47,7 @@ export default {
     AppContent,
     AppContentTitle,
     NotificationButton,
-    TicksClock,
+    SessionTimeClock,
     StartStop,
     Cameras,
     Timeline,

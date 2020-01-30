@@ -1,7 +1,10 @@
 import uuid
 import requests
 import operator
+import time
 
+from twisted.internet import reactor
+from twisted.internet.base import DelayedCall
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
@@ -15,17 +18,21 @@ class RulesProcessor:
         self.room_id = room_id
         self.channel = channel
 
-        self.ticks = 0
-        self.tick_loop = LoopingCall(self.tick)
+        self.session_timer = {
+            'session_time': 0.,
+            'task': None,
+            'last_schedule_timestamp': 0.,
+        }
 
         self.rule_definitions = []
         self.on_trigger_type_rules = {
             'incoming_event': [],
-            'periodic_event': [],
             'session_start': [],
             'session_pause': [],
             'session_resume': [],
         }
+
+        self.periodic_triggers = []
 
         self.variable_definitions = []
         self.variables = {}
@@ -129,11 +136,6 @@ class RulesProcessor:
     def send_event(self, to, event):
         self.factory.send_to_node(to, self.channel, event)
 
-    def tick(self):
-        self.ticks += 1
-        self.factory.send_beat(self.room_id, self.ticks)
-        # self.process_alarms()
-
     def fetch_and_init_rules(self):
         scenario_rules = requests.get(
             '{}/get_scenario/'.format(self.storage_url),
@@ -145,11 +147,20 @@ class RulesProcessor:
 
         for trigger_type in self.on_trigger_type_rules:
             self.on_trigger_type_rules[trigger_type] = []
+        self.periodic_triggers = []
 
         for rule in self.rule_definitions:
             for trigger in rule['triggers']:
                 if trigger['template'] in self.on_trigger_type_rules:
                     self.on_trigger_type_rules[trigger['template']].append(rule)
+                elif trigger['template'] == 'periodic_trigger':
+                    self.periodic_triggers.append({
+                        'period': trigger['arguments']['period'],
+                        'rule': rule,
+                        'task': None,
+                        'last_schedule_time_before_trigger': 0.,
+                        'last_schedule_timestamp': 0.,
+                    })
                 else:
                     self.on_trigger_type_rules[trigger['template']] = [rule]
 
@@ -161,26 +172,31 @@ class RulesProcessor:
                 self.variables[variable['name']] = variable['init_value']
 
     def run_room(self):
-        if not self.tick_loop.running:
-            if self.ticks == 0:
+        if not self.session_timer['task']:
+            if self.session_timer['session_time'] == 0.:
                 self.factory.send_notification('info', "Session started")
                 self.process_rules_from_trigger_type('session_start', {})
+                self.schedule_session_timer()
+                self.schedule_periodic_triggers()
             else:
                 self.factory.send_notification('info', "Session resumed")
                 self.process_rules_from_trigger_type('session_resume', {})
-            self.tick_loop.start(1)
+                self.resume_session_timer()
+                self.resume_periodic_triggers()
 
     def halt_room(self):
-        if self.tick_loop.running:
-            self.tick_loop.stop()
+        if self.session_timer['task']:
             self.factory.send_notification('info', "Session paused")
             self.process_rules_from_trigger_type('session_pause', {})
+            self.pause_session_timer()
+            self.pause_periodic_triggers()
 
     def reset_room(self):
-        if not self.tick_loop.running:
+        if not self.session_timer['task'] and self.session_timer['session_time'] != 0.:
             self.factory.send_reset(self.room_id)
             self.factory.send_notification('info', "Session reset")
-            self.ticks = 0
+            self.cancel_session_timer()
+            self.cancel_periodic_triggers()
             self.records = []
             self.fetch_and_init_rules()
 
@@ -194,13 +210,16 @@ class RulesProcessor:
 
     def process_rules_from_trigger_type(self, trigger_type, context):
         for rule in self.on_trigger_type_rules[trigger_type]:
-            try:
-                self.if_conditions_then_actions(
-                    rule['conditions'], rule['actions'], context)
-            except Exception:
-                message = "Error while processing rule {}".format(rule['name'])
-                self.factory.send_notification('error', message)
-                logger.exception()
+            self.process_rule(rule, context)
+
+    def process_rule(self, rule, context):
+        try:
+            self.if_conditions_then_actions(
+                rule['conditions'], rule['actions'], context)
+        except Exception:
+            message = "Error while processing rule {}".format(rule['name'])
+            self.factory.send_notification('error', message)
+            logger.exception()
 
     def if_conditions_then_actions(self, conditions, actions, context):
         if all([self.compute_condition(c, context) for c in conditions]):
@@ -387,9 +406,9 @@ class RulesProcessor:
     def action_record(self, arguments, context):
         computed_label = self.compute(arguments['label'], context)
         id_ = str(uuid.uuid4())
-        ticks = self.ticks
-        self.records.append({'id': id_, 'ticks': ticks, 'label': computed_label})
-        self.factory.send_record(self.room_id, id_, ticks, computed_label)
+        t = self.session_timer['session_time']
+        self.records.append({'id': id_, 'session_time': t, 'label': computed_label})
+        self.factory.send_record(self.room_id, id_, t, computed_label)
 
     def action_create_a_new_object(self, *args):
         self.last_created_object = {}
@@ -426,6 +445,106 @@ class RulesProcessor:
 
     def action_do_nothing(self, *args):
         pass
+
+    def tic_tac(self):
+        now = time.monotonic()
+        delta_since_last_schedule = now - self.session_timer['last_schedule_timestamp']
+        self.session_timer['last_schedule_timestamp'] = now
+
+        self.session_timer['session_time'] += delta_since_last_schedule
+        time_before_next_call = 1 - self.session_timer['session_time'] % 1
+        self.session_timer['task'] = reactor.callLater(time_before_next_call, self.tic_tac)
+
+        self.factory.send_tic_tac(self.room_id, self.session_timer['session_time'])
+
+    def schedule_session_timer(self):
+        self.session_timer['last_schedule_timestamp'] = time.monotonic()
+        self.session_timer['task'] = reactor.callLater(1, self.tic_tac)
+
+    def resume_session_timer(self):
+        self.session_timer['last_schedule_timestamp'] = time.monotonic()
+        self.session_timer['task'] = reactor.callLater(
+            self.session_timer['last_schedule_time_before_trigger'], self.tic_tac)
+
+    def pause_session_timer(self):
+        delta_since_last_schedule = time.monotonic() - self.session_timer['last_schedule_timestamp']
+        self.session_timer['last_schedule_time_before_trigger'] = 1 - delta_since_last_schedule
+        self.session_timer['session_time'] += delta_since_last_schedule
+        try:
+            self.session_timer['task'].cancel()
+        except Exception as e:
+            logger.warning(
+                "Could not cancel session timer (reason={})".format(e))
+        finally:
+            self.session_timer['task'] = None
+
+    def cancel_session_timer(self):
+        try:
+            self.session_timer['task'].cancel()
+        except Exception as e:
+            logger.warning(
+                "Could not cancel session timer (reason={})".format(e))
+        finally:
+            self.session_timer['task'] = None
+        self.session_timer['session_time'] = 0.
+
+    def process_periodic_rule(self, periodic_trigger_index):
+        now = time.monotonic()
+        trigger = self.periodic_triggers[periodic_trigger_index]
+        try:
+            computed_period = self.compute(trigger['period'], {})
+        except Exception:
+            message = "Error while computing trigger period for rule {}".format(trigger['rule']['name'])
+            self.factory.send_notification('error', message)
+            logger.exception()
+        else:
+            trigger['last_schedule_time_before_trigger'] = computed_period
+            trigger['last_schedule_timestamp'] = now
+            trigger['task'] = reactor.callLater(computed_period, self.process_periodic_rule, periodic_trigger_index)
+        self.process_rule(trigger['rule'], {})
+
+    def schedule_periodic_triggers(self):
+        now = time.monotonic()
+        for trigger_index, trigger in enumerate(self.periodic_triggers):
+            try:
+                computed_period = self.compute(trigger['period'], {})
+            except Exception:
+                message = "Error while computing trigger period for rule {}".format(trigger['rule']['name'])
+                self.factory.send_notification('error', message)
+                logger.exception()
+            else:
+                trigger['last_schedule_time_before_trigger'] = computed_period
+                trigger['last_schedule_timestamp'] = now
+                trigger['task'] = reactor.callLater(computed_period, self.process_periodic_rule, trigger_index)
+
+    def resume_periodic_triggers(self):
+        now = time.monotonic()
+        for trigger_index, trigger in enumerate(self.periodic_triggers):
+            trigger['last_schedule_timestamp'] = now
+            trigger['task'] = reactor.callLater(
+                trigger['last_schedule_time_before_trigger'],
+                self.process_periodic_rule, trigger_index
+            )
+
+    def pause_periodic_triggers(self):
+        now = time.monotonic()
+        for trigger in self.periodic_triggers:
+            delta_since_last_schedule = now - trigger['last_schedule_timestamp']
+            trigger['last_schedule_time_before_trigger'] = (
+                trigger['last_schedule_time_before_trigger'] - delta_since_last_schedule)
+            try:
+                trigger['task'].cancel()
+            except Exception as e:
+                logger.warning(
+                    "Could not cancel periodic task for rule {} (reason={})".format(trigger['rule']['name'], e))
+
+    def cancel_periodic_triggers(self):
+        for trigger in self.periodic_triggers:
+            try:
+                trigger['task'].cancel()
+            except Exception as e:
+                logger.warning(
+                    "Could not cancel periodic task for rule {} (reason={})".format(trigger['rule']['name'], e))
 
     # def process_alarms(self):
     #     context = {}

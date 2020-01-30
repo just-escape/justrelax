@@ -7,7 +7,7 @@
         </a>
       </div>
       <div class="d-flex flex-row">
-        <TicksClock class="mr-2" :ticks="room.liveData.ticks" :displayZero="false"/>
+        <SessionTimeClock class="mr-2" :sessionTime="room.liveData.sessionTime" :displayZero="false"/>
         <CollapseChevron class="align-self-center" v-b-toggle="'collapse-rooms-' + room.id"/>
       </div>
     </div>
@@ -33,14 +33,14 @@
 <script>
 import Tab from '@/components/nav/Tab.vue'
 import CollapseChevron from '@/components/common/CollapseChevron.vue'
-import TicksClock from '@/components/common/TicksClock.vue'
+import SessionTimeClock from '@/components/common/SessionTimeClock.vue'
 import { getRoomDisplayName } from '@/helper/room.js'
 
 export default {
   name: 'TabRoom',
   components: {
     CollapseChevron,
-    TicksClock,
+    SessionTimeClock,
     Tab,
   },
   computed: {

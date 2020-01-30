@@ -30,9 +30,9 @@
           <line class="stroke-softdark" :x1="referenceLineX1" :x2="referenceLineX2" :y1="axisY" :y2="axisY" :style="styleStrokeWidth"/>
 
           <line
-            v-if="getXFromTicks(currentTimeX) >= axisX1"
-            :x1="ticksLineX1"
-            :x2="ticksLineX2"
+            v-if="getXFromSessionTime(currentTimeX) >= axisX1"
+            :x1="sessionTimeLineX1"
+            :x2="sessionTimeLineX2"
             :y1="axisY"
             :y2="axisY"
             class="stroke-jaffa"
@@ -42,8 +42,8 @@
           <g v-for="(t, index) in graduations" :key="t.id">
             <line
               class="stroke-jaffa"
-              :x1="getXFromTicks(t)"
-              :x2="getXFromTicks(t)"
+              :x1="getXFromSessionTime(t)"
+              :x2="getXFromSessionTime(t)"
               :y1="graduationLineY1"
               :y2="graduationLineY2"
               :style="styleStrokeWidth"
@@ -51,7 +51,7 @@
             <foreignObject width="100%" height="100%" :x="getGraduationTextX(t, index)" :y="lowerTextY">
               <body xmlns="http://www.w3.org/1999/xhtml" class="bgc-dark">
                 <div :id="'graduation' + index" :style="styleFontSize" class="timeline-text">
-                  <TicksClock :ticks="t" :displayZero="true"/>
+                  <SessionTimeClock :sessionTime="t" :displayZero="true"/>
                 </div>
               </body>
             </foreignObject>
@@ -61,7 +61,7 @@
             <g v-for="record in records" :key="record.id" :id="record.id">
               <circle
                 class="stroke-jaffa fill-jaffa"
-                :cx="getXFromTicks(record.ticks)"
+                :cx="getXFromSessionTime(record.sessionTime)"
                 :cy="axisY"
                 :r="getProportionalValue(foregroundRecordId == record.id ? 15 : 10)"
                 @mouseenter="sendRecordToForeground(record.id)"
@@ -70,9 +70,9 @@
               <foreignObject
                 width="100%"
                 :height="upperTextHeight"
-                :x="getUpperTextX(record.ticks)"
+                :x="getUpperTextX(record.sessionTime)"
                 :y="upperTextY"
-                :transform="'rotate(-60 ' + getUpperTextX(record.ticks) + ' ' + upperTextY + ')'"
+                :transform="'rotate(-60 ' + getUpperTextX(record.sessionTime) + ' ' + upperTextY + ')'"
               >
                 <body xmlns="http://www.w3.org/1999/xhtml" class="bgc-transparent position-relative">
                   <div
@@ -95,13 +95,13 @@
 
 <script>
 import ButtonJaffa from '@/components/common/ButtonJaffa.vue'
-import TicksClock from '@/components/common/TicksClock.vue'
+import SessionTimeClock from '@/components/common/SessionTimeClock.vue'
 
 export default {
   name: 'Timeline',
   components: {
     ButtonJaffa,
-    TicksClock,
+    SessionTimeClock,
   },
   data: function() {
     return {
@@ -162,15 +162,15 @@ export default {
     },
     records: function() {
       var r = this.room.liveData.records
-        .filter(r => this.axisX1 <= this.getXFromTicks(r.ticks) && this.getXFromTicks(r.ticks) <= this.axisX2)
+        .filter(r => this.axisX1 <= this.getXFromSessionTime(r.sessionTime) && this.getXFromSessionTime(r.sessionTime) <= this.axisX2)
       return r
     },
     currentTimeX: function() {
-      return this.room.liveData.ticks * this.pxPerTick
+      return this.room.liveData.sessionTime * this.pxPerTick
     },
-    getXFromTicks: function() {
-      return function(ticks) {
-        return ticks * this.pxPerTick
+    getXFromSessionTime: function() {
+      return function(sessionTime) {
+        return Math.round(sessionTime) * this.pxPerTick
       }
     },
     strifeOffset: function() {
@@ -197,11 +197,11 @@ export default {
     referenceLineX2: function() {
       return this.axisX2 + this.getProportionalValue(5)
     },
-    ticksLineX1: function() {
+    sessionTimeLineX1: function() {
       return this.axisX1 - this.getProportionalValue(5)
     },
-    ticksLineX2: function() {
-      return Math.min(this.getXFromTicks(this.currentTimeX), this.axisX2) + this.getProportionalValue(5)
+    sessionTimeLineX2: function() {
+      return Math.min(this.getXFromSessionTime(this.currentTimeX), this.axisX2) + this.getProportionalValue(5)
     },
     graduationLineY1: function() {
       return this.axisY - this.getProportionalValue(5)
@@ -210,13 +210,13 @@ export default {
       return this.axisY + this.getProportionalValue(15)
     },
     getUpperTextX: function() {
-      return function(ticks) {
-        return this.getXFromTicks(ticks) - this.getProportionalValue(25)
+      return function(sessionTime) {
+        return this.getXFromSessionTime(sessionTime) - this.getProportionalValue(25)
       }
     },
     getGraduationTextX: function() {
       return function(t, id) {
-        var center = this.getXFromTicks(t)
+        var center = this.getXFromSessionTime(t)
         var textElement = document.getElementById('graduation' + id)
         if (textElement) {
           var textWidth = textElement.offsetWidth

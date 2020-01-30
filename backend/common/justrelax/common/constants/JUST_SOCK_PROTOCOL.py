@@ -26,13 +26,13 @@ I_AM_CLIENT_TYPE = 'client_type'
 I_AM_NAME = 'name'
 I_AM_CHANNEL = 'channel'
 
-TIC_TAC_TICKS = 'ticks'
+TIC_TAC_SESSION_TIME = 'session_time'
 
 NOTIFICATION_TYPE = 'notification_type'
 NOTIFICATION_MESSAGE = 'notification_message'
 
 RECORD_ID = 'id'
-RECORD_TICKS = 'ticks'
+RECORD_SESSION_TIME = 'session_time'
 RECORD_LABEL = 'label'
 
 SEND_EVENT_NODE = 'node'

@@ -10,7 +10,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
-        'name': 'periodic_event',
+        'name': 'periodic_trigger',
         'context': 'trigger',
         'links': [
             {
