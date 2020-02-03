@@ -62,7 +62,15 @@ export default {
         var args = {}
         for (var link of this.templates[value].links) {
           if (link.type === "argument") {
-            if (link.value_type === "variable") {
+            if (link.value_type === "timer") {
+              // Determine the default value dynamically
+              let timerVariables = editorStore.state.variables.filter(v => v.type === "timer")
+              if (timerVariables.length > 0) {
+                args[link.key] = {variable: timerVariables[0].name}
+              } else {
+                args[link.key] = {variable: null}
+              }
+            } else if (link.value_type === "variable") {
               // Determine the default value dynamically
               if (editorStore.state.variables.length > 0) {
                 args[link.key] = {variable: editorStore.state.variables[0].name}
@@ -127,6 +135,8 @@ export default {
         return true
       } else if (valueType === "object") {
         return {function: "last_created_object"}
+      } else if (valueType === "timer") {
+        return {function: "expiring_timer"}
       } else if (valueType === "disabled") {
         return null
       } else {

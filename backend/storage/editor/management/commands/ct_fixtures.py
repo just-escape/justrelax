@@ -10,6 +10,26 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'name': 'timed_trigger',
+        'context': 'trigger',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'After ',
+            },
+            {
+                'type': 'argument',
+                'key': 'session_time',
+                'value_type': 'real',
+                'default_value': '1.00',
+            },
+            {
+                'type': 'text',
+                'text': ' second(s) of session time',
+            },
+        ],
+    },
+    {
         'name': 'periodic_trigger',
         'context': 'trigger',
         'links': [
@@ -26,6 +46,22 @@ COMPONENT_TEMPLATES = [
             {
                 'type': 'text',
                 'text': ' second(s) of session time',
+            },
+        ],
+    },
+    {
+        'name': 'timer_trigger',
+        'context': 'trigger',
+        'links': [
+            {
+                'type': 'argument',
+                'key': 'timer',
+                'value_type': 'timer',
+                'default_value': 'null',
+            },
+            {
+                'type': 'text',
+                'text': ' expires',
             },
         ],
     },
@@ -384,6 +420,99 @@ COMPONENT_TEMPLATES = [
                 'value_type': 'predefined',
                 'default_value': 'null',
                 'predefined_choices': '<rules>',
+            },
+        ],
+    },
+    {
+        'name': 'start_timer',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Start timer ',
+            },
+            {
+                'type': 'argument',
+                'key': 'timer',
+                'value_type': 'timer',
+                'default_value': '{"function": "expiring_timer"}',
+            },
+            {
+                'type': 'text',
+                'text': ' as a ',
+            },
+            {
+                'type': 'argument',
+                'key': 'type',
+                'value_type': 'predefined',
+                'predefined_choices': 'One shot,Periodic',
+                'default_value': '"One shot"',
+            },
+            {
+                'type': 'text',
+                'text': ' timer that will expire in ',
+            },
+            {
+                'type': 'argument',
+                'key': 'time',
+                'value_type': 'real',
+                'default_value': '30.00',
+            },
+            {
+                'type': 'text',
+                'text': ' seconds',
+            },
+        ],
+    },
+    {
+        'name': 'pause_timer',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Pause ',
+            },
+            {
+                'type': 'argument',
+                'key': 'timer',
+                'value_type': 'timer',
+                'default_value': '{"function": "last_started_timer"}',
+            },
+        ],
+    },
+    {
+        'name': 'resume_timer',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Resume ',
+            },
+            {
+                'type': 'argument',
+                'key': 'timer',
+                'value_type': 'timer',
+                'default_value': '{"function": "last_started_timer"}',
+            },
+        ],
+    },
+    {
+        'name': 'sleep',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Wait ',
+            },
+            {
+                'type': 'argument',
+                'key': 'real',
+                'value_type': 'real',
+                'default_value': '1.5',
+            },
+            {
+                'type': 'text',
+                'text': ' seconds',
             },
         ],
     },

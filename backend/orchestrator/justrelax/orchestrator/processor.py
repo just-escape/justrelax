@@ -1,14 +1,135 @@
 import uuid
+import math
 import requests
 import operator
 import time
 
 from twisted.internet import reactor
-from twisted.internet.base import DelayedCall
-from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
 from justrelax.orchestrator import RULES as R
+
+STATE_NOT_STARTED = 'not_started'
+STATE_TICKING = 'ticking'
+STATE_PAUSED = 'paused'
+
+
+class Timer:
+    def __init__(self, processor, time, repeat=False, callback=None, *args, **kwargs):
+        self.processor = processor
+        self.time = time
+        self.repeat = repeat
+        self.callback = callback
+        self.callback_args = args
+        self.callback_kwargs = kwargs
+
+        self.task = None
+        self.last_computed_delay = 0.
+        self.last_schedule_timestamp = 0.
+        self.manual_pause = False
+
+    def get_remaining_time(self):
+        if not self.task or not self.task.active():
+            return 0.
+
+        remaining_time = self.last_schedule_timestamp + self.last_computed_delay - time.monotonic()
+
+        return round(remaining_time, 2)
+
+    def start(self):
+        if self.processor.state == STATE_TICKING:
+            self.compute_and_schedule()
+
+    def compute_and_schedule(self):
+        now = time.monotonic()
+        try:
+            computed_time = self.processor.compute(self.time, {})
+        except Exception:
+            message = "Error while computing {}".format(self.time)
+            self.processor.send_notification('error', message)
+            logger.exception()
+        else:
+            self.last_computed_delay = computed_time
+            self.last_schedule_timestamp = now
+            self.task = reactor.callLater(computed_time, self.perform_task)
+
+    def pause(self):
+        if self.task and self.task.active() and self.processor.state == STATE_TICKING:
+            now = time.monotonic()
+            delta_since_last_schedule = now - self.last_schedule_timestamp
+            self.last_computed_delay -= delta_since_last_schedule
+            self.task.cancel()
+
+    def resume(self):
+        if self.task and not self.task.active() and not self.manual_pause and self.processor.state == STATE_TICKING:
+            now = time.monotonic()
+            self.last_schedule_timestamp = now
+            self.task = reactor.callLater(
+                self.last_computed_delay, self.perform_task)
+
+    def cancel(self):
+        if self.task and self.task.active():
+            self.task.cancel()
+
+    def perform_task(self):
+        if self.repeat:
+            self.compute_and_schedule()
+        else:
+            self.processor.dereference_timer(self)
+        self.callback(*self.callback_args, **self.callback_kwargs)
+
+
+class SessionTimer:
+    def __init__(self, processor):
+        self.processor = processor
+
+        self.tic_tac_period = 1  # seconds
+
+        self.state = STATE_NOT_STARTED
+        self.session_time = 0.
+
+        self.task = None
+        self.last_computed_delay = 0.
+        self.last_schedule_timestamp = 0.
+
+    def start(self):
+        if self.state == STATE_NOT_STARTED:
+            self.last_schedule_timestamp = time.monotonic()
+            self.schedule_next_tic_tac()
+            self.state = STATE_TICKING
+
+    def schedule_next_tic_tac(self):
+        now = time.monotonic()
+        delta_since_last_schedule = now - self.last_schedule_timestamp
+        self.last_schedule_timestamp = now
+
+        self.session_time += delta_since_last_schedule
+        delay_before_next_call = self.tic_tac_period - self.session_time % self.tic_tac_period
+        self.task = reactor.callLater(delay_before_next_call, self.tic_tac)
+
+    def pause(self):
+        if self.state == STATE_TICKING:
+            delta_since_last_schedule = time.monotonic() - self.last_schedule_timestamp
+            self.last_computed_delay = self.tic_tac_period - delta_since_last_schedule
+            self.session_time += delta_since_last_schedule
+            self.task.cancel()
+            self.state = STATE_PAUSED
+
+    def resume(self):
+        if self.state == STATE_PAUSED:
+            now = time.monotonic()
+            self.last_schedule_timestamp = now
+            self.task = reactor.callLater(self.last_computed_delay, self.tic_tac)
+            self.state = STATE_TICKING
+
+    def cancel(self):
+        if self.state == STATE_PAUSED:
+            self.session_time = 0.
+            self.state = STATE_NOT_STARTED
+
+    def tic_tac(self):
+        self.schedule_next_tic_tac()
+        self.processor.tic_tac()
 
 
 class RulesProcessor:
@@ -18,11 +139,7 @@ class RulesProcessor:
         self.room_id = room_id
         self.channel = channel
 
-        self.session_timer = {
-            'session_time': 0.,
-            'task': None,
-            'last_schedule_timestamp': 0.,
-        }
+        self.session_timer = SessionTimer(self)
 
         self.rule_definitions = []
         self.on_trigger_type_rules = {
@@ -32,12 +149,13 @@ class RulesProcessor:
             'session_resume': [],
         }
 
-        self.periodic_triggers = []
+        self.timers = set()
 
-        self.variable_definitions = []
         self.variables = {}
 
         self.last_created_object = {}
+        # The variable name or None is no timer was ever started
+        self.last_started_timer = None
 
         self.condition_table = {
             'simple_condition': self.condition_simple_condition,
@@ -55,6 +173,10 @@ class RulesProcessor:
             'save_real_in_object': self.action_save_real_in_object,
             'save_boolean_in_object': self.action_save_boolean_in_object,
             'trigger_rule': self.action_trigger_rule,
+            'start_timer': self.action_start_timer,
+            'pause_timer': self.action_pause_timer,
+            'resume_timer': self.action_resume_timer,
+            'sleep': self.sleep,
             'do_nothing': self.action_do_nothing,
         }
 
@@ -75,9 +197,18 @@ class RulesProcessor:
             'string_comparison': self.function_string_comparison,
             'object_comparison': self.function_object_comparison,
             'boolean_comparison': self.function_boolean_comparison,
+            'timer_get_remaining_time': self.function_timer_get_remaining_time,
+            'integer_to_string': self.function_integer_to_string,
+            'real_to_string': self.function_real_to_string,
+            'boolean_to_string': self.function_boolean_to_string,
+            'object_to_string': self.function_object_to_string,
+            'real_to_integer': self.function_real_to_integer,
+            'integer_to_real': self.function_integer_to_real,
             'boolean_not': self.function_boolean_not,
             'boolean_or': self.function_boolean_or,
             'boolean_and': self.function_boolean_and,
+            'expiring_timer': self.function_expiring_timer,
+            'last_started_timer': self.function_last_started_timer,
         }
 
         self.integer_arithmetic_operator_table = {
@@ -123,12 +254,13 @@ class RulesProcessor:
         #     JR.SYSTEM_VARIABLE_IS_RUNNING: self.get_is_running,
         #     JR.SYSTEM_VARIABLE_TICKS: self.get_ticks
         # }
-        # self.alarm_definitions = self.rules.get(JR.ALARMS, {})
-        # self.alarms = {}
-
         self.records = []
 
         self.fetch_and_init_rules()
+
+    @property
+    def state(self):
+        return self.session_timer.state
 
     def is_subscribed_to_channel(self, channel):
         return self.channel == channel
@@ -143,62 +275,78 @@ class RulesProcessor:
         ).json()
 
         self.rule_definitions = scenario_rules['rules']
-        self.variable_definitions = scenario_rules['variables']
 
         for trigger_type in self.on_trigger_type_rules:
             self.on_trigger_type_rules[trigger_type] = []
-        self.periodic_triggers = []
+        self.timers = set()
+
+        self.variables = {}
+        variable_definitions = scenario_rules['variables']
+        for variable in variable_definitions:
+            if variable['type'] == 'timer':
+                context = {R.CONTEXT_EXPIRING_TIMER: variable['name']}
+                init_value = Timer(
+                    self,
+                    0, False,
+                    self.process_rules, [], context,
+                )
+            else:
+                init_value = variable['init_value']
+            self.variables[variable['name']] = init_value
 
         for rule in self.rule_definitions:
             for trigger in rule['triggers']:
                 if trigger['template'] in self.on_trigger_type_rules:
                     self.on_trigger_type_rules[trigger['template']].append(rule)
+                elif trigger['template'] == 'timed_trigger':
+                    self.timers.add(
+                        Timer(
+                            self,
+                            trigger['arguments']['session_time'], False,
+                            self.process_rule, rule, {},
+                        )
+                    )
                 elif trigger['template'] == 'periodic_trigger':
-                    self.periodic_triggers.append({
-                        'period': trigger['arguments']['period'],
-                        'rule': rule,
-                        'task': None,
-                        'last_schedule_time_before_trigger': 0.,
-                        'last_schedule_timestamp': 0.,
-                    })
+                    self.timers.add(
+                        Timer(
+                            self,
+                            trigger['arguments']['period'], True,
+                            self.process_rule, rule, {},
+                        )
+                    )
+                elif trigger['template'] == 'timer_trigger':
+                    variable_timer_name = trigger['arguments']['timer']['variable']
+                    self.variables[variable_timer_name].callback_args[0].append(rule)
                 else:
                     self.on_trigger_type_rules[trigger['template']] = [rule]
 
-        self.variables = {}
-        for variable in self.variable_definitions:
-            if variable['list']:
-                self.variables[variable['name']] = []
-            else:
-                self.variables[variable['name']] = variable['init_value']
-
     def run_room(self):
-        if not self.session_timer['task']:
-            if self.session_timer['session_time'] == 0.:
-                self.factory.send_notification('info', "Session started")
-                self.process_rules_from_trigger_type('session_start', {})
-                self.schedule_session_timer()
-                self.schedule_periodic_triggers()
-            else:
-                self.factory.send_notification('info', "Session resumed")
-                self.process_rules_from_trigger_type('session_resume', {})
-                self.resume_session_timer()
-                self.resume_periodic_triggers()
+        if self.session_timer.state == STATE_NOT_STARTED:
+            self.process_rules(self.on_trigger_type_rules['session_start'], {})
+            self.session_timer.start()
+            self.schedule_timers()
+            self.factory.send_notification('info', "Session started")
+        elif self.session_timer.state == STATE_PAUSED:
+            self.process_rules(self.on_trigger_type_rules['session_resume'], {})
+            self.session_timer.resume()
+            self.resume_timers()
+            self.factory.send_notification('info', "Session resumed")
 
     def halt_room(self):
-        if self.session_timer['task']:
+        if self.session_timer.state == STATE_TICKING:
+            self.process_rules(self.on_trigger_type_rules['session_pause'], {})
+            self.pause_timers()
+            self.session_timer.pause()
             self.factory.send_notification('info', "Session paused")
-            self.process_rules_from_trigger_type('session_pause', {})
-            self.pause_session_timer()
-            self.pause_periodic_triggers()
 
     def reset_room(self):
-        if not self.session_timer['task'] and self.session_timer['session_time'] != 0.:
+        if self.session_timer.state == STATE_PAUSED:
             self.factory.send_reset(self.room_id)
-            self.factory.send_notification('info', "Session reset")
-            self.cancel_session_timer()
-            self.cancel_periodic_triggers()
+            self.cancel_timers()
+            self.session_timer.cancel()
             self.records = []
             self.fetch_and_init_rules()
+            self.factory.send_notification('info', "Session reset")
 
     def on_event(self, from_, event):
         context = {
@@ -206,10 +354,10 @@ class RulesProcessor:
             R.CONTEXT_TRIGGERING_EVENT: event,
         }
 
-        self.process_rules_from_trigger_type('incoming_event', context)
+        self.process_rules(self.on_trigger_type_rules['incoming_event'], context)
 
-    def process_rules_from_trigger_type(self, trigger_type, context):
-        for rule in self.on_trigger_type_rules[trigger_type]:
+    def process_rules(self, rules, context):
+        for rule in rules:
             self.process_rule(rule, context)
 
     def process_rule(self, rule, context):
@@ -338,6 +486,40 @@ class RulesProcessor:
         computed_right = self.compute(arguments['right'], context)
         return comparator(computed_left, computed_right)
 
+    def function_timer_get_remaining_time(self, arguments, context):
+        timer = self.compute(arguments['timer'], context)
+        return timer.get_remaining_time() if timer else 0.
+
+    def function_integer_to_string(self, arguments, context):
+        integer = self.compute(arguments['integer'], context)
+        return str(integer)
+
+    def function_real_to_string(self, arguments, context):
+        real = self.compute(arguments['real'], context)
+        return str(real)
+
+    def function_boolean_to_string(self, arguments, context):
+        boolean = self.compute(arguments['boolean'], context)
+        return str(boolean)
+
+    def function_object_to_string(self, arguments, context):
+        object_ = self.compute(arguments['object'], context)
+        return str(object_)
+
+    def function_real_to_integer(self, arguments, context):
+        real = self.compute(arguments['real'], context)
+        operation = arguments['operation']
+        if operation == 'Ceil':
+            return math.ceil(real)
+        elif operation == 'Floor':
+            return math.floor(real)
+        else:
+            return round(real)
+
+    def function_integer_to_real(self, arguments, context):
+        integer = self.compute(arguments['integer'], context)
+        return float(integer)
+
     def function_boolean_not(self, arguments, context):
         computed_right = self.compute(arguments['right'], context)
         return not computed_right
@@ -351,6 +533,13 @@ class RulesProcessor:
         computed_left = self.compute(arguments['left'], context)
         computed_right = self.compute(arguments['right'], context)
         return computed_left and computed_right
+
+    @staticmethod
+    def function_expiring_timer(arguments, context):
+        return context.get(R.CONTEXT_EXPIRING_TIMER, None)
+
+    def function_last_started_timer(self, *args):
+        return self.last_started_timer
 
     def compute_condition(self, condition, context):
         condition_type = condition['template']
@@ -384,6 +573,9 @@ class RulesProcessor:
 
     def action_set_variable(self, arguments, context):
         computed_variable_name = self.compute(arguments['variable_name'], context)
+        if type(self.variables[computed_variable_name]) is Timer:
+            logger.warning("set_variable action is not supported for timer variables")
+            return
         computed_value = self.compute(arguments['value'], context)
 
         self.variables[computed_variable_name] = computed_value
@@ -406,7 +598,7 @@ class RulesProcessor:
     def action_record(self, arguments, context):
         computed_label = self.compute(arguments['label'], context)
         id_ = str(uuid.uuid4())
-        t = self.session_timer['session_time']
+        t = self.session_timer.session_time
         self.records.append({'id': id_, 'session_time': t, 'label': computed_label})
         self.factory.send_record(self.room_id, id_, t, computed_label)
 
@@ -443,146 +635,59 @@ class RulesProcessor:
         computed_value = self.compute(arguments['value'], context)
         computed_object[computed_key] = int(computed_value)
 
+    def action_start_timer(self, arguments, context):
+        timer = self.compute(arguments['timer'], context)
+        if timer:
+            repeat = True if arguments['type'] == 'Periodic' else False
+            time_ = arguments['time']
+
+            if timer in self.timers:
+                timer.cancel()
+
+            timer.repeat = repeat
+            timer.time = time_
+            timer.manual_pause = False
+            self.timers.add(timer)
+            self.last_started_timer = timer
+
+            timer.start()
+
+    def action_pause_timer(self, arguments, context):
+        timer = self.compute(arguments['timer'], context)
+        if timer:
+            timer.manual_pause = True
+            timer.pause()
+
+    def action_resume_timer(self, arguments, context):
+        timer = self.compute(arguments['timer'], context)
+        if timer:
+            timer.manual_pause = False
+            timer.resume()
+
+    def action_sleep(self, arguments, context):
+        pass
+
     def action_do_nothing(self, *args):
         pass
 
     def tic_tac(self):
-        now = time.monotonic()
-        delta_since_last_schedule = now - self.session_timer['last_schedule_timestamp']
-        self.session_timer['last_schedule_timestamp'] = now
+        self.factory.send_tic_tac(self.room_id, self.session_timer.session_time)
 
-        self.session_timer['session_time'] += delta_since_last_schedule
-        time_before_next_call = 1 - self.session_timer['session_time'] % 1
-        self.session_timer['task'] = reactor.callLater(time_before_next_call, self.tic_tac)
+    def schedule_timers(self):
+        for timer in self.timers:
+            timer.start()
 
-        self.factory.send_tic_tac(self.room_id, self.session_timer['session_time'])
+    def resume_timers(self):
+        for timer in self.timers:
+            timer.resume()
 
-    def schedule_session_timer(self):
-        self.session_timer['last_schedule_timestamp'] = time.monotonic()
-        self.session_timer['task'] = reactor.callLater(1, self.tic_tac)
+    def pause_timers(self):
+        for timer in self.timers:
+            timer.pause()
 
-    def resume_session_timer(self):
-        self.session_timer['last_schedule_timestamp'] = time.monotonic()
-        self.session_timer['task'] = reactor.callLater(
-            self.session_timer['last_schedule_time_before_trigger'], self.tic_tac)
+    def cancel_timers(self):
+        for timer in self.timers:
+            timer.cancel()
 
-    def pause_session_timer(self):
-        delta_since_last_schedule = time.monotonic() - self.session_timer['last_schedule_timestamp']
-        self.session_timer['last_schedule_time_before_trigger'] = 1 - delta_since_last_schedule
-        self.session_timer['session_time'] += delta_since_last_schedule
-        try:
-            self.session_timer['task'].cancel()
-        except Exception as e:
-            logger.warning(
-                "Could not cancel session timer (reason={})".format(e))
-        finally:
-            self.session_timer['task'] = None
-
-    def cancel_session_timer(self):
-        try:
-            self.session_timer['task'].cancel()
-        except Exception as e:
-            logger.warning(
-                "Could not cancel session timer (reason={})".format(e))
-        finally:
-            self.session_timer['task'] = None
-        self.session_timer['session_time'] = 0.
-
-    def process_periodic_rule(self, periodic_trigger_index):
-        now = time.monotonic()
-        trigger = self.periodic_triggers[periodic_trigger_index]
-        try:
-            computed_period = self.compute(trigger['period'], {})
-        except Exception:
-            message = "Error while computing trigger period for rule {}".format(trigger['rule']['name'])
-            self.factory.send_notification('error', message)
-            logger.exception()
-        else:
-            trigger['last_schedule_time_before_trigger'] = computed_period
-            trigger['last_schedule_timestamp'] = now
-            trigger['task'] = reactor.callLater(computed_period, self.process_periodic_rule, periodic_trigger_index)
-        self.process_rule(trigger['rule'], {})
-
-    def schedule_periodic_triggers(self):
-        now = time.monotonic()
-        for trigger_index, trigger in enumerate(self.periodic_triggers):
-            try:
-                computed_period = self.compute(trigger['period'], {})
-            except Exception:
-                message = "Error while computing trigger period for rule {}".format(trigger['rule']['name'])
-                self.factory.send_notification('error', message)
-                logger.exception()
-            else:
-                trigger['last_schedule_time_before_trigger'] = computed_period
-                trigger['last_schedule_timestamp'] = now
-                trigger['task'] = reactor.callLater(computed_period, self.process_periodic_rule, trigger_index)
-
-    def resume_periodic_triggers(self):
-        now = time.monotonic()
-        for trigger_index, trigger in enumerate(self.periodic_triggers):
-            trigger['last_schedule_timestamp'] = now
-            trigger['task'] = reactor.callLater(
-                trigger['last_schedule_time_before_trigger'],
-                self.process_periodic_rule, trigger_index
-            )
-
-    def pause_periodic_triggers(self):
-        now = time.monotonic()
-        for trigger in self.periodic_triggers:
-            delta_since_last_schedule = now - trigger['last_schedule_timestamp']
-            trigger['last_schedule_time_before_trigger'] = (
-                trigger['last_schedule_time_before_trigger'] - delta_since_last_schedule)
-            try:
-                trigger['task'].cancel()
-            except Exception as e:
-                logger.warning(
-                    "Could not cancel periodic task for rule {} (reason={})".format(trigger['rule']['name'], e))
-
-    def cancel_periodic_triggers(self):
-        for trigger in self.periodic_triggers:
-            try:
-                trigger['task'].cancel()
-            except Exception as e:
-                logger.warning(
-                    "Could not cancel periodic task for rule {} (reason={})".format(trigger['rule']['name'], e))
-
-    # def process_alarms(self):
-    #     context = {}
-    #     to_pop = []
-    #     for alarm in self.alarms:
-    #         context[JR.CONTEXT_ALARM_NAME] = alarm
-    #
-    #         self.alarms[alarm]["ticks"] -= 1
-    #
-    #         if self.alarms[alarm]["ticks"] > 0:
-    #             continue
-    #
-    #         to_pop.append(alarm)
-    #
-    #         conditions = self.alarm_definitions[alarm].get(JR.CONDITIONS, [True])
-    #         self.compute_value(conditions)
-    #
-    #         actions = self.alarm_definitions[alarm].get(JR.ACTIONS, [])
-    #         self.process_actions(actions)
-    #
-    #     for key in to_pop:
-    #         self.alarms.pop(key)
-    # def process_start_alarm_action(self, action, context=None):
-    #     ticks = self.compute_value(action[JR.ACTION_START_ALARM_TICKS], context=context)
-    #     for name in ensure_iterable(action[JR.ACTION_START_ALARM]):
-    #         computed_name = self.compute_value(name, context=context)
-    #
-    #         alarm = self.alarm_definitions.get(computed_name, None)
-    #         if alarm:
-    #             if computed_name not in self.alarms:
-    #                 alarm_id = 0
-    #
-    #                 self.alarms[computed_name] = {
-    #                     "id": alarm_id,
-    #                     "ticks": ticks,
-    #                 }
-    #
-    # def process_cancel_alarm_action(self, action, context=None):
-    #     for name in ensure_iterable(action[JR.ACTION_CANCEL_ALARM]):
-    #         computed_name = self.compute_value(name, context=context)
-    #         alarm = self.alarms.pop(computed_name, None)
+    def dereference_timer(self, timer):
+        self.timers.remove(timer)

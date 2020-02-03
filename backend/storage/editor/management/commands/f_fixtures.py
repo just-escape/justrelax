@@ -418,6 +418,156 @@ FUNCTIONS = [
     },
     {
         'category': '',
+        'name': 'timer_get_remaining_time',
+        'return_type': 'real',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Remaining time of '
+            },
+            {
+                'type': 'argument',
+                'key': 'timer',
+                'value_type': 'timer',
+                'default_value': '{"function": "last_started_timer"}',
+            }
+        ],
+    },
+    {
+        'category': '',
+        'name': 'integer_to_string',
+        'return_type': 'string',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'String('
+            },
+            {
+                'type': 'argument',
+                'key': 'integer',
+                'value_type': 'integer',
+                'default_value': '1',
+            },
+            {
+                'type': 'text',
+                'text': ')'
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'real_to_string',
+        'return_type': 'string',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'String('
+            },
+            {
+                'type': 'argument',
+                'key': 'real',
+                'value_type': 'real',
+                'default_value': '1.5',
+            },
+            {
+                'type': 'text',
+                'text': ')'
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'boolean_to_string',
+        'return_type': 'string',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'String('
+            },
+            {
+                'type': 'argument',
+                'key': 'boolean',
+                'value_type': 'boolean',
+                'default_value': 'True',
+            },
+            {
+                'type': 'text',
+                'text': ')'
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'object_to_string',
+        'return_type': 'string',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'String('
+            },
+            {
+                'type': 'argument',
+                'key': 'object',
+                'value_type': 'object',
+                'default_value': '{"function": "last_created_object"}',
+            },
+            {
+                'type': 'text',
+                'text': ')'
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'real_to_integer',
+        'return_type': 'integer',
+        'links': [
+            {
+                'type': 'argument',
+                'key': 'operation',
+                'value_type': 'predefined',
+                'predefined_choices': 'Round,Ceil,Floor',
+                'default_value': '"Round"',
+            },
+            {
+                'type': 'text',
+                'text': '('
+            },
+            {
+                'type': 'argument',
+                'key': 'integer',
+                'value_type': 'integer',
+                'default_value': '1.5',
+            },
+            {
+                'type': 'text',
+                'text': ')'
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'integer_to_real',
+        'return_type': 'real',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Real('
+            },
+            {
+                'type': 'argument',
+                'key': 'integer',
+                'value_type': 'integer',
+                'default_value': '1',
+            },
+            {
+                'type': 'text',
+                'text': ')'
+            },
+        ],
+    },
+    {
+        'category': '',
         'name': 'boolean_not',
         'return_type': 'boolean',
         'links': [
@@ -476,6 +626,28 @@ FUNCTIONS = [
                 'key': 'right',
                 'value_type': 'boolean',
                 'default_value': 'true',
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'expiring_timer',
+        'return_type': 'timer',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Expiring timer',
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'last_started_timer',
+        'return_type': 'timer',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Last started timer',
             },
         ],
     },
