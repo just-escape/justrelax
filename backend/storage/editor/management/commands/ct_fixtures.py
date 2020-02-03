@@ -497,7 +497,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
-        'name': 'sleep',
+        'name': 'wait',
         'context': 'action',
         'links': [
             {
@@ -506,7 +506,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'argument',
-                'key': 'real',
+                'key': 'time',
                 'value_type': 'real',
                 'default_value': '1.5',
             },

@@ -5,6 +5,7 @@ import operator
 import time
 
 from twisted.internet import reactor
+from twisted.internet.defer import Deferred, inlineCallbacks
 
 from justrelax.common.logging_utils import logger
 from justrelax.orchestrator import RULES as R
@@ -176,7 +177,7 @@ class RulesProcessor:
             'start_timer': self.action_start_timer,
             'pause_timer': self.action_pause_timer,
             'resume_timer': self.action_resume_timer,
-            'sleep': self.sleep,
+            'wait': self.action_wait,
             'do_nothing': self.action_do_nothing,
         }
 
@@ -369,10 +370,11 @@ class RulesProcessor:
             self.factory.send_notification('error', message)
             logger.exception()
 
+    @inlineCallbacks
     def if_conditions_then_actions(self, conditions, actions, context):
         if all([self.compute_condition(c, context) for c in conditions]):
             for action in actions:
-                self.process_action(action, context)
+                yield self.process_action(action, context)
 
     def compute(self, value, context):
         if not isinstance(value, dict):
@@ -664,8 +666,15 @@ class RulesProcessor:
             timer.manual_pause = False
             timer.resume()
 
-    def action_sleep(self, arguments, context):
-        pass
+    def action_wait(self, arguments, context):
+        time_ = self.compute(arguments['time'], context)
+
+        d = Deferred()
+        timer = Timer(self, time_, False, d.callback, None)
+        self.timers.add(timer)
+        timer.start()
+
+        return d
 
     def action_do_nothing(self, *args):
         pass
