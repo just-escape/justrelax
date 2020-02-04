@@ -15,9 +15,11 @@
         </b-button-group>
       </div>
       <div class="d-flex flex-column">
-        <div v-for="(r, index) in rules" :key="index" class="pointer" @click="displayRule(index)">
-          <i class="far fa-file fa-fw"></i> {{ r.name }}
-        </div>
+        <draggable :list="rules" :group="{name: 'rules'}">
+          <div v-for="(r, index) in rules" :key="index" class="pointer" @click="displayRule(index)">
+            <i class="far fa-file fa-fw"></i> {{ r.name }}
+          </div>
+        </draggable>
       </div>
     </div>
     <div class="container-fluid">
@@ -51,7 +53,7 @@
                 <Context
                   :title="'Triggers'"
                   :type="'trigger'"
-                  :components="displayedRule.triggers"
+                  :fqdn="['rules', displayedRuleIndex, 'triggers']"
                   @updateComponent="(index, c) => updateComponent('trigger', index, c)"
                 />
               </div>
@@ -61,7 +63,7 @@
                 <Context
                   :title="'Conditions'"
                   :type="'condition'"
-                  :components="displayedRule.conditions"
+                  :fqdn="['rules', displayedRuleIndex, 'conditions']"
                   @updateComponent="(index, c) => updateComponent('condition', index, c)"
                 />
               </div>
@@ -71,7 +73,7 @@
                 <Context
                   :title="'Actions'"
                   :type="'action'"
-                  :components="displayedRule.actions"
+                  :fqdn="['rules', displayedRuleIndex, 'actions']"
                   @updateComponent="(index, c) => updateComponent('action', index, c)"
                 />
               </div>
@@ -87,10 +89,12 @@
 import ButtonSmall from "@/components/common/ButtonSmall"
 import Context from "@/components/editor/Context.vue"
 import editorStore from "@/store/editorStore.js"
+import draggable from "vuedraggable"
 
 export default {
   name: 'TabRules',
   components: {
+    draggable,
     ButtonSmall,
     Context,
   },
@@ -100,8 +104,15 @@ export default {
     }
   },
   computed: {
-    rules: function() {
-      return editorStore.state.rules
+    rules: {
+      get() {
+        return editorStore.state.rules
+      },
+      set(value) {
+        let fqdn = ['rules']
+        let data = value
+        editorStore.commit('setDataFromFQDN', {fqdn, data})
+      },
     },
     displayedRule: function() {
       if (editorStore.state.rules[this.displayedRuleIndex] === undefined) {

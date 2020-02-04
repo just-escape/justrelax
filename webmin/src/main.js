@@ -6,7 +6,6 @@ import VueAnime from 'vue-animejs'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import vSelect from 'vue-select'
 
 import justSockService from '@/store/justSockService.js'
 import router from '@/router/index.js'
@@ -22,8 +21,6 @@ Vue.use(VueNativeSock, 'ws://localhost:3031', {
 })
 Vue.use(VueAnime)
 Vue.use(BootstrapVue)
-
-Vue.component('v-select', vSelect)
 
 Vue.config.productionTip = false
 

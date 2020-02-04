@@ -6,16 +6,17 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <div class="d-flex flex-column">
+          <draggable :list="storeBoundComponents" :group="{name: type}">
             <ComponentInline
-              v-for="(c, index) in components"
+              v-for="(c, index) in storeBoundComponents"
               :key="index"
               :component="c"
-              :modalId="getModalId(index)"
               :context="type"
+              :modalId="getModalId(index)"
+              :fqdn="fqdn + [index]"
               @updateComponent="(c) => updateComponent(index, c)"
             />
-          </div>
+          </draggable>
         </div>
       </div>
     </div>
@@ -24,10 +25,13 @@
 
 <script>
 import ComponentInline from "@/components/editor/ComponentInline.vue"
+import editorStore from "@/store/editorStore.js"
+import draggable from "vuedraggable"
 
 export default {
   name: 'Context',
   components: {
+    draggable,
     ComponentInline,
   },
   computed: {
@@ -42,10 +46,20 @@ export default {
         return []
       }
     },
+    storeBoundComponents: {
+      get() {
+        return editorStore.getters.dataFromFQDN(this.fqdn)
+      },
+      set(value) {
+        let fqdn = this.fqdn
+        let data = value
+        editorStore.commit('setDataFromFQDN', {fqdn, data})
+      },
+    },
   },
   methods: {
     getModalId(suffix) {
-      return this.type + '-' + suffix
+      return this.fqdn + '-' + suffix
     },
     updateComponent(componentIndex, component) {
       this.$emit('updateComponent', componentIndex, component)
@@ -54,7 +68,7 @@ export default {
   props: {
     title: String,
     type: String,
-    components: Array,
+    fqdn: Array,  // Fully Qualified Data Name
   }
 }
 </script>

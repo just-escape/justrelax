@@ -17,6 +17,17 @@ export default new Vuex.Store({
     },
     orderedTemplates: [],
   },
+  getters: {
+    dataFromFQDN(state) {
+      return (fqdn) => {
+        var data = state
+        for (var reference of fqdn) {
+          data = data[reference]
+        }
+        return data
+      }
+    }
+  },
   mutations: {
     loadTemplates (state, templates) {
       for (var context of ['function', 'trigger', 'condition', 'action']) {
@@ -39,6 +50,13 @@ export default new Vuex.Store({
           name: "Rule " + (state.rules.length + 1),
         }
       )
+    },
+    setDataFromFQDN (state, {fqdn, data}) {
+      var dataPath = state
+      for (var reference of fqdn) {
+        dataPath = dataPath[reference]
+      }
+      dataPath = data
     },
     addComponent (state, {ruleIndex, context}) {
       var args = {}
