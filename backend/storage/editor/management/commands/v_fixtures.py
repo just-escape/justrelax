@@ -29,4 +29,16 @@ VARIABLES = [
         'list': False,
         'type': 'timer',
     },
+    {
+        'name': 'variable_real_1',
+        'init_value': 0.,
+        'list': False,
+        'type': 'real',
+    },
+    {
+        'name': 'variable_real_2',
+        'init_value': 0.,
+        'list': False,
+        'type': 'real',
+    },
 ]

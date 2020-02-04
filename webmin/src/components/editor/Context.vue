@@ -9,11 +9,11 @@
           <draggable :list="storeBoundComponents" :group="{name: type}">
             <ComponentInline
               v-for="(c, index) in storeBoundComponents"
-              :key="index"
+              :key="getKey(index)"
               :component="c"
               :context="type"
               :modalId="getModalId(index)"
-              :fqdn="fqdn + [index]"
+              :fqdn="getFQDN(index)"
               @updateComponent="(c) => updateComponent(index, c)"
             />
           </draggable>
@@ -56,10 +56,22 @@ export default {
         editorStore.commit('setDataFromFQDN', {fqdn, data})
       },
     },
+    getFQDN() {
+      return (index) => {
+        var fqdn = JSON.parse(JSON.stringify(this.fqdn))
+        fqdn.push(index)
+        return fqdn
+      }
+    },
+    getKey() {
+      return (index) => {
+        return this.getFQDN(index).join('-')
+      }
+    },
   },
   methods: {
     getModalId(suffix) {
-      return this.fqdn + '-' + suffix
+      return this.getFQDN(suffix).join('-')
     },
     updateComponent(componentIndex, component) {
       this.$emit('updateComponent', componentIndex, component)

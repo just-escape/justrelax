@@ -58,7 +58,16 @@ class Timer:
         if self.task and self.task.active() and self.processor.state == STATE_TICKING:
             now = time.monotonic()
             delta_since_last_schedule = now - self.last_schedule_timestamp
-            self.last_computed_delay -= delta_since_last_schedule
+            if delta_since_last_schedule > self.last_computed_delay:
+                logger.warning(
+                    "Timer precision issue (now={}, last_schedule_timestamp={}, delta={}, last_computed_delay={}): "
+                    "rounding last_computed_delay to 0".format(
+                        now, self.last_schedule_timestamp, delta_since_last_schedule, self.last_computed_delay
+                    )
+                )
+                self.last_computed_delay = 0
+            else:
+                self.last_computed_delay -= delta_since_last_schedule
             self.task.cancel()
 
     def resume(self):
@@ -574,13 +583,13 @@ class RulesProcessor:
                 break
 
     def action_set_variable(self, arguments, context):
-        computed_variable_name = self.compute(arguments['variable_name'], context)
-        if type(self.variables[computed_variable_name]) is Timer:
+        variable_name = arguments['variable']['variable']
+        if type(self.variables[variable_name]) is Timer:
             logger.warning("set_variable action is not supported for timer variables")
             return
         computed_value = self.compute(arguments['value'], context)
 
-        self.variables[computed_variable_name] = computed_value
+        self.variables[variable_name] = computed_value
 
     def action_send_event_simple(self, arguments, context):
         computed_to = self.compute(arguments['node_name'], context)

@@ -228,14 +228,6 @@ class Component(models.Model):
     template = models.ForeignKey(ComponentTemplate, on_delete=models.CASCADE)
     index = models.IntegerField()
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['rule', 'template', 'index'],
-                name='rule_template_index',
-            ),
-        ]
-
     def __str__(self):
         return "{} - {}".format(self.rule, self.template)
 

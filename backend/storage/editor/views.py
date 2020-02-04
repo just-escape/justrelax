@@ -203,28 +203,29 @@ def update_components(rule, components, context):
     ids_to_update = component_ids & old_component_ids
     for id_ in ids_to_update:
         save = False
-        component = [c for c in components if c.get('id', None) == id_][0]
-        component_to_update = Component.objects.get(id=id_)
+        for index, component in enumerate(components):
+            if component.get('id', None) == id_:
+                component_to_update = Component.objects.get(id=id_)
 
-        template = ComponentTemplate.objects.get(name=component['template'])
-        if component_to_update.template != template:
-            component_to_update.template = template
-            save = True
+                template = ComponentTemplate.objects.get(name=component['template'])
+                if component_to_update.template != template:
+                    component_to_update.template = template
+                    save = True
 
-        if component_to_update.index != components.index(component):
-            component_to_update.index = components.index(component)
-            save = True
+                if component_to_update.index != index:
+                    component_to_update.index = index
+                    save = True
 
-        if save:
-            component_to_update.save()
+                if save:
+                    component_to_update.save()
 
-        # Update arguments
-        update_component_arguments(component_to_update, component['arguments'])
+                # Update arguments
+                update_component_arguments(component_to_update, component['arguments'])
 
     # Create
-    components_to_create = [c for c in components if c.get('id', None) not in ids_to_update]
-    for component in components_to_create:
-        create_component(rule, component, context, components.index(component))
+    for index, c in enumerate(components):
+        if c.get('id', None) not in ids_to_update:
+            create_component(rule, c, context, index)
 
 
 def update_rules(room, rules):
@@ -242,58 +243,59 @@ def update_rules(room, rules):
     ids_to_update = rule_ids & old_rule_ids
     for id_ in ids_to_update:
         save = False
-        rule = [r for r in rules if r.get('id', None) == id_][0]
-        rule_to_update = Rule.objects.get(id=id_)
+        for index, rule in enumerate(rules):
+            if rule.get('id', None) == id_:
+                rule_to_update = Rule.objects.get(id=id_)
 
-        if rule_to_update.name != rule['name']:
-            rule_to_update.name = rule['name']
-            save = True
+                if rule_to_update.name != rule['name']:
+                    rule_to_update.name = rule['name']
+                    save = True
 
-        if rule_to_update.index != rules.index(rule):
-            rule_to_update.index = rules.index(rule)
-            save = True
+                if rule_to_update.index != index:
+                    rule_to_update.index = index
+                    save = True
 
-        if save:
-            rule_to_update.save()
+                if save:
+                    rule_to_update.save()
 
-        # Update components
-        update_components(rule_to_update, rule['triggers'], 'trigger')
-        update_components(rule_to_update, rule['conditions'], 'condition')
-        update_components(rule_to_update, rule['actions'], 'action')
+                # Update components
+                update_components(rule_to_update, rule['triggers'], 'trigger')
+                update_components(rule_to_update, rule['conditions'], 'condition')
+                update_components(rule_to_update, rule['actions'], 'action')
 
     # Create
-    rules_to_create = [r for r in rules if r.get('id', None) not in ids_to_update]
-    for rule in rules_to_create:
-        new_rule = Rule(
-            room=room,
-            name=rule['name'],
-            index=rules.index(rule),
-        )
-        new_rule.save()
-
-        for component in rule['triggers']:
-            create_component(
-                new_rule,
-                component,
-                'trigger',
-                rule['triggers'].index(component),
+    for rule_index, rule in enumerate(rules):
+        if rule.get('id', None) not in ids_to_update:
+            new_rule = Rule(
+                room=room,
+                name=rule['name'],
+                index=rule_index,
             )
+            new_rule.save()
 
-        for component in rule['conditions']:
-            create_component(
-                new_rule,
-                component,
-                'condition',
-                rule['conditions'].index(component),
-            )
+            for component_index, component in enumerate(rule['triggers']):
+                create_component(
+                    new_rule,
+                    component,
+                    'trigger',
+                    component_index,
+                )
 
-        for component in rule['actions']:
-            create_component(
-                new_rule,
-                component,
-                'action',
-                rule['actions'].index(component),
-            )
+            for component_index, component in enumerate(rule['conditions']):
+                create_component(
+                    new_rule,
+                    component,
+                    'condition',
+                    component_index,
+                )
+
+            for component_index, component in enumerate(rule['actions']):
+                create_component(
+                    new_rule,
+                    component,
+                    'action',
+                    component_index,
+                )
 
 
 def update_variables(room, variables):
@@ -311,43 +313,44 @@ def update_variables(room, variables):
     ids_to_update = variable_ids & old_variable_ids
     for id_ in ids_to_update:
         save = False
-        variable = [v for v in variables if v.get('id', None) == id_][0]
-        variable_to_update = Variable.objects.get(id=id_)
+        for index, variable in enumerate(variables):
+            if variable.get('id', None) == id_:
+                variable_to_update = Variable.objects.get(id=id_)
 
-        if variable_to_update.name != variable['name']:
-            variable_to_update.name = variable['name']
-            save = True
+                if variable_to_update.name != variable['name']:
+                    variable_to_update.name = variable['name']
+                    save = True
 
-        if variable_to_update.type != variable['type']:
-            variable_to_update.type = variable['type']
-            save = True
+                if variable_to_update.type != variable['type']:
+                    variable_to_update.type = variable['type']
+                    save = True
 
-        if variable_to_update.index != variables.index(variable):
-            variable_to_update.index = variables.index(variable)
-            save = True
+                if variable_to_update.index != index:
+                    variable_to_update.index = index
+                    save = True
 
-        if variable_to_update.init_value != variable['init_value']:
-            variable_to_update.init_value = variable['init_value']
-            save = True
+                if variable_to_update.init_value != variable['init_value']:
+                    variable_to_update.init_value = variable['init_value']
+                    save = True
 
-        if variable_to_update.list != variable['list']:
-            variable_to_update.list = variable['list']
-            save = True
+                if variable_to_update.list != variable['list']:
+                    variable_to_update.list = variable['list']
+                    save = True
 
-        if save:
-            variable_to_update.save()
+                if save:
+                    variable_to_update.save()
 
     # Create
-    variables_to_create = [v for v in variables if v.get('id', None) not in ids_to_update]
-    for variable in variables_to_create:
-        new_variable = Variable(
-            room=room,
-            name=variable['name'],
-            index=variables.index(variable),
-            init_value=variable['init_value'],
-            list=variable['list'],
-        )
-        new_variable.save()
+    for index, v in enumerate(variables):
+        if v.get('id', None) not in ids_to_update:
+            new_variable = Variable(
+                room=room,
+                name=v['name'],
+                index=index,
+                init_value=v['init_value'],
+                list=v['list'],
+            )
+            new_variable.save()
 
 
 @api_view(['POST'])

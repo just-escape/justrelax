@@ -79,7 +79,7 @@ export default {
               }
             } else if (this.componentBuffer.template === 'set_variable' && link.key === 'value') {
               // Hardcoded behavior for special case
-              let variable = this.getVariableFromName(args.variable_name.variable)
+              let variable = this.getVariableFromName(args.variable.variable)
               link.value_type = variable === null ? "disabled" : variable.type
               args[link.key] = this.getDefaultValueFromValueType(link.value_type)
             } else {
@@ -99,7 +99,7 @@ export default {
       this.componentBuffer.arguments[key] = value
 
       // Hardcoded behavior for special case
-      if (this.selectedTemplate === 'set_variable' && key === 'variable_name') {
+      if (this.selectedTemplate === 'set_variable' && key === 'variable') {
         let variable = this.getVariableFromName(value.variable)
         for (var link of this.templates[this.selectedTemplate].links) {
           if (link.key === 'value' && link.value_type !== variable.type) {

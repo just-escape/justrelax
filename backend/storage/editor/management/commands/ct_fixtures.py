@@ -200,7 +200,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'argument',
-                'key': 'variable_name',
+                'key': 'variable',
                 'value_type': 'variable',
                 'default_value': 'null',
             },
