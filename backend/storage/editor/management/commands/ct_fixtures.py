@@ -149,7 +149,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'event',
                 'value_type': 'object',
-                'default_value': '{"function": "last_created_object"}',
+                'default_value': '{"function": "last_created_object", "arguments": {}}',
             },
             {
                 'type': 'text',
@@ -238,7 +238,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'value',
                 'value_type': 'object',
-                'default_value': '{"function": "last_created_object"}',
+                'default_value': '{"function": "last_created_object", "arguments": {}}',
             },
             {
                 'type': 'text',
@@ -258,7 +258,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'object',
                 'value_type': 'object',
-                'default_value': '{"function": "last_created_object"}',
+                'default_value': '{"function": "last_created_object", "arguments": {}}',
             }
         ],
     },
@@ -294,7 +294,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'object',
                 'value_type': 'object',
-                'default_value': '{"function": "last_created_object"}',
+                'default_value': '{"function": "last_created_object", "arguments": {}}',
             }
         ],
     },
@@ -330,7 +330,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'object',
                 'value_type': 'object',
-                'default_value': '{"function": "last_created_object"}',
+                'default_value': '{"function": "last_created_object", "arguments": {}}',
             }
         ],
     },
@@ -366,7 +366,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'object',
                 'value_type': 'object',
-                'default_value': '{"function": "last_created_object"}',
+                'default_value': '{"function": "last_created_object", "arguments": {}}',
             }
         ],
     },
@@ -402,7 +402,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'object',
                 'value_type': 'object',
-                'default_value': '{"function": "last_created_object"}',
+                'default_value': '{"function": "last_created_object", "arguments": {}}',
             }
         ],
     },
@@ -435,7 +435,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'timer',
                 'value_type': 'timer',
-                'default_value': '{"function": "expiring_timer"}',
+                'default_value': '{"function": "expiring_timer", "arguments": {}}',
             },
             {
                 'type': 'text',
@@ -476,7 +476,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'timer',
                 'value_type': 'timer',
-                'default_value': '{"function": "last_started_timer"}',
+                'default_value': '{"function": "last_started_timer", "arguments": {}}',
             },
         ],
     },
@@ -492,7 +492,7 @@ COMPONENT_TEMPLATES = [
                 'type': 'argument',
                 'key': 'timer',
                 'value_type': 'timer',
-                'default_value': '{"function": "last_started_timer"}',
+                'default_value': '{"function": "last_started_timer", "arguments": {}}',
             },
         ],
     },
