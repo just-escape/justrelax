@@ -47,7 +47,7 @@ class Timer:
             computed_time = self.processor.compute(self.time, {})
         except Exception:
             message = "Error while computing {}".format(self.time)
-            self.processor.send_notification('error', message)
+            self.processor.factory.send_notification('error', message)
             logger.exception()
         else:
             self.last_computed_delay = computed_time
