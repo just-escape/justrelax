@@ -48,9 +48,9 @@ class JustSockClientFactory(WebSocketClientFactory, ReconnectingClientFactory):
             logger.error("Error while trying to send message={}".format(message))
             logger.exception()
 
-    def process_message(self, message):
+    def process_event(self, event):
         try:
-            self.service.process_message(message)
+            self.service.process_event(event)
         except Exception:
-            logger.error("Error while trying to process message={}".format(message))
+            logger.error("Error while trying to process event={}".format(event))
             logger.exception()
