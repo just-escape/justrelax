@@ -3,9 +3,7 @@ from twisted.internet import reactor
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService
 from justrelax.node.video_player.vlc_player import VLCVideoPlayer
-from justrelax.node.video_player.vlc_player import VLCLoopingChapterVideoPlayer
-from justrelax.node.video_player.omx_player import OMXPlayer
-from justrelax.node.video_player.omx_player import OMXLoopingChapterVideoPlayer
+from justrelax.node.video_player.vlc_player import VLCDynamicSlidesPlayer
 
 
 class VideoPlayer(JustSockClientService):
@@ -19,7 +17,8 @@ class VideoPlayer(JustSockClientService):
         ACTION_PAUSE = "pause"
         ACTION_STOP = "stop"
 
-        ACTION_SET_CHAPTER = "set_chapter"
+        ACTION_SET_SLIDE = "set_slide"
+        SLIDE_INDEX = "slide_index"
         CHAPTER_ID = "chapter_id"
 
     def start(self):
@@ -29,12 +28,13 @@ class VideoPlayer(JustSockClientService):
             path = video['path']
             mode = video.get('mode', 'one_shot')
 
-            if mode == 'chapter_loop':
+            if mode == 'dynamic_slides':
+                initial_slides = video['initial_slides']
                 chapters = video['chapters']
-                player = OMXLoopingChapterVideoPlayer(
-                    media_path=path, chapters=chapters)
+                player = VLCDynamicSlidesPlayer(
+                    media_path=path, initial_slides=initial_slides, chapters=chapters)
             else:
-                player = OMXPlayer(media_path=path)
+                player = VLCVideoPlayer(media_path=path)
 
             self.videos[id_] = player
 
@@ -89,9 +89,9 @@ class VideoPlayer(JustSockClientService):
 
             reactor.callLater(delay, getattr(player, action['method']))
 
-        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_CHAPTER:
+        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_SLIDE:
             if self.PROTOCOL.VIDEO_ID not in event:
-                logger.error("Set chapter action has no video_id: skipping")
+                logger.error("Set slide action has no video_id: skipping")
                 return
 
             video_id = event[self.PROTOCOL.VIDEO_ID]
@@ -100,8 +100,18 @@ class VideoPlayer(JustSockClientService):
                 logger.error("Unknown video id={}: aborting".format(video_id))
                 return
 
+            if self.PROTOCOL.SLIDE_INDEX not in event:
+                logger.error("Set slide action has no chapter id: skipping")
+                return
+
+            slide_index = event[self.PROTOCOL.SLIDE_INDEX]
+            if slide_index >= len(player.slides):
+                logger.error("Video id={} has only {} slides ({} is out of range): skipping".format(
+                    video_id, len(player.slides), slide_index))
+                return
+
             if self.PROTOCOL.CHAPTER_ID not in event:
-                logger.error("Set chapter action has no chapter id: skipping")
+                logger.error("Set slide action has no chapter id: skipping")
                 return
 
             chapter_id = event[self.PROTOCOL.CHAPTER_ID]
@@ -110,10 +120,10 @@ class VideoPlayer(JustSockClientService):
                     video_id, chapter_id))
                 return
 
-            logger.info("Setting chapter id={} for video id={}".format(
-                chapter_id, video_id))
+            logger.info("Setting chapter id={} in slide index={} for video id={}".format(
+                chapter_id, slide_index, video_id))
 
-            reactor.callLater(delay, player.set_chapter, chapter_id)
+            reactor.callLater(delay, player.set_slide, slide_index, chapter_id)
 
         else:
             logger.debug("Unknown command type '{}': skipping".format(
