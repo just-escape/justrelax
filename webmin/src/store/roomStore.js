@@ -9,6 +9,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     rooms: [],
+    onHoldLiveData: {},
   },
   getters: {
     room (state) {
@@ -31,26 +32,39 @@ export default new Vuex.Store({
   mutations: {
     addRooms (state, rooms) {
       for (var room of rooms) {
-        room.liveData = {
-          sessionTime: 0,
-          records: [],
+        if (state.onHoldLiveData[room.id] !== undefined) {
+          room.liveData = JSON.parse(JSON.stringify(state.onHoldLiveData[room.id]))
+          delete state.onHoldLiveData[room.id]
+        } else {
+          room.liveData = {
+            sessionTime: 0,
+            records: [],
+          }
         }
       }
       Vue.set(state, 'rooms', rooms)
     },
-    /*setRoomLiveData (state, {roomId, liveData}) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No rooms to set live data')
-        return
+    pushLiveData (state, {roomId, sessionTime, records}) {
+      /* Receiving rooms or live data first is not deterministic. If a room if found, the live data is set.
+       * Otherwise, the live data is put on hold until a room with the same id is received from the REST API.
+       **/
+      var foundARoom = false
+      for (var room of state.rooms) {
+        if (room.id === roomId) {
+          foundARoom = true
+          room.liveData.sessionTime = sessionTime
+          room.liveData.records = records
+        }
       }
 
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to set live data')
-      } else {
-        state.rooms[roomId].liveData = liveData
+      if (foundARoom === false) {
+        state.onHoldLiveData[roomId] = {
+          sessionTime: sessionTime,
+          records: records,
+        }
       }
     },
-    addRecord (state, {roomId, recordId, sessionTime, recordLabel}) {
+    /*addRecord (state, {roomId, recordId, sessionTime, recordLabel}) {
       if (!state.rooms) {
         notificationStore.dispatch('pushError', 'No rooms to add record')
         return
@@ -147,20 +161,6 @@ export default new Vuex.Store({
       }
       justSockService.commit('sendMessage', message)
     },
-    /*
-    processAction(context, {roomId, action}) {
-      var formData = new FormData()
-      formData.append('name', action)
-      justRestAPI.post('/rooms/' + roomId + '/action', formData)
-        .then(function (response) {
-          if (!response.data.success) {
-            notificationStore.dispatch('pushError', 'Error while processing action: ' + response.data.error)
-          }
-        })
-        .catch(function (error) {
-          notificationStore.dispatch('pushError', 'Error while processing action: ' + error)
-        })
-    },*/
     processSendEventTo(context, {roomId, node, event}) {
       let message = {
         room_id: roomId,

@@ -16,6 +16,10 @@ class JustSockServerFactory(WebSocketServerFactory):
 
     def register_admin(self, admin):
         self.admins.add(admin)
+        for room_id, processor in self.service.processors.items():
+            records = processor.records
+            session_time = processor.session_timer.session_time
+            admin.send_live_data(room_id, session_time, records)
 
     def unregister_admin(self, admin):
         self.admins.remove(admin)

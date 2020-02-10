@@ -239,6 +239,15 @@ class JustSockServerProtocol(WebSocketServerProtocol):
         }
         self.send_json(message)
 
+    def send_live_data(self, room_id, session_time, records):
+        message = {
+            P.MESSAGE_TYPE: P.MESSAGE_TYPE_INIT_LIVE_DATA,
+            P.ROOM_ID: room_id,
+            P.RECORD_SESSION_TIME: session_time,
+            P.INIT_LIVE_DATA_RECORDS: records,
+        }
+        self.send_json(message)
+
     def send_json(self, dict_):
         unicode_json = json.dumps(dict_, ensure_ascii=False)
         bytes_ = unicode_json.encode("utf8")

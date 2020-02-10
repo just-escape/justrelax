@@ -40,6 +40,10 @@ const justSockService = new Vuex.Store({
         roomStore.dispatch('addRecord', {roomId, recordId, recordSessionTime, recordLabel})
       } else if (message.message_type == 'RESET') {
         roomStore.commit('processReset', roomId)
+      } else if (message.message_type == 'INIT_LIVE_DATA') {
+        let sessionTime = message.session_time
+        let records = message.records
+        roomStore.commit('pushLiveData', {roomId, sessionTime, records})
       }
     },
     // eslint-disable-next-line
