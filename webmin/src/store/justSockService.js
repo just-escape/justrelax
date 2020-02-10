@@ -34,10 +34,10 @@ const justSockService = new Vuex.Store({
         let notificationMessage = message.notification_message
         notificationStore.commit('pushNotification', {type: type, message: notificationMessage})
       } else if (message.message_type == 'REC') {
-        let recordId = message.record_id
+        let recordId = message.id
         let recordSessionTime = message.session_time
         let recordLabel = message.label
-        roomStore.dispatch('addRecord', {roomId, recordId, recordSessionTime, recordLabel})
+        roomStore.commit('addRecord', {roomId, recordId, recordSessionTime, recordLabel})
       } else if (message.message_type == 'RESET') {
         roomStore.commit('processReset', roomId)
       } else if (message.message_type == 'INIT_LIVE_DATA') {

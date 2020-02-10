@@ -61,7 +61,7 @@
             <g v-for="record in records" :key="record.id" :id="record.id">
               <circle
                 class="stroke-jaffa fill-jaffa"
-                :cx="getXFromSessionTime(record.sessionTime)"
+                :cx="getXFromSessionTime(record.session_time)"
                 :cy="axisY"
                 :r="getProportionalValue(foregroundRecordId == record.id ? 15 : 10)"
                 @mouseenter="sendRecordToForeground(record.id)"
@@ -69,10 +69,10 @@
               />
               <foreignObject
                 width="100%"
-                :height="upperTextHeight"
-                :x="getUpperTextX(record.sessionTime)"
+                height="100%"
+                :x="getUpperTextX(record.session_time)"
                 :y="upperTextY"
-                :transform="'rotate(-60 ' + getUpperTextX(record.sessionTime) + ' ' + upperTextY + ')'"
+                :transform="'rotate(-60 ' + getUpperTextX(record.session_time) + ' ' + upperTextY + ')'"
               >
                 <body xmlns="http://www.w3.org/1999/xhtml" class="bgc-transparent position-relative">
                   <div
@@ -162,7 +162,7 @@ export default {
     },
     records: function() {
       var r = this.room.liveData.records
-        .filter(r => this.axisX1 <= this.getXFromSessionTime(r.sessionTime) && this.getXFromSessionTime(r.sessionTime) <= this.axisX2)
+        .filter(r => this.axisX1 <= this.getXFromSessionTime(r.session_time) && this.getXFromSessionTime(r.session_time) <= this.axisX2)
       return r
     },
     currentTimeX: function() {
@@ -187,9 +187,6 @@ export default {
         padding: this.getProportionalValue(0.5) + 'rem',
         borderRadius: this.getProportionalValue(0.8) + 'rem'
       }
-    },
-    upperTextHeight: function() {
-      return this.getProportionalValue(2.5 + 2 * 0.5) + 'rem'
     },
     referenceLineX1: function() {
       return this.axisX1 - this.getProportionalValue(5)

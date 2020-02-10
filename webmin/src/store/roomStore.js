@@ -64,18 +64,19 @@ export default new Vuex.Store({
         }
       }
     },
-    /*addRecord (state, {roomId, recordId, sessionTime, recordLabel}) {
-      if (!state.rooms) {
-        notificationStore.dispatch('pushError', 'No rooms to add record')
-        return
+    addRecord (state, {roomId, recordId, recordSessionTime, recordLabel}) {
+      for (var room of state.rooms) {
+        if (room.id === roomId) {
+          room.liveData.records.push(
+            {
+              id: recordId,
+              session_time: recordSessionTime,
+              label: recordLabel,
+            }
+          )
+        }
       }
-
-      if (state.rooms[roomId] == undefined) {
-        notificationStore.dispatch('pushError', 'Room id=' + roomId + ' not found to add record')
-      } else {
-        state.rooms[roomId].liveData.records.push(record)
-      }
-    },*/
+    },
     setClock (state, {roomId, sessionTime}) {
       for (var room of state.rooms) {
         if (room.id === roomId) {
@@ -136,9 +137,6 @@ export default new Vuex.Store({
     },
     ticTac(context, {roomId, sessionTime}) {
       context.commit('setClock', {roomId, sessionTime})
-    },
-    addRecord(context, {roomId, record}) {
-      context.commit('addRecord', {roomId, record})
     },
     runRoom (context, roomId) {
       let message = {

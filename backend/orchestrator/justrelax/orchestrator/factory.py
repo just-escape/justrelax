@@ -66,9 +66,9 @@ class JustSockServerFactory(WebSocketServerFactory):
         for admin in self.admins:
             admin.send_tic_tac(room_id, session_time)
 
-    def send_record(self, room_id, record_id, ticks, label):
+    def send_record(self, room_id, record_id, session_time, label):
         for admin in self.admins:
-            admin.send_record(room_id, record_id, ticks, label)
+            admin.send_record(room_id, record_id, session_time, label)
 
     def send_reset(self, room_id):
         for admin in self.admins:
