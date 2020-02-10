@@ -191,6 +191,48 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'name': 'add_record_now',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Add a record now with label ',
+            },
+            {
+                'type': 'argument',
+                'key': 'label',
+                'value_type': 'string',
+                'default_value': '"label"',
+            },
+        ],
+    },
+    {
+        'name': 'add_record',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Add a record at ',
+            },
+            {
+                'type': 'argument',
+                'key': 'session_time',
+                'value_type': 'real',
+                'default_value': '0',
+            },
+            {
+                'type': 'text',
+                'text': ' seconds with label ',
+            },
+            {
+                'type': 'argument',
+                'key': 'label',
+                'value_type': 'string',
+                'default_value': '"label"',
+            },
+        ],
+    },
+    {
         'name': 'set_variable',
         'context': 'action',
         'links': [

@@ -175,6 +175,8 @@ class RulesProcessor:
             'send_event_simple': self.action_send_event_simple,
             'send_event_complex': self.action_send_event_complex,
             'push_notification': self.action_push_notification,
+            'add_record_now': self.action_add_record_now,
+            'add_record': self.action_add_record,
             'set_variable': self.action_set_variable,
             'create_a_new_object': self.action_create_a_new_object,
             'save_object_in_object': self.action_save_object_in_object,
@@ -606,12 +608,20 @@ class RulesProcessor:
         computed_message = self.compute(arguments['message'], context)
         self.factory.send_notification(notification_type, computed_message)
 
-    def action_record(self, arguments, context):
+    def action_add_record_now(self, arguments, context):
         computed_label = self.compute(arguments['label'], context)
+        session_time = self.session_timer.session_time
+        self.record(session_time, computed_label)
+
+    def action_add_record(self, arguments, context):
+        computed_label = self.compute(arguments['label'], context)
+        computed_session_time = self.compute(arguments['session_time'], context)
+        self.record(computed_session_time, computed_label)
+
+    def record(self, session_time, label):
         id_ = str(uuid.uuid4())
-        t = self.session_timer.session_time
-        self.records.append({'id': id_, 'session_time': t, 'label': computed_label})
-        self.factory.send_record(self.room_id, id_, t, computed_label)
+        self.records.append({'id': id_, 'session_time': session_time, 'label': label})
+        self.factory.send_record(self.room_id, id_, session_time, label)
 
     def action_create_a_new_object(self, *args):
         self.last_created_object = {}
