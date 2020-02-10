@@ -1,3 +1,5 @@
+import json
+
 from autobahn.twisted.websocket import WebSocketServerFactory
 
 from justrelax.common.logging_utils import logger
@@ -44,10 +46,12 @@ class JustSockServerFactory(WebSocketServerFactory):
 
     def process_send_event_to(self, room_id, node_name, event):
         channel = self.service.processors[room_id].channel
+        event = json.loads(event)
         self.send_to_node(node_name, channel, event)
 
     def process_send_event_as(self, room_id, node_name, event):
         processor = self.service.processors[room_id]
+        event = json.loads(event)
         processor.on_event(node_name, event)
 
     def send_notification(self, type_, message):
