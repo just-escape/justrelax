@@ -81,7 +81,11 @@ export default {
               // Hardcoded behavior for special case
               let variable = this.getVariableFromName(args.variable.variable)
               link.value_type = variable === null ? "disabled" : variable.type
-              args[link.key] = this.getDefaultValueFromValueType(link.value_type)
+              if (args[link.key] === null) {
+                args[link.key] = this.getDefaultValueFromValueType(link.value_type)
+              } else {
+                args[link.key] = this.componentBuffer.arguments[link.key]
+              }
             } else {
               args[link.key] = JSON.parse(link.default_value)
             }
@@ -115,6 +119,7 @@ export default {
     },
     reloadComponentBuffer: function() {
       this.componentBuffer = JSON.parse(JSON.stringify(this.component))
+      this.selectedTemplate = this.selectedTemplate
     },
     getVariableFromName: function(variableName) {
       for (var variable of editorStore.state.variables) {
