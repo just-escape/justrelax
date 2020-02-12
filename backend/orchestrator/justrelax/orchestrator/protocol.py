@@ -82,6 +82,9 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                     node = message[P.SEND_EVENT_NODE]
                     event_to_send = message[P.EVENT]
                     self.factory.process_send_event_as(room_id, node, event_to_send)
+                elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_PRESSED_ADMIN_BUTTON:
+                    button_id = message[P.PRESSED_BUTTON_ID]
+                    self.factory.process_on_admin_button_pressed(room_id, button_id)
 
             else:
                 self.process_i_am_message(message)
@@ -132,6 +135,10 @@ class JustSockServerProtocol(WebSocketServerProtocol):
 
                     if P.SEND_EVENT_NODE not in message:
                         return False, "Missing node argument"
+
+                if message_type == P.MESSAGE_TYPE_PRESSED_ADMIN_BUTTON:
+                    if P.PRESSED_BUTTON_ID not in message:
+                        return False, "Missing button_id argument"
 
         return True, None
 

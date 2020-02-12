@@ -58,6 +58,9 @@ class JustSockServerFactory(WebSocketServerFactory):
         event = json.loads(event)
         processor.on_event(node_name, event)
 
+    def process_on_admin_button_pressed(self, room_id, button_id):
+        self.service.processors[room_id].on_admin_button_pressed(button_id)
+
     def send_notification(self, type_, message):
         for admin in self.admins:
             admin.send_notification(type_, message)

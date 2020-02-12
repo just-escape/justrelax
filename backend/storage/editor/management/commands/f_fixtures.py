@@ -180,6 +180,17 @@ FUNCTIONS = [
     },
     {
         'category': '',
+        'name': 'triggering_admin_button_id',
+        'return_type': 'string',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'Triggering admin button id',
+            },
+        ],
+    },
+    {
+        'category': '',
         'name': 'integer_arithmetic',
         'return_type': 'integer',
         'links': [

@@ -154,6 +154,7 @@ class RulesProcessor:
         self.rule_definitions = []
         self.on_trigger_type_rules = {
             'incoming_event': [],
+            'admin_button_press': [],
             'session_start': [],
             'session_pause': [],
             'session_resume': [],
@@ -202,6 +203,7 @@ class RulesProcessor:
             'triggering_node_name': self.function_triggering_node_name,
             'triggering_event_simple': self.function_triggering_event_simple,
             'triggering_event_complex': self.function_triggering_event_complex,
+            'triggering_admin_button_id': self.function_triggering_admin_button_id,
             'integer_arithmetic': self.function_integer_arithmetic,
             'real_arithmetic': self.function_real_arithmetic,
             'integer_comparison': self.function_integer_comparison,
@@ -330,7 +332,7 @@ class RulesProcessor:
                     variable_timer_name = trigger['arguments']['timer']['variable']
                     self.variables[variable_timer_name].callback_args[0].append(rule)
                 else:
-                    self.on_trigger_type_rules[trigger['template']] = [rule]
+                    logger.warning("Unknown trigger type {}: skipping".format(trigger['template']))
 
     def run_room(self):
         if self.session_timer.state == STATE_NOT_STARTED:
@@ -367,6 +369,12 @@ class RulesProcessor:
         }
 
         self.process_rules(self.on_trigger_type_rules['incoming_event'], context)
+
+    def on_admin_button_pressed(self, button_id):
+        context = {
+            R.CONTEXT_TRIGGERING_ADMIN_BUTTON_ID: button_id,
+        }
+        self.process_rules(self.on_trigger_type_rules['admin_button_press'], context)
 
     def process_rules(self, rules, context):
         for rule in rules:
@@ -449,6 +457,11 @@ class RulesProcessor:
     def function_triggering_event_complex(arguments, context):
         event = context.get(R.CONTEXT_TRIGGERING_EVENT, '')
         return dict(event)
+
+    @staticmethod
+    def function_triggering_admin_button_id(arguments, context):
+        admin_button_id = context.get(R.CONTEXT_TRIGGERING_ADMIN_BUTTON_ID, '')
+        return admin_button_id
 
     def function_integer_arithmetic(self, arguments, context):
         computed_left = self.compute(arguments['left'], context)

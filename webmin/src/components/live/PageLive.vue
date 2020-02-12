@@ -25,6 +25,7 @@
       <Timeline :room="room" class="mb-4"/>
       <SendEvent :room="room" class="mb-4"/>
       <!--<Actions :room="room"/>-->
+      <AdminButtons :buttonCards="buttonCards" :room="room"/>
     </div>
   </AppContent>
 </template>
@@ -38,6 +39,7 @@ import StartStop from '@/components/live/StartStop.vue'
 import Cameras from '@/components/live/Cameras.vue'
 import Timeline from '@/components/live/Timeline.vue'
 import SendEvent from '@/components/live/SendEvent.vue'
+import AdminButtons from '@/components/live/AdminButtons.vue'
 // import Actions from '@/components/live/Actions.vue'
 import roomStore from '@/store/roomStore.js'
 
@@ -52,7 +54,116 @@ export default {
     Cameras,
     Timeline,
     SendEvent,
+    AdminButtons,
     // Actions,
+  },
+  data() {
+    return {
+      buttonCards: [
+        {
+          name: "Card 1",
+          rows: [
+            {
+              name: "Row 1",
+              buttons: [
+                {
+                  id: "c1r1b1",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c1r1b2",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c1r1b3",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c1r1b4",
+                  icon: "fas fa-bullseye",
+                },
+              ],
+            },
+            {
+              name: "Row 2",
+              buttons: [
+                {
+                  id: "c1r2b1",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c1r2b2",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c1r2b3",
+                  icon: "fas fa-bullseye",
+                },
+              ],
+            },
+            {
+              name: "Row 3",
+              buttons: [
+                {
+                  id: "c1r3b1",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c1r3b2",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c1r3b3",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c1r3b4",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c1r3b5",
+                  icon: "fas fa-bullseye",
+                },
+              ],
+            },
+          ],
+        },        {
+          name: "Card 2",
+          rows: [
+            {
+              name: "Row 1",
+              buttons: [
+                {
+                  id: "c2r1b1",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c2r1b2",
+                  icon: "fas fa-bullseye",
+                },
+              ],
+            },
+            {
+              name: "Row 2",
+              buttons: [
+                {
+                  id: "c2r2b1",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c2r2b2",
+                  icon: "fas fa-bullseye",
+                },
+                {
+                  id: "c2r2b3",
+                  icon: "fas fa-bullseye",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }
   },
   computed: {
     room() {

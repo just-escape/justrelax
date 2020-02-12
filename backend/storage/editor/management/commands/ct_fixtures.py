@@ -10,6 +10,16 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'name': 'admin_button_press',
+        'context': 'trigger',
+        'links': [
+            {
+                'type': 'text',
+                'text': 'An admin button has been pressed',
+            },
+        ],
+    },
+    {
         'name': 'timed_trigger',
         'context': 'trigger',
         'links': [

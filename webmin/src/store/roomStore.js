@@ -45,7 +45,8 @@ export default new Vuex.Store({
       Vue.set(state, 'rooms', rooms)
     },
     pushLiveData (state, {roomId, sessionTime, records}) {
-      /* Receiving rooms or live data first is not deterministic. If a room if found, the live data is set.
+      /**
+       * Receiving rooms or live data first is not deterministic. If a room if found, the live data is set.
        * Otherwise, the live data is put on hold until a room with the same id is received from the REST API.
        **/
       var foundARoom = false
@@ -156,6 +157,14 @@ export default new Vuex.Store({
       let message = {
         room_id: roomId,
         message_type: "RESET",
+      }
+      justSockService.commit('sendMessage', message)
+    },
+    pressedAdminButton (context, {roomId, buttonId}) {
+      let message = {
+        room_id: roomId,
+        message_type: "PRESSED_ADMIN_BUTTON",
+        button_id: buttonId,
       }
       justSockService.commit('sendMessage', message)
     },
