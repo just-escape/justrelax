@@ -6,7 +6,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Last created object',
+                'locale': 'last_created_object',
             },
         ],
     },
@@ -17,7 +17,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Load value with key ',
+                'locale': 'get_object_associated_with_key',
             },
             {
                 'type': 'argument',
@@ -27,7 +27,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' from ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -44,7 +44,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Load value with key ',
+                'locale': 'get_string_associated_with_key',
             },
             {
                 'type': 'argument',
@@ -54,7 +54,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' from ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -71,7 +71,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Load value with key ',
+                'locale': 'get_integer_associated_with_key',
             },
             {
                 'type': 'argument',
@@ -81,7 +81,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' from ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -98,7 +98,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Load value with key ',
+                'locale': 'get_real_associated_with_key',
             },
             {
                 'type': 'argument',
@@ -108,7 +108,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' from ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -125,7 +125,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Load value with key ',
+                'locale': 'get_boolean_associated_with_key',
             },
             {
                 'type': 'argument',
@@ -135,7 +135,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' from ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -152,29 +152,29 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Triggering node',
+                'locale': 'triggering_node',
             },
         ],
     },
     {
         'category': '',
-        'name': 'triggering_event_simple',
+        'name': 'triggering_event_string',
         'return_type': 'string',
         'links': [
             {
                 'type': 'text',
-                'text': 'Triggering event',
+                'locale': 'triggering_event_string',
             },
         ],
     },
     {
         'category': '',
-        'name': 'triggering_event_complex',
+        'name': 'triggering_event_object',
         'return_type': 'object',
         'links': [
             {
                 'type': 'text',
-                'text': 'Triggering event',
+                'locale': 'triggering_event_object',
             },
         ],
     },
@@ -185,7 +185,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Triggering admin button id',
+                'locale': 'triggering_admin_button_id',
             },
         ],
     },
@@ -202,7 +202,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -213,7 +213,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -236,7 +236,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -247,7 +247,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -270,7 +270,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -281,7 +281,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -304,7 +304,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -315,7 +315,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -338,18 +338,18 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
                 'key': 'operator',
                 'value_type': 'predefined',
-                'predefined_choices': 'is equal to,is not equal to,contains',
-                'default_value': '"is equal to"',
+                'predefined_choices': '=,!=,contains',
+                'default_value': '"="',
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -372,18 +372,18 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
                 'key': 'operator',
                 'value_type': 'predefined',
-                'predefined_choices': 'is equal to,is not equal to',
-                'default_value': '"is equal to"',
+                'predefined_choices': 'is,is_not',
+                'default_value': '"is"',
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -406,18 +406,18 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
                 'key': 'operator',
                 'value_type': 'predefined',
-                'predefined_choices': 'is,is not',
+                'predefined_choices': 'is,is_not',
                 'default_value': '"is"',
             },
             {
                 'type': 'text',
-                'text': ' ',
+                'locale': 'space',
             },
             {
                 'type': 'argument',
@@ -429,12 +429,12 @@ FUNCTIONS = [
     },
     {
         'category': '',
-        'name': 'timer_get_remaining_time',
+        'name': 'timer_remaining_time',
         'return_type': 'real',
         'links': [
             {
                 'type': 'text',
-                'text': 'Remaining time of '
+                'locale': 'remaining_time_of'
             },
             {
                 'type': 'argument',
@@ -451,7 +451,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'String('
+                'locale': 'string('
             },
             {
                 'type': 'argument',
@@ -461,7 +461,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ')'
+                'locale': ')'
             },
         ],
     },
@@ -472,7 +472,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'String('
+                'locale': 'string('
             },
             {
                 'type': 'argument',
@@ -482,7 +482,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ')'
+                'locale': ')'
             },
         ],
     },
@@ -493,7 +493,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'String('
+                'locale': 'string('
             },
             {
                 'type': 'argument',
@@ -503,7 +503,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ')'
+                'locale': ')'
             },
         ],
     },
@@ -514,7 +514,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'String('
+                'locale': 'string('
             },
             {
                 'type': 'argument',
@@ -524,7 +524,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ')'
+                'locale': ')'
             },
         ],
     },
@@ -537,12 +537,12 @@ FUNCTIONS = [
                 'type': 'argument',
                 'key': 'operation',
                 'value_type': 'predefined',
-                'predefined_choices': 'Round,Ceil,Floor',
-                'default_value': '"Round"',
+                'predefined_choices': 'round,ceil,floor',
+                'default_value': '"round"',
             },
             {
                 'type': 'text',
-                'text': '('
+                'locale': '('
             },
             {
                 'type': 'argument',
@@ -552,7 +552,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ')'
+                'locale': ')'
             },
         ],
     },
@@ -563,7 +563,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Real('
+                'locale': 'real('
             },
             {
                 'type': 'argument',
@@ -573,7 +573,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ')'
+                'locale': ')'
             },
         ],
     },
@@ -584,7 +584,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'not ',
+                'locale': 'not',
             },
             {
                 'type': 'argument',
@@ -607,7 +607,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' or ',
+                'locale': 'or',
             },
             {
                 'type': 'argument',
@@ -630,7 +630,7 @@ FUNCTIONS = [
             },
             {
                 'type': 'text',
-                'text': ' and ',
+                'locale': 'and',
             },
             {
                 'type': 'argument',
@@ -647,7 +647,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Expiring timer',
+                'locale': 'expiring_timer',
             },
         ],
     },
@@ -658,7 +658,7 @@ FUNCTIONS = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Last started timer',
+                'locale': 'last_started_timer',
             },
         ],
     },

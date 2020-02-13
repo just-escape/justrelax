@@ -12,7 +12,7 @@
         :key="t.name"
         :value="t.name"
       >
-        {{ t.name }}
+        {{ $t("editor.links." + t.name + ".name") }}
       </option>
     </select>
 
@@ -20,6 +20,7 @@
       :args="args"
       :links="links"
       :modalId="modalId"
+      :templateName="selectedTemplate"
       @updateArgument="updateArgument"
     />
   </b-modal>

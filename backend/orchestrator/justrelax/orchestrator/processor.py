@@ -173,8 +173,8 @@ class RulesProcessor:
         }
 
         self.action_table = {
-            'send_event_simple': self.action_send_event_simple,
-            'send_event_complex': self.action_send_event_complex,
+            'send_event_string': self.action_send_event_string,
+            'send_event_object': self.action_send_event_object,
             'push_notification': self.action_push_notification,
             'add_record_now': self.action_add_record_now,
             'add_record': self.action_add_record,
@@ -201,8 +201,8 @@ class RulesProcessor:
             'object_get_real': self.function_object_get_real,
             'object_get_boolean': self.function_object_get_boolean,
             'triggering_node_name': self.function_triggering_node_name,
-            'triggering_event_simple': self.function_triggering_event_simple,
-            'triggering_event_complex': self.function_triggering_event_complex,
+            'triggering_event_string': self.function_triggering_event_string,
+            'triggering_event_object': self.function_triggering_event_object,
             'triggering_admin_button_id': self.function_triggering_admin_button_id,
             'integer_arithmetic': self.function_integer_arithmetic,
             'real_arithmetic': self.function_real_arithmetic,
@@ -211,7 +211,7 @@ class RulesProcessor:
             'string_comparison': self.function_string_comparison,
             'object_comparison': self.function_object_comparison,
             'boolean_comparison': self.function_boolean_comparison,
-            'timer_get_remaining_time': self.function_timer_get_remaining_time,
+            'timer_remaining_time': self.function_timer_remaining_time,
             'integer_to_string': self.function_integer_to_string,
             'real_to_string': self.function_real_to_string,
             'boolean_to_string': self.function_boolean_to_string,
@@ -249,19 +249,19 @@ class RulesProcessor:
         }
 
         self.string_comparator_table = {
-            'is equal to': operator.eq,
-            'is not equal to': operator.ne,
+            '=': operator.eq,
+            '!=': operator.ne,
             'contains': operator.contains,
         }
 
         self.object_comparator_table = {
-            'is equal to': operator.is_,
-            'is not equal to': operator.is_not,
+            'is': operator.is_,
+            'is_not': operator.is_not,
         }
 
         self.boolean_comparator_table = {
             'is': operator.is_,
-            'is not': operator.is_not,
+            'is_not': operator.is_not,
         }
 
         # self.system_vars = {
@@ -449,12 +449,12 @@ class RulesProcessor:
         return context.get(R.CONTEXT_TRIGGERING_EVENT_NODE_NAME, '')
 
     @staticmethod
-    def function_triggering_event_simple(arguments, context):
+    def function_triggering_event_string(arguments, context):
         event = context.get(R.CONTEXT_TRIGGERING_EVENT, '')
         return str(event)
 
     @staticmethod
-    def function_triggering_event_complex(arguments, context):
+    def function_triggering_event_object(arguments, context):
         event = context.get(R.CONTEXT_TRIGGERING_EVENT, '')
         return dict(event)
 
@@ -512,7 +512,7 @@ class RulesProcessor:
         computed_right = self.compute(arguments['right'], context)
         return comparator(computed_left, computed_right)
 
-    def function_timer_get_remaining_time(self, arguments, context):
+    def function_timer_remaining_time(self, arguments, context):
         timer = self.compute(arguments['timer'], context)
         return timer.get_remaining_time() if timer else 0.
 
@@ -535,9 +535,9 @@ class RulesProcessor:
     def function_real_to_integer(self, arguments, context):
         real = self.compute(arguments['real'], context)
         operation = arguments['operation']
-        if operation == 'Ceil':
+        if operation == 'ceil':
             return math.ceil(real)
-        elif operation == 'Floor':
+        elif operation == 'floor':
             return math.floor(real)
         else:
             return round(real)
@@ -606,12 +606,12 @@ class RulesProcessor:
 
         self.variables[variable_name] = computed_value
 
-    def action_send_event_simple(self, arguments, context):
+    def action_send_event_string(self, arguments, context):
         computed_to = self.compute(arguments['node_name'], context)
         computed_event = str(self.compute(arguments['event'], context))
         self.send_event(computed_to, computed_event)
 
-    def action_send_event_complex(self, arguments, context):
+    def action_send_event_object(self, arguments, context):
         computed_to = self.compute(arguments['node_name'], context)
         computed_event = dict(self.compute(arguments['event'], context))
         self.send_event(computed_to, computed_event)
@@ -672,7 +672,7 @@ class RulesProcessor:
     def action_start_timer(self, arguments, context):
         timer = self.compute(arguments['timer'], context)
         if timer:
-            repeat = True if arguments['type'] == 'Periodic' else False
+            repeat = True if arguments['type'] == 'periodic' else False
             time_ = arguments['time']
 
             if timer in self.timers:

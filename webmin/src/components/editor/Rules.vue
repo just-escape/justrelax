@@ -2,7 +2,7 @@
   <div class="d-flex flex-row h-100">
     <div class="rules-list">
       <div class="d-flex flex-row mb-3">
-        <h2 class="big-noodle size-15 align-self-center mb-0 mr-3">Rules</h2>
+        <h2 class="big-noodle size-15 align-self-center mb-0 mr-3">{{ $t('editor.rules') }}</h2>
         <b-button-group>
           <ButtonSmall class="position-relative" @click="addRule()">
             <i class="far fa-file fa-fw"></i>
@@ -25,7 +25,7 @@
     <div class="container-fluid">
       <div class="row">
         <div v-if="displayedRule === null" class="col">
-          Loading...
+          {{ $t('editor.loading') }}
         </div>
         <div v-else class="col">
           <div class="d-flex flex-row mb-3">
@@ -51,7 +51,7 @@
             <div class="row mb-2">
               <div class="col">
                 <Context
-                  :title="'Triggers'"
+                  :title="$t('editor.triggers')"
                   :type="'trigger'"
                   :fqdn="['rules', displayedRuleIndex, 'triggers']"
                   @updateComponent="(index, c) => updateComponent('trigger', index, c)"
@@ -61,7 +61,7 @@
             <div class="row mb-2">
               <div class="col">
                 <Context
-                  :title="'Conditions'"
+                  :title="$t('editor.conditions')"
                   :type="'condition'"
                   :fqdn="['rules', displayedRuleIndex, 'conditions']"
                   @updateComponent="(index, c) => updateComponent('condition', index, c)"
@@ -71,7 +71,7 @@
             <div class="row">
               <div class="col">
                 <Context
-                  :title="'Actions'"
+                  :title="$t('editor.actions')"
                   :type="'action'"
                   :fqdn="['rules', displayedRuleIndex, 'actions']"
                   @updateComponent="(index, c) => updateComponent('action', index, c)"

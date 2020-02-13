@@ -2,7 +2,7 @@
   <div v-if="!disabled" class="row mb-3">
     <div @click="pushMyValue" class="d-flex align-items-center col-3">
       <input type="radio" :checked="checked">
-      <span class="ml-2">Function:</span>
+      <span class="ml-2">{{ $t('editor.function') }}</span>
     </div>
     <div @focus="pushMyValue" class="col-9">
       <select v-model="selectedFunction" @focus="pushMyValue" class="w-100">
@@ -11,12 +11,13 @@
           :key="f.name"
           :value="f.name"
         >
-          {{ f.name }}
+          {{ $t('editor.links.' + f.name + ".name") }}
         </option>
       </select>
 
       <TemplateEditable
         :modalId="modalId"
+        :templateName="selectedFunction"
         :args="args"
         :links="links"
         @updateArgument="updateArgument"

@@ -50,7 +50,7 @@ class FunctionTemplateLink(models.Model):
     )
 
     # relevant if type is text
-    text = models.CharField(max_length=128, null=True, blank=True)
+    locale = models.CharField(max_length=128, null=True, blank=True)
 
     # relevant if type is argument
     key = models.CharField(max_length=64, null=True)
@@ -81,7 +81,7 @@ class FunctionTemplateLinkForm(forms.ModelForm):
             'function',
             'index',
             'type',
-            'text',
+            'locale',
             'key',
             'value_type',
             'default_value',
@@ -184,7 +184,7 @@ class ComponentTemplateLink(models.Model):
     )
 
     # relevant if type is text
-    text = models.CharField(max_length=128, null=True, blank=True)
+    locale = models.CharField(max_length=128, null=True, blank=True)
 
     # relevant if type is argument
     key = models.CharField(max_length=64, null=True)
@@ -215,7 +215,7 @@ class ComponentTemplateLinkForm(forms.ModelForm):
             'template',
             'index',
             'type',
-            'text',
+            'locale',
             'key',
             'value_type',
             'default_value',

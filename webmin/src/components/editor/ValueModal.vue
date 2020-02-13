@@ -7,6 +7,7 @@
   >
     <ValueModalPredefined
       v-if="displayPredefinedSelector"
+      :templateName="templateName"
       :predefinedChoices="predefinedChoices"
       :parentValue="value"
       :checked="selectedSource === 'predefined'"
@@ -140,6 +141,7 @@ export default {
     modalId: String,
     value: [Object, Boolean, String, Number],
     inputType: String,
+    templateName: String,
     predefinedChoices: Array,
   },
 }

@@ -9,7 +9,7 @@
       'font-italic': !editable,
     }"
   >
-    <span>{{ format(value) }}</span>
+    <span>{{ formattedValue }}</span>
   </span>
 </template>
 
@@ -18,11 +18,17 @@ import editorStore from '@/store/editorStore.js'
 
 export default {
   name: "FormattedValue",
+  computed: {
+    formattedValue() {
+      this.$i18n.locale
+      return this.format(this.value)
+    }
+  },
   methods: {
     format(value) {
       // Null is not selectable on this interface
       if (value === null) {
-        return "<Nothing>"
+        return this.$t("editor.nothing")
       } else if (value === true) {
         return "True"
       } else if (value === false) {
@@ -31,7 +37,7 @@ export default {
         return value
       } else if (typeof value === "string") {
         if (value === "") {
-          return "<Empty string>"
+          return this.$t("editor.empty_string")
         } else {
           return value
         }
@@ -41,7 +47,7 @@ export default {
           let links = editorStore.state.templates.function[value.function].links
           for (var link of links) {
             if (link.type === 'text') {
-              formattedValue += link.text
+              formattedValue += this.$t('editor.links.' + value.function + '.' + link.locale)
             } else if (link.type === 'argument') {
               formattedValue += this.format(value.arguments[link.key])
             }
@@ -49,7 +55,7 @@ export default {
           return "(" + formattedValue + ")"
         } else if (value.variable !== undefined) {
           if (value.variable === null) {
-            return "<No variable>"
+            return this.$t("editor.no_variable")
           } else {
             return value.variable
           }
@@ -77,7 +83,7 @@ export default {
         }*/
       }
 
-      return "<Error>"
+      return this.$t("editor.error")
     }
   },
   props: {

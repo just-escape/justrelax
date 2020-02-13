@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="big-noodle text-jaffa text-center">
-      <span class="mr-3">Admin buttons</span>
+      <span class="mr-3">{{ $t('admin_buttons') }}</span>
       <ButtonJaffa
         size="sm"
         @click="showButtonIds = !showButtonIds"

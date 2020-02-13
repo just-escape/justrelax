@@ -2,7 +2,7 @@
   <div class="row mb-3">
     <div @click="pushMyValue" class="d-flex align-items-center col-3">
       <input type="radio" :checked="checked">
-      <span class="ml-2">Predefined:</span>
+      <span class="ml-2">{{ $t('editor.predefined') }}</span>
     </div>
     <div class="col-9">
       <select v-model="selectedChoice" @focus="pushMyValue">
@@ -11,7 +11,7 @@
           :key="value"
           :value="value"
         >
-          {{ value }}
+          {{ $t('editor.links.' + templateName + '.' + value) }}
         </option>
       </select>
     </div>
@@ -45,6 +45,7 @@ export default {
   },
   props: {
     predefinedChoices: Array,
+    templateName: String,
   }
 }
 </script>

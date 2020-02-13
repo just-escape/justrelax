@@ -5,6 +5,7 @@
       class="pointer"
       :args="args"
       :links="links"
+      :templateName="component.template"
     />
 
     <ComponentModal

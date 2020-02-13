@@ -26,7 +26,7 @@ def get_serialized_functions():
                 'type': ftl.type,
             }
             if ftl.type == 'text':
-                function_template_link['text'] = ftl.text
+                function_template_link['locale'] = ftl.locale
             elif ftl.type == 'argument':
                 function_template_link['key'] = ftl.key
                 function_template_link['default_value'] = ftl.default_value
@@ -53,7 +53,7 @@ def get_serialized_component_templates(context):
                 'type': ctl.type,
             }
             if ctl.type == 'text':
-                component_template_link['text'] = ctl.text
+                component_template_link['locale'] = ctl.locale
             elif ctl.type == 'argument':
                 component_template_link['key'] = ctl.key
                 component_template_link['default_value'] = ctl.default_value

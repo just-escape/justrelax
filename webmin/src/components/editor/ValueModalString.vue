@@ -2,11 +2,11 @@
   <div class="row mb-3">
     <div @click="pushMyValue" class="d-flex align-items-center col-3">
       <input type="radio" :checked="checked">
-      <span class="ml-2">String:</span>
+      <span class="ml-2">{{ $t('editor.string') }}</span>
     </div>
     <div class="col-9">
       <input
-        placeholder="Any text"
+        :placeholder="$t('editor.any_text')"
         class="w-100"
         @focus="pushMyValue"
         @input="pushMyValue"

@@ -2,7 +2,7 @@
   <div class="row mb-3">
     <div @click="pushMyValueIfNotDisabled" class="d-flex align-items-center col-3">
       <input id="test" :disabled="disabled" type="radio" :checked="checked">
-      <span :disabled="disabled" class="ml-2">Variable:</span>
+      <span :disabled="disabled" class="ml-2">{{ $t('editor.variable') }}</span>
     </div>
     <div class="col-9">
       <select v-model="selectedVariable" @focus="pushMyValueIfNotDisabled" :disabled="disabled" class="w-100">

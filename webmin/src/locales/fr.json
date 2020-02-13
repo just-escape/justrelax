@@ -1,0 +1,315 @@
+{
+  "admin_buttons": "Boutons d'admin",
+  "editor": {
+    "editor": "Editeur",
+    "empty_string": "<Chaîne vide>",
+    "nothing": "<Rien>",
+    "no_variable": "<Pas de variable>",
+    "error": "<Error>",
+    "rules": "Règles",
+    "loading": "Chargement...",
+    "triggers": "Déclencheurs",
+    "conditions": "Conditions",
+    "actions": "Actions",
+    "boolean": "Booléen :",
+    "function": "Fonction :",
+    "integer": "Entier :",
+    "predefined": "Prédéfini :",
+    "real": "Réel :",
+    "string": "Chaîne :",
+    "any_text": "Texte",
+    "variable": "Variable :",
+    "links": {
+      "incoming_event": {
+        "name": "Événement reçu",
+        "an_event_has_been_received": "Un événement a été reçu"
+      },
+      "admin_button_press": {
+        "name": "Bouton d'admin pressé",
+        "an_admin_button_has_been_pressed": "Un bouton d'admin a été pressé"
+      },
+      "timed_trigger": {
+        "name": "Temps passé",
+        "after": "Après ",
+        "seconds_of_session_time": " seconde(s) de temps de session"
+      },
+      "periodic_trigger": {
+        "name": "Déclencheur périodique",
+        "every": "Toute les ",
+        "seconds_of_session_time": " seconde(s) de temps de session"
+      },
+      "timer_trigger": {
+        "name": "Minuteur expiré",
+        "expires": " expire"
+      },
+      "session_start": {
+        "name": "Début de session",
+        "the_session_is_started": "La session est lancée"
+      },
+      "session_pause": {
+        "name": "Pause de session",
+        "the_session_is_paused": "La session est mise en pause"
+      },
+      "session_resume": {
+        "name": "Reprise de session",
+        "the_session_is_resumed": "La session est reprise"
+      },
+      "simple_condition": {
+        "name": "Condition simple",
+        "if": "Si "
+      },
+      "send_event_string": {
+        "name": "Envoyer un événement chaîne à un node",
+        "send_event": "Envoyer l'événement ",
+        "to_node": " au node "
+      },
+      "send_event_object": {
+        "name": "Envoyer un événement objet à un node",
+        "send_event": "Envoyer l'événement ",
+        "to_node": " au node "
+      },
+      "push_notification": {
+        "name": "Envoyer une notification admin",
+        "push_an": "Envoyer une notification de type ",
+        "info": "info",
+        "error": "erreur",
+        "notification_on_the_admin_interface_with_message": " sur l'interface avec le message "
+      },
+      "add_record_now": {
+        "name": "Ajouter un enregistrement",
+        "add_a_record_now_with_label": "Ajouter un enregistrement maintenant avec le label "
+      },
+      "add_record": {
+        "name": "Ajouter un enregistrement à",
+        "add_a_record_at": "Ajouter un enregistrement à ",
+        "seconds_with_label": " secondes avec le label "
+      },
+      "set_variable": {
+        "name": "Affecter variable",
+        "set_value_of_variable": "Changer la valeur de la variable ",
+        "to": " à "
+      },
+      "create_a_new_object": {
+        "name": "Créer un nouvel objet",
+        "create_a_new_object": "Créer un nouvel objet"
+      },
+      "save_object_in_object": {
+        "name": "Charger un objet dans un objet",
+        "save": "Associer ",
+        "with_key": " avec la clé ",
+        "in_object": " dans l'objet "
+      },
+      "save_string_in_object": {
+        "name": "Charger une chaîne dans un objet",
+        "save": "Asscoier ",
+        "with_key": " avec la clé ",
+        "in_object": " dans l'objet "
+      },
+      "save_integer_in_object": {
+        "name": "Charger un entier dans un objet",
+        "save": "Associer ",
+        "with_key": " avec la clé ",
+        "in_object": " dans l'objet "
+      },
+      "save_real_in_object": {
+        "name": "Charger un réel dans un objet",
+        "save": "Associer ",
+        "with_key": " avec la clé ",
+        "in_object": " dans l'objet "
+      },
+      "save_boolean_in_object": {
+        "name": "Charger un booléen dans un objet",
+        "save": "Associer ",
+        "with_key": " avec la clé ",
+        "in_object": " dans l'objet "
+      },
+      "trigger_rule": {
+        "name": "Déclencher une règle",
+        "trigger_rule_named": "Déclencher la règle nommée "
+      },
+      "start_timer": {
+        "name": "Démarrer un minuteur",
+        "start_timer": "Démarrer le minuteur ",
+        "as_a": " en tant que minuteur ",
+        "one_shot": "À un coup",
+        "periodic": "Périodique",
+        "timer_that_will_expire_in": " expirant dans ",
+        "seconds": " seconde(s)"
+      },
+      "pause_timer": {
+        "name": "Mettre en pause un minuteur",
+        "pause": "Mettre en pause "
+      },
+      "resume_timer": {
+        "name": "Reprendre un minuteur",
+        "resume": "Reprendre "
+      },
+      "wait": {
+        "name": "Attendre",
+        "wait": "Attendre ",
+        "seconds": " seconde(s)"
+      },
+      "do_nothing": {
+        "name": "Ne rien faire",
+        "do_nothing": "Ne rien faire"
+      },
+      "last_created_object": {
+        "name": "Dernier objet créé",
+        "last_created_object": "Dernier objet créé"
+      },
+      "object_get_object": {
+        "name": "Objet à partir d'une clé",
+        "get_object_associated_with_key": "Charger un objet associé à la clé ",
+        "in_object": " dans l'objet "
+      },
+      "object_get_string": {
+        "name": "Chaîne à partir d'une clé",
+        "get_string_associated_with_key": "Charger une chaîne associée à la clé ",
+        "in_object": " dans l'objet "
+      },
+      "object_get_integer": {
+        "name": "Entier à partir d'une clé",
+        "get_integer_associated_with_key": "Charger un entier associé à la clé ",
+        "in_object": " dans l'objet "
+      },
+      "object_get_real": {
+        "name": "Réel à partir d'une clé",
+        "get_real_associated_with_key": "Charger un réel associé à la clé ",
+        "in_object": " dans l'objet "
+      },
+      "object_get_boolean": {
+        "name": "Booléen à partir d'une clé",
+        "get_boolean_associated_with_key": "Charger un booléen associé à la clé ",
+        "in_object": " dans l'objet "
+      },
+      "triggering_node_name": {
+        "name": "Node déclencheur",
+        "triggering_node": "Node déclencheur"
+      },
+      "triggering_event_string": {
+        "name": "Événement déclencheur (chaîne)",
+        "triggering_event_string": "Événement déclencheur (chaîne)"
+      },
+      "triggering_event_object": {
+        "name": "Événement déclencheur (objet)",
+        "triggering_event_object": "Événement déclencheur (objet)"
+      },
+      "triggering_admin_button_id": {
+        "name": "Id du bouton d'admin déclencheur",
+        "triggering_admin_button_id": "Id du bouton d'admin déclencheur"
+      },
+      "integer_arithmetic": {
+        "name": "Arithmétique",
+        "space": " ",
+        "+": "+",
+        "-": "-",
+        "*": "*",
+        "/": "/"
+      },
+      "real_arithmetic": {
+        "name": "Arithmétique",
+        "space": " ",
+        "+": "+",
+        "-": "-",
+        "*": "*",
+        "/": "/"
+      },
+      "integer_comparison": {
+        "name": "Comparaison d'entiers",
+        "space": " ",
+        "=": "=",
+        "!=": "!=",
+        ">": ">",
+        ">=": ">=",
+        "<": "<",
+        "<=": "<="
+      },
+      "real_comparison": {
+        "name": "Comparaison de réels",
+        "space": " ",
+        "=": "=",
+        "!=": "!=",
+        ">": ">",
+        ">=": ">=",
+        "<": "<",
+        "<=": "<="
+      },
+      "string_comparison": {
+        "name": "Comparaison de chaînes",
+        "space": " ",
+        "=": "est égal à",
+        "!=": "n'est pas égal à",
+        "contains": "contient"
+      },
+      "object_comparison": {
+        "name": "Comparaison d'objets",
+        "space": " ",
+        "is": "est égal à",
+        "is_not": "n'est pas égal à"
+      },
+      "boolean_comparison": {
+        "name": "Comparaison de booléens",
+        "space": " ",
+        "is": "est",
+        "is_not": "n'est pas"
+      },
+      "timer_remaining_time": {
+        "name": "Temps restant de minuteur",
+        "remaining_time_of": "Temps restant de "
+      },
+      "integer_to_string": {
+        "name": "Convertion d'entier en chaîne",
+        "string(": "Chaîne(",
+        ")": ")"
+      },
+      "real_to_string": {
+        "name": "Convertion de réel en chaîne",
+        "string(": "Chaîne(",
+        ")": ")"
+      },
+      "boolean_to_string": {
+        "name": "Convertion de booléen en chaîne",
+        "string(": "Chaîne(",
+        ")": ")"
+      },
+      "object_to_string": {
+        "name": "Convertion d'objet en chaîne",
+        "string(": "Chaîne(",
+        ")": ")"
+      },
+      "real_to_integer": {
+        "name": "Convertion de réel en entier",
+        "round": "Arrondi",
+        "ceil": "Arrondi inférieur",
+        "floor": "Arrondi supérieur",
+        "(": "(",
+        ")": ")"
+      },
+      "integer_to_real": {
+        "name": "Convertion d'entier en réel",
+        "real(": "Réel(",
+        ")": ")"
+      },
+      "boolean_not": {
+        "name": "NON",
+        "not": "non "
+      },
+      "boolean_or": {
+        "name": "OU",
+        "or": " ou "
+      },
+      "boolean_and": {
+        "name": "ET",
+        "and": " et "
+      },
+      "expiring_timer": {
+        "name": "Minuteur expirant",
+        "expiring_timer": "Minuteur expirant"
+      },
+      "last_started_timer": {
+        "name": "Dernier minuteur démarré",
+        "last_started_timer": "Dernier minuteur démarré"
+      }
+    }
+  }
+}

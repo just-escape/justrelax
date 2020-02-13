@@ -2,7 +2,7 @@
   <AppContent>
     <AppContentTitle class="d-flex flex-row" slot="header-left">
       <AppContentTitle class="mr-5">
-        Editor
+        {{ $t('editor.editor') }}
       </AppContentTitle>
       <b-button-group class="my-auto">
         <ButtonJaffa @click="save()">
@@ -11,7 +11,7 @@
       </b-button-group>
     </AppContentTitle>
     <div slot="main" v-if="!room">
-      Room not found
+      {{ $t('room_not_found') }}
     </div>
     <div slot="main" class="mt-2 h-100" v-else>
       <Rules/>

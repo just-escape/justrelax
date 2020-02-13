@@ -9,6 +9,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import justSockService from '@/store/justSockService.js'
 import router from '@/router/index.js'
+import i18n from '@/i18n.js'
 
 import App from '@/App.vue'
 
@@ -26,5 +27,6 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router: router
+  router: router,
+  i18n: i18n,
 }).$mount('#app')

@@ -5,7 +5,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'An event has been received',
+                'locale': 'an_event_has_been_received',
             },
         ],
     },
@@ -15,7 +15,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'An admin button has been pressed',
+                'locale': 'an_admin_button_has_been_pressed',
             },
         ],
     },
@@ -25,7 +25,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'After ',
+                'locale': 'after',
             },
             {
                 'type': 'argument',
@@ -35,7 +35,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' second(s) of session time',
+                'locale': 'seconds_of_session_time',
             },
         ],
     },
@@ -45,7 +45,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Every ',
+                'locale': 'every',
             },
             {
                 'type': 'argument',
@@ -55,7 +55,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' second(s) of session time',
+                'locale': 'seconds_of_session_time',
             },
         ],
     },
@@ -71,7 +71,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' expires',
+                'locale': 'expires',
             },
         ],
     },
@@ -81,7 +81,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'The session has started',
+                'locale': 'the_session_is_started',
             },
         ],
     },
@@ -91,7 +91,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'The session has paused',
+                'locale': 'the_session_is_paused',
             },
         ],
     },
@@ -101,7 +101,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'The session has resumed',
+                'locale': 'the_session_is_resumed',
             },
         ],
     },
@@ -111,7 +111,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'If ',
+                'locale': 'if',
             },
             {
                 'type': 'argument',
@@ -122,12 +122,12 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
-        'name': 'send_event_simple',
+        'name': 'send_event_string',
         'context': 'action',
         'links': [
             {
                 'type': 'text',
-                'text': 'Send event ',
+                'locale': 'send_event',
             },
             {
                 'type': 'argument',
@@ -137,7 +137,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' to node named ',
+                'locale': 'to_node',
             },
             {
                 'type': 'argument',
@@ -148,12 +148,12 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
-        'name': 'send_event_complex',
+        'name': 'send_event_object',
         'context': 'action',
         'links': [
             {
                 'type': 'text',
-                'text': 'Send event ',
+                'locale': 'send_event',
             },
             {
                 'type': 'argument',
@@ -163,7 +163,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' to node named ',
+                'locale': 'to_node',
             },
             {
                 'type': 'argument',
@@ -179,7 +179,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Push an ',
+                'locale': 'push_an',
             },
             {
                 'type': 'argument',
@@ -190,7 +190,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' notification with message ',
+                'locale': 'notification_on_the_admin_interface_with_message',
             },
             {
                 'type': 'argument',
@@ -206,7 +206,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Add a record now with label ',
+                'locale': 'add_a_record_now_with_label',
             },
             {
                 'type': 'argument',
@@ -222,7 +222,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Add a record at ',
+                'locale': 'add_a_record_at',
             },
             {
                 'type': 'argument',
@@ -232,7 +232,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' seconds with label ',
+                'locale': 'seconds_with_label',
             },
             {
                 'type': 'argument',
@@ -248,7 +248,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Set value of variable ',
+                'locale': 'set_value_of_variable',
             },
             {
                 'type': 'argument',
@@ -258,7 +258,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' to ',
+                'locale': 'to',
             },
             {
                 'type': 'argument',
@@ -274,7 +274,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Create a new object',
+                'locale': 'create_a_new_object',
             },
         ],
     },
@@ -284,7 +284,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Save ',
+                'locale': 'save',
             },
             {
                 'type': 'argument',
@@ -294,7 +294,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' with key ',
+                'locale': 'with_key',
             },
             {
                 'type': 'argument',
@@ -304,7 +304,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' in object ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -320,7 +320,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Save ',
+                'locale': 'save',
             },
             {
                 'type': 'argument',
@@ -330,7 +330,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' with key ',
+                'locale': 'with_key',
             },
             {
                 'type': 'argument',
@@ -340,7 +340,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' in object ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -356,7 +356,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Save ',
+                'locale': 'save',
             },
             {
                 'type': 'argument',
@@ -366,7 +366,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' with key ',
+                'locale': 'with_key',
             },
             {
                 'type': 'argument',
@@ -376,7 +376,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' in object ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -392,7 +392,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Save ',
+                'locale': 'save',
             },
             {
                 'type': 'argument',
@@ -402,7 +402,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' with key ',
+                'locale': 'with_key',
             },
             {
                 'type': 'argument',
@@ -412,7 +412,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' in object ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -428,7 +428,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Save ',
+                'locale': 'save',
             },
             {
                 'type': 'argument',
@@ -438,7 +438,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' with key ',
+                'locale': 'with_key',
             },
             {
                 'type': 'argument',
@@ -448,7 +448,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' in object ',
+                'locale': 'in_object',
             },
             {
                 'type': 'argument',
@@ -464,7 +464,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Trigger rule named ',
+                'locale': 'trigger_rule_named',
             },
             {
                 'type': 'argument',
@@ -481,7 +481,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Start timer ',
+                'locale': 'start_timer',
             },
             {
                 'type': 'argument',
@@ -491,18 +491,18 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' as a ',
+                'locale': 'as_a',
             },
             {
                 'type': 'argument',
                 'key': 'type',
                 'value_type': 'predefined',
-                'predefined_choices': 'One shot,Periodic',
-                'default_value': '"One shot"',
+                'predefined_choices': 'one_shot,periodic',
+                'default_value': '"one_shot"',
             },
             {
                 'type': 'text',
-                'text': ' timer that will expire in ',
+                'locale': 'timer_that_will_expire_in',
             },
             {
                 'type': 'argument',
@@ -512,7 +512,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' seconds',
+                'locale': 'seconds',
             },
         ],
     },
@@ -522,7 +522,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Pause ',
+                'locale': 'pause',
             },
             {
                 'type': 'argument',
@@ -538,7 +538,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Resume ',
+                'locale': 'resume',
             },
             {
                 'type': 'argument',
@@ -554,7 +554,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Wait ',
+                'locale': 'wait',
             },
             {
                 'type': 'argument',
@@ -564,7 +564,7 @@ COMPONENT_TEMPLATES = [
             },
             {
                 'type': 'text',
-                'text': ' seconds',
+                'locale': 'seconds',
             },
         ],
     },
@@ -574,7 +574,7 @@ COMPONENT_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'text': 'Do nothing',
+                'locale': 'do_nothing',
             },
         ],
     },

@@ -22,7 +22,7 @@ class FunctionTemplateLinkAdmin(admin.ModelAdmin):
         'function',
         'index',
         'type',
-        'text',
+        'locale',
         'key',
         'value_type',
         'default_value',
@@ -31,7 +31,7 @@ class FunctionTemplateLinkAdmin(admin.ModelAdmin):
     search_fields = (
         'function__name',
         'type',
-        'text',
+        'locale',
         'key',
         'default_value',
     )
@@ -61,7 +61,7 @@ class ComponentTemplateLinkAdmin(admin.ModelAdmin):
         'template',
         'index',
         'type',
-        'text',
+        'locale',
         'key',
         'value_type',
         'default_value',
@@ -70,7 +70,7 @@ class ComponentTemplateLinkAdmin(admin.ModelAdmin):
     search_fields = (
         'template__name',
         'type',
-        'text',
+        'locale',
         'key',
         'default_value',
     )
