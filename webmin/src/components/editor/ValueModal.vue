@@ -32,20 +32,6 @@
       @pushValue="(newValue) => updateValueBuffer('function', newValue)"
     />
 
-    <!--<ValueModalObject
-      v-if="inputType === 'object'"
-      :parentValue="value"
-      :checked="selectedSource === 'object'"
-      @pushValue="(newValue) => updateValueBuffer('object', newValue)"
-    />
-
-    <ValueModalList
-      v-if="inputType === 'list'"
-      :parentValue="value"
-      :checked="selectedSource === 'list'"
-      @pushValue="(newValue) => updateValueBuffer('list', newValue)"
-    />-->
-
     <ValueModalString
       v-if="displayStringSelector"
       :parentValue="value"
@@ -80,8 +66,6 @@
 import ValueModalPredefined from '@/components/editor/ValueModalPredefined.vue'
 import ValueModalVariable from '@/components/editor/ValueModalVariable.vue'
 import ValueModalFunction from '@/components/editor/ValueModalFunction.vue'
-// import ValueModalObject from '@/components/editor/ValueModalObject.vue'
-// import ValueModalList from '@/components/editor/ValueModalList.vue'
 import ValueModalString from '@/components/editor/ValueModalString.vue'
 import ValueModalInteger from '@/components/editor/ValueModalInteger.vue'
 import ValueModalReal from '@/components/editor/ValueModalReal.vue'
@@ -93,8 +77,6 @@ export default {
     ValueModalPredefined,
     ValueModalVariable,
     ValueModalFunction,
-    // ValueModalObject,
-    // ValueModalList,
     ValueModalString,
     ValueModalInteger,
     ValueModalReal,

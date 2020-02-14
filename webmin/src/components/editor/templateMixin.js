@@ -36,28 +36,7 @@ export default {
           } else {
             return value.variable
           }
-        } /*else if (value.object !== undefined) {
-          var objectOutput = "{"
-          let keys = Object.keys(value.object)
-          for (var i = 0 ; i < keys.length ; i++) {
-            objectOutput += this.format(keys[i]) + ": " + this.format(value.object[keys[i]])
-            if (i !== keys.length - 1) {
-              objectOutput += ", "
-            }
-          }
-          objectOutput += "}"
-          return objectOutput
-        } else if (value.list !== undefined) {
-          var listOutput = "["
-          for (var j = 0 ; j < value.list.length ; j++) {
-            listOutput += this.format(value.list[j])
-            if (j !== value.list.length - 1) {
-              listOutput += ", "
-            }
-          }
-          listOutput += "]"
-          return listOutput
-        }*/
+        }
       }
 
       return this.$t("editor.error")
