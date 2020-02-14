@@ -26,6 +26,10 @@ export default {
     if (typeof this.parentValue === "string") {
       this.valueBuffer = this.parentValue
       this.pushMyValue()
+    } else if (this.parentValue === true) {
+      // In case of empty string, the passed vue prop is :prop="''", which is equivalent to prop being true
+      this.valueBuffer = ""
+      this.pushMyValue()
     } else {
       this.valueBuffer = "hello"
     }

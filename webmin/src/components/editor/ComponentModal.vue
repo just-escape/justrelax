@@ -97,7 +97,7 @@ export default {
       this.$emit('update', JSON.parse(JSON.stringify(this.componentBuffer)))
     },
     updateArgument(key, value) {
-      this.componentBuffer.arguments[key] = value
+      this.$set(this.componentBuffer.arguments, key, value)
 
       // Hardcoded behavior for special case
       if (this.selectedTemplate === 'set_variable' && key === 'variable') {

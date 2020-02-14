@@ -1,11 +1,12 @@
 <template>
   <div>
+    {{args}}
     <span v-for="link in links" :key="link.key">
       <span v-if="link.type === 'text'">{{ $t('editor.links.' + templateName + '.' + link.locale) }}</span>
       <span v-else-if="link.type === 'argument'">
         <FormattedValue
           v-b-modal="getSubmodalId(link.key)"
-          :value="args[link.key]"
+          :formattedContent="format(args[link.key])"
           :editable="true"
           :editDisabled="isEditDisabled(link)"
           :lastEdited="lastEditedArgumentKey === link.key"
@@ -28,10 +29,12 @@
 <script>
 import FormattedValue from '@/components/editor/FormattedValue.vue'
 import ValueModal from '@/components/editor/ValueModal.vue'
+import templateMixin from '@/components/editor/templateMixin.js'
 import editorStore from '@/store/editorStore.js'
 
 export default {
   name: "TemplateEditable",
+  mixins: [templateMixin],
   components: {
     FormattedValue,
     ValueModal,
@@ -46,6 +49,7 @@ export default {
       return this.modalId + '-' + suffix
     },
     updateArgument(key, value) {
+      this.lastEditedArgumentKey = key
       this.$emit('updateArgument', key, value)
     },
     updateLastEditedArgument(argumentKey) {
@@ -58,6 +62,10 @@ export default {
   watch: {
     links() {
       this.lastEditedArgumentKey = undefined
+    },
+    $i18n() {
+      // Trick to force locales to reload
+      this.lastEditedArgumentKey = this.lastEditedArgumentKey
     }
   },
   props: {

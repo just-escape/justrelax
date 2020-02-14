@@ -4,6 +4,7 @@
     body-bg-variant="dark"
     body-text-variant="light"
     @ok="ok"
+    @hidden="$emit('hidden')"
   >
     <ValueModalPredefined
       v-if="displayPredefinedSelector"
