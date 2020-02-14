@@ -82,11 +82,7 @@ export default {
               // Hardcoded behavior for special case
               let variable = this.getVariableFromName(args.variable.variable)
               link.value_type = variable === null ? "disabled" : variable.type
-              if (args[link.key] === null) {
-                args[link.key] = this.getDefaultValueFromValueType(link.value_type)
-              } else {
-                args[link.key] = this.componentBuffer.arguments[link.key]
-              }
+              args[link.key] = this.getDefaultValueFromValueType(link.value_type)
             } else {
               args[link.key] = JSON.parse(link.default_value)
             }
@@ -120,7 +116,6 @@ export default {
     },
     reloadComponentBuffer: function() {
       this.componentBuffer = JSON.parse(JSON.stringify(this.component))
-      this.selectedTemplate = this.selectedTemplate
     },
     getVariableFromName: function(variableName) {
       for (var variable of editorStore.state.variables) {
@@ -153,6 +148,19 @@ export default {
   },
   created() {
     this.reloadComponentBuffer()
+
+    // Hardcoded behavior for special case
+    if (this.componentBuffer.template === 'set_variable') {
+      let variable = this.getVariableFromName(this.componentBuffer.arguments.variable.variable)
+      if (variable !== null) {
+        for (var link of this.templates.set_variable.links) {
+          if (link.key === 'value') {
+            link.value_type = variable.type
+            return
+          }
+        }
+      }
+    }
   },
   props: {
     modalId: String,

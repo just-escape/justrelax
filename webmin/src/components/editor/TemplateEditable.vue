@@ -7,11 +7,11 @@
           v-b-modal="getSubmodalId(link.key)"
           :value="args[link.key]"
           :editable="true"
-          :editDisabled="link.value_type === 'disabled'"
+          :editDisabled="isEditDisabled(link)"
           :lastEdited="lastEditedArgumentKey === link.key"
         />
         <ValueModal
-          v-if="link.value_type !== 'disabled'"
+          v-if="!isEditDisabled(link)"
           :modalId="getSubmodalId(link.key)"
           :value="args[link.key]"
           :inputType="link.value_type"
@@ -28,6 +28,7 @@
 <script>
 import FormattedValue from '@/components/editor/FormattedValue.vue'
 import ValueModal from '@/components/editor/ValueModal.vue'
+import editorStore from '@/store/editorStore.js'
 
 export default {
   name: "TemplateEditable",
@@ -49,6 +50,9 @@ export default {
     },
     updateLastEditedArgument(argumentKey) {
       this.lastEditedArgumentKey = argumentKey
+    },
+    isEditDisabled(link) {
+      return link.value_type === 'disabled' || (link.value_type === 'variable' && editorStore.state.variables.length === 0)
     },
   },
   watch: {
