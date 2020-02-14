@@ -166,7 +166,7 @@ def update_component_arguments(component, arguments):
 
     # Delete
     keys_to_delete = old_argument_keys - argument_keys
-    old_arguments.filter(key__in=keys_to_delete, component=component)
+    old_arguments.filter(key__in=keys_to_delete, component=component).delete()
 
     # Update
     keys_to_update = argument_keys & old_argument_keys

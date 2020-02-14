@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{args}}
     <span v-for="link in links" :key="link.key">
       <span v-if="link.type === 'text'">{{ $t('editor.links.' + templateName + '.' + link.locale) }}</span>
       <span v-else-if="link.type === 'argument'">
@@ -56,6 +55,7 @@ export default {
       this.lastEditedArgumentKey = argumentKey
     },
     isEditDisabled(link) {
+      // Dirty. This should be an info from the parent component.
       return link.value_type === 'disabled' || (link.value_type === 'variable' && editorStore.state.variables.length === 0)
     },
   },
