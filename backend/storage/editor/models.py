@@ -4,6 +4,19 @@ from django import forms
 from scenario.models import Room
 
 
+CATEGORIES = (
+    ('', ''),
+    ('event', 'event'),
+    ('admin', 'admin'),
+    ('time', 'time'),
+    ('session', 'session'),
+    ('object', 'object'),
+    ('conversion', 'conversion'),
+    ('timer', 'timer'),
+    ('math', 'math'),
+    ('trigger', 'trigger'),
+)
+
 VALUE_TYPES = (
     ('string', 'string'),
     ('boolean', 'boolean'),
@@ -23,7 +36,9 @@ TEMPLATE_LINK_TYPES = (
 
 
 class Function(models.Model):
-    category = models.CharField(max_length=64, blank=True)
+    category = models.CharField(
+        choices=CATEGORIES, default=CATEGORIES[0][0],
+        max_length=64, blank=True)
     index = models.IntegerField(unique=True)
     name = models.CharField(max_length=64, unique=True)
     return_type = models.CharField(
@@ -146,6 +161,9 @@ class ComponentTemplate(models.Model):
         ('action', 'action'),
     )
 
+    category = models.CharField(
+        choices=CATEGORIES, default=CATEGORIES[0][0],
+        max_length=64, blank=True)
     index = models.IntegerField()
     name = models.CharField(max_length=64)
     context = models.CharField(

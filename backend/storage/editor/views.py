@@ -45,6 +45,7 @@ def get_serialized_component_templates(context):
     component_templates = []
     for ct in ComponentTemplate.objects.filter(context=context).order_by('index'):
         component_template = {
+            'category': ct.category,
             'name': ct.name,
             'links': [],
         }

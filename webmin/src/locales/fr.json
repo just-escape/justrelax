@@ -19,6 +19,18 @@
     "string": "Chaîne :",
     "any_text": "Texte",
     "variable": "Variable :",
+    "categories": {
+      "": "",
+      "event": "Événement",
+      "admin": "Admin",
+      "time": "Temps",
+      "session": "Session",
+      "object": "Objet",
+      "conversion": "Conversion",
+      "timer": "Minuteur",
+      "math": "Maths",
+      "trigger": "Déclencheur"
+    },
     "links": {
       "incoming_event": {
         "name": "Événement reçu",

@@ -40,6 +40,7 @@ class Command(BaseCommand):
 
         for ct_index, ct in enumerate(COMPONENT_TEMPLATES):
             created_component_template = ComponentTemplate.objects.create(
+                category=ct['category'],
                 context=ct['context'],
                 index=ct_index,
                 name=ct['name'],

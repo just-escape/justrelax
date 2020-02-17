@@ -20,6 +20,18 @@
     "string": "String:",
     "any_text": "Any text",
     "variable": "Variable:",
+    "categories": {
+      "": "",
+      "event": "Event",
+      "admin": "Admin",
+      "time": "Time",
+      "session": "Session",
+      "object": "Object",
+      "conversion": "Conversion",
+      "timer": "Timer",
+      "math": "Math",
+      "trigger": "Trigger"
+    },
     "links": {
       "incoming_event": {
         "name": "Event received",
@@ -180,7 +192,7 @@
       },
       "object_get_boolean": {
         "name": "Get boolean from key",
-        "get_boolean_associated_with_key": "Get boolean associated with key",
+        "get_boolean_associated_with_key": "Get boolean associated with key ",
         "in_object": " in object "
       },
       "triggering_node_name": {

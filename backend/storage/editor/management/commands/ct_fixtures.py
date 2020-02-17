@@ -1,5 +1,6 @@
 COMPONENT_TEMPLATES = [
     {
+        'category': 'event',
         'name': 'incoming_event',
         'context': 'trigger',
         'links': [
@@ -10,6 +11,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'admin',
         'name': 'admin_button_press',
         'context': 'trigger',
         'links': [
@@ -20,6 +22,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'time',
         'name': 'timed_trigger',
         'context': 'trigger',
         'links': [
@@ -40,6 +43,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'time',
         'name': 'periodic_trigger',
         'context': 'trigger',
         'links': [
@@ -60,6 +64,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'time',
         'name': 'timer_trigger',
         'context': 'trigger',
         'links': [
@@ -76,6 +81,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'session',
         'name': 'session_start',
         'context': 'trigger',
         'links': [
@@ -86,6 +92,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'session',
         'name': 'session_pause',
         'context': 'trigger',
         'links': [
@@ -96,6 +103,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'session',
         'name': 'session_resume',
         'context': 'trigger',
         'links': [
@@ -106,6 +114,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': '',
         'name': 'simple_condition',
         'context': 'condition',
         'links': [
@@ -122,6 +131,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'event',
         'name': 'send_event_string',
         'context': 'action',
         'links': [
@@ -148,6 +158,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'event',
         'name': 'send_event_object',
         'context': 'action',
         'links': [
@@ -174,6 +185,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'admin',
         'name': 'push_notification',
         'context': 'action',
         'links': [
@@ -201,6 +213,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'admin',
         'name': 'add_record_now',
         'context': 'action',
         'links': [
@@ -217,6 +230,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'admin',
         'name': 'add_record',
         'context': 'action',
         'links': [
@@ -243,32 +257,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
-        'name': 'set_variable',
-        'context': 'action',
-        'links': [
-            {
-                'type': 'text',
-                'locale': 'set_value_of_variable',
-            },
-            {
-                'type': 'argument',
-                'key': 'variable',
-                'value_type': 'variable',
-                'default_value': 'null',
-            },
-            {
-                'type': 'text',
-                'locale': 'to',
-            },
-            {
-                'type': 'argument',
-                'key': 'value',
-                'value_type': 'disabled',
-                'default_value': 'null',
-            },
-        ],
-    },
-    {
+        'category': 'object',
         'name': 'create_a_new_object',
         'context': 'action',
         'links': [
@@ -279,6 +268,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'object',
         'name': 'save_object_in_object',
         'context': 'action',
         'links': [
@@ -315,6 +305,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'object',
         'name': 'save_string_in_object',
         'context': 'action',
         'links': [
@@ -351,6 +342,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'object',
         'name': 'save_integer_in_object',
         'context': 'action',
         'links': [
@@ -387,6 +379,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'object',
         'name': 'save_real_in_object',
         'context': 'action',
         'links': [
@@ -423,6 +416,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'object',
         'name': 'save_boolean_in_object',
         'context': 'action',
         'links': [
@@ -459,23 +453,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
-        'name': 'trigger_rule',
-        'context': 'action',
-        'links': [
-            {
-                'type': 'text',
-                'locale': 'trigger_rule_named',
-            },
-            {
-                'type': 'argument',
-                'key': 'rule_name',
-                'value_type': 'predefined',
-                'default_value': 'null',
-                'predefined_choices': '<rules>',
-            },
-        ],
-    },
-    {
+        'category': 'timer',
         'name': 'start_timer',
         'context': 'action',
         'links': [
@@ -517,6 +495,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'timer',
         'name': 'pause_timer',
         'context': 'action',
         'links': [
@@ -533,6 +512,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'timer',
         'name': 'resume_timer',
         'context': 'action',
         'links': [
@@ -549,6 +529,7 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': '',
         'name': 'wait',
         'context': 'action',
         'links': [
@@ -569,6 +550,52 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': '',
+        'name': 'set_variable',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'set_value_of_variable',
+            },
+            {
+                'type': 'argument',
+                'key': 'variable',
+                'value_type': 'variable',
+                'default_value': 'null',
+            },
+            {
+                'type': 'text',
+                'locale': 'to',
+            },
+            {
+                'type': 'argument',
+                'key': 'value',
+                'value_type': 'disabled',
+                'default_value': 'null',
+            },
+        ],
+    },
+    {
+        'category': '',
+        'name': 'trigger_rule',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'trigger_rule_named',
+            },
+            {
+                'type': 'argument',
+                'key': 'rule_name',
+                'value_type': 'predefined',
+                'default_value': 'null',
+                'predefined_choices': '<rules>',
+            },
+        ],
+    },
+    {
+        'category': '',
         'name': 'do_nothing',
         'context': 'action',
         'links': [

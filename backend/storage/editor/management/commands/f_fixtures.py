@@ -1,6 +1,6 @@
 FUNCTIONS = [
     {
-        'category': '',
+        'category': 'object',
         'name': 'last_created_object',
         'return_type': 'object',
         'links': [
@@ -11,7 +11,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'object',
         'name': 'object_get_object',
         'return_type': 'object',
         'links': [
@@ -38,7 +38,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'object',
         'name': 'object_get_string',
         'return_type': 'string',
         'links': [
@@ -65,7 +65,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'object',
         'name': 'object_get_integer',
         'return_type': 'integer',
         'links': [
@@ -92,7 +92,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'object',
         'name': 'object_get_real',
         'return_type': 'real',
         'links': [
@@ -119,7 +119,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'object',
         'name': 'object_get_boolean',
         'return_type': 'boolean',
         'links': [
@@ -146,7 +146,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'trigger',
         'name': 'triggering_node_name',
         'return_type': 'string',
         'links': [
@@ -157,7 +157,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'trigger',
         'name': 'triggering_event_string',
         'return_type': 'string',
         'links': [
@@ -168,7 +168,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'trigger',
         'name': 'triggering_event_object',
         'return_type': 'object',
         'links': [
@@ -179,7 +179,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'trigger',
         'name': 'triggering_admin_button_id',
         'return_type': 'string',
         'links': [
@@ -190,7 +190,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'math',
         'name': 'integer_arithmetic',
         'return_type': 'integer',
         'links': [
@@ -224,7 +224,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'math',
         'name': 'real_arithmetic',
         'return_type': 'real',
         'links': [
@@ -428,7 +428,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'timer',
         'name': 'timer_remaining_time',
         'return_type': 'real',
         'links': [
@@ -445,7 +445,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'conversion',
         'name': 'integer_to_string',
         'return_type': 'string',
         'links': [
@@ -466,7 +466,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'conversion',
         'name': 'real_to_string',
         'return_type': 'string',
         'links': [
@@ -487,7 +487,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'conversion',
         'name': 'boolean_to_string',
         'return_type': 'string',
         'links': [
@@ -508,7 +508,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'conversion',
         'name': 'object_to_string',
         'return_type': 'string',
         'links': [
@@ -529,7 +529,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'conversion',
         'name': 'real_to_integer',
         'return_type': 'integer',
         'links': [
@@ -557,7 +557,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'conversion',
         'name': 'integer_to_real',
         'return_type': 'real',
         'links': [
@@ -641,7 +641,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'timer',
         'name': 'expiring_timer',
         'return_type': 'timer',
         'links': [
@@ -652,7 +652,7 @@ FUNCTIONS = [
         ],
     },
     {
-        'category': '',
+        'category': 'timer',
         'name': 'last_started_timer',
         'return_type': 'timer',
         'links': [

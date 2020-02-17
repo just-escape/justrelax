@@ -11,7 +11,8 @@
           :key="f.name"
           :value="f.name"
         >
-          {{ $t('editor.links.' + f.name + ".name") }}
+          <span v-if="f.category">{{ $t('editor.categories.' + f.category) }} - </span>
+          <span>{{ $t('editor.links.' + f.name + ".name") }}</span>
         </option>
       </select>
 
