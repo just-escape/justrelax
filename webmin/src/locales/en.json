@@ -37,9 +37,18 @@
         "name": "Event received",
         "an_event_has_been_received": "An event has been received"
       },
+      "incoming_event_from_node": {
+        "name": "Event received from node",
+        "an_event_has_been_received_from_node": "An event has been received from node "
+      },
       "admin_button_press": {
-        "name": "Admin button pressed",
+        "name": "Button pressed",
         "an_admin_button_has_been_pressed": "An admin button has been pressed"
+      },
+      "admin_button_id_press": {
+        "name": "Specific button pressed",
+        "the_admin_button": "The admin button ",
+        "has_been_pressed": " has been pressed"
       },
       "timed_trigger": {
         "name": "Time elapsed",

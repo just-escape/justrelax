@@ -154,7 +154,9 @@ class RulesProcessor:
         self.rule_definitions = []
         self.on_trigger_type_rules = {
             'incoming_event': [],
+            'incoming_event_from_node': [],
             'admin_button_press': [],
+            'admin_button_id_press': [],
             'session_start': [],
             'session_pause': [],
             'session_resume': [],
@@ -264,10 +266,6 @@ class RulesProcessor:
             'is_not': operator.is_not,
         }
 
-        # self.system_vars = {
-        #     JR.SYSTEM_VARIABLE_IS_RUNNING: self.get_is_running,
-        #     JR.SYSTEM_VARIABLE_TICKS: self.get_ticks
-        # }
         self.records = []
 
         self.fetch_and_init_rules()
@@ -311,7 +309,12 @@ class RulesProcessor:
         for rule in self.rule_definitions:
             for trigger in rule['triggers']:
                 if trigger['template'] in self.on_trigger_type_rules:
-                    self.on_trigger_type_rules[trigger['template']].append(rule)
+                    self.on_trigger_type_rules[trigger['template']].append(
+                        {
+                            "trigger": trigger,
+                            "rule": rule,
+                        }
+                    )
                 elif trigger['template'] == 'timed_trigger':
                     self.timers.add(
                         Timer(
@@ -370,15 +373,28 @@ class RulesProcessor:
 
         self.process_rules(self.on_trigger_type_rules['incoming_event'], context)
 
+        for rule in self.on_trigger_type_rules['incoming_event_from_node']:
+            computed_triggering_node_name = self.compute(
+                rule['trigger']['arguments']['node_name'], context)
+            if computed_triggering_node_name == from_:
+                self.process_rule(rule, context)
+
     def on_admin_button_pressed(self, button_id):
         context = {
             R.CONTEXT_TRIGGERING_ADMIN_BUTTON_ID: button_id,
         }
+
         self.process_rules(self.on_trigger_type_rules['admin_button_press'], context)
+
+        for rule in self.on_trigger_type_rules['admin_button_id_press']:
+            computed_triggering_button_id = self.compute(
+                rule['trigger']['arguments']['button_id'], context)
+            if computed_triggering_button_id == button_id:
+                self.process_rule(rule, context)
 
     def process_rules(self, rules, context):
         for rule in rules:
-            self.process_rule(rule, context)
+            self.process_rule(rule['rule'], context)
 
     def process_rule(self, rule, context):
         try:

@@ -36,9 +36,18 @@
         "name": "Événement reçu",
         "an_event_has_been_received": "Un événement a été reçu"
       },
+      "incoming_event_from_node": {
+        "name": "Événement reçu d'un node",
+        "an_event_has_been_received_from_node": "Un événement a été reçu du node "
+      },
       "admin_button_press": {
-        "name": "Bouton d'admin pressé",
+        "name": "Bouton pressé",
         "an_admin_button_has_been_pressed": "Un bouton d'admin a été pressé"
+      },
+      "admin_button_id_press": {
+        "name": "Bouton spécifique pressé",
+        "the_admin_button": "Le bouton d'admin ",
+        "has_been_pressed": " a été pressé"
       },
       "timed_trigger": {
         "name": "Temps passé",

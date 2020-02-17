@@ -11,6 +11,23 @@ COMPONENT_TEMPLATES = [
         ],
     },
     {
+        'category': 'event',
+        'name': 'incoming_event_from_node',
+        'context': 'trigger',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'an_event_has_been_received_from_node',
+            },
+            {
+                'type': 'argument',
+                'key': 'node_name',
+                'value_type': 'string',
+                'default_value': '"node"',
+            }
+        ],
+    },
+    {
         'category': 'admin',
         'name': 'admin_button_press',
         'context': 'trigger',
@@ -19,6 +36,27 @@ COMPONENT_TEMPLATES = [
                 'type': 'text',
                 'locale': 'an_admin_button_has_been_pressed',
             },
+        ],
+    },
+    {
+        'category': 'admin',
+        'name': 'admin_button_id_press',
+        'context': 'trigger',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'the_admin_button',
+            },
+            {
+                'type': 'argument',
+                'key': 'button_id',
+                'value_type': 'string',
+                'default_value': '"id"',
+            },
+            {
+                'type': 'text',
+                'locale': 'has_been_pressed',
+            }
         ],
     },
     {
