@@ -17,17 +17,17 @@
     <div class="container-fluid" v-if="component.template === 'if_then_else_multiple_functions'">
       <div class="row">
         <div class="col">
-          <SubContextParagraph
+          <ComponentParagraph
             :title="$t('editor.if_conditions')"
             context="condition"
             :fqdn="getFQDN('if_conditions')"
           />
-          <SubContextParagraph
+          <ComponentParagraph
             :title="$t('editor.then_actions')"
             context="action"
             :fqdn="getFQDN('then_actions')"
           />
-          <SubContext
+          <ComponentParagraph
             :title="$t('editor.else_actions')"
             context="action"
             :fqdn="getFQDN('else_actions')"
@@ -48,7 +48,7 @@ export default {
   components: {
     Template: Template,
     ComponentModal: ComponentModal,
-    SubContextParagraph: () => import('@/components/editor/Context.vue'),
+    ComponentParagraph: () => import('@/components/editor/ComponentParagraph.vue'),
   },
   computed: {
     component() {

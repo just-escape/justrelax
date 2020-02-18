@@ -50,7 +50,7 @@
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col">
-                <ContextParagraph
+                <ComponentParagraph
                   :root="true"
                   :title="$t('editor.triggers')"
                   context="trigger"
@@ -60,7 +60,7 @@
             </div>
             <div class="row mb-2">
               <div class="col">
-                <ContextParagraph
+                <ComponentParagraph
                   :root="true"
                   :title="$t('editor.conditions')"
                   context="condition"
@@ -70,7 +70,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <ContextParagraph
+                <ComponentParagraph
                   :root="true"
                   :title="$t('editor.actions')"
                   context="action"
@@ -87,7 +87,7 @@
 
 <script>
 import ButtonSmall from "@/components/common/ButtonSmall"
-import ContextParagraph from "@/components/editor/Context.vue"
+import ComponentParagraph from "@/components/editor/ComponentParagraph.vue"
 import editorStore from "@/store/editorStore.js"
 import draggable from "vuedraggable"
 
@@ -96,7 +96,7 @@ export default {
   components: {
     draggable,
     ButtonSmall,
-    ContextParagraph,
+    ComponentParagraph,
   },
   data() {
     return {

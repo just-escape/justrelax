@@ -26,7 +26,7 @@ import editorStore from "@/store/editorStore.js"
 import draggable from "vuedraggable"
 
 export default {
-  name: 'Context',
+  name: 'ComponentParagraph',
   components: {
     draggable,
     ComponentInline,
