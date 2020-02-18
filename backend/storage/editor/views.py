@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from scenario.models import Room
-from editor.models import Template, TemplateLink, Variable, Rule, CONTEXTS
+from editor.models import Template, TemplateLink, Variable, Rule
 
 
 def get_serialized_templates():
