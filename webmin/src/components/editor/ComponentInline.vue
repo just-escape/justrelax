@@ -6,6 +6,7 @@
       :args="args"
       :links="links"
       :templateName="component.template"
+      :editable="false"
     />
 
     <ComponentModal

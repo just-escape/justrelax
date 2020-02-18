@@ -17,24 +17,25 @@
       </option>
     </select>
 
-    <TemplateEditable
+    <Template
       :args="args"
       :links="links"
       :modalId="modalId"
       :templateName="selectedTemplate"
+      :editable="true"
       @updateArgument="updateArgument"
     />
   </b-modal>
 </template>
 
 <script>
-import TemplateEditable from '@/components/editor/TemplateEditable.vue'
+import Template from '@/components/editor/Template.vue'
 import editorStore from '@/store/editorStore.js'
 
 export default {
   name: "ComponentModal",
   components: {
-    TemplateEditable,
+    Template,
   },
   data() {
     return {

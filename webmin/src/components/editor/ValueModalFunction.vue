@@ -16,11 +16,12 @@
         </option>
       </select>
 
-      <TemplateEditable
+      <Template
         :modalId="modalId"
         :templateName="selectedFunction"
         :args="args"
         :links="links"
+        :editable="true"
         @updateArgument="updateArgument"
       />
     </div>
@@ -35,7 +36,7 @@ export default {
   name: "ValueModalFunction",
   mixins: [valueModalMixin],
   components: {
-    TemplateEditable: () => import('@/components/editor/TemplateEditable.vue'),
+    Template: () => import('@/components/editor/Template.vue'),
   },
   computed: {
     selectableFunctions() {
