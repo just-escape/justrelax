@@ -19,9 +19,6 @@
     "string": "Chaîne :",
     "any_text": "Texte",
     "variable": "Variable :",
-    "if_conditions": "Si - Conditions",
-    "then_actions": "Alors - Actions",
-    "else_actions": "Sinon - Actions",
     "categories": {
       "": "",
       "event": "Événement",
@@ -170,7 +167,10 @@
       },
       "if_then_else_multiple_functions": {
         "name": "Si / Alors / Sinon (Plusieurs fonctions)",
-        "if_then_do_else_do": "Si (toutes les conditions sont True) alors (réaliser les actions) sinon (réaliser les actions)"
+        "if_then_do_else_do": "Si (toutes les conditions sont True) alors (réaliser les actions) sinon (réaliser les actions)",
+        "if_conditions": "Si - Conditions",
+        "then_actions": "Alors - Actions",
+        "else_actions": "Sinon - Actions"
       },
       "wait": {
         "name": "Attendre",

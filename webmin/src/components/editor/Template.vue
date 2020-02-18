@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div @click="clicked()">
+    <i v-if="!editable" class="mr-1 fas fa-fw fa-plus handle" :class="icon"></i>
+
     <span v-for="link in links" :key="link.key">
       <span v-if="link.type === 'text'">{{ $t('editor.templates.' + templateName + '.' + link.locale) }}</span>
       <span v-else-if="link.type === 'argument'">
@@ -42,6 +44,9 @@ export default {
     }
   },
   computed: {
+    icon() {
+      return editorStore.getters.iconFromTemplate(this.templateName)
+    },
     getModalId() {
       return (index) => {
         return this.modalId + '-' + index
@@ -98,6 +103,16 @@ export default {
       }
 
       return this.$t("editor.error")
+    },
+    clicked() {
+      this.$emit('click')
+      if (!this.editable) {
+        if (editorStore.state.selectedFQDN.toString() === this.fqdn.toString()) {
+          this.$bvModal.show(this.modalId)
+        } else {
+          editorStore.commit('setSelectedFQDN', this.fqdn)
+        }
+      }
     }
   },
   watch: {
@@ -114,7 +129,8 @@ export default {
     links: Array,
     modalId: String,
     templateName: String,
-    editable: Boolean
+    editable: Boolean,
+    fqdn: Array,
   },
 }
 </script>

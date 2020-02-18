@@ -8,6 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     selectedFQDN: undefined,
+    displayedRuleIndex: 0,
     variables: [],
     rules: [],
     templatesByName: {},
@@ -22,6 +23,43 @@ export default new Vuex.Store({
       object: [],
       timer: [],
     },
+    iconContextTable: {
+      trigger: 'fa-play',
+      condition: 'fa-question',
+      action: 'fa-exclamation',
+    },
+    iconTemplateTable: {
+      incoming_event: 'fa-sign-in-alt',
+      incoming_event_from_node: 'fa-sign-in-alt',
+      admin_button_press: 'fa-hand-point-down',
+      admin_button_id_press: 'fa-hand-point-down',
+      timed_trigger: 'fa-clock',
+      periodic_trigger: 'fa-clock',
+      timer_trigger: 'fa-clock',
+      session_start: 'fa-play',
+      session_pause: 'fa-pause',
+      session_resume: 'fa-play',
+      simple_condition: 'fa-question',
+      send_event_string: 'fa-sign-out-alt',
+      send_event_object: 'fa-sign-out-alt',
+      push_notification: 'fa-users-cog',
+      add_record_now: 'fa-users-cog',
+      add_record: 'fa-users-cog',
+      create_a_new_object: 'fa-file-excel',
+      save_object_in_object: 'fa-file-excel',
+      save_string_in_object: 'fa-file-excel',
+      save_integer_in_object: 'fa-file-excel',
+      save_real_in_object: 'fa-file-excel',
+      save_boolean_in_object: 'fa-file-excel',
+      start_timer: 'fa-clock',
+      pause_timer: 'fa-clock',
+      resume_timer: 'fa-clock',
+      if_then_else_multiple_functions: 'fa-question',
+      wait: 'fa-hourglass-start',
+      set_variable: 'fa-file-excel',
+      trigger_rule: 'fa-cog',
+      do_nothing: 'fa-cog',
+    },
   },
   getters: {
     dataFromFQDN(state) {
@@ -32,7 +70,41 @@ export default new Vuex.Store({
         }
         return data
       }
-    }
+    },
+    displayedRule(state) {
+      if (state.rules[state.displayedRuleIndex] === undefined) {
+        return null
+      } else {
+        return state.rules[state.displayedRuleIndex]
+      }
+    },
+    selectedRuleIndex(state) {
+      if (state.selectedFQDN === undefined) {
+        return -1
+      } else {
+        return state.selectedFQDN[1]
+      }
+    },
+    iconFromContext(state) {
+      return (context) => {
+        let icon = state.iconContextTable[context]
+        if (icon === undefined) {
+          return ''
+        } else {
+          return icon
+        }
+      }
+    },
+    iconFromTemplate(state) {
+      return (context) => {
+        let icon = state.iconTemplateTable[context]
+        if (icon === undefined) {
+          return ''
+        } else {
+          return icon
+        }
+      }
+    },
   },
   mutations: {
     loadTemplates (state, templates) {
@@ -84,6 +156,9 @@ export default new Vuex.Store({
     },
     setVariables (state, variables) {
       Vue.set(state, 'variables', variables)
+    },
+    setSelectedFQDN (state, fqdn) {
+      state.selectedFQDN = fqdn
     },
   },
   actions: {

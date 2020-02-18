@@ -1,12 +1,25 @@
 <template>
   <div>
-    <div :class="{'text-jaffa': root}">
-      <i class="fas fa-fw" :class="icon"></i> {{ title }}
+    <div
+      class="rounded"
+      :class="{'bgc-dark': selectedFQDN === fqdn}"
+      @click="paragraphClicked()"
+    >
+      <span :class="{'text-jaffa': root}">
+        <i class="mr-1 fas fa-fw" :class="icon"></i>{{ title }}
+      </span>
     </div>
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <draggable :list="storeBoundComponents" :group="{name: context}">
+          <draggable
+            @start="onDragStart"
+            @update="onDragUpdate"
+            @end="onDragUpdate"
+            handle=".handle"
+            :list="storeBoundComponents"
+            :group="{name: context}"
+          >
             <ComponentInline
               v-for="(c, index) in storeBoundComponents"
               :key="getKey(index)"
@@ -33,15 +46,7 @@ export default {
   },
   computed: {
     icon() {
-      if (this.context === 'trigger') {
-        return ['fa-play']
-      } else if (this.context === 'condition') {
-        return ['fa-question']
-      } else if (this.context === 'action') {
-        return ['fa-exclamation']
-      } else {
-        return []
-      }
+      return [editorStore.getters.iconFromContext(this.context)]
     },
     storeBoundComponents: {
       get() {
@@ -64,6 +69,24 @@ export default {
       return (index) => {
         return this.getFQDN(index).join('-')
       }
+    },
+    selectedFQDN() {
+      return editorStore.state.selectedFQDN
+    },
+  },
+  methods: {
+    paragraphClicked() {
+      editorStore.commit('setSelectedFQDN', this.fqdn)
+    },
+    onDragStart(event) {
+      var fqdn = JSON.parse(JSON.stringify(this.fqdn))
+      fqdn.push(event.oldIndex)
+      editorStore.commit('setSelectedFQDN', fqdn)
+    },
+    onDragUpdate(event) {
+      var fqdn = JSON.parse(JSON.stringify(this.fqdn))
+      fqdn.push(event.newIndex)
+      editorStore.commit('setSelectedFQDN', fqdn)
     },
   },
   props: {

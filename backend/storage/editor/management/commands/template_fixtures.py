@@ -579,7 +579,21 @@ ACTION_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'locale': 'if_then_do_else_do'
+                'locale': 'if_then_do_else_do',
+            },
+        ],
+        'context_paragraphs': [
+            {
+                'type': 'condition',
+                'key': 'if_conditions',
+            },
+            {
+                'type': 'action',
+                'key': 'then_actions',
+            },
+            {
+                'type': 'action',
+                'key': 'else_actions',
             },
         ],
     },

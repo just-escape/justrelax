@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from scenario.models import Room
-from editor.models import Template, TemplateLink, Variable, Rule
+from editor.models import Template, TemplateLink, TemplateContextParagraph, Variable, Rule
 
 
 def get_serialized_templates():
@@ -18,6 +18,7 @@ def get_serialized_templates():
             'context': t.context,
             'links': [],
         }
+
         for link in TemplateLink.objects.filter(template=t).order_by('index'):
             template_link = {
                 'type': link.type,
@@ -33,6 +34,16 @@ def get_serialized_templates():
                 else:
                     template_link['predefined_choices'] = None
             template['links'].append(template_link)
+
+        cps = TemplateContextParagraph.objects.filter(template=t).order_by('index')
+        if cps:
+            template['context_paragraphs'] = []
+            for cp in cps:
+                context_paragraph = {
+                    'type': cp.type,
+                    'key': cp.key,
+                }
+                template['context_paragraphs'].append(context_paragraph)
 
         templates.append(template)
 

@@ -16,8 +16,14 @@
       </div>
       <div class="d-flex flex-column">
         <draggable :list="rules" :group="{name: 'rules'}">
-          <div v-for="(r, index) in rules" :key="index" class="pointer" @click="displayRule(index)">
-            <i class="far fa-file fa-fw"></i> {{ r.name }}
+          <div
+            v-for="(r, index) in rules"
+            :key="index"
+            class="rounded"
+            @click="ruleClicked(index)"
+            :class="{'bgc-dark': displayedRuleIndex === index}"
+          >
+            <i class="mr-1 far fa-file fa-fw"></i>{{ r.name }}
           </div>
         </draggable>
       </div>
@@ -98,11 +104,6 @@ export default {
     ButtonSmall,
     ComponentParagraph,
   },
-  data() {
-    return {
-      displayedRuleIndex: 0,
-    }
-  },
   computed: {
     rules: {
       get() {
@@ -115,16 +116,19 @@ export default {
       },
     },
     displayedRule: function() {
-      if (editorStore.state.rules[this.displayedRuleIndex] === undefined) {
-        return null
-      } else {
-        return editorStore.state.rules[this.displayedRuleIndex]
-      }
+      return editorStore.getters.displayedRule
+    },
+    displayedRuleIndex: function() {
+      return editorStore.state.displayedRuleIndex
+    },
+    selectedRuleIndex: function() {
+      return editorStore.state.selectedRuleIndex
     },
   },
   methods: {
-    displayRule: function(index) {
-      this.displayedRuleIndex = index
+    ruleClicked: function(index) {
+      let fqdn = ['rules', index]
+      editorStore.commit('setSelectedFQDN', fqdn)
     },
     addRule: function() {
       let fqdn = ['rules']

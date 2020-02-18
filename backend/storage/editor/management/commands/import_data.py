@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from scenario.models import Room
-from editor.models import Template, TemplateLink, Variable, Rule
+from editor.models import Template, TemplateLink, TemplateContextParagraph, Variable, Rule
 
 from editor.management.commands.template_fixtures import TEMPLATES
 from editor.management.commands.variable_fixtures import VARIABLES
@@ -31,6 +31,15 @@ class Command(BaseCommand):
                     value_type=link.get('value_type', 'string'),
                     predefined_choices=link.get('predefined_choices', ''),
                     default_value=link.get('default_value', None),
+                )
+
+            context_paragraphs = t.get('context_paragraphs', [])
+            for cp_index, cp in enumerate(context_paragraphs):
+                TemplateContextParagraph.objects.create(
+                    template=created_template,
+                    index=cp_index,
+                    key=cp['key'],
+                    type=cp['type'],
                 )
 
         r = Room.objects.get(id=1)

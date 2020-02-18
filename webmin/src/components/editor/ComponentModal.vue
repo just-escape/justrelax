@@ -91,6 +91,16 @@ export default {
           }
         }
         this.componentBuffer.arguments = args
+
+        if (editorStore.state.templatesByName[value].context_paragraphs !== undefined) {
+          var paragraphs = {}
+          for (var paragraph of editorStore.state.templatesByName[value].context_paragraphs) {
+            paragraphs[paragraph.key] = []
+          }
+          this.componentBuffer.paragraphs = paragraphs
+        } else {
+          delete this.componentBuffer.paragraphs
+        }
       }
     },
   },

@@ -1,12 +1,14 @@
 <template>
   <div>
     <Template
-      v-b-modal="modalId"
-      class="pointer"
       :args="args"
       :links="links"
       :templateName="component.template"
       :editable="false"
+      class="rounded"
+      :class="{'bgc-dark': isSelected}"
+      :fqdn="fqdn"
+      :modalId="modalId"
     />
 
     <ComponentModal
@@ -15,23 +17,15 @@
       :fqdn="fqdn"
     />
 
-    <div class="container-fluid" v-if="component.template === 'if_then_else_multiple_functions'">
+    <div class="container-fluid" v-if="contextParagraphs !== undefined">
       <div class="row">
         <div class="col">
           <ComponentParagraph
-            :title="$t('editor.if_conditions')"
-            context="condition"
-            :fqdn="getFQDN('if_conditions')"
-          />
-          <ComponentParagraph
-            :title="$t('editor.then_actions')"
-            context="action"
-            :fqdn="getFQDN('then_actions')"
-          />
-          <ComponentParagraph
-            :title="$t('editor.else_actions')"
-            context="action"
-            :fqdn="getFQDN('else_actions')"
+            v-for="(cp, index) in contextParagraphs"
+            :key="index"
+            :title="$t('editor.templates.' + component.template + '.' + cp.key)"
+            :context="cp.type"
+            :fqdn="getFQDN(cp.key)"
           />
         </div>
       </div>
@@ -58,6 +52,9 @@ export default {
     links() {
       return editorStore.state.templatesByName[this.component.template].links
     },
+    contextParagraphs() {
+      return editorStore.state.templatesByName[this.component.template].context_paragraphs
+    },
     args() {
       return this.component.arguments
     },
@@ -70,6 +67,16 @@ export default {
     },
     modalId() {
       return this.fqdn.join('-')
+    },
+    selectedFQDN() {
+      return editorStore.state.selectedFQDN
+    },
+    isSelected() {
+      if (this.selectedFQDN === undefined) {
+        return false
+      } else {
+        return this.selectedFQDN.toString() === this.fqdn.toString()
+      }
     },
   },
   props: {

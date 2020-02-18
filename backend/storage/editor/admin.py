@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from editor.models import Template, TemplateForm
 from editor.models import TemplateLink, TemplateLinkForm
+from editor.models import TemplateContextParagraph, TemplateContextParagraphForm
 from editor.models import Variable, VariableForm
 from editor.models import Rule, RuleForm
 
@@ -33,6 +34,22 @@ class TemplateLinkAdmin(admin.ModelAdmin):
     )
 
 
+class TemplateContextParagraphAdmin(admin.ModelAdmin):
+    form = TemplateContextParagraphForm
+    list_display = (
+        'template',
+        'index',
+        'key',
+        'type',
+    )
+    search_fields = (
+        'template__name',
+        'index',
+        'key',
+        'type',
+    )
+
+
 class VariableAdmin(admin.ModelAdmin):
     form = VariableForm
     list_display = ('room', 'index', 'name', 'type', 'init_value', 'list',)
@@ -47,5 +64,6 @@ class RuleAdmin(admin.ModelAdmin):
 
 admin.site.register(Template, TemplateAdmin)
 admin.site.register(TemplateLink, TemplateLinkAdmin)
+admin.site.register(TemplateContextParagraph, TemplateContextParagraphAdmin)
 admin.site.register(Variable, VariableAdmin)
 admin.site.register(Rule, RuleAdmin)

@@ -41,6 +41,12 @@ CONTEXTS = (
     ('timer', 'timer'),
 )
 
+PARAGRAPH_TYPES = (
+    ('trigger', 'trigger'),
+    ('condition', 'condition'),
+    ('action', 'action'),
+)
+
 TEMPLATE_LINK_TYPES = (
     ('text', 'text'),
     ('argument', 'argument'),
@@ -113,6 +119,28 @@ class TemplateLinkForm(forms.ModelForm):
             'value_type',
             'default_value',
             'predefined_choices',
+        )
+
+
+class TemplateContextParagraph(models.Model):
+    template = models.ForeignKey(Template, on_delete=models.CASCADE)
+    index = models.IntegerField()
+    key = models.CharField(max_length=64, null=False, blank=False)
+    type = models.CharField(
+        choices=PARAGRAPH_TYPES, default=PARAGRAPH_TYPES[0][0], max_length=16)
+
+    def __str__(self):
+        return '{} template ({})'.format(self.template.name, self.index)
+
+
+class TemplateContextParagraphForm(forms.ModelForm):
+    class Meta:
+        model = TemplateContextParagraph
+        fields = (
+            'template',
+            'index',
+            'key',
+            'type',
         )
 
 
