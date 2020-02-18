@@ -32,15 +32,15 @@
             <div class="mr-3 align-self-center">{{ displayedRule.name }}</div>
 
             <b-button-group>
-              <ButtonSmall class="position-relative" @click="addComponent('trigger')">
+              <ButtonSmall class="position-relative" @click="addTrigger()">
                 <i class="fas fa-exclamation fa-fw"></i>
                 <i class="fas fa-plus bottom-right"></i>
               </ButtonSmall>
-              <ButtonSmall class="position-relative" @click="addComponent('condition')">
+              <ButtonSmall class="position-relative" @click="addCondition()">
                 <i class="fas fa-question fa-fw"></i>
                 <i class="fas fa-plus bottom-right"></i>
               </ButtonSmall>
-              <ButtonSmall class="position-relative" @click="addComponent('action')">
+              <ButtonSmall class="position-relative" @click="addAction()">
                 <i class="fas fa-play fa-fw"></i>
                 <i class="fas fa-plus bottom-right"></i>
               </ButtonSmall>
@@ -50,31 +50,31 @@
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col">
-                <Context
+                <ContextParagraph
+                  :root="true"
                   :title="$t('editor.triggers')"
-                  :type="'trigger'"
-                  :fqdn="['rules', displayedRuleIndex, 'triggers']"
-                  @updateComponent="(index, c) => updateComponent('trigger', index, c)"
+                  context="trigger"
+                  :fqdn="['rules', displayedRuleIndex, 'content', 'triggers']"
                 />
               </div>
             </div>
             <div class="row mb-2">
               <div class="col">
-                <Context
+                <ContextParagraph
+                  :root="true"
                   :title="$t('editor.conditions')"
-                  :type="'condition'"
-                  :fqdn="['rules', displayedRuleIndex, 'conditions']"
-                  @updateComponent="(index, c) => updateComponent('condition', index, c)"
+                  context="condition"
+                  :fqdn="['rules', displayedRuleIndex, 'content', 'conditions']"
                 />
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <Context
+                <ContextParagraph
+                  :root="true"
                   :title="$t('editor.actions')"
-                  :type="'action'"
-                  :fqdn="['rules', displayedRuleIndex, 'actions']"
-                  @updateComponent="(index, c) => updateComponent('action', index, c)"
+                  context="action"
+                  :fqdn="['rules', displayedRuleIndex, 'content', 'actions']"
                 />
               </div>
             </div>
@@ -87,7 +87,7 @@
 
 <script>
 import ButtonSmall from "@/components/common/ButtonSmall"
-import Context from "@/components/editor/Context.vue"
+import ContextParagraph from "@/components/editor/Context.vue"
 import editorStore from "@/store/editorStore.js"
 import draggable from "vuedraggable"
 
@@ -96,7 +96,7 @@ export default {
   components: {
     draggable,
     ButtonSmall,
-    Context,
+    ContextParagraph,
   },
   data() {
     return {
@@ -127,15 +127,26 @@ export default {
       this.displayedRuleIndex = index
     },
     addRule: function() {
-      editorStore.commit('addRule')
+      let fqdn = ['rules']
+      let newRuleIndex = editorStore.state.rules.length + 1
+      let data = {
+        content: {
+          triggers: [],
+          conditions: [],
+          actions: [],
+        },
+        name: "Rule " + newRuleIndex,
+      }
+      editorStore.commit('pushDataFromFQDN', {fqdn, data})
     },
-    addComponent: function(context) {
-      let ruleIndex = this.displayedRuleIndex
-      editorStore.commit('addComponent', {ruleIndex, context})
+    addTrigger: function() {
+      editorStore.commit('addContext', 'trigger')
     },
-    updateComponent: function(context, componentIndex, component) {
-      let ruleIndex = this.displayedRuleIndex
-      editorStore.commit('updateComponent', {ruleIndex, context, componentIndex, component})
+    addCondition: function() {
+      editorStore.commit('addContext', 'condition')
+    },
+    addAction: function() {
+      editorStore.commit('addContext', 'action')
     },
   }
 }

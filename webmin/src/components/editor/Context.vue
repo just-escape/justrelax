@@ -1,20 +1,17 @@
 <template>
   <div>
-    <div class="text-jaffa">
+    <div :class="{'text-jaffa': root}">
       <i class="fas fa-fw" :class="icon"></i> {{ title }}
     </div>
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <draggable :list="storeBoundComponents" :group="{name: type}">
+          <draggable :list="storeBoundComponents" :group="{name: context}">
             <ComponentInline
               v-for="(c, index) in storeBoundComponents"
               :key="getKey(index)"
-              :component="c"
-              :context="type"
-              :modalId="getModalId(index)"
+              :context="context"
               :fqdn="getFQDN(index)"
-              @updateComponent="(c) => updateComponent(index, c)"
             />
           </draggable>
         </div>
@@ -36,11 +33,11 @@ export default {
   },
   computed: {
     icon() {
-      if (this.type === 'trigger') {
+      if (this.context === 'trigger') {
         return ['fa-play']
-      } else if (this.type === 'condition') {
+      } else if (this.context === 'condition') {
         return ['fa-question']
-      } else if (this.type === 'action') {
+      } else if (this.context === 'action') {
         return ['fa-exclamation']
       } else {
         return []
@@ -69,17 +66,13 @@ export default {
       }
     },
   },
-  methods: {
-    getModalId(suffix) {
-      return this.getFQDN(suffix).join('-')
-    },
-    updateComponent(componentIndex, component) {
-      this.$emit('updateComponent', componentIndex, component)
-    }
-  },
   props: {
+    root: {
+      type: Boolean,
+      default: false,
+    },
     title: String,
-    type: String,
+    context: String,
     fqdn: Array,  // Fully Qualified Data Name
   }
 }

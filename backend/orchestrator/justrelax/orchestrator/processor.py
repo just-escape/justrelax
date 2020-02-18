@@ -424,10 +424,10 @@ class RulesProcessor:
             variable_name = value["variable"]
             return self.variables[variable_name]
 
-        if "function" in value:
-            function = self.function_table.get(value["function"], None)
+        if "template" in value:
+            function = self.function_table.get(value["template"], None)
             if function is None:
-                raise ValueError('Unknown function {}'.format(value["function"]))
+                raise ValueError('Unknown function {}'.format(value["template"]))
             return function(value["arguments"], context)
 
         return None

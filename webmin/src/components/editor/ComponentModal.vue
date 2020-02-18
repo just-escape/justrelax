@@ -8,12 +8,12 @@
   >
     <select v-model="selectedTemplate" class="mr-2">
       <option
-        v-for="t in orderedTemplates"
+        v-for="t in templates"
         :key="t.name"
         :value="t.name"
       >
         <span v-if="t.category">{{ $t('editor.categories.' + t.category) }} - </span>
-        <span>{{ $t("editor.links." + t.name + ".name") }}</span>
+        <span>{{ $t("editor.templates." + t.name + ".name") }}</span>
       </option>
     </select>
 
@@ -42,14 +42,14 @@ export default {
     }
   },
   computed: {
-    templates() {
-      return editorStore.state.templates[this.context]
+    component() {
+      return editorStore.getters.dataFromFQDN(this.fqdn)
     },
-    orderedTemplates() {
-      return editorStore.state.orderedTemplates[this.context]
+    templates() {
+      return editorStore.state.templatesByContext[this.context]
     },
     links() {
-      return this.templates[this.componentBuffer.template].links
+      return editorStore.state.templatesByName[this.componentBuffer.template].links
     },
     args() {
       return this.componentBuffer.arguments
@@ -62,7 +62,7 @@ export default {
         this.componentBuffer.template = value
 
         var args = {}
-        for (var link of this.templates[value].links) {
+        for (var link of editorStore.state.templatesByName[value].links) {
           if (link.type === "argument") {
             if (link.value_type === "timer") {
               // Determine the default value dynamically
@@ -95,7 +95,9 @@ export default {
   },
   methods: {
     ok: function() {
-      this.$emit('update', JSON.parse(JSON.stringify(this.componentBuffer)))
+      let fqdn = this.fqdn
+      let data = JSON.parse(JSON.stringify(this.componentBuffer))
+      editorStore.commit('setDataFromFQDN', {fqdn, data})
     },
     updateArgument(key, value) {
       this.$set(this.componentBuffer.arguments, key, value)
@@ -103,7 +105,7 @@ export default {
       // Hardcoded behavior for special case
       if (this.selectedTemplate === 'set_variable' && key === 'variable') {
         let variable = this.getVariableFromName(value.variable)
-        for (var link of this.templates[this.selectedTemplate].links) {
+        for (var link of editorStore.state.templatesByName[this.selectedTemplate].links) {
           if (link.key === 'value' && link.value_type !== variable.type) {
             link.value_type = variable.type
             this.componentBuffer.arguments.value = this.getDefaultValueFromValueType(variable.type)
@@ -136,9 +138,9 @@ export default {
       } else if (valueType === "boolean") {
         return true
       } else if (valueType === "object") {
-        return {function: "last_created_object"}
+        return {template: "last_created_object"}
       } else if (valueType === "timer") {
-        return {function: "expiring_timer"}
+        return {template: "expiring_timer"}
       } else if (valueType === "disabled") {
         return null
       } else {
@@ -154,7 +156,7 @@ export default {
     if (this.componentBuffer.template === 'set_variable') {
       let variable = this.getVariableFromName(this.componentBuffer.arguments.variable.variable)
       if (variable !== null) {
-        for (var link of this.templates.set_variable.links) {
+        for (var link of editorStore.state.templatesByName.set_variable.links) {
           if (link.key === 'value') {
             link.value_type = variable.type
             return
@@ -166,7 +168,7 @@ export default {
   props: {
     modalId: String,
     context: String,
-    component: Object,
+    fqdn: Array,
   }
 }
 </script>

@@ -19,12 +19,12 @@ export default {
           return value
         }
       } else if (typeof value === "object") {
-        if (value.function !== undefined) {
+        if (value.template !== undefined) {
           var formattedValue = ""
-          let links = editorStore.state.templates.function[value.function].links
+          let links = editorStore.state.templatesByName[value.template].links
           for (var link of links) {
             if (link.type === 'text') {
-              formattedValue += this.$t('editor.links.' + value.function + '.' + link.locale)
+              formattedValue += this.$t('editor.templates.' + value.template + '.' + link.locale)
             } else if (link.type === 'argument') {
               formattedValue += this.format(value.arguments[link.key])
             }

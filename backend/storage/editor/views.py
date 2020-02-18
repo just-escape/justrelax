@@ -6,79 +6,42 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from scenario.models import Room
-from editor.models import Function, FunctionTemplateLink
-from editor.models import ComponentTemplate, ComponentTemplateLink
-from editor.models import Variable
-from editor.models import Rule, Component, ComponentArgument
+from editor.models import Template, TemplateLink, Variable, Rule, CONTEXTS
 
 
-def get_serialized_functions():
-    functions = []
-    for f in Function.objects.all().order_by('index'):
-        serialized_function = {
-            'category': f.category,
-            'return_type': f.return_type,
-            'name': f.name,
+def get_serialized_templates():
+    templates = []
+    for t in Template.objects.all().order_by('index'):
+        template = {
+            'category': t.category,
+            'name': t.name,
+            'context': t.context,
             'links': [],
         }
-        for ftl in FunctionTemplateLink.objects.filter(function=f).order_by('index'):
-            function_template_link = {
-                'type': ftl.type,
+        for link in TemplateLink.objects.filter(template=t).order_by('index'):
+            template_link = {
+                'type': link.type,
             }
-            if ftl.type == 'text':
-                function_template_link['locale'] = ftl.locale
-            elif ftl.type == 'argument':
-                function_template_link['key'] = ftl.key
-                function_template_link['default_value'] = ftl.default_value
-                function_template_link['value_type'] = ftl.value_type
-                if ftl.predefined_choices:
-                    function_template_link['predefined_choices'] = ftl.predefined_choices.split(',')
+            if link.type == 'text':
+                template_link['locale'] = link.locale
+            elif link.type == 'argument':
+                template_link['key'] = link.key
+                template_link['default_value'] = link.default_value
+                template_link['value_type'] = link.value_type
+                if link.predefined_choices:
+                    template_link['predefined_choices'] = link.predefined_choices.split(',')
                 else:
-                    function_template_link['predefined_choices'] = None
-            serialized_function['links'].append(function_template_link)
-        functions.append(serialized_function)
+                    template_link['predefined_choices'] = None
+            template['links'].append(template_link)
 
-    return functions
+        templates.append(template)
 
-
-def get_serialized_component_templates(context):
-    component_templates = []
-    for ct in ComponentTemplate.objects.filter(context=context).order_by('index'):
-        component_template = {
-            'category': ct.category,
-            'name': ct.name,
-            'links': [],
-        }
-        for ctl in ComponentTemplateLink.objects.filter(template=ct).order_by('index'):
-            component_template_link = {
-                'type': ctl.type,
-            }
-            if ctl.type == 'text':
-                component_template_link['locale'] = ctl.locale
-            elif ctl.type == 'argument':
-                component_template_link['key'] = ctl.key
-                component_template_link['default_value'] = ctl.default_value
-                component_template_link['value_type'] = ctl.value_type
-                if ctl.predefined_choices:
-                    component_template_link['predefined_choices'] = ctl.predefined_choices.split(',')
-                else:
-                    component_template_link['predefined_choices'] = None
-            component_template['links'].append(component_template_link)
-
-        component_templates.append(component_template)
-
-    return component_templates
+    return templates
 
 
 @api_view(['GET'])
 def get_templates(request):
-    response = {
-        'function': get_serialized_functions(),
-        'trigger': get_serialized_component_templates('trigger'),
-        'condition': get_serialized_component_templates('condition'),
-        'action': get_serialized_component_templates('action'),
-    }
-
+    response = get_serialized_templates()
     return Response(response)
 
 
@@ -97,30 +60,13 @@ def get_serialized_variables(room):
     return variables
 
 
-def get_serialized_components(rule, context):
-    components = []
-    for c in Component.objects.filter(rule=rule, template__context=context).order_by('index'):
-        component = {
-            'id': c.id,
-            'template': c.template.name,
-            'arguments': {},
-        }
-        for ca in ComponentArgument.objects.filter(component=c):
-            component['arguments'][ca.key] = json.loads(ca.value)
-        components.append(component)
-
-    return components
-
-
 def get_serialized_rules(room):
     rules = []
     for r in Rule.objects.filter(room=room).order_by('index'):
         rule = {
             'id': r.id,
             'name': r.name,
-            'triggers': get_serialized_components(r, 'trigger'),
-            'conditions': get_serialized_components(r, 'condition'),
-            'actions': get_serialized_components(r, 'action'),
+            'content': json.loads(r.content),
         }
         rules.append(rule)
     return rules
@@ -137,96 +83,6 @@ def get_scenario(request):
     }
 
     return Response(response)
-
-
-def create_component(rule, component, context, index):
-    template = ComponentTemplate.objects.get(
-        name=component['template'],
-        context=context,
-    )
-    new_component = Component(
-        rule=rule,
-        template=template,
-        index=index,
-    )
-    new_component.save()
-
-    for key, value in component['arguments'].items():
-        ComponentArgument(
-            component=new_component,
-            key=key,
-            value=json.dumps(value),
-        ).save()
-
-
-def update_component_arguments(component, arguments):
-    argument_keys = {*arguments.keys()}
-
-    old_arguments = ComponentArgument.objects.filter(component=component)
-    old_argument_keys = {a.key for a in old_arguments}
-
-    # Delete
-    keys_to_delete = old_argument_keys - argument_keys
-    old_arguments.filter(key__in=keys_to_delete, component=component).delete()
-
-    # Update
-    keys_to_update = argument_keys & old_argument_keys
-    for key in keys_to_update:
-        value = json.dumps(arguments[key])
-        argument_to_update = ComponentArgument.objects.get(component=component, key=key)
-
-        if argument_to_update.value != value:
-            argument_to_update.value = value
-            argument_to_update.save()
-
-    # Create
-    arguments_to_create = {key: value for key, value in arguments.items() if key not in keys_to_update}
-    for key, value in arguments_to_create.items():
-        ComponentArgument(
-            component=component,
-            key=key,
-            value=json.dumps(value),
-        ).save()
-
-
-def update_components(rule, components, context):
-    component_ids = {c.get('id', None) for c in components}
-    component_ids.discard(None)
-
-    old_components = Component.objects.all()
-    old_component_ids = {c.id for c in old_components}
-
-    # Delete
-    ids_to_delete = old_component_ids - component_ids
-    old_components.filter(id__in=ids_to_delete, rule=rule, template__context=context).delete()
-
-    # Update
-    ids_to_update = component_ids & old_component_ids
-    for id_ in ids_to_update:
-        save = False
-        for index, component in enumerate(components):
-            if component.get('id', None) == id_:
-                component_to_update = Component.objects.get(id=id_)
-
-                template = ComponentTemplate.objects.get(name=component['template'])
-                if component_to_update.template != template:
-                    component_to_update.template = template
-                    save = True
-
-                if component_to_update.index != index:
-                    component_to_update.index = index
-                    save = True
-
-                if save:
-                    component_to_update.save()
-
-                # Update arguments
-                update_component_arguments(component_to_update, component['arguments'])
-
-    # Create
-    for index, c in enumerate(components):
-        if c.get('id', None) not in ids_to_update:
-            create_component(rule, c, context, index)
 
 
 def update_rules(room, rules):
@@ -256,13 +112,13 @@ def update_rules(room, rules):
                     rule_to_update.index = index
                     save = True
 
+                json_content = json.dumps(rule['content'])
+                if rule_to_update.content != json_content:
+                    rule_to_update.content = json_content
+                    save = True
+
                 if save:
                     rule_to_update.save()
-
-                # Update components
-                update_components(rule_to_update, rule['triggers'], 'trigger')
-                update_components(rule_to_update, rule['conditions'], 'condition')
-                update_components(rule_to_update, rule['actions'], 'action')
 
     # Create
     for rule_index, rule in enumerate(rules):
@@ -271,32 +127,9 @@ def update_rules(room, rules):
                 room=room,
                 name=rule['name'],
                 index=rule_index,
+                content=json.dumps(rule['content']),
             )
             new_rule.save()
-
-            for component_index, component in enumerate(rule['triggers']):
-                create_component(
-                    new_rule,
-                    component,
-                    'trigger',
-                    component_index,
-                )
-
-            for component_index, component in enumerate(rule['conditions']):
-                create_component(
-                    new_rule,
-                    component,
-                    'condition',
-                    component_index,
-                )
-
-            for component_index, component in enumerate(rule['actions']):
-                create_component(
-                    new_rule,
-                    component,
-                    'action',
-                    component_index,
-                )
 
 
 def update_variables(room, variables):

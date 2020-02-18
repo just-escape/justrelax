@@ -20,6 +20,9 @@
     "string": "String:",
     "any_text": "Any text",
     "variable": "Variable:",
+    "if_conditions": "If - Conditions",
+    "then_actions": "Then - Actions",
+    "else_actions": "Else - Actions",
     "categories": {
       "": "",
       "event": "Event",
@@ -32,7 +35,7 @@
       "math": "Math",
       "trigger": "Trigger"
     },
-    "links": {
+    "templates": {
       "incoming_event": {
         "name": "Event received",
         "an_event_has_been_received": "An event has been received"
@@ -165,6 +168,10 @@
       "resume_timer": {
         "name": "Resume timer",
         "resume": "Resume "
+      },
+      "if_then_else_multiple_functions": {
+        "name": "If / Then / Else (Multiple functions)",
+        "if_then_do_else_do": "If (all conditions are True) then do (perform actions) else do (perform actions)"
       },
       "wait": {
         "name": "Wait",

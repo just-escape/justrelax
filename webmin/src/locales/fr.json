@@ -19,6 +19,9 @@
     "string": "Chaîne :",
     "any_text": "Texte",
     "variable": "Variable :",
+    "if_conditions": "Si - Conditions",
+    "then_actions": "Alors - Actions",
+    "else_actions": "Sinon - Actions",
     "categories": {
       "": "",
       "event": "Événement",
@@ -31,7 +34,7 @@
       "math": "Maths",
       "trigger": "Déclencheur"
     },
-    "links": {
+    "templates": {
       "incoming_event": {
         "name": "Événement reçu",
         "an_event_has_been_received": "Un événement a été reçu"
@@ -164,6 +167,10 @@
       "resume_timer": {
         "name": "Reprendre un minuteur",
         "resume": "Reprendre "
+      },
+      "if_then_else_multiple_functions": {
+        "name": "Si / Alors / Sinon (Plusieurs fonctions)",
+        "if_then_do_else_do": "Si (toutes les conditions sont True) alors (réaliser les actions) sinon (réaliser les actions)"
       },
       "wait": {
         "name": "Attendre",

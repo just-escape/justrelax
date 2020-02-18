@@ -29,33 +29,45 @@ VALUE_TYPES = (
     ('disabled', 'disabled'),  # Special behavior on the interface
 )
 
+CONTEXTS = (
+    ('trigger', 'trigger'),
+    ('condition', 'condition'),
+    ('action', 'action'),
+    ('string', 'string'),
+    ('boolean', 'boolean'),
+    ('integer', 'integer'),
+    ('real', 'real'),
+    ('object', 'object'),
+    ('timer', 'timer'),
+)
+
 TEMPLATE_LINK_TYPES = (
     ('text', 'text'),
     ('argument', 'argument'),
 )
 
 
-class Function(models.Model):
+class Template(models.Model):
     category = models.CharField(
         choices=CATEGORIES, default=CATEGORIES[0][0],
         max_length=64, blank=True)
     index = models.IntegerField(unique=True)
     name = models.CharField(max_length=64, unique=True)
-    return_type = models.CharField(
-        choices=VALUE_TYPES, default=VALUE_TYPES[0][0], max_length=16)
+    context = models.CharField(
+        choices=CONTEXTS, default=CONTEXTS[0][0], max_length=16)
 
     def __str__(self):
         return self.name
 
 
-class FunctionForm(forms.ModelForm):
+class TemplateForm(forms.ModelForm):
     class Meta:
-        model = Function
-        fields = ('category', 'index', 'name', 'return_type',)
+        model = Template
+        fields = ('category', 'index', 'name', 'context',)
 
 
-class FunctionTemplateLink(models.Model):
-    function = models.ForeignKey(Function, on_delete=models.CASCADE)
+class TemplateLink(models.Model):
+    template = models.ForeignKey(Template, on_delete=models.CASCADE)
 
     index = models.IntegerField()
     type = models.CharField(
@@ -76,24 +88,24 @@ class FunctionTemplateLink(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['function', 'index'],
-                name='function_index',
+                fields=['template', 'index'],
+                name='template_index',
             ),
             models.UniqueConstraint(
-                fields=['function', 'key'],
-                name='function_key',
+                fields=['template', 'key'],
+                name='template_key',
             )
         ]
 
     def __str__(self):
-        return '{} template ({})'.format(self.function.name, self.index)
+        return '{} template ({})'.format(self.template.name, self.index)
 
 
-class FunctionTemplateLinkForm(forms.ModelForm):
+class TemplateLinkForm(forms.ModelForm):
     class Meta:
-        model = FunctionTemplateLink
+        model = TemplateLink
         fields = (
-            'function',
+            'template',
             'index',
             'type',
             'locale',
@@ -138,6 +150,7 @@ class Rule(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     index = models.IntegerField()
     name = models.CharField(max_length=64)
+    content = models.TextField()
 
     class Meta:
         constraints = [
@@ -151,137 +164,4 @@ class Rule(models.Model):
 class RuleForm(forms.ModelForm):
     class Meta:
         model = Rule
-        fields = ('room', 'index', 'name',)
-
-
-class ComponentTemplate(models.Model):
-    CONTEXTS = (
-        ('trigger', 'trigger'),
-        ('condition', 'condition'),
-        ('action', 'action'),
-    )
-
-    category = models.CharField(
-        choices=CATEGORIES, default=CATEGORIES[0][0],
-        max_length=64, blank=True)
-    index = models.IntegerField()
-    name = models.CharField(max_length=64)
-    context = models.CharField(
-        max_length=16, choices=CONTEXTS, default=CONTEXTS[0][0])
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['context', 'index'],
-                name='context_index',
-            ),
-            models.UniqueConstraint(
-                fields=['context', 'name'],
-                name='context_name',
-            )
-        ]
-
-    def __str__(self):
-        return '{} - {}'.format(self.context, self.name)
-
-
-class ComponentTemplateForm(forms.ModelForm):
-    class Meta:
-        model = ComponentTemplate
-        fields = ('index', 'name', 'context',)
-
-
-class ComponentTemplateLink(models.Model):
-    template = models.ForeignKey(ComponentTemplate, on_delete=models.CASCADE)
-
-    index = models.IntegerField()
-    type = models.CharField(
-        max_length=16,
-        choices=TEMPLATE_LINK_TYPES,
-        default=TEMPLATE_LINK_TYPES[0][0],
-    )
-
-    # relevant if type is text
-    locale = models.CharField(max_length=128, null=True, blank=True)
-
-    # relevant if type is argument
-    key = models.CharField(max_length=64, null=True)
-    value_type = models.CharField(choices=VALUE_TYPES, max_length=16, default=VALUE_TYPES[0][0])
-    default_value = models.TextField(null=True, blank=True)
-    predefined_choices = models.TextField(null=True, blank=True)  # comma-separated values
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['template', 'index'],
-                name='template_index',
-            ),
-            models.UniqueConstraint(
-                fields=['template', 'key'],
-                name='template_key',
-            )
-        ]
-
-    def __str__(self):
-        return "{} template ({})".format(self.template, self.index)
-
-
-class ComponentTemplateLinkForm(forms.ModelForm):
-    class Meta:
-        model = ComponentTemplateLink
-        fields = (
-            'template',
-            'index',
-            'type',
-            'locale',
-            'key',
-            'value_type',
-            'default_value',
-            'predefined_choices',
-        )
-
-
-class Component(models.Model):
-    rule = models.ForeignKey(Rule, on_delete=models.CASCADE)
-    template = models.ForeignKey(ComponentTemplate, on_delete=models.CASCADE)
-    index = models.IntegerField()
-
-    def __str__(self):
-        return "{} - {}".format(self.rule, self.template)
-
-
-class ComponentForm(forms.ModelForm):
-    class Meta:
-        model = Component
-        fields = (
-            'rule',
-            'template',
-            'index',
-        )
-
-
-class ComponentArgument(models.Model):
-    component = models.ForeignKey(Component, on_delete=models.CASCADE)
-    key = models.CharField(max_length=64, null=True)
-    value = models.TextField(null=True, blank=True)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['component', 'key'],
-                name='component_key',
-            ),
-        ]
-
-    def __str__(self):
-        return "{} - {}={}".format(self.component, self.key, self.value)
-
-
-class ComponentArgumentForm(forms.ModelForm):
-    class Meta:
-        model = ComponentArgument
-        fields = (
-            'component',
-            'key',
-            'value',
-        )
+        fields = ('room', 'index', 'name', 'content')

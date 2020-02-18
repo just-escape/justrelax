@@ -11,7 +11,7 @@
           :key="value"
           :value="value"
         >
-          {{ $t('editor.links.' + templateName + '.' + value) }}
+          {{ $t('editor.templates.' + templateName + '.' + value) }}
         </option>
       </select>
     </div>

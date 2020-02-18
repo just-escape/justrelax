@@ -7,15 +7,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    selectedFQDN: undefined,
     variables: [],
     rules: [],
-    templates: {
-      function: {},
-      trigger: {},
-      condition: {},
-      action: {},
+    templatesByName: {},
+    templatesByContext: {
+      trigger: [],
+      condition: [],
+      action: [],
+      string: [],
+      boolean: [],
+      integer: [],
+      real: [],
+      object: [],
+      timer: [],
     },
-    orderedTemplates: [],
   },
   getters: {
     dataFromFQDN(state) {
@@ -30,53 +36,51 @@ export default new Vuex.Store({
   },
   mutations: {
     loadTemplates (state, templates) {
-      for (var context of ['function', 'trigger', 'condition', 'action']) {
-        state.orderedTemplates[context] = templates[context]
-        for (var template of state.orderedTemplates[context]) {
-          state.templates[context][template.name] = template
-        }
+      for (var t of templates) {
+        state.templatesByName[t.name] = t
+        state.templatesByContext[t.context].push(t)
       }
     },
     loadScenario (state, scenario) {
       Vue.set(state, 'variables', scenario.variables)
       Vue.set(state, 'rules', scenario.rules)
     },
-    addRule (state) {
-      state.rules.push(
-        {
-          triggers: [],
-          conditions: [],
-          actions: [],
-          name: "Rule " + (state.rules.length + 1),
-        }
-      )
-    },
     setDataFromFQDN (state, {fqdn, data}) {
+      let copiedFQDN = JSON.parse(JSON.stringify(fqdn))
+      let lastFQDNReference = copiedFQDN.pop()
+      var dataPath = state
+      for (var reference of copiedFQDN) {
+        dataPath = dataPath[reference]
+      }
+      Vue.set(dataPath, lastFQDNReference, data)
+    },
+    pushDataFromFQDN (state, {fqdn, data}) {
       var dataPath = state
       for (var reference of fqdn) {
         dataPath = dataPath[reference]
       }
-      dataPath = data
+      dataPath.push(data)
     },
-    addComponent (state, {ruleIndex, context}) {
+    addContext (state, context) {
       var args = {}
-      for (var link of state.orderedTemplates[context][0].links) {
+      for (var link of state.templatesByContext[context][0].links) {
         if (link.type === "argument") {
           args[link.key] = JSON.parse(link.default_value)
         }
       }
 
       let component = {
-        template: state.orderedTemplates[context][0].name,
+        template: state.templatesByContext[context][0].name,
         arguments: args,
       }
 
-      // + 's' is dirty
-      state.rules[ruleIndex][context + 's'].push(component)
-    },
-    updateComponent (state, {ruleIndex, context, componentIndex, component}) {
-      // + 's' is dirty
-      Vue.set(state.rules[ruleIndex][context + 's'], componentIndex, component)
+      if (context === 'trigger') {
+        state.rules[0].content.triggers.push(component)
+      } else if (context === 'condition') {
+        state.rules[0].content.conditions.push(component)
+      } else if (context === 'action') {
+        state.rules[0].content.actions.push(component)
+      }
     },
     setVariables (state, variables) {
       Vue.set(state, 'variables', variables)

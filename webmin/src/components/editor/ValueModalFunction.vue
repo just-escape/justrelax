@@ -12,7 +12,7 @@
           :value="f.name"
         >
           <span v-if="f.category">{{ $t('editor.categories.' + f.category) }} - </span>
-          <span>{{ $t('editor.links.' + f.name + ".name") }}</span>
+          <span>{{ $t('editor.templates.' + f.name + ".name") }}</span>
         </option>
       </select>
 
@@ -38,29 +38,21 @@ export default {
     TemplateEditable: () => import('@/components/editor/TemplateEditable.vue'),
   },
   computed: {
-    functions() {
-      return editorStore.state.templates.function
-    },
     selectableFunctions() {
-      let this_ = this
-      return editorStore.state.orderedTemplates.function.filter(
-        function(f) {
-          return f.return_type === this_.inputType
-        }
-      )
+      return editorStore.state.templatesByContext[this.inputType]
     },
     disabled() {
       return this.selectableFunctions.length === 0
     },
     selectedFunction: {
       get() {
-        return this.valueBuffer.function
+        return this.valueBuffer.template
       },
       set(value) {
-        this.valueBuffer.function = value
+        this.valueBuffer.template = value
 
         var args = {}
-        for (var link of this.functions[value].links) {
+        for (var link of editorStore.state.templatesByName[value].links) {
           if (link.type === "argument") {
             args[link.key] = JSON.parse(link.default_value)
           }
@@ -70,7 +62,7 @@ export default {
       },
     },
     links() {
-      return this.functions[this.selectedFunction].links
+      return editorStore.state.templatesByName[this.selectedFunction].links
     },
     args() {
       return this.valueBuffer.arguments
@@ -83,14 +75,14 @@ export default {
     },
   },
   created() {
-    if (typeof this.parentValue === "object" && this.parentValue.function !== undefined) {
+    if (typeof this.parentValue === "object" && this.parentValue.template !== undefined) {
       this.valueBuffer = JSON.parse(JSON.stringify(this.parentValue))
       this.pushMyValue()
     } else {
       if (!this.disabled) {
         let defaultFunction = this.selectableFunctions[0]
 
-        this.$set(this, 'valueBuffer', {function: defaultFunction.name})
+        this.$set(this, 'valueBuffer', {template: defaultFunction.name})
 
         this.$set(this.valueBuffer, 'arguments', {})
         for (var link of defaultFunction.links) {

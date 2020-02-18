@@ -1,7 +1,7 @@
 <template>
   <div>
     <span v-for="(link, index) in links" :key="index">
-      <span v-if="link.type === 'text'">{{ $t('editor.links.' + templateName + '.' + link.locale) }}</span>
+      <span v-if="link.type === 'text'">{{ $t('editor.templates.' + templateName + '.' + link.locale) }}</span>
       <span v-else-if="link.type === 'argument'">
         <FormattedValue :formattedContent="format(args[link.key])"/>
       </span>

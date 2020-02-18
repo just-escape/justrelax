@@ -9,11 +9,32 @@
     />
 
     <ComponentModal
-      @update="update"
       :modalId="modalId"
       :context="context"
-      :component="component"
+      :fqdn="fqdn"
     />
+
+    <div class="container-fluid" v-if="component.template === 'if_then_else_multiple_functions'">
+      <div class="row">
+        <div class="col">
+          <SubContextParagraph
+            :title="$t('editor.if_conditions')"
+            context="condition"
+            :fqdn="getFQDN('if_conditions')"
+          />
+          <SubContextParagraph
+            :title="$t('editor.then_actions')"
+            context="action"
+            :fqdn="getFQDN('then_actions')"
+          />
+          <SubContext
+            :title="$t('editor.else_actions')"
+            context="action"
+            :fqdn="getFQDN('else_actions')"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,26 +46,34 @@ import editorStore from '@/store/editorStore.js'
 export default {
   name: "ComponentInline",
   components: {
-    Template,
-    ComponentModal,
+    Template: Template,
+    ComponentModal: ComponentModal,
+    SubContextParagraph: () => import('@/components/editor/Context.vue'),
   },
   computed: {
-    links: function() {
-      return editorStore.state.templates[this.context][this.component.template].links
+    component() {
+      return editorStore.getters.dataFromFQDN(this.fqdn)
     },
-    args: function() {
+    links() {
+      return editorStore.state.templatesByName[this.component.template].links
+    },
+    args() {
       return this.component.arguments
     },
-  },
-  methods: {
-    update: function(component) {
-      this.$emit('updateComponent', component)
+    getFQDN() {
+      return (key) => {
+        var fqdn = JSON.parse(JSON.stringify(this.fqdn))
+        fqdn.push(key)
+        return fqdn
+      }
+    },
+    modalId() {
+      return this.fqdn.join('-')
     },
   },
   props: {
-    component: Object,
     context: String,
-    modalId: String,
+    fqdn: Array,
   }
 }
 </script>
