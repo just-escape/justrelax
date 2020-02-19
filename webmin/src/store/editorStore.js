@@ -29,36 +29,36 @@ export default new Vuex.Store({
       action: 'fa-exclamation',
     },
     iconTemplateTable: {
-      incoming_event: 'fa-sign-in-alt',
-      incoming_event_from_node: 'fa-sign-in-alt',
-      admin_button_press: 'fa-hand-point-down',
-      admin_button_id_press: 'fa-hand-point-down',
-      timed_trigger: 'fa-clock',
-      periodic_trigger: 'fa-clock',
-      timer_trigger: 'fa-clock',
-      session_start: 'fa-play',
-      session_pause: 'fa-pause',
-      session_resume: 'fa-play',
-      simple_condition: 'fa-question',
-      send_event_string: 'fa-sign-out-alt',
-      send_event_object: 'fa-sign-out-alt',
-      push_notification: 'fa-users-cog',
-      add_record_now: 'fa-users-cog',
-      add_record: 'fa-users-cog',
-      create_a_new_object: 'fa-file-excel',
-      save_object_in_object: 'fa-file-excel',
-      save_string_in_object: 'fa-file-excel',
-      save_integer_in_object: 'fa-file-excel',
-      save_real_in_object: 'fa-file-excel',
-      save_boolean_in_object: 'fa-file-excel',
-      start_timer: 'fa-clock',
-      pause_timer: 'fa-clock',
-      resume_timer: 'fa-clock',
-      if_then_else_multiple_functions: 'fa-question',
-      wait: 'fa-hourglass-start',
-      set_variable: 'fa-file-excel',
-      trigger_rule: 'fa-cog',
-      do_nothing: 'fa-cog',
+      incoming_event: 'fas fa-sign-in-alt',
+      incoming_event_from_node: 'fas fa-sign-in-alt',
+      admin_button_press: 'fas fa-hand-point-down',
+      admin_button_id_press: 'fas fa-hand-point-down',
+      timed_trigger: 'far fa-clock',
+      periodic_trigger: 'far fa-clock',
+      timer_trigger: 'far fa-clock',
+      session_start: 'fas fa-play',
+      session_pause: 'fas fa-pause',
+      session_resume: 'fas fa-play',
+      simple_condition: 'fas fa-question',
+      send_event_string: 'fas fa-sign-out-alt',
+      send_event_object: 'fas fa-sign-out-alt',
+      push_notification: 'fas fa-users-cog',
+      add_record_now: 'fas fa-users-cog',
+      add_record: 'fas fa-users-cog',
+      create_a_new_object: 'fas fa-file-excel',
+      save_object_in_object: 'fas fa-file-excel',
+      save_string_in_object: 'fas fa-file-excel',
+      save_integer_in_object: 'fas fa-file-excel',
+      save_real_in_object: 'fas fa-file-excel',
+      save_boolean_in_object: 'fas fa-file-excel',
+      start_timer: 'far fa-clock',
+      pause_timer: 'far fa-clock',
+      resume_timer: 'far fa-clock',
+      if_then_else_multiple_functions: 'fas fa-question',
+      wait: 'fas fa-hourglass-start',
+      set_variable: 'fas fa-file-excel',
+      trigger_rule: 'fas fa-cog',
+      do_nothing: 'fas fa-cog',
     },
   },
   getters: {
@@ -76,13 +76,6 @@ export default new Vuex.Store({
         return null
       } else {
         return state.rules[state.displayedRuleIndex]
-      }
-    },
-    selectedRuleIndex(state) {
-      if (state.selectedFQDN === undefined) {
-        return -1
-      } else {
-        return state.selectedFQDN[1]
       }
     },
     iconFromContext(state) {
@@ -133,35 +126,97 @@ export default new Vuex.Store({
       }
       dataPath.push(data)
     },
-    addContext (state, context) {
-      var args = {}
-      for (var link of state.templatesByContext[context][0].links) {
-        if (link.type === "argument") {
-          args[link.key] = JSON.parse(link.default_value)
-        }
-      }
-
-      let component = {
-        template: state.templatesByContext[context][0].name,
-        arguments: args,
-      }
-
-      if (context === 'trigger') {
-        state.rules[0].content.triggers.push(component)
-      } else if (context === 'condition') {
-        state.rules[0].content.conditions.push(component)
-      } else if (context === 'action') {
-        state.rules[0].content.actions.push(component)
-      }
-    },
     setVariables (state, variables) {
       Vue.set(state, 'variables', variables)
     },
     setSelectedFQDN (state, fqdn) {
       state.selectedFQDN = fqdn
+      state.displayedRuleIndex = fqdn[1]
     },
   },
   actions: {
+    addComponent (context, contextType) {
+      // TODO: Fix this algo
+      /**
+      // Identify the target FQDN to push the new component
+      var fqdn = undefined
+      for (var i = context.state.selectedFQDN.length - 1 ; i >= 0 ; i--) {
+        if (i <= 3) {
+          fqdn = ['rules', context.state.displayedRuleIndex, 'content']
+
+          if (contextType === 'trigger') {
+            fqdn.push('triggers')
+          } else if (contextType === 'condition') {
+            fqdn.push('conditions')
+          } else {
+            // contextType === 'action'
+            fqdn.push('actions')
+          }
+          break
+        } else {
+          // Identify the template
+          var trimmedFQDN = context.state.selectedFQDN.slice(0, i + 1)
+          var trimmedFQDNData = context.getters.dataFromFQDN(trimmedFQDN)
+          let dataTemplate = context.state.templatesByName[trimmedFQDNData.template]
+
+          // If the template has context paragraphs...
+          if (dataTemplate.context_paragraphs !== undefined) {
+            // ... try to find a match
+            for (var p of dataTemplate.context_paragraphs) {
+              if (p.type === contextType) {
+                fqdn = JSON.parse(JSON.stringify(trimmedFQDN))
+                fqdn.push('paragraphs')
+                fqdn.push(p.key)
+                console.log(fqdn)
+                console.log(context.state.rules[0].content.actions)
+                break
+              }
+            }
+
+            if (fqdn !== undefined) {
+              break // The first for loop
+            }
+          }
+        }
+      }*/
+      var fqdn = ['rules', context.state.displayedRuleIndex, 'content']
+
+      if (contextType === 'trigger') {
+        fqdn.push('triggers')
+      } else if (contextType === 'condition') {
+        fqdn.push('conditions')
+      } else {
+        // contextType === 'action'
+        fqdn.push('actions')
+      }
+
+      // Generate a default component
+      var data = {
+        template: context.state.templatesByContext[contextType][0].name,
+      }
+
+      var args = {}
+      for (var link of context.state.templatesByContext[contextType][0].links) {
+        if (link.type === "argument") {
+          args[link.key] = JSON.parse(link.default_value)
+        }
+      }
+
+      Vue.set(data, 'arguments', args)
+
+      /* Unlikely to happen, because all default components (index = 0) don't
+       * have context paragraphs.
+       **/
+      if (context.state.templatesByContext[contextType][0].context_paragraphs !== undefined) {
+        var paragraphs = {}
+        for (var paragraph of context.state.templatesByContext[contextType][0].context_paragraphs) {
+          paragraphs[paragraph.key] = []
+        }
+        Vue.set(data, 'paragraphs', paragraphs)
+      }
+
+      context.commit('pushDataFromFQDN', {fqdn, data})
+    },
     loadEditorData(context, roomId) {
       context.dispatch('loadTemplates', roomId)
     },
@@ -179,6 +234,9 @@ export default new Vuex.Store({
       justRestAPI.get('/get_scenario/', {params: {room_id: roomId}})
         .then(function(response) {
           context.commit('loadScenario', response.data)
+          if (context.state.rules.length > 0) {
+            context.commit('setSelectedFQDN', ['rules', 0])
+          }
         })
         .catch(function(error) {
           notificationStore.dispatch('pushError', 'Error while fetching scenario: ' + error)

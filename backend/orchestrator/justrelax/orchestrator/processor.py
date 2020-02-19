@@ -191,6 +191,7 @@ class RulesProcessor:
             'start_timer': self.action_start_timer,
             'pause_timer': self.action_pause_timer,
             'resume_timer': self.action_resume_timer,
+            'if_then_else_multiple_functions': self.action_if_then_else_multiple_functions,
             'wait': self.action_wait,
             'do_nothing': self.action_do_nothing,
         }
@@ -307,7 +308,7 @@ class RulesProcessor:
             self.variables[variable['name']] = init_value
 
         for rule in self.rule_definitions:
-            for trigger in rule['triggers']:
+            for trigger in rule['content']['triggers']:
                 if trigger['template'] in self.on_trigger_type_rules:
                     self.on_trigger_type_rules[trigger['template']].append(
                         {
@@ -399,7 +400,7 @@ class RulesProcessor:
     def process_rule(self, rule, context):
         try:
             self.if_conditions_then_actions(
-                rule['conditions'], rule['actions'], context)
+                rule['content']['conditions'], rule['content']['actions'], context)
         except Exception:
             message = "Error while processing rule {}".format(rule['name'])
             self.factory.send_notification('error', message)
@@ -602,18 +603,21 @@ class RulesProcessor:
         if action_method is None:
             raise ValueError('Unknown action type {}'.format(action_type))
 
-        return action_method(action['arguments'], context)
+        arguments = action['arguments']
+        paragraphs = action.get('paragraphs', {})
 
-    def action_trigger_rule(self, arguments, context):
+        return action_method(arguments, paragraphs, context)
+
+    def action_trigger_rule(self, arguments, paragraphs, context):
         computed_rule_name = self.compute(arguments['rule_name'], context)
         for rule in self.rule_definitions:
             if rule['name'] == computed_rule_name:
-                conditions = rule['conditions']
-                actions = rule['actions']
+                conditions = rule['content']['conditions']
+                actions = rule['content']['actions']
                 self.if_conditions_then_actions(conditions, actions, context)
                 break
 
-    def action_set_variable(self, arguments, context):
+    def action_set_variable(self, arguments, paragraphs, context):
         variable_name = arguments['variable']['variable']
         if type(self.variables[variable_name]) is Timer:
             logger.warning("set_variable action is not supported for timer variables")
@@ -622,27 +626,27 @@ class RulesProcessor:
 
         self.variables[variable_name] = computed_value
 
-    def action_send_event_string(self, arguments, context):
+    def action_send_event_string(self, arguments, paragraphs, context):
         computed_to = self.compute(arguments['node_name'], context)
         computed_event = str(self.compute(arguments['event'], context))
         self.send_event(computed_to, computed_event)
 
-    def action_send_event_object(self, arguments, context):
+    def action_send_event_object(self, arguments, paragraphs, context):
         computed_to = self.compute(arguments['node_name'], context)
         computed_event = dict(self.compute(arguments['event'], context))
         self.send_event(computed_to, computed_event)
 
-    def action_push_notification(self, arguments, context):
+    def action_push_notification(self, arguments, paragraphs, context):
         notification_type = arguments['type']
         computed_message = self.compute(arguments['message'], context)
         self.factory.send_notification(notification_type, computed_message)
 
-    def action_add_record_now(self, arguments, context):
+    def action_add_record_now(self, arguments, paragraphs, context):
         computed_label = self.compute(arguments['label'], context)
         session_time = self.session_timer.session_time
         self.record(session_time, computed_label)
 
-    def action_add_record(self, arguments, context):
+    def action_add_record(self, arguments, paragraphs, context):
         computed_label = self.compute(arguments['label'], context)
         computed_session_time = self.compute(arguments['session_time'], context)
         self.record(computed_session_time, computed_label)
@@ -655,37 +659,37 @@ class RulesProcessor:
     def action_create_a_new_object(self, *args):
         self.last_created_object = {}
 
-    def action_save_object_in_object(self, arguments, context):
+    def action_save_object_in_object(self, arguments, paragraphs, context):
         computed_object = self.compute(arguments['object'], context)
         computed_key = self.compute(arguments['key'], context)
         computed_value = self.compute(arguments['value'], context)
         computed_object[computed_key] = dict(computed_value)
 
-    def action_save_string_in_object(self, arguments, context):
+    def action_save_string_in_object(self, arguments, paragraphs, context):
         computed_object = self.compute(arguments['object'], context)
         computed_key = self.compute(arguments['key'], context)
         computed_value = self.compute(arguments['value'], context)
         computed_object[computed_key] = str(computed_value)
 
-    def action_save_integer_in_object(self, arguments, context):
+    def action_save_integer_in_object(self, arguments, paragraphs, context):
         computed_object = self.compute(arguments['object'], context)
         computed_key = self.compute(arguments['key'], context)
         computed_value = self.compute(arguments['value'], context)
         computed_object[computed_key] = int(computed_value)
 
-    def action_save_real_in_object(self, arguments, context):
+    def action_save_real_in_object(self, arguments, paragraphs, context):
         computed_object = self.compute(arguments['object'], context)
         computed_key = self.compute(arguments['key'], context)
         computed_value = self.compute(arguments['value'], context)
         computed_object[computed_key] = float(computed_value)
 
-    def action_save_boolean_in_object(self, arguments, context):
+    def action_save_boolean_in_object(self, arguments, paragraphs, context):
         computed_object = self.compute(arguments['object'], context)
         computed_key = self.compute(arguments['key'], context)
         computed_value = self.compute(arguments['value'], context)
         computed_object[computed_key] = int(computed_value)
 
-    def action_start_timer(self, arguments, context):
+    def action_start_timer(self, arguments, paragraphs, context):
         timer = self.compute(arguments['timer'], context)
         if timer:
             repeat = True if arguments['type'] == 'periodic' else False
@@ -702,19 +706,30 @@ class RulesProcessor:
 
             timer.start()
 
-    def action_pause_timer(self, arguments, context):
+    def action_pause_timer(self, arguments, paragraphs, context):
         timer = self.compute(arguments['timer'], context)
         if timer:
             timer.manual_pause = True
             timer.pause()
 
-    def action_resume_timer(self, arguments, context):
+    def action_resume_timer(self, arguments, paragraphs, context):
         timer = self.compute(arguments['timer'], context)
         if timer:
             timer.manual_pause = False
             timer.resume()
 
-    def action_wait(self, arguments, context):
+    @inlineCallbacks
+    def action_if_then_else_multiple_functions(self, arguments, paragraphs, context):
+        conditions = paragraphs['if_conditions']
+        if all([self.compute_condition(c, context) for c in conditions]):
+            actions = paragraphs['then_actions']
+        else:
+            actions = paragraphs['else_actions']
+
+        for action in actions:
+            yield self.process_action(action, context)
+
+    def action_wait(self, arguments, paragraphs, context):
         time_ = self.compute(arguments['time'], context)
 
         d = Deferred()

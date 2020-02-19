@@ -2,8 +2,8 @@
   <div>
     <div
       class="rounded"
-      :class="{'bgc-dark': selectedFQDN === fqdn}"
-      @click="paragraphClicked()"
+      :class="{'bgc-dark': isSelected}"
+      @click="paragraphClicked"
     >
       <span :class="{'text-jaffa': root}">
         <i class="mr-1 fas fa-fw" :class="icon"></i>{{ title }}
@@ -16,7 +16,6 @@
             @start="onDragStart"
             @update="onDragUpdate"
             @end="onDragUpdate"
-            handle=".handle"
             :list="storeBoundComponents"
             :group="{name: context}"
           >
@@ -73,6 +72,13 @@ export default {
     selectedFQDN() {
       return editorStore.state.selectedFQDN
     },
+    isSelected() {
+      if (this.selectedFQDN === undefined) {
+        return false
+      } else {
+        return this.selectedFQDN.toString() === this.fqdn.toString()
+      }
+    },
   },
   methods: {
     paragraphClicked() {
@@ -84,6 +90,7 @@ export default {
       editorStore.commit('setSelectedFQDN', fqdn)
     },
     onDragUpdate(event) {
+      // TODO: fix this when the from/to are not in the same list
       var fqdn = JSON.parse(JSON.stringify(this.fqdn))
       fqdn.push(event.newIndex)
       editorStore.commit('setSelectedFQDN', fqdn)

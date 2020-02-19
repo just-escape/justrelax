@@ -25,7 +25,7 @@
             :key="index"
             :title="$t('editor.templates.' + component.template + '.' + cp.key)"
             :context="cp.type"
-            :fqdn="getFQDN(cp.key)"
+            :fqdn="getParagraphFQDN(cp.key)"
           />
         </div>
       </div>
@@ -58,9 +58,10 @@ export default {
     args() {
       return this.component.arguments
     },
-    getFQDN() {
+    getParagraphFQDN() {
       return (key) => {
         var fqdn = JSON.parse(JSON.stringify(this.fqdn))
+        fqdn.push('paragraphs')
         fqdn.push(key)
         return fqdn
       }

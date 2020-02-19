@@ -15,7 +15,13 @@
         </b-button-group>
       </div>
       <div class="d-flex flex-column">
-        <draggable :list="rules" :group="{name: 'rules'}">
+        <draggable
+          @start="onDragStart"
+          @update="onDragUpdate"
+          @end="onDragUpdate"
+          :list="rules"
+          :group="{name: 'rules'}"
+        >
           <div
             v-for="(r, index) in rules"
             :key="index"
@@ -121,9 +127,6 @@ export default {
     displayedRuleIndex: function() {
       return editorStore.state.displayedRuleIndex
     },
-    selectedRuleIndex: function() {
-      return editorStore.state.selectedRuleIndex
-    },
   },
   methods: {
     ruleClicked: function(index) {
@@ -142,15 +145,27 @@ export default {
         name: "Rule " + newRuleIndex,
       }
       editorStore.commit('pushDataFromFQDN', {fqdn, data})
+
+      if (newRuleIndex === 1) {
+        editorStore.commit('setSelectedFQDN', ['rules', 0])
+      }
     },
     addTrigger: function() {
-      editorStore.commit('addContext', 'trigger')
+      editorStore.dispatch('addComponent', 'trigger')
     },
     addCondition: function() {
-      editorStore.commit('addContext', 'condition')
+      editorStore.dispatch('addComponent', 'condition')
     },
     addAction: function() {
-      editorStore.commit('addContext', 'action')
+      editorStore.dispatch('addComponent', 'action')
+    },
+    onDragStart: function(event) {
+      var fqdn = ['rules', event.oldIndex]
+      editorStore.commit('setSelectedFQDN', fqdn)
+    },
+    onDragUpdate: function(event) {
+      var fqdn = ['rules', event.newIndex]
+      editorStore.commit('setSelectedFQDN', fqdn)
     },
   }
 }
