@@ -378,7 +378,7 @@ class RulesProcessor:
             computed_triggering_node_name = self.compute(
                 rule['trigger']['arguments']['node_name'], context)
             if computed_triggering_node_name == from_:
-                self.process_rule(rule, context)
+                self.process_rule(rule['rule'], context)
 
     def on_admin_button_pressed(self, button_id):
         context = {
@@ -391,7 +391,7 @@ class RulesProcessor:
             computed_triggering_button_id = self.compute(
                 rule['trigger']['arguments']['button_id'], context)
             if computed_triggering_button_id == button_id:
-                self.process_rule(rule, context)
+                self.process_rule(rule['rule'], context)
 
     def process_rules(self, rules, context):
         for rule in rules:
