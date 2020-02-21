@@ -60,11 +60,17 @@ class JustSockServerProtocol(WebSocketServerProtocol):
             self.log_message(message, to_server=True)
 
             if self.client_type == P.CLIENT_NODE:
-                # message[P.EVENT_TYPE] is P.EVENT_TYPE_MESSAGE thanks to
-                # validate_event
-                event = message[P.EVENT]
+                if message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_EVENT:
+                    event = message[P.EVENT]
+                    self.factory.process_event(self.name, self.channel, event)
+                elif message[P.MESSAGE_TYPE] == P.MESSAGE_TYPE_LOG:
+                    level = message[P.LOG_LEVEL]
+                    content = message[P.LOG_CONTENT]
+                    if level == P.LOG_LEVEL_INFO:
+                        self.factory.send_log_info(content)
+                    elif level == P.LOG_LEVEL_ERROR:
+                        self.factory.send_log_error(content)
 
-                self.factory.process_event(self.name, self.channel, event)
             elif self.client_type == P.CLIENT_ADMIN:
                 room_id = message[P.ROOM_ID]
 
@@ -119,8 +125,20 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                     return False, "Channel must be alphanumeric"
         else:
             if self.client_type == P.CLIENT_NODE:
-                if message_type != P.MESSAGE_TYPE_EVENT:
+                if message_type == P.MESSAGE_TYPE_LOG:
+                    if P.LOG_LEVEL not in message:
+                        return False, "Missing log level argument"
+
+                    log_levels = [P.LOG_LEVEL_INFO, P.LOG_LEVEL_ERROR]
+                    if message[P.LOG_LEVEL] not in log_levels:
+                        return False, "Expecting a log level in {}".format(", ".join(log_levels))
+
+                    if P.LOG_CONTENT not in message:
+                        return False, "Missing content argument"
+
+                elif message_type != P.MESSAGE_TYPE_EVENT:
                     return False, "Expecting an event message"
+
             elif self.client_type == P.CLIENT_ADMIN:
                 if message_type not in P.HANDLED_ADMIN_MESSAGE_TYPES:
                     return False, "Expecting a message type in {}".format(
@@ -210,6 +228,20 @@ class JustSockServerProtocol(WebSocketServerProtocol):
         message = {
             P.MESSAGE_TYPE: P.MESSAGE_TYPE_EVENT,
             P.EVENT: event,
+        }
+        self.send_json(message)
+
+    def send_log_info(self, content):
+        self.send_log(P.LOG_LEVEL_INFO, content)
+
+    def send_log_error(self, content):
+        self.send_log(P.LOG_LEVEL_ERROR, content)
+
+    def send_log(self, level, content):
+        message = {
+            P.MESSAGE_TYPE: P.MESSAGE_TYPE_LOG,
+            P.LOG_LEVEL: level,
+            P.LOG_CONTENT: content,
         }
         self.send_json(message)
 

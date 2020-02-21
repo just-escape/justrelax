@@ -39,6 +39,14 @@ class JustSockServerFactory(WebSocketServerFactory):
             if processor.is_subscribed_to_channel(channel):
                 processor.on_event(name, event)
 
+    def send_log_error(self, content):
+        for admin in self.admins:
+            admin.send_log_error(content)
+
+    def send_log_info(self, content):
+        for admin in self.admins:
+            admin.send_log_info(content)
+
     def process_run_room(self, room_id):
         self.service.processors[room_id].run_room()
 

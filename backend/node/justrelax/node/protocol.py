@@ -97,6 +97,21 @@ class JustSockClientProtocol(WebSocketClientProtocol):
         logger.debug("Declaring as a node")
         self.send_json(message)
 
+    def send_log_info(self, content):
+        self.send_log(P.LOG_LEVEL_INFO, content)
+
+    def send_log_error(self, content):
+        self.send_log(P.LOG_LEVEL_ERROR, content)
+
+    def send_log(self, level, content):
+        message = {
+            P.MESSAGE_TYPE: P.MESSAGE_TYPE_LOG,
+            P.LOG_LEVEL: level,
+            P.LOG_CONTENT: content,
+        }
+        logger.debug("Sending message to the server: {}".format(message))
+        self.send_json(message)
+
     def send_event(self, event):
         message = {
             P.MESSAGE_TYPE: P.MESSAGE_TYPE_EVENT,

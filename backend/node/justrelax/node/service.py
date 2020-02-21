@@ -30,5 +30,5 @@ class JustSockClientService(internet.TCPClient):
     def stop(self):
         pass
 
-    def process_message(self, message):
+    def process_event(self, event):
         pass
