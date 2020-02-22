@@ -1,6 +1,6 @@
 <template>
   <div>
-    <video v-if="displayOverlayVideo" :src="overlayVideoId" mute autoplay class="overlay" @ended="onEnd()"></video>
+    <video v-if="displayOverlayVideo" :src="overlayVideoId" mute autoplay @ended="onEnd()"></video>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import videoStore from '@/store/videoStore.js'
 
 export default {
-  name: "Scene",
+  name: "OverlayVideo",
   computed: {
     displayOverlayVideo() {
       return videoStore.state.overlayVideoId !== undefined
@@ -26,11 +26,6 @@ export default {
       videoStore.commit('setOverlayVideoId', undefined)
     },
   },
-  watch: {
-    overlayVideoId() {
-      console.log('hey')
-    }
-  }
 }
 </script>
 
