@@ -4,7 +4,9 @@ import Vuex from 'vuex'
 import i18n from '@/locales.js'
 import router from '@/router.js'
 
-Vue.use(Vuex);
+import videoStore from '@/store/videoStore.js'
+
+Vue.use(Vuex)
 
 const justSockService = new Vuex.Store({
   mutations: {
@@ -29,12 +31,12 @@ const justSockService = new Vuex.Store({
     },
     SOCKET_ONMESSAGE (state, rawMessage) {
       let message = JSON.parse(rawMessage.data)
-      if (message.message_type != 'EVENT') {
+      if (message.message_type !== 'EVENT') {
         return
       }
 
       let event = message.event
-      if (event.type == 'reset') {
+      if (event.type === 'reset') {
         // Reload page
         router.go()
       } else if (event.type == 'l10n') {
@@ -49,6 +51,9 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
+      } else if (event.type === 'play_video') {
+        let videoId = event.video_id
+        videoStore.commit('setOverlayVideoId', videoId)
       }
     },
     SOCKET_RECONNECT (state, count) {

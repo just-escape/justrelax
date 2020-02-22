@@ -1,6 +1,7 @@
 <template>
   <div>
-    <video src="@/assets/scene.webm" mute autoplay loop type="video/webm"></video>
+    <video src="@/assets/marmitron_interface_h.264_25_50.mp4" mute autoplay loop></video>
+    <!--<img src="@/assets/marmitron_interface.png">-->
   </div>
 </template>
 

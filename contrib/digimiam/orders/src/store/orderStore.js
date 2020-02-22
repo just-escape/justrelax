@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-var store = new Vuex.Store({
+let store = new Vuex.Store({
   state: {
     cartItems: [
       {itemId: 'salade_flamande', increment: -1},

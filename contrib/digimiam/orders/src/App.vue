@@ -12,7 +12,7 @@ export default {
     window.oncontextmenu = function() {
       return false
     }
-    // this.$connect()
+    this.$connect()
   }
 }
 </script>
