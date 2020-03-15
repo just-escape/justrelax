@@ -9,6 +9,7 @@ except RuntimeError:
 from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 
+from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService
 
 
@@ -26,7 +27,6 @@ class FloppyReader(JustSockClientService):
             self.rst_pin_cycle.append(pin)
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, GPIO.LOW)
-        print(self.rst_pin_cycle)
 
         self.rc522_reader = RFID()
 
@@ -59,4 +59,5 @@ class FloppyReader(JustSockClientService):
 
     def read_callback(self, reader_index, nfc_uid):
         if self.latest_reads[reader_index] != nfc_uid:
-            print("reader_index={}, nfc_uid={}".format(reader_index, nfc_uid))
+            self.latest_reads[reader_index] = nfc_uid
+            logger.info("reader_index={}, nfc_uid={}".format(reader_index, nfc_uid))
