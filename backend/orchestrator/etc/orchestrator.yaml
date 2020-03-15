@@ -2,4 +2,4 @@ websocket_port: 3031
 
 storage_url: http://localhost:8000
 
-logging: logging.yaml
+logging: null
