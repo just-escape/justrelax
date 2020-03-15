@@ -1,0 +1,16 @@
+host: localhost
+port: 3031
+
+name: floppy_reader
+channel: digimiam1
+
+node_params:
+  # Based on GPIO.BOARD mode
+  rst_pins:
+    - 11
+    - 12
+    - 13
+    - 15
+    - 16
+
+logging: null
