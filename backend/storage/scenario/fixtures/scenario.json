@@ -1,0 +1,1 @@
+[{"model": "scenario.scenario", "pk": 1, "fields": {"name": "Le Digimiam", "index": 0}}, {"model": "scenario.room", "pk": 1, "fields": {"scenario": 1, "cardinal": "room 12", "channel": "digimiam12", "index": 0}}]

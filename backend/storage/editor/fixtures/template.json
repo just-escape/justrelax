@@ -1,0 +1,3170 @@
+[
+{
+  "model": "editor.template",
+  "pk": 1,
+  "fields": {
+    "category": "event",
+    "index": 0,
+    "name": "incoming_event",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 2,
+  "fields": {
+    "category": "event",
+    "index": 1,
+    "name": "incoming_event_from_node",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 3,
+  "fields": {
+    "category": "admin",
+    "index": 2,
+    "name": "admin_button_press",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 4,
+  "fields": {
+    "category": "admin",
+    "index": 3,
+    "name": "admin_button_id_press",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 5,
+  "fields": {
+    "category": "time",
+    "index": 4,
+    "name": "timed_trigger",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 6,
+  "fields": {
+    "category": "time",
+    "index": 5,
+    "name": "periodic_trigger",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 7,
+  "fields": {
+    "category": "time",
+    "index": 6,
+    "name": "timer_trigger",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 8,
+  "fields": {
+    "category": "session",
+    "index": 7,
+    "name": "session_start",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 9,
+  "fields": {
+    "category": "session",
+    "index": 8,
+    "name": "session_pause",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 10,
+  "fields": {
+    "category": "session",
+    "index": 9,
+    "name": "session_resume",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 11,
+  "fields": {
+    "category": "",
+    "index": 10,
+    "name": "simple_condition",
+    "context": "condition"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 12,
+  "fields": {
+    "category": "event",
+    "index": 11,
+    "name": "send_event_string",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 13,
+  "fields": {
+    "category": "event",
+    "index": 12,
+    "name": "send_event_object",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 14,
+  "fields": {
+    "category": "admin",
+    "index": 13,
+    "name": "push_notification",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 15,
+  "fields": {
+    "category": "admin",
+    "index": 14,
+    "name": "add_record_now",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 16,
+  "fields": {
+    "category": "admin",
+    "index": 15,
+    "name": "add_record",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 17,
+  "fields": {
+    "category": "object",
+    "index": 16,
+    "name": "create_a_new_object",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 18,
+  "fields": {
+    "category": "object",
+    "index": 17,
+    "name": "save_object_in_object",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 19,
+  "fields": {
+    "category": "object",
+    "index": 18,
+    "name": "save_string_in_object",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 20,
+  "fields": {
+    "category": "object",
+    "index": 19,
+    "name": "save_integer_in_object",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 21,
+  "fields": {
+    "category": "object",
+    "index": 20,
+    "name": "save_real_in_object",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 22,
+  "fields": {
+    "category": "object",
+    "index": 21,
+    "name": "save_boolean_in_object",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 23,
+  "fields": {
+    "category": "timer",
+    "index": 22,
+    "name": "start_timer",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 24,
+  "fields": {
+    "category": "timer",
+    "index": 23,
+    "name": "pause_timer",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 25,
+  "fields": {
+    "category": "timer",
+    "index": 24,
+    "name": "resume_timer",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 26,
+  "fields": {
+    "category": "",
+    "index": 25,
+    "name": "if_then_else_multiple_functions",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 27,
+  "fields": {
+    "category": "",
+    "index": 26,
+    "name": "wait",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 28,
+  "fields": {
+    "category": "",
+    "index": 27,
+    "name": "set_variable",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 29,
+  "fields": {
+    "category": "",
+    "index": 28,
+    "name": "trigger_rule",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 30,
+  "fields": {
+    "category": "",
+    "index": 29,
+    "name": "do_nothing",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 31,
+  "fields": {
+    "category": "object",
+    "index": 30,
+    "name": "last_created_object",
+    "context": "object"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 32,
+  "fields": {
+    "category": "object",
+    "index": 31,
+    "name": "object_get_object",
+    "context": "object"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 33,
+  "fields": {
+    "category": "trigger",
+    "index": 32,
+    "name": "triggering_event_object",
+    "context": "object"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 34,
+  "fields": {
+    "category": "object",
+    "index": 33,
+    "name": "object_get_string",
+    "context": "string"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 35,
+  "fields": {
+    "category": "trigger",
+    "index": 34,
+    "name": "triggering_node_name",
+    "context": "string"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 36,
+  "fields": {
+    "category": "trigger",
+    "index": 35,
+    "name": "triggering_event_string",
+    "context": "string"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 37,
+  "fields": {
+    "category": "trigger",
+    "index": 36,
+    "name": "triggering_admin_button_id",
+    "context": "string"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 38,
+  "fields": {
+    "category": "conversion",
+    "index": 37,
+    "name": "real_to_string",
+    "context": "string"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 39,
+  "fields": {
+    "category": "conversion",
+    "index": 38,
+    "name": "boolean_to_string",
+    "context": "string"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 40,
+  "fields": {
+    "category": "conversion",
+    "index": 39,
+    "name": "object_to_string",
+    "context": "string"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 41,
+  "fields": {
+    "category": "conversion",
+    "index": 40,
+    "name": "integer_to_string",
+    "context": "string"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 42,
+  "fields": {
+    "category": "object",
+    "index": 41,
+    "name": "object_get_integer",
+    "context": "integer"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 43,
+  "fields": {
+    "category": "math",
+    "index": 42,
+    "name": "integer_arithmetic",
+    "context": "integer"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 44,
+  "fields": {
+    "category": "conversion",
+    "index": 43,
+    "name": "real_to_integer",
+    "context": "integer"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 45,
+  "fields": {
+    "category": "object",
+    "index": 44,
+    "name": "object_get_real",
+    "context": "real"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 46,
+  "fields": {
+    "category": "math",
+    "index": 45,
+    "name": "real_arithmetic",
+    "context": "real"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 47,
+  "fields": {
+    "category": "conversion",
+    "index": 46,
+    "name": "integer_to_real",
+    "context": "real"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 48,
+  "fields": {
+    "category": "timer",
+    "index": 47,
+    "name": "timer_remaining_time",
+    "context": "real"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 49,
+  "fields": {
+    "category": "object",
+    "index": 48,
+    "name": "object_get_boolean",
+    "context": "boolean"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 50,
+  "fields": {
+    "category": "",
+    "index": 49,
+    "name": "boolean_not",
+    "context": "boolean"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 51,
+  "fields": {
+    "category": "",
+    "index": 50,
+    "name": "boolean_or",
+    "context": "boolean"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 52,
+  "fields": {
+    "category": "",
+    "index": 51,
+    "name": "boolean_and",
+    "context": "boolean"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 53,
+  "fields": {
+    "category": "",
+    "index": 52,
+    "name": "integer_comparison",
+    "context": "boolean"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 54,
+  "fields": {
+    "category": "",
+    "index": 53,
+    "name": "real_comparison",
+    "context": "boolean"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 55,
+  "fields": {
+    "category": "",
+    "index": 54,
+    "name": "string_comparison",
+    "context": "boolean"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 56,
+  "fields": {
+    "category": "",
+    "index": 55,
+    "name": "object_comparison",
+    "context": "boolean"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 57,
+  "fields": {
+    "category": "",
+    "index": 56,
+    "name": "boolean_comparison",
+    "context": "boolean"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 58,
+  "fields": {
+    "category": "timer",
+    "index": 57,
+    "name": "expiring_timer",
+    "context": "timer"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 59,
+  "fields": {
+    "category": "timer",
+    "index": 58,
+    "name": "last_started_timer",
+    "context": "timer"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1,
+  "fields": {
+    "template": 1,
+    "index": 0,
+    "type": "text",
+    "locale": "an_event_has_been_received",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 2,
+  "fields": {
+    "template": 2,
+    "index": 0,
+    "type": "text",
+    "locale": "an_event_has_been_received_from_node",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 3,
+  "fields": {
+    "template": 2,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "node_name",
+    "value_type": "string",
+    "default_value": "\"node\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 4,
+  "fields": {
+    "template": 3,
+    "index": 0,
+    "type": "text",
+    "locale": "an_admin_button_has_been_pressed",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 5,
+  "fields": {
+    "template": 4,
+    "index": 0,
+    "type": "text",
+    "locale": "the_admin_button",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 6,
+  "fields": {
+    "template": 4,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "button_id",
+    "value_type": "string",
+    "default_value": "\"id\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 7,
+  "fields": {
+    "template": 4,
+    "index": 2,
+    "type": "text",
+    "locale": "has_been_pressed",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 8,
+  "fields": {
+    "template": 5,
+    "index": 0,
+    "type": "text",
+    "locale": "after",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 9,
+  "fields": {
+    "template": 5,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "session_time",
+    "value_type": "real",
+    "default_value": "1.00",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 10,
+  "fields": {
+    "template": 5,
+    "index": 2,
+    "type": "text",
+    "locale": "seconds_of_session_time",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 11,
+  "fields": {
+    "template": 6,
+    "index": 0,
+    "type": "text",
+    "locale": "every",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 12,
+  "fields": {
+    "template": 6,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "period",
+    "value_type": "real",
+    "default_value": "1.00",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 13,
+  "fields": {
+    "template": 6,
+    "index": 2,
+    "type": "text",
+    "locale": "seconds_of_session_time",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 14,
+  "fields": {
+    "template": 7,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "timer",
+    "value_type": "timer",
+    "default_value": "null",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 15,
+  "fields": {
+    "template": 7,
+    "index": 1,
+    "type": "text",
+    "locale": "expires",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 16,
+  "fields": {
+    "template": 8,
+    "index": 0,
+    "type": "text",
+    "locale": "the_session_is_started",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 17,
+  "fields": {
+    "template": 9,
+    "index": 0,
+    "type": "text",
+    "locale": "the_session_is_paused",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 18,
+  "fields": {
+    "template": 10,
+    "index": 0,
+    "type": "text",
+    "locale": "the_session_is_resumed",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 19,
+  "fields": {
+    "template": 11,
+    "index": 0,
+    "type": "text",
+    "locale": "if",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 20,
+  "fields": {
+    "template": 11,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "condition",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 21,
+  "fields": {
+    "template": 12,
+    "index": 0,
+    "type": "text",
+    "locale": "send_event",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 22,
+  "fields": {
+    "template": 12,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "event",
+    "value_type": "string",
+    "default_value": "\"hello\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 23,
+  "fields": {
+    "template": 12,
+    "index": 2,
+    "type": "text",
+    "locale": "to_node",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 24,
+  "fields": {
+    "template": 12,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "node_name",
+    "value_type": "string",
+    "default_value": "\"node\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 25,
+  "fields": {
+    "template": 13,
+    "index": 0,
+    "type": "text",
+    "locale": "send_event",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 26,
+  "fields": {
+    "template": 13,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "event",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 27,
+  "fields": {
+    "template": 13,
+    "index": 2,
+    "type": "text",
+    "locale": "to_node",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 28,
+  "fields": {
+    "template": 13,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "node_name",
+    "value_type": "string",
+    "default_value": "\"node\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 29,
+  "fields": {
+    "template": 14,
+    "index": 0,
+    "type": "text",
+    "locale": "push_an",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 30,
+  "fields": {
+    "template": 14,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "type",
+    "value_type": "predefined",
+    "default_value": "\"info\"",
+    "predefined_choices": "info,error"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 31,
+  "fields": {
+    "template": 14,
+    "index": 2,
+    "type": "text",
+    "locale": "notification_on_the_admin_interface_with_message",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 32,
+  "fields": {
+    "template": 14,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "message",
+    "value_type": "string",
+    "default_value": "\"message\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 33,
+  "fields": {
+    "template": 15,
+    "index": 0,
+    "type": "text",
+    "locale": "add_a_record_now_with_label",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 34,
+  "fields": {
+    "template": 15,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "label",
+    "value_type": "string",
+    "default_value": "\"label\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 35,
+  "fields": {
+    "template": 16,
+    "index": 0,
+    "type": "text",
+    "locale": "add_a_record_at",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 36,
+  "fields": {
+    "template": 16,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "session_time",
+    "value_type": "real",
+    "default_value": "0",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 37,
+  "fields": {
+    "template": 16,
+    "index": 2,
+    "type": "text",
+    "locale": "seconds_with_label",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 38,
+  "fields": {
+    "template": 16,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "label",
+    "value_type": "string",
+    "default_value": "\"label\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 39,
+  "fields": {
+    "template": 17,
+    "index": 0,
+    "type": "text",
+    "locale": "create_a_new_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 40,
+  "fields": {
+    "template": 18,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 41,
+  "fields": {
+    "template": 18,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 42,
+  "fields": {
+    "template": 18,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 43,
+  "fields": {
+    "template": 18,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 44,
+  "fields": {
+    "template": 18,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 45,
+  "fields": {
+    "template": 18,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 46,
+  "fields": {
+    "template": 19,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 47,
+  "fields": {
+    "template": 19,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "string",
+    "default_value": "\"hello\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 48,
+  "fields": {
+    "template": 19,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 49,
+  "fields": {
+    "template": 19,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 50,
+  "fields": {
+    "template": 19,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 51,
+  "fields": {
+    "template": 19,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 52,
+  "fields": {
+    "template": 20,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 53,
+  "fields": {
+    "template": 20,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 54,
+  "fields": {
+    "template": 20,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 55,
+  "fields": {
+    "template": 20,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 56,
+  "fields": {
+    "template": 20,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 57,
+  "fields": {
+    "template": 20,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 58,
+  "fields": {
+    "template": 21,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 59,
+  "fields": {
+    "template": 21,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "real",
+    "default_value": "1.5",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 60,
+  "fields": {
+    "template": 21,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 61,
+  "fields": {
+    "template": 21,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 62,
+  "fields": {
+    "template": 21,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 63,
+  "fields": {
+    "template": 21,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 64,
+  "fields": {
+    "template": 22,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 65,
+  "fields": {
+    "template": 22,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 66,
+  "fields": {
+    "template": 22,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 67,
+  "fields": {
+    "template": 22,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 68,
+  "fields": {
+    "template": 22,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 69,
+  "fields": {
+    "template": 22,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 70,
+  "fields": {
+    "template": 23,
+    "index": 0,
+    "type": "text",
+    "locale": "start_timer",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 71,
+  "fields": {
+    "template": 23,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "timer",
+    "value_type": "timer",
+    "default_value": "{\"template\": \"expiring_timer\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 72,
+  "fields": {
+    "template": 23,
+    "index": 2,
+    "type": "text",
+    "locale": "as_a",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 73,
+  "fields": {
+    "template": 23,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "type",
+    "value_type": "predefined",
+    "default_value": "\"one_shot\"",
+    "predefined_choices": "one_shot,periodic"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 74,
+  "fields": {
+    "template": 23,
+    "index": 4,
+    "type": "text",
+    "locale": "timer_that_will_expire_in",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 75,
+  "fields": {
+    "template": 23,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "time",
+    "value_type": "real",
+    "default_value": "30.00",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 76,
+  "fields": {
+    "template": 23,
+    "index": 6,
+    "type": "text",
+    "locale": "seconds",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 77,
+  "fields": {
+    "template": 24,
+    "index": 0,
+    "type": "text",
+    "locale": "pause",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 78,
+  "fields": {
+    "template": 24,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "timer",
+    "value_type": "timer",
+    "default_value": "{\"template\": \"last_started_timer\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 79,
+  "fields": {
+    "template": 25,
+    "index": 0,
+    "type": "text",
+    "locale": "resume",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 80,
+  "fields": {
+    "template": 25,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "timer",
+    "value_type": "timer",
+    "default_value": "{\"template\": \"last_started_timer\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 81,
+  "fields": {
+    "template": 26,
+    "index": 0,
+    "type": "text",
+    "locale": "if_then_do_else_do",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 82,
+  "fields": {
+    "template": 27,
+    "index": 0,
+    "type": "text",
+    "locale": "wait",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 83,
+  "fields": {
+    "template": 27,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "time",
+    "value_type": "real",
+    "default_value": "1.5",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 84,
+  "fields": {
+    "template": 27,
+    "index": 2,
+    "type": "text",
+    "locale": "seconds",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 85,
+  "fields": {
+    "template": 28,
+    "index": 0,
+    "type": "text",
+    "locale": "set_value_of_variable",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 86,
+  "fields": {
+    "template": 28,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "variable",
+    "value_type": "variable",
+    "default_value": "null",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 87,
+  "fields": {
+    "template": 28,
+    "index": 2,
+    "type": "text",
+    "locale": "to",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 88,
+  "fields": {
+    "template": 28,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "disabled",
+    "default_value": "null",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 89,
+  "fields": {
+    "template": 29,
+    "index": 0,
+    "type": "text",
+    "locale": "trigger_rule_named",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 90,
+  "fields": {
+    "template": 29,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "rule_name",
+    "value_type": "predefined",
+    "default_value": "null",
+    "predefined_choices": "<rules>"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 91,
+  "fields": {
+    "template": 30,
+    "index": 0,
+    "type": "text",
+    "locale": "do_nothing",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 92,
+  "fields": {
+    "template": 31,
+    "index": 0,
+    "type": "text",
+    "locale": "last_created_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 93,
+  "fields": {
+    "template": 32,
+    "index": 0,
+    "type": "text",
+    "locale": "get_object_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 94,
+  "fields": {
+    "template": 32,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 95,
+  "fields": {
+    "template": 32,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 96,
+  "fields": {
+    "template": 32,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 97,
+  "fields": {
+    "template": 33,
+    "index": 0,
+    "type": "text",
+    "locale": "triggering_event_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 98,
+  "fields": {
+    "template": 34,
+    "index": 0,
+    "type": "text",
+    "locale": "get_string_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 99,
+  "fields": {
+    "template": 34,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 100,
+  "fields": {
+    "template": 34,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 101,
+  "fields": {
+    "template": 34,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 102,
+  "fields": {
+    "template": 35,
+    "index": 0,
+    "type": "text",
+    "locale": "triggering_node",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 103,
+  "fields": {
+    "template": 36,
+    "index": 0,
+    "type": "text",
+    "locale": "triggering_event_string",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 104,
+  "fields": {
+    "template": 37,
+    "index": 0,
+    "type": "text",
+    "locale": "triggering_admin_button_id",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 105,
+  "fields": {
+    "template": 38,
+    "index": 0,
+    "type": "text",
+    "locale": "string(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 106,
+  "fields": {
+    "template": 38,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "real",
+    "value_type": "real",
+    "default_value": "1.5",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 107,
+  "fields": {
+    "template": 38,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 108,
+  "fields": {
+    "template": 39,
+    "index": 0,
+    "type": "text",
+    "locale": "string(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 109,
+  "fields": {
+    "template": 39,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "boolean",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 110,
+  "fields": {
+    "template": 39,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 111,
+  "fields": {
+    "template": 40,
+    "index": 0,
+    "type": "text",
+    "locale": "string(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 112,
+  "fields": {
+    "template": 40,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 113,
+  "fields": {
+    "template": 40,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 114,
+  "fields": {
+    "template": 41,
+    "index": 0,
+    "type": "text",
+    "locale": "string(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 115,
+  "fields": {
+    "template": 41,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "integer",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 116,
+  "fields": {
+    "template": 41,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 117,
+  "fields": {
+    "template": 42,
+    "index": 0,
+    "type": "text",
+    "locale": "get_integer_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 118,
+  "fields": {
+    "template": 42,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 119,
+  "fields": {
+    "template": 42,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 120,
+  "fields": {
+    "template": 42,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 121,
+  "fields": {
+    "template": 43,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 122,
+  "fields": {
+    "template": 43,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 123,
+  "fields": {
+    "template": 43,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"+\"",
+    "predefined_choices": "+,-,*,/"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 124,
+  "fields": {
+    "template": 43,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 125,
+  "fields": {
+    "template": 43,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 126,
+  "fields": {
+    "template": 44,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "operation",
+    "value_type": "predefined",
+    "default_value": "\"round\"",
+    "predefined_choices": "round,ceil,floor"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 127,
+  "fields": {
+    "template": 44,
+    "index": 1,
+    "type": "text",
+    "locale": "(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 128,
+  "fields": {
+    "template": 44,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "integer",
+    "value_type": "integer",
+    "default_value": "1.5",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 129,
+  "fields": {
+    "template": 44,
+    "index": 3,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 130,
+  "fields": {
+    "template": 45,
+    "index": 0,
+    "type": "text",
+    "locale": "get_real_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 131,
+  "fields": {
+    "template": 45,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 132,
+  "fields": {
+    "template": 45,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 133,
+  "fields": {
+    "template": 45,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 134,
+  "fields": {
+    "template": 46,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "real",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 135,
+  "fields": {
+    "template": 46,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 136,
+  "fields": {
+    "template": 46,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"+\"",
+    "predefined_choices": "+,-,*,/"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 137,
+  "fields": {
+    "template": 46,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 138,
+  "fields": {
+    "template": 46,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "real",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 139,
+  "fields": {
+    "template": 47,
+    "index": 0,
+    "type": "text",
+    "locale": "real(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 140,
+  "fields": {
+    "template": 47,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "integer",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 141,
+  "fields": {
+    "template": 47,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 142,
+  "fields": {
+    "template": 48,
+    "index": 0,
+    "type": "text",
+    "locale": "remaining_time_of",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 143,
+  "fields": {
+    "template": 48,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "timer",
+    "value_type": "timer",
+    "default_value": "{\"template\": \"last_started_timer\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 144,
+  "fields": {
+    "template": 49,
+    "index": 0,
+    "type": "text",
+    "locale": "get_boolean_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 145,
+  "fields": {
+    "template": 49,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 146,
+  "fields": {
+    "template": 49,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 147,
+  "fields": {
+    "template": 49,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 148,
+  "fields": {
+    "template": 50,
+    "index": 0,
+    "type": "text",
+    "locale": "not",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 149,
+  "fields": {
+    "template": 50,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 150,
+  "fields": {
+    "template": 51,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 151,
+  "fields": {
+    "template": 51,
+    "index": 1,
+    "type": "text",
+    "locale": "or",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 152,
+  "fields": {
+    "template": 51,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 153,
+  "fields": {
+    "template": 52,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 154,
+  "fields": {
+    "template": 52,
+    "index": 1,
+    "type": "text",
+    "locale": "and",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 155,
+  "fields": {
+    "template": 52,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 156,
+  "fields": {
+    "template": 53,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 157,
+  "fields": {
+    "template": 53,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 158,
+  "fields": {
+    "template": 53,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"=\"",
+    "predefined_choices": "=,!=,>,>=,<,<="
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 159,
+  "fields": {
+    "template": 53,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 160,
+  "fields": {
+    "template": 53,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 161,
+  "fields": {
+    "template": 54,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "real",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 162,
+  "fields": {
+    "template": 54,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 163,
+  "fields": {
+    "template": 54,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"=\"",
+    "predefined_choices": "=,!=,>,>=,<,<="
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 164,
+  "fields": {
+    "template": 54,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 165,
+  "fields": {
+    "template": 54,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "real",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 166,
+  "fields": {
+    "template": 55,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "string",
+    "default_value": "\"hello\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 167,
+  "fields": {
+    "template": 55,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 168,
+  "fields": {
+    "template": 55,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"=\"",
+    "predefined_choices": "=,!=,contains"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 169,
+  "fields": {
+    "template": 55,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 170,
+  "fields": {
+    "template": 55,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "string",
+    "default_value": "\"hello\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 171,
+  "fields": {
+    "template": 56,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 172,
+  "fields": {
+    "template": 56,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 173,
+  "fields": {
+    "template": 56,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"is\"",
+    "predefined_choices": "is,is_not"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 174,
+  "fields": {
+    "template": 56,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 175,
+  "fields": {
+    "template": 56,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 176,
+  "fields": {
+    "template": 57,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 177,
+  "fields": {
+    "template": 57,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 178,
+  "fields": {
+    "template": 57,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"is\"",
+    "predefined_choices": "is,is_not"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 179,
+  "fields": {
+    "template": 57,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 180,
+  "fields": {
+    "template": 57,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 181,
+  "fields": {
+    "template": 58,
+    "index": 0,
+    "type": "text",
+    "locale": "expiring_timer",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 182,
+  "fields": {
+    "template": 59,
+    "index": 0,
+    "type": "text",
+    "locale": "last_started_timer",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatecontextparagraph",
+  "pk": 1,
+  "fields": {
+    "template": 26,
+    "index": 0,
+    "key": "if_conditions",
+    "type": "condition"
+  }
+},
+{
+  "model": "editor.templatecontextparagraph",
+  "pk": 2,
+  "fields": {
+    "template": 26,
+    "index": 1,
+    "key": "then_actions",
+    "type": "action"
+  }
+},
+{
+  "model": "editor.templatecontextparagraph",
+  "pk": 3,
+  "fields": {
+    "template": 26,
+    "index": 2,
+    "key": "else_actions",
+    "type": "action"
+  }
+}
+]
