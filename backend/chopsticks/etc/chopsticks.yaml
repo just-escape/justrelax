@@ -1,0 +1,119 @@
+host: localhost
+port: 3031
+
+name: chopsticks
+channel: digimiam1
+
+environment: test
+
+node_params:
+  watcher_frequency: 100
+  difficulty:
+    initial: easy
+    available:
+      - easy
+      - normal
+      - hard
+  colors:
+    switched_off:
+      r: 0
+      g: 0
+      b: 0
+    blue:
+      r: 0
+      g: 0
+      b: 1
+    orange:
+      r: 1
+      g: 1
+      b: 0
+  letters:
+    - chopstick_plug_reactions:
+        easy: set_blue
+        normal: set_blue
+        hard: set_blue
+      chopstick_unplug_reactions:
+        easy: switch_off
+        normal: switch_off
+        hard: switch_off
+      reaction_pin: 2
+      led_pins:
+        r: 3
+        g: 4
+        b: 14
+      led_initial_color: switched_off
+      led_success_color: blue
+    - periodic_reactions:
+        easy:
+          reaction: toggle_blue_orange
+          period: 5
+        normal:
+          reaction: toggle_blue_orange
+          period: 10
+        hard:
+          reaction: toggle_blue_orange
+          period: 2
+      reaction_pin: 15
+      led_pins:
+        r: 17
+        g: 18
+        b: 27
+      led_initial_color: blue
+      led_success_color: orange
+    - chopstick_plug_reactions:
+        easy: toggle_blue_orange
+        normal: toggle_blue_orange
+        hard: toggle_blue_orange
+      reaction_pin: 22
+      led_pins:
+        r: 23
+        g: 24
+        b: 10
+      led_initial_color: blue
+      led_success_color: orange
+    - chopstick_plug_reactions:
+        easy: toggle_blue_orange
+        normal: toggle_blue_orange
+        hard: toggle_blue_orange
+      reaction_pin: 9
+      led_pins:
+        r: 25
+        g: 11
+        b: 8
+      led_initial_color: orange
+      led_success_color: orange
+    - chopstick_plug_reactions:
+        easy: toggle_blue_orange
+        normal: toggle_blue_orange
+        hard: toggle_blue_orange
+      reaction_pin: 7
+      led_pins:
+        r: 0
+        g: 1
+        b: 5
+      led_initial_color: blue
+      led_success_color: orange
+    - chopstick_plug_reactions:
+        easy: toggle_blue_orange
+        normal: toggle_blue_orange
+        hard: toggle_blue_orange
+      reaction_pin: 6
+      led_pins:
+        r: 12
+        g: 13
+        b: 19
+      led_initial_color: blue
+      led_success_color: orange
+    - chopstick_plug_reactions:
+        easy: toggle_blue_orange
+        normal: toggle_blue_orange
+        hard: toggle_blue_orange
+      reaction_pin: 16
+      led_pins:
+        r: 26
+        g: 20
+        b: 21
+      led_initial_color: orange
+      led_success_color: orange
+
+logging: null
