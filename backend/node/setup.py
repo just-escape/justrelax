@@ -11,6 +11,7 @@ if __name__ == '__main__':
         name="justrelax_node",
         version="0.1",
         packages=["justrelax.node"],
+        scripts=["scripts/just-newnode"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

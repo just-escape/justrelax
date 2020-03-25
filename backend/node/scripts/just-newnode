@@ -1,0 +1,137 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+
+class NodeFactory:
+    def __init__(self, name, location='.'):
+        self.name = name
+        self.location = location
+
+    @property
+    def root(self):
+        return os.path.join(self.location, self.name)
+
+    @property
+    def class_name(self):
+        split_name = self.name.split('_')
+        class_name = ""
+        for part in split_name:
+            # In case of '__'
+            if not part:
+                break
+            class_name += part[0].upper()
+            class_name += part[1:]
+        return class_name
+
+    def create_node(self):
+        self.create_root_shenanigans()
+        self.create_default_conf()
+        self.create_python_tree()
+        self.create_twisted_plugin()
+
+    def create_root_shenanigans(self):
+        os.makedirs(self.root)
+
+        requirements = [""]
+        requirements_file = os.path.join(self.root, "requirements.txt")
+        with open(requirements_file, "w+") as fh:
+            fh.write("\n".join(requirements))
+
+        setup_py = [
+            "from setuptools import setup",
+            "",
+            "def get_requirements():",
+            "    with open(\"requirements.txt\") as fh:",
+            "        return fh.readlines()",
+            "",
+            "if __name__ == '__main__':",
+            "    setup(",
+            "        name=\"justrelax_node_{}\",".format(self.name),
+            "        version=\"0.1\",",
+            "        packages=[\"justrelax.node.{}\", \"twisted.plugins\"],".format(self.name),
+            "        install_requires=get_requirements(),",
+            "        zip_safe=False,",
+            "    )",
+            "",
+        ]
+        setup_py_file = os.path.join(self.root, "setup.py")
+        with open(setup_py_file, "w+") as fh:
+            fh.write("\n".join(setup_py))
+
+    def create_default_conf(self):
+        conf_dir = os.path.join(self.root, "etc")
+        os.makedirs(conf_dir)
+
+        default_conf = [
+            "host: localhost",
+            "port: 3031",
+            "",
+            "name: {}".format(self.name),
+            "channel: digimiam1",
+            "",
+            "logging: null",
+            "",
+        ]
+
+        conf_file = os.path.join(conf_dir, "{}.yaml".format(self.name))
+        with open(conf_file, "w+") as fh:
+            fh.write("\n".join(default_conf))
+
+    def create_python_tree(self):
+        python_dir = os.path.join(self.root, "justrelax", "node", self.name)
+        os.makedirs(python_dir)
+
+        init_py = [
+            "from justrelax.node.{}.service import {}".format(self.name, self.class_name),
+            "",
+        ]
+        init_py_file = os.path.join(python_dir, '__init__.py')
+        with open(init_py_file, "w+") as fh:
+            fh.write("\n".join(init_py))
+
+        service_py = [
+            "from justrelax.node.service import JustSockClientService",
+            "",
+            "",
+            "class {}(JustSockClientService):".format(self.class_name),
+            "    def start(self):",
+            "        print(self.node_params)",
+            "        self.factory.send_event({'hello': 'world'})",
+            "",
+            "    def process_event(self, event):",
+            "        print(event)",
+            "",
+        ]
+        service_py_file = os.path.join(python_dir, 'service.py')
+        with open(service_py_file, "w+") as fh:
+            fh.write("\n".join(service_py))
+
+    def create_twisted_plugin(self):
+        plugin_dir = os.path.join(self.root, "twisted", "plugins")
+        os.makedirs(plugin_dir)
+
+        plugin_py = [
+            "from justrelax.node.plugin import AbstractNodeServiceMaker",
+            "from justrelax.node.{} import {}".format(self.name, self.class_name),
+            "",
+            "",
+            "class ServiceMaker(AbstractNodeServiceMaker):",
+            "    service = {}".format(self.class_name),
+            "",
+            "",
+            "service_maker = ServiceMaker()",
+            "",
+        ]
+        plugin_py_file = os.path.join(plugin_dir, "{}.py".format(self.name))
+        with open(plugin_py_file, "w+") as fh:
+            fh.write("\n".join(plugin_py))
+
+
+if __name__ == '__main__':
+    node_name = sys.argv[1]
+    location = sys.argv[2] if len(sys.argv) > 2 else '.'
+
+    factory = NodeFactory(node_name, location)
+    factory.create_node()
