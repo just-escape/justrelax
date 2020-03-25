@@ -64,6 +64,7 @@ class AbstractNodeServiceMaker(object):
             "port": 3031,
             "name": self.get_default_node_name(),
             "channel": "digimiam1",
+            "environment": "rpi",
             "node_params": {},
             "logging": None,
         }
