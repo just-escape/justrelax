@@ -4,8 +4,6 @@ port: 3031
 name: chopsticks
 channel: digimiam1
 
-environment: test
-
 node_params:
   watcher_frequency: 100
   difficulty:
@@ -25,7 +23,7 @@ node_params:
       b: 1
     orange:
       r: 1
-      g: 1
+      g: 0.02
       b: 0
   letters:
     - chopstick_plug_reactions:

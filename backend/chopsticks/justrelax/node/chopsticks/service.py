@@ -26,7 +26,6 @@ class Letter:
 
         self.led = RGBLED(led_pins["r"], led_pins["g"], led_pins["b"])
         self.led.color = (0, 0, 0)
-        self.led.pulse()
 
         self.led_success_color = led_success_color
 
