@@ -1,5 +1,4 @@
 websocket_port: 3031
-http_port: 3032
 
 storage_url: http://localhost:8000
 
