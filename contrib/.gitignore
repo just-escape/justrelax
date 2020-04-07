@@ -1,0 +1,12 @@
+build
+dist
+venv
+log
+__pycache__/
+*.pyc
+*.egg-info/
+
+dropin.cache
+*.pid
+
+.idea

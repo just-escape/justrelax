@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import rospy
 
 from niryo_one_python_api.niryo_one_api import NiryoOne, TOOL_GRIPPER_1_ID
