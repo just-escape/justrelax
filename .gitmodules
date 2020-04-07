@@ -1,0 +1,12 @@
+[submodule "contrib/digimiam/control_panel/arduino/libraries/contrib/digimiam/control_panel/arduino/libraries/ArduinoJson"]
+	path = contrib/digimiam/control_panel/arduino/libraries/contrib/digimiam/control_panel/arduino/libraries/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson
+[submodule "contrib/digimiam/control_panel/arduino/libraries/FastLED"]
+	path = contrib/digimiam/control_panel/arduino/libraries/FastLED
+	url = https://github.com/FastLED/FastLED
+[submodule "contrib/digimiam/control_panel/arduino/libraries/MFRC522"]
+	path = contrib/digimiam/control_panel/arduino/libraries/MFRC522
+	url = https://github.com/miguelbalboa/rfid
+[submodule "contrib/digimiam/control_panel/arduino/libraries/ArduinoJson"]
+	path = contrib/digimiam/control_panel/arduino/libraries/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson
