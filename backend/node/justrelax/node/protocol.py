@@ -138,10 +138,30 @@ class JustSockClientProtocol(WebSocketClientProtocol):
 class JSONSerialProtocol(LineOnlyReceiver):
     delimiter = b'\n'
 
-    def __init__(self, on_event_callback):
-        self.on_event_callback = on_event_callback
+    def __init__(self, service, on_event_callback=None):
+        self.service = service
+        if on_event_callback is None:
+            self.on_event_callback = self.service.process_arduino_event
+        else:
+            self.on_event_callback = on_event_callback
 
     def lineReceived(self, line):
-        decoded_line = line.decode('ascii')
-        event = json.loads(decoded_line)
-        self.on_event_callback(event)
+        try:
+            decoded_line = line.decode('ascii')
+            event = json.loads(decoded_line)
+        except Exception as e:
+            formatted_exception = "{}: {}".format(type(e).__name__, e)
+            self.service.factory.protocol.send_log_error("Error while trying to forward arduino line={}: {}".format(
+                line, formatted_exception))
+            logger.error("Error while trying to forward arduino line={}".format(line))
+            logger.exception()
+            return
+
+        try:
+            self.service.process_arduino_event(event)
+        except Exception as e:
+            formatted_exception = "{}: {}".format(type(e).__name__, e)
+            self.service.factory.protocol.send_log_error("Error while trying to process arduino event={}: {}".format(
+                event, formatted_exception))
+            logger.error("Error while trying to process arduino event={}".format(event))
+            logger.exception()
