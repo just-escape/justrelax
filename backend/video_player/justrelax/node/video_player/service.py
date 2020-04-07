@@ -21,7 +21,9 @@ class VideoPlayer(JustSockClientService):
         SLIDE_INDEX = "slide_index"
         CHAPTER_ID = "chapter_id"
 
-    def start(self):
+    def __init__(self, *args, **kwargs):
+        super(VideoPlayer, self).__init__(*args, **kwargs)
+
         self.videos = {}
         for video in self.node_params.get('videos', []):
             id_ = video['id']

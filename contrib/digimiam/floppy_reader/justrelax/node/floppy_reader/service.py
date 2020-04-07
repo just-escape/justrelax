@@ -14,7 +14,9 @@ from justrelax.node.service import JustSockClientService
 
 
 class FloppyReader(JustSockClientService):
-    def start(self):
+    def __init__(self, *args, **kwargs):
+        super(FloppyReader, self).__init__(*args, **kwargs)
+
         self.latest_reads = []
         self.rst_pin_cycle = []
         self.current_rst_pin_index = -1

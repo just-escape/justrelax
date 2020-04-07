@@ -12,7 +12,9 @@ class HologramPlayer(JustSockClientService):
         SELECT = "select"
         CHAPTER_ID = "chapter_id"
 
-    def start(self):
+    def __init__(self, *args, **kwargs):
+        super(HologramPlayer, self).__init__(*args, **kwargs)
+
         self.looping_task = None
 
         self.chapters = {}

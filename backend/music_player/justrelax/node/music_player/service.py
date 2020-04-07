@@ -28,7 +28,9 @@ class MusicPlayer(JustSockClientService):
         DURATION = "duration"
         EASE = "ease"
 
-    def start(self):
+    def __init__(self, *args, **kwargs):
+        super(MusicPlayer, self).__init__(*args, **kwargs)
+
         initial_master_volume = self.node_params.get('master_volume', None)
         master_volume_mixer = self.node_params.get('mixer', '')
         default_initial_volume = self.node_params.get('default_volume', 100)

@@ -189,7 +189,7 @@ class Chopsticks(JustSockClientService):
             letter.check_chopstick()
 
     def success_callback(self):
-        self.factory.send_event({"success": True})
+        self.send_event({"success": True})
 
     def set_difficulty(self, difficulty):
         if difficulty not in self.available_difficulties:

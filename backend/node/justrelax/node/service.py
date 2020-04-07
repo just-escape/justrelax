@@ -40,3 +40,6 @@ class JustSockClientService(internet.TCPClient):
 
     def process_event(self, event):
         pass
+
+    def send_event(self, event):
+        self.factory.send_event(event)

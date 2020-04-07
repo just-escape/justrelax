@@ -9,7 +9,9 @@ from justrelax.node.service import JustSockClientService
 
 
 class Niryo(JustSockClientService):
-    def start(self):
+    def __init__(self, *args, **kwargs):
+        super(Niryo, self).__init__(*args, **kwargs)
+
         rospy.init_node('justrelax')
         self.niryo = NiryoOne()
         self.niryo.change_tool(TOOL_GRIPPER_1_ID)

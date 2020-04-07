@@ -1,5 +1,7 @@
 import json
 
+from twisted.protocols.basic import LineOnlyReceiver
+
 from autobahn.twisted.websocket import WebSocketClientProtocol
 
 from justrelax.common.constants import JUST_SOCK_PROTOCOL as P
@@ -131,3 +133,15 @@ class JustSockClientProtocol(WebSocketClientProtocol):
 
     def __str__(self):
         return "{}@{}".format(self.name, self.channel)
+
+
+class JSONSerialProtocol(LineOnlyReceiver):
+    delimiter = b'\n'
+
+    def __init__(self, on_event_callback):
+        self.on_event_callback = on_event_callback
+
+    def lineReceived(self, line):
+        decoded_line = line.decode('ascii')
+        event = json.loads(decoded_line)
+        self.on_event_callback(event)
