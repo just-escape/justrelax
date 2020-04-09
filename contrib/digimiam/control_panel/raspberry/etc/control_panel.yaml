@@ -1,0 +1,80 @@
+host: localhost
+port: 3031
+
+name: control_panel
+channel: digimiam1
+
+node_params:
+  arduino:
+    port: /dev/arduino
+    baud_rate: 9600
+  chrono_leds:
+    strip: 0
+    strip_length: 23
+    reverse_pins: yes
+  status_leds:
+    strip: 1
+    strip_length: 3
+    reverse_pins: yes
+  initial_difficulty: easy
+  difficulties:
+    easy:
+      chrono_led_frequency: 4
+      # At least 6 or the sequence generator might deadlock itself
+      available_floppies:
+        - a
+        - b
+        - c
+        - d
+        - e
+        - f
+    normal:
+      chrono_led_frequency: 3
+      # At least 6 or the sequence generator might deadlock itself
+      available_floppies:
+        - a
+        - b
+        - c
+        - d
+        - e
+        - f
+        - g
+    hard:
+      chrono_led_frequency: 2
+      # At least 6 or the sequence generator might deadlock itself
+      available_floppies:
+        - a
+        - b
+        - c
+        - d
+        - e
+        - f
+        - g
+        - h
+  floppies:
+    a:
+      pattern: 1-0-1-0-1-1-0
+      tag: 4-153-10-218-168-100-132
+    b:
+      pattern: 1-0-1-0-1-1-0
+      tag: 4-159-10-218-168-100-132
+    c:
+      pattern: 1-0-1-0-1-1-0
+      tag: 4-163-10-218-168-100-132
+    d:
+      pattern: 1-0-1-0-1-1-0
+      tag: 4-240-11-218-168-100-132
+    e:
+      pattern: 1-0-1-0-1-1-0
+      tag: 1-2-3-4
+    f:
+      pattern: 1-0-1-0-1-1-0
+      tag: 57-38-232-60
+    g:
+      pattern: 1-0-1-0-1-1-0
+      tag: X
+    h:
+      pattern: 1-0-1-0-1-1-0
+      tag: X
+
+logging: null
