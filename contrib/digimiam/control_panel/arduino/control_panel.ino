@@ -126,14 +126,6 @@ void pushCurrentReaderNullValue() {
   Serial.println();
 }
 
-void loop() {
-  updateStatusLedsColors();
-  updateControlLedsColors();
-  FastLED.show();
-
-  floppyRead();
-}
-
 void updateStatusLedsColors() {
   int i;
 
@@ -254,6 +246,14 @@ void floppyRead() {
   digitalWrite(rstPins[currentReaderIndex], LOW);
   currentReaderIndex = (currentReaderIndex + 1) % 5;
   delay(1);
+}
+
+void loop() {
+  updateStatusLedsColors();
+  updateControlLedsColors();
+  FastLED.show();
+
+  floppyRead();
 }
 
 void onEvent() {
