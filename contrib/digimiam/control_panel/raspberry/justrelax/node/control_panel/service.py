@@ -35,7 +35,12 @@ class NiryoController:
         self.floppy_readers = [None, None, None, None, None]
 
         self._status = None
-        self.status = "chaos"
+
+        def init_status():
+            self.status = "chaos"
+
+        # Introduce a delay to ensure that arduino's serial is ready to process characters
+        reactor.callLater(1, init_status)
 
     @property
     def difficulty(self):
