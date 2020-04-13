@@ -11,7 +11,7 @@ class Serial:
         self.service = service
 
         if on_event_callback is None:
-            self.on_event_callback = self.service.process_arduino_event
+            self.on_event_callback = self.service.process_serial_event
         else:
             self.on_event_callback = on_event_callback
 
@@ -30,8 +30,9 @@ class Serial:
 
     def process_parse_exception(self, line, exception):
         formatted_exception = "{}: {}".format(type(exception).__name__, exception)
-        self.service.factory.protocol.send_log_error("Error while trying to forward arduino line={}: {}".format(
-            line, formatted_exception))
+        if self.service.factory.protocol:
+            self.service.factory.protocol.send_log_error("Error while trying to forward arduino line={}: {}".format(
+                line, formatted_exception))
         logger.error("Error while trying to forward arduino line={}".format(line))
         logger.exception()
 

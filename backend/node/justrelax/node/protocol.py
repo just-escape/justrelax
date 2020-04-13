@@ -151,5 +151,7 @@ class JSONSerialProtocol(LineOnlyReceiver):
         else:
             self.on_event_callback(event)
 
-    def send(self, event):
-        self.sendLine((json.dumps(event).encode()))
+    def send_event(self, event):
+        encoded_event = json.dumps(event, separators=(',', ':')).encode()
+        logger.debug("Sending {}".format(encoded_event))
+        self.sendLine(encoded_event)
