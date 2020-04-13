@@ -7,19 +7,11 @@ channel: digimiam1
 node_params:
   arduino:
     port: /dev/arduino
-    baud_rate: 9600
-  chrono_leds:
-    strip: 0
-    strip_length: 23
-    reverse_pins: yes
-  status_leds:
-    strip: 1
-    strip_length: 3
-    reverse_pins: yes
+    baud_rate: 19200
   initial_difficulty: easy
   difficulties:
     easy:
-      chrono_led_frequency: 4
+      chrono_leds_frequency: 2
       # At least 6 or the sequence generator might deadlock itself
       available_floppies:
         - a
@@ -29,7 +21,7 @@ node_params:
         - e
         - f
     normal:
-      chrono_led_frequency: 3
+      chrono_leds_frequency: 3
       # At least 6 or the sequence generator might deadlock itself
       available_floppies:
         - a
@@ -40,7 +32,7 @@ node_params:
         - f
         - g
     hard:
-      chrono_led_frequency: 2
+      chrono_leds_frequency: 2
       # At least 6 or the sequence generator might deadlock itself
       available_floppies:
         - a
