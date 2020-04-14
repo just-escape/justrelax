@@ -145,6 +145,7 @@ class NiryoController:
 
     def on_mute(self):
         self.chrono_leds.fill((0, 0, 0))
+        self.chrono_leds.show()
         self.set_status_leds_color(first="r", second="b", third="b")
 
     def on_playing(self):
