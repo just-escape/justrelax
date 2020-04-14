@@ -1,0 +1,13 @@
+[Unit]
+Description=Output device node daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/output_device.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o outputdevice -c /etc/justrelax/output_device.yaml
+
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
