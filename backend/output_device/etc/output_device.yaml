@@ -1,0 +1,10 @@
+host: localhost
+port: 3031
+
+name: output_device
+channel: digimiam1
+
+node_params:
+  pin: 4
+
+logging: null
