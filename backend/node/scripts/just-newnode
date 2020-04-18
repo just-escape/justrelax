@@ -92,13 +92,15 @@ class NodeFactory:
             fh.write("\n".join(init_py))
 
         service_py = [
+            "from justrelax.common.logging_utils import logger",
             "from justrelax.node.service import JustSockClientService",
             "",
             "",
             "class {}(JustSockClientService):".format(self.class_name),
-            "    def start(self):",
-            "        print(self.node_params)",
-            "        self.factory.send_event({'hello': 'world'})",
+            "    def __init__(self):",
+            "        super({}, self).__init__(*args, **kwargs)".format(self.class_name),
+            "        logger.info(self.node_params)",
+            "        self.send_event({'hello': 'world'})",
             "",
             "    def process_event(self, event):",
             "        print(event)",
