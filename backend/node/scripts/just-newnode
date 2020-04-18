@@ -97,7 +97,7 @@ class NodeFactory:
             "",
             "",
             "class {}(JustSockClientService):".format(self.class_name),
-            "    def __init__(self):",
+            "    def __init__(self, *args, **kwargs):",
             "        super({}, self).__init__(*args, **kwargs)".format(self.class_name),
             "        logger.info(self.node_params)",
             "        self.send_event({'hello': 'world'})",
