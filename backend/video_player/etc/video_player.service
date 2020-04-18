@@ -1,0 +1,13 @@
+[Unit]
+Description=Video player node daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/video_player.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o videoplayer -c /etc/justrelax/video_player.yaml
+
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
