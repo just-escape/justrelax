@@ -3,6 +3,7 @@
 #include <deprecated.h>
 #include <require_cpp11.h>
 #include <MFRC522Extended.h>
+#include <HX711-multi.h>
 
 #include <ArduinoJson.h>
 #include <FastLED.h>
@@ -19,8 +20,16 @@
 #define PROTOCOL_READER "r"
 #define PROTOCOL_TAG "t"
 
+#define PROTOCOL_LOAD_CELL "l"
+#define PROTOCOL_MEASURES "m"
+
 #define PROTOCOL_LED_SET_COLOR "s"
 #define PROTOCOL_COLORS "c"
+
+#define HX711_CLK 22
+byte HX711_DOUT_PINS[7] = {24, 26, 28, 30, 32, 34, 36};
+long int hx711Measures[7];
+HX711MULTI hx711Scales(7, HX711_DOUT_PINS, HX711_CLK);
 
 int rstPins[5] = {2, 3, 4, 5, 6};
 #define SS_PIN      53
@@ -56,6 +65,16 @@ boolean controlLedsBlinkToggle = false;
 DynamicJsonDocument receivedDocument(JSON_OBJECT_SIZE(20));
 String receivedEvent = "";
 
+void hx711_tare() {
+    bool isTareSuccessful = false;
+    unsigned long tareTimeout = 4000;
+
+    unsigned long tareStartTime = millis();
+    while (!isTareSuccessful && millis() < (tareStartTime + tareTimeout)) {
+        isTareSuccessful = hx711Scales.tare(20, 10000);
+    }
+}
+
 void setup() {
   Serial.begin(19200);
 
@@ -65,6 +84,8 @@ void setup() {
     pinMode(rstPins[i], OUTPUT);
     digitalWrite(rstPins[i], LOW);
   }
+
+  hx711_tare();
 
   FastLED.addLeds<LED_TYPE, STATUS_STRIP_PIN, COLOR_ORDER>(ledStrips[0], STATUS_STRIP_LENGTH).setCorrection(TypicalLEDStrip);
   FastLED.addLeds<LED_TYPE, CONTROL_STRIP_PIN, COLOR_ORDER>(ledStrips[1], CONTROL_STRIP_LENGTH).setCorrection(TypicalLEDStrip);
@@ -248,7 +269,24 @@ void floppyRead() {
   delay(1);
 }
 
+void pushHX711Measures() {
+  StaticJsonDocument<JSON_OBJECT_SIZE(2) + JSON_ARRAY_SIZE(7)> event;
+
+  event[PROTOCOL_EVENT_TYPE] = PROTOCOL_LOAD_CELL;
+  JsonArray measures = event.createNestedArray(PROTOCOL_MEASURES);
+
+  hx711Scales.read(hx711Measures);
+  for (int i = 0 ; i < hx711Scales.get_count() ; i++) {
+    measures.add(hx711Measures[i] / 40000);
+  }
+
+  serializeJson(event, Serial);
+  Serial.println();
+}
+
 void loop() {
+  pushHX711Measures();
+
   updateStatusLedsColors();
   updateControlLedsColors();
   FastLED.show();
