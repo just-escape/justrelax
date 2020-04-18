@@ -1,0 +1,12 @@
+host: localhost
+port: 3031
+
+name: video_player
+channel: digimiam1
+
+node_params:
+  path: /path/to/video.mp4
+  autoplay: yes
+  loop: yes
+
+logging: null
