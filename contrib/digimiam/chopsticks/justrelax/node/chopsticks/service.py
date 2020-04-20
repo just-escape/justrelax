@@ -61,7 +61,7 @@ class Letter:
         if new_periodic_task is None:
             self.periodic_task = None
         else:
-            self.periodic_task = LoopingCall(new_periodic_task["reaction"])
+            self.periodic_task = LoopingCall(self.execute_periodic_reaction, new_periodic_task["reaction"])
             self.periodic_task.start(new_periodic_task["period"])
 
     @property
@@ -78,6 +78,7 @@ class Letter:
         blue = self.colors.get(value, {}).get("b", 0)
         self.led.color = (red, green, blue)
 
+    def check_success(self):
         # A letter evaluates to True if its led_color equals to its success_color
         if all(self.letters) and not Letter.success:
             Letter.success = True
@@ -123,11 +124,18 @@ class Letter:
         logger.debug("Letter {} chopstick plugged".format(self.letters.index(self)))
         reaction = self.plug_reactions.get(self.difficulty, self.reaction_do_nothing)
         reaction()
+        self.check_success()
 
     def on_chopstick_unplug(self):
         logger.debug("Letter {} chopstick unplugged".format(self.letters.index(self)))
         reaction = self.unplug_reactions.get(self.difficulty, self.reaction_do_nothing)
         reaction()
+        self.check_success()
+
+    def execute_periodic_reaction(self, reaction):
+        logger.debug("Letter {} periodic reaction".format(self.letters.index(self)))
+        reaction()
+        self.check_success()
 
     @staticmethod
     def on_success():
@@ -140,6 +148,8 @@ class Letter:
 class Chopsticks(JustSockClientService):
     class PROTOCOL:
         ACTION = "action"
+
+        SUCCESS = "success"
 
         SET_DIFFICULTY = "set_difficulty"
         DIFFICULTY = "difficulty"
@@ -189,7 +199,7 @@ class Chopsticks(JustSockClientService):
             letter.check_chopstick()
 
     def success_callback(self):
-        self.send_event({"success": True})
+        self.send_event({self.PROTOCOL.ACTION: self.PROTOCOL.SUCCESS})
 
     def set_difficulty(self, difficulty):
         if difficulty not in self.available_difficulties:

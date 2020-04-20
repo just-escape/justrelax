@@ -416,8 +416,10 @@ class ControlPanel(JustSockClientService):
         PROTOCOL_COLORS = "c"
 
     class PROTOCOL:
-        EVENT_TYPE = "event_type"
+        ACTION = "action"
 
+        SUCCESS = "success"
+        MANUAL_MODE = "manual_mode"
         RESET = "reset"
 
         SET_STATUS = "set_status"
@@ -465,15 +467,15 @@ class ControlPanel(JustSockClientService):
     def process_event(self, event):
         logger.debug("Processing event '{}'".format(event))
 
-        if self.PROTOCOL.EVENT_TYPE not in event:
+        if self.PROTOCOL.ACTION not in event:
             logger.error("Event has no event_type: skipping")
             return
 
-        if event[self.PROTOCOL.EVENT_TYPE] == self.PROTOCOL.RESET:
+        if event[self.PROTOCOL.ACTION] == self.PROTOCOL.RESET:
             self.niryo_controller.reset()
             self.serial.send_event({self.ARDUINO_PROTOCOL.EVENT_TYPE: self.ARDUINO_PROTOCOL.RESET})
 
-        elif event[self.PROTOCOL.EVENT_TYPE] == self.PROTOCOL.SET_STATUS:
+        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.SET_STATUS:
             if self.PROTOCOL.STATUS not in event:
                 logger.error("Event has no status: skipping")
                 return
@@ -481,7 +483,7 @@ class ControlPanel(JustSockClientService):
             status = event[self.PROTOCOL.STATUS]
             self.niryo_controller.status = status
 
-        elif event[self.PROTOCOL.EVENT_TYPE] == self.PROTOCOL.SET_DIFFICULTY:
+        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.SET_DIFFICULTY:
             if self.PROTOCOL.DIFFICULTY not in event:
                 logger.error("Event has no difficulty: skipping")
                 return
@@ -510,7 +512,7 @@ class ControlPanel(JustSockClientService):
         self.serial.send_event(event)
 
     def process_manual_mode(self):
-        self.send_event({"manual_mode": True})
+        self.send_event({self.PROTOCOL.ACTION: self.PROTOCOL.MANUAL_MODE})
 
     def process_success(self):
-        self.send_event({"success": True})
+        self.send_event({self.PROTOCOL.ACTION: self.PROTOCOL.SUCCESS})
