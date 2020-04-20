@@ -1,0 +1,35 @@
+No login screen at boot:
+
+/etc/lightdm/lightdm.conf
+```
+[Seat:*]
+autologin-user=jbb
+```
+
+No sleep mode:
+???
+
+No mouse cursor:
+???
+
+Run chrome in kiosk mode:
+```
+chromium --kiosk --app=<url> --window-position=0,0 --noerrdialogs --user-data-dir=/path/to/directory --password-store=basic
+```
+--noerrordialors for popups ("translate this page")
+--user-data-dir for separate instances (sound)
+--password-store=basic to prevent error messages due to this autologin-user=jbb
+
+Cinnamon startup application conf file:
+~/.config/autostart/<name>.desktop
+```
+[Desktop Entry]
+Type=Application
+Exec=<command>
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=<name>
+Comment[en_US]=No description
+X-GNOME-Autostart-Delay=0
+```

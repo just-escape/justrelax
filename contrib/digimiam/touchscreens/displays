@@ -1,0 +1,5 @@
+# Vu de face sur la face arrière :
+#
+# [ HDMI-A-0 (server) ]  [ DisplayPort-2 (stock) ]  [ DisplayPort-1 (orders) ]  [ DisplayPort-0 (sync) ]
+
+xrandr --output DisplayPort-2 --mode 1920x1080 --rotate left --output DisplayPort-0 --mode 1920x1080 --right-of DisplayPort-0 --output DisplayPort-1 --mode 1920x1080 --right-of DisplayPort-0 --output HDMI-A-0 --mode 1920x1080 --right-of DisplayPort-1
