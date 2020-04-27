@@ -1,2 +1,1 @@
-board
 adafruit-circuitpython-neopixel
