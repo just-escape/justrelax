@@ -30,7 +30,6 @@ class NiryoController:
 
         self.current_chrono_led = -1  # -1 <=> game not started
         self.success_sequence = [None, None, None, None, None]
-        self.generate_success_sequence()
 
         self.floppy_readers = [None, None, None, None, None]
 
@@ -149,6 +148,8 @@ class NiryoController:
         self.set_status_leds_color(first="r", second="b", third="b")
 
     def on_playing(self):
+        self.generate_success_sequence()
+
         self.current_chrono_led = -1
         self.chrono_leds.fill((0, 0, 0))
         self.chrono_leds.show()
