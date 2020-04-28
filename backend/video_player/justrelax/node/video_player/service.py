@@ -4,7 +4,7 @@ from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService
-from justrelax.node.common.media import MediaPlayerMixin
+from justrelax.node.media.player import MediaPlayerMixin
 
 
 class Player(MediaPlayerMixin):

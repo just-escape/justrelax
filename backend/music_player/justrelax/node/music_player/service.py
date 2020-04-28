@@ -5,7 +5,7 @@ from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
-from justrelax.node.common.volume import EASE_MAPPING, MasterVolume
+from justrelax.node.media.volume import EASE_MAPPING, MasterVolume
 from justrelax.node.music_player.vlc_player import VLCSelfReleasingTrackPlayer
 from justrelax.node.music_player.vlc_player import VLCLoopingTrackPlayer
 from justrelax.node.music_player.pyglet_player import PygletTrackPlayer
