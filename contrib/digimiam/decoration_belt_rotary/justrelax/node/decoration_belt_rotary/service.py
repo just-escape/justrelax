@@ -2,8 +2,7 @@ import gpiozero
 
 from twisted.internet import reactor
 
-from justrelax.node.service import JustSockClientService
-from justrelax.common.logging_utils import logger
+from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 
 
 class Rotary:
@@ -42,15 +41,12 @@ class Rotary:
         self.task = reactor.callLater(0, self.check_delta, clk_value)
 
 
-class DecorationBeltRotary(JustSockClientService):
+class DecorationBeltRotary(EventCategoryToMethodMixin, JustSockClientService):
     class PROTOCOL:
-        EVENT_TYPE = "event_type"
+        CATEGORY = "category"
 
         NEW_POSITION = "new_position"
         POSITION = "position"
-
-        ENABLE = "enable"
-        DISABLE = "disable"
 
     def __init__(self, *args, **kwargs):
         super(DecorationBeltRotary, self).__init__(*args, **kwargs)
@@ -58,29 +54,18 @@ class DecorationBeltRotary(JustSockClientService):
         clk_pin = self.node_params["clk_pin"]
         dt_pin = self.node_params["dt_pin"]
 
-        self.rotary = Rotary(clk_pin, dt_pin, self.process_new_position)
+        self.rotary = Rotary(clk_pin, dt_pin, self.notify_new_position)
 
-    def process_new_position(self, position):
+    def notify_new_position(self, position):
         self.send_event(
             {
-                self.PROTOCOL.EVENT_TYPE: self.PROTOCOL.NEW_POSITION,
+                self.PROTOCOL.CATEGORY: self.PROTOCOL.NEW_POSITION,
                 self.PROTOCOL.POSITION: position
             }
         )
 
-    def process_event(self, event):
-        logger.debug("Processing event '{}'".format(event))
+    def process_enable(self):
+        self.rotary.enable()
 
-        if self.PROTOCOL.EVENT_TYPE not in event:
-            logger.error("Event has no event_type: skipping")
-            return
-
-        if event[self.PROTOCOL.EVENT_TYPE] == self.PROTOCOL.ENABLE:
-            self.rotary.enable()
-
-        elif event[self.PROTOCOL.EVENT_TYPE] == self.PROTOCOL.DISABLE:
-            self.rotary.disable()
-
-        else:
-            logger.warning("Unknown event type '{}': skipping".format(
-                event[self.PROTOCOL.EVENT_TYPE]))
+    def process_disable(self):
+        self.rotary.disable()

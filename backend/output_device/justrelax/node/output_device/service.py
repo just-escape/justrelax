@@ -1,16 +1,10 @@
 import gpiozero
 
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 from justrelax.common.logging_utils import logger
 
 
-class OutputDevice(JustSockClientService):
-    class PROTOCOL:
-        ACTION = "action"
-
-        HIGH = "on"
-        LOW = "off"
-
+class OutputDevice(EventCategoryToMethodMixin, JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(OutputDevice, self).__init__(*args, **kwargs)
 
@@ -18,33 +12,19 @@ class OutputDevice(JustSockClientService):
 
         custom_high = custom_keywords.get("high", None)
         if custom_high:
-            self.PROTOCOL.HIGH = custom_high
+            setattr(self, "process_{}".format(custom_high), self.process_high)
 
         custom_low = custom_keywords.get("low", None)
         if custom_low:
-            self.PROTOCOL.LOW = custom_low
+            setattr(self, "process_{}".format(custom_low), self.process_high)
 
         pin = self.node_params["pin"]
         self.device = gpiozero.OutputDevice(pin)
 
-    def process_event(self, event):
-        logger.debug("Processing event '{}'".format(event))
-        if type(event) is not dict:
-            logger.error("Unknown event: skipping")
-            return
+    def process_high(self):
+        logger.debug("Setting device pin to high")
+        self.device.on()
 
-        if self.PROTOCOL.ACTION not in event:
-            logger.error("Event has no action: skipping")
-            return
-
-        if event[self.PROTOCOL.ACTION] == self.PROTOCOL.HIGH:
-            logger.debug("Setting device pin to high")
-            self.device.on()
-
-        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.LOW:
-            logger.debug("Setting device pin to low")
-            self.device.off()
-
-        else:
-            logger.warning("Unknown action type '{}': skipping".format(
-                event[self.PROTOCOL.ACTION]))
+    def process_low(self):
+        logger.debug("Setting device pin to low")
+        self.device.off()

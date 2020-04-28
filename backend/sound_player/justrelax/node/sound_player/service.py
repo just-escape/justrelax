@@ -5,24 +5,11 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 from justrelax.node.common.volume import EASE_MAPPING, MasterVolume
 
 
-class SoundPlayer(JustSockClientService):
-    class PROTOCOL:
-        ACTION = "action"
-
-        SOUND_ID = "sound_id"
-        DELAY = "delay"
-
-        ACTION_PLAY = "play"
-
-        ACTION_SET_VOLUME = "set_volume"
-        VOLUME = "volume"
-        DURATION = "duration"
-        EASE = "ease"
-
+class SoundPlayer(EventCategoryToMethodMixin, JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(SoundPlayer, self).__init__(*args, **kwargs)
 
@@ -82,50 +69,42 @@ class SoundPlayer(JustSockClientService):
         pyglet.clock.tick()
         pyglet.app.platform_event_loop.dispatch_posted_events()
 
-    def process_event(self, event):
-        logger.debug("Processing event '{}'".format(event))
-        if type(event) is not dict:
-            logger.debug("Unknown event: skipping")
-            return
-
-        if self.PROTOCOL.ACTION not in event:
-            logger.debug("Event has no action: skipping")
-            return
-
-        delay = event.get(self.PROTOCOL.DELAY, 0)
+    def process_play(self, sound_id: str, delay=0):
         if not isinstance(delay, (int, float)):
-            logger.error("Delay must be int or float (received={}): skipping".format(delay))
-            return
+            raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
-        if event[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_PLAY:
-            if self.PROTOCOL.SOUND_ID not in event:
-                logger.error("Play action has no sound_id: skipping")
-                return
+        logger.info("Playing sound id={}".format(sound_id))
 
-            sound_id = event[self.PROTOCOL.SOUND_ID]
-            logger.info("Playing sound id={}".format(sound_id))
+        sound = self.sounds.get(sound_id, None)
+        if sound is None:
+            raise ValueError("Unknown sound id={}: aborting".format(sound_id))
 
-            sound = self.sounds.get(sound_id, None)
-            if sound is None:
-                logger.error("Unknown sound id={}: aborting".format(sound_id))
-                return
+        reactor.callLater(delay, self.sound_player, sound)
 
-            reactor.callLater(delay, self.sound_player, sound)
+    def process_set_volume(self, volume: int, duration, ease: str = 'easeInOutSine', delay=0):
+        if not isinstance(delay, (int, float)):
+            raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
-        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.ACTION_SET_VOLUME:
-            if self.PROTOCOL.VOLUME not in event:
-                logger.error("Set volume action has not volume: skipping")
-                return
+        if not isinstance(duration, (int, float)):
+            raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
-            volume = event[self.PROTOCOL.VOLUME]
-            duration = event.get(self.PROTOCOL.DURATION, 0)
-            ease = event.get(self.PROTOCOL.EASE, 'easeInOutSine')
+        if not isinstance(duration, (int, float)):
+            raise ValueError('Duration must be int or float (received={}): aborting'.format(duration))
 
-            self.set_volume(delay, volume, duration, ease)
+        if ease not in EASE_MAPPING:
+            raise ValueError('Unknown easing function (received={}): aborting'.format(ease))
 
+        volume = min(volume, 100)
+        volume = max(0, volume)
+
+        duration = max(0, duration)
+
+        ease = EASE_MAPPING[ease]
+
+        if self.master_volume is None:
+            raise RuntimeError("Master volume has not been initialized properly: skipping")
         else:
-            logger.debug("Unknown command type '{}': skipping".format(
-                event[self.PROTOCOL.ACTION]))
+            reactor.callLater(delay, self.master_volume.fade_volume, volume, duration, ease)
 
     def pyglet_play_sound(self, sound):
         player = pyglet.media.Player()
@@ -152,28 +131,3 @@ class SoundPlayer(JustSockClientService):
 
         # Add 0.1 seconds by precaution
         reactor.callLater(sound['duration'] + 0.1, free_player)
-
-    def set_volume(self, delay, volume, duration=0, ease='easeInOutSine'):
-        if not isinstance(volume, int):
-            logger.error('Volume must be an int (received={}): aborting'.format(volume))
-            return
-
-        if not isinstance(duration, int):
-            logger.error('Duration must be an int (received={}): aborting'.format(duration))
-            return
-
-        if ease not in EASE_MAPPING:
-            logger.error('Unknown easing function (received={}): aborting'.format(ease))
-            return
-
-        volume = min(volume, 100)
-        volume = max(0, volume)
-
-        duration = max(0, duration)
-
-        ease = EASE_MAPPING[ease]
-
-        if self.master_volume is None:
-            logger.error("Master volume has not been initialized properly: skipping")
-        else:
-            reactor.callLater(delay, self.master_volume.fade_volume, volume, duration, ease)

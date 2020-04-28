@@ -3,7 +3,7 @@ from gpiozero import InputDevice, RGBLED
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 
 
 class Letter:
@@ -145,23 +145,7 @@ class Letter:
         return self.led_color == self.led_success_color
 
 
-class Chopsticks(JustSockClientService):
-    class PROTOCOL:
-        ACTION = "action"
-
-        SUCCESS = "success"
-
-        SET_DIFFICULTY = "set_difficulty"
-        DIFFICULTY = "difficulty"
-
-        RESET = "reset"
-
-        EMULATE_CHOPSTICK_PLUG = "emulate_chopstick_plug"
-        EMULATE_CHOPSTICK_UNPLUG = "emulate_chopstick_unplug"
-        LETTER_INDEX = "letter_index"
-
-        FORCE_SUCCESS = "force_success"
-
+class Chopsticks(EventCategoryToMethodMixin, JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(Chopsticks, self).__init__(*args, **kwargs)
 
@@ -179,7 +163,7 @@ class Chopsticks(JustSockClientService):
     def init_letters(self):
         Letter.letters = self.letters  # To allow interactions between letters
         Letter.colors = self.colors
-        Letter.on_success = self.success_callback
+        Letter.on_success = self.notify_success
 
         for letter_conf in self.letters_configuration:
             letter = Letter(
@@ -198,8 +182,8 @@ class Chopsticks(JustSockClientService):
         for letter in self.letters:
             letter.check_chopstick()
 
-    def success_callback(self):
-        self.send_event({self.PROTOCOL.ACTION: self.PROTOCOL.SUCCESS})
+    def notify_success(self):
+        self.send_event({"category": "success"})
 
     def set_difficulty(self, difficulty):
         if difficulty not in self.available_difficulties:
@@ -211,51 +195,21 @@ class Chopsticks(JustSockClientService):
         for letter in self.letters:
             letter.difficulty = difficulty
 
-    def reset(self):
+    def process_reset(self):
         Letter.success = False
 
         for letter_index, letter in enumerate(self.letters):
             letter.difficulty = self.initial_difficulty
             letter.led_color = self.letters_configuration[letter_index]['led_initial_color']
 
-    def process_event(self, event):
-        logger.debug("Processing event '{}'".format(event))
-        if type(event) is not dict:
-            logger.error("Unknown event: skipping")
-            return
+    def process_emulate_chopstick_plug(self, letter_index: int):
+        self.letters[letter_index].on_chopstick_plug()
 
-        if self.PROTOCOL.ACTION not in event:
-            logger.error("Event has no action: skipping")
-            return
+    def process_emulate_chopstick_unplug(self, letter_index: int):
+        self.letters[letter_index].on_chopstick_unplug()
 
-        if event[self.PROTOCOL.ACTION] == self.PROTOCOL.SET_DIFFICULTY:
-            if self.PROTOCOL.DIFFICULTY not in event:
-                logger.error("Set difficulty action has no difficulty: skipping")
-                return
+    def process_force_success(self):
+        self.letters[0].on_success()
 
-            difficulty = event[self.PROTOCOL.DIFFICULTY]
-            self.set_difficulty(difficulty)
-
-        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.RESET:
-            self.reset()
-
-        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.EMULATE_CHOPSTICK_PLUG:
-            if self.PROTOCOL.LETTER_INDEX not in event:
-                logger.error("Event has no letter index: skipping")
-                return
-
-            self.letters[event[self.PROTOCOL.LETTER_INDEX]].on_chopstick_plug()
-
-        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.EMULATE_CHOPSTICK_UNPLUG:
-            if self.PROTOCOL.LETTER_INDEX not in event:
-                logger.error("Event has no letter index: skipping")
-                return
-
-            self.letters[event[self.PROTOCOL.LETTER_INDEX]].on_chopstick_unplug()
-
-        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.FORCE_SUCCESS:
-            self.letters[0].on_success()
-
-        else:
-            logger.warning("Unknown action type '{}': skipping".format(
-                event[self.PROTOCOL.ACTION]))
+    def process_set_difficulty(self, difficulty: str):
+        self.set_difficulty(difficulty)

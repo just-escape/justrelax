@@ -5,7 +5,7 @@ import neopixel
 
 from twisted.internet import reactor
 
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 from justrelax.node.helper import Serial
 
 from justrelax.common.logging_utils import logger
@@ -210,7 +210,7 @@ class NiryoController:
                 post_animation()
 
         def post_animation():
-            self.service.process_success()
+            self.service.notify_success()
 
         self.tasks["success_animation"] = reactor.callLater(0.5, post_delay)
 
@@ -401,7 +401,7 @@ class NiryoController:
         self.status = "chaos"
 
 
-class ControlPanel(JustSockClientService):
+class ControlPanel(EventCategoryToMethodMixin, JustSockClientService):
     class ARDUINO_PROTOCOL:
         EVENT_TYPE = "e"
 
@@ -415,19 +415,6 @@ class ControlPanel(JustSockClientService):
 
         PROTOCOL_SET_COLORS = "s"
         PROTOCOL_COLORS = "c"
-
-    class PROTOCOL:
-        ACTION = "action"
-
-        SUCCESS = "success"
-        MANUAL_MODE = "manual_mode"
-        RESET = "reset"
-
-        SET_STATUS = "set_status"
-        STATUS = "status"
-
-        SET_DIFFICULTY = "set_difficulty"
-        DIFFICULTY = "difficulty"
 
     def __init__(self, *args, **kwargs):
         super(ControlPanel, self).__init__(*args, **kwargs)
@@ -463,34 +450,17 @@ class ControlPanel(JustSockClientService):
             self.on_rfid_read(reader, tag)
 
         elif event[self.ARDUINO_PROTOCOL.EVENT_TYPE] == self.ARDUINO_PROTOCOL.MODE_MANUAL:
-            self.process_manual_mode()
+            self.notify_manual_mode()
 
-    def process_event(self, event):
-        logger.debug("Processing event '{}'".format(event))
+    def process_reset(self):
+        self.niryo_controller.reset()
+        self.serial.send_event({self.ARDUINO_PROTOCOL.EVENT_TYPE: self.ARDUINO_PROTOCOL.RESET})
 
-        if self.PROTOCOL.ACTION not in event:
-            logger.error("Event has no event_type: skipping")
-            return
+    def process_set_status(self, status: str):
+        self.niryo_controller.status = status
 
-        if event[self.PROTOCOL.ACTION] == self.PROTOCOL.RESET:
-            self.niryo_controller.reset()
-            self.serial.send_event({self.ARDUINO_PROTOCOL.EVENT_TYPE: self.ARDUINO_PROTOCOL.RESET})
-
-        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.SET_STATUS:
-            if self.PROTOCOL.STATUS not in event:
-                logger.error("Event has no status: skipping")
-                return
-
-            status = event[self.PROTOCOL.STATUS]
-            self.niryo_controller.status = status
-
-        elif event[self.PROTOCOL.ACTION] == self.PROTOCOL.SET_DIFFICULTY:
-            if self.PROTOCOL.DIFFICULTY not in event:
-                logger.error("Event has no difficulty: skipping")
-                return
-
-            difficulty = event[self.PROTOCOL.DIFFICULTY]
-            self.niryo_controller.difficulty = difficulty
+    def process_set_difficulty(self, difficulty: str):
+        self.niryo_controller.difficulty = difficulty
 
     def on_rfid_read(self, reader, tag):
         if not tag:
@@ -512,8 +482,8 @@ class ControlPanel(JustSockClientService):
         }
         self.serial.send_event(event)
 
-    def process_manual_mode(self):
-        self.send_event({self.PROTOCOL.ACTION: self.PROTOCOL.MANUAL_MODE})
+    def notify_manual_mode(self):
+        self.send_event({"category": "manual_mode"})
 
-    def process_success(self):
-        self.send_event({self.PROTOCOL.ACTION: self.PROTOCOL.SUCCESS})
+    def notify_success(self):
+        self.send_event({"category": "success"})
