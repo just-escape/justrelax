@@ -8,7 +8,7 @@ def get_requirements():
 
 if __name__ == '__main__':
     setup(
-        name="justrelax_node_hologram_player",
+        name="justrelax_hologram_player",
         version="0.1",
         packages=["justrelax.node.hologram_player", "twisted.plugins"],
         install_requires=get_requirements(),

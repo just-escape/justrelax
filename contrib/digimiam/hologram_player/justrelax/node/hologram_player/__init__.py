@@ -1,1 +1,3 @@
-from justrelax.node.hologram_player.service import HologramPlayer
+from justrelax.node.hologram_player.service import VideoPlayer
+from justrelax.node.hologram_player.vlc_player import VLCVideoPlayer
+from justrelax.node.hologram_player.vlc_player import VLCLoopingChapterVideoPlayer

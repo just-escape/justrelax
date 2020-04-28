@@ -1,72 +1,66 @@
-import vlc
-
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
+from justrelax.node.hologram_player.vlc_player import VLCDynamicSlidesPlayer
+
+# TODO: only one video is handled by this node
 
 
-class HologramPlayer(JustSockClientService):
-    class PROTOCOL:
-        COMMAND_TYPE = "type"
-        SELECT = "select"
-        CHAPTER_ID = "chapter_id"
-
+class HologramPlayer(EventCategoryToMethodMixin, JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(HologramPlayer, self).__init__(*args, **kwargs)
 
-        self.looping_task = None
+        self.videos = {}
+        for video in self.node_params.get('videos', []):
+            id_ = video['id']
+            path = video['path']
 
-        self.chapters = {}
-        for chapter in self.node_params['chapters']:
-            self.chapters[chapter['id']] = {
-                'start': chapter['start'],
-                'loop_a': chapter['loop_a'],
-                'loop_b': chapter['loop_b'],
-            }
+            initial_slides = video['initial_slides']
+            chapters = video['chapters']
+            player = VLCDynamicSlidesPlayer(
+                media_path=path, initial_slides=initial_slides, chapters=chapters)
 
-        self.player = vlc.MediaPlayer(self.service_params['video_path'])
-        self.player.set_fullscreen(True)
+            self.videos[id_] = player
 
-        if 'default_chapter' in self.service_params:
-            self.lock_chapter(self.service_params['default_chapter'])
+    def play_pause_stop(self, action, method_name, video_id, delay):
+        if not isinstance(delay, (int, float)):
+            raise TypeError("Delay must be int or float (received={}): skipping".format(delay))
 
-    def process_event(self, event):
-        logger.debug("Processing event '{}'".format(event))
-        if type(event) is not dict:
-            logger.debug("Unknown event: skipping")
-            return
+        logger.info("{} video id={}".format(action, video_id))
 
-        if self.PROTOCOL.COMMAND_TYPE not in event:
-            logger.debug("Event has no command type: skipping")
-            return
+        player = self.videos.get(video_id, None)
+        if player is None:
+            raise ValueError("Unknown video id={}: aborting".format(video_id))
 
-        if event[self.PROTOCOL.COMMAND_TYPE] == self.PROTOCOL.SELECT:
-            if self.PROTOCOL.CHAPTER_ID not in event:
-                logger.debug("Select command has no chapter id: skipping")
-                return
+        reactor.callLater(delay, getattr(player, method_name))
 
-            self.lock_chapter(event[self.PROTOCOL.CHAPTER_ID])
-        else:
-            logger.debug("Unknown command type '{}': skipping".format(
-                event[self.PROTOCOL.COMMAND_TYPE]))
+    def process_play(self, video_id: str, delay=0):
+        self.play_pause_stop("Playing", "play", video_id, delay)
 
-    def lock_chapter(self, chapter_id):
-        logger.info("Locking on chapter id={}".format(chapter_id))
+    def process_pause(self, video_id: str, delay=0):
+        self.play_pause_stop("Pausing", "pause", video_id, delay)
 
-        chapter = self.chapters.get(chapter_id, None)
-        if chapter is None:
-            logger.error("Unknown chapter id={}: aborting".format(chapter_id))
-            return
+    def process_stop(self, video_id: str, delay=0):
+        self.play_pause_stop("Stopping", "stop", video_id, delay)
 
-        if self.looping_task is not None:
-            self.looping_task.cancel()
+    def process_set_slide(self, video_id: str, slide_index: int, chapter_id: str, delay=0):
+        if not isinstance(delay, (int, float)):
+            raise TypeError("Delay must be int or float (received={}): skipping".format(delay))
 
-        self.player.set_time(int(self.chapters[chapter_id]['start'] * 1000))
-        self.player.play()
-        reactor.callLater(self.chapters[chapter_id]['loop_b'], self.loop_chapter, chapter_id)
+        player = self.videos.get(video_id, None)
+        if player is None:
+            raise ValueError("Unknown video id={}: aborting".format(video_id))
 
-    def loop_chapter(self, chapter_id):
-        self.media_player.set_time(int(self.chapters[chapter_id]['loop_a'] * 1000))
-        time_before_loop = self.chapters[chapter_id]['loop_b'] - self.chapters[chapter_id]['loop_a']
-        reactor.callLater(time_before_loop, self.lock_loop, chapter_id)
+        if slide_index >= len(player.slides):
+            raise ValueError("Video id={} has only {} slides ({} is out of range): skipping".format(
+                video_id, len(player.slides), slide_index))
+
+        if chapter_id not in player.chapters:
+            raise ValueError("Video id={} has not chapter id={}: skipping".format(
+                video_id, chapter_id))
+
+        logger.info("Setting chapter id={} in slide index={} for video id={}".format(
+            chapter_id, slide_index, video_id))
+
+        reactor.callLater(delay, player.set_slide, slide_index, chapter_id)
