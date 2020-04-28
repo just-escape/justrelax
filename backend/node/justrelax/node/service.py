@@ -1,3 +1,4 @@
+import inspect
 from gpiozero import Device
 from gpiozero.pins.mock import MockFactory, MockPWMPin
 
@@ -43,3 +44,65 @@ class JustSockClientService(internet.TCPClient):
 
     def send_event(self, event):
         self.factory.send_event(event)
+
+
+class EventCategoryToMethodMixin:
+    CATEGORY_FIELD = "category"
+    METHOD_PREFIX = "process"
+    METHOD_SEPARATOR = "_"
+
+    @staticmethod
+    def get_category(event):
+        if EventCategoryToMethodMixin.CATEGORY_FIELD not in event:
+            raise TypeError("Event has no category: ignoring")
+
+        category = event[EventCategoryToMethodMixin.CATEGORY_FIELD]
+        return category
+
+    def get_method_from_category(self, category):
+        method_name = "{}{}{}".format(
+            EventCategoryToMethodMixin.METHOD_PREFIX,
+            EventCategoryToMethodMixin.METHOD_SEPARATOR,
+            category)
+        method = getattr(self, method_name, None)
+        if not callable(method):
+            raise NotImplementedError("Method {} not found".format(method_name))
+        return method
+
+    @staticmethod
+    def check_arguments(event, method):
+        method_arguments = inspect.signature(method).parameters
+        for arg in method_arguments.values():
+            if arg.default is arg.empty:
+                # No default value: a value must be defined in the event
+                if arg.name not in event:
+                    raise TypeError("Event has no {} field: ignoring".format(arg.name))
+
+                if arg.annotation is not arg.empty:
+                    if type(event[arg.name]) is not arg.annotation:
+                        raise TypeError("Event field {} type is not {} (received {}): ignoring".format(
+                            arg.name, arg.annotation, type(event[arg.name])))
+
+    @staticmethod
+    def pop_superfluous_fields(event, method):
+        # This inspection is not 100% proof. Positional only arguments or *args / **kwargs can mess
+        # with this logic, but at least it covers a lot of cases.
+        method_arguments = inspect.signature(method).parameters
+        event.pop(EventCategoryToMethodMixin.CATEGORY_FIELD)
+        for field in event:
+            if field not in method_arguments:
+                event.pop(field)
+
+    def process_event(self, event):
+        logger.debug("Processing event '{}'".format(event))
+        if type(event) is not dict:
+            logger.error("Unknown event: skipping")
+            return
+
+        category = self.get_category(event)
+        method = self.get_method_from_category(category)
+
+        self.check_arguments(event, method)
+        self.pop_superfluous_fields(event, method)
+
+        method(**event)
