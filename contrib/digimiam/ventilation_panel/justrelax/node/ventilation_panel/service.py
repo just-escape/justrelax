@@ -6,7 +6,7 @@ import board
 from twisted.internet.reactor import callLater
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 
 
 class AirSource:
@@ -164,7 +164,7 @@ class VentilationController:
         self.display_connected_air_ducts_before_restart()
 
     def on_success(self):
-        self.service.process_success()
+        self.service.notify_success()
 
     def on_connect(self, air_duct, air_source):
         logger.debug("{} is connected to {}".format(air_duct, air_source))
@@ -557,20 +557,7 @@ class VentilationController:
                 ad.check_connection()
 
 
-class VentilationPanel(JustSockClientService):
-    class PROTOCOL:
-        EVENT_TYPE = "event_type"
-
-        RESET = "reset"
-
-        SET_STATUS = "set_status"
-        STATUS = "status"
-
-        SET_DIFFICULTY = "set_difficulty"
-        DIFFICULTY = "difficulty"
-
-        SUCCESS = "success"
-
+class VentilationPanel(EventCategoryToMethodMixin, JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(VentilationPanel, self).__init__(*args, **kwargs)
 
@@ -603,35 +590,14 @@ class VentilationPanel(JustSockClientService):
 
         self.vc = VentilationController(self, initial_difficulty, difficulties, air_ducts, air_sources, colors)
 
-    def process_event(self, event):
-        logger.debug("Processing event '{}'".format(event))
+    def process_reset(self):
+        self.vc.reset()
 
-        if self.PROTOCOL.EVENT_TYPE not in event:
-            logger.error("Event has no event_type: skipping")
-            return
+    def process_set_status(self, status: str):
+        self.vc.status = status
 
-        if event[self.PROTOCOL.EVENT_TYPE] == self.PROTOCOL.RESET:
-            self.vc.reset()
+    def process_set_difficulty(self, difficulty: str):
+        self.vc.difficulty = difficulty
 
-        elif event[self.PROTOCOL.EVENT_TYPE] == self.PROTOCOL.SET_STATUS:
-            if self.PROTOCOL.STATUS not in event:
-                logger.error("Event has no status: skipping")
-                return
-
-            status = event[self.PROTOCOL.STATUS]
-            self.vc.status = status
-
-        elif event[self.PROTOCOL.EVENT_TYPE] == self.PROTOCOL.SET_DIFFICULTY:
-            if self.PROTOCOL.DIFFICULTY not in event:
-                logger.error("Event has no difficulty: skipping")
-                return
-
-            difficulty = event[self.PROTOCOL.DIFFICULTY]
-            self.vc.difficulty = difficulty
-
-        else:
-            logger.warning("Unknown event type '{}': skipping".format(
-                event[self.PROTOCOL.EVENT_TYPE]))
-
-    def process_success(self):
-        self.send_event({self.PROTOCOL.EVENT_TYPE: self.PROTOCOL.SUCCESS})
+    def notify_success(self):
+        self.send_event({"category": "success"})
