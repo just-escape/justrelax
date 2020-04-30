@@ -245,14 +245,10 @@ class VentilationController:
             self.unskippable_animation_task = callLater(1.3, step3)
 
         def step3():
-            self.good_move_animation()
+            self.blink(self.round, "light_green", 5)
             self.unskippable_animation_task = callLater(1.3, step4)
 
         def step4():
-            self.blink(self.round, "light_green", 5)
-            self.unskippable_animation_task = callLater(1.3, step5)
-
-        def step5():
             if self.round < 2:
                 logger.debug("Going to next round".format(self.round))
                 self.round += 1
@@ -262,9 +258,9 @@ class VentilationController:
                     self.display_connected_air_ducts_before_restart()
             else:
                 logger.debug("All rounds have been completed: victory!")
-                self.success_animation(step6)
+                self.success_animation(step5)
 
-        def step6():
+        def step5():
             self.status = "success"
 
         step1()
@@ -284,6 +280,32 @@ class VentilationController:
 
         self.skip_skippable_animations()
 
+        def pre_display_animation():
+            self.unskippable_animation_task = callLater(3, display_element)
+            for ad in self.air_ducts.values():
+                ad.set_color("black")
+                self.fluid_to_color(
+                    ad.led_index,
+                    "red",
+                    0.5,
+                    "display_element",
+                    self.fluid_to_color,
+                    ad.led_index,
+                    "black",
+                    0.5,
+                    "display_element",
+                    self.fluid_to_color,
+                    ad.led_index,
+                    "red",
+                    0.5,
+                    "display_element",
+                    self.fluid_to_color,
+                    ad.led_index,
+                    "black",
+                    0.5,
+                    "display_element",
+                )
+
         def display_element(index=0):
             if index < len(self.success_sequence):
                 # For the last element of the sequence, this code saves a task in the unskippable_animation_task,
@@ -302,7 +324,7 @@ class VentilationController:
                     "display_element",
                 )
 
-        display_element()
+        pre_display_animation()
 
     def get_expected_sources(self, cursor):
         displayed_color = self.success_sequence[cursor]["color"]
@@ -545,7 +567,7 @@ class VentilationController:
         self.new_success_sequence()
         self.sequence_cursor = 0
 
-        self.unskippable_animation_task = callLater(1.5, self.display_sequence)
+        self.unskippable_animation_task = callLater(0.5, self.display_sequence)
 
     def reset(self):
         self.status = "inactive"
