@@ -70,15 +70,15 @@ node_params:
   difficulties:
     easy:
       round0:
-        - ad0 > yellow, ad1 > orange, ad2 > orange
+        - ad0 > yellow, ad1 > white, ad2 > white
         - ad2 > white, ad1 > yellow, ad0 > white
-        - ad1 > orange, ad0 > white, ad2 > orange
+        - ad1 > yellow, ad0 > white, ad2 > yellow
         - ad0 > yellow, ad1 > yellow, ad2 > white
-        - ad0 > white, ad1 > orange, ad2 > yellow
-        - ad1 > white, ad2 > orange, ad0 > white
-        - ad1 > yellow, ad2 > white, ad0 > orange
-        - ad2 > white, ad0 > orange, ad1 > yellow
-        - ad2 > orange, ad1 > white, ad0 > white
+        - ad0 > white, ad1 > yellow, ad2 > yellow
+        - ad1 > white, ad2 > yellow, ad0 > white
+        - ad1 > yellow, ad2 > white, ad0 > yellow
+        - ad2 > white, ad0 > yellow, ad1 > yellow
+        - ad2 > yellow, ad1 > white, ad0 > white
         - ad2 > yellow, ad0 > yellow, ad1 > yellow
       round1:
         - ad1 > orange, ad0 > pink, ad1 > white, ad2 > yellow
@@ -104,16 +104,16 @@ node_params:
         - ad2 > white, ad0 > yellow, ad1 > white, ad0 > blue
     normal:
       round0:
-        - ad1 > yellow, ad0 > orange, ad2 > white
-        - ad0 > yellow, ad2 > orange, ad1 > orange
+        - ad1 > yellow, ad0 > yellow, ad2 > white
+        - ad0 > yellow, ad2 > white, ad1 > yellow
         - ad1 > white, ad0 > yellow, ad2 > pink
-        - ad0 > white, ad1 > orange, ad2 > white
+        - ad0 > white, ad1 > yellow, ad2 > white
         - ad2 > yellow, ad1 > yellow, ad0 > pink
-        - ad2 > orange, ad0 > yellow, ad1 > pink
+        - ad2 > yellow, ad0 > yellow, ad1 > pink
         - ad1 > white, ad2 > pink, ad0 > pink
-        - ad2 > orange, ad0 > yellow, ad1 > yellow
-        - ad1 > orange, ad2 > pink, ad0 > white
-        - ad0 > white, ad1 > orange, ad2 > white
+        - ad2 > yellow, ad0 > yellow, ad1 > yellow
+        - ad1 > yellow, ad2 > pink, ad0 > white
+        - ad0 > white, ad1 > yellow, ad2 > white
       round1:
         - ad1 > yellow, ad2 > yellow, ad0 > pink, ad2 > blue
         - ad0 > yellow, ad1 > yellow, ad2 > orange, ad0 > blue
@@ -138,16 +138,16 @@ node_params:
         - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white, ad2 > white
     hard:
       round0:
-        - ad1 > yellow, ad0 > yellow, ad2 > pink, ad1 > orange
-        - ad2 > orange, ad0 > white, ad1 > pink, ad2 > white
-        - ad0 > yellow, ad2 > orange, ad1 > white, ad2 > yellow
-        - ad2 > yellow, ad1 > yellow, ad0 > orange, ad1 > orange
+        - ad1 > yellow, ad0 > yellow, ad2 > pink, ad1 > white
+        - ad2 > yellow, ad0 > white, ad1 > pink, ad2 > white
+        - ad0 > yellow, ad2 > yellow, ad1 > white, ad2 > yellow
+        - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
         - ad0 > white, ad1 > pink, ad2 > pink, ad1 > yellow
-        - ad0 > orange, ad2 > orange, ad1 > orange, ad2 > white
-        - ad1 > white, ad0 > pink, ad2 > orange, ad0 > orange
-        - ad1 > orange, ad2 > yellow, ad0 > yellow, ad1 > white
-        - ad2 > orange, ad1 > pink, ad0 > white, ad1 > pink
-        - ad2 > orange, ad1 > yellow, ad0 > white, ad1 > white
+        - ad0 > white, ad2 > yellow, ad1 > yellow, ad2 > white
+        - ad1 > white, ad0 > pink, ad2 > yellow, ad0 > yellow
+        - ad1 > white, ad2 > yellow, ad0 > yellow, ad1 > white
+        - ad2 > yellow, ad1 > pink, ad0 > white, ad1 > pink
+        - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > white
       round1:
         - ad1 > yellow, ad2 > yellow, ad0 > pink, ad2 > blue, ad1 > orange
         - ad0 > white, ad2 > orange, ad1 > pink, ad2 > orange, ad1 > blue
