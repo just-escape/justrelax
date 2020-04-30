@@ -281,28 +281,38 @@ class VentilationController:
         self.skip_skippable_animations()
 
         def pre_display_animation():
-            self.unskippable_animation_task = callLater(3, display_element)
+            self.unskippable_animation_task = callLater(1.6, display_element)
             for ad in self.air_ducts.values():
                 ad.set_color("black")
                 self.fluid_to_color(
                     ad.led_index,
                     "red",
-                    0.5,
+                    0.1,
                     "display_element",
                     self.fluid_to_color,
                     ad.led_index,
                     "black",
-                    0.5,
+                    0.1,
                     "display_element",
                     self.fluid_to_color,
                     ad.led_index,
                     "red",
-                    0.5,
+                    0.1,
                     "display_element",
                     self.fluid_to_color,
                     ad.led_index,
                     "black",
-                    0.5,
+                    0.1,
+                    "display_element",
+                    self.fluid_to_color,
+                    ad.led_index,
+                    "red",
+                    0.1,
+                    "display_element",
+                    self.fluid_to_color,
+                    ad.led_index,
+                    "black",
+                    0.1,
                     "display_element",
                 )
 
