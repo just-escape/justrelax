@@ -96,14 +96,14 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
     def event_up(self):
         logger.info("Pulling table up")
         self.motor.position_up()
-        logger.info("Turning off the led.")
+        logger.info("Turning off the led")
         self.led.off()
         self.cancel_tasks()
         logger.info("Scheduling the motor to stop after {} seconds".format(self.pull_delay))
         self.stop_motor_task = callLater(self.pull_delay, self.motor.stop)
 
     def event_down(self):
-        logger.info("Pulling table down.")
+        logger.info("Pulling table down")
         self.motor.position_down()
         self.cancel_led_task()
         logger.info("Scheduling the led to turn on after {} seconds".format(self.pull_delay))
@@ -112,3 +112,7 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
         self.stop_motor_task = callLater(self.pull_delay, self.motor.stop)
         logger.info("Stop listening to the switch")
         self.check_switch_task.stop()
+
+    def event_stop(self):
+        logger.info("Stopping the table")
+        self.motor.stop()
