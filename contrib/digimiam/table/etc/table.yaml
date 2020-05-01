@@ -9,6 +9,7 @@ node_params:
   motor_up_pin: 20
   motor_down_pin: 21
   led_pin: 16
-  led_delay: 10
+  pull_delay: 10
+  up_down_minimum_delay: 1
 
 logging: null
