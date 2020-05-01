@@ -105,7 +105,7 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
     def event_down(self):
         logger.info("Pulling table down")
         self.motor.position_down()
-        self.cancel_led_task()
+        self.cancel_tasks()
         logger.info("Scheduling the led to turn on after {} seconds".format(self.pull_delay))
         self.led_task = callLater(self.pull_delay, self.led.on)
         logger.info("Scheduling the motor to stop after {} seconds".format(self.pull_delay))
