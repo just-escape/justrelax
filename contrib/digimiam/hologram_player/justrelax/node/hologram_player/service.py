@@ -35,16 +35,16 @@ class HologramPlayer(EventCategoryToMethodMixin, JustSockClientService):
 
         reactor.callLater(delay, getattr(player, method_name))
 
-    def process_play(self, video_id: str, delay=0):
+    def event_play(self, video_id: str, delay=0):
         self.play_pause_stop("Playing", "play", video_id, delay)
 
-    def process_pause(self, video_id: str, delay=0):
+    def event_pause(self, video_id: str, delay=0):
         self.play_pause_stop("Pausing", "pause", video_id, delay)
 
-    def process_stop(self, video_id: str, delay=0):
+    def event_stop(self, video_id: str, delay=0):
         self.play_pause_stop("Stopping", "stop", video_id, delay)
 
-    def process_set_slide(self, video_id: str, slide_index: int, chapter_id: str, delay=0):
+    def event_set_slide(self, video_id: str, slide_index: int, chapter_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise TypeError("Delay must be int or float (received={}): skipping".format(delay))
 

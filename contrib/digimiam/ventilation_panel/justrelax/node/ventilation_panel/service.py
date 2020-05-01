@@ -622,13 +622,13 @@ class VentilationPanel(EventCategoryToMethodMixin, JustSockClientService):
 
         self.vc = VentilationController(self, initial_difficulty, difficulties, air_ducts, air_sources, colors)
 
-    def process_reset(self):
+    def event_reset(self):
         self.vc.reset()
 
-    def process_set_status(self, status: str):
+    def event_set_status(self, status: str):
         self.vc.status = status
 
-    def process_set_difficulty(self, difficulty: str):
+    def event_set_difficulty(self, difficulty: str):
         self.vc.difficulty = difficulty
 
     def notify_success(self):

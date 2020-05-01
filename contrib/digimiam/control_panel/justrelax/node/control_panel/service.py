@@ -452,14 +452,14 @@ class ControlPanel(EventCategoryToMethodMixin, JustSockClientService):
         elif event[self.ARDUINO_PROTOCOL.EVENT_TYPE] == self.ARDUINO_PROTOCOL.MODE_MANUAL:
             self.notify_manual_mode()
 
-    def process_reset(self):
+    def event_reset(self):
         self.niryo_controller.reset()
         self.serial.send_event({self.ARDUINO_PROTOCOL.EVENT_TYPE: self.ARDUINO_PROTOCOL.RESET})
 
-    def process_set_status(self, status: str):
+    def event_set_status(self, status: str):
         self.niryo_controller.status = status
 
-    def process_set_difficulty(self, difficulty: str):
+    def event_set_difficulty(self, difficulty: str):
         self.niryo_controller.difficulty = difficulty
 
     def on_rfid_read(self, reader, tag):

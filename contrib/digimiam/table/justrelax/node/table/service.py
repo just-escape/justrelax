@@ -22,14 +22,14 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
         if self.switch.is_active:
             if not self.motor.is_active:
                 logger.info("Switch is active and motor is not active")
-                self.process_down()
+                self.event_down()
                 self.check_switch_task.stop()
 
     def cancel_led_task(self):
         if self.led_task and self.led_task.active():
             self.led_task.cancel()
 
-    def process_reset(self):
+    def event_reset(self):
         logger.info("Resetting node: turning on motor, turning off led and listening to the switch.")
         self.motor.on()
         self.led.off()
@@ -37,13 +37,13 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
         if not self.check_switch_task.running:
             self.check_switch_task.start(1 / 25)
 
-    def process_up(self):
+    def event_up(self):
         logger.info("Pulling table up: turning on motor and turning off led. The switch will not be listened.")
         self.motor.on()
         self.led.off()
         self.cancel_led_task()
 
-    def process_down(self):
+    def event_down(self):
         logger.info(
             "Pulling table down: turning off motor, scheduling to turn on the led and stop listening to the switch.")
         self.motor.off()

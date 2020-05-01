@@ -195,21 +195,21 @@ class Chopsticks(EventCategoryToMethodMixin, JustSockClientService):
         for letter in self.letters:
             letter.difficulty = difficulty
 
-    def process_reset(self):
+    def event_reset(self):
         Letter.success = False
 
         for letter_index, letter in enumerate(self.letters):
             letter.difficulty = self.initial_difficulty
             letter.led_color = self.letters_configuration[letter_index]['led_initial_color']
 
-    def process_emulate_chopstick_plug(self, letter_index: int):
+    def event_emulate_chopstick_plug(self, letter_index: int):
         self.letters[letter_index].on_chopstick_plug()
 
-    def process_emulate_chopstick_unplug(self, letter_index: int):
+    def event_emulate_chopstick_unplug(self, letter_index: int):
         self.letters[letter_index].on_chopstick_unplug()
 
-    def process_force_success(self):
+    def event_force_success(self):
         self.letters[0].on_success()
 
-    def process_set_difficulty(self, difficulty: str):
+    def event_set_difficulty(self, difficulty: str):
         self.set_difficulty(difficulty)

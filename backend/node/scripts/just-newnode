@@ -104,8 +104,8 @@ class NodeFactory:
             "        logger.info(self.node_params)",
             "        self.send_event({'hello': 'world'})",
             "",
-            "    def process_event(self, event):",
-            "        print(event)",
+            "    def event_hello(self):",
+            "        pass",
             "",
         ]
         service_py_file = os.path.join(python_dir, 'service.py')

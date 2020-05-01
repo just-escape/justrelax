@@ -64,8 +64,8 @@ class DecorationBeltRotary(EventCategoryToMethodMixin, JustSockClientService):
             }
         )
 
-    def process_enable(self):
+    def event_enable(self):
         self.rotary.enable()
 
-    def process_disable(self):
+    def event_disable(self):
         self.rotary.disable()

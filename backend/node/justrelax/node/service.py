@@ -48,7 +48,7 @@ class JustSockClientService(internet.TCPClient):
 
 class EventCategoryToMethodMixin:
     CATEGORY_FIELD = "category"
-    METHOD_PREFIX = "process"
+    METHOD_PREFIX = "event"
     METHOD_SEPARATOR = "_"
 
     @staticmethod
@@ -89,7 +89,9 @@ class EventCategoryToMethodMixin:
         # with this logic, but at least it covers a lot of cases.
         method_arguments = inspect.signature(method).parameters
         event.pop(EventCategoryToMethodMixin.CATEGORY_FIELD)
-        for field in event:
+        # Cast as a list so that the entire list is defined before we might pop fields.
+        # Otherwise we would raise RuntimeError ("dictionary changed size during iteration").
+        for field in list(event.keys()):
             if field not in method_arguments:
                 event.pop(field)
 

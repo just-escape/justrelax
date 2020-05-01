@@ -69,7 +69,7 @@ class SoundPlayer(EventCategoryToMethodMixin, JustSockClientService):
         pyglet.clock.tick()
         pyglet.app.platform_event_loop.dispatch_posted_events()
 
-    def process_play(self, sound_id: str, delay=0):
+    def event_play(self, sound_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
@@ -81,7 +81,7 @@ class SoundPlayer(EventCategoryToMethodMixin, JustSockClientService):
 
         reactor.callLater(delay, self.sound_player, sound)
 
-    def process_set_volume(self, volume: int, duration, ease: str = 'easeInOutSine', delay=0):
+    def event_set_volume(self, volume: int, duration, ease: str = 'easeInOutSine', delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 

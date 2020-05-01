@@ -62,13 +62,9 @@ class VideoPlayer(JustSockClientService):
 
         autoplay = self.node_params.get('autoplay', False)
         if autoplay:
-            self.process_event(
-                {
-                    self.PROTOCOL.ACTION: self.PROTOCOL.ACTION_PLAY,
-                }
-            )
+            self.event_play()
 
-    def process_play(self, delay=0):
+    def event_play(self, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
@@ -76,7 +72,7 @@ class VideoPlayer(JustSockClientService):
 
         reactor.callLater(delay, self.player.play)
 
-    def process_pause(self, delay=0):
+    def event_pause(self, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
@@ -84,7 +80,7 @@ class VideoPlayer(JustSockClientService):
 
         reactor.callLater(delay, self.player.pause)
 
-    def process_stop(self, delay=0):
+    def event_stop(self, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 

@@ -84,16 +84,16 @@ class MusicPlayer(EventCategoryToMethodMixin, JustSockClientService):
 
         reactor.callLater(delay, getattr(track, method))
 
-    def process_play(self, track_id: str, delay=0):
+    def event_play(self, track_id: str, delay=0):
         self.play_pause_stop("Playing", "play", track_id, delay)
 
-    def process_pause(self, track_id: str, delay=0):
+    def event_pause(self, track_id: str, delay=0):
         self.play_pause_stop("Pausing", "pause", track_id, delay)
 
-    def process_stop(self, track_id: str, delay=0):
+    def event_stop(self, track_id: str, delay=0):
         self.play_pause_stop("Stopping", "stop", track_id, delay)
 
-    def process_set_volume(self, volume: int, track_id=None, duration=0, ease: str = 'easeInOutSine', delay=0):
+    def event_set_volume(self, volume: int, track_id=None, duration=0, ease: str = 'easeInOutSine', delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
