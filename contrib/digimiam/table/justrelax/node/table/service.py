@@ -11,9 +11,9 @@ from justrelax.node.service import JustSockClientService, EventCategoryToMethodM
 class Motor:
     def __init__(self, up_pin, down_pin):
         # Never have those the two pins active at the same time or the electronics might crash
-        self.motor_up = OutputDevice(up_pin)
-        self.motor_down = OutputDevice(down_pin)
+        self.motor_up = OutputDevice(up_pin, active_high=False)
         self.motor_up.off()
+        self.motor_down = OutputDevice(down_pin, active_high=False)
         self.motor_down.off()
 
     def position_up(self):
