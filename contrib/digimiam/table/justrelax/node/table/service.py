@@ -110,8 +110,9 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
         self.led_task = callLater(self.pull_delay, self.led.on)
         logger.info("Scheduling the motor to stop after {} seconds".format(self.pull_delay))
         self.stop_motor_task = callLater(self.pull_delay, self.motor.stop)
-        logger.info("Stop listening to the switch")
-        self.check_switch_task.stop()
+        if self.check_switch_task.running:
+            logger.info("Stop listening to the switch")
+            self.check_switch_task.stop()
 
     def event_stop(self):
         logger.info("Stopping the table")
