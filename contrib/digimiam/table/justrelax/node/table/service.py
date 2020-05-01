@@ -34,7 +34,8 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
         self.motor.on()
         self.led.off()
         self.cancel_led_task()
-        self.check_switch_task.start(1 / 25)
+        if not self.check_switch_task.running:
+            self.check_switch_task.start(1 / 25)
 
     def process_up(self):
         logger.info("Pulling table up: turning on motor and turning off led. The switch will not be listened.")
