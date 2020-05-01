@@ -25,7 +25,7 @@ class AirDuct:
     def __init__(self, name, air_duct_controller, fan_pin, jack_pin, led_index):
         self.name = name
         self.ad_controller = air_duct_controller
-        self.fan = gpiozero.OutputDevice(fan_pin)  # TODO: PWM with transition to normal speed
+        self.fan = gpiozero.OutputDevice(fan_pin)
         self.jack = gpiozero.OutputDevice(jack_pin)
         self.led_index = led_index
         self.connected_source = None
@@ -41,7 +41,6 @@ class AirDuct:
         for as_ in self.ad_controller.air_sources.values():
             if as_.is_active():
                 if self.connected_source is not as_:
-                    self.fan.on()
                     self.connected_source = as_
                     self.ad_controller.on_connect(self, as_)
                 connection_found = True
@@ -49,7 +48,6 @@ class AirDuct:
 
         if not connection_found:
             if self.connected_source is not None:
-                self.fan.off()
                 self.connected_source = None
                 self.ad_controller.on_disconnect(self)
         self.jack.off()
@@ -153,6 +151,8 @@ class VentilationController:
         return r, g, b
 
     def on_inactive(self):
+        for ad in self.air_ducts.values():
+            ad.fan.off()
         self.led_strip.fill((0, 0, 0))
 
     def on_playing(self):
@@ -197,6 +197,7 @@ class VentilationController:
 
                 else:
                     logger.debug("Good connection")
+                    air_duct.fan.on()
                     air_duct.last_connected_sources.append(air_source)  # Keep track of the good history
                     if self.sequence_cursor == len(self.success_sequence) - 1:
                         self.sequence_cursor = -1
@@ -219,6 +220,7 @@ class VentilationController:
             return
 
         if self.sequence_cursor != -1:  # Game is running
+            air_duct.fan.off()
             if self.success_sequence[self.sequence_cursor]["air_duct"] != air_duct.name:
                 # It was not necessary to disconnect this air duct: considering as an error
                 # TODO: reactivate this rule
@@ -246,6 +248,8 @@ class VentilationController:
 
         def step3():
             self.blink(self.round, "light_green", 5)
+            for ad in self.air_ducts.values():
+                ad.fan.off()
             self.unskippable_animation_task = callLater(1.3, step4)
 
         def step4():
@@ -532,6 +536,9 @@ class VentilationController:
         logger.debug("Running bad move failure animation")
 
         self.skip_skippable_animations()
+
+        for ad in self.air_ducts.values():
+            ad.fan.off()
 
         def wait_and_display_connected_air_ducts_before_restart():
             self.animation_tasks["wait"] = callLater(
