@@ -1,7 +1,7 @@
 <template>
   <div class="h-100">
-    <div class="d-flex flex-column justify-content-between h-100">
-      <div class="flex-grow-1 mb-4 position-relative">
+    <div class="d-flex flex-column justify-content-between h-100 px-3">
+      <div class="flex-grow-1 mb-4 position-relative menu-container">
         <div class="glowing-wire top-wire"></div>
         <div class="glowing-wire bottom-wire"></div>
 
@@ -9,12 +9,10 @@
           <div class="menu-frame"></div>
           <div class="menu-background"></div>
 
-          <div class="d-flex flex-row h-100">
-            <div class="title-ribbon pb-2 pl-3 d-flex align-items-end">
-              <div class="title">{{ $t('devices_synchronization') }}</div>
-            </div>
-            <LightPuzzleMenuContent class="h-100"/>
+          <div class="title-ribbon p-2">
+            <div class="title">{{ $t('devices_synchronization') }}</div>
           </div>
+          <LightPuzzleMenuContent class="h-100"/>
         </div>
       </div>
       <div class="position-relative">
@@ -42,8 +40,7 @@ export default {
 <style scoped>
 .glowing-wire {
   position: absolute;
-  /* 2 * bootstrap column padding */
-  width: calc(2 * 15px);
+  width: calc(2 * 15px + 16px);
   height: 1px;
   left: 100%;
   border-top: 1px solid #00d1b6;
@@ -67,48 +64,56 @@ export default {
 }
 
 .title-ribbon {
+  position: absolute;
+  width: 100%;
+  height: 58px;
+  top: 0;
+  right: 0;
+  border-bottom: 1px solid #00d1b6;
   background-color: rgba(00, 45, 64, 0.6);
-  border-right: 1px solid #00d1b6;
-  padding-right: 2px;
-  height: 100%;
-  width: 48px;
+  font-size: 20px;
   clip-path: polygon(
     100% 0%,
     100% 100%,
     0% 100%,
-    0% 36px,
-    36px 0%
+    0% 54px,
+    54px 0%
   );
 }
 
 .title {
   line-height: 1.3;
   font-size: 18px;
+  text-align: right;
   width: 100%;
-  writing-mode: tb-rl;
-  transform: rotate(180deg);
+}
+
+.menu-container {
+  border: 1px solid transparent;
+  border-top: 9px solid transparent;
+  padding-top: 60px;
 }
 
 .menu-frame {
   position: absolute;
-  left: 0px;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
+  left: -1px;
+  top: -9px;
+  right: -1px;
+  bottom: -1px;
   filter: drop-shadow(1px 1px 4px rgba(0, 209, 182, 0.75));
   clip-path: polygon(
-    calc(100% + 10px) calc(0% - 10px),
+    calc(100% - 1px) -10px,
+    calc(100% + 10px) -10px,
     calc(100% + 10px) calc(100% + 10px),
-    calc(0% - 10px) calc(100% + 10px),
-    calc(0% - 10px) 36px,
-    36px calc(0% - 10px),
-    calc(100% - 1px) calc(0% - 10px),
-    calc(100% - 1px) 1px,
-    calc(36px + 9px - 3px) 1px,
-    9px calc(36px),
-    9px calc(100% - 1px),
-    calc(100% - 1px) calc(100% - 1px),
-    calc(100% - 1px) calc(0% - 10px)
+    -10px calc(100% + 6px),
+    -10px 66px,
+    calc(66px + 8px) -10px,
+    calc(100% - 1px) -10px,
+    calc(100% - 1px) 9px,
+    calc(66px + 1px) 9px,
+    1px 66px,
+    1px calc(100% - 1px),
+    calc(100% - 1px) calc(100% - 1px)
   );
   z-index: 10;
 }
@@ -122,18 +127,18 @@ export default {
   bottom: 0;
   background-color: #00d1b6;
   clip-path: polygon(
-    100% 0%,
-    100% 100%,
-    0% 100%,
-    0% 36px,
-    34px 0%,
-    calc(100% - 1px) 0%,
-    calc(100% - 1px) 1px,
-    calc(36px + 9px - 3px) 1px,
-    9px calc(36px),
-    9px calc(100% - 1px),
-    calc(100% - 1px) calc(100% - 1px),
-    calc(100% - 1px) 0%
+    calc(100% - 1px) -10px,
+    calc(100% + 10px) -10px,
+    calc(100% + 10px) calc(100% + 10px),
+    -10px calc(100% + 6px),
+    -10px 66px,
+    calc(66px + 8px) -10px,
+    calc(100% - 1px) -10px,
+    calc(100% - 1px) 9px,
+    calc(66px + 1px) 9px,
+    1px 66px,
+    1px calc(100% - 1px),
+    calc(100% - 1px) calc(100% - 1px)
   );
   z-index: 10;
 }
@@ -149,8 +154,8 @@ export default {
     100% 0%,
     100% 100%,
     0% 100%,
-    0% 36px,
-    36px 0%
+    0% 54px,
+    54px 0%
   );
   z-index: -1;
 }

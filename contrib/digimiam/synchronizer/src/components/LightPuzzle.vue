@@ -1,10 +1,10 @@
 <template>
-  <div class="container px-0">
-    <div class="row">
+  <div class="container-fluid px-0">
+    <div class="row justify-content-center">
       <div class="col-3">
         <LightPuzzleMenu/>
       </div>
-      <div class="col-9">
+      <div class="col-8">
         <LightContainer/>
       </div>
     </div>

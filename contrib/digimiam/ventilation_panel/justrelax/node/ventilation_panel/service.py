@@ -326,6 +326,10 @@ class VentilationController:
                 # ensuring that the animation time lasts until the last led has turned black again.
                 self.unskippable_animation_task = callLater(2, display_element, index + 1)
                 element = self.success_sequence[index]
+
+                self.air_ducts[element["air_duct"]].fan.on()
+                self.animation_tasks["fan"] = callLater(1.4, self.air_ducts[element["air_duct"]].fan.off)
+
                 self.fluid_to_color(
                     self.air_ducts[element["air_duct"]].led_index,
                     element["color"],

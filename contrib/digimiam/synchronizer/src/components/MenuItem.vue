@@ -39,6 +39,7 @@
     <span class="underline-dots flex-grow-1 mx-1"></span>
 
     <div
+      class="price"
       :style="{color: 'rgb(' + price.color.r + ', ' + price.color.g + ', ' + price.color.b + ')'}"
     >
       <span
@@ -348,7 +349,7 @@ export default {
     dishLabel: function(newValue) {
       if (newValue === null) {
         this.dishColor = 'orangered'
-        this.scrambleTo('dish', this.$('hashtag_hashtag_error'))
+        this.scrambleTo('dish', this.$t('hashtag_hashtag_error'))
       } else {
         this.dishColor = 'yellow'
         this.scrambleTo('dish', this.$t(newValue))
@@ -431,11 +432,17 @@ export default {
 }
 
 .text {
+  font-size: 18px;
   position: relative;
   z-index: 10;
 }
 
+.price {
+  font-size: 18px;
+}
+
 .underline-dots {
+  font-size: 18px;
   border-bottom: 1px dotted #ffffff;
   margin-bottom: 3px;
 }

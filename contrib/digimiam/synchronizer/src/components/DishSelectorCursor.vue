@@ -1,7 +1,7 @@
 <template>
   <div 
     class="cursor"
-    v-touch:start="tapStart"
+    @mousedown="tap"
     :style="{top: top, left: left, zIndex: zIndex, height: height, width: width}"
   ></div>
 </template>
@@ -32,8 +32,8 @@ export default {
     },
   },
   methods: {
-    tapStart: function() {
-      menuStore.commit('appTapStart', this.itemIndex)
+    tap: function() {
+      menuStore.commit('tap', this.itemIndex)
     },
   },
   props: ['itemIndex'],

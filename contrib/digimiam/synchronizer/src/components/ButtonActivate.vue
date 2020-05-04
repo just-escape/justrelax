@@ -1,8 +1,8 @@
 <template>
   <ButtonBlue class="btn-block">
     <div class="d-flex flex-row justify-content-center">
-      <span class="align-self-center mr-2">{{ $t('activate') }}</span>
-      <img src="@/assets/img/hologram.svg" height="22px">
+      <span class="align-self-center mr-3">{{ $t('activate') }}</span>
+      <img src="@/assets/img/hologram.svg" height="24px">
     </div>
   </ButtonBlue>
 </template>

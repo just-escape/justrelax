@@ -17,28 +17,30 @@ export default {
 
 <style scoped>
 button {
-    background-color: rgba(00, 45, 80, 0.6);
-    color: rgba(0, 209, 182, 0.7);
-    border-top: none;
-    border-bottom: none;
-    border-right: 3px solid rgba(0, 209, 182, 0.4);
-    border-left: 3px solid rgba(0, 209, 182, 0.4);
-    border-radius: 0px;
-    transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out;
+  background-color: rgba(00, 45, 80, 0.6);
+  color: rgba(0, 209, 182, 0.7);
+  border-top: none;
+  border-bottom: none;
+  border-right: 3px solid rgba(0, 209, 182, 0.4);
+  border-left: 3px solid rgba(0, 209, 182, 0.4);
+  border-radius: 0px;
+  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out;
+  font-size: 20px;
+  padding: 0.375rem 0.75rem 0.275rem 0.75rem;
 }
 
 button:hover:not(:disabled) {
-    background-color: rgba(00, 209, 182, 0.1);
-    border-right-color: rgba(0, 209, 182, 0.4);
-    border-left-color: rgba(0, 209, 182, 0.4);
-    color: rgba(0, 209, 182, 0.7);
+  background-color: rgba(00, 209, 182, 0.1);
+  border-right-color: rgba(0, 209, 182, 0.4);
+  border-left-color: rgba(0, 209, 182, 0.4);
+  color: rgba(0, 209, 182, 0.7);
 }
 
 button:not(:disabled):not(.disabled):active {
-    background-color: rgba(00, 209, 182, 0.1);
-    border-right-color: rgba(0, 209, 182, 0.4);
-    border-left-color: rgba(0, 209, 182, 0.4);
-    color: rgba(0, 209, 182, 0.7);
+  background-color: rgba(00, 209, 182, 0.1);
+  border-right-color: rgba(0, 209, 182, 0.4);
+  border-left-color: rgba(0, 209, 182, 0.4);
+  color: rgba(0, 209, 182, 0.7);
 }
 
 button:focus, button:not(:disabled):not(.disabled):active:focus {

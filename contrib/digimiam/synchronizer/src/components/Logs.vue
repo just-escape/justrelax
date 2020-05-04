@@ -86,7 +86,7 @@ export default {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-right: 4px;
-  max-height: 800px;
+  max-height: 934px;
 }
 
 .logs ul {

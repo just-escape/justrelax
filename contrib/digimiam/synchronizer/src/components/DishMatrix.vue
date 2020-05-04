@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex h-100 d-flex flex-column mx-3">
-    <div class="selector-frame glowing-container position-relative w-100 h-100 mb-3">
-      <div class="synthetic">{{ $t('synthetic') }}</div>
-      <div class="organic">{{ $t('organic') }}</div>
-      <div class="yummy-yummy">{{ $t('yummy_yummy') }}</div>
-      <div class="yummy">{{ $t('yummy') }}</div>
+    <div class="selector-frame glowing-container position-relative w-100 h-100 mb-4">
+      <div class="alpha">{{ $t('α') }}</div>
+      <div class="omega">{{ $t('Ω') }}</div>
+      <div class="beta-minus">{{ $t('β_minus') }}</div>
+      <div class="beta-plus">{{ $t('β_plus') }}</div>
 
       <DishSelector
         v-for="(item, itemIndex) in menuItems"
@@ -54,45 +54,45 @@ export default {
 </script>
 
 <style scoped>
-.synthetic {
-  position: absolute;
-  text-align: right;
-  right: 0;
-  bottom: calc(-14px - 5px);
-  line-height: 1;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.organic {
+.alpha {
   position: absolute;
   text-align: left;
   left: 0;
-  bottom: calc(-14px - 5px);
+  bottom: calc(-20px - 2px);
   line-height: 1;
-  font-size: 14px;
+  font-size: 20px;
   color: rgba(255, 255, 255, 0.65);
 }
 
-.yummy {
+.omega {
+  position: absolute;
+  text-align: right;
+  right: 0;
+  bottom: calc(-20px - 2px);
+  line-height: 1;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.beta-minus {
   position: absolute;
   bottom: 0;
-  left: calc(-14px - 3px);
+  left: calc(-20px - 2px);
   writing-mode: tb-rl;
   transform: rotate(180deg);
   line-height: 1;
-  font-size: 14px;
+  font-size: 20px;
   color: rgba(255, 255, 255, 0.65);
 }
 
-.yummy-yummy {
+.beta-plus {
   position: absolute;
   top: 0;
-  left: calc(-14px - 3px);
+  left: calc(-20px - 2px);
   writing-mode: tb-rl;
   transform: rotate(180deg);
   line-height: 1;
-  font-size: 14px;
+  font-size: 20px;
   color: rgba(255, 255, 255, 0.65);
 }
 
@@ -103,8 +103,6 @@ export default {
 }
 
 .selector-frame {
-  height: 439px;
-  width: 100%;
   background:
     linear-gradient(to right, transparent 20%, rgba(0, 150, 150, 0.09) 80%),
     linear-gradient(to top, transparent 20%, rgba(0, 150, 150, 0.09) 80%);
@@ -112,13 +110,13 @@ export default {
 
 /* The same padding than on buttons */
 .button-like-frame {
-  padding: 0.375rem 0.75rem;
-  height: 36px;
+  padding: 0.375rem 1rem 0.275rem 1rem;
 }
 
 .generator-matrix-title {
   color: rgba(255, 255, 255, 0.65);
   background-color: rgba(00, 45, 80, 0.6);
   border: 1px solid rgba(0, 209, 182, 0.55);
+  font-size: 20px;
 }
 </style>

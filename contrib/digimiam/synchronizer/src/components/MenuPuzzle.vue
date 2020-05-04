@@ -1,12 +1,12 @@
 <template>
   <div class="position-relative">
     <div class="container-fluid px-0 h-100">
-      <div class="row h-100">
+      <div class="row justify-content-center h-100">
         <div class="col-8">
           <DishMatrix/>
         </div>
 
-        <div class="col-4">
+        <div class="col-3">
           <MenuDisplay/>
         </div>
       </div>

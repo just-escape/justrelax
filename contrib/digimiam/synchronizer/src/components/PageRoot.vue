@@ -6,14 +6,14 @@
     class="d-flex justify-content-center position-relative h-100"
   >
     <BackgroundLines/>
-    <div class="padding-top-10px global-container row py-3">
-      <div class="col-9">
-        <div class="d-flex flex-column">
-          <LightPuzzle class="h-402px mb-4"/>
-          <MenuPuzzle class="h-492px"/>
+    <div class="row py-5 px-5 w-100">
+      <div class="col-9 pl-0 pr-4">
+        <div class="d-flex flex-column h-100">
+          <LightPuzzle class="h-50 mb-3"/>
+          <MenuPuzzle class="h-50 mt-3"/>
         </div>
       </div>
-      <div class="col-3">
+      <div class="col-3 px-0">
         <Logs/>
       </div>
     </div>

@@ -34,12 +34,8 @@ export default new Vuex.Store({
         cursorWidth: 41,
         cursorHeight: 41,
         selectorZIndex: 10,
-        /* Relative to the .selector-frame
-           .selector-frame width + bootstrap col-8 width + margin-right + col margin + col margin
-         */
-        wireX2: 537 + 16 + 15 + 15,
-        /* Tmp value */
-        wireY2: 150,
+        wireX2: 900,
+        wireY2: 135,
         dish: null,
         price: null,
       },
@@ -49,12 +45,8 @@ export default new Vuex.Store({
         cursorWidth: 41,
         cursorHeight: 41,
         selectorZIndex: 10,
-        /* Relative to the .selector-frame
-           .selector-frame width + bootstrap col-8 width + margin-right + col margin + col margin
-         */
-        wireX2: 537 + 16 + 15 + 15,
-        /* Tmp value */
-        wireY2: 200,
+        wireX2: 900,
+        wireY2: 186,
         dish: null,
         price: null,
       },
@@ -64,12 +56,8 @@ export default new Vuex.Store({
         cursorWidth: 41,
         cursorHeight: 41,
         selectorZIndex: 10,
-        /* Relative to the .selector-frame
-           .selector-frame width + bootstrap col-8 width + margin-right + col margin + col margin
-         */
-        wireX2: 537 + 16 + 15 + 15,
-        /* Tmp value */
-        wireY2: 250,
+        wireX2: 900,
+        wireY2: 237,
         dish: null,
         price: null,
       },
@@ -79,18 +67,14 @@ export default new Vuex.Store({
         cursorWidth: 41,
         cursorHeight: 41,
         selectorZIndex: 10,
-        /* Relative to the .selector-frame
-           .selector-frame width + bootstrap col-8 width + margin-right + col margin + col margin
-         */
-        wireX2: 537 + 16 + 15 + 15,
-        /* Tmp value */
-        wireY2: 300,
+        wireX2: 900,
+        wireY2: 288,
         dish: null,
         price: null,
       },
     ],
-    selectorHeight: 438,
-    selectorWidth: 535.98,
+    selectorHeight: 408,
+    selectorWidth: 852,
     mouseX: 0,
     lastMouseX: null,
     mouseY: 0,
@@ -178,7 +162,7 @@ export default new Vuex.Store({
         state.menuItems[state.dragging].price = null
       }
     },
-    appTapStart (state, id) {
+    tap (state, id) {
       state.dragging = id
       state.zIndexCounter += 1
       state.menuItems[id].zIndex = state.zIndexCounter

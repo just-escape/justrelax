@@ -1,14 +1,14 @@
 <template>
   <div class="position-relative h-100">
     <div class="d-flex flex-column h-100">
-      <div class="menu-container px-2 pb-1 position-relative mb-3 h-100">
+      <div class="menu-container px-2 pb-1 position-relative mb-4 h-100">
         <div class="menu-frame"></div>
         <div class="menu-background"></div>
         <div class="menu-title-ribbon mb-2 text-right p-2">
           {{ $t('digimiam_menu') }}
         </div>
-        <div class="date text-right mb-5">
-            {{ date }}
+        <div class="date text-right mb-5 mt-2">
+          {{ date }}
         </div>
 
         <MenuItem
@@ -16,6 +16,9 @@
           :key="item.id"
           :itemIndex="itemIndex"
         />
+        <div style="color:red">
+        dragging: {{dragging}}
+        </div>
       </div>
 
       <div class="position-relative">
@@ -44,6 +47,9 @@ export default {
     }
   },
   computed: {
+    dragging: function() {
+      return menuStore.state.dragging
+    },
     lang: function() {
       return this.$i18n.locale
     },
@@ -89,7 +95,7 @@ export default {
     100% 100%,
     0% 100%,
     0px calc(43px - 6px),
-    43px 0px
+    calc(43px + 6px) 0px
   );
   z-index: -1;
 }
@@ -106,12 +112,12 @@ export default {
     calc(100% + 10px) -10px,
     calc(100% + 10px) calc(100% + 10px),
     -10px calc(100% + 6px),
-    -10px calc(43px - 7px - 6px),
-    calc(43px + 2px - 6px) -10px,
+    -10px calc(48px - 7px - 6px),
+    calc(48px + 2px - 6px) -10px,
     calc(100% - 1px) -10px,
     calc(100% - 1px) 9px,
-    calc(43px + 1px) 9px,
-    1px 43px,
+    calc(48px + 1px) 9px,
+    1px 48px,
     1px calc(100% - 1px),
     calc(100% - 1px) calc(100% - 1px)
   );
@@ -131,12 +137,12 @@ export default {
     100% 0%,
     100% 100%,
     0% 100%,
-    0% calc(43px - 7px),
-    calc(43px + 2px) 0%,
+    0% calc(48px - 7px),
+    calc(48px + 2px) 0%,
     calc(100% - 1px) 0%,
     calc(100% - 1px) 9px,
-    calc(43px + 1px) 9px,
-    1px 43px,
+    calc(48px + 1px) 9px,
+    1px 48px,
     1px calc(100% - 1px),
     calc(100% - 1px) calc(100% - 1px)
   );
@@ -146,12 +152,12 @@ export default {
 .menu-title-ribbon {
   position: absolute;
   width: 100%;
-  height: 34px;
+  height: 40px;
   top: 0;
   right: 0;
   border-bottom: 1px solid #00d1b6;
   background-color: rgba(00, 45, 64, 0.6);
-  font-size: 18px;
+  font-size: 20px;
   clip-path: polygon(
     100% 0%,
     100% 100%,
@@ -162,15 +168,15 @@ export default {
 }
 
 .date {
-  font-size: 10px;
+  font-size: 14px;
   z-index: 11;
 }
 
 .glowing-wire {
   position: absolute;
-  height: 16px;
+  height: 24px;
   width: 1px;
-  bottom: 36px;
+  bottom: 40px;
   border-left: 1px solid #00d1b6;
   box-shadow: 1px 0px 3px 0.01px rgba(0, 209, 182, 0.7);
 }
