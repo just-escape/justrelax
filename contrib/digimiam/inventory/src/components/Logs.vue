@@ -4,6 +4,7 @@
       <div class="corner top-left"></div>
       <div class="corner top-right"></div>
       <div class="corner bottom-right"></div>
+
       <div class="logs w-100">
         <ul class="list-unstyled mb-0" id="scroll-bar">
           <li v-for="(log, index) in logs" :key="log.id" class="mb-2">
@@ -72,10 +73,6 @@ export default {
 </script>
 
 <style scoped>
-.title {
-  font-size: 14px;
-}
-
 .logs-box {
   margin-bottom: 30px;
   padding: 5px;
@@ -87,12 +84,11 @@ export default {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-right: 4px;
-  max-height: 800px;
   font-family: "monospace";
 }
 
 .logs ul {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1;
   overflow-y: scroll;
   max-height: 100%;

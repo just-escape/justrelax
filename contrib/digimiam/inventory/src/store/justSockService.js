@@ -34,10 +34,10 @@ const justSockService = new Vuex.Store({
       }
 
       let event = message.event
-      if (event.type == 'reset') {
+      if (event.category == 'reset') {
         // Reload page
         router.go()
-      } else if (event.type == 'l10n') {
+      } else if (event.category == 'l10n') {
         if (event.lang == 'fr') {
           if (i18n.locale != 'fr') {
             router.push({path: '/', query: {'lang': 'fr'}})
@@ -49,7 +49,7 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
-      } else if (event.type == 'log') {
+      } else if (event.category == 'log') {
         logStore.commit('processLog', event)
       }
     },

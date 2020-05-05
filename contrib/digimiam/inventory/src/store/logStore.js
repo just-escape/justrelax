@@ -21,13 +21,19 @@ var store = new Vuex.Store({
       for (var i = 0 ; i < Object.keys(state).length ; i++) {
         var lang = Object.keys(state)[i]
 
+        var message
+        if (log.use_locale === true) {
+          message = i18n.t('log.' + log.message, lang)
+        } else {
+          message = log.message
+        }
+
         state[lang].logs.push({
           level: log.level,
-          message: i18n.t('log.' + log.locale, lang),
+          message: message,
           displayedMessage: '',
           displayedChars: -1,
         })
-        state[lang].carriageReturns += 1
         updateDisplayedMessages(lang)
       }
     },
@@ -58,7 +64,13 @@ function _updateDisplayedMessages(lang) {
     if (store.state[lang].logs[i].displayedChars < store.state[lang].logs[i].message.length - 1) {
       var logIndex = i
       store.commit('typeOneChar', {lang, logIndex})
-      setTimeout(_updateDisplayedMessages, 75, lang)
+
+      var delay = 75
+      if (store.state[lang].logs[logIndex].message[store.state[lang].logs[logIndex].displayedChars] === '.') {
+        delay = 500
+      }
+
+      setTimeout(_updateDisplayedMessages, delay, lang)
       return
     }
   }
