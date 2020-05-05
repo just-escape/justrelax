@@ -34,7 +34,7 @@ export default new Vuex.Store({
         cursorWidth: 41,
         cursorHeight: 41,
         selectorZIndex: 10,
-        wireX2: 900,
+        wireX2: 899,
         wireY2: 135,
         dish: null,
         price: null,
@@ -45,7 +45,7 @@ export default new Vuex.Store({
         cursorWidth: 41,
         cursorHeight: 41,
         selectorZIndex: 10,
-        wireX2: 900,
+        wireX2: 899,
         wireY2: 186,
         dish: null,
         price: null,
@@ -56,7 +56,7 @@ export default new Vuex.Store({
         cursorWidth: 41,
         cursorHeight: 41,
         selectorZIndex: 10,
-        wireX2: 900,
+        wireX2: 899,
         wireY2: 237,
         dish: null,
         price: null,
@@ -67,7 +67,7 @@ export default new Vuex.Store({
         cursorWidth: 41,
         cursorHeight: 41,
         selectorZIndex: 10,
-        wireX2: 900,
+        wireX2: 899,
         wireY2: 288,
         dish: null,
         price: null,
@@ -84,7 +84,7 @@ export default new Vuex.Store({
   },
   mutations: {
     // eslint-disable-next-line
-    appMoving (state, event) {
+    appCursorMove (state, event) {
       var clientX
       var clientY
       if (event.targetTouches === undefined) {
@@ -162,15 +162,19 @@ export default new Vuex.Store({
         state.menuItems[state.dragging].price = null
       }
     },
-    tap (state, id) {
+    cursorPress (state, id) {
       state.dragging = id
       state.zIndexCounter += 1
       state.menuItems[id].zIndex = state.zIndexCounter
     },
-    appTapEnd (state) {
+    appCursorRelease (state) {
+      state.lastMouseX = null
+      state.lastMouseY = null
       state.dragging = null
     },
     appMouseleave (state) {
+      state.lastMouseX = null
+      state.lastMouseY = null
       state.dragging = null
     },
     initGlitchAnimation (state, animationId) {

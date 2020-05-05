@@ -1,7 +1,9 @@
 <template>
   <div
-    v-touch:moving="moving"
-    v-touch:end="tapEnd"
+    @touchmove="cursorMove"
+    @mousemove="cursorMove"
+    @touchend="cursorRelease"
+    @mouseup="cursorRelease"
     @mouseleave="mouseleave"
     class="d-flex justify-content-center position-relative h-100"
   >
@@ -36,11 +38,11 @@ export default {
     MenuPuzzle,
   },
   methods: {
-    moving: function(event) {
-      menuStore.commit('appMoving', event)
+    cursorMove: function(event) {
+      menuStore.commit('appCursorMove', event)
     },
-    tapEnd: function() {
-      menuStore.commit('appTapEnd')
+    cursorRelease: function() {
+      menuStore.commit('appCursorRelease')
     },
     mouseleave: function() {
       menuStore.commit('appMouseleave')

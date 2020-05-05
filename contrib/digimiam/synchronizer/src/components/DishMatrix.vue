@@ -20,7 +20,7 @@
     </div>
 
     <div class="d-flex flex-row justify-content-center">
-      <div class="button-like-frame generator-matrix-title">
+      <div class="button-like-frame generator-matrix-title position-relative">
         {{ $t('dish_generator_matrix') }}
       </div>
     </div>
@@ -116,7 +116,48 @@ export default {
 .generator-matrix-title {
   color: rgba(255, 255, 255, 0.65);
   background-color: rgba(00, 45, 80, 0.6);
-  border: 1px solid rgba(0, 209, 182, 0.55);
+  /*border: 1px solid rgba(0, 209, 182, 0.55);*/
   font-size: 20px;
+  clip-path: polygon(
+    10px 0%,
+    calc(100% - 10px) 0%,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0% calc(100% - 10px),
+    0% 10px
+  );
+}
+
+.generator-matrix-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #00d1b6;
+  clip-path: polygon(
+    10px 0%,
+    calc(100% - 10px) 0%,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0% calc(100% - 10px),
+    0% 10px,
+    10px 0%,
+    calc(10px + 1px) 1px,
+    1.5px calc(10px + 1px),
+    1.5px calc(100% - 10px - 1px),
+    calc(10px + 1px) calc(100% - 1.5px),
+    calc(100% - 10px - 1px) calc(100% - 1.5px),
+    calc(100% - 1px) calc(100% - 10px - 1px),
+    calc(100% - 1px) calc(10px + 1px),
+    calc(100% - 10px - 1px) 1.5px,
+    calc(10px + 1px) 1.5px
+  );
+  z-index: 10;
 }
 </style>

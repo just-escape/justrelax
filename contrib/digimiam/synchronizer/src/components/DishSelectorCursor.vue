@@ -1,7 +1,8 @@
 <template>
   <div 
     class="cursor"
-    @mousedown="tap"
+    @mousedown="cursorPress"
+    @touchstart="cursorPress"
     :style="{top: top, left: left, zIndex: zIndex, height: height, width: width}"
   ></div>
 </template>
@@ -32,8 +33,8 @@ export default {
     },
   },
   methods: {
-    tap: function() {
-      menuStore.commit('tap', this.itemIndex)
+    cursorPress: function() {
+      menuStore.commit('cursorPress', this.itemIndex)
     },
   },
   props: ['itemIndex'],

@@ -1,71 +1,81 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex);
+import i18n from '@/locales.js'
+
+Vue.use(Vuex)
 
 var store = new Vuex.Store({
   state: {
-    logs: [],
-    carriageReturns: 0,
-    typingLogs: false,
+    fr: {
+      logs: [],
+      typingLogs: false,
+    },
+    en: {
+      logs: [],
+      typingLogs: false,
+    },
   },
   mutations: {
-    // eslint-disable-next-line
-    processEventLog (state, {level, message}) {
-      state.logs.push({
-        level: level,
-        message: message,
-        displayedMessage: '',
-        displayedChars: -1,
-      })
-      state.carriageReturns += 1
-      updateDisplayedMessages()
+    processLog (state, log) {
+      for (var i = 0 ; i < Object.keys(state).length ; i++) {
+        var lang = Object.keys(state)[i]
+
+        var message 
+        if (log.use_locale === true) {
+          message = i18n.t('log.' + log.message, lang)
+        } else {
+          message = log.message
+        }
+
+        state[lang].logs.push({
+          level: log.level,
+          message: message,
+          displayedMessage: '',
+          displayedChars: -1,
+        })
+        updateDisplayedMessages(lang)
+      }
     },
-    lockTypingLogs(state) {
-      state.typingLogs = true
+    lockTypingLogs(state, lang) {
+      state[lang].typingLogs = true
     },
-    unlockTypingLogs(state) {
-      state.typingLogs = false
+    unlockTypingLogs(state, lang) {
+      state[lang].typingLogs = false
     },
-    typeOneChar(state, logIndex) {
-      state.logs[logIndex].displayedChars += 1
-      state.logs[logIndex].displayedMessage += state.logs[logIndex].message[state.logs[logIndex].displayedChars]
+    typeOneChar(state, {lang, logIndex}) {
+      state[lang].logs[logIndex].displayedChars += 1
+      state[lang].logs[logIndex].displayedMessage += state[lang].logs[logIndex].message[state[lang].logs[logIndex].displayedChars]
     },
-    typeCarriageReturn(state, logIndex) {
-      state.carriageReturns += 1
-      state.logs[logIndex].displayedMessage += '<br>'
-    }
   },
 })
 
-function updateDisplayedMessages() {
-  if (store.state.typingLogs === true) {
+function updateDisplayedMessages(lang) {
+  if (store.state[lang].typingLogs === true) {
     return
   }
-  store.commit('lockTypingLogs')
+  store.commit('lockTypingLogs', lang)
 
-  _updateDisplayedMessages()
+  _updateDisplayedMessages(lang)
 }
 
-function _updateDisplayedMessages() {
-  for (var i = 0 ; i < store.state.logs.length ; i++) {
-    if (store.state.logs[i].displayedChars < store.state.logs[i].message.length - 1) {
-      store.commit('typeOneChar', i)
-      if (store.state.logs[i].level == 'info') {
-        if (store.state.logs[i].displayedChars % 29 - 24 == 0) {
-          store.commit('typeCarriageReturn', i)
-        }
-      } else if (store.state.logs[i].level == 'warning') {
-        if (store.state.logs[i].displayedChars % 29 - 21 == 0) {
-          store.commit('typeCarriageReturn', i)
-        }
+function _updateDisplayedMessages(lang) {
+  for (var i = 0 ; i < store.state[lang].logs.length ; i++) {
+    if (store.state[lang].logs[i].displayedChars < store.state[lang].logs[i].message.length - 1) {
+      var logIndex = i
+      store.commit('typeOneChar', {lang, logIndex})
+
+      var delay = 75
+      if (store.state[lang].logs[logIndex].message[store.state[lang].logs[logIndex].displayedChars] === '.') {
+        delay = 500
       }
-      setTimeout(_updateDisplayedMessages, 75)
+
+      setTimeout(_updateDisplayedMessages, delay, lang)
       return
     }
   }
 
-  store.commit('unlockTypingLogs')
+  store.commit('unlockTypingLogs', lang)
 }
 
 export default store

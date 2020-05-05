@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import Vue2TouchEvents from 'vue2-touch-events'
 import VueNativeSock from 'vue-native-websocket'
 import VueAnime from 'vue-animejs'
 import BootstrapVue from 'bootstrap-vue'
@@ -12,8 +11,6 @@ import router from '@/router.js'
 import i18n from '@/locales.js'
 
 import App from '@/App.vue'
-
-Vue.use(Vue2TouchEvents)
 
 Vue.use(VueNativeSock, 'ws://localhost:3031', {
   store: justSockService,

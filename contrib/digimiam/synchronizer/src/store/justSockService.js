@@ -37,10 +37,10 @@ const justSockService = new Vuex.Store({
       }
 
       let event = message.event
-      if (event.type == 'reset') {
+      if (event.category == 'reset') {
         // Reload page
         router.go()
-      } else if (event.type == 'l10n') {
+      } else if (event.category == 'l10n') {
         if (event.lang == 'fr') {
           if (i18n.locale != 'fr') {
             router.push({path: '/', query: {'lang': 'fr'}})
@@ -52,11 +52,9 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
-      } else if (event.type == 'log') {
-        let logLevel = event.level
-        let logMessage = event.message
-        logStore.commit('processEventLog', {logLevel, logMessage})
-      } else if (event.type == 'sensor') {
+      } else if (event.category == 'log') {
+        logStore.commit('processLog', event)
+      } else if (event.category == 'sensor') {
         let sensorId = event['sensor_id']
         let activated = event.activated
         lightStore.dispatch('toggleSensor', {sensorId, activated})

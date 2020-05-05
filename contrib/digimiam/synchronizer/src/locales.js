@@ -5,6 +5,8 @@ Vue.use(VueI18n)
 
 const locales = {
   en: {
+    warning: 'Warning:',
+    info: 'Info:',
     activate: 'ACTIVATE',
     dish_generator_matrix: 'DISH GENERATOR MATRIX',
     digimiam_menu: 'DIGIMIAM MENU',
@@ -33,6 +35,8 @@ const locales = {
     flubber: 'Flubber',
   },
   fr: {
+    warning: 'Attention:',
+    info: 'Info:',
     activate: 'ACTIVER',
     dish_generator_matrix: 'MATRICE GÉNÉRATRICE DE PLATS',
     digimiam_menu: 'MENU DU DIGIMIAM',

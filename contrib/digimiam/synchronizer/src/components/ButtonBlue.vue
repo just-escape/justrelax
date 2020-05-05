@@ -17,7 +17,7 @@ export default {
 
 <style scoped>
 button {
-  background-color: rgba(00, 45, 80, 0.6);
+  background-color: rgba(0, 45, 80, 0.6);
   color: rgba(0, 209, 182, 0.7);
   border-top: none;
   border-bottom: none;
@@ -30,14 +30,21 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background-color: rgba(00, 209, 182, 0.1);
+  background-color: rgba(0, 45, 80, 0.6);
+  color: rgba(0, 209, 182, 0.7);
+  border-right: 3px solid rgba(0, 209, 182, 0.4);
+  border-left: 3px solid rgba(0, 209, 182, 0.4);
+}
+
+button:active:not(:disabled) {
+  background-color: rgba(0, 204, 255, 0.2);
   border-right-color: rgba(0, 209, 182, 0.4);
   border-left-color: rgba(0, 209, 182, 0.4);
   color: rgba(0, 209, 182, 0.7);
 }
 
 button:not(:disabled):not(.disabled):active {
-  background-color: rgba(00, 209, 182, 0.1);
+  background-color: rgba(0, 204, 255, 0.2);
   border-right-color: rgba(0, 209, 182, 0.4);
   border-left-color: rgba(0, 209, 182, 0.4);
   color: rgba(0, 209, 182, 0.7);

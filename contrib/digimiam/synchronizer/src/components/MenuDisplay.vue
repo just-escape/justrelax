@@ -16,9 +16,6 @@
           :key="item.id"
           :itemIndex="itemIndex"
         />
-        <div style="color:red">
-        dragging: {{dragging}}
-        </div>
       </div>
 
       <div class="position-relative">
