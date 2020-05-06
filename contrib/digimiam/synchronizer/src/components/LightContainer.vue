@@ -1,7 +1,7 @@
 <template>
   <div class="glowing-container">
     <div>
-      <svg viewBox="0 0 600 400">
+      <svg viewBox="0 0 754 400">
         <LightContainerDefs/>
 
         <LightContainerGenerator/>

@@ -1,29 +1,29 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     glitches: {},
     selectableAreas: [
       // units in percent
-      {top: 8, left: 8, dish: "steakfie", price: "1"},
-      {top: 8, left: 31, dish: "pizzage", price: "2"},
-      {top: 8, left: 54, dish: "gaufresque", price: "3"},
-      {top: 8, left: 77, dish: "puddy_puddy", price: "4"},
-      {top: 31, left: 8, dish: "insectosteak", price: "5"},
-      {top: 31, left: 31, dish: "pizzaliere", price: "6"},
-      {top: 31, left: 54, dish: "spider_gaufre", price: "7"},
-      {top: 31, left: 77, dish: "potjevleesch", price: "8"},
-      {top: 54, left: 8, dish: "protobulle", price: "9"},
-      {top: 54, left: 31, dish: "cambraisienne", price: "10"},
-      {top: 54, left: 54, dish: "nano_gaufre", price: "11"},
-      {top: 54, left: 77, dish: "chtite_gelee", price: "12"},
-      {top: 77, left: 8, dish: "salade_flamande", price: "13"},
-      {top: 77, left: 31, dish: "pizzalgue", price: "14"},
-      {top: 77, left: 54, dish: "gaufre_fouret", price: "15"},
-      {top: 77, left: 77, dish: "flubber", price: "16"},
+      {top: 8, left: 8, dish: "steakfie"},
+      {top: 8, left: 31, dish: "pizzage"},
+      {top: 8, left: 54, dish: "gaufresque"},
+      {top: 8, left: 77, dish: "puddy_puddy"},
+      {top: 31, left: 8, dish: "insectosteak"},
+      {top: 31, left: 31, dish: "pizzaliere"},
+      {top: 31, left: 54, dish: "spider_gaufre"},
+      {top: 31, left: 77, dish: "potjevleesch"},
+      {top: 54, left: 8, dish: "protobulle"},
+      {top: 54, left: 31, dish: "cambraisienne"},
+      {top: 54, left: 54, dish: "nano_gaufre"},
+      {top: 54, left: 77, dish: "chtite_gelee"},
+      {top: 77, left: 8, dish: "salade_flamande"},
+      {top: 77, left: 31, dish: "pizzalgue"},
+      {top: 77, left: 54, dish: "gaufre_fouret"},
+      {top: 77, left: 77, dish: "flubber"},
     ],
     selectableAreaHeight: 15, // percentage
     selectableAreaWidth: 15, // percentage
@@ -31,49 +31,49 @@ export default new Vuex.Store({
       {
         cursorLeft: 0,
         cursorTop: 0,
-        cursorWidth: 41,
-        cursorHeight: 41,
+        cursorWidth: 30,
+        cursorHeight: 30,
         selectorZIndex: 10,
         wireX2: 899,
         wireY2: 135,
         dish: null,
-        price: null,
+        price: 8,
       },
       {
         cursorLeft: 200,
         cursorTop: 200,
-        cursorWidth: 41,
-        cursorHeight: 41,
+        cursorWidth: 30,
+        cursorHeight: 30,
         selectorZIndex: 10,
         wireX2: 899,
         wireY2: 186,
         dish: null,
-        price: null,
+        price: 12,
       },
       {
         cursorLeft: 100,
         cursorTop: 100,
-        cursorWidth: 41,
-        cursorHeight: 41,
+        cursorWidth: 30,
+        cursorHeight: 30,
         selectorZIndex: 10,
         wireX2: 899,
         wireY2: 237,
         dish: null,
-        price: null,
+        price: 13,
       },
       {
         cursorLeft: 50,
         cursorTop: 50,
-        cursorWidth: 41,
-        cursorHeight: 41,
+        cursorWidth: 30,
+        cursorHeight: 30,
         selectorZIndex: 10,
         wireX2: 899,
         wireY2: 288,
         dish: null,
-        price: null,
+        price: 15,
       },
     ],
-    selectorHeight: 408,
+    selectorHeight: 410,
     selectorWidth: 852,
     mouseX: 0,
     lastMouseX: null,
@@ -154,12 +154,10 @@ export default new Vuex.Store({
             cursorPercentY <= state.selectableAreas[i].top + state.selectableAreaHeight
           ) {
             state.menuItems[state.dragging].dish = state.selectableAreas[i].dish
-            state.menuItems[state.dragging].price = state.selectableAreas[i].price
             return
           }
         }
         state.menuItems[state.dragging].dish = null
-        state.menuItems[state.dragging].price = null
       }
     },
     cursorPress (state, id) {

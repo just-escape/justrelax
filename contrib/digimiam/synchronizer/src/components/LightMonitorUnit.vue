@@ -1,20 +1,18 @@
 <template>
-  <div>
-    <svg :viewBox="'0 0 ' + boxWidth + ' ' + boxHeight">
-      <defs>
-        <filter id="mu-glowing" x="-50" y="-50" width="150" height="150">
-          <feGaussianBlur result="blurOut" in="offOut" stdDeviation="20"/>
-          <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
-        </filter>
-      </defs>
+  <svg :viewBox="'0 0 ' + boxWidth + ' ' + boxHeight" class="position-absolute" :style="{top: positionY, left: positionX}">
+    <defs>
+      <filter id="mu-glowing" x="-50" y="-50" width="150" height="150">
+        <feGaussianBlur result="blurOut" in="offOut" stdDeviation="25"/>
+        <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+      </filter>
+    </defs>
 
-      <path
-        :d="d(sizeColor)"
-        :fill="getColor"
-        :filter="filter"
-      />
-    </svg>
-  </div>
+    <path
+      :d="d(sizeColor)"
+      :fill="getColor"
+      :filter="filter"
+    />
+  </svg>
 </template>
 
 <script>
@@ -25,7 +23,6 @@ export default {
       boxWidth: 135,
       boxHeight: 135,
       sizeColor: 40,
-      sizeContainer: 50,
       colors: {
         pink: {
           r: 232,
@@ -101,6 +98,6 @@ export default {
       return 'rgb(' + r + ', ' + g + ', ' + b + ')'
     }
   },
-  props: ['color', 'on']
+  props: ['color', 'on', 'positionX', 'positionY']
 }
 </script>

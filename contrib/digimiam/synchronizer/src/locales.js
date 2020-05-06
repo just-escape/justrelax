@@ -7,7 +7,7 @@ const locales = {
   en: {
     warning: 'Warning:',
     info: 'Info:',
-    activate: 'ACTIVATE',
+    validate: 'VALIDATE',
     dish_generator_matrix: 'DISH GENERATOR MATRIX',
     digimiam_menu: 'DIGIMIAM MENU',
     α: 'α',
@@ -37,7 +37,7 @@ const locales = {
   fr: {
     warning: 'Attention:',
     info: 'Info:',
-    activate: 'ACTIVER',
+    validate: 'VALIDER',
     dish_generator_matrix: 'MATRICE GÉNÉRATRICE DE PLATS',
     digimiam_menu: 'MENU DU DIGIMIAM',
     α: 'α',

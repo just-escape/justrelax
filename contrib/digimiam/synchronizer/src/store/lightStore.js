@@ -291,10 +291,9 @@ function deactivateEdge(edgeId) {
 }
 
 function moveGeneratorWire() {
-  var startX = store.state.generatorWireX
-  var startY = store.state.generatorWireY
-  var deltaX = startX - store.getters.activationSequenceGeneratorAnchor.x
-  var deltaY = startY - store.getters.activationSequenceGeneratorAnchor.y
+  // TODO: rewrite init animation
+  newActivationSequence()
+  /*var startY = store.state.generatorWireY
 
   Vue.prototype.$anime({
     duration: 1200,
@@ -303,7 +302,6 @@ function moveGeneratorWire() {
       var newX = startX - deltaX * anim.progress / 100
       var newY = startY - deltaY * anim.progress / 100
 
-      store.commit('setGeneratorWireX', newX)
       store.commit('setGeneratorWireY', newY)
     },
     complete: function() {
@@ -311,9 +309,8 @@ function moveGeneratorWire() {
       var verticeId = store.state.edges[firstEdgeId].getVertice1()
       var glow = 'glowing-more'
       store.commit('setVerticeGlow', {verticeId, glow})
-      newActivationSequence()
     }
-  })
+  })*/
 }
 
 function nextDeactivation() {
@@ -1154,10 +1151,6 @@ var store = new Vuex.Store({
     activationSequenceIndex: 0,
     activationSequences: [
       {
-        generatorAnchor: {
-          x: 230,
-          y: 200,
-        },
         edges: [
           '01B-01A',
           '01A-01F',
@@ -1169,10 +1162,6 @@ var store = new Vuex.Store({
         ],
       },
       {
-        generatorAnchor: {
-          x: 260,
-          y: 20,
-        },
         edges: [
           '00A-00C',
           '00F-00A',
@@ -1180,8 +1169,6 @@ var store = new Vuex.Store({
         ],
       }
     ],
-    generatorWireX: 0,
-    generatorWireY: 0,
     sensors: {
       'pink': false,
       'orange': false,
@@ -1199,9 +1186,6 @@ var store = new Vuex.Store({
   getters: {
     activationSequenceEdges (state) {
       return state.activationSequences[state.activationSequenceIndex].edges
-    },
-    activationSequenceGeneratorAnchor (state) {
-      return state.activationSequences[state.activationSequenceIndex].generatorAnchor
     },
     currentActivationEdgeId (state, getters) {
       for (var i = 0 ; i < getters.activationSequenceEdges.length ; i++) {
@@ -1298,12 +1282,6 @@ var store = new Vuex.Store({
       state.vertices[verticeId].color.g = g
       state.vertices[verticeId].color.b = b
     },
-    setGeneratorWireX (state, x) {
-      state.generatorWireX = x
-    },
-    setGeneratorWireY (state, y) {
-      state.generatorWireY = y
-    },
     activationSequenceIndexPlusPlus (state) {
       state.activationSequenceIndex = (state.activationSequenceIndex + 1) % state.activationSequences.length
     },
@@ -1355,11 +1333,6 @@ var store = new Vuex.Store({
   },
   actions: {
     init (context) {
-      var x = context.getters.activationSequenceGeneratorAnchor.x
-      var y = context.getters.activationSequenceGeneratorAnchor.y
-      context.commit('setGeneratorWireX', x)
-      context.commit('setGeneratorWireY', y)
-
       var firstEdgeId = context.getters.activationSequenceEdges[0]
       var verticeId = store.state.edges[firstEdgeId].getVertice1()
       var glow = 'glowing-more'

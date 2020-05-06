@@ -38,18 +38,7 @@
 
     <span class="underline-dots flex-grow-1 mx-1"></span>
 
-    <div
-      class="price"
-      :style="{color: 'rgb(' + price.color.r + ', ' + price.color.g + ', ' + price.color.b + ')'}"
-    >
-      <span
-        v-for="i in price.array"
-        :key="i.id"
-        :style="{opacity: i.opacity}"
-        v-html="i.char"
-      ></span>
-      <span>Ḟ</span>
-    </div>
+    <div class="price">{{ price }}Ḟ</div>
   </div>
 </template>
 
@@ -76,20 +65,6 @@ export default {
           b: 0,
         },
       },
-      price: {
-        // -1 => is not animated
-        remainingScrambleAnimations: -1,
-        targetChars: [],
-        arrayPlusMinusCharProba: 0,
-        array: [],
-        colorAnimation: null,
-        colorAnimationReverse: false,
-        color: {
-          r: 255,
-          g: 69,
-          b: 0,
-        },
-      },
     }
   },
   computed: {
@@ -99,7 +74,7 @@ export default {
     dishLabel: function() {
       return menuStore.state.menuItems[this.itemIndex].dish
     },
-    priceLabel: function() {
+    price: function() {
       return menuStore.state.menuItems[this.itemIndex].price
     },
     cursorPosition: function() {
@@ -355,19 +330,9 @@ export default {
         this.scrambleTo('dish', this.$t(newValue))
       }
     },
-    priceLabel: function(newValue) {
-      if (newValue === null) {
-        this.priceColor = 'orangered'
-        this.scrambleTo('price', '??')
-      } else {
-        this.priceColor = 'yellow'
-        this.scrambleTo('price', newValue)
-      }
-    },
     cursorPosition: function() {
       if (this.dishLabel === null) {
         this.scrambleTo('dish', this.$t('hashtag_hashtag_error'))
-        this.scrambleTo('price', '??')
       }
     },
     lang: function() {
@@ -389,18 +354,8 @@ export default {
       easing: 'linear',
     })
 
-    this.price.colorAnimation = this.$anime({
-      autoplay: false,
-      duration: 500,
-      update(anim) {
-        this_.price.color.g = 69 + 186 * anim.progress / 100
-      },
-      easing: 'linear',
-    })
-
     this.glitchAnimation()
     this.scrambleTo('dish', this.$t('hashtag_hashtag_error'))
-    this.scrambleTo('price', '??')
   },
   props: ['itemIndex']
 }
@@ -439,6 +394,7 @@ export default {
 
 .price {
   font-size: 18px;
+  color: green;
 }
 
 .underline-dots {
