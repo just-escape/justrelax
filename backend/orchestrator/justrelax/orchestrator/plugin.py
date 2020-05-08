@@ -46,8 +46,7 @@ class OrchestratorServiceMaker(object):
         websocket_port = config.get("websocket_port", 3031)
         storage_url = config.get("storage_url", "http://localhost:8000")
 
-        if "logging" in config and config["logging"]:
-            init_logging(config["logging"])
+        init_logging(config.get("logging", None))
 
         s = JustSockServerService(websocket_port, storage_url)
         return s
