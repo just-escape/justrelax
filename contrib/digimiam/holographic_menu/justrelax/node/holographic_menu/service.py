@@ -37,11 +37,11 @@ class HolographicMenu(EventCategoryToMethodMixin, JustSockClientService):
         if not isinstance(delay, (int, float)):
             raise TypeError("Delay must be int or float (received={}): skipping".format(delay))
 
-        if slide_index >= len(player.slides):
+        if slide_index >= len(self.player.slides):
             raise ValueError("Video has only {} slides ({} is out of range): skipping".format(
-                len(player.slides), slide_index))
+                len(self.player.slides), slide_index))
 
-        if chapter_id not in player.chapters:
+        if chapter_id not in self.player.chapters:
             raise ValueError("Video has no chapter id={}: skipping".format(
                 chapter_id))
 
