@@ -12,10 +12,27 @@
         :itemIndex="itemIndex"
       />
 
+      <div v-for="(graduation, graduationIndex) in graduations" :key="graduationIndex"
+        class="graduation"
+        :style="{
+          left: graduation.left,
+          bottom: graduation.bottom,
+          width: graduation.width,
+          height: graduation.height,
+          opacity: graduationsOpacity,
+        }"
+      />
+
       <div
         v-for="area in selectableAreas" :key="area.id"
         class="selectable-area"
-        :style="{top: area.top + '%', left: area.left + '%', height: selectableAreaHeight, width: selectableAreaWidth}">
+        :style="{
+          top: area.top + '%',
+          left: area.left + '%',
+          height: selectableAreaHeight,
+          width: selectableAreaWidth,
+          opacity: selectableAreasOpacity,
+        }">
       </div>
     </div>
 
@@ -30,11 +47,18 @@
 <script>
 import DishSelector from '@/components/DishSelector.vue'
 import menuStore from '@/store/menuStore.js'
+import difficultyStore from '@/store/difficultyStore.js'
 
 export default {
   name: 'DishMatrix',
   components: {
     DishSelector,
+  },
+  data() {
+    return {
+      selectableAreasOpacity: 0,
+      graduationsOpacity: 1,
+    }
   },
   computed: {
     selectableAreas: function() {
@@ -49,6 +73,96 @@ export default {
     menuItems: function() {
       return menuStore.state.menuItems
     },
+    graduations: function() {
+      return [
+        {
+          left: "-5px",
+          bottom: "27%",
+          height: "1px",
+          width: "5px",
+        },
+        {
+          left: "-7px",
+          bottom: "50%",
+          height: "1px",
+          width: "7px",
+        },
+        {
+          left: "-5px",
+          bottom: "73%",
+          height: "1px",
+          width: "5px",
+        },
+        {
+          left: "27%",
+          bottom: "-5px",
+          height: "5px",
+          width: "1px",
+        },
+        {
+          left: "50%",
+          bottom: "-7px",
+          height: "7px",
+          width: "1px",
+        },
+        {
+          left: "73%",
+          bottom: "-5px",
+          height: "5px",
+          width: "1px",
+        },
+      ]
+    },
+    difficulty: function() {
+      return difficultyStore.state.difficulty
+    },
+  },
+  watch: {
+    difficulty: function(newValue) {
+      if (newValue == difficultyStore.state.EASY) {
+        this.$anime({
+          targets: this,
+          selectableAreasOpacity: 1,
+          duration: 4000,
+          easing: 'easeInOutExpo',
+        })
+      } else {
+        this.$anime({
+          targets: this,
+          selectableAreasOpacity: 0,
+          duration: 4000,
+          easing: 'easeInOutExpo',
+        })
+      }
+
+      if (newValue == difficultyStore.state.HARD) {
+        this.$anime({
+          targets: this,
+          graduationsOpacity: 0,
+          duration: 4000,
+          easing: 'easeInOutExpo',
+        })
+      } else {
+        this.$anime({
+          targets: this,
+          graduationsOpacity: 1,
+          duration: 4000,
+          easing: 'easeInOutExpo',
+        })
+      }
+    },
+  },
+  created() {
+    if (this.difficulty == difficultyStore.state.EASY) {
+      this.selectableAreasOpacity = 1
+      this.graduationsOpacity = 1
+    } else if (this.difficulty == difficultyStore.state.NORMAL) {
+      this.selectableAreasOpacity = 0
+      this.graduationsOpacity = 1
+    } else if (this.difficulty == difficultyStore.state.HARD) {
+      this.selectableAreasOpacity = 0
+      this.graduationsOpacity = 0
+    }
   },
 }
 </script>
@@ -98,8 +212,8 @@ export default {
 
 .selectable-area {
   position: absolute;
-  /*border: 1px dotted rgba(255, 255, 255, 0.7);
-  box-shadow: 0px 0px 14px -8px rgba(255, 255, 255, 1);*/
+  border: 1px dotted rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 14px -8px rgba(255, 255, 255, 1);
 }
 
 .selector-frame {
@@ -159,5 +273,11 @@ export default {
     calc(10px + 1px) 1.5px
   );
   z-index: 10;
+}
+
+.graduation {
+  position: absolute;
+  background-color: #00d1b6;
+  box-shadow: 0px 1px 3px 0.01px rgba(0, 209, 182, 0.7);
 }
 </style>

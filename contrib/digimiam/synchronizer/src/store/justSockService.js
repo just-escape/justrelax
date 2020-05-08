@@ -6,6 +6,7 @@ import router from '@/router.js'
 
 import lightStore from '@/store/lightStore.js'
 import logStore from '@/store/logStore.js'
+import difficultyStore from '@/store/difficultyStore.js'
 
 Vue.use(Vuex)
 
@@ -40,6 +41,8 @@ const justSockService = new Vuex.Store({
       if (event.category == 'reset') {
         // Reload page
         router.go()
+      } else if (event.category == 'set_difficulty') {
+        difficultyStore.commit('setDifficulty', event.difficulty)
       } else if (event.category == 'l10n') {
         if (event.lang == 'fr') {
           if (i18n.locale != 'fr') {
