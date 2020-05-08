@@ -63,4 +63,8 @@ class HologramPlayer(EventCategoryToMethodMixin, JustSockClientService):
         logger.info("Setting chapter id={} in slide index={} for video id={}".format(
             chapter_id, slide_index, video_id))
 
+        # Temporary
+        if chapter_id == 'error':
+            chapter_id = 'puddy_puddy'
+
         reactor.callLater(delay, player.set_slide, slide_index, chapter_id)
