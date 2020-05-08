@@ -1,0 +1,64 @@
+host: localhost
+port: 3031
+
+name: holographic_menu
+channel: digimiam1
+
+node_params:
+  path: /path/to/video.mp4
+  initial_slides:
+    - puddy_puddy
+    - puddy_puddy
+    - puddy_puddy
+    - puddy_puddy
+  chapters:
+    - id: salade_flamande
+      start: 0
+      duration: 12
+    - id: insectosteak
+      start: 12
+      duration: 9
+    - id: pizzalgue
+      start: 21
+      duration: 14
+    - id: pizzaliere
+      start: 35
+      duration: 11
+    - id: steakfie
+      start: 46
+      duration: 14
+    - id: potjevleesch
+      start: 60
+      duration: 11
+    - id: pizzage
+      start: 71
+      duration: 11
+    - id: cambraisienne
+      start: 82
+      duration: 13
+    - id: chtite_gelee
+      start: 95
+      duration: 11
+    - id: flubber
+      start: 106
+      duration: 11
+    - id: protobulle
+      start: 117
+      duration: 11
+    - id: spider_gaufre
+      start: 128
+      duration: 11
+    - id: puddy_puddy
+      start: 139
+      duration: 12
+    - id: nano_gaufre
+      start: 151
+      duration: 6
+    - id: gaufresque
+      start: 157
+      duration: 12
+    - id: algaufre
+      start: 169
+      duration: 11
+
+logging: null
