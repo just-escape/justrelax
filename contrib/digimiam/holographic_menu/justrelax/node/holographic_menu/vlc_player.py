@@ -44,7 +44,7 @@ class VLCVideoPlayer(MediaPlayerMixin):
 
 
 class VLCDynamicSlidesPlayer(VLCVideoPlayer):
-    def __init__(self, media_path, initial_slides, chapters, *args, **kwargs):
+    def __init__(self, media_path, initial_slides, chapters, service, *args, **kwargs):
         super(VLCDynamicSlidesPlayer, self).__init__(
             media_path, *args, **kwargs)
 
@@ -54,6 +54,8 @@ class VLCDynamicSlidesPlayer(VLCVideoPlayer):
         self.load_chapters(chapters)
         self.current_slide_index = 0
         self.slides = initial_slides
+
+        self.service = service
 
     @property
     def current_chapter(self):
@@ -75,6 +77,7 @@ class VLCDynamicSlidesPlayer(VLCVideoPlayer):
         logger.debug('Setting player time to {} because current slide is chapter id={}'.format(
             self.current_chapter['start'], self.slides[self.current_slide_index]))
         self.player.set_time(int(self.current_chapter['start']) * 1000)
+        self.service.notify_slide(self.current_slide_index)
 
     def schedule_slide_task(self, time):
         logger.debug('Scheduling next slide in {} seconds'.format(time))
@@ -102,6 +105,7 @@ class VLCDynamicSlidesPlayer(VLCVideoPlayer):
             logger.debug('Setting time={} because current slide is {}'.format(
                 self.current_chapter['start'], self.slides[self.current_slide_index]))
             self.player.set_time(int(self.current_chapter['start'] * 1000))
+            self.service.notify_slide(slide_index)
             if self.current_state == MediaPlayerMixin.STATE_PLAYING:
                 time_before_slide = self.current_chapter['duration']
                 self.schedule_slide_task(time_before_slide)

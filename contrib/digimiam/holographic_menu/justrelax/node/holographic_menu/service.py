@@ -14,9 +14,12 @@ class HolographicMenu(EventCategoryToMethodMixin, JustSockClientService):
         chapters = self.node_params['chapters']
 
         self.player = VLCDynamicSlidesPlayer(
-            media_path=path, initial_slides=initial_slides, chapters=chapters)
+            media_path=path, initial_slides=initial_slides, chapters=chapters, service=self)
 
         reactor.callLater(1, self.event_play)
+
+    def notify_slide(self, slide_index):
+        self.send_event({"category": "play_slide", "slide": slide_index})
 
     def play_pause_stop(self, action, method_name, delay):
         if not isinstance(delay, (int, float)):
