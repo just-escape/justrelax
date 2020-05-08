@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import justSockService from '@/store/justSockService.js'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -22,7 +24,7 @@ export default new Vuex.Store({
       {top: 54, left: 77, dish: "chtite_gelee"},
       {top: 77, left: 8, dish: "salade_flamande"},
       {top: 77, left: 31, dish: "pizzalgue"},
-      {top: 77, left: 54, dish: "gaufre_fouret"},
+      {top: 77, left: 54, dish: "algaufre"},
       {top: 77, left: 77, dish: "flubber"},
     ],
     selectableAreaHeight: 15, // percentage
@@ -37,7 +39,7 @@ export default new Vuex.Store({
         wireX2: 899,
         wireY2: 135,
         dish: null,
-        price: 8,
+        price: 10,
       },
       {
         cursorLeft: 200,
@@ -48,7 +50,7 @@ export default new Vuex.Store({
         wireX2: 899,
         wireY2: 186,
         dish: null,
-        price: 12,
+        price: 11,
       },
       {
         cursorLeft: 100,
@@ -59,7 +61,7 @@ export default new Vuex.Store({
         wireX2: 899,
         wireY2: 237,
         dish: null,
-        price: 13,
+        price: 12,
       },
       {
         cursorLeft: 50,
@@ -70,8 +72,14 @@ export default new Vuex.Store({
         wireX2: 899,
         wireY2: 288,
         dish: null,
-        price: 15,
+        price: 4,
       },
+    ],
+    expectedMenu: [
+      "potjevleesch",
+      "salade_flamande",
+      "cambraisienne",
+      "gaufresque",
     ],
     selectorHeight: 410,
     selectorWidth: 852,
@@ -191,6 +199,35 @@ export default new Vuex.Store({
       state.glitches[animationId].animation.pause()
       state.glitches[animationId].redShadow = false
       state.glitches[animationId].animation.seek(0)
-    }
+    },
+    pushMenuEntry (state, index) {
+      var dish
+      if (state.menuItems[index].dish) {
+        dish = state.menuItems[index].dish
+      } else {
+        dish = "error"
+      }
+
+      justSockService.commit('sendEvent', {
+        category: "set_menu_entry",
+        index: index,
+        dish: dish,
+      })
+    },
+    validateMenu (state) {
+      var success = true
+      for (var menuItemIndex in state.menuItems) {
+        if (state.menuItems[menuItemIndex].dish !== state.expectedMenu[menuItemIndex]) {
+          success = false
+          break
+        }
+      }
+
+      if (success) {
+        justSockService.commit('sendEvent', {
+          category: "menu_success"
+        })
+      }
+    },
   },
 })

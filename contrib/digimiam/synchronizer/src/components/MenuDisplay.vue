@@ -21,21 +21,21 @@
       <div class="position-relative">
         <div class="glowing-wire left-wire"></div>
         <div class="glowing-wire right-wire"></div>
-        <ButtonActivate class="btn-block"/>
+        <ButtonValidate @click="validate" class="btn-block"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ButtonActivate from '@/components/ButtonActivate.vue'
+import ButtonValidate from '@/components/ButtonValidate.vue'
 import MenuItem from '@/components/MenuItem.vue'
 import menuStore from '@/store/menuStore.js'
 
 export default {
   name: 'MenuDisplay',
   components: {
-    ButtonActivate,
+    ButtonValidate,
     MenuItem,
   },
   data() {
@@ -60,7 +60,10 @@ export default {
       date.setFullYear(2080)
       this.$moment.locale(this.lang)
       this.date = this.$moment(date).format('LL')
-    }
+    },
+    validate: function() {
+      menuStore.commit("validateMenu")
+    },
   },
   watch: {
     lang: function() {

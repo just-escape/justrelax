@@ -31,7 +31,7 @@ const locales = {
     chtite_gelee: 'Ch\'tite gelée',
     salade_flamande: 'Salade Flamande',
     pizzalgue: 'Pizzalgue',
-    gaufre_fouret: 'Gaufre fourêt',
+    algaufre: 'Algaufre',
     flubber: 'Flubber',
   },
   fr: {
@@ -61,7 +61,7 @@ const locales = {
     chtite_gelee: 'Ch\'tite gelée',
     salade_flamande: 'Salade Flamande',
     pizzalgue: 'Pizzalgue',
-    gaufre_fouret: 'Gaufre fourêt',
+    algaufre: 'Algaufre',
     flubber: 'Flubber',
   }
 }

@@ -308,7 +308,7 @@ export default {
           }
         }
 
-        
+
         if (this[data + 'Label'] !== null) {
           if (this[data].colorAnimationReverse === true) {
             this[data].colorAnimationReverse = false
@@ -317,6 +317,8 @@ export default {
           this[data].colorAnimation.play()
         }
         this[data].remainingScrambleAnimations -= 1
+
+        menuStore.commit("pushMenuEntry", this.itemIndex)
       }
     },
   },

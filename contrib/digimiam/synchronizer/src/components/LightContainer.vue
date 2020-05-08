@@ -1,10 +1,11 @@
 <template>
   <div class="glowing-container">
     <div>
-      <svg viewBox="0 0 754 400">
+      <svg viewBox="0 0 670 356">
         <LightContainerDefs/>
 
         <LightContainerGenerator/>
+        <LightContainerGenerator transform="translate(36 0) rotate(180 335 178)"/>
         <LightContainerEdges/>
         <LightContainerVertices/>
       </svg>
