@@ -15,10 +15,3 @@ if __name__ == '__main__':
         install_requires=get_requirements(),
         zip_safe=False,
     )
-
-    try:
-        from twisted.plugin import IPlugin, getPlugins  # NOQA: E402
-    except ImportError:
-        pass
-    else:
-        list(getPlugins(IPlugin))

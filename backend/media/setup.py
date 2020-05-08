@@ -8,16 +8,9 @@ def get_requirements():
 
 if __name__ == '__main__':
     setup(
-        name="justrelax_media",
+        name="justrelax_node_media",
         version="0.1",
-        packages=["justrelax.media"],
+        packages=["justrelax.node.media"],
         install_requires=get_requirements(),
         zip_safe=False,
     )
-
-    try:
-        from twisted.plugin import IPlugin, getPlugins  # NOQA: E402
-    except ImportError:
-        pass
-    else:
-        list(getPlugins(IPlugin))
