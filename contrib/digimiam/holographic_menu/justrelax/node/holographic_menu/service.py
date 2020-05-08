@@ -16,6 +16,8 @@ class HolographicMenu(EventCategoryToMethodMixin, JustSockClientService):
         self.player = VLCDynamicSlidesPlayer(
             media_path=path, initial_slides=initial_slides, chapters=chapters)
 
+        reactor.callLater(1, self.event_play)
+
     def play_pause_stop(self, action, method_name, delay):
         if not isinstance(delay, (int, float)):
             raise TypeError("Delay must be int or float (received={}): skipping".format(delay))
