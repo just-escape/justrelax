@@ -74,44 +74,7 @@ export default {
       return menuStore.state.menuItems
     },
     graduations: function() {
-      return [
-        {
-          left: "-5px",
-          bottom: "27%",
-          height: "1px",
-          width: "5px",
-        },
-        {
-          left: "-7px",
-          bottom: "50%",
-          height: "1px",
-          width: "7px",
-        },
-        {
-          left: "-5px",
-          bottom: "73%",
-          height: "1px",
-          width: "5px",
-        },
-        {
-          left: "27%",
-          bottom: "-5px",
-          height: "5px",
-          width: "1px",
-        },
-        {
-          left: "50%",
-          bottom: "-7px",
-          height: "7px",
-          width: "1px",
-        },
-        {
-          left: "73%",
-          bottom: "-5px",
-          height: "5px",
-          width: "1px",
-        },
-      ]
+      return menuStore.state.graduations
     },
     difficulty: function() {
       return difficultyStore.state.difficulty

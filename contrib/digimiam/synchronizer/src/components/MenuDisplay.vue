@@ -11,17 +11,21 @@
           {{ date }}
         </div>
 
-        <MenuItem
-          v-for="(item, itemIndex) in menuItems"
-          :key="item.id"
-          :itemIndex="itemIndex"
-        />
+        <div class="position-relative">
+          <MenuItemCursor class="position-absolute"/>
+          <MenuItem
+            v-for="(item, itemIndex) in menuItems"
+            class="pl-4"
+            :key="item.id"
+            :itemIndex="itemIndex"
+          />
+        </div>
       </div>
 
       <div class="position-relative">
         <div class="glowing-wire left-wire"></div>
         <div class="glowing-wire right-wire"></div>
-        <ButtonValidate @click="validate" class="btn-block"/>
+        <ButtonValidate @click="validate" class="btn-block" :disabled="success"/>
       </div>
     </div>
   </div>
@@ -29,6 +33,7 @@
 
 <script>
 import ButtonValidate from '@/components/ButtonValidate.vue'
+import MenuItemCursor from '@/components/MenuItemCursor.vue'
 import MenuItem from '@/components/MenuItem.vue'
 import menuStore from '@/store/menuStore.js'
 
@@ -36,6 +41,7 @@ export default {
   name: 'MenuDisplay',
   components: {
     ButtonValidate,
+    MenuItemCursor,
     MenuItem,
   },
   data() {
@@ -52,7 +58,10 @@ export default {
     },
     menuItems: function() {
       return menuStore.state.menuItems
-    }
+    },
+    success: function() {
+      return menuStore.state.success
+    },
   },
   methods: {
     refreshDate: function() {

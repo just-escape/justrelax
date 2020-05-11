@@ -1,5 +1,9 @@
 <template>
-  <b-button @click="$emit('click')" class="position-relative">
+  <b-button
+    @click="click"
+    class="position-relative"
+    :style="{filter: 'grayscale(' + grayscale + ')'}"
+  >
     <div class="corner-top-left"></div>
     <div class="corner-top-right"></div>
     <div class="corner-bottom-left"></div>
@@ -12,6 +16,28 @@
 <script>
 export default {
   name: 'ButtonBlue',
+  computed: {
+    grayscale() {
+      if (this.disabled) {
+        return 0.8
+      } else {
+        return 0
+      }
+    }
+  },
+  methods: {
+    click() {
+      if (this.disabled === false) {
+        this.$emit('click')
+      }
+    }
+  },
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
 }
 </script>
 
@@ -24,7 +50,7 @@ button {
   border-right: 3px solid rgba(0, 209, 182, 0.4);
   border-left: 3px solid rgba(0, 209, 182, 0.4);
   border-radius: 0px;
-  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out;
+  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, filter 4s ease-in-out;
   font-size: 20px;
   padding: 0.375rem 0.75rem 0.275rem 0.75rem;
 }

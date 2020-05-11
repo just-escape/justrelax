@@ -29,6 +29,44 @@ export default new Vuex.Store({
     ],
     selectableAreaHeight: 15, // percentage
     selectableAreaWidth: 15, // percentage
+    graduations: [
+      {
+        left: "-5px",
+        bottom: "27%",
+        height: "1px",
+        width: "5px",
+      },
+      {
+        left: "-5px",
+        bottom: "50%",
+        height: "1px",
+        width: "5px",
+      },
+      {
+        left: "-5px",
+        bottom: "73%",
+        height: "1px",
+        width: "5px",
+      },
+      {
+        left: "27%",
+        bottom: "-5px",
+        height: "5px",
+        width: "1px",
+      },
+      {
+        left: "50%",
+        bottom: "-5px",
+        height: "5px",
+        width: "1px",
+      },
+      {
+        left: "73%",
+        bottom: "-5px",
+        height: "5px",
+        width: "1px",
+      },
+    ],
     menuItems: [
       {
         cursorLeft: 0,
@@ -81,6 +119,7 @@ export default new Vuex.Store({
       "cambraisienne",
       "gaufresque",
     ],
+    cursorPosition: 0,
     selectorHeight: 410,
     selectorWidth: 852,
     mouseX: 0,
@@ -89,10 +128,15 @@ export default new Vuex.Store({
     lastMouseY: null,
     dragging: null,
     zIndexCounter: 10,
+    success: false,
   },
   mutations: {
     // eslint-disable-next-line
     appCursorMove (state, event) {
+      if (state.success) {
+        return
+      }
+
       var clientX
       var clientY
       if (event.targetTouches === undefined) {
@@ -215,6 +259,10 @@ export default new Vuex.Store({
       })
     },
     validateMenu (state) {
+      if (state.success) {
+        return
+      }
+
       var success = true
       for (var menuItemIndex in state.menuItems) {
         if (state.menuItems[menuItemIndex].dish !== state.expectedMenu[menuItemIndex]) {
@@ -224,10 +272,28 @@ export default new Vuex.Store({
       }
 
       if (success) {
+        state.success = true
         justSockService.commit('sendEvent', {
           category: "menu_success"
         })
       }
+    },
+    forceSuccess (state) {
+      if (state.success) {
+        return
+      }
+
+      // TODO: set cursor positions ?
+      // TODO: set menu entries
+      // TODO: notify hologram player
+
+      state.success = true
+      justSockService.commit('sendEvent', {
+        category: "menu_success"
+      })
+    },
+    setMenuCursorPosition (state, position) {
+      state.cursorPosition = position
     },
   },
 })

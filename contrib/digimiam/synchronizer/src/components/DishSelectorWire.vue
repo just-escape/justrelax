@@ -1,7 +1,15 @@
 <template>
   <div
     class="wire"
-    :style="{left: left, top: top, width: width, transform: transform, height: thickness, zIndex: zIndex}"
+    :style="{
+      left: left,
+      top: top,
+      width: width,
+      transform: transform,
+      height: thickness,
+      zIndex: zIndex,
+      opacity: opacity,
+    }"
   ></div>
 </template>
 
@@ -16,6 +24,13 @@ export default {
     }
   },
   computed: {
+    opacity: function() {
+      if (menuStore.state.success === false) {
+        return 1
+      } else {
+        return 0
+      }
+    },
     x1: function() {
       return this.item.cursorLeft + this.item.cursorWidth / 2
     },
@@ -69,5 +84,6 @@ export default {
   position: absolute;
   background-color: #00d1b6;
   box-shadow: 0px 1px 3px 0.01px rgba(0, 209, 182, 0.7);
+  transition: opacity 4s ease-in-out;
 }
 </style>

@@ -83,9 +83,16 @@ export default {
     lang: function() {
       return this.$i18n.locale
     },
+    success: function() {
+      return menuStore.state.success
+    },
   },
   methods: {
     glitchAnimation: function() {
+      if (this.success) {
+        return
+      }
+
       var this_ = this
 
       this.$anime.timeline({})
@@ -343,6 +350,37 @@ export default {
       } else {
         this.scrambleTo('dish', this.$t(this.dishLabel))
       }
+    },
+    success: function() {
+      var this_ = this
+      let initR = this.dish.color.r
+      let initG = this.dish.color.g
+      let initB = this.dish.color.b
+
+      var targetDiffG
+      if (128 > initG) {
+        targetDiffG = 128 - initG
+      } else {
+        targetDiffG = initG - 128
+      }
+
+      this.dish.colorAnimation.pause()
+
+      this.dish.colorAnimation = this.$anime({
+        autoplay: false,
+        duration: 4000,
+        update(anim) {
+          this_.dish.color.r = initR - initR * anim.progress / 100
+          if (128 > initG) {
+            this_.dish.color.g = initG + targetDiffG * anim.progress / 100
+          } else {
+            this_.dish.color.g = initG - targetDiffG * anim.progress / 100
+          }
+          this_.dish.color.b = initB - initB * anim.progress / 100
+        },
+        easing: 'easeInOut',
+      })
+      this.dish.colorAnimation.play()
     },
   },
   mounted() {

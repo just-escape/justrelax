@@ -3,7 +3,14 @@
     class="cursor"
     @mousedown="cursorPress"
     @touchstart="cursorPress"
-    :style="{top: top, left: left, zIndex: zIndex, height: height, width: width}"
+    :style="{
+      top: top,
+      left: left,
+      zIndex: zIndex,
+      height: height,
+      width: width,
+      filter: filter,
+    }"
   >
     <div class="edge"></div>
     <div class="edge flip-vertically"></div>
@@ -18,6 +25,13 @@ import menuStore from '@/store/menuStore.js'
 export default {
   name: 'DishSelectorCursor',
   computed: {
+    filter: function() {
+      if (menuStore.state.success === false) {
+        return ''
+      } else {
+        return 'hue-rotate(-40deg) brightness(0.65) contrast(0.95)'
+      }
+    },
     top: function() {
       return this.item.cursorTop + 'px'
     },
@@ -60,6 +74,7 @@ export default {
     0% 70%,
     0% 30%
   );
+  transition: filter 4s ease-in-out;
 }
 
 .edge {
@@ -75,6 +90,7 @@ export default {
     4px 30%,
     0% 30%
   );
+  transition: filter 4s ease-in-out;
 }
 
 .flip-vertically {

@@ -7,6 +7,7 @@ import router from '@/router.js'
 import lightStore from '@/store/lightStore.js'
 import logStore from '@/store/logStore.js'
 import difficultyStore from '@/store/difficultyStore.js'
+import menuStore from './menuStore'
 
 Vue.use(Vuex)
 
@@ -57,6 +58,10 @@ const justSockService = new Vuex.Store({
         }
       } else if (event.category == 'log') {
         logStore.commit('processLog', event)
+      } else if (event.category == 'set_menu_cursor_position') {
+        menuStore.commit('setMenuCursorPosition', event.position)
+      } else if (event.category == 'force_menu_success') {
+        menuStore.commit('forceSuccess')
       } else if (event.category == 'sensor') {
         let sensorId = event['sensor_id']
         let activated = event.activated
