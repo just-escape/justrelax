@@ -358,10 +358,10 @@ export default {
       let initB = this.dish.color.b
 
       var targetDiffG
-      if (128 > initG) {
-        targetDiffG = 128 - initG
+      if (170 > initG) {
+        targetDiffG = 170 - initG
       } else {
-        targetDiffG = initG - 128
+        targetDiffG = initG - 170
       }
 
       this.dish.colorAnimation.pause()
@@ -434,7 +434,7 @@ export default {
 
 .price {
   font-size: 18px;
-  color: green;
+  color: rgb(0, 170, 0);
 }
 
 .underline-dots {

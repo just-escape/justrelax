@@ -20,6 +20,8 @@
             :itemIndex="itemIndex"
           />
         </div>
+
+        <MenuLoadingWidget :startAnimationSignal="startAnimationSignal"/>
       </div>
 
       <div class="position-relative">
@@ -34,6 +36,7 @@
 <script>
 import ButtonValidate from '@/components/ButtonValidate.vue'
 import MenuItemCursor from '@/components/MenuItemCursor.vue'
+import MenuLoadingWidget from '@/components/MenuLoadingWidget.vue'
 import MenuItem from '@/components/MenuItem.vue'
 import menuStore from '@/store/menuStore.js'
 
@@ -42,11 +45,13 @@ export default {
   components: {
     ButtonValidate,
     MenuItemCursor,
+    MenuLoadingWidget,
     MenuItem,
   },
   data() {
     return {
-      date: undefined
+      date: undefined,
+      startAnimationSignal: false,
     }
   },
   computed: {
@@ -71,7 +76,20 @@ export default {
       this.date = this.$moment(date).format('LL')
     },
     validate: function() {
-      menuStore.commit("validateMenu")
+      if (menuStore.state.success || menuStore.state.validating) {
+        return
+      }
+
+      this.startAnimationSignal = !this.startAnimationSignal
+
+      menuStore.commit("lockValidate")
+      setTimeout(this.validatePostAnimation, 4000)
+    },
+    validatePostAnimation: function() {
+      menuStore.commit("unlockValidate")
+      if (menuStore.getters.isSuccess) {
+        menuStore.commit("validateMenu")
+      }
     },
   },
   watch: {

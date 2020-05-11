@@ -128,12 +128,23 @@ export default new Vuex.Store({
     lastMouseY: null,
     dragging: null,
     zIndexCounter: 10,
+    validating: false,
     success: false,
+  },
+  getters: {
+    isSuccess (state) {
+      for (var menuItemIndex in state.menuItems) {
+        if (state.menuItems[menuItemIndex].dish !== state.expectedMenu[menuItemIndex]) {
+          return false
+        }
+      }
+      return true
+    }
   },
   mutations: {
     // eslint-disable-next-line
     appCursorMove (state, event) {
-      if (state.success) {
+      if (state.success || state.validating) {
         return
       }
 
@@ -258,25 +269,21 @@ export default new Vuex.Store({
         dish: dish,
       })
     },
+    lockValidate (state) {
+      state.validating = true
+    },
+    unlockValidate (state) {
+      state.validating = false
+    },
     validateMenu (state) {
-      if (state.success) {
+      if (state.success || state.validating) {
         return
       }
 
-      var success = true
-      for (var menuItemIndex in state.menuItems) {
-        if (state.menuItems[menuItemIndex].dish !== state.expectedMenu[menuItemIndex]) {
-          success = false
-          break
-        }
-      }
-
-      if (success) {
-        state.success = true
-        justSockService.commit('sendEvent', {
-          category: "menu_success"
-        })
-      }
+      state.success = true
+      justSockService.commit('sendEvent', {
+        category: "menu_success"
+      })
     },
     forceSuccess (state) {
       if (state.success) {

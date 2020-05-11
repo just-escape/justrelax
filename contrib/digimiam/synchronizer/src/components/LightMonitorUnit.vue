@@ -8,7 +8,7 @@
     </defs>
 
     <path
-      :d="d(sizeColor)"
+      :d="d(size)"
       :fill="getColor"
       :filter="filter"
     />
@@ -22,7 +22,7 @@ export default {
     return {
       boxWidth: 135,
       boxHeight: 135,
-      sizeColor: 40,
+      size: 40,
       colors: {
         pink: {
           r: 232,

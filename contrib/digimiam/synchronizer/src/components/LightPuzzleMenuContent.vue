@@ -1,49 +1,47 @@
 <template>
-  <div class="w-100 d-flex flex-column justify-content-between p-2">
-    <div class="d-flex flex-column">
-      <LightMonitorUnit
-        class="monitor-unit d-inline-block"
-        color="pink"
-        :on="pinkSensor"
-        :positionX="140 - 80 / 2"
-        :positionY="0 + 135 - 80 / 2"
-      />
-      <LightMonitorUnit
-        class="monitor-unit d-inline-block"
-        color="yellow"
-        :on="yellowSensor"
-        :positionX="210 - 80 / 2"
-        :positionY="40 + 135 - 80 / 2"
-      />
-      <LightMonitorUnit
-        class="monitor-unit d-inline-block"
-        color="green"
-        :on="greenSensor"
-        :positionX="210 - 80 / 2"
-        :positionY="120 + 135 - 80 / 2"
-      />
-      <LightMonitorUnit
-        class="monitor-unit d-inline-block"
-        color="blue"
-        :on="blueSensor"
-        :positionX="140 - 80 / 2"
-        :positionY="160 + 135 - 80 / 2"
-      />
-      <LightMonitorUnit
-        class="monitor-unit d-inline-block"
-        color="orange"
-        :on="orangeSensor"
-        :positionX="70 - 80 / 2"
-        :positionY="120 + 135 - 80 / 2"
-      />
-      <LightMonitorUnit
-        class="monitor-unit d-inline-block"
-        color="purple"
-        :on="true"
-        :positionX="70 - 80 / 2"
-        :positionY="40 + 135 - 80 / 2"
-      />
-    </div>
+  <div>
+    <LightMonitorUnit
+      class="monitor-unit"
+      color="pink"
+      :on="pinkSensor"
+      :positionX="140 - 80 / 2"
+      :positionY="0 + 135 - 80 / 2"
+    />
+    <LightMonitorUnit
+      class="monitor-unit"
+      color="yellow"
+      :on="yellowSensor"
+      :positionX="210 - 80 / 2"
+      :positionY="40 + 135 - 80 / 2"
+    />
+    <LightMonitorUnit
+      class="monitor-unit"
+      color="green"
+      :on="greenSensor"
+      :positionX="210 - 80 / 2"
+      :positionY="120 + 135 - 80 / 2"
+    />
+    <LightMonitorUnit
+      class="monitor-unit"
+      color="blue"
+      :on="blueSensor"
+      :positionX="140 - 80 / 2"
+      :positionY="160 + 135 - 80 / 2"
+    />
+    <LightMonitorUnit
+      class="monitor-unit"
+      color="orange"
+      :on="orangeSensor"
+      :positionX="70 - 80 / 2"
+      :positionY="120 + 135 - 80 / 2"
+    />
+    <LightMonitorUnit
+      class="monitor-unit"
+      color="purple"
+      :on="true"
+      :positionX="70 - 80 / 2"
+      :positionY="40 + 135 - 80 / 2"
+    />
   </div>
 </template>
 
