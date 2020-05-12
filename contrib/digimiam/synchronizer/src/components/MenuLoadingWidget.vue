@@ -136,6 +136,6 @@ export default {
 
 <style scoped>
 .hexagon {
-  width: 12px;
+  width: 18px;
 }
 </style>

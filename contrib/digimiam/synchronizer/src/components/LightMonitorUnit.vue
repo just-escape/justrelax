@@ -29,10 +29,10 @@ export default {
           g: 62,
           b: 140,
         },
-        yellow: {
+        white: {
           r: 255,
-          g: 193,
-          b: 7,
+          g: 255,
+          b: 255,
         },
         green: {
           r: 40,
@@ -49,10 +49,10 @@ export default {
           g: 126,
           b: 20,
         },
-        purple: {
-          r: 102,
-          g: 16,
-          b: 242,
+        red: {
+          r: 220,
+          g: 53,
+          b: 69,
         },
       }
     }

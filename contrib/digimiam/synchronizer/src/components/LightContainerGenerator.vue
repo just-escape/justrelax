@@ -2,7 +2,7 @@
   <g>
     <LightContainerGeneratorHexagon
       v-for="(bgh, bghIndex) in backgroundHexagons"
-      :key="bghIndex"
+      :key="'bgh-' + bghIndex"
       :centerX="bgh.x"
       :centerY="bgh.y"
       :diameter="backgroundHexagonsFillDiamater"
@@ -11,7 +11,7 @@
     />
     <LightContainerGeneratorHexagon
       v-for="(fgh, fghIndex) in foregroundHexagons"
-      :key="fghIndex"
+      :key="'fgh-' + fghIndex"
       :centerX="fgh.x"
       :centerY="fgh.y"
       :diameter="fgh.diameter"

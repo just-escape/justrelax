@@ -170,7 +170,7 @@ function nextActivation() {
     store.commit('setUnplayable')
     confirmationAnimation()
   } else {
-    if (store.state.sensors[store.state.edges[edgeId].activationSensorId] === true) {
+    if (store.state.sensors[store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId] === true) {
       activateEdge(edgeId)
     } else {
       nextActivationSequence()
@@ -408,6 +408,7 @@ var store = new Vuex.Store({
           b: 182,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '12': {
         x: 10 / 4 * 120 - 37.5,
@@ -424,6 +425,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '13': {
         x: 12 / 4 * 120 - 37.5,
@@ -440,6 +442,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '14': {
         x: 14 / 4 * 120 - 37.5,
@@ -456,6 +459,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '15': {
         x: 16 / 4 * 120 - 37.5,
@@ -472,6 +476,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '16': {
         x: 18 / 4 * 120 - 37.5,
@@ -488,6 +493,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '21': {
         x: 7 / 4 * 120 - 37.5,
@@ -504,6 +510,7 @@ var store = new Vuex.Store({
           b: 182,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '22': {
         x: 9 / 4 * 120 - 37.5,
@@ -520,6 +527,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '23': {
         x: 11 / 4 * 120 - 37.5,
@@ -536,6 +544,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '24': {
         x: 13 / 4 * 120 - 37.5,
@@ -552,6 +561,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '25': {
         x: 15 / 4 * 120 - 37.5,
@@ -568,6 +578,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '26': {
         x: 17 / 4 * 120 - 37.5,
@@ -584,6 +595,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '27': {
         x: 19 / 4 * 120 - 37.5,
@@ -600,6 +612,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '31': {
         x: 8 / 4 * 120 - 37.5,
@@ -616,6 +629,7 @@ var store = new Vuex.Store({
           b: 182,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '32': {
         x: 10 / 4 * 120 - 37.5,
@@ -632,6 +646,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '33': {
         x: 12 / 4 * 120 - 37.5,
@@ -648,6 +663,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '34': {
         x: 14 / 4 * 120 - 37.5,
@@ -664,6 +680,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '35': {
         x: 16 / 4 * 120 - 37.5,
@@ -680,6 +697,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '36': {
         x: 18 / 4 * 120 - 37.5,
@@ -696,6 +714,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '41': {
         x: 7 / 4 * 120 - 37.5,
@@ -712,6 +731,7 @@ var store = new Vuex.Store({
           b: 182,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '42': {
         x: 9 / 4 * 120 - 37.5,
@@ -728,6 +748,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '43': {
         x: 11 / 4 * 120 - 37.5,
@@ -744,6 +765,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '44': {
         x: 13 / 4 * 120 - 37.5,
@@ -760,6 +782,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '45': {
         x: 15 / 4 * 120 - 37.5,
@@ -776,6 +799,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '46': {
         x: 17 / 4 * 120 - 37.5,
@@ -792,6 +816,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '47': {
         x: 19 / 4 * 120 - 37.5,
@@ -808,6 +833,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '51': {
         x: 8 / 4 * 120 - 37.5,
@@ -824,6 +850,7 @@ var store = new Vuex.Store({
           b: 182,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '52': {
         x: 10 / 4 * 120 - 37.5,
@@ -840,6 +867,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '53': {
         x: 12 / 4 * 120 - 37.5,
@@ -856,6 +884,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '54': {
         x: 14 / 4 * 120 - 37.5,
@@ -872,6 +901,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '55': {
         x: 16 / 4 * 120 - 37.5,
@@ -888,6 +918,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '56': {
         x: 18 / 4 * 120 - 37.5,
@@ -904,6 +935,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '61': {
         x: 7 / 4 * 120 - 37.5,
@@ -920,6 +952,7 @@ var store = new Vuex.Store({
           b: 182,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '62': {
         x: 9 / 4 * 120 - 37.5,
@@ -936,6 +969,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '63': {
         x: 11 / 4 * 120 - 37.5,
@@ -952,6 +986,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '64': {
         x: 13 / 4 * 120 - 37.5,
@@ -968,6 +1003,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '65': {
         x: 15 / 4 * 120 - 37.5,
@@ -984,6 +1020,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '66': {
         x: 17 / 4 * 120 - 37.5,
@@ -1000,6 +1037,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '67': {
         x: 19 / 4 * 120 - 37.5,
@@ -1016,6 +1054,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '71': {
         x: 8 / 4 * 120 - 37.5,
@@ -1032,6 +1071,7 @@ var store = new Vuex.Store({
           b: 182,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '72': {
         x: 10 / 4 * 120 - 37.5,
@@ -1048,6 +1088,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '73': {
         x: 12 / 4 * 120 - 37.5,
@@ -1064,6 +1105,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '74': {
         x: 14 / 4 * 120 - 37.5,
@@ -1080,6 +1122,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '75': {
         x: 16 / 4 * 120 - 37.5,
@@ -1096,6 +1139,7 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
       '76': {
         x: 18 / 4 * 120 - 37.5,
@@ -1112,465 +1156,18 @@ var store = new Vuex.Store({
           b: 255,
         },
         glowing: 'glowing',
+        activationSensorId: 'white',
       },
-      /*'00A': {
-        x: 290,
-        y: 80,
-        rotation: 0,
-        color: {
-          r: 232,
-          g: 62,
-          b: 140,
-        },
-        initColor: {
-          r: 232,
-          g: 62,
-          b: 140,
-        },
-        glowing: 'glowing',
-      },
-      '00B': {
-        x: 230,
-        y: 80,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '00C': {
-        x: 260,
-        y: 20,
-        rotation: 0,
-        color: {
-          r: 0,
-          g: 209,
-          b: 182,
-        },
-        initColor: {
-          r: 0,
-          g: 209,
-          b: 182,
-        },
-        glowing: 'glowing',
-      },
-      '00D': {
-        x: 320,
-        y: 20,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '00E': {
-        x: 350,
-        y: 80,
-        rotation: 0,
-        color: {
-          r: 40,
-          g: 167,
-          b: 69,
-        },
-        initColor: {
-          r: 40,
-          g: 167,
-          b: 69,
-        },
-        glowing: 'glowing',
-      },
-      '00F': {
-        x: 320,
-        y: 140,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 193,
-          b: 7,
-        },
-        initColor: {
-          r: 255,
-          g: 193,
-          b: 7,
-        },
-        glowing: 'glowing',
-      },
-      '00G': {
-        x: 260,
-        y: 140,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '01A': {
-        x: 290,
-        y: 200,
-        rotation: 0,
-        color: {
-          r: 232,
-          g: 62,
-          b: 140,
-        },
-        initColor: {
-          r: 232,
-          g: 62,
-          b: 140,
-        },
-        glowing: 'glowing',
-      },
-      '01B': {
-        x: 230,
-        y: 200,
-        rotation: 0,
-        color: {
-          r: 0,
-          g: 209,
-          b: 182,
-        },
-        initColor: {
-          r: 0,
-          g: 209,
-          b: 182,
-        },
-        glowing: 'glowing',
-      },
-      '01E': {
-        x: 350,
-        y: 200,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '01F': {
-        x: 320,
-        y: 260,
-        rotation: 0,
-        color: {
-          r: 253,
-          g: 126,
-          b: 20,
-        },
-        initColor: {
-          r: 253,
-          g: 126,
-          b: 20,
-        },
-        glowing: 'glowing',
-      },
-      '01G': {
-        x: 260,
-        y: 260,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '02A': {
-        x: 290,
-        y: 320,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '02B': {
-        x: 230,
-        y: 320,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '02E': {
-        x: 350,
-        y: 320,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '02F': {
-        x: 320,
-        y: 380,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '02G': {
-        x: 260,
-        y: 380,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '10A': {
-        x: 380,
-        y: 20,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '10E': {
-        x: 440,
-        y: 20,
-        rotation: 0,
-        color: {
-          r: 232,
-          g: 62,
-          b: 140,
-        },
-        initColor: {
-          r: 232,
-          g: 62,
-          b: 140,
-        },
-        glowing: 'glowing',
-      },
-      '10F': {
-        x: 410,
-        y: 80,
-        rotation: 0,
-        color: {
-          r: 102,
-          g: 16,
-          b: 242,
-        },
-        initColor: {
-          r: 102,
-          g: 16,
-          b: 242,
-        },
-        glowing: 'glowing',
-      },
-      '11A': {
-        x: 380,
-        y: 140,
-        rotation: 0,
-        color: {
-          r: 0,
-          g: 123,
-          b: 255,
-        },
-        initColor: {
-          r: 0,
-          g: 123,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '11E': {
-        x: 440,
-        y: 140,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '11F': {
-        x: 410,
-        y: 200,
-        rotation: 0,
-        color: {
-          r: 40,
-          g: 167,
-          b: 69,
-        },
-        initColor: {
-          r: 40,
-          g: 167,
-          b: 69,
-        },
-        glowing: 'glowing',
-      },
-      '12A': {
-        x: 380,
-        y: 260,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 193,
-          b: 7,
-        },
-        initColor: {
-          r: 255,
-          g: 193,
-          b: 7,
-        },
-        glowing: 'glowing',
-      },
-      '12E': {
-        x: 440,
-        y: 260,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '12F': {
-        x: 410,
-        y: 320,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '13A': {
-        x: 380,
-        y: 380,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },
-      '13E': {
-        x: 440,
-        y: 380,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-        },
-        glowing: 'glowing',
-      },*/
     },
     edges: {
-      '01B-01A': {
+      '11-12': {
         getVertice1: function () {
-          return '01B'
+          return '11'
         },
         getVertice2: function() {
-          return '01A'
+          return '12'
         },
-        color: 'rgba(255, 255, 255, 0.3)',
+        color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
         activated: false,
         validated: false,
@@ -1579,36 +1176,18 @@ var store = new Vuex.Store({
           if (store.state.activationSequenceIndex == 0) {
             return 'left-right'
           } else if (store.state.activationSequenceIndex == 1) {
-            return 'right-left'
+            return 'left-right'
           }
         },
-        activationSensorId: 'pink',
       },
-      '01A-01F': {
+      '12-13': {
         getVertice1: function() {
-          return '01A'
+          return '12'
         },
         getVertice2: function() {
-          return '01F'
+          return '13'
         },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'topleft-bottomright'
-        },
-        activationSensorId: 'orange',
-      },
-      '01F-12A': {
-        getVertice1: function() {
-          return '01F'
-        },
-        getVertice2: function() {
-          return '12A'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
+        color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
         activated: false,
         validated: false,
@@ -1616,214 +1195,15 @@ var store = new Vuex.Store({
         getDirection: function() {
           return 'left-right'
         },
-        activationSensorId: 'yellow',
       },
-      '12A-11F': {
+      '13-14': {
         getVertice1: function() {
-          return '12A'
+          return '13'
         },
         getVertice2: function() {
-          return '11F'
+          return '14'
         },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomleft-topright'
-        },
-        activationSensorId: 'green',
-      },
-      '11F-11A': {
-        getVertice1: function() {
-          return '11F'
-        },
-        getVertice2: function() {
-          return '11A'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomright-topleft'
-        },
-        activationSensorId: 'blue',
-      },
-      '11A-10F': {
-        getVertice1: function() {
-          return '11A'
-        },
-        getVertice2: function() {
-          return '10F'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomleft-topright'
-        },
-        activationSensorId: 'purple',
-      },
-      '10F-10E': {
-        getVertice1: function() {
-          return '10F'
-        },
-        getVertice2: function() {
-          return '10E'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomleft-topright'
-        },
-        activationSensorId: 'pink',
-      },
-      '01A-00F': {
-        getVertice1: function() {
-          return '01A'
-        },
-        getVertice2: function() {
-          return '00F'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          if (store.state.activationSequenceIndex == 0) {
-            return 'bottomleft-topright'
-          } else if (store.state.activationSequenceIndex == 1) {
-            return 'topright-bottomleft'
-          }
-        },
-        activationSensorId: null,
-      },
-      '00F-00E': {
-        getVertice1: function() {
-          return '00F'
-        },
-        getVertice2: function() {
-          return '00E'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomleft-topright'
-        },
-        activationSensorId: 'green',
-      },
-      '00F-00A': {
-        getVertice1: function() {
-          if (store.state.activationSequenceIndex == 0) {
-            return '00F'
-          } else if (store.state.activationSequenceIndex == 1) {
-            return '00A'
-          }
-        },
-        getVertice2: function() {
-          if (store.state.activationSequenceIndex == 0) {
-            return '00A'
-          } else if (store.state.activationSequenceIndex == 1) {
-            return '00F'
-          }
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          if (store.state.activationSequenceIndex == 0) {
-            return 'bottomright-topleft'
-          } else if (store.state.activationSequenceIndex == 1) {
-            return 'topleft-bottomright'
-          }
-        },
-        activationSensorId: 'yellow',
-      },
-      '00A-00C': {
-        getVertice1: function() {
-          if (store.state.activationSequenceIndex == 0) {
-            return '00A'
-          } else if (store.state.activationSequenceIndex == 1) {
-            return '00C'
-          }
-        },
-        getVertice2: function() {
-          if (store.state.activationSequenceIndex == 0) {
-            return '00C'
-          } else if (store.state.activationSequenceIndex == 1) {
-            return '00A'
-          }
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          if (store.state.activationSequenceIndex == 0) {
-            return 'bottomright-topleft'
-          } else if (store.state.activationSequenceIndex == 1) {
-            return 'topleft-bottomright'
-          }
-        },
-        activationSensorId: 'pink',
-      },
-      '01F-02E': {
-        getVertice1: function() {
-          return '01F'
-        },
-        getVertice2: function() {
-          return '02E'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'topleft-bottomright'
-        },
-        activationSensorId: null,
-      },
-      '02E-02F': {
-        getVertice1: function() {
-          return '02E'
-        },
-        getVertice2: function() {
-          return '02F'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'topright-bottomleft'
-        },
-        activationSensorId: null,
-      },
-      '02E-12F': {
-        getVertice1: function() {
-          return '02E'
-        },
-        getVertice2: function() {
-          return '12F'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
+        color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
         activated: false,
         validated: false,
@@ -1831,33 +1211,15 @@ var store = new Vuex.Store({
         getDirection: function() {
           return 'left-right'
         },
-        activationSensorId: null,
       },
-      '12F-12E': {
+      '14-15': {
         getVertice1: function() {
-          return '12F'
+          return '14'
         },
         getVertice2: function() {
-          return '12E'
+          return '15'
         },
-        color: 'rgba(255, 255, 255, 0.3)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomleft-topright'
-        },
-        activationSensorId: null,
-      },
-      '11A-11E': {
-        getVertice1: function() {
-          return '11A'
-        },
-        getVertice2: function() {
-          return '11E'
-        },
-        color: 'rgba(255, 255, 255, 0.3)',
+        color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
         activated: false,
         validated: false,
@@ -1865,40 +1227,152 @@ var store = new Vuex.Store({
         getDirection: function() {
           return 'left-right'
         },
-        activationSensorId: null,
+      },
+      '15-16': {
+        getVertice1: function() {
+          return '15'
+        },
+        getVertice2: function() {
+          return '16'
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          return 'left-right'
+        },
+      },
+      '21-22': {
+        getVertice1: function() {
+          return '21'
+        },
+        getVertice2: function() {
+          return '22'
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          return 'left-right'
+        },
+      },
+      '22-23': {
+        getVertice1: function() {
+          return '22'
+        },
+        getVertice2: function() {
+          return '23'
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          return 'left-right'
+        },
+      },
+      '23-24': {
+        getVertice1: function() {
+          return '24'
+        },
+        getVertice2: function() {
+          return '25'
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.activationSequenceIndex == 0) {
+            return 'left-right'
+          } else if (store.state.activationSequenceIndex == 1) {
+            return 'left-right'
+          }
+        },
+      },
+      '25-26': {
+        getVertice1: function() {
+          return '25'
+        },
+        getVertice2: function() {
+          return '26'
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          return 'left-right'
+        },
+      },
+      '26-27': {
+        getVertice1: function() {
+          if (store.state.activationSequenceIndex == 0) {
+            return '26'
+          } else if (store.state.activationSequenceIndex == 1) {
+            return '26'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.activationSequenceIndex == 0) {
+            return '27'
+          } else if (store.state.activationSequenceIndex == 1) {
+            return '27'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.activationSequenceIndex == 0) {
+            return 'left-right'
+          } else if (store.state.activationSequenceIndex == 1) {
+            return 'left-right'
+          }
+        },
       },
     },
     activationSequenceIndex: 0,
     activationSequences: [
       {
         edges: [
-          '01B-01A',
-          '01A-01F',
-          '01F-12A',
-          '12A-11F',
-          '11F-11A',
-          '11A-10F',
-          '10F-10E',
+          '11-12',
+          '12-13',
+          '13-14',
+          '14-15',
+          '15-16',
         ],
       },
       {
         edges: [
-          '00A-00C',
-          '00F-00A',
-          '00F-00E',
+          '21-22',
+          '22-23',
+          '23-24',
+          '24-25',
+          '25-26',
+          '26-27',
         ],
       }
     ],
     sensors: {
-      'pink': false,
-      'orange': false,
-      'yellow': false,
-      'green': false,
+      'white': false,
+      'red': false,
       'blue': false,
-      'purple': false,
+      'orange': false,
+      'green': false,
+      'pink': false,
     },
-    colorDefault: 'rgba(255, 255, 255, 0.3)',
-    colorActivation: 'rgba(255, 69, 00, 0.4)',
+    colorDefault: 'rgba(255, 255, 255, 0)',
+    colorActivation: 'rgba(255, 255, 255, 0.3)',
     colorValidated: 'rgba(0, 209, 182, 1)',
     activationAnimation: null,
     playable: true,
@@ -1923,12 +1397,12 @@ var store = new Vuex.Store({
       for (var i = getters.activationSequenceEdges.length - 1 ; i >= 0 ; i--) {
         var edgeId = getters.activationSequenceEdges[i]
         var edge = state.edges[edgeId]
-    
+
         if (edge.activated) {
           return edgeId
         }
       }
-    
+
       return null
     },
     nextFinalAnimationEdgeIds (state) {
@@ -2015,7 +1489,7 @@ var store = new Vuex.Store({
         state.edges[edgeId].color = white
       }
     },
-    toggleSensor (state, {activationSequenceEdges, currentActivationEdgeId, sensorId, activated}) {
+    toggleSensor (state, {currentVertice, sensorId, activated}) {
       if (!Object.keys(state.sensors).includes(sensorId)) {
         // eslint-disable-next-line
         console.error("Unknown sensor " + sensorId)
@@ -2033,17 +1507,13 @@ var store = new Vuex.Store({
       if (state.playable) {
         if (activated === true) {
           if (state.activationAnimation === null) {
-            var firstEdge = state.edges[activationSequenceEdges[0]]
-
-            if (firstEdge.activationSensorId == sensorId) {
+            if (currentVertice.activationSensorId == sensorId) {
               nextActivation()
             }
           }
         } else {
           if (state.activationAnimation) {
-            var currentEdgeId = currentActivationEdgeId
-
-            if (state.edges[currentEdgeId].activationSensorId == sensorId) {
+            if (currentVertice.activationSensorId == sensorId) {
               nextActivationSequence()
             }
           }
@@ -2065,10 +1535,9 @@ var store = new Vuex.Store({
       }
     },
     toggleSensor (context, {sensorId, activated}) {
-      var currentActivationEdgeId = context.getters.currentActivationEdgeId
-      var activationSequenceEdges = context.getters.activationSequenceEdges
+      var currentVertice = context.state.vertices[context.state.edges[context.getters.currentActivationEdgeId].getVertice2()]
 
-      context.commit('toggleSensor', {activationSequenceEdges, currentActivationEdgeId, sensorId, activated})
+      context.commit('toggleSensor', {currentVertice, sensorId, activated})
     }
   }
 })

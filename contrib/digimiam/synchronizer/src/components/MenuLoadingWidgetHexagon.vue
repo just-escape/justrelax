@@ -1,8 +1,16 @@
 <template>
   <svg :viewBox="'0 0 ' + boxWidth + ' ' + boxHeight" class="position-absolute" :style="{top: positionY, left: positionX}">
+    <defs>
+      <filter id="wh-glowing" x="-20" y="-20" width="120" height="120">
+        <feGaussianBlur result="blurOut" in="offOut" stdDeviation="20"/>
+        <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+      </filter>
+    </defs>
+
     <path
       :d="d(size)"
       :fill="getFill"
+      filter="url('#wh-glowing')"
     />
   </svg>
 </template>
@@ -12,9 +20,9 @@ export default {
   name: 'MenuLoadingWidgetHexagon',
   data: function() {
     return {
-      boxWidth: 140,
-      boxHeight: 140,
-      size: 65,
+      boxWidth: 135,
+      boxHeight: 135,
+      size: 40,
       animation: null,
       opacity: 0,
     }
