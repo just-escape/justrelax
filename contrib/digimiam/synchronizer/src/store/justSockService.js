@@ -57,7 +57,10 @@ const justSockService = new Vuex.Store({
           i18n.locale = 'en'
         }
       } else if (event.category == 'log') {
-        logStore.commit('processLog', event)
+        let logMessage = event.message
+        let level = event.level
+        let useLocale = event.use_locale
+        logStore.commit('processLog', {logMessage, level, useLocale})
       } else if (event.category == 'set_menu_cursor_position') {
         menuStore.commit('setMenuCursorPosition', event.position)
       } else if (event.category == 'force_menu_success') {

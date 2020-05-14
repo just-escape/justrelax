@@ -18,44 +18,44 @@
     <LightMonitorUnit
       class="monitor-unit"
       color="blue"
-      :on="pinkSensor"
-      :positionX="140 - 80 / 2"
-      :positionY="0 + 135 - 80 / 2"
+      :on="blueSensor"
+      :positionX="140 - 90 / 2"
+      :positionY="0 + 135 - 90 / 2"
     />
     <LightMonitorUnit
       class="monitor-unit"
       color="white"
-      :on="yellowSensor"
-      :positionX="210 - 80 / 2"
-      :positionY="40 + 135 - 80 / 2"
+      :on="whiteSensor"
+      :positionX="210 - 90 / 2"
+      :positionY="40 + 135 - 90 / 2"
     />
     <LightMonitorUnit
       class="monitor-unit"
       color="pink"
-      :on="greenSensor"
-      :positionX="210 - 80 / 2"
-      :positionY="120 + 135 - 80 / 2"
+      :on="pinkSensor"
+      :positionX="210 - 90 / 2"
+      :positionY="120 + 135 - 90 / 2"
     />
     <LightMonitorUnit
       class="monitor-unit"
       color="red"
-      :on="blueSensor"
-      :positionX="140 - 80 / 2"
-      :positionY="160 + 135 - 80 / 2"
+      :on="redSensor"
+      :positionX="140 - 90 / 2"
+      :positionY="160 + 135 - 90 / 2"
     />
     <LightMonitorUnit
       class="monitor-unit"
       color="green"
-      :on="orangeSensor"
-      :positionX="70 - 80 / 2"
-      :positionY="120 + 135 - 80 / 2"
+      :on="greenSensor"
+      :positionX="70 - 90 / 2"
+      :positionY="120 + 135 - 90 / 2"
     />
     <LightMonitorUnit
       class="monitor-unit"
       color="orange"
-      :on="true"
-      :positionX="70 - 80 / 2"
-      :positionY="40 + 135 - 80 / 2"
+      :on="orangeSensor"
+      :positionX="70 - 90 / 2"
+      :positionY="40 + 135 - 90 / 2"
     />
   </div>
 </template>
@@ -96,6 +96,6 @@ export default {
 
 <style scoped>
 .monitor-unit {
-  width: 80px;
+  width: 90px;
 }
 </style>

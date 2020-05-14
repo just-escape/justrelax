@@ -4,14 +4,14 @@
       v-for="(e, eId) in horizontalEdges" :key="e.id"
       :fill="getEdgeColor(e, eId)"
       :points="getHorizontalEdgePoints(e)"
-      :filter="getEdgeGlow(e)"
+      :style="getClipPath(e)"
     />
     <path
       v-for="(e, eId) in diagonalEdges" :key="e.id"
       :stroke="getEdgeColor(e, eId)"
       :d="getDiagonalEdgePoints(e)"
-      :filter="getEdgeGlow(e)"
       stroke-width="8"
+      :style="getClipPath(e)"
     />
   </g>
 </template>
@@ -89,13 +89,38 @@ export default {
         return edge.color
       }
     },
-    getEdgeGlow: function() {
+    getClipPath: function() {
       return function(edge) {
-        if (edge.activated || edge.finalAnimation) {
-          return 'url(#glowing-more)'
-        } else {
-          return ''
+        var leftPart = '50% 100%, 0% 100%, 0% 0%, 50% 0%'
+        var rightPart = '50% 0%, 100% 0%, 100% 100%, 50% 100%'
+
+        if (edge.getDirection() == 'left-right' || edge.getDirection() == 'right-left') {
+          if (lightStore.state.vertices[edge.getVertice1()].startingPoint || lightStore.state.transparentVertices) {
+            leftPart = '50% 100%, 22% 100%, 26% 50%, 22% 0%, 50% 0%'
+          }
+
+          if (lightStore.state.transparentVertices) {
+            rightPart = '50% 0%, 78% 0%, 74% 50%, 78% 100%, 50% 100%'
+          }
+        } else if (edge.getDirection() == 'topleft-bottomright' || edge.getDirection() == 'bottomright-topleft') {
+          if (lightStore.state.vertices[edge.getVertice1()].startingPoint || lightStore.state.transparentVertices) {
+            leftPart = '0% 100%, 0% 28%, 27.5% 26.5%, 48% 0%, 100% 0%'
+          }
+
+          if (lightStore.state.transparentVertices) {
+            rightPart = '100% 0%, 100% 73%, 72.5% 73.5%, 52% 100%, 0% 100%'
+          }
+        } else if (edge.getDirection() == 'topright-bottomleft' || edge.getDirection() == 'bottomleft-topright') {
+          if (lightStore.state.vertices[edge.getVertice1()].startingPoint || lightStore.state.transparentVertices) {
+            leftPart = '0% 0%, 0% 73.5%, 27.5% 73.5%, 50% 100%, 100% 100%'
+          }
+
+          if (lightStore.state.transparentVertices) {
+            rightPart = '100% 100%, 100% 27%, 75% 27%, 42% 0%, 0% 0%'
+          }
         }
+
+        return 'clip-path: polygon(' + leftPart + ', ' + rightPart + ')'
       }
     },
   },

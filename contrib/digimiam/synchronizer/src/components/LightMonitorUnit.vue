@@ -20,8 +20,8 @@ export default {
   name: 'LightMonitorUnit',
   data: function() {
     return {
-      boxWidth: 135,
-      boxHeight: 135,
+      boxWidth: 150,
+      boxHeight: 150,
       size: 40,
       colors: {
         pink: {

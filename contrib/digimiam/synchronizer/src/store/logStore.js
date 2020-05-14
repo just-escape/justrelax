@@ -17,19 +17,19 @@ var store = new Vuex.Store({
     },
   },
   mutations: {
-    processLog (state, log) {
+    processLog (state, {logMessage, level, useLocale}) {
       for (var i = 0 ; i < Object.keys(state).length ; i++) {
         var lang = Object.keys(state)[i]
 
         var message 
-        if (log.use_locale === true) {
-          message = i18n.t('log.' + log.message, lang)
+        if (useLocale === true) {
+          message = i18n.t('log.' + logMessage, lang)
         } else {
-          message = log.message
+          message = logMessage
         }
 
         state[lang].logs.push({
-          level: log.level,
+          level: level,
           message: message,
           displayedMessage: '',
           displayedChars: -1,
