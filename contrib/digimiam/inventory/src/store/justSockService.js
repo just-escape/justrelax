@@ -50,7 +50,10 @@ const justSockService = new Vuex.Store({
           i18n.locale = 'en'
         }
       } else if (event.category == 'log') {
-        logStore.commit('processLog', event)
+        let logMessage = event.message
+        let level = event.level
+        let useLocale = event.use_locale
+        logStore.commit('processLog', {logMessage, level, useLocale})
       }
     },
     SOCKET_RECONNECT (state, count) {
