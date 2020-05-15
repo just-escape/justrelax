@@ -4,6 +4,8 @@ import Vuex from 'vuex'
 import i18n from '@/locales.js'
 import router from '@/router.js'
 
+import lockerStore from '@/store/lockerStore.js'
+
 Vue.use(Vuex)
 
 const justSockService = new Vuex.Store({
@@ -48,6 +50,8 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
+      } else if (event.category == 'enable') {
+        lockerStore.commit('enable')
       }
     },
     SOCKET_RECONNECT (state, count) {

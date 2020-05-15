@@ -48,13 +48,15 @@ export default {
     connect() {
       lockerStore.commit('connect', this.index)
 
-      lockerStore.commit('checkPattern')
-      if (lockerStore.state.success) {
-        lockerStore.commit('setConnectorsColorTransition', 0.8)
-        lockerStore.commit('showSuccess')
-        setTimeout(lockerStore.commit, 801, 'setConnectorsColorTransition', 0)
-        setTimeout(lockerStore.commit, 1200, 'resetPattern')
-        setTimeout(lockerStore.commit, 1200, 'notifySuccess')
+      if (lockerStore.state.enableSuccess) {
+        lockerStore.commit('checkPattern')
+        if (lockerStore.state.success) {
+          lockerStore.commit('setConnectorsColorTransition', 0.8)
+          lockerStore.commit('showSuccess')
+          setTimeout(lockerStore.commit, 801, 'setConnectorsColorTransition', 0)
+          setTimeout(lockerStore.commit, 1200, 'resetPattern')
+          setTimeout(lockerStore.commit, 1200, 'notifySuccess')
+        }
       }
     },
     startPattern() {

@@ -67,8 +67,12 @@ var store = new Vuex.Store({
     ],
     success: false,
     successNotified: false,
+    enableSuccess: false,
   },
   mutations: {
+    enable(state) {
+      state.enableSuccess = true
+    },
     move(state, {x, y}) {
       state.cursorPosition.x = x
       state.cursorPosition.y = y
@@ -111,7 +115,6 @@ var store = new Vuex.Store({
       }
     },
     checkPattern(state) {
-        console.log(state.connections, state.successPattern)
       if (state.successPattern.length !== state.connections.length) {
         return
       }
