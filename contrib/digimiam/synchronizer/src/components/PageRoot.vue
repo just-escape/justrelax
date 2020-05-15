@@ -5,6 +5,7 @@
     @touchend="cursorRelease"
     @mouseup="cursorRelease"
     @mouseleave="mouseleave"
+    @touchleave="mouseleave"
     class="d-flex justify-content-center position-relative h-100"
   >
     <BackgroundLines/>
