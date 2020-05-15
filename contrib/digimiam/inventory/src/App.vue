@@ -19,9 +19,9 @@ export default {
 
 <style>
 @font-face {
-    font-family: "Code New Roman";
-    font-style: normal;
-    src: url('./assets/webfonts/code-new-roman.woff2') format('woff2');
+  font-family: "Code New Roman";
+  font-style: normal;
+  src: url('./assets/webfonts/code-new-roman.woff2') format('woff2');
 }
 
 #app {
