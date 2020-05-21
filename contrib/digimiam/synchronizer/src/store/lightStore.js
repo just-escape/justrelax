@@ -1955,10 +1955,10 @@ var store = new Vuex.Store({
         state.edges[edgeId].color = white
       }
     },
-    toggleSensor (state, {currentVertice, sensorId, activated}) {
-      if (!Object.keys(state.sensors).includes(sensorId)) {
+    toggleColor (state, {currentVertice, color, activated}) {
+      if (!Object.keys(state.sensors).includes(color)) {
         // eslint-disable-next-line
-        console.error("Unknown sensor " + sensorId)
+        console.error("Unknown color " + color)
         return
       }
 
@@ -1968,18 +1968,18 @@ var store = new Vuex.Store({
         return
       }
 
-      state.sensors[sensorId] = activated
+      state.sensors[color] = activated
 
       if (state.playable) {
         if (activated === true) {
           if (state.activationAnimation === null) {
-            if (currentVertice.activationSensorId == sensorId) {
+            if (currentVertice.activationSensorId == color) {
               nextActivation()
             }
           }
         } else {
           if (state.activationAnimation) {
-            if (currentVertice.activationSensorId == sensorId) {
+            if (currentVertice.activationSensorId == color) {
               nextActivationSequence()
             }
           }
@@ -1997,10 +1997,10 @@ var store = new Vuex.Store({
         context.commit('setEdgeColor', {edgeId, color})
       }
     },
-    toggleSensor (context, {sensorId, activated}) {
+    toggleColor (context, {color, activated}) {
       var currentVertice = context.state.vertices[context.state.edges[context.getters.currentActivationEdgeId].getVertice2()]
 
-      context.commit('toggleSensor', {currentVertice, sensorId, activated})
+      context.commit('toggleColor', {currentVertice, color, activated})
     }
   }
 })

@@ -65,10 +65,10 @@ const justSockService = new Vuex.Store({
         menuStore.commit('setMenuCursorPosition', event.position)
       } else if (event.category == 'force_menu_success') {
         menuStore.commit('forceSuccess')
-      } else if (event.category == 'sensor') {
-        let sensorId = event['sensor_id']
+      } else if (event.category == 'load_cell') {
+        let color = event['color']
         let activated = event.activated
-        lightStore.dispatch('toggleSensor', {sensorId, activated})
+        lightStore.dispatch('toggleColor', {color, activated})
       }
     },
     SOCKET_RECONNECT (state, count) {
