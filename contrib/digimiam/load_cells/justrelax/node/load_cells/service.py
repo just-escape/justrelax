@@ -1,5 +1,3 @@
-import inspect
-
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService
 from justrelax.node.helper import Serial
@@ -12,21 +10,29 @@ class LoadCells(JustSockClientService):
         self.serials = []
         self.colors = {}
         for serial_index, serial_conf in enumerate(self.node_params['serials']):
-            setattr(self, '_on_serial_{}_event'.format(serial_index), self._on_serial_x_event)
             serial = Serial(
                 self, serial_conf['port'], serial_conf['baud_rate'],
                 getattr(self, '_on_serial_{}_event'.format(serial_index)))
             self.serials.append({'serial': serial, 'conf': serial_conf})
+
             for cell_index, color in serial_conf['cells'].items():
                 if color not in self.colors:
                     self.colors[color] = {}
                 self.colors[color][(serial_index, cell_index)] = False
-            self.is_pink_activated = False
 
-    def _on_serial_x_event(self, event):
-        caller_method_name = inspect.stack()[-2][3]
-        serial_index = int(caller_method_name.replace('_on_serial_', '').replace('_event', ''))
-        self.on_serial_x_event(event, serial_index)
+        self.is_pink_activated = False
+
+    def _on_serial_0_event(self, event):
+        self.on_serial_x_event(event, 0)
+
+    def _on_serial_1_event(self, event):
+        self.on_serial_x_event(event, 1)
+
+    def _on_serial_2_event(self, event):
+        self.on_serial_x_event(event, 2)
+
+    def _on_serial_3_event(self, event):
+        self.on_serial_x_event(event, 3)
 
     def on_serial_x_event(self, event, serial_index):
         if event['c'] != 'm':
