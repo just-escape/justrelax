@@ -46,10 +46,6 @@ class HolographicMenu(EventCategoryToMethodMixin, JustSockClientService):
             raise ValueError("Video has only {} slides ({} is out of range): skipping".format(
                 len(self.player.slides), slide_index))
 
-        # Temporary
-        if chapter_id == 'error':
-            chapter_id = 'puddy_puddy'
-
         if chapter_id not in self.player.chapters:
             raise ValueError("Video has no chapter id={}: skipping".format(
                 chapter_id))
