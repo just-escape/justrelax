@@ -60,7 +60,7 @@ class LoadCells(JustSockClientService):
         if activation is not is_color_activated:
             self.send_event({'category': 'load_cell', 'color': color, 'activated': activation})
 
-        self.colors[(serial_index, cell_id)] = activation
+        self.colors[color][(serial_index, cell_id)] = activation
 
         # Pink is hardcoded. Don't hit me.
         if color in ['red', 'white']:
