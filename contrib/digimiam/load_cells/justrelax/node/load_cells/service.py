@@ -54,6 +54,8 @@ class LoadCells(JustSockClientService):
         color = self.serials[serial_index]['conf']['cells'][cell_id]
 
         activation = value > threshold
+        logger.debug("Serial={}, cell_id={}, value={}, threshold={}, activation={}".format(
+            serial_index, cell_id, value, threshold, activation))
         is_color_activated = self.is_color_activated(color)
 
         # Only notify in case of diff
