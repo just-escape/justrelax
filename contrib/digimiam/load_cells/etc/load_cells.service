@@ -1,0 +1,13 @@
+[Unit]
+Description=Load cells node daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/load_cells.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o loadcelss -c /etc/justrelax/load_cells.yaml
+
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

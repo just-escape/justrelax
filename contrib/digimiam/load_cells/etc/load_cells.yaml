@@ -1,0 +1,34 @@
+host: localhost
+port: 3031
+
+name: load_cells
+channel: digimiam1
+
+node_params:
+  serials:
+    - port: /dev/arduino1
+      baud_rate: 9600
+      threshold: 20
+      cells:
+        0: blue
+        1: blue
+    - port: /dev/arduino2
+      baud_rate: 9600
+      threshold: 20
+      cells:
+        0: white
+        1: red
+    - port: /dev/arduino3
+      baud_rate: 9600
+      threshold: 20
+      cells:
+        0: orange
+        1: white
+    - port: /dev/arduino4
+      baud_rate: 9600
+      threshold: 20
+      cells:
+        0: orange
+        1: green
+
+logging: null
