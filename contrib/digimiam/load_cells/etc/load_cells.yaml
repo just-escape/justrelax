@@ -18,18 +18,18 @@ node_params:
       threshold: 20
       cells:
         0: white
-        1: red
+        1: white
     - port: /dev/arduino3
       baud_rate: 9600
       threshold: 20
       cells:
         0: orange
-        1: white
+        1: orange
     - port: /dev/arduino4
       baud_rate: 9600
       threshold: 20
       cells:
-        0: orange
+        0: red
         1: green
 
 logging: null

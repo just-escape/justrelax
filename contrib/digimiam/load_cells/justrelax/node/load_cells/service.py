@@ -28,8 +28,6 @@ class LoadCells(JustSockClientService):
                     self.colors[color] = {}
                 self.colors[color][(serial_index, cell_index)] = False
 
-        self.is_pink_activated = False
-
     def _on_serial_0_event(self, event):
         self.on_serial_x_event(event, 0)
 
@@ -63,7 +61,7 @@ class LoadCells(JustSockClientService):
 
         activation = value > threshold
         logger.debug("Serial={}, cell_id={}, value={}, threshold={}".format(serial_index, cell_id, value, threshold))
-        is_color_activated = self.is_color_activated(color)
+        is_color_activated = any(self.colors[color].values())
 
         if activation:
             # Hide oscillations
@@ -95,22 +93,3 @@ class LoadCells(JustSockClientService):
 
         self.send_event({'category': 'load_cell', 'color': color, 'activated': activate})
         self.colors[color][key] = activate
-
-        # Pink is hardcoded. Don't hit me.
-        if color in ['red', 'white']:
-            complementary_color = 'red' if color == 'white' else 'white'
-            is_complementary_color_activated = self.is_color_activated(complementary_color)
-            pink_activation = self.is_color_activated(color) and is_complementary_color_activated
-
-            # Only notify in case of diff
-            if pink_activation is not self.is_pink_activated:
-                if pink_activation:
-                    logger.debug("Activating pink")
-                else:
-                    logger.debug("Deactivating pink")
-
-                self.send_event({'category': 'load_cell', 'color': 'pink', 'activated': activate})
-                self.is_pink_activated = activate
-
-    def is_color_activated(self, color):
-        return any(self.colors[color].values())
