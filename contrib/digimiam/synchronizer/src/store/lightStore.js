@@ -184,27 +184,27 @@ function activateEdge(edgeId) {
     },
   })
   .add({
-    duration: 3000,
+    duration: 5000,
     targets: '.gradientColor1',
     offset: '100%',
   })
   .add({
-    duration: 3000,
+    duration: 5000,
     targets: '.gradientColor2',
     offset: '110%',
-  }, '-=3000')
+  }, '-=5000')
   .add({
-    duration: 3000,
+    duration: 5000,
     update(anim) {
       var rotation = anim.progress * 360 / 100
       store.commit('setVerticeRotation', {verticeId, rotation})
     },
-  }, '-=3000')
+  }, '-=5000')
   .add({
-    duration: 2500,
+    duration: 4000,
     targets: '#glowing-transition-intensity',
     stdDeviation: "20",
-  }, '-=2500')
+  }, '-=4000')
   .add({
     duration: 1,
     targets: '.gradientColor1',

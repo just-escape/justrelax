@@ -12,7 +12,7 @@ export default {
   name: "MenuItemCursor",
   data() {
     return {
-      cursorTop: 3,
+      cursorTop: 5,
       opacity: 1,
     }
   },
@@ -28,7 +28,7 @@ export default {
     cursorPosition(newValue) {
       this.$anime({
         targets: this,
-        cursorTop: 3 + 51 * newValue,
+        cursorTop: 5 + 51 * newValue,
         duration: 1000,
         easing: 'easeOutQuint',
       })
@@ -48,17 +48,23 @@ export default {
 <style scoped>
 .cursor {
   line-height: 27px;
-  height: 17px;
-  width: 14px;
+  height: 15px;
+  width: 13px;
   background-color: #00d1f6;
-  left: 1px;
+  left: 3px;
   clip-path: polygon(
     0% 0%,
     2px 0%,
     100% calc(50% - 1px),
     100% calc(50% + 1px),
     2px 100%,
-    0% 100%
+    0% 100%,
+    0% 3px,
+    2.5px 3px,
+    2.5px calc(100% - 3px),
+    calc(100% - 3px) 50%,
+    2.5px 3px,
+    0% 3px
   );
 }
 </style>
