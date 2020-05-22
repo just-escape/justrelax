@@ -13,7 +13,7 @@ class LoadCells(JustSockClientService):
 
         self.serials = []
         self.colors = {}
-        self.color_deactivation_tasks = {'pink': callLater(self)}
+        self.color_deactivation_tasks = {}
         for serial_index, serial_conf in enumerate(self.node_params['serials']):
             serial = Serial(
                 self, serial_conf['port'], serial_conf['baud_rate'],
@@ -21,6 +21,9 @@ class LoadCells(JustSockClientService):
             self.serials.append({'serial': serial, 'conf': serial_conf})
 
             for cell_index, color in serial_conf['cells'].items():
+                if color not in self.color_deactivation_tasks:
+                    self.color_deactivation_tasks[color] = None
+
                 if color not in self.colors:
                     self.colors[color] = {}
                 self.colors[color][(serial_index, cell_index)] = False
@@ -64,12 +67,12 @@ class LoadCells(JustSockClientService):
 
         if activation:
             # Hide oscillations
-            if self.color_deactivation_tasks[color].active():
+            if self.color_deactivation_tasks[color] and self.color_deactivation_tasks[color].active():
                 logger.debug("Canceling {} deactivation".format(color))
                 self.color_deactivation_tasks[color].cancel()
         else:
             # Don't notify if a task is already planned
-            if self.color_deactivation_tasks[color].active():
+            if self.color_deactivation_tasks[color] and self.color_deactivation_tasks[color].active():
                 return
 
         # Only notify in case of diff
