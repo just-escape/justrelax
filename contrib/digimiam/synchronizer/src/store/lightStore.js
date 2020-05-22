@@ -2001,7 +2001,29 @@ var store = new Vuex.Store({
       var currentVertice = context.state.vertices[context.state.edges[context.getters.currentActivationEdgeId].getVertice2()]
 
       context.commit('toggleColor', {currentVertice, color, activated})
-    }
+
+      if (color === 'red' || color === 'white') {
+        var complementaryColor = 'red'
+        if (color === 'red') {
+          complementaryColor = 'white'
+        }
+
+        let isComplementaryColorActivated = context.state.sensors[complementaryColor]
+        let pinkActivation = activated && isComplementaryColorActivated
+
+        // Only notify in case of diff
+        if (context.state.sensors.pink !== pinkActivation) {
+          context.commit(
+            'toggleColor',
+            {
+              currentVertice: currentVertice,
+              color: 'pink',
+              activated: pinkActivation,
+            }
+          )
+        }
+      }
+    },
   }
 })
 
