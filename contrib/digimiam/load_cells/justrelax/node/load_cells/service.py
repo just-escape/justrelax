@@ -1,3 +1,5 @@
+from twisted.internet.reactor import callLater
+
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService
 from justrelax.node.helper import Serial
@@ -7,8 +9,11 @@ class LoadCells(JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(LoadCells, self).__init__(*args, **kwargs)
 
+        self.deactivation_delay = self.node_params['deactivation_delay']
+
         self.serials = []
         self.colors = {}
+        self.color_deactivation_tasks = {'pink': callLater(self)}
         for serial_index, serial_conf in enumerate(self.node_params['serials']):
             serial = Serial(
                 self, serial_conf['port'], serial_conf['baud_rate'],
@@ -54,15 +59,39 @@ class LoadCells(JustSockClientService):
         color = self.serials[serial_index]['conf']['cells'][cell_id]
 
         activation = value > threshold
-        logger.debug("Serial={}, cell_id={}, value={}, threshold={}, activation={}".format(
-            serial_index, cell_id, value, threshold, activation))
+        logger.debug("Serial={}, cell_id={}, value={}, threshold={}".format(serial_index, cell_id, value, threshold))
         is_color_activated = self.is_color_activated(color)
+
+        if activation:
+            # Hide oscillations
+            if self.color_deactivation_tasks[color].active():
+                logger.debug("Canceling {} deactivation".format(color))
+                self.color_deactivation_tasks[color].cancel()
+        else:
+            # Don't notify if a task is already planned
+            if self.color_deactivation_tasks[color].active():
+                return
 
         # Only notify in case of diff
         if activation is not is_color_activated:
-            self.send_event({'category': 'load_cell', 'color': color, 'activated': activation})
+            self.toggle(color, activation, (serial_index, cell_id))
 
-        self.colors[color][(serial_index, cell_id)] = activation
+    def toggle(self, color, activate, key):
+        if activate:
+            self._toggle(color, activate, key)
+        else:
+            logger.debug("Scheduling {} deactivation".format(color))
+            self.color_deactivation_tasks[color] = callLater(
+                self.deactivation_delay, self._toggle, color, activate, key)
+
+    def _toggle(self, color, activate, key):
+        if activate:
+            logger.debug("Activating {}".format(color))
+        else:
+            logger.debug("Deactivating {}".format(color))
+
+        self.send_event({'category': 'load_cell', 'color': color, 'activated': activate})
+        self.colors[color][key] = activate
 
         # Pink is hardcoded. Don't hit me.
         if color in ['red', 'white']:
@@ -72,8 +101,13 @@ class LoadCells(JustSockClientService):
 
             # Only notify in case of diff
             if pink_activation is not self.is_pink_activated:
-                self.send_event({'category': 'load_cell', 'color': 'pink', 'activated': pink_activation})
-                self.is_pink_activated = pink_activation
+                if pink_activation:
+                    logger.debug("Activating pink")
+                else:
+                    logger.debug("Deactivating pink")
+
+                self.send_event({'category': 'load_cell', 'color': 'pink', 'activated': activate})
+                self.is_pink_activated = activate
 
     def is_color_activated(self, color):
         return any(self.colors[color].values())
