@@ -46,17 +46,21 @@ class JustSockClientFactory(WebSocketClientFactory, ReconnectingClientFactory):
             self.protocol.send_event(event)
         except Exception as e:
             formatted_exception = "{}: {}".format(type(e).__name__, e)
-            self.protocol.send_log_error("Error while trying to send event={}: {}".format(
-                event, formatted_exception))
-            logger.error("Error while trying to send message={}".format(event))
-            logger.exception()
+            try:
+                self.protocol.send_log_error("Error while trying to send event={}: {}".format(
+                    event, formatted_exception))
+            except Exception:
+                pass
+            logger.error("Error while trying to send message={} ({})".format(event, formatted_exception))
 
     def process_event(self, event):
         try:
             self.service.process_event(event)
         except Exception as e:
             formatted_exception = "{}: {}".format(type(e).__name__, e)
-            self.protocol.send_log_error("Error while trying to process event={}: {}".format(
-                event, formatted_exception))
-            logger.error("Error while trying to process event={}".format(event))
-            logger.exception()
+            try:
+                self.protocol.send_log_error("Error while trying to process event={}: {}".format(
+                    event, formatted_exception))
+            except Exception:
+                pass
+            logger.error("Error while trying to process event={} ({})".format(event, formatted_exception))

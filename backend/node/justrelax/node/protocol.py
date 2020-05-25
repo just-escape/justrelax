@@ -1,6 +1,7 @@
 import json
 
 from twisted.protocols.basic import LineOnlyReceiver
+from twisted.internet.protocol import connectionDone
 
 from autobahn.twisted.websocket import WebSocketClientProtocol
 
@@ -138,9 +139,14 @@ class JustSockClientProtocol(WebSocketClientProtocol):
 class JSONSerialProtocol(LineOnlyReceiver):
     delimiter = b'\n'
 
-    def __init__(self, on_event_callback, on_parse_exception):
+    def __init__(self, on_event_callback, on_parse_exception, on_connection_lost=None):
         self.on_event_callback = on_event_callback
         self.on_parse_exception = on_parse_exception
+        self.on_connection_lost = on_connection_lost
+
+    def connectionLost(self, reason=connectionDone):
+        if self.on_connection_lost:
+            self.on_connection_lost(reason)
 
     def lineReceived(self, line):
         try:
