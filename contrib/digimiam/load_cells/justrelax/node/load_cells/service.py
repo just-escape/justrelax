@@ -1,95 +1,114 @@
+from gpiozero import InputDevice
+
 from twisted.internet.reactor import callLater
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService
-from justrelax.node.helper import Serial
+
+
+class Cell:
+    def __init__(self, pin, on_activation, on_deactivation):
+        self.pin = pin
+        self.device = InputDevice(pin)
+        self.last_state = False
+
+        self.on_activation = on_activation
+        self.on_deactivation = on_deactivation
+
+        callLater(0, self.check_myself)
+
+    def check_myself(self):
+        callLater(0, self.check_myself)
+
+        is_activated = bool(self.device.value)
+        if is_activated is self.last_state:
+            return
+
+        self.last_state = is_activated
+
+        if is_activated:
+            logger.info("Cell (pin={}) has been activated".format(self.pin))
+            self.on_activation()
+        else:
+            logger.info("Cell (pin={}) has been deactivated".format(self.pin))
+            self.on_deactivation()
+
+    def __bool__(self):
+        return self.last_state
+
+    def __str__(self):
+        return str(self.pin)
+
+
+class Color:
+    def __init__(self, name, deactivation_delay, on_toggle):
+        self.name = name
+        self.deactivation_delay = deactivation_delay
+        self.is_activated = False
+        self.deactivation_task = None
+        self.cells = []
+        self.on_toggle = on_toggle
+
+    def add_cell(self, pin):
+        self.cells.append(Cell(pin, self.on_cell_activation, self.on_cell_deactivation))
+
+    def on_cell_activation(self):
+        if self.is_activated:
+            logger.debug("Color {} is already activated: skipping".format(self))
+            return
+
+        # Hide oscillations
+        if self.deactivation_task and self.deactivation_task.active():
+            logger.debug("Canceling {} deactivation".format(self))
+            self.deactivation_task.cancel()
+
+        self.toggle()
+
+    def on_cell_deactivation(self):
+        if not self.is_activated:
+            logger.debug("Color {} is already deactivated: skipping".format(self))  # Should not happen often
+
+        else:
+            if all([not cell for cell in self.cells]):
+                # Don't notify if a task is already planned
+                if self.deactivation_task and self.deactivation_task.active():
+                    logger.debug("Color {} is already planned to deactivate: skipping".format(self))
+                    return
+
+                self.toggle()
+
+            else:
+                logger.debug("Color {} was activated, but some cells remain active: skipping".format(self))
+
+    def toggle(self):
+        if self.is_activated:
+            self._toggle(self.name, self.is_activated)
+        else:
+            self.deactivation_task = callLater(self.deactivation_delay, self._toggle, self.name, self.is_activated)
+
+    def _toggle(self, color, activate):
+        if activate:
+            logger.debug("Activating {}".format(self))
+        else:
+            logger.debug("Deactivating {}".format(self))
+
+        self.on_toggle(color, activate)
+
+    def __str__(self):
+        return str(self.name)
 
 
 class LoadCells(JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(LoadCells, self).__init__(*args, **kwargs)
 
-        self.deactivation_delay = self.node_params['deactivation_delay']
+        deactivation_delay = self.node_params['deactivation_delay']
 
-        self.serials = []
         self.colors = {}
-        self.color_deactivation_tasks = {}
-        for serial_index, serial_conf in enumerate(self.node_params['serials']):
-            serial = Serial(
-                self, serial_conf['port'], serial_conf['baud_rate'],
-                getattr(self, '_on_serial_{}_event'.format(serial_index)))
-            self.serials.append({'serial': serial, 'conf': serial_conf})
+        for pin, color in self.node_params['cells'].items():
+            if color not in self.colors:
+                self.colors[color] = Color(color, deactivation_delay, self.notify)
+            self.colors[color].add_cell(pin)
 
-            for cell_index, color in serial_conf['cells'].items():
-                if color not in self.color_deactivation_tasks:
-                    self.color_deactivation_tasks[color] = None
-
-                if color not in self.colors:
-                    self.colors[color] = {}
-                self.colors[color][(serial_index, cell_index)] = False
-
-    def _on_serial_0_event(self, event):
-        self.on_serial_x_event(event, 0)
-
-    def _on_serial_1_event(self, event):
-        self.on_serial_x_event(event, 1)
-
-    def _on_serial_2_event(self, event):
-        self.on_serial_x_event(event, 2)
-
-    def _on_serial_3_event(self, event):
-        self.on_serial_x_event(event, 3)
-
-    def on_serial_x_event(self, event, serial_index):
-        if event['c'] != 'm':
-            logger.warning("Unknown event {}: ignoring".format(event))
-            return
-
-        if 'i' not in event:
-            logger.warning("Event {} has no cell id: ignoring".format(event))
-            return
-
-        if 'v' not in event:
-            logger.warning("Event {} has no value: ignoring".format(event))
-            return
-
-        cell_id = event['i']
-        value = event['v']
-
-        threshold = self.serials[serial_index]['conf']['threshold']
-        color = self.serials[serial_index]['conf']['cells'][cell_id]
-
-        activation = value > threshold
-        logger.debug("Serial={}, cell_id={}, value={}, threshold={}".format(serial_index, cell_id, value, threshold))
-        is_color_activated = any(self.colors[color].values())
-
-        if activation:
-            # Hide oscillations
-            if self.color_deactivation_tasks[color] and self.color_deactivation_tasks[color].active():
-                logger.debug("Canceling {} deactivation".format(color))
-                self.color_deactivation_tasks[color].cancel()
-        else:
-            # Don't notify if a task is already planned
-            if self.color_deactivation_tasks[color] and self.color_deactivation_tasks[color].active():
-                return
-
-        # Only notify in case of diff
-        if activation is not is_color_activated:
-            self.toggle(color, activation, (serial_index, cell_id))
-
-    def toggle(self, color, activate, key):
-        if activate:
-            self._toggle(color, activate, key)
-        else:
-            logger.debug("Scheduling {} deactivation".format(color))
-            self.color_deactivation_tasks[color] = callLater(
-                self.deactivation_delay, self._toggle, color, activate, key)
-
-    def _toggle(self, color, activate, key):
-        if activate:
-            logger.debug("Activating {}".format(color))
-        else:
-            logger.debug("Deactivating {}".format(color))
-
-        self.send_event({'category': 'load_cell', 'color': color, 'activated': activate})
-        self.colors[color][key] = activate
+    def notify(self, color, activated):
+        self.send_event({'category': 'load_cell', 'color': color, 'activated': activated})

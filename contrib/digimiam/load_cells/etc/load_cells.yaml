@@ -6,30 +6,14 @@ channel: digimiam1
 
 node_params:
   deactivation_delay: 0.3
-  serials:
-    - port: /dev/arduino1
-      baud_rate: 9600
-      threshold: 20
-      cells:
-        0: blue
-        1: blue
-    - port: /dev/arduino2
-      baud_rate: 9600
-      threshold: 20
-      cells:
-        0: white
-        1: white
-    - port: /dev/arduino3
-      baud_rate: 9600
-      threshold: 20
-      cells:
-        0: orange
-        1: orange
-    - port: /dev/arduino4
-      baud_rate: 9600
-      threshold: 20
-      cells:
-        0: red
-        1: green
+  cells:
+    6: blue
+    12: blue
+    13: white
+    16: white
+    19: orange
+    20: orange
+    21: red
+    26: green
 
 logging: null

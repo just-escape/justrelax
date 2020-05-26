@@ -1,19 +1,13 @@
 #include <HX711-multi.h>
 
-#include <ArduinoJson.h>
-
-#define PROTOCOL_CATEGORY "c"
-
-#define PROTOCOL_MEASURE "m"
-#define PROTOCOL_CELL_ID "i"
-#define PROTOCOL_VALUE "v"
-
 #define HX711_CLK 2
 byte HX711_DOUT_PINS[2] = {3, 4};
 long int hx711Measures[2];
-long int lastHX711Measures[2] = {0};
 HX711MULTI hx711Scales(2, HX711_DOUT_PINS, HX711_CLK);
 
+byte OUTPUT_PINS[2] = {5, 6};
+
+#define THRESHOLD 5
 
 void hx711_tare() {
     bool isTareSuccessful = false;
@@ -30,26 +24,20 @@ void setup() {
 
     hx711_tare();
 
+    for (int i = 0 ; i < 2 ; i++) {
+        pinMode(OUTPUT_PINS[i], OUTPUT);
+    }
+
     delay(100);
-}
-
-void notifyMeasure(int cellId, long int value) {
-    StaticJsonDocument<JSON_OBJECT_SIZE(3)> event;
-
-    event[PROTOCOL_CATEGORY] = PROTOCOL_MEASURE;
-    event[PROTOCOL_CELL_ID] = cellId;
-    event[PROTOCOL_VALUE] = value;
-
-    serializeJson(event, Serial);
-    Serial.println();
 }
 
 void loop() {
     hx711Scales.read(hx711Measures);
     for (int i = 0 ; i < hx711Scales.get_count() ; i++) {
-        if (lastHX711Measures[i] != hx711Measures[i] / 40000) {
-            notifyMeasure(i, hx711Measures[i] / 40000);
-            lastHX711Measures[i] = hx711Measures[i] / 40000;
+        if (hx711Measures[i] / 40000 >= THRESHOLD) {
+            digitalWrite(OUTPUT_PINS[i], HIGH);
+        } else {
+            digitalWrite(OUTPUT_PINS[i], LOW);
         }
     }
 }
