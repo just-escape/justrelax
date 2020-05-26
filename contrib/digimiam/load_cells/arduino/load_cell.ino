@@ -20,8 +20,6 @@ void hx711_tare() {
 }
 
 void setup() {
-    Serial.begin(9600);
-
     hx711_tare();
 
     for (int i = 0 ; i < 2 ; i++) {

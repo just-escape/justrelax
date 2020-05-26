@@ -62,6 +62,7 @@ class Color:
             logger.debug("Canceling {} deactivation".format(self))
             self.deactivation_task.cancel()
 
+        self.is_activated = True
         self.toggle()
 
     def on_cell_deactivation(self):
@@ -75,6 +76,7 @@ class Color:
                     logger.debug("Color {} is already planned to deactivate: skipping".format(self))
                     return
 
+                self.is_activated = False
                 self.toggle()
 
             else:
