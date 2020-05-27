@@ -1,64 +1,67 @@
-host: localhost
+host: 172.16.3.2
 port: 3031
 
 name: holographic_menu
 channel: digimiam1
 
 node_params:
-  path: /path/to/video.mp4
+  path: /home/pi/menu.mp4
   initial_slides:
-    - puddy_puddy
-    - puddy_puddy
-    - puddy_puddy
-    - puddy_puddy
+    - error
+    - error
+    - error
+    - error
   chapters:
     - id: salade_flamande
-      start: 0
-      end: 12
+      start: 0.72
+      end: 13.24
     - id: insectosteak
-      start: 12
-      end: 9
+      start: 13.72
+      end: 22
     - id: pizzalgue
-      start: 21
-      end: 14
+      start: 22.72
+      end: 35.24
     - id: pizzaliere
-      start: 35
-      end: 11
+      start: 35.72
+      end: 48
     - id: steakfie
-      start: 46
-      end: 14
+      start: 48.72
+      end: 61
     - id: potjevleesch
-      start: 60
-      end: 11
+      start: 61.72
+      end: 73
     - id: pizzage
-      start: 71
-      end: 11
+      start: 73.72
+      end: 83.56
     - id: cambraisienne
-      start: 82
-      end: 13
+      start: 84.28
+      end: 96.56
     - id: chtite_gelee
-      start: 95
-      end: 11
+      start: 97.32
+      end: 107.6
     - id: flubber
-      start: 106
-      end: 11
+      start: 108.32
+      end: 120.6
     - id: protobulle
-      start: 117
-      end: 11
+      start: 121.32
+      end: 131.6
     - id: spider_gaufre
-      start: 128
-      end: 11
+      start: 132.32
+      end: 142.56
     - id: puddy_puddy
-      start: 139
-      end: 12
+      start: 143.24
+      end: 155.52
     - id: nano_gaufre
-      start: 151
-      end: 6
+      start: 156.24
+      end: 164.76
     - id: gaufresque
-      start: 157
-      end: 12
+      start: 165.44
+      end: 175.72
     - id: algaufre
-      start: 169
-      end: 11
+      start: 176.44
+      end: 186.72
+    - id: error
+      start: 187.44
+      end: 197.72
 
 logging: null

@@ -5,7 +5,7 @@ name: load_cells
 channel: digimiam1
 
 node_params:
-  deactivation_delay: 0.3
+  deactivation_delay: 0.2
   cells:
     6: blue
     12: blue
