@@ -2002,7 +2002,7 @@ var store = new Vuex.Store({
 
       context.commit('toggleColor', {currentVertice, color, activated})
 
-      if (color === 'red' || color === 'white') {
+      if (color === 'red' || color === 'white') {
         var complementaryColor = 'red'
         if (color === 'red') {
           complementaryColor = 'white'

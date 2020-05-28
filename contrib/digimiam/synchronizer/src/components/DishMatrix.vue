@@ -1,10 +1,6 @@
 <template>
   <div class="d-flex h-100 d-flex flex-column mx-3">
     <div class="selector-frame glowing-container position-relative w-100 h-100 mb-4">
-      <div class="alpha">{{ $t('α') }}</div>
-      <div class="omega">{{ $t('Ω') }}</div>
-      <div class="beta-minus">{{ $t('β_minus') }}</div>
-      <div class="beta-plus">{{ $t('β_plus') }}</div>
 
       <DishSelector
         v-for="(item, itemIndex) in menuItems"
@@ -12,15 +8,16 @@
         :itemIndex="itemIndex"
       />
 
-      <div v-for="(graduation, graduationIndex) in graduations" :key="graduationIndex"
-        class="graduation"
-        :style="{
-          left: graduation.left,
-          bottom: graduation.bottom,
-          width: graduation.width,
-          height: graduation.height,
-          opacity: graduationsOpacity,
-        }"
+      <DishMatrixGraduation
+        v-for="(graduation, graduationIndex) in graduations" :key="graduationIndex"
+        :dashLeft="graduation.dashLeft"
+        :dashBottom="graduation.dashBottom"
+        :dashWidth="graduation.dashWidth"
+        :dashHeight="graduation.dashHeight"
+        :icon="graduation.icon"
+        :iconFa="graduation.iconFa"
+        :iconLeft="graduation.iconLeft"
+        :iconBottom="graduation.iconBottom"
       />
 
       <div
@@ -45,6 +42,7 @@
 </template>
 
 <script>
+import DishMatrixGraduation from '@/components/DishMatrixGraduation.vue'
 import DishSelector from '@/components/DishSelector.vue'
 import menuStore from '@/store/menuStore.js'
 import difficultyStore from '@/store/difficultyStore.js'
@@ -52,6 +50,7 @@ import difficultyStore from '@/store/difficultyStore.js'
 export default {
   name: 'DishMatrix',
   components: {
+    DishMatrixGraduation,
     DishSelector,
   },
   data() {
@@ -131,48 +130,6 @@ export default {
 </script>
 
 <style scoped>
-.alpha {
-  position: absolute;
-  text-align: left;
-  left: 0;
-  bottom: calc(-20px - 2px);
-  line-height: 1;
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.omega {
-  position: absolute;
-  text-align: right;
-  right: 0;
-  bottom: calc(-20px - 2px);
-  line-height: 1;
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.beta-minus {
-  position: absolute;
-  bottom: 0;
-  left: calc(-20px - 2px);
-  writing-mode: tb-rl;
-  transform: rotate(180deg);
-  line-height: 1;
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.beta-plus {
-  position: absolute;
-  top: 0;
-  left: calc(-20px - 2px);
-  writing-mode: tb-rl;
-  transform: rotate(180deg);
-  line-height: 1;
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.65);
-}
-
 .selectable-area {
   position: absolute;
   border: 1px dotted rgba(255, 255, 255, 0.7);
@@ -191,6 +148,7 @@ export default {
 }
 
 .generator-matrix-title {
+  top: 15px;
   color: rgba(255, 255, 255, 0.65);
   background-color: rgba(00, 45, 80, 0.6);
   font-size: 20px;
@@ -235,11 +193,5 @@ export default {
     calc(10px + 1px) 1.5px
   );
   z-index: 10;
-}
-
-.graduation {
-  position: absolute;
-  background-color: #00d1b6;
-  box-shadow: 0px 1px 3px 0.01px rgba(0, 209, 182, 0.7);
 }
 </style>
