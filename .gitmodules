@@ -19,3 +19,6 @@
 [submodule "backend/proxuino/arduino/libraries/ArduinoJson"]
 	path = backend/proxuino/arduino/libraries/ArduinoJson
 	url = https://github.com/bblanchon/ArduinoJson
+[submodule "contrib/digimiam/control_panel/arduino_floppy_patterns/libraries/ArduinoJson"]
+	path = contrib/digimiam/control_panel/arduino_floppy_patterns/libraries/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson
