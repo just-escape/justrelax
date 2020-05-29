@@ -115,8 +115,8 @@ export default new Vuex.Store({
       {
         cursorLeft: 0,
         cursorTop: 0,
-        cursorWidth: 26,
-        cursorHeight: 26,
+        cursorWidth: 30,
+        cursorHeight: 30,
         selectorZIndex: 10,
         wireX2: 899,
         wireY2: 135,
@@ -126,8 +126,8 @@ export default new Vuex.Store({
       {
         cursorLeft: 200,
         cursorTop: 200,
-        cursorWidth: 26,
-        cursorHeight: 26,
+        cursorWidth: 30,
+        cursorHeight: 30,
         selectorZIndex: 10,
         wireX2: 899,
         wireY2: 186,
@@ -137,8 +137,8 @@ export default new Vuex.Store({
       {
         cursorLeft: 100,
         cursorTop: 100,
-        cursorWidth: 26,
-        cursorHeight: 26,
+        cursorWidth: 30,
+        cursorHeight: 30,
         selectorZIndex: 10,
         wireX2: 899,
         wireY2: 237,
@@ -148,8 +148,8 @@ export default new Vuex.Store({
       {
         cursorLeft: 50,
         cursorTop: 50,
-        cursorWidth: 26,
-        cursorHeight: 26,
+        cursorWidth: 30,
+        cursorHeight: 30,
         selectorZIndex: 10,
         wireX2: 899,
         wireY2: 288,

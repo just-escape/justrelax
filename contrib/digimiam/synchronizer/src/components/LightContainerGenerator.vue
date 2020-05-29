@@ -259,16 +259,6 @@ export default {
           opacity: 0.06,
         },
         {
-          x: this.backgroundHexagonsOffsetX,
-          y: this.backgroundHexagonsOffsetY,
-          opacity: 0.05,
-        },
-        {
-          x: this.backgroundHexagonsOffsetX,
-          y: 2 * Math.sqrt(3 * this.backgroundHexagonsDiameter * this.backgroundHexagonsDiameter / 16) + this.backgroundHexagonsOffsetY,
-          opacity: 0.09,
-        },
-        {
           x: 6 / 4 * this.backgroundHexagonsDiameter + this.backgroundHexagonsOffsetX,
           y: this.backgroundHexagonsOffsetY,
           opacity: 0.07,
@@ -307,16 +297,6 @@ export default {
           x: 3 / 4 * this.backgroundHexagonsDiameter + this.backgroundHexagonsOffsetX,
           y: 7 * Math.sqrt(3 * this.backgroundHexagonsDiameter * this.backgroundHexagonsDiameter / 16) + this.backgroundHexagonsOffsetY,
           opacity: 0.1,
-        },
-        {
-          x: 0 / 4 * this.backgroundHexagonsDiameter + this.backgroundHexagonsOffsetX,
-          y: 6 * Math.sqrt(3 * this.backgroundHexagonsDiameter * this.backgroundHexagonsDiameter / 16) + this.backgroundHexagonsOffsetY,
-          opacity: 0.04,
-        },
-        {
-          x: 0 / 4 * this.backgroundHexagonsDiameter + this.backgroundHexagonsOffsetX,
-          y: 4 * Math.sqrt(3 * this.backgroundHexagonsDiameter * this.backgroundHexagonsDiameter / 16) + this.backgroundHexagonsOffsetY,
-          opacity: 0.065,
         },
       ]
     },

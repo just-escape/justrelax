@@ -30,27 +30,16 @@ const ACTIVATION_SEQUENCE_NORMAL_1 = [
 
 const ACTIVATION_SEQUENCE_HARD_1 = [
   '61-62',
-  '62-72',
-  '72-73',
-  '73-74',
-  '74-65',
-  '65-64',
-  '64-54',
-  '54-55',
-  '55-45',
-  '45-44',
-  '44-53',
-  '53-63',
-  '63-52',
-  '52-43',
-  '43-32',
-  '32-33',
-  '33-24',
-  '24-34',
-  '34-35',
-  '35-46',
-  '46-36',
+  '62-63',
+  '63-64',
+  '64-65',
+  '65-66',
+  '66-67',
 ]
+
+function setPlayable() {
+  store.commit('setPlayable')
+}
 
 function verticesToTurquoise(verticeIds) {
   store.commit('setVerticesTransparent')
@@ -81,6 +70,12 @@ function verticesToTurquoise(verticeIds) {
           store.commit('setVerticeRGBA', {verticeId, r, g, b, a})
         }
       }
+
+      var colorValidatedR = 255 - 255 * anim.progress / 100
+      var colorValidatedG = 255 - (255 - 209) * anim.progress / 100
+      var colorValidatedB = 255 - (255 - 182) * anim.progress / 100
+      var colorValidatedA = 1 - 0.6 * anim.progress / 100
+      store.state.colorValidated = 'rgba(' + colorValidatedR + ', ' + colorValidatedG + ', ' + colorValidatedB + ', ' + colorValidatedA + ')'
     }
   })
 }
@@ -112,22 +107,12 @@ function activateEdgesForFinalAnimation(edgeIds) {
   .add({
     duration: 2000,
     targets: '.gradientColor1',
-    offset: '100%',
+    offset: '75%',
   })
   .add({
     duration: 2000,
     targets: '.gradientColor2',
-    offset: '110%',
-  }, '-=2000')
-  .add({
-    duration: 2000,
-    update(anim) {
-      var rotation = anim.progress * 360 / 100
-      for (var i = 0 ; i < edgeIds.length ; i++) {
-        var verticeId = store.state.edges[edgeIds[i]].getVertice2()
-        store.commit('setVerticeRotation', {verticeId, rotation})
-      }
-    },
+    offset: '85%',
   }, '-=2000')
   .add({
     duration: 1500,
@@ -175,36 +160,31 @@ function activateEdge(edgeId) {
       store.commit('activateEdge', edgeId)
       var glow = 'glowing-transition'
       store.commit('setVerticeGlow', {verticeId, glow})
+      store.commit('startVerticePulse', verticeId)
     },
     complete: function() {
       store.commit('validateEdge', edgeId)
       var glow = 'glowing-more'
       store.commit('setVerticeGlow', {verticeId, glow})
+      store.commit('stopVerticePulse', verticeId)
       nextActivation()
     },
   })
   .add({
     duration: 5000,
     targets: '.gradientColor1',
-    offset: '100%',
+    offset: '75%',
   })
   .add({
     duration: 5000,
     targets: '.gradientColor2',
-    offset: '110%',
+    offset: '85%',
   }, '-=5000')
   .add({
     duration: 5000,
-    update(anim) {
-      var rotation = anim.progress * 360 / 100
-      store.commit('setVerticeRotation', {verticeId, rotation})
-    },
-  }, '-=5000')
-  .add({
-    duration: 4000,
     targets: '#glowing-transition-intensity',
     stdDeviation: "20",
-  }, '-=4000')
+  }, '-=5000')
   .add({
     duration: 1,
     targets: '.gradientColor1',
@@ -235,52 +215,31 @@ function nextActivation() {
     if (store.state.sensors[store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId] === true) {
       activateEdge(edgeId)
     } else {
-      nextActivationSequence()
+      if (store.state.edges[store.state.currentActivationSequence[1]] == edgeId) {
+        gameOver(newActivationSequence)
+      } else {
+        gameOver(setPlayable)
+      }
     }
   }
 }
 
 function confirmationAnimation() {
-  var i = 0
-  var verticeIds = []
+  var timeout = 500
 
-  for (i = 0 ; i < store.state.currentActivationSequence.length ; i++) {
-    var v1 = store.state.edges[store.state.currentActivationSequence[i]].getVertice1()
-    if (!verticeIds.includes(v1)) {
-      verticeIds.push(v1)
-    }
-
-    var v2 = store.state.edges[store.state.currentActivationSequence[i]].getVertice2()
-    if (!verticeIds.includes(v2)) {
-      verticeIds.push(v2)
-    }
+  for (var i = 0 ; i < store.state.currentActivationSequence.length ; i++) {
+    var verticeId = store.state.edges[store.state.currentActivationSequence[i]].getVertice2()
+    setTimeout(store.commit, timeout, 'startVerticePulse', verticeId)
+    setTimeout(store.commit, timeout + 300, 'stopVerticePulse', verticeId)
+    timeout += 400
   }
 
-  var rotationAnimation = {
-    duration: 1200,
-    easing: 'linear',
-    update(anim) {
-      var rotation = anim.progress * 180 / 100
-      for (i = 0 ; i < verticeIds.length ; i++) {
-        var verticeId = verticeIds[i]
-        store.commit('setVerticeRotation', {verticeId, rotation})
-      }
-    },
-  }
-
-  Vue.prototype.$anime.timeline({
-    complete: function() {
-      setTimeout(propagateFinalAnimation, 750)
-    }
-  })
-  .add(rotationAnimation, '+=250')
-  .add(rotationAnimation, '+=500')
+  timeout += 400
+  setTimeout(propagateFinalAnimation, timeout)
 }
 
-function _deactivateEdge(edgeId) {
+function _deactivateEdge(edgeId, callback) {
   var verticeId = store.state.edges[edgeId].getVertice2()
-
-  var rotationReference = store.state.vertices[verticeId].rotation
 
   Vue.prototype.$anime.timeline({
     easing: 'linear',
@@ -293,7 +252,7 @@ function _deactivateEdge(edgeId) {
       store.commit('deactivateEdge', edgeId)
       var glow = 'glowing'
       store.commit('setVerticeGlow', {verticeId, glow})
-      nextDeactivation()
+      nextDeactivation(callback)
     },
   })
   .add({
@@ -308,19 +267,12 @@ function _deactivateEdge(edgeId) {
   }, '-=1000')
   .add({
     duration: 1000,
-    update(anim) {
-      var rotation = rotationReference - (rotationReference * anim.progress / 100)
-      store.commit('setVerticeRotation', {verticeId, rotation})
-    },
-  }, '-=1000')
-  .add({
-    duration: 1000,
     targets: '#glowing-transition-intensity',
     stdDeviation: "2",
   }, '-=1000')
 }
 
-function deactivateEdge(edgeId) {
+function deactivateEdge(edgeId, callback) {
   /* If the deactivation sequence happens after an edge has been validated
    * and because conditions are not met to activate the next one, some
    * values have already been reset, so we need to preset them. Otherwise,
@@ -329,18 +281,18 @@ function deactivateEdge(edgeId) {
   if (store.state.edges[edgeId].validated) {
     Vue.prototype.$anime.timeline({
       complete: function() {
-        _deactivateEdge(edgeId)
+        _deactivateEdge(edgeId, callback)
       }
     })
     .add({
       duration: 1,
       targets: '.gradientColor1',
-      offset: '100%',
+      offset: '75%',
     })
     .add({
       duration: 1,
       targets: '.gradientColor2',
-      offset: '110%',
+      offset: '85%',
     }, '-=1')
     .add({
       duration: 1,
@@ -348,20 +300,17 @@ function deactivateEdge(edgeId) {
       stdDeviation: "20",
     }, '-=1')
   } else {
-    _deactivateEdge(edgeId)
+    _deactivateEdge(edgeId, callback)
   }
 }
 
-function nextDeactivation() {
+function nextDeactivation(callback) {
   var edgeId = store.getters.currentDeactivationEdgeId
 
   if (edgeId === null) {
-    store.commit('resetActivationSequenceEdgesColor')
-
-    store.commit('loadNextActivationSequence')
-    newActivationSequence()
+    callback()
   } else {
-    deactivateEdge(edgeId)
+    deactivateEdge(edgeId, callback)
   }
 }
 
@@ -381,12 +330,12 @@ function newActivationPathEdge(i, edgeId) {
   .add({
     duration: 350,
     targets: '.gradientColor1',
-    offset: '100%',
+    offset: '75%',
   })
   .add({
     duration: 350,
     targets: '.gradientColor2',
-    offset: '110%',
+    offset: '85%',
   }, '-=350')
   .add({
     duration: 1,
@@ -414,13 +363,16 @@ function newActivationPath() {
 }
 
 function newActivationSequence() {
+  store.commit('resetActivationSequenceEdgesColor')
+
+  store.commit('loadNextActivationSequence')
   newActivationPath()
 }
 
-function nextActivationSequence() {
+function gameOver(callback) {
   store.commit('setUnplayable')
 
-  nextDeactivation()
+  nextDeactivation(callback)
 }
 
 var store = new Vuex.Store({
@@ -429,7 +381,6 @@ var store = new Vuex.Store({
       '11': {
         x: 8 / 4 * 120 - 37.5,
         y: 0 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 209,
@@ -445,11 +396,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: null,
         startingPoint: true,
+        pulse: false,
       },
       '12': {
         x: 10 / 4 * 120 - 37.5,
         y: 0 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -465,11 +416,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '13': {
         x: 12 / 4 * 120 - 37.5,
         y: 0 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 253,
           g: 126,
@@ -485,11 +436,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'orange',
         startingPoint: false,
+        pulse: false,
       },
       '14': {
         x: 14 / 4 * 120 - 37.5,
         y: 0 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 255,
           g: 255,
@@ -505,11 +456,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'white',
         startingPoint: false,
+        pulse: false,
       },
       '15': {
         x: 16 / 4 * 120 - 37.5,
         y: 0 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 253,
           g: 126,
@@ -525,11 +476,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'orange',
         startingPoint: false,
+        pulse: false,
       },
       '16': {
         x: 18 / 4 * 120 - 37.5,
         y: 0 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -545,11 +496,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '21': {
         x: 7 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 209,
@@ -565,11 +516,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: null,
         startingPoint: true,
+        pulse: false,
       },
       '22': {
         x: 9 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 253,
           g: 126,
@@ -585,11 +536,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'orange',
         startingPoint: false,
+        pulse: false,
       },
       '23': {
         x: 11 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 40,
           g: 167,
@@ -605,11 +556,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'green',
         startingPoint: false,
+        pulse: false,
       },
       '24': {
         x: 13 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 220,
           g: 53,
@@ -625,11 +576,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'red',
         startingPoint: false,
+        pulse: false,
       },
       '25': {
         x: 15 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -645,11 +596,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '26': {
         x: 17 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 255,
           g: 255,
@@ -665,11 +616,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'white',
         startingPoint: false,
+        pulse: false,
       },
       '27': {
         x: 19 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 253,
           g: 126,
@@ -685,11 +636,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'orange',
         startingPoint: false,
+        pulse: false,
       },
       '31': {
         x: 8 / 4 * 120 - 37.5,
         y: 2 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 209,
@@ -705,11 +656,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: null,
         startingPoint: true,
+        pulse: false,
       },
       '32': {
         x: 10 / 4 * 120 - 37.5,
         y: 2 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 255,
           g: 255,
@@ -725,11 +676,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'white',
         startingPoint: false,
+        pulse: false,
       },
       '33': {
         x: 12 / 4 * 120 - 37.5,
         y: 2 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -745,11 +696,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '34': {
         x: 14 / 4 * 120 - 37.5,
         y: 2 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 255,
           g: 255,
@@ -765,11 +716,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'white',
         startingPoint: false,
+        pulse: false,
       },
       '35': {
         x: 16 / 4 * 120 - 37.5,
         y: 2 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 232,
           g: 62,
@@ -785,11 +736,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'pink',
         startingPoint: false,
+        pulse: false,
       },
       '36': {
         x: 18 / 4 * 120 - 37.5,
         y: 2 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -805,11 +756,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '41': {
         x: 7 / 4 * 120 - 37.5,
         y: 3 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 209,
@@ -825,11 +776,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: null,
         startingPoint: true,
+        pulse: false,
       },
       '42': {
         x: 9 / 4 * 120 - 37.5,
         y: 3 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -845,11 +796,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '43': {
         x: 11 / 4 * 120 - 37.5,
         y: 3 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 40,
           g: 167,
@@ -865,11 +816,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'green',
         startingPoint: false,
+        pulse: false,
       },
       '44': {
         x: 13 / 4 * 120 - 37.5,
         y: 3 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 253,
           g: 126,
@@ -885,11 +836,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'orange',
         startingPoint: false,
+        pulse: false,
       },
       '45': {
         x: 15 / 4 * 120 - 37.5,
         y: 3 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -905,11 +856,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '46': {
         x: 17 / 4 * 120 - 37.5,
         y: 3 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 253,
           g: 126,
@@ -925,11 +876,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'orange',
         startingPoint: false,
+        pulse: false,
       },
       '47': {
         x: 19 / 4 * 120 - 37.5,
         y: 3 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 232,
           g: 62,
@@ -945,11 +896,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'pink',
         startingPoint: false,
+        pulse: false,
       },
       '51': {
         x: 8 / 4 * 120 - 37.5,
         y: 4 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 209,
@@ -965,11 +916,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: null,
         startingPoint: true,
+        pulse: false,
       },
       '52': {
         x: 10 / 4 * 120 - 37.5,
         y: 4 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 253,
           g: 126,
@@ -985,11 +936,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'orange',
         startingPoint: false,
+        pulse: false,
       },
       '53': {
         x: 12 / 4 * 120 - 37.5,
         y: 4 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 255,
           g: 255,
@@ -1005,11 +956,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'white',
         startingPoint: false,
+        pulse: false,
       },
       '54': {
         x: 14 / 4 * 120 - 37.5,
         y: 4 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 40,
           g: 167,
@@ -1025,11 +976,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'green',
         startingPoint: false,
+        pulse: false,
       },
       '55': {
         x: 16 / 4 * 120 - 37.5,
         y: 4 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 255,
           g: 255,
@@ -1045,11 +996,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'white',
         startingPoint: false,
+        pulse: false,
       },
       '56': {
         x: 18 / 4 * 120 - 37.5,
         y: 4 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -1065,11 +1016,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '61': {
         x: 7 / 4 * 120 - 37.5,
         y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 209,
@@ -1085,11 +1036,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: null,
         startingPoint: true,
+        pulse: false,
       },
       '62': {
         x: 9 / 4 * 120 - 37.5,
         y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -1105,11 +1056,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '63': {
         x: 11 / 4 * 120 - 37.5,
         y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 220,
           g: 53,
@@ -1125,11 +1076,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'red',
         startingPoint: false,
+        pulse: false,
       },
       '64': {
         x: 13 / 4 * 120 - 37.5,
         y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 0,
           g: 123,
@@ -1145,11 +1096,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'blue',
         startingPoint: false,
+        pulse: false,
       },
       '65': {
         x: 15 / 4 * 120 - 37.5,
         y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 253,
           g: 126,
@@ -1165,11 +1116,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'orange',
         startingPoint: false,
+        pulse: false,
       },
       '66': {
         x: 17 / 4 * 120 - 37.5,
         y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 220,
           g: 53,
@@ -1185,11 +1136,11 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'red',
         startingPoint: false,
+        pulse: false,
       },
       '67': {
         x: 19 / 4 * 120 - 37.5,
         y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
         color: {
           r: 255,
           g: 255,
@@ -1205,126 +1156,7 @@ var store = new Vuex.Store({
         glowing: 'glowing',
         activationSensorId: 'white',
         startingPoint: false,
-      },
-      '71': {
-        x: 8 / 4 * 120 - 37.5,
-        y: 6 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
-        color: {
-          r: 0,
-          g: 209,
-          b: 182,
-          a: 0.7,
-        },
-        initColor: {
-          r: 0,
-          g: 209,
-          b: 182,
-          a: 0.7,
-        },
-        glowing: 'glowing',
-        activationSensorId: null,
-        startingPoint: true,
-      },
-      '72': {
-        x: 10 / 4 * 120 - 37.5,
-        y: 6 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'white',
-        startingPoint: false,
-      },
-      '73': {
-        x: 12 / 4 * 120 - 37.5,
-        y: 6 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
-        color: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        initColor: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'orange',
-        startingPoint: false,
-      },
-      '74': {
-        x: 14 / 4 * 120 - 37.5,
-        y: 6 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
-        color: {
-          r: 232,
-          g: 62,
-          b: 140,
-          a: 1,
-        },
-        initColor: {
-          r: 232,
-          g: 62,
-          b: 140,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'pink',
-        startingPoint: false,
-      },
-      '75': {
-        x: 16 / 4 * 120 - 37.5,
-        y: 6 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
-        color: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'blue',
-        startingPoint: false,
-      },
-      '76': {
-        x: 18 / 4 * 120 - 37.5,
-        y: 6 / 2 * 60 * Math.sqrt(3) + 23,
-        rotation: 0,
-        color: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        initColor: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'orange',
-        startingPoint: false,
+        pulse: false,
       },
     },
     edges: {
@@ -1620,28 +1452,12 @@ var store = new Vuex.Store({
           return 'left-right'
         },
       },
-      '62-72': {
+      '62-63': {
         getVertice1: function() {
           return '62'
         },
         getVertice2: function() {
-          return '72'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'topleft-bottomright'
-        },
-      },
-      '72-73': {
-        getVertice1: function() {
-          return '72'
-        },
-        getVertice2: function() {
-          return '73'
+          return '63'
         },
         color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
@@ -1652,41 +1468,9 @@ var store = new Vuex.Store({
           return 'left-right'
         },
       },
-      '73-74': {
+      '63-64': {
         getVertice1: function() {
-          return '73'
-        },
-        getVertice2: function() {
-          return '74'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '74-65': {
-        getVertice1: function() {
-          return '74'
-        },
-        getVertice2: function() {
-          return '65'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomleft-topright'
-        },
-      },
-      '65-64': {
-        getVertice1: function() {
-          return '65'
+          return '63'
         },
         getVertice2: function() {
           return '64'
@@ -1697,31 +1481,15 @@ var store = new Vuex.Store({
         validated: false,
         finalAnimation: false,
         getDirection: function() {
-          return 'right-left'
+          return 'left-right'
         },
       },
-      '64-54': {
+      '64-65': {
         getVertice1: function() {
           return '64'
         },
         getVertice2: function() {
-          return '54'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomleft-topright'
-        },
-      },
-      '54-55': {
-        getVertice1: function() {
-          return '54'
-        },
-        getVertice2: function() {
-          return '55'
+          return '65'
         },
         color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
@@ -1732,12 +1500,12 @@ var store = new Vuex.Store({
           return 'left-right'
         },
       },
-      '55-45': {
+      '65-66': {
         getVertice1: function() {
-          return '55'
+          return '65'
         },
         getVertice2: function() {
-          return '45'
+          return '66'
         },
         color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
@@ -1745,15 +1513,15 @@ var store = new Vuex.Store({
         validated: false,
         finalAnimation: false,
         getDirection: function() {
-          return 'bottomright-topleft'
+          return 'left-right'
         },
       },
-      '45-44': {
+      '66-67': {
         getVertice1: function() {
-          return '45'
+          return '66'
         },
         getVertice2: function() {
-          return '44'
+          return '67'
         },
         color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
@@ -1761,55 +1529,7 @@ var store = new Vuex.Store({
         validated: false,
         finalAnimation: false,
         getDirection: function() {
-          return 'right-left'
-        },
-      },
-      '44-53': {
-        getVertice1: function() {
-          return '44'
-        },
-        getVertice2: function() {
-          return '53'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'topright-bottomleft'
-        },
-      },
-      '53-63': {
-        getVertice1: function() {
-          return '53'
-        },
-        getVertice2: function() {
-          return '63'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'topright-bottomleft'
-        },
-      },
-      '63-52': {
-        getVertice1: function() {
-          return '63'
-        },
-        getVertice2: function() {
-          return '52'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomright-topleft'
+          return 'left-right'
         },
       },
     },
@@ -1834,8 +1554,8 @@ var store = new Vuex.Store({
     },
     currentActivationSequence: [],
     colorDefault: 'rgba(255, 255, 255, 0)',
-    colorActivation: 'rgba(255, 255, 255, 0.3)',
-    colorValidated: 'rgba(0, 209, 182, 0.6)',
+    colorActivation: 'rgba(255, 255, 255, 0.4)',
+    colorValidated: 'rgba(255, 255, 255, 1)',
     activationAnimation: null,
     playable: true,
     transparentVertices: false,
@@ -1896,6 +1616,11 @@ var store = new Vuex.Store({
     },
     setUnplayable (state) {
       state.playable = false
+
+      for (let [verticeId, vertice] of Object.entries(state.vertices)) {
+        vertice.pulse = false
+      }
+
       if (store.state.activationAnimation !== null) {
         store.state.activationAnimation.pause()
         store.state.activationAnimation = null
@@ -1925,8 +1650,17 @@ var store = new Vuex.Store({
     setActivationAnimation (state, activationAnimation) {
       state.activationAnimation = activationAnimation
     },
-    setVerticeRotation (state, {verticeId, rotation}) {
-      state.vertices[verticeId].rotation = rotation
+    setVerticePulseScale (state, {verticeId, pulseIndex, scale}) {
+      state.vertices[verticeId].pulses[pulseIndex].scale = scale
+    },
+    setVerticePulseOpacity (state, {verticeId, pulseIndex, opacity}) {
+      state.vertices[verticeId].pulses[pulseIndex].opacity = opacity
+    },
+    startVerticePulse (state, verticeId) {
+      state.vertices[verticeId].pulse = true
+    },
+    stopVerticePulse (state, verticeId) {
+      state.vertices[verticeId].pulse = false
     },
     setVerticeGlow (state, {verticeId, glow}) {
       state.vertices[verticeId].glowing = glow
@@ -1980,7 +1714,11 @@ var store = new Vuex.Store({
         } else {
           if (state.activationAnimation) {
             if (currentVertice.activationSensorId == color) {
-              nextActivationSequence()
+              if (state.edges[state.currentActivationSequence[0]].validated) {
+                gameOver(newActivationSequence)
+              } else {
+                gameOver(setPlayable)
+              }
             }
           }
         }
