@@ -212,7 +212,7 @@ function nextActivation() {
     store.commit('setUnplayable')
     confirmationAnimation()
   } else {
-    if (store.state.sensors[store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId] === true) {
+    if (store.state.activatedSensors.slice(0, 3).includes(store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId)) {
       activateEdge(edgeId)
     } else {
       if (store.state.edges[store.state.currentActivationSequence[1]] == edgeId) {
@@ -1544,14 +1544,7 @@ var store = new Vuex.Store({
         ACTIVATION_SEQUENCE_HARD_1,
       ],
     },
-    sensors: {
-      'white': false,
-      'red': false,
-      'blue': false,
-      'orange': false,
-      'green': false,
-      'pink': false,
-    },
+    activatedSensors: [],
     currentActivationSequence: [],
     colorDefault: 'rgba(255, 255, 255, 0)',
     colorActivation: 'rgba(255, 255, 255, 0.4)',
@@ -1617,7 +1610,7 @@ var store = new Vuex.Store({
     setUnplayable (state) {
       state.playable = false
 
-      for (let [verticeId, vertice] of Object.entries(state.vertices)) {
+      for (let [, vertice] of Object.entries(state.vertices)) {
         vertice.pulse = false
       }
 
@@ -1690,19 +1683,17 @@ var store = new Vuex.Store({
       }
     },
     toggleColor (state, {currentVertice, color, activated}) {
-      if (!Object.keys(state.sensors).includes(color)) {
-        // eslint-disable-next-line
-        console.error("Unknown color " + color)
-        return
+      if (activated === true) {
+        if (!state.activatedSensors.includes(color)) {
+          state.activatedSensors.push(color)
+        }
+      } else {
+        state.activatedSensors = state.activatedSensors.filter(
+          function(ele) {
+            return ele != color
+          }
+        )
       }
-
-      if (activated !== true && activated !== false) {
-        // eslint-disable-next-line
-        console.error("Activated must be true or false (received '" + activated + "')")
-        return
-      }
-
-      state.sensors[color] = activated
 
       if (state.playable) {
         if (activated === true) {
@@ -1746,11 +1737,11 @@ var store = new Vuex.Store({
           complementaryColor = 'white'
         }
 
-        let isComplementaryColorActivated = context.state.sensors[complementaryColor]
+        let isComplementaryColorActivated = context.state.activatedSensors.slice(0, 3).includes(complementaryColor)
         let pinkActivation = activated && isComplementaryColorActivated
 
         // Only notify in case of diff
-        if (context.state.sensors.pink !== pinkActivation) {
+        if (context.state.activatedSensors.includes('pink') !== pinkActivation) {
           context.commit(
             'toggleColor',
             {
