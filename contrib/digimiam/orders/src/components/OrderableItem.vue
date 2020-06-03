@@ -1,6 +1,6 @@
 <template>
   <div
-    class="item media justify-content-end align-items-center w-100"
+    class="position-relative item media justify-content-end align-items-center w-100"
     :style="'transform: translateX(' + translate + '%)'"
   >
     <div class="media-body text-right">
@@ -12,26 +12,34 @@
       </div>
       <div class="d-flex flex-row justify-content-end align-items-center">
         <div class="size-11 glowing-text pr-3">10 nF</div>
-        <OrderItemButton @mousedown="$emit('orderMe')" :disabled="!orderable" class="size-11"/>
+        <OrderItemButton @mousedown="$emit('orderMe')" :clickable="!orderable || isRestaurantClosed" :gray="isRestaurantClosed" class="size-11"/>
       </div>
     </div>
     <img src="@/assets/gaufresque.png" :width="height + 'px'" class="img-fluid"/>
+
+    <WarningClosed size="small" v-if="isRestaurantClosed"/>
   </div>
 </template>
 
 <script>
 import OrderItemButton from '@/components/OrderItemButton.vue'
+import WarningClosed from '@/components/WarningClosed.vue'
 import orderStore from '@/store/orderStore.js'
+import progressionStore from '@/store/progressionStore.js'
 
 export default {
   name: "OrderableItem",
   components: {
     OrderItemButton,
+    WarningClosed,
   },
   computed: {
     quantity: function() {
       return orderStore.state.items[this.itemId].quantity
-    }
+    },
+    isRestaurantClosed: function() {
+      return progressionStore.state.isRestaurantClosed
+    },
   },
   props: ["itemId", "height", "translate", "orderable"],
 }

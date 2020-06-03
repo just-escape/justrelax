@@ -1,8 +1,8 @@
 <template>
   <b-btn
     @mousedown="mousedown"
-    variant="info rounded-circle"
-    :disabled="disabled"
+    :variant="variant"
+    :disabled="clickable"
     :style="{transform: 'scale(' + scale + ')'}"
   >
     <div><i class="fas fa-plus"></i></div>
@@ -15,6 +15,18 @@ export default {
   data() {
     return {
       scale: 1,
+    }
+  },
+  computed: {
+    variant() {
+      var ret = ""
+      if (this.gray) {
+        ret += "secondary"
+      } else {
+        ret += "info"
+      }
+      ret += " rounded-circle"
+      return ret
     }
   },
   methods: {
@@ -33,15 +45,25 @@ export default {
       })
     },
   },
-  props: ["disabled"]
+  props: {
+    clickable: Boolean,
+    gray: Boolean,
+  }
 }
 </script>
 
 <style scoped>
 button {
   opacity: 0.75;
-  filter: drop-shadow(0px 0px 4px rgba(23, 162, 184, 0.75));
   box-shadow: none !important;
+}
+
+.btn-info {
+  filter: drop-shadow(0px 0px 4px rgba(23, 162, 184, 0.75));
+}
+
+.btn-secondary {
+  filter: drop-shadow(0px 0px 4px rgba(108, 117, 125, 0.75));
 }
 
 button:disabled {

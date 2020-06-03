@@ -5,7 +5,7 @@ import i18n from '@/locales.js'
 import router from '@/router.js'
 
 import videoStore from '@/store/videoStore.js'
-import documentationStore from '@/store/documentationStore.js'
+import progressionStore from '@/store/progressionStore.js'
 
 Vue.use(Vuex)
 
@@ -56,9 +56,11 @@ const justSockService = new Vuex.Store({
         let videoId = event.video_id
         videoStore.commit('setOverlayVideoId', videoId)
       } else if (event.category === 'set_ventilation_panel_round') {
-        documentationStore.commit('setRound', event.round)
+        progressionStore.commit('setRound', event.round)
       } else if (event.category === 'set_documentation_visibility') {
-        documentationStore.commit('setDocumentationVisibility', event.show)
+        progressionStore.commit('setDocumentationVisibility', event.show)
+      } else if (event.category === 'set_restaurant_status') {
+        progressionStore.commit('setRestaurantStatus', event.closed)
       }
     },
     SOCKET_RECONNECT (state, count) {

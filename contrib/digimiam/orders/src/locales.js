@@ -38,6 +38,7 @@ const locales = {
     sequence_code: 'Sequence code:',
     documentation_generated: 'Documentation generated on June 2 2053',
     terminal_label: 'root@digimiam : bash++ Terminal',
+    closed: 'CLOSED',
   },
   fr: {
     salade_flamande: 'Salade flamande',
@@ -73,6 +74,7 @@ const locales = {
     sequence_code: 'Code séquence :',
     documentation_generated: 'Documentation générée le 2 juin 2053',
     terminal_label: 'root@digimiam : bash++ Terminal',
+    closed: 'FERMÉ',
   }
 }
 

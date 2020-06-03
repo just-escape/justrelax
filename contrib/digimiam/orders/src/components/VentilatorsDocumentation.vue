@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import documentationStore from '@/store/documentationStore.js'
+import progressionStore from '@/store/progressionStore.js'
 
 export default {
   name: "VentilatorsDocumentation",
@@ -230,7 +230,7 @@ export default {
   },
   computed: {
     terminalTop() {
-      if (documentationStore.state.showDocumentation) {
+      if (progressionStore.state.showDocumentation) {
         return "-1px"
       } else {
         return "-100%"
@@ -245,7 +245,7 @@ export default {
       return this.colorInstructions[this.$i18n.locale]
     },
     puzzleRound() {
-      return documentationStore.state.round
+      return progressionStore.state.round
     },
   },
   methods: {
