@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative h-100">
+  <div class="position-relative overflow-hidden h-100">
     <Scene class="position-absolute"/>
     <ItemSelector class="position-absolute"/>
     <OrderSummary class="position-absolute order-summary"/>

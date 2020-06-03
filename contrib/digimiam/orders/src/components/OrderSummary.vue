@@ -1,24 +1,39 @@
 <template>
-  <div class="position-relative d-flex flex-column flex-grow-1 rounded overflow-hidden">
-    <div class="p-4">
+  <div class="position-relative d-flex flex-column flex-grow-1">
+    <WarningWindow class="position-absolute"/>
+
+    <div class="overflow-hidden p-4">
       <div class="d-flex flex-row justify-content-end align-items-end mb-2 px-2">
-        <div class="text-orange text-right pr-3">
-          <div class="font-weight-bold">Cart is full</div>
-          <div class="small">Confirm or reset your order</div>
+        <div class="text-orange text-right pr-3" :class="{'d-none': !isCartFull}">
+          <div class="font-weight-bold"> {{ $t('cart_full') }}</div>
+          <div class="small">{{ $t('confirm_or_reset_order') }}</div>
         </div>
         <div class="w-50">
-          <b-btn block variant="outline-info py-2" @click="trashbin">RESET ORDER</b-btn>
+          <b-btn
+            block
+            :variant="isRestaurantClosed ? 'outline-secondary' : 'outline-info'"
+            class="py-2"
+            @click="reset"
+          >
+            {{ $t('reset_order') }}
+          </b-btn>
         </div>
       </div>
 
       <div class="d-flex flex-row justify-content-end align-items-center mb-4 px-2">
         <div class="text-white pr-3">
           <div class="d-flex flex-row font-weight-bold">
-            <div>Total: {{ totalPrice }} nF</div>
+            <div>{{ $t('total') }} {{ totalPrice }} nF</div>
           </div>
         </div>
         <div class="w-50">
-          <OrderConfirmButton :pulse="true">CONFIRM ORDER</OrderConfirmButton>
+          <OrderConfirmButton
+            :pulse="cartItems.length"
+            :gray="isRestaurantClosed"
+            @click="confirm"
+          >
+            {{ $t('confirm_order') }}
+          </OrderConfirmButton>
         </div>
       </div>
 
@@ -45,6 +60,7 @@
 import OrderSummaryItem from '@/components/OrderSummaryItem.vue'
 import OrderConfirmButton from '@/components/OrderConfirmButton.vue'
 import WarningClosed from '@/components/WarningClosed.vue'
+import WarningWindow from '@/components/WarningWindow.vue'
 import orderStore from '@/store/orderStore.js'
 import progressionStore from '@/store/progressionStore.js'
 
@@ -54,22 +70,28 @@ export default {
     OrderSummaryItem,
     OrderConfirmButton,
     WarningClosed,
+    WarningWindow,
   },
   computed: {
+    isCartFull: function() {
+      return orderStore.getters.isCartFull
+    },
     cartItems: function() {
       return orderStore.state.cartItems
     },
     totalPrice: function() {
-      var price = 0
-      return price
+      return orderStore.getters.totalPrice
     },
     isRestaurantClosed: function() {
       return progressionStore.state.isRestaurantClosed
     },
   },
   methods: {
-    trashbin: function() {
+    reset: function() {
       orderStore.commit('resetOrder')
+    },
+    confirm: function() {
+      orderStore.commit('confirmOrder')
     },
   }
 }

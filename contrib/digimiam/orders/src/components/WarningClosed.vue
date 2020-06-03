@@ -1,20 +1,20 @@
 <template>
   <div class="position-absolute h-100 w-100 d-flex align-items-center justify-content-center" :class="{shrink: size === 'small'}">
     <div class="d-flex flex-row closed align-items-center">
-      <NeonsWarning class="mx-3"/>
+      <Neons class="mx-3" color="var(--warning)"/>
       <div>{{ $t('closed') }}</div>
-      <NeonsWarning class="mx-3"/>
+      <Neons class="mx-3" color="var(--warning)"/>
     </div>
   </div>
 </template>
 
 <script>
-import NeonsWarning from '@/components/NeonsWarning.vue'
+import Neons from '@/components/Neons.vue'
 
 export default {
   name: "WarningClosed",
   components: {
-    NeonsWarning,
+    Neons,
   },
   props: {
     size: {
@@ -27,7 +27,7 @@ export default {
 
 <style scoped>
 .closed {
-  background-color: orangered;
+  background-color: rgba(240, 25, 25, 0.75);
   color: white;
   font-size: 40px;
   height: 65px;

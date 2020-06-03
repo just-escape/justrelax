@@ -39,6 +39,11 @@ const locales = {
     documentation_generated: 'Documentation generated on June 2 2053',
     terminal_label: 'root@digimiam : bash++ Terminal',
     closed: 'CLOSED',
+    cart_full: 'Cart is full',
+    confirm_or_reset_order: 'Confirm or reset your order',
+    reset_order: 'RESET ORDER',
+    confirm_order: 'CONFIRM ORDER',
+    total: 'Total:',
   },
   fr: {
     salade_flamande: 'Salade flamande',
@@ -75,6 +80,11 @@ const locales = {
     documentation_generated: 'Documentation générée le 2 juin 2053',
     terminal_label: 'root@digimiam : bash++ Terminal',
     closed: 'FERMÉ',
+    cart_full: 'Panier plein',
+    confirm_or_reset_order: 'Validez ou videz le panier',
+    reset_order: 'VIDER LE PANIER',
+    confirm_order: 'COMMANDER',
+    total: 'Total :',
   }
 }
 

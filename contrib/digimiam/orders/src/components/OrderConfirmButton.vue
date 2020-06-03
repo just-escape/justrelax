@@ -4,9 +4,9 @@
     class="font-weight-bold custom-transition py-3"
     block
     :size="size"
-    variant="info"
+    :variant="gray ? 'secondary' : 'info'"
     :disabled="disabled"
-    :style="{'boxShadow': boxShadow}"
+    :style="{'boxShadow': boxShadow, opacity: gray ? 0.7 : 1}"
   >
     <slot></slot>
   </b-btn>
@@ -66,7 +66,7 @@ export default {
       endDelay: 1000,
     }, '-=1500')
   },
-  props: ["size", "pulse", "disabled"]
+  props: ["size", "pulse", "disabled", "gray"]
 }
 </script>
 

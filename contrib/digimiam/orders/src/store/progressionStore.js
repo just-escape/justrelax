@@ -10,6 +10,7 @@ let store = new Vuex.Store({
     round: 0,
     showDocumentation: false,
     isRestaurantClosed: false,
+    runCutsceneAfterErrorAcknowledgement: false,
   },
   mutations: {
     setRound (state, round) {
@@ -21,6 +22,9 @@ let store = new Vuex.Store({
     setRestaurantStatus (state, closed) {
       state.isRestaurantClosed = closed
       orderStore.commit('resetOrder')
+    },
+    runCutsceneAfterErrorAcknowledgement (state) {
+      state.runCutsceneAfterErrorAcknowledgement = true
     },
   }
 })
