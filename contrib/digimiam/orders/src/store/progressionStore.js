@@ -10,7 +10,12 @@ let store = new Vuex.Store({
     round: 0,
     showDocumentation: false,
     isRestaurantClosed: false,
-    runCutsceneAfterErrorAcknowledgement: false,
+    runCutsceneAfterNotificationAcknowledgement: false,
+    cutscenes: {
+      ms_pepper_pantry: require('@/assets/mme_poivre_stock.mp4'),
+      ms_pepper_thanks: require('@/assets/mme_poivre_merci.mp4'),
+    },
+    currentCutscene: undefined,
   },
   mutations: {
     setRound (state, round) {
@@ -23,8 +28,22 @@ let store = new Vuex.Store({
       state.isRestaurantClosed = closed
       orderStore.commit('resetOrder')
     },
-    runCutsceneAfterErrorAcknowledgement (state) {
-      state.runCutsceneAfterErrorAcknowledgement = true
+    runCutsceneAfterNotificationAcknowledgement (state) {
+      state.runCutsceneAfterNotificationAcknowledgement = true
+    },
+    playCutscene(state, cutsceneId) {
+      if (state.cutscenes[cutsceneId]) {
+        state.currentCutscene = cutsceneId
+      }
+    },
+    onCutsceneEnd(state) {
+      // Not clean :|
+      if (state.currentCutscene === "ms_pepper_pantry") {
+        state.runCutsceneAfterNotificationAcknowledgement = false
+        setTimeout(store.commit, 800, 'setDocumentationVisibility', true)
+      }
+
+      state.currentCutscene = undefined
     },
   }
 })

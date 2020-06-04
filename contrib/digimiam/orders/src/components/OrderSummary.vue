@@ -1,6 +1,6 @@
 <template>
   <div class="position-relative d-flex flex-column flex-grow-1">
-    <WarningWindow class="position-absolute"/>
+    <OrderNotification class="position-absolute" :displayed="displayOrderNotification" @ok="acknowledgeNotification"/>
 
     <div class="overflow-hidden p-4">
       <div class="d-flex flex-row justify-content-end align-items-end mb-2 px-2">
@@ -13,6 +13,8 @@
             block
             :variant="isRestaurantClosed ? 'outline-secondary' : 'outline-info'"
             class="py-2"
+            :disabled="!cartItems.length || isRestaurantClosed"
+            :style="{opacity: !cartItems.length || isRestaurantClosed ? 0.4 : 1}"
             @click="reset"
           >
             {{ $t('reset_order') }}
@@ -30,6 +32,7 @@
           <OrderConfirmButton
             :pulse="cartItems.length"
             :gray="isRestaurantClosed"
+            :disabled="!cartItems.length || isRestaurantClosed"
             @click="confirm"
           >
             {{ $t('confirm_order') }}
@@ -60,7 +63,7 @@
 import OrderSummaryItem from '@/components/OrderSummaryItem.vue'
 import OrderConfirmButton from '@/components/OrderConfirmButton.vue'
 import WarningClosed from '@/components/WarningClosed.vue'
-import WarningWindow from '@/components/WarningWindow.vue'
+import OrderNotification from '@/components/OrderNotification.vue'
 import orderStore from '@/store/orderStore.js'
 import progressionStore from '@/store/progressionStore.js'
 
@@ -70,7 +73,12 @@ export default {
     OrderSummaryItem,
     OrderConfirmButton,
     WarningClosed,
-    WarningWindow,
+    OrderNotification,
+  },
+  data() {
+    return {
+      autocloseNotification: null,
+    }
   },
   computed: {
     isCartFull: function() {
@@ -85,13 +93,21 @@ export default {
     isRestaurantClosed: function() {
       return progressionStore.state.isRestaurantClosed
     },
+    displayOrderNotification: function() {
+      return orderStore.state.displayOrderNotification
+    },
   },
   methods: {
     reset: function() {
       orderStore.commit('resetOrder')
     },
     confirm: function() {
+      this.autocloseNotification = setTimeout(this.acknowledgeNotification, 15000)
       orderStore.commit('confirmOrder')
+    },
+    acknowledgeNotification() {
+      clearTimeout(this.autocloseNotification)
+      orderStore.commit('acknowledgeOrderNotification')
     },
   }
 }

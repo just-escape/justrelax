@@ -6,7 +6,7 @@
     :size="size"
     :variant="gray ? 'secondary' : 'info'"
     :disabled="disabled"
-    :style="{'boxShadow': boxShadow, opacity: gray ? 0.7 : 1}"
+    :style="{'boxShadow': boxShadow}"
   >
     <slot></slot>
   </b-btn>
@@ -74,5 +74,9 @@ export default {
 /* bootstrap value except for the box-shadow that prevents the animejs animation to be displayed */
 .custom-transition {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+button:disabled {
+  opacity: 0.4;
 }
 </style>

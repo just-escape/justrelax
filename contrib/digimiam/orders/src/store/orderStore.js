@@ -56,7 +56,7 @@ let store = new Vuex.Store({
         price: 0.5,
       },
     },
-    displayOrderError: false,
+    displayOrderNotification: false,
     hasFirstOrderBeenIssued: false,
   },
   getters: {
@@ -79,10 +79,16 @@ let store = new Vuex.Store({
       state.cartItems = []
     },
     confirmOrder (state) {
-      state.displayOrderError = true
+      state.displayOrderNotification = true
       if (!state.hasFirstOrderBeenIssued) {
         state.hasFirstOrderBeenIssued = true
-        progressionStore.commit('runCutsceneAfterErrorAcknowledgement')
+        progressionStore.commit('runCutsceneAfterNotificationAcknowledgement')
+      }
+    },
+    acknowledgeOrderNotification (state) {
+      state.displayOrderNotification = false
+      if (progressionStore.state.runCutsceneAfterNotificationAcknowledgement) {
+        setTimeout(progressionStore.commit, 2000, 'playCutscene', 'ms_pepper_pantry')
       }
     },
   }

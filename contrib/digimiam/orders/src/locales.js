@@ -44,6 +44,11 @@ const locales = {
     reset_order: 'RESET ORDER',
     confirm_order: 'CONFIRM ORDER',
     total: 'Total:',
+    information: 'INFORMATION',
+    dear_customers: 'Dear customers,',
+    we_are_not_able_to_process_your_order: 'We are not able to process your order for an unknown reason.',
+    this_information_has_been_teletransmitted: 'This information has been teletransmitted.',
+    ok: 'Ok',
   },
   fr: {
     salade_flamande: 'Salade flamande',
@@ -85,6 +90,11 @@ const locales = {
     reset_order: 'VIDER LE PANIER',
     confirm_order: 'COMMANDER',
     total: 'Total :',
+    information: 'INFORMATION',
+    dear_customers: 'Chers clients,',
+    we_are_not_able_to_process_your_order: 'Nous sommes dans l\'impossibilité de traiter votre commande pour une raison inconnue.',
+    this_information_has_been_teletransmitted: 'Cette information a été télétransmise.',
+    ok: 'Ok',
   }
 }
 

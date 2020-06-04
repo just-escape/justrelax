@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 import i18n from '@/locales.js'
 import router from '@/router.js'
 
-import videoStore from '@/store/videoStore.js'
 import progressionStore from '@/store/progressionStore.js'
 
 Vue.use(Vuex)
@@ -52,9 +51,8 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
-      } else if (event.category === 'play_video') {
-        let videoId = event.video_id
-        videoStore.commit('setOverlayVideoId', videoId)
+      } else if (event.category === 'play_cutscene') {
+        progressionStore.commit('playCutscene', event.cutscene_id)
       } else if (event.category === 'set_ventilation_panel_round') {
         progressionStore.commit('setRound', event.round)
       } else if (event.category === 'set_documentation_visibility') {

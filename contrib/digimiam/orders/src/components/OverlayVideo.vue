@@ -1,29 +1,25 @@
 <template>
   <div>
-    <video v-if="displayOverlayVideo" :src="overlayVideoId" mute autoplay @ended="onEnd()"></video>
+    <video v-if="displayOverlayVideo" :src="cutscene" mute autoplay @ended="onEnd()"></video>
   </div>
 </template>
 
 <script>
-import videoStore from '@/store/videoStore.js'
+import progressionStore from '@/store/progressionStore.js'
 
 export default {
   name: "OverlayVideo",
   computed: {
     displayOverlayVideo() {
-      return videoStore.state.overlayVideoId !== undefined
+      return progressionStore.state.currentCutscene !== undefined
     },
-    overlayVideoId() {
-      if (videoStore.state.overlayVideoId === 'video1') {
-        return require('@/assets/hologram.mp4')
-      } else {
-        return require('@/assets/cambraisienne_boucle.mp4')
-      }
+    cutscene() {
+      return progressionStore.state.cutscenes[progressionStore.state.currentCutscene]
     },
   },
   methods: {
     onEnd() {
-      videoStore.commit('setOverlayVideoId', undefined)
+      progressionStore.commit('onCutsceneEnd')
     },
   },
 }
