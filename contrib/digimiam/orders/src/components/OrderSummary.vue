@@ -102,6 +102,7 @@ export default {
       orderStore.commit('resetOrder')
     },
     confirm: function() {
+      clearTimeout(this.autocloseNotification)
       this.autocloseNotification = setTimeout(this.acknowledgeNotification, 15000)
       orderStore.commit('confirmOrder')
     },

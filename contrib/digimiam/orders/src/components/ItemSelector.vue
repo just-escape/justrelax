@@ -143,7 +143,7 @@ export default {
   padding-left: 30px;
   overflow-x: hidden;
   /* scroll-snap-type: y mandatory; */
-  -webkit-mask-image: radial-gradient(ellipse 90% 40% at 50% 50%, black 50%, transparent 90%);
+  mask-image: radial-gradient(ellipse 90% 40% at 50% 50%, black 50%, transparent 90%);
 }
 
 #meal-container::-webkit-scrollbar {
