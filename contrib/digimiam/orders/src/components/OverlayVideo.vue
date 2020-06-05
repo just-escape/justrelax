@@ -1,8 +1,8 @@
 <template>
   <div>
     <video
-      v-if="displayOverlayVideo"
-      :src="cutscene"
+      v-if="displayVideo"
+      :src="src"
       :loop="loop"
       autoplay
       @ended="onEnd()"
@@ -17,24 +17,24 @@ export default {
   name: "OverlayVideo",
   data() {
     return {
-      // Is updated only when a cutscene is not playing
-      cutsceneLang: this.$i18n.locale,
+      // Is updated only when a video is not playing
+      videoLang: this.$i18n.locale,
     }
   },
   computed: {
-    displayOverlayVideo() {
-      return progressionStore.state.currentCutscene !== null
+    displayVideo() {
+      return progressionStore.state.currentOverlayVideo !== null
     },
-    cutscene() {
-      if (this.displayOverlayVideo) {
-        return progressionStore.state.cutscenes[progressionStore.state.currentCutscene][this.cutsceneLang]
+    src() {
+      if (this.displayVideo) {
+        return progressionStore.state.overlayVideos[progressionStore.state.currentOverlayVideo][this.videoLang]
       } else {
         return ""
       }
     },
     loop() {
-      if (this.displayOverlayVideo) {
-        return progressionStore.state.cutscenes[progressionStore.state.currentCutscene].loop
+      if (this.displayVideo) {
+        return progressionStore.state.overlayVideos[progressionStore.state.currentOverlayVideo].loop
       } else {
         return false
       }
@@ -45,15 +45,15 @@ export default {
   },
   methods: {
     onEnd() {
-      progressionStore.commit('onCutsceneEnd')
-      this.cutsceneLang = this.locale
+      progressionStore.commit('onOverlayVideoEnd')
+      this.videoLang = this.locale
     },
   },
   watch: {
     locale(newValue) {
-      if (!this.displayOverlayVideo) {
+      if (!this.displayVideo) {
         // Otherwise, wait for the onEnd callback to update
-        this.cutsceneLang = newValue
+        this.videoLang = newValue
       }
     },
   },

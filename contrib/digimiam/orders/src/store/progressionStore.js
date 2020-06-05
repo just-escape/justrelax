@@ -10,8 +10,8 @@ let store = new Vuex.Store({
     round: 0,
     showDocumentation: false,
     isRestaurantClosed: false,
-    runCutsceneAfterNotificationAcknowledgement: false,
-    cutscenes: {
+    runMsPepperPantryAfterNotificationAcknowledgement: false,
+    overlayVideos: {
       glitching: {
         fr: require('@/assets/glitch.mp4'),
         en: require('@/assets/glitch.mp4'),
@@ -33,7 +33,7 @@ let store = new Vuex.Store({
         loop: false,
       },
     },
-    currentCutscene: 'glitching',
+    currentOverlayVideo: 'glitching',
   },
   mutations: {
     setRound (state, round) {
@@ -46,25 +46,25 @@ let store = new Vuex.Store({
       state.isRestaurantClosed = closed
       orderStore.commit('resetOrder')
     },
-    runCutsceneAfterNotificationAcknowledgement (state) {
-      state.runCutsceneAfterNotificationAcknowledgement = true
+    runMsPepperPantryAfterNotificationAcknowledgement (state) {
+      state.runMsPepperPantryAfterNotificationAcknowledgement = true
     },
-    playCutscene(state, cutsceneId) {
-      if (state.cutscenes[cutsceneId]) {
-        state.currentCutscene = cutsceneId
+    playOverlayVideo(state, videoId) {
+      if (state.overlayVideos[videoId]) {
+        state.currentOverlayVideo = videoId
       }
     },
-    stopCutscene(state) {
-      state.currentCutscene = null
+    stopOverlayVideo(state) {
+      state.currentOverlayVideo = null
     },
-    onCutsceneEnd(state) {
+    onOverlayVideoEnd(state) {
       // Not clean :|
-      if (state.currentCutscene === "ms_pepper_pantry") {
-        state.runCutsceneAfterNotificationAcknowledgement = false
+      if (state.currentOverlayVideo === "ms_pepper_pantry") {
+        state.runMsPepperPantryAfterNotificationAcknowledgement = false
         setTimeout(store.commit, 800, 'setDocumentationVisibility', true)
       }
 
-      state.currentCutscene = undefined
+      state.currentOverlayVideo = null
     },
   }
 })

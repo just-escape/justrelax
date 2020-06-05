@@ -51,10 +51,10 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
-      } else if (event.category === 'play_cutscene') {
-        progressionStore.commit('playCutscene', event.cutscene_id)
-      } else if (event.category === 'stop_cutscene') {
-        progressionStore.commit('stopCutscene')
+      } else if (event.category === 'play_overlay_video') {
+        progressionStore.commit('playOverlayVideo', event.video_id)
+      } else if (event.category === 'stop_overlay_video') {
+        progressionStore.commit('stopOverlayVideo')
       } else if (event.category === 'set_ventilation_panel_round') {
         progressionStore.commit('setRound', event.round)
       } else if (event.category === 'set_documentation_visibility') {

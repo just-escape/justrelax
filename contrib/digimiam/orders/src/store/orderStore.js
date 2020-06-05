@@ -82,13 +82,13 @@ let store = new Vuex.Store({
       state.displayOrderNotification = true
       if (!state.hasFirstOrderBeenIssued) {
         state.hasFirstOrderBeenIssued = true
-        progressionStore.commit('runCutsceneAfterNotificationAcknowledgement')
+        progressionStore.commit('runMsPepperPantryAfterNotificationAcknowledgement')
       }
     },
     acknowledgeOrderNotification (state) {
       state.displayOrderNotification = false
-      if (progressionStore.state.runCutsceneAfterNotificationAcknowledgement) {
-        setTimeout(progressionStore.commit, 2000, 'playCutscene', 'ms_pepper_pantry')
+      if (progressionStore.state.runMsPepperPantryAfterNotificationAcknowledgement) {
+        setTimeout(progressionStore.commit, 2000, 'playOverlayVideo', 'ms_pepper_pantry')
       }
     },
   }
