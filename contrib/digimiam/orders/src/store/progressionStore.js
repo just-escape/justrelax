@@ -12,16 +12,28 @@ let store = new Vuex.Store({
     isRestaurantClosed: false,
     runCutsceneAfterNotificationAcknowledgement: false,
     cutscenes: {
+      glitching: {
+        fr: require('@/assets/glitch.mp4'),
+        en: require('@/assets/glitch.mp4'),
+        loop: true,
+      },
+      glitching_less: {
+        fr: require('@/assets/glitch_less.mp4'),
+        en: require('@/assets/glitch_less.mp4'),
+        loop: true,
+      },
       ms_pepper_pantry: {
         fr: require('@/assets/mme_poivre_stock.mp4'),
         en: require('@/assets/ms_pepper_pantry.mp4'),
+        loop: false,
       },
       ms_pepper_thanks: {
         fr: require('@/assets/mme_poivre_merci.mp4'),
         en: require('@/assets/ms_pepper_says_thanks.mp4'),
+        loop: false,
       },
     },
-    currentCutscene: undefined,
+    currentCutscene: 'glitching',
   },
   mutations: {
     setRound (state, round) {
@@ -41,6 +53,9 @@ let store = new Vuex.Store({
       if (state.cutscenes[cutsceneId]) {
         state.currentCutscene = cutsceneId
       }
+    },
+    stopCutscene(state) {
+      state.currentCutscene = null
     },
     onCutsceneEnd(state) {
       // Not clean :|

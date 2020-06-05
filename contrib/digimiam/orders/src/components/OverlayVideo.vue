@@ -1,6 +1,12 @@
 <template>
   <div>
-    <video v-if="displayOverlayVideo" :src="cutscene" autoplay @ended="onEnd()"></video>
+    <video
+      v-if="displayOverlayVideo"
+      :src="cutscene"
+      :loop="loop"
+      autoplay
+      @ended="onEnd()"
+    />
   </div>
 </template>
 
@@ -17,10 +23,21 @@ export default {
   },
   computed: {
     displayOverlayVideo() {
-      return progressionStore.state.currentCutscene !== undefined
+      return progressionStore.state.currentCutscene !== null
     },
     cutscene() {
-      return progressionStore.state.cutscenes[progressionStore.state.currentCutscene][this.cutsceneLang]
+      if (this.displayOverlayVideo) {
+        return progressionStore.state.cutscenes[progressionStore.state.currentCutscene][this.cutsceneLang]
+      } else {
+        return ""
+      }
+    },
+    loop() {
+      if (this.displayOverlayVideo) {
+        return progressionStore.state.cutscenes[progressionStore.state.currentCutscene].loop
+      } else {
+        return false
+      }
     },
     locale() {
       return this.$i18n.locale
