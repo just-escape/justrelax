@@ -12,8 +12,14 @@ let store = new Vuex.Store({
     isRestaurantClosed: false,
     runCutsceneAfterNotificationAcknowledgement: false,
     cutscenes: {
-      ms_pepper_pantry: require('@/assets/mme_poivre_stock.mp4'),
-      ms_pepper_thanks: require('@/assets/mme_poivre_merci.mp4'),
+      ms_pepper_pantry: {
+        fr: require('@/assets/mme_poivre_stock.mp4'),
+        en: require('@/assets/ms_pepper_pantry.mp4'),
+      },
+      ms_pepper_thanks: {
+        fr: require('@/assets/mme_poivre_merci.mp4'),
+        en: require('@/assets/ms_pepper_says_thanks.mp4'),
+      },
     },
     currentCutscene: undefined,
   },
