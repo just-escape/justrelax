@@ -1,6 +1,6 @@
 <template>
-  <div class="d-flex flex-grow-1 flex-column">
-    <div class="logs-box d-flex flex-grow-1 w-100 position-relative mb-0">
+  <div class="logs-container glowing-container h-100 p-3">
+    <div class="logs-box d-flex flex-grow-1 w-100 position-relative mb-0 h-100">
       <div class="corner top-left"></div>
       <div class="corner top-right"></div>
       <div class="corner bottom-right"></div>
@@ -73,6 +73,10 @@ export default {
 </script>
 
 <style scoped>
+.logs-container {
+  border-top: 9px solid #00d1b6;
+}
+
 .logs-box {
   margin-bottom: 30px;
   padding: 5px;

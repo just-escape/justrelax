@@ -35,13 +35,15 @@ export default {
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
-}
-
-.padding-top-10px {
-  padding-top: 10px;
+  color: var(--light);
 }
 
 .text-teal {
   color: #00d1b6;
+}
+
+.glowing-container {
+  border: 1px solid #00d1b6;
+  box-shadow: 0px 0px 14px -6px rgba(0, 209, 182, 1);
 }
 </style>

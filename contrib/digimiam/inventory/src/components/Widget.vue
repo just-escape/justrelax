@@ -52,8 +52,8 @@ export default {
 .round-box {
   border-radius: 50%;
   border: 2px solid #00d1b8;
-  height: 72px;
-  width: 72px;
+  height: 100px;
+  width: 100px;
   flex-grow: 1;
   color: #00d1b8;
   font-size: 12px;

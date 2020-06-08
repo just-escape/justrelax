@@ -4,6 +4,7 @@ import VueAnime from 'vue-animejs'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Vue2TouchEvents from 'vue2-touch-events'
 
 import justSockService from '@/store/justSockService.js'
 
@@ -20,6 +21,11 @@ Vue.use(VueNativeSock, 'ws://localhost:3031', {
 })
 Vue.use(VueAnime)
 Vue.use(BootstrapVue)
+
+Vue.use(Vue2TouchEvents, {
+  disableClick: false,
+  swipeTolerance: 100,
+})
 
 Vue.config.productionTip = false
 
