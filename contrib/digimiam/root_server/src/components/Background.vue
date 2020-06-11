@@ -1,7 +1,8 @@
 <template>
-  <div class="position-absolute">
-    <canvas id="container"></canvas>
-  </div>
+  <div class="position-absolute" style="background: ">
+    <!--<canvas id="container"></canvas>-->
+    <!--<video src="@/assets/Wireframe.mp4" autoplay loop width="1920px" height="1080px"></video>
+  --></div>
 </template>
 
 <script>
@@ -135,8 +136,14 @@ export default {
     },
   },
   mounted() {
-    this.init()
-    this.render()
+    // this.init()
+    // this.render()
   }
 }
 </script>
+
+<style scoped>
+video {
+  display: block;
+}
+</style>
