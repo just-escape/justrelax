@@ -1,14 +1,21 @@
 <template>
   <div
+    @mousedown="press"
+    @touchstart="press"
     class="position-absolute"
-    :style="{top: top + 'px', left: left + 'px', width: width + 'px'}"
+    :style="{
+      top: top + 'px',
+      left: left + 'px',
+      width: width + 'px',
+      transform: 'scale(' + scale + ')',
+    }"
   >
     <svg :viewBox="'-0.75 -0.75 ' + (w + 1.5) + ' ' + (h + 1.5)" class="svg-glowing">
       <polygon
         :points="edges"
         :stroke="'rgba(0, 209, 182, 1)'"
         stroke-width="0.75"
-        fill="transparent"
+        :fill="'rgba(0, 209, 182, ' + fillOpacity + ')'"
       />
     </svg>
     <div class="position-absolute w-100 h-100 top-left">
@@ -25,6 +32,8 @@ export default {
   data() {
     return {
       size: 20,
+      scale: 1,
+      fillOpacity: 0,
     }
   },
   computed: {
@@ -54,6 +63,25 @@ export default {
       var bottomLeftY = this.h
 
       return leftX + ',' + leftY + ' ' + topLeftX + ',' + topLeftY + ' ' + topRightX + ',' + topRightY + ' ' + rightX + ',' + rightY + ' ' + bottomRightX + ',' + bottomRightY + ' ' + bottomLeftX + ',' + bottomLeftY
+    },
+  },
+  methods: {
+    press() {
+      this.$anime.timeline({
+        targets: this,
+      })
+      .add({
+        scale: 1.2,
+        fillOpacity: 0.2,
+        duration: 175,
+        easing: 'easeOutSine',
+      })
+      .add({
+        scale: 1,
+        fillOpacity: 0,
+        duration: 175,
+        easing: 'easeInSine',
+      })
     },
   },
   props: {

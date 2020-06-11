@@ -1,15 +1,15 @@
 <template>
   <div class="position-relative w-100 h-100 p-3">
     <div class="position-absolute keyboard-offset">
-      <KeyboardLetter
-        v-for="(letter, letterIndex) in layout" :key="'letter-' + letterIndex"
-        :top="letter.top" :left="letter.left" :width="70"
-        :character="letter.character"
-      />
       <KeyboardSpaceBar
         :top="149.5" :left="317"
         :width="227.5" :height="105"
         :character="' '"
+      />
+      <KeyboardLetter
+        v-for="(letter, letterIndex) in layout" :key="'letter-' + letterIndex"
+        :top="letter.top" :left="letter.left" :width="70"
+        :character="letter.character"
       />
       <KeyboardDodecagon
         v-for="(special, specialIndex) in specialActions" :key="'special-' + specialIndex"
@@ -43,7 +43,7 @@ export default {
           mirror: true,
         },
         {
-          top: 87.5,
+          top: 120,
           left: 739,
           character: 'CR',
           mirror: false,
