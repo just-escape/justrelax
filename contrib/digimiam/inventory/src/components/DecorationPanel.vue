@@ -11,6 +11,7 @@
           <Widgets class="mb-3"/>
           <Charts class="mb-3"/>
           <Bars class="mb-3"/>
+          <TableBox style="width: 180px;height:180px;"/>
         </div>
       </div>
     </div>
@@ -21,6 +22,7 @@
 import Widgets from '@/components/Widgets.vue'
 import Charts from '@/components/Charts.vue'
 import Bars from '@/components/Bars.vue'
+import TableBox from '@/components/TableBox.vue'
 
 export default {
   name: "DecorationPanel",
@@ -28,6 +30,7 @@ export default {
     Widgets,
     Charts,
     Bars,
+    TableBox,
   },
 }
 </script>

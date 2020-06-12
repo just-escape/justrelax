@@ -46,4 +46,8 @@ export default {
   border: 1px solid #00d1b6;
   box-shadow: 0px 0px 14px -6px rgba(0, 209, 182, 1);
 }
+
+.transition-1s {
+  transition: all 1s;
+}
 </style>

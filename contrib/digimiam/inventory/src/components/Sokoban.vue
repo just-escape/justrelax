@@ -7,9 +7,14 @@
     v-touch:swipe.bottom="swipeBottom"
   >
     <div class="position-absolute w-100 d-flex flex-row" style="bottom: 0px; left: 0px">
-      <b-btn @click="setLevel(0)">Level 1</b-btn>
-      <b-btn @click="setLevel(1)">Level 2</b-btn>
-      <b-btn @click="setLevel(2)">Level 3</b-btn>
+      <b-btn @click="setLevel(0)" class="mr-2">Level 1</b-btn>
+      <b-btn @click="setLevel(1)" class="mr-2">Level 2</b-btn>
+      <b-btn @click="setLevel(2)" class="mr-5">Level 3</b-btn>
+
+      <b-btn @click="move('left')" class="mr-2">gauche</b-btn>
+      <b-btn @click="move('down')" class="mr-2">bas</b-btn>
+      <b-btn @click="move('up')" class="mr-2">haut</b-btn>
+      <b-btn @click="move('right')">droite</b-btn>
     </div>
 
     <div
@@ -24,17 +29,29 @@
         :style="{width: cubeSize, height: cubeSize, transform: cubeTransform}"
       >
         <Level
+          :sceneSize="sceneSize"
           :transform="transformLeft"
           :map="mapLeft"
+          :blocks="blocksLeft"
         />
         <Level
+          :sceneSize="sceneSize"
           :transform="transformFront"
           :map="mapFront"
+          :blocks="blocksFront"
         />
         <Level
+          :sceneSize="sceneSize"
           :transform="transformTop"
           :map="mapTop"
+          :blocks="blocksTop"
         />
+      </div>
+    </div>
+
+    <div class="position-absolute" :style="{width: cubeSize, height: cubeSize}">
+      <div class="position-relative">
+        <Marmitron :sceneSize="sceneSize"/>
       </div>
     </div>
   </div>
@@ -42,12 +59,14 @@
 
 <script>
 import Level from '@/components/Level.vue'
+import Marmitron from '@/components/Marmitron.vue'
 import sokobanStore from '@/store/sokobanStore.js'
 
 export default {
   name: "Sokoban",
   components: {
     Level,
+    Marmitron,
   },
   data() {
     return {
@@ -84,6 +103,15 @@ export default {
     },
     mapTop() {
       return sokobanStore.state.currentGrids.top
+    },
+    blocksLeft() {
+      return sokobanStore.state.currentBlocks.left
+    },
+    blocksFront() {
+      return sokobanStore.state.currentBlocks.front
+    },
+    blocksTop() {
+      return sokobanStore.state.currentBlocks.top
     },
     currentFace() {
       return sokobanStore.state.currentFace
@@ -150,6 +178,9 @@ export default {
     },
     setLevel(level) {
       sokobanStore.commit('setLevel', level)
+    },
+    move(direction) {
+      sokobanStore.commit('move', direction)
     },
     swipeLeft() {
       if (this.currentFace === 'left' && this.currentLevel > 0) {

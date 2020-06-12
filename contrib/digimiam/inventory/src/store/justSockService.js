@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import i18n from '@/locales.js'
 import router from '@/router.js'
+import sokobanStore from '@/store/sokobanStore.js'
 import logStore from '@/store/logStore.js'
 
 Vue.use(Vuex)
@@ -54,6 +55,12 @@ const justSockService = new Vuex.Store({
         let level = event.level
         let useLocale = event.use_locale
         logStore.commit('processLog', {logMessage, level, useLocale})
+      } else if (event.category === 'lock_difficulty') {
+        sokobanStore.commit('lockDifficulty')
+      } else if (event.category === 'set_difficulty') {
+        sokobanStore.commit('setDifficulty', event.difficulty)
+      } else if (event.category === 'move') {
+        sokobanStore.commit('move', event.direction)
       }
     },
     SOCKET_RECONNECT (state, count) {

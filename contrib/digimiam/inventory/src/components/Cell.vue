@@ -1,5 +1,5 @@
 <template>
-  <div :style="{background: background}"></div>
+  <div class="transition-1s" :style="{background: background}"></div>
 </template>
 
 <script>
@@ -9,6 +9,8 @@ export default {
     background() {
       if (this.content === 'W') {
         return 'rgb(120, 120, 120)'
+      } else if (this.content === 'B') {
+        return 'saddlebrown'
       } else if (this.content === '.') {
         return 'rgba(230, 230, 230, 0)'
       } else {
