@@ -25,7 +25,7 @@
       <div class="d-flex flex-row justify-content-end align-items-center mb-4 px-2">
         <div class="text-white pr-3">
           <div class="d-flex flex-row font-weight-bold">
-            <div>{{ $t('total') }} {{ totalPrice }} nF</div>
+            <div>{{ $t('total_price') }} {{ totalPrice }} {{ $t('Ḟ') }}</div>
           </div>
         </div>
         <div class="w-50">
@@ -49,6 +49,7 @@
           <OrderSummaryItem
             v-for="item in cartItems"
             :key="item.increment"
+            :itemId="item.itemId"
             class="col-3 list-complete-item p-0"
           />
         </transition-group>

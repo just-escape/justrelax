@@ -1,13 +1,13 @@
 <template>
   <div>
-    <video src="@/assets/scene.webm" mute autoplay loop></video>
+    <video controls src="@/assets/scene.webm" mute loop></video>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Scene",
-}
+  name: "Scene"
+};
 </script>
 
 <style scoped>

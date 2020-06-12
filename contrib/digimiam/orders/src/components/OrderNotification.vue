@@ -8,7 +8,7 @@
     <div class="border-left-bottom-right shadow-box-top bg-light-transparent p-3">
       <div class="media">
         <div class="mr-3 bg-info glow align-self-center d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; border-radius: 50%">
-          <i class="fas fa-info" style="color: var(--light);font-size: 1.7rem;"></i>
+          <i class="text-light size-17rem fas fa-info"></i>
         </div>
         <div class="media-body d-flex flex-column">
           <div class="mb-1">
@@ -124,10 +124,14 @@ export default {
 }
 
 .glow {
-  box-shadow: 0px 0px 4px var(--info);
+  box-shadow: 0px 0px 3px var(--info);
 }
 
 .shadow-box-top {
   box-shadow: 1px -1px 5px var(--info);
+}
+
+.size-17rem {
+  font-size: 1.7rem;
 }
 </style>

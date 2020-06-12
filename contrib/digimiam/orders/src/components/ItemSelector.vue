@@ -1,12 +1,12 @@
 <template>
   <div class="d-flex flex-column justify-content-center">
     <div
-      id="meal-container"
+      id="item-container"
       :style="{height: 3 * itemHeight + 'px', overflowY: lockScroll ? 'hidden' : 'scroll'}"
       @scroll="scroll()"
     >
       <OrderableItem
-        v-for="(item, itemIndex) in items" :key="item.id"
+        v-for="(item, itemIndex) in items" :key="itemIndex"
         :itemId="item.id"
         :height="itemHeight"
         :translate="item.translate"
@@ -22,16 +22,31 @@ import OrderableItem from '@/components/OrderableItem.vue'
 import orderStore from '@/store/orderStore.js'
 
 export default {
-  name: "MealSelector",
+  name: "ItemSelector",
   components: {
     OrderableItem,
   },
   data() {
     return {
-      mealContainer: undefined,
+      itemContainer: undefined,
       lockScroll: false,
       itemHeight: 270,
       items: [
+        {
+          id: "cambraisienne",
+          translate: 0,
+          orderable: false,
+        },
+        {
+          id: "gaufresque",
+          translate: 0,
+          orderable: false,
+        },
+        {
+          id: "potjevleesch",
+          translate: 0,
+          orderable: false,
+        },
         {
           id: "salade_flamande",
           translate: 0,
@@ -53,17 +68,7 @@ export default {
           orderable: false,
         },
         {
-          id: "frites",
-          translate: 0,
-          orderable: false,
-        },
-        {
-          id: "boisson1",
-          translate: 0,
-          orderable: false,
-        },
-        {
-          id: "boisson2",
+          id: "salade_flamande",
           translate: 0,
           orderable: false,
         },
@@ -78,17 +83,17 @@ export default {
   methods: {
     scroll: function() {
       // Ensures infinite scrolling
-      if (this.mealContainer.scrollTop == 0) {
+      if (this.itemContainer.scrollTop == 0) {
         this.items.unshift(this.items.pop())
-        this.mealContainer.scrollTop += this.itemHeight
-      } else if (this.mealContainer.scrollTop + this.mealContainer.offsetHeight == this.mealContainer.scrollHeight) {
+        this.itemContainer.scrollTop += this.itemHeight
+      } else if (this.itemContainer.scrollTop + this.itemContainer.offsetHeight == this.itemContainer.scrollHeight) {
         this.items.push(this.items.shift())
-        this.mealContainer.scrollTop -= this.itemHeight
+        this.itemContainer.scrollTop -= this.itemHeight
       }
 
       // With 3 items, the first center position is relative
       // to the first one by an offset of 1
-      let firstItem = this.mealContainer.scrollTop / this.itemHeight
+      let firstItem = this.itemContainer.scrollTop / this.itemHeight
       let centerPosition = firstItem + 1
       for (var i = 0 ; i < this.items.length ; i++) {
         var itemPositionFromCenter = centerPosition - i
@@ -118,7 +123,7 @@ export default {
       this.lockItemsScroll()
       let scrollTarget = this.itemHeight * (itemIndex - 1)
       this.$anime({
-        targets: this.mealContainer,
+        targets: this.itemContainer,
         scrollTop: scrollTarget,
         duration: 300,
         easing: 'easeOutQuad',
@@ -128,7 +133,7 @@ export default {
     }
   },
   mounted() {
-    this.mealContainer = document.getElementById('meal-container')
+    this.itemContainer = document.getElementById('item-container')
 
     // Doesn't actually scroll, but initialize scroll-related this.items attributes
     this.scroll()
@@ -137,7 +142,7 @@ export default {
 </script>
 
 <style scoped>
-#meal-container {
+#item-container {
   width: 570px;
   height: 294px;
   padding-left: 30px;
@@ -146,7 +151,7 @@ export default {
   mask-image: radial-gradient(ellipse 90% 40% at 50% 50%, black 50%, transparent 90%);
 }
 
-#meal-container::-webkit-scrollbar {
+#item-container::-webkit-scrollbar {
   display: none;
 }
 </style>

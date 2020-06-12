@@ -16,44 +16,21 @@ let store = new Vuex.Store({
     cartItemIncrement: 0,
     maxCartItems: 4,
     items: {
-      salade_flamande: {
-        price: 10,
-      },
-      cambraisienne: {
-        price: 10,
+      gaufresque: {
+        price: 4,
+        img: require('@/assets/img/gaufresque.png'),
       },
       potjevleesch: {
         price: 10,
+        img: require('@/assets/img/potlevlesch.png'),
       },
-      frites: {
-        price: 10,
+      salade_flamande: {
+        price: 11,
+        img: require('@/assets/img/salade.png'),
       },
-      moules: {
-        price: 10,
-      },
-      gaufresque: {
-        price: 10,
-      },
-      boisson1: {
-        price: 10,
-      },
-      boisson2: {
-        price: 10,
-      },
-      boisson3: {
-        price: 10,
-      },
-      sauce1: {
-        price: 0.5,
-      },
-      sauce2: {
-        price: 0.5,
-      },
-      sauce3: {
-        price: 0.5,
-      },
-      sauce4: {
-        price: 0.5,
+      cambraisienne: {
+        price: 12,
+        img: require('@/assets/img/cambraisienne.png'),
       },
     },
     displayOrderNotification: false,

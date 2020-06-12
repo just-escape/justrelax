@@ -26,8 +26,7 @@ export default {
 
 #app {
   font-family: 'Gotham', 'sans-serif';
-  color: #222;
-  background-color: wheat;
+  background-color: black;
   position: relative;
   display: block;
   user-select: none;

@@ -33,7 +33,7 @@ let store = new Vuex.Store({
         loop: false,
       },
     },
-    currentOverlayVideo: 'glitching',
+    currentOverlayVideo: null,
   },
   mutations: {
     setRound (state, round) {

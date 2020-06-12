@@ -1,13 +1,26 @@
 <template>
   <div class="position-relative">
-    <div class="position-absolute price bg-info rounded">10 nF</div>
-    <img src="@/assets/gaufresque.png" class="img-fluid">
+    <div class="position-absolute price bg-info rounded">{{ price }} {{ $t('Ḟ') }}</div>
+    <img :src="src" class="img-fluid">
   </div>
 </template>
 
 <script>
+import orderStore from '@/store/orderStore.js'
+
 export default {
   name: "OrderSummaryItem",
+  computed: {
+    src() {
+      return orderStore.state.items[this.itemId].img
+    },
+    price() {
+      return orderStore.state.items[this.itemId].price
+    },
+  },
+  props: {
+    itemId: String,
+  },
 }
 </script>
 
