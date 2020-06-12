@@ -59,9 +59,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-video {
-  display: block; /* Removes a mysterious margin bottom */
-}
-</style>

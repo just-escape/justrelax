@@ -23,7 +23,7 @@
       </div>
 
       <div class="d-flex flex-row justify-content-end align-items-center mb-4 px-2">
-        <div class="text-white pr-3">
+        <div class="text-light pr-3">
           <div class="d-flex flex-row font-weight-bold">
             <div>{{ $t('total_price') }} {{ totalPrice }} {{ $t('Ḟ') }}</div>
           </div>

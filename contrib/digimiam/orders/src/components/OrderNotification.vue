@@ -2,7 +2,7 @@
   <div class="window d-flex flex-column" :style="{left: left, bottom: bottom, transform: transform}">
     <div class="d-flex flex-row rounded-top bg-info shadow-box-top align-items-center h-header">
       <Neons class="ml-2" color="var(--light)"/>
-      <h3 class="size-12 py-1 mx-3 mb-0 text-white">{{ $t('information') }}</h3>
+      <h3 class="size-12 py-1 mx-3 mb-0 text-light">{{ $t('information') }}</h3>
       <Neons class="mr-2" color="var(--light)"/>
     </div>
     <div class="border-left-bottom-right shadow-box-top bg-light-transparent p-3">

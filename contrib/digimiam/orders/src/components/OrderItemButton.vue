@@ -2,7 +2,7 @@
   <b-btn
     @mousedown="mousedown"
     :variant="gray ? 'secondary' : 'info'"
-    :disabled="clickable"
+    :disabled="!clickable"
     class="rounded-circle"
     :style="{transform: 'scale(' + scale + ')'}"
   >

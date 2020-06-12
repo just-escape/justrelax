@@ -12,7 +12,7 @@
       </div>
       <div class="d-flex flex-row justify-content-end align-items-center">
         <div class="size-11 glowing-text pr-3">{{ price }} {{ $t('Ḟ') }}</div>
-        <OrderItemButton @mousedown="$emit('orderMe')" :clickable="!orderable || isRestaurantClosed" :gray="isRestaurantClosed" class="size-11"/>
+        <OrderItemButton @mousedown="$emit('orderMe')" :clickable="orderable && !isRestaurantClosed" :gray="isRestaurantClosed" class="size-11"/>
       </div>
     </div>
     <img :src="src" :width="height + 'px'" class="img-fluid"/>

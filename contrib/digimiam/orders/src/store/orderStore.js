@@ -7,6 +7,9 @@ Vue.use(Vuex)
 
 let store = new Vuex.Store({
   state: {
+    lockSelectorScroll: false,
+    itemIdToAdd: null,
+    addItemToCartSignal: false,
     cartItems: [
       {itemId: 'salade_flamande', increment: -1},
       {itemId: 'salade_flamande', increment: -2},
@@ -35,6 +38,7 @@ let store = new Vuex.Store({
     },
     displayOrderNotification: false,
     hasFirstOrderBeenIssued: false,
+    orderSomething: false,
   },
   getters: {
     isCartFull (state) {
@@ -49,7 +53,13 @@ let store = new Vuex.Store({
     },
   },
   mutations: {
-    plusOne (state, itemId) {
+    lockSelectorScroll (state) {
+      state.lockSelectorScroll = true
+    },
+    unlockSelectorScroll (state) {
+      state.lockSelectorScroll = false
+    },
+    displayItemInCart (state, itemId) {
       state.cartItems.unshift({itemId: itemId, increment: state.cartItemIncrement++})
     },
     resetOrder (state) {
@@ -67,6 +77,10 @@ let store = new Vuex.Store({
       if (progressionStore.state.runMsPepperPantryAfterNotificationAcknowledgement) {
         setTimeout(progressionStore.commit, 2000, 'playOverlayVideo', 'ms_pepper_pantry')
       }
+    },
+    addItemToCart (state, itemId) {
+      state.itemIdToAdd = itemId
+      state.addItemToCartSignal = !state.addItemToCartSignal
     },
   }
 })

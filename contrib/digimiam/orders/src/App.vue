@@ -44,7 +44,7 @@ button {
   box-shadow: none !important;
 }
 
-.text-white {
-  color: var(--light);
+video {
+  display: block; /* Removes a mysterious margin bottom */
 }
 </style>
