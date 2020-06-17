@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <svg viewBox="0 0 118 51" class="mb-1">
+  <div class="d-flex flex-column align-items-center w-100">
+    <svg viewBox="0 0 118 51" class="px-3 py-2 glowing-container w-75 mb-1">
       <g v-for="(v, index) in values" :key="v.id">
         <rect
           :x="v.x"
           :y="Math.abs(46 - (36 * v.percent / 100))"
-          width="10"
+          width="13"
           :height="36 * v.percent / 100"
         />
         <foreignObject
@@ -56,15 +56,7 @@ export default {
           deltaColor: '#00d1b6',
         },
         {
-          x: 22,
-          percent: 70,
-          label: this.$t('protoid'),
-          delta: '',
-          deltaOpacity: 0,
-          deltaColor: '#00d1b6',
-        },
-        {
-          x: 38,
+          x: 25,
           percent: 70,
           label: this.$t('lipid'),
           delta: '',
@@ -72,33 +64,33 @@ export default {
           deltaColor: '#00d1b6',
         },
         {
-          x: 54,
+          x: 44,
           percent: 27,
-          label: this.$t('glucid'),
+          label: this.$t('carbohydrates'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',
         },
         {
-          x: 70,
-          percent: 89,
-          label: this.$t('mineral'),
-          delta: '',
-          deltaOpacity: 0,
-          deltaColor: '#00d1b6',
-        },
-        {
-          x: 86,
-          percent: 10,
+          x: 63,
+          percent: 80,
           label: this.$t('vitamin'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',
         },
         {
-          x: 102,
-          percent: 29,
-          label: this.$t('antioxidant'),
+          x: 82,
+          percent: 75,
+          label: this.$t('mineral'),
+          delta: '',
+          deltaOpacity: 0,
+          deltaColor: '#00d1b6',
+        },
+        {
+          x: 101,
+          percent: 78,
+          label: this.$t('trace_mineral'),
           delta: '',
           deltaOpacity: 0,
           deltaColor: '#00d1b6',
@@ -132,13 +124,13 @@ export default {
   },
   methods: {
     variation: function(valueIndex) {
-      // between -20.0% and +20.0%
-      var newVariation = Math.floor(Math.random() * 400 - 200) / 10
+      // between -10.0 and +10.0
+      var newVariation = Math.floor(Math.random() * 200 - 100) / 10
 
       if (newVariation != 0) {
         if (
-          this.values[valueIndex].percent * (1 + (newVariation / 100)) > 100 ||
-          this.values[valueIndex].percent * (1 + (newVariation / 100)) < 0
+          this.values[valueIndex].percent + newVariation > 100 ||
+          this.values[valueIndex].percent + newVariation < 0
         ) {
           newVariation *= -1
         }
@@ -161,13 +153,13 @@ export default {
           duration: 3000,
           easing: 'easeInExpo',
         }).add({
-          percent: this.values[valueIndex].percent * (1 + (newVariation / 100)),
+          percent: this.values[valueIndex].percent + newVariation,
           duration: 1000,
           easing: 'linear',
         }, 500)
       }
 
-      setTimeout(this.variation, Math.random() * 6000 + 4000, valueIndex)
+      setTimeout(this.variation, Math.random() * 60000 + 4000, valueIndex)
     }
   },
   mounted: function() {
@@ -183,15 +175,8 @@ export default {
 </script>
 
 <style scoped>
-svg {
-  height: 132px;
-  width: 264px;
-  border: 1px solid rgba(00, 209, 182, 0.4);
-  box-shadow: 0px 0px 10px -6px rgba(0, 209, 182, 0.75);
-}
-
 .title {
-  font-size: 12px;
+  font-size: 16px;
 }
 
 rect {

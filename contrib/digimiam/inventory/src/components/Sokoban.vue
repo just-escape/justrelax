@@ -1,52 +1,48 @@
 <template>
-  <div class="position-relative scene d-flex align-items-center justify-content-center">
-    <div class="position-absolute w-100 d-flex flex-row justify-content-center" style="bottom: 0px; left: 0px">
-      <b-btn @click="move('left')" class="mr-2">gauche</b-btn>
-      <b-btn @click="move('down')" class="mr-2">bas</b-btn>
-      <b-btn @click="move('up')" class="mr-2">haut</b-btn>
-      <b-btn @click="move('right')" class="mr-5">droite</b-btn>
-
-      <b-btn @click="reset()">reset</b-btn>
-    </div>
-
-    <div
-      class="transition-1s"
-      :style="{
-        perspective: scenePerspective,
-        'perspective-origin': scenePerspectiveOrigin,
-      }"
-    >
+  <Window :title="$t('stock_management')">
+    <div class="d-flex flex-column align-items-center justify-content-around h-100">
       <div
-        class="position-relative cube transition-1s"
-        :style="{width: cubeSize, height: cubeSize, transform: cubeTransform}"
+        class="transition-1s"
+        :style="{
+          perspective: scenePerspective,
+          'perspective-origin': scenePerspectiveOrigin,
+        }"
       >
-        <Level
-          :sceneSize="sceneSize"
-          :transform="transformLeft"
-          :face="'left'"
-        />
-        <Level
-          :sceneSize="sceneSize"
-          :transform="transformFront"
-          :face="'front'"
-        />
-        <Level
-          :sceneSize="sceneSize"
-          :transform="transformTop"
-          :face="'top'"
-        />
+        <div
+          class="position-relative cube transition-1s"
+          :style="{width: cubeSize, height: cubeSize, transform: cubeTransform}"
+        >
+          <Level
+            :sceneSize="sceneSize"
+            :transform="transformLeft"
+            :face="'left'"
+          />
+          <Level
+            :sceneSize="sceneSize"
+            :transform="transformFront"
+            :face="'front'"
+          />
+          <Level
+            :sceneSize="sceneSize"
+            :transform="transformTop"
+            :face="'top'"
+          />
+        </div>
       </div>
+
     </div>
-  </div>
+  </Window>
 </template>
 
 <script>
+import Window from '@/components/Window.vue'
 import Level from '@/components/Level.vue'
 import sokobanStore from '@/store/sokobanStore.js'
 
 export default {
   name: "Sokoban",
   components: {
+    Window,
     Level,
   },
   data() {

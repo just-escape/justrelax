@@ -1,93 +1,96 @@
 <template>
-  <div class="d-flex flex-column position-relative">
-    <div
-      :class="{'error': data.error}"
-      class="round-box position-relative m-2"
-    >
+  <div class="position-relative">
+    <div class="position-absolute w-100 h-100 top-left">
       <div
-        class="shadowed-round-box"
-        :style="{transform: 'rotate(' + shadowAngle + 'deg)'}"
-      ></div>
-      <WidgetGauge :fill="data.gauge" :anime="data.anime"/>
-      <div class="h-100 box-content d-flex flex-column text-center justify-content-center pt-2">
-        <i :class="data.icon" class="mb-1"></i>
-        <span>{{ $t(data.label) }}</span>
+        :class="{'text-teal': !error, 'text-orange': error}"
+        class="size-20 d-flex flex-column justify-content-center align-items-center h-100 pb-3"
+      >
+        <i :class="icon" class="size-26px pb-1"/>
+        <div v-if="error">{{ $t('error') }}</div>
+        <div v-else>{{ $t('ok') }}</div>
       </div>
     </div>
-    <div class="box-label text-center">
-      {{ $t(data.name) }}
+    <div class="d-flex flex-column align-items-center">
+      <svg
+        :viewBox="'-0.75 -0.75 ' + (w + 1.5) + ' ' + (h + 1.5)"
+        :class="{'svg-glowing': !error, 'svg-glowing-error': error}"
+        class="mb-1"
+      >
+        <polygon
+          :points="edges"
+          :stroke="error ? 'orangered' : 'rgba(0, 209, 182, 1)'"
+          stroke-width="0.75"
+          fill="transparent"
+        />
+      </svg>
+      <div>
+        {{ $t(label) }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import WidgetGauge from '@/components/WidgetGauge.vue'
-
 export default {
-  name: 'Widget',
-  data: function() {
+  name: "Widget",
+  data() {
     return {
-      shadowAngle: 0
+      size: 20,
     }
   },
-  components: {
-    WidgetGauge,
-  },
-  mounted: function() {
-    this.shadowAngle = this.data.shadowAngle
+  computed: {
+    h() {
+      return Math.sqrt(3) * this.size
+    },
+    w() {
+      return 2 * this.size
+    },
+    edges() {
+      var leftX = 0
+      var leftY = this.h / 2
 
-    this.$anime({
-      targets: this,
-      shadowAngle: 360 + this.data.shadowAngle,
-      duration: this.data.shadowCycle,
-      loop: true,
-      easing: 'linear',
-    })
+      var topLeftX = 0.25 * this.w
+      var topLeftY = 0
+
+      var topRightX = 0.75 * this.w
+      var topRightY = 0
+
+      var rightX = this.w
+      var rightY = this.h / 2
+
+      var bottomRightX = 0.75 * this.w
+      var bottomRightY = this.h
+
+      var bottomLeftX = 0.25 * this.w
+      var bottomLeftY = this.h
+
+      return leftX + ',' + leftY + ' ' + topLeftX + ',' + topLeftY + ' ' + topRightX + ',' + topRightY + ' ' + rightX + ',' + rightY + ' ' + bottomRightX + ',' + bottomRightY + ' ' + bottomLeftX + ',' + bottomLeftY
+    },
   },
-  props: ['data'],
+  props: {
+    icon: String,
+    status: String,
+    label: String,
+    error: Boolean,
+  },
 }
 </script>
 
 <style scoped>
-.round-box {
-  border-radius: 50%;
-  border: 2px solid #00d1b8;
-  height: 100px;
-  width: 100px;
-  flex-grow: 1;
-  color: #00d1b8;
-  font-size: 12px;
-  background-color: #01222f;
+.svg-glowing {
+  filter: drop-shadow(0px 0px 2px rgba(0, 209, 182, 0.5));
 }
 
-.shadowed-round-box {
-  position: absolute;
-  border-radius: 50%;
-  height: 100%;
-  width: 100%;
-  box-shadow: 4px 0px 6px 0px rgba(0, 209, 182, 0.75);
+.svg-glowing-error {
+  filter: drop-shadow(0px 0px 2px orangered);
 }
 
-.box-label {
-  font-size: 12px;
-  line-height: 1;
-}
-
-.error.round-box {
-  color: orangered;
-  border: 2px solid orangered;
-}
-
-.error .shadowed-round-box {
-  border-radius: 50%;
-  box-shadow: 4px 0px 6px 0px rgba(255, 69, 00, 0.75);
-}
-
-i {
+.size-26px {
   font-size: 26px;
 }
 
-.box-content > i, .box-content > span {
-  z-index: 10;
+.top-left {
+  top: 0;
+  left: 0;
 }
 </style>

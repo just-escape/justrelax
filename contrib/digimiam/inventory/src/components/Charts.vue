@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <svg viewBox="-3 -3 112 59" class="mb-1">
+  <div class="d-flex flex-column align-items-center w-100">
+    <svg viewBox="-3 -3 112 59" class="glowing-container px-3 py-2 mb-1 w-75">
       <path d="M2,0 2,53"/>
       <path d="M-2,49.5 106,49.5"/>
 
@@ -105,26 +105,26 @@ export default {
       return {'x': x, 'y': y}
     },
     variation: function(valueIndex) {
-      // between -20.0% and +20.0%
-      var newVariation = Math.floor(Math.random() * 400 - 200) / 10
+      // between -5 and +5
+      var newVariation = Math.floor(Math.random() * 10 - 5)
 
       if (newVariation != 0) {
         if (
-          this.points[valueIndex].y * (1 + (newVariation / 100)) > 47 ||
-          this.points[valueIndex].y * (1 + (newVariation / 100)) < 2
+          this.points[valueIndex].y + newVariation > 47 ||
+          this.points[valueIndex].y + newVariation < 2
         ) {
           newVariation *= -1
         }
 
         this.$anime({
           targets: this.points[valueIndex],
-          y: this.points[valueIndex].y * (1 + (newVariation / 100)),
+          y: this.points[valueIndex].y + newVariation,
           duration: 3000,
           easing: 'easeInSine',
         })
       }
 
-      setTimeout(this.variation, Math.random() * 5000 + 9000, valueIndex)
+      setTimeout(this.variation, Math.random() * 70000 + 9000, valueIndex)
     }
   },
   mounted: function() {
@@ -136,15 +136,8 @@ export default {
 </script>
 
 <style scoped>
-svg {
-  height: 132px;
-  width: 264px;
-  border: 1px solid rgba(00, 209, 182, 0.4);
-  box-shadow: 0px 0px 10px -6px rgba(0, 209, 182, 0.75);
-}
-
 .title {
-  font-size: 12px;
+  font-size: 16px;
 }
 
 circle {

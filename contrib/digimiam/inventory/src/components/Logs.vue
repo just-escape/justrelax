@@ -80,7 +80,7 @@ export default {
 .logs-box {
   margin-bottom: 30px;
   padding: 5px;
-  max-height: 396px;
+  max-height: 656px;
 }
 
 .logs {

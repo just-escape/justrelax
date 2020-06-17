@@ -1,9 +1,15 @@
 <template>
-  <div class="d-flex flex-row justify-content-around">
+  <div class="d-flex flex-row justify-content-between w-75">
     <Widget
-      v-for="m in measures"
-      :key="m.id"
-      :data="m"
+      v-for="(m, mIndex) in measures"
+      :key="mIndex"
+      :top="m.top"
+      :left="m.left"
+      :status="m.status"
+      :label="m.label"
+      :icon="m.icon"
+      :error="m.error"
+      :style="{width: '100px'}"
     />
   </div>
 </template>
@@ -20,33 +26,27 @@ export default {
     return {
       measures: [
         {
-          name: 'temperature',
-          label: 'ok',
-          icon: ['fas', 'fa-thermometer-quarter'],
-          gauge: 0.37,
-          shadowAngle: 50,
-          shadowCycle: 7000,
+          top: 0,
+          left: 100,
+          icon: "fa fa-thermometer-quarter",
+          label: "temperature",
           error: false,
         },
         {
-          name: 'humidity',
-          label: 'ok',
-          icon: ['fas', 'fa-tint'],
-          gauge: 0.18,
-          shadowAngle: 200,
-          shadowCycle: 3800,
+          top: 0,
+          left: 100,
+          icon: "fa fa-tint",
+          label: "humidity",
           error: false,
         },
         {
-          name: 'stocks',
-          label: 'error',
-          icon: ['fas', 'fa-tags'],
-          gauge: 0.89,
-          shadowAngle: 100,
-          shadowCycle: 5000,
+          top: 0,
+          left: 100,
+          icon: "fa fa-tags",
+          label: "stocks",
           error: true,
         },
-      ]
+      ],
     }
   },
 }

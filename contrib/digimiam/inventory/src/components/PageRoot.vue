@@ -2,14 +2,11 @@
   <div class="h-100 position-relative">
     <BackgroundLines/>
     <div class="h-100 justify-content-center d-flex flex-column p-5">
-      <div class="h-640px d-flex flex-row mb-5">
-        <DecorationPanel class="w-55 mr-4"></DecorationPanel>
-        <Logs class="ml-4 flex-grow-1"/>
+      <div class="h-670px d-flex flex-row mb-5">
+        <DecorationPanel class="w-55 mr-4"/>
+        <Logs class="w-45 ml-4"/>
       </div>
-      <Sokoban class="h-1280px"/>
-      <!--<div class="padding-top-10px">
-        <Container/>
-      </div>-->
+      <Sokoban class="h-1250px"/>
     </div>
   </div>
 </template>
@@ -19,8 +16,6 @@ import BackgroundLines from '@/components/BackgroundLines.vue'
 import DecorationPanel from '@/components/DecorationPanel.vue'
 import Logs from '@/components/Logs.vue'
 import Sokoban from '@/components/Sokoban.vue'
-// import Container from '@/components/Container.vue'
-// import blockStore from '@/store/blockStore.js'
 
 export default {
   name: 'PageRoot',
@@ -29,7 +24,6 @@ export default {
     DecorationPanel,
     Logs,
     Sokoban,
-    // Container,
   },
   created() {
     var lang = this.$route.query.lang
@@ -43,16 +37,20 @@ export default {
 </script>
 
 <style scoped>
-.h-640px {
-  height: 640px;
+.h-670px {
+  height: 670px;
 }
 
 .w-55 {
   width: 55%;
 }
 
-.h-1280px {
-  height: 1280px;
+.w-45 {
+  width: 45%;
+}
+
+.h-1250px {
+  height: 1250px;
 }
 
 .w-360px {
