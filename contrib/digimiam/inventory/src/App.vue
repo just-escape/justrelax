@@ -50,4 +50,8 @@ export default {
 .transition-1s {
   transition: all 1s;
 }
+
+.transition-400ms {
+  transition: all 0.4s linear;
+}
 </style>
