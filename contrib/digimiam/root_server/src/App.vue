@@ -71,16 +71,6 @@ button:hover {
   bottom: calc(-26px - 5px);
   right: 0px;
 }
-
-video {
-  display: block;
-}
-
-.video-thumbnail {
-   width: 160px;
-   height: 90px;
-}
-
 .size-20 {
   font-size: 20px;
 }
@@ -92,5 +82,34 @@ video {
 
 .svg-glowing {
   filter: drop-shadow(0px 0px 3px #00d1b6);
+}
+
+.btn-outline-info:focus {
+  box-shadow: none;
+}
+
+video {
+  display: block;
+}
+
+video:focus {
+  outline: none !important;
+}
+
+.video-thumbnail {
+   width: 160px;
+   height: 90px;
+}
+
+video::-webkit-media-controls-fullscreen-button {
+  display: none;
+}
+
+video::-webkit-media-controls-mute-button {
+  display: none;
+}
+
+video::-webkit-media-controls-volume-slider {
+  display: none;
 }
 </style>

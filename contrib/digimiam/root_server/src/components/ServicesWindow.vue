@@ -11,8 +11,8 @@
         <ServiceStatus class="mb-3" :label="'Bras'">
           <img src="@/assets/robotics.png" height="53px">
         </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="'Réseau'">
-          <img src="@/assets/network.png" height="53px">
+        <ServiceStatus class="mb-3" :label="'Congélateur'">
+          <i class="far fa-snowflake size-50 text-teal"></i>
         </ServiceStatus>
       </div>
       <div class="d-flex flex-column align-items-center justify-content-center h-100">
@@ -25,8 +25,8 @@
         <ServiceStatus class="mb-3" :label="'Imprimante'">
           <img src="@/assets/printer.png" height="53px">
         </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="'Magie'">
-          <i class="fas fa-quidditch size-50 text-teal"></i>
+        <ServiceStatus class="mb-3" :label="'Four'">
+          <img src="@/assets/oven.svg" height="53px">
         </ServiceStatus>
       </div>
     </div>

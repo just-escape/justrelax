@@ -7,7 +7,6 @@
       top: top + 'px',
       left: left + 'px',
       width: width + 'px',
-      height: height + 'px',
       transform: 'scale(' + scale + ')',
     }"
   >

@@ -1,6 +1,7 @@
 <template>
-  <Window :title="$t('INTELLIGENCE CULINAIRE')" class="overflow-hidden">
-    <video src="@/assets/Wireframe.mp4" loop class="h-100 position-absolute" style="left: -45%"></video>
+  <Window :title="$t('INTELLIGENCE CULINAIRE')" class="oveflow-hidden">
+    <video src="@/assets/marmitron_background.mp4" autoplay loop class="position-absolute"/>
+    <video src="@/assets/marmitron.webm" autoplay loop class="position-absolute"/>
   </Window>
 </template>
 

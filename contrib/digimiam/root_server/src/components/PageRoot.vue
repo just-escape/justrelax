@@ -32,14 +32,14 @@
       </div>
     </div>
 
-    <!--<ExpandableVideos/>-->
+    <ExpandableVideos/>
   </div>
 </template>
 
 <script>
 import BackgroundLines from '@/components/BackgroundLines.vue'
 // import PasswordWindow from '@/components/PasswordWindow.vue'
-// import ExpandableVideos from '@/components/ExpandableVideos.vue'
+import ExpandableVideos from '@/components/ExpandableVideos.vue'
 import MarmitronWindow from '@/components/MarmitronWindow.vue'
 import ServicesWindow from '@/components/ServicesWindow.vue'
 import ConfigurationWindow from '@/components/ConfigurationWindow.vue'
@@ -51,7 +51,7 @@ export default {
   name: 'PageRoot',
   components: {
     BackgroundLines,
-    // ExpandableVideos,
+    ExpandableVideos,
     // PasswordWindow,
     MarmitronWindow,
     ServicesWindow,

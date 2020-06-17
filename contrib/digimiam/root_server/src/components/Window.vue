@@ -1,13 +1,19 @@
 <template>
   <div class="position-relative h-100 w-100">
-    <div class="window-container position-relative h-100">
-      <div class="window-frame"/>
-      <div class="window-background"/>
-      <div class="window-title-ribbon mb-2 text-right p-2">
+    <div
+      class="window-container position-relative h-100"
+      :class="{warning: theme === 'warning'}"
+    >
+      <div class="window-background" :class="{warning: theme === 'warning'}"/>
+      <div class="window-frame" :class="{warning: theme === 'warning'}"/>
+      <div
+        class="window-title-ribbon mb-2 text-right p-2"
+        :class="{warning: theme === 'warning'}"
+      >
         {{ title }}
       </div>
 
-      <slot></slot>    
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -19,7 +25,11 @@ export default {
     title: {
       type: String,
       default: "TITLE",
-    }
+    },
+    theme: {
+      type: String,
+      default: "standard",
+    },
   },
 }
 </script>
@@ -29,23 +39,6 @@ export default {
   border: 1px solid transparent;
   border-top: 9px solid transparent;
   padding-top: 40px;
-}
-
-.window-background {
-  background-color: rgba(00, 45, 64, 0.5);
-  position: absolute;
-  top: -9px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  clip-path: polygon(
-    100% 0%,
-    100% 100%,
-    0% 100%,
-    0px calc(43px - 6px),
-    calc(43px + 6px) 0px
-  );
-  z-index: -1;
 }
 
 .window-frame {
@@ -70,6 +63,10 @@ export default {
     calc(100% - 1px) calc(100% - 1px)
   );
   z-index: 1;
+}
+
+.window-frame.warning {
+  filter: drop-shadow(1px 1px 4px rgba(255, 69, 0, 0.75));
 }
 
 .window-frame::before {
@@ -97,6 +94,31 @@ export default {
   z-index: 10;
 }
 
+.window-frame.warning::before {
+  background-color: orangered;
+}
+
+.window-background {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  clip-path: polygon(
+    100% 0%,
+    100% 100%,
+    0% 100%,
+    0% calc(48px - 11px),
+    calc(48px) 0%
+  );
+}
+
+.window-background.warning {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .window-title-ribbon {
   position: absolute;
   width: 100%;
@@ -113,5 +135,10 @@ export default {
     0px calc(43px - 9px),
     43px 0px
   );
+}
+
+.window-title-ribbon.warning {
+  border-bottom: 1px solid orangered;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 </style>
