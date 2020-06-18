@@ -45,7 +45,7 @@
 <script>
 import Window from '@/components/Window.vue'
 import ButtonOrange from '@/components/ButtonOrange.vue'
-import keyboardStore from '@/store/keyboardStore.js'
+import passwordStore from '@/store/passwordStore.js'
 
 export default {
   name: "PasswordWindow",
@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     displayed() {
-      return keyboardStore.state.displayPasswordWindow
+      return passwordStore.state.displayPasswordWindow
     },
     top() {
       return "calc(0px + " + this.topOffset + "px)"
@@ -79,16 +79,16 @@ export default {
       return "scaleX(" + this.scaleX + ") scaleY(" + this.scaleY + ")"
     },
     pressSignal() {
-      return keyboardStore.state.pressSignal
+      return passwordStore.state.pressSignal
     },
     backspaceSignal() {
-      return keyboardStore.state.backspaceSignal
+      return passwordStore.state.backspaceSignal
     },
     crSignal() {
-      return keyboardStore.state.crSignal
+      return passwordStore.state.crSignal
     },
     recordKeyPresses() {
-      return keyboardStore.state.displayPasswordWindow && !keyboardStore.state.displayPasswordRecoveryWindow
+      return passwordStore.state.displayPasswordWindow && !passwordStore.state.displayPasswordRecoveryWindow
     },
   },
   methods: {
@@ -104,7 +104,7 @@ export default {
       this.password = ''
     },
     displayPasswordRecoveryWindow() {
-      keyboardStore.state.displayPasswordRecoveryWindow = true
+      passwordStore.state.displayPasswordRecoveryWindow = true
     },
   },
   watch: {

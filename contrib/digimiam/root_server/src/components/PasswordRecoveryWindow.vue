@@ -45,7 +45,7 @@
 <script>
 import Window from '@/components/Window.vue'
 import ButtonOrange from '@/components/ButtonOrange.vue'
-import keyboardStore from '@/store/keyboardStore.js'
+import passwordStore from '@/store/passwordStore.js'
 
 export default {
   name: "PasswordRecoveryWindow",
@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     displayed() {
-      return keyboardStore.state.displayPasswordRecoveryWindow
+      return passwordStore.state.displayPasswordRecoveryWindow
     },
     top() {
       return "calc(0px + " + this.topOffset + "px)"
@@ -79,24 +79,24 @@ export default {
       return "scaleX(" + this.scaleX + ") scaleY(" + this.scaleY + ")"
     },
     lastPressedCharacter() {
-      return keyboardStore.state.lastPressedCharacter
+      return passwordStore.state.lastPressedCharacter
     },
     pressSignal() {
-      return keyboardStore.state.pressSignal
+      return passwordStore.state.pressSignal
     },
     backspaceSignal() {
-      return keyboardStore.state.backspaceSignal
+      return passwordStore.state.backspaceSignal
     },
     crSignal() {
-      return keyboardStore.state.crSignal
+      return passwordStore.state.crSignal
     },
     recordKeyPresses() {
-      return keyboardStore.state.displayPasswordRecoveryWindow
+      return passwordStore.state.displayPasswordRecoveryWindow
     },
   },
   methods: {
     validate() {
-      if (keyboardStore.state.secretAnswers.includes(this.secretAnswer)) {
+      if (passwordStore.state.secretAnswers.includes(this.secretAnswer)) {
         this.errorMessageOpacityAnimation.pause()
         this.errorMessageOpacityAnimation = this.$anime({
           targets: this,
@@ -104,7 +104,7 @@ export default {
           duration: 500,
           easing: 'easeInQuad',
         })
-        keyboardStore.commit('success')
+        passwordStore.commit('success')
       } else {
         this.errorMessageOpacityAnimation.pause()
         this.errorMessageOpacity = 1
@@ -118,7 +118,7 @@ export default {
       }
     },
     hidePasswordRecoveryWindow() {
-      keyboardStore.commit('hidePasswordRecoveryWindow')
+      passwordStore.commit('hidePasswordRecoveryWindow')
     },
   },
   watch: {

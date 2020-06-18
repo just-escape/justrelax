@@ -36,7 +36,7 @@
 <script>
 import Window from '@/components/Window.vue'
 import ServiceStatus from '@/components/ServiceStatus.vue'
-import keyboardStore from '@/store/keyboardStore.js'
+import passwordStore from '@/store/passwordStore.js'
 
 export default {
   name: "ServicesWindow",
@@ -88,17 +88,17 @@ export default {
   },
   methods: {
     togglePasswordWindow() {
-      if (keyboardStore.state.displayPasswordWindow) {
-        keyboardStore.commit('hidePasswordWindow')
+      if (passwordStore.state.displayPasswordWindow) {
+        passwordStore.commit('hidePasswordWindow')
       } else {
-        keyboardStore.commit('displayPasswordWindow')
+        passwordStore.commit('displayPasswordWindow')
       }
     },
     togglePasswordRecoveryWindow() {
-      if (keyboardStore.state.displayPasswordRecoveryWindow) {
-        keyboardStore.commit('hidePasswordRecoveryWindow')
+      if (passwordStore.state.displayPasswordRecoveryWindow) {
+        passwordStore.commit('hidePasswordRecoveryWindow')
       } else {
-        keyboardStore.commit('displayPasswordRecoveryWindow')
+        passwordStore.commit('displayPasswordRecoveryWindow')
       }
     },
   }

@@ -29,7 +29,7 @@
 import KeyboardDodecagon from '@/components/KeyboardDodecagon.vue'
 import KeyboardSpaceBar from '@/components/KeyboardSpaceBar.vue'
 import KeyboardLetter from '@/components/KeyboardLetter.vue'
-import keyboardStore from '@/store/keyboardStore.js'
+import passwordStore from '@/store/passwordStore.js'
 
 export default {
   name: "Keyboard",
@@ -196,7 +196,7 @@ export default {
   },
   computed: {
     isKeyboardActive() {
-      return keyboardStore.state.displayPasswordWindow || keyboardStore.state.displayPasswordRecoveryWindow
+      return passwordStore.state.displayPasswordWindow || passwordStore.state.displayPasswordRecoveryWindow
     },
   },
   watch: {
