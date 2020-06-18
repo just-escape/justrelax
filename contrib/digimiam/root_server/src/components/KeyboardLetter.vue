@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import passwordStore from '@/store/passwordStore.js'
+import businessStore from '@/store/businessStore.js'
 
 export default {
   name: "KeyboardLetter",
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     press() {
-      if (passwordStore.state.displayPasswordWindow || passwordStore.state.displayPasswordRecoveryWindow) {
+      if (businessStore.state.displayPasswordWindow || businessStore.state.displayPasswordRecoveryWindow) {
         this.$anime.timeline({
           targets: this,
         })
@@ -86,7 +86,7 @@ export default {
           easing: 'easeInSine',
         })
 
-        passwordStore.commit('press', this.character)
+        businessStore.commit('press', this.character)
       }
     },
   },

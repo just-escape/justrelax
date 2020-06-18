@@ -14,6 +14,7 @@ let store = new Vuex.Store({
     crSignal: false,
     displayPasswordWindow: false,
     displayPasswordRecoveryWindow: false,
+    displayDangerWindow: false,
     success: false,
   },
   mutations: {
@@ -42,6 +43,12 @@ let store = new Vuex.Store({
     },
     hidePasswordRecoveryWindow (state) {
       state.displayPasswordRecoveryWindow = false
+    },
+    displayDangerWindow (state) {
+      state.displayDangerWindow = true
+    },
+    hideDangerWindow (state) {
+      state.displayDangerWindow = false
     },
     success (state) {
       state.success = true

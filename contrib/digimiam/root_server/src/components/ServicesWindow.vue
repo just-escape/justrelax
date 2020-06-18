@@ -5,8 +5,17 @@
         <ServiceStatus class="mb-3" :label="'Synchronisation'">
           <i class="fas fa-project-diagram size-50 text-teal"></i>
         </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="'Ventilation'">
-          <i class="fas fa-fan size-50 text-teal"></i>
+        <ServiceStatus
+          class="mb-3" :label="'Ventilation'"
+          :error="blinkVentilationService"
+        >
+          <i
+            class="fas fa-fan size-50"
+            :class="{
+              'text-teal': !blinkVentilationService,
+              'text-red': blinkVentilationService,
+            }"
+          ></i>
         </ServiceStatus>
         <ServiceStatus class="mb-3" :label="'Bras'">
           <img src="@/assets/robotics.png" height="53px">
@@ -36,6 +45,7 @@
 <script>
 import Window from '@/components/Window.vue'
 import ServiceStatus from '@/components/ServiceStatus.vue'
+import businessStore from '@/store/businessStore.js'
 
 export default {
   name: "ServicesWindow",
@@ -45,6 +55,7 @@ export default {
   },
   data() {
     return {
+      blinkVentilationService: false,
       services: [
         [
           {
@@ -84,6 +95,23 @@ export default {
         ],
       ]
     }
+  },
+  computed: {
+    displayDangerWindow() {
+      return businessStore.state.displayDangerWindow
+    },
+  },
+  methods: {
+    activateVentilationServiceBlink() {
+      this.blinkVentilationService = true
+    },
+  },
+  watch: {
+    displayDangerWindow(newValue) {
+      if (newValue) {
+        setTimeout(this.activateVentilationServiceBlink, 375)
+      }
+    },
   },
 }
 </script>

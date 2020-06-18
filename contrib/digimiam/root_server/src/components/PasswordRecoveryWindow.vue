@@ -4,7 +4,7 @@
     :style="{top: top, left: left, transform: transform}"
   >
     <Window :title="'AUTHENTIFICATION AUXILIAIRE'" theme="warning">
-      <div class="d-flex flex-column justify-content-between px-3 py-4 h-100 bg-back-transparent text-orange-light">
+      <div class="d-flex flex-column justify-content-between px-3 py-4 h-100 bg-black-transparent text-orange-light">
         <div class="text-18">
           <div>
             L'authenfication de secours est activée. Vous pouvez vous authentifier en répondant à votre question secrète :
@@ -45,7 +45,7 @@
 <script>
 import Window from '@/components/Window.vue'
 import ButtonOrange from '@/components/ButtonOrange.vue'
-import passwordStore from '@/store/passwordStore.js'
+import businessStore from '@/store/businessStore.js'
 
 export default {
   name: "PasswordRecoveryWindow",
@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     displayed() {
-      return passwordStore.state.displayPasswordRecoveryWindow
+      return businessStore.state.displayPasswordRecoveryWindow
     },
     top() {
       return "calc(0px + " + this.topOffset + "px)"
@@ -79,24 +79,24 @@ export default {
       return "scaleX(" + this.scaleX + ") scaleY(" + this.scaleY + ")"
     },
     lastPressedCharacter() {
-      return passwordStore.state.lastPressedCharacter
+      return businessStore.state.lastPressedCharacter
     },
     pressSignal() {
-      return passwordStore.state.pressSignal
+      return businessStore.state.pressSignal
     },
     backspaceSignal() {
-      return passwordStore.state.backspaceSignal
+      return businessStore.state.backspaceSignal
     },
     crSignal() {
-      return passwordStore.state.crSignal
+      return businessStore.state.crSignal
     },
     recordKeyPresses() {
-      return passwordStore.state.displayPasswordRecoveryWindow
+      return businessStore.state.displayPasswordRecoveryWindow
     },
   },
   methods: {
     validate() {
-      if (passwordStore.state.secretAnswers.includes(this.secretAnswer)) {
+      if (businessStore.state.secretAnswers.includes(this.secretAnswer)) {
         this.errorMessageOpacityAnimation.pause()
         this.errorMessageOpacityAnimation = this.$anime({
           targets: this,
@@ -104,7 +104,7 @@ export default {
           duration: 500,
           easing: 'easeInQuad',
         })
-        passwordStore.commit('success')
+        businessStore.commit('success')
       } else {
         this.errorMessageOpacityAnimation.pause()
         this.errorMessageOpacity = 1
@@ -118,7 +118,7 @@ export default {
       }
     },
     hidePasswordRecoveryWindow() {
-      passwordStore.commit('hidePasswordRecoveryWindow')
+      businessStore.commit('hidePasswordRecoveryWindow')
     },
   },
   watch: {

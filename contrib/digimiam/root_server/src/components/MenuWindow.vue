@@ -3,20 +3,20 @@
     <div class="d-flex flex-row justify-content-around mx-4 h-100">
       <div class="d-flex flex-column align-items-center justify-content-center h-100">
         <ServiceStatus class="mb-3" :label="'?'">
-          <i  @click="togglePasswordWindow" class="fas fa-question size-50 text-teal"></i>
+          <i @click="togglePasswordWindow" class="fas fa-question size-50 text-teal"></i>
         </ServiceStatus>
         <ServiceStatus class="mb-3" :label="'?'">
           <i @click="togglePasswordRecoveryWindow" class="fas fa-question size-50 text-teal"></i>
         </ServiceStatus>
         <ServiceStatus class="mb-3" :label="'?'">
-          <i class="fas fa-question size-50 text-teal"></i>
+          <i @click="toggleDangerWindow" class="fas fa-question size-50 text-teal"></i>
         </ServiceStatus>
         <ServiceStatus class="mb-3" :label="'?'">
           <i class="fas fa-question size-50 text-teal"></i>
         </ServiceStatus>
       </div>
       <div class="d-flex flex-column align-items-center justify-content-center h-100">
-        <ServiceStatus @click="togglePasswordRecoveryWindow" class="mb-3" :label="'?'">
+        <ServiceStatus class="mb-3" :label="'?'">
           <i class="fas fa-question size-50 text-teal"></i>
         </ServiceStatus>
         <ServiceStatus class="mb-3" :label="'?'">
@@ -36,7 +36,7 @@
 <script>
 import Window from '@/components/Window.vue'
 import ServiceStatus from '@/components/ServiceStatus.vue'
-import passwordStore from '@/store/passwordStore.js'
+import businessStore from '@/store/businessStore.js'
 
 export default {
   name: "ServicesWindow",
@@ -88,17 +88,24 @@ export default {
   },
   methods: {
     togglePasswordWindow() {
-      if (passwordStore.state.displayPasswordWindow) {
-        passwordStore.commit('hidePasswordWindow')
+      if (businessStore.state.displayPasswordWindow) {
+        businessStore.commit('hidePasswordWindow')
       } else {
-        passwordStore.commit('displayPasswordWindow')
+        businessStore.commit('displayPasswordWindow')
       }
     },
     togglePasswordRecoveryWindow() {
-      if (passwordStore.state.displayPasswordRecoveryWindow) {
-        passwordStore.commit('hidePasswordRecoveryWindow')
+      if (businessStore.state.displayPasswordRecoveryWindow) {
+        businessStore.commit('hidePasswordRecoveryWindow')
       } else {
-        passwordStore.commit('displayPasswordRecoveryWindow')
+        businessStore.commit('displayPasswordRecoveryWindow')
+      }
+    },
+    toggleDangerWindow() {
+      if (businessStore.state.displayDangerWindow) {
+        businessStore.commit('hideDangerWindow')
+      } else {
+        businessStore.commit('displayDangerWindow')
       }
     },
   }

@@ -53,6 +53,14 @@ export default {
   font-size: 18px;
 }
 
+.text-big {
+  font-size: 28px;
+}
+
+.text-biiig {
+  font-size: 300px;
+}
+
 .z-index-20 {
   z-index: 20;
 }
@@ -68,7 +76,7 @@ export default {
 }
 
 .text-red {
-  color: red;
+  color: rgb(230, 0, 40);
 }
 
 .size-50 {
@@ -97,7 +105,7 @@ button:hover {
   height: 350px;
 }
 
-.bg-back-transparent {
+.bg-black-transparent {
   background-color: rgba(0, 0, 0, 0.8);
 }
 

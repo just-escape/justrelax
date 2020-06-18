@@ -4,7 +4,7 @@
     :style="{top: top, left: left, transform: transform}"
   >
     <Window :title="'AUTHENTIFICATION'" theme="warning">
-      <div class="d-flex flex-column justify-content-between px-3 py-4 h-100 bg-back-transparent text-orange-light">
+      <div class="d-flex flex-column justify-content-between px-3 py-4 h-100 bg-black-transparent text-orange-light">
         <div class="text-18">
           <div>
             L'ouverture du réseau requiert le mot de passe administrateur.
@@ -45,7 +45,7 @@
 <script>
 import Window from '@/components/Window.vue'
 import ButtonOrange from '@/components/ButtonOrange.vue'
-import passwordStore from '@/store/passwordStore.js'
+import businessStore from '@/store/businessStore.js'
 
 export default {
   name: "PasswordWindow",
@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     displayed() {
-      return passwordStore.state.displayPasswordWindow
+      return businessStore.state.displayPasswordWindow
     },
     top() {
       return "calc(0px + " + this.topOffset + "px)"
@@ -79,16 +79,16 @@ export default {
       return "scaleX(" + this.scaleX + ") scaleY(" + this.scaleY + ")"
     },
     pressSignal() {
-      return passwordStore.state.pressSignal
+      return businessStore.state.pressSignal
     },
     backspaceSignal() {
-      return passwordStore.state.backspaceSignal
+      return businessStore.state.backspaceSignal
     },
     crSignal() {
-      return passwordStore.state.crSignal
+      return businessStore.state.crSignal
     },
     recordKeyPresses() {
-      return passwordStore.state.displayPasswordWindow && !passwordStore.state.displayPasswordRecoveryWindow
+      return businessStore.state.displayPasswordWindow && !businessStore.state.displayPasswordRecoveryWindow
     },
   },
   methods: {
@@ -104,7 +104,7 @@ export default {
       this.password = ''
     },
     displayPasswordRecoveryWindow() {
-      passwordStore.state.displayPasswordRecoveryWindow = true
+      businessStore.state.displayPasswordRecoveryWindow = true
     },
   },
   watch: {

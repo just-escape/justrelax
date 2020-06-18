@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import passwordStore from '@/store/passwordStore.js'
+import businessStore from '@/store/businessStore.js'
 
 export default {
   name: "KeyboardDodecagon",
@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     press() {
-      if (passwordStore.state.displayPasswordWindow || passwordStore.state.displayPasswordRecoveryWindow) {
+      if (businessStore.state.displayPasswordWindow || businessStore.state.displayPasswordRecoveryWindow) {
         this.$anime.timeline({
           targets: this,
         })
@@ -124,9 +124,9 @@ export default {
         })
 
         if (this.character === 'BACKSPACE') {
-          passwordStore.commit('backspace')
+          businessStore.commit('backspace')
         } else if (this.character === 'CR') {
-          passwordStore.commit('cr')
+          businessStore.commit('cr')
         }
       }
     },

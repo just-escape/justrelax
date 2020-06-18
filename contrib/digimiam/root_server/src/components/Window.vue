@@ -2,12 +2,24 @@
   <div class="position-relative h-100 w-100">
     <div
       class="window-container position-relative h-100"
-      :class="{warning: theme === 'warning'}"
+      :class="{
+        warning: theme === 'warning',
+        danger: theme === 'danger',
+      }"
     >
-      <div class="window-frame" :class="{warning: theme === 'warning'}"/>
+      <div
+        class="window-frame"
+        :class="{
+          warning: theme === 'warning',
+          danger: theme === 'danger',
+        }"
+      />
       <div
         class="window-title-ribbon mb-2 text-right p-2"
-        :class="{warning: theme === 'warning'}"
+        :class="{
+          warning: theme === 'warning',
+          danger: theme === 'danger',
+        }"
       >
         {{ title }}
       </div>
@@ -68,6 +80,10 @@ export default {
   filter: drop-shadow(1px 1px 4px rgba(255, 69, 0, 0.75));
 }
 
+.window-frame.danger {
+  filter: drop-shadow(1px 1px 4px rgba(230, 0, 40, 1));
+}
+
 .window-frame::before {
   content: '';
   position: absolute;
@@ -97,6 +113,10 @@ export default {
   background-color: orangered;
 }
 
+.window-frame.danger::before {
+  background-color: rgb(230, 0, 40);
+}
+
 .window-title-ribbon {
   position: absolute;
   width: 100%;
@@ -117,6 +137,11 @@ export default {
 
 .window-title-ribbon.warning {
   border-bottom: 1px solid orangered;
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.window-title-ribbon.danger {
+  border-bottom: 1px solid rgb(230, 0, 40);
   background-color: rgba(0, 0, 0, 1);
 }
 </style>
