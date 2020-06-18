@@ -44,7 +44,6 @@ export default {
       bottomOffset: 300,
       scaleX: 0,
       scaleY: 0,
-      animation: null,
     }
   },
   computed: {
@@ -61,7 +60,7 @@ export default {
   watch: {
     displayed(newValue) {
       if (newValue) {
-        this.animation = this.$anime.timeline({
+        this.$anime.timeline({
           targets: this,
         })
         .add({
@@ -77,7 +76,7 @@ export default {
           easing: 'easeOutQuad'
         }, '-=700')
       } else {
-        this.animation = this.$anime.timeline({
+        this.$anime.timeline({
           targets: this,
         })
         .add({
@@ -94,8 +93,6 @@ export default {
         }, '-=300')
       }
     },
-  },
-  created() {
   },
   props: {
     displayed: Boolean,
