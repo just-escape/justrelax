@@ -1,6 +1,15 @@
 <template>
   <Window :title="$t('stock_management')">
     <div class="d-flex flex-column align-items-center justify-content-around h-100">
+      <div class="position-absolute w-100 d-flex flex-row justify-content-center" style="bottom: -44px; left: 0px">
+        <b-btn @click="move('left')" class="mr-2">gauche</b-btn>
+        <b-btn @click="move('down')" class="mr-2">bas</b-btn>
+        <b-btn @click="move('up')" class="mr-2">haut</b-btn>
+        <b-btn @click="move('right')" class="mr-5">droite</b-btn>
+
+        <b-btn @click="reset()">reset</b-btn>
+      </div>
+
       <div
         class="transition-1s"
         :style="{
@@ -144,6 +153,8 @@ export default {
         sokobanStore.commit('move', "right")
       } else if (e.code === "KeyW") {
         sokobanStore.commit('move', 'up')
+      } else if (e.code === "KeyR") {
+        sokobanStore.commit('reset')
       }
     },
     reset() {
