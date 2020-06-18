@@ -33,12 +33,42 @@ export default {
   background: radial-gradient(ellipse at center, #03181f, rgb(3, 26, 34));
 }
 
+.transition-1s {
+  transition: all 1s;
+}
+
 .text-orange {
   color: orangered;
 }
 
+.text-orange-light {
+  color: #fd7e14;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-18 {
+  font-size: 18px;
+}
+
+.z-index-20 {
+  z-index: 20;
+}
+
+.input-warning {
+  border: 1px solid #fd7e14;
+  color: #fd7e14;
+  height: 35px;
+}
+
 .text-teal {
   color: #00d1b6;
+}
+
+.text-red {
+  color: red;
 }
 
 .size-50 {
@@ -60,6 +90,15 @@ button:hover {
 
 .btn-outline-info:not(:disabled):not(.disabled):focus {
   background: transparent;
+}
+
+.password-window {
+  width: 550px;
+  height: 350px;
+}
+
+.bg-back-transparent {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .bottom-right {

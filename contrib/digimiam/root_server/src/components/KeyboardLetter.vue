@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import keyboardStore from '@/store/keyboardStore.js'
+
 export default {
   name: "KeyboardLetter",
   data() {
@@ -67,21 +69,25 @@ export default {
   },
   methods: {
     press() {
-      this.$anime.timeline({
-        targets: this,
-      })
-      .add({
-        scale: 1.2,
-        fillOpacity: 0.2,
-        duration: 175,
-        easing: 'easeOutSine',
-      })
-      .add({
-        scale: 1,
-        fillOpacity: 0,
-        duration: 175,
-        easing: 'easeInSine',
-      })
+      if (keyboardStore.state.displayPasswordWindow || keyboardStore.state.displayPasswordRecoveryWindow) {
+        this.$anime.timeline({
+          targets: this,
+        })
+        .add({
+          scale: 1.2,
+          fillOpacity: 0.2,
+          duration: 175,
+          easing: 'easeOutSine',
+        })
+        .add({
+          scale: 1,
+          fillOpacity: 0,
+          duration: 175,
+          easing: 'easeInSine',
+        })
+
+        keyboardStore.commit('press', this.character)
+      }
     },
   },
   props: {

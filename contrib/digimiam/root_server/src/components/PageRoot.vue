@@ -1,7 +1,6 @@
 <template>
   <div class="position-relative h-100">
     <BackgroundLines/>
-    <!--<PasswordWindow/>-->
 
     <div class="d-flex flex-row h-100 p-5">
       <div class="d-flex flex-column w-25 pr-4">
@@ -32,13 +31,17 @@
       </div>
     </div>
 
+    <PasswordWindow/>
+    <PasswordRecoveryWindow/>
+
     <ExpandableVideos/>
   </div>
 </template>
 
 <script>
 import BackgroundLines from '@/components/BackgroundLines.vue'
-// import PasswordWindow from '@/components/PasswordWindow.vue'
+import PasswordWindow from '@/components/PasswordWindow.vue'
+import PasswordRecoveryWindow from '@/components/PasswordRecoveryWindow.vue'
 import ExpandableVideos from '@/components/ExpandableVideos.vue'
 import MarmitronWindow from '@/components/MarmitronWindow.vue'
 import ServicesWindow from '@/components/ServicesWindow.vue'
@@ -52,7 +55,8 @@ export default {
   components: {
     BackgroundLines,
     ExpandableVideos,
-    // PasswordWindow,
+    PasswordWindow,
+    PasswordRecoveryWindow,
     MarmitronWindow,
     ServicesWindow,
     ConfigurationWindow,

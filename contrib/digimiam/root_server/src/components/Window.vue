@@ -4,7 +4,6 @@
       class="window-container position-relative h-100"
       :class="{warning: theme === 'warning'}"
     >
-      <div class="window-background" :class="{warning: theme === 'warning'}"/>
       <div class="window-frame" :class="{warning: theme === 'warning'}"/>
       <div
         class="window-title-ribbon mb-2 text-right p-2"
@@ -98,27 +97,6 @@ export default {
   background-color: orangered;
 }
 
-.window-background {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background-color: transparent;
-  clip-path: polygon(
-    100% 0%,
-    100% 100%,
-    0% 100%,
-    0% calc(48px - 11px),
-    calc(48px) 0%
-  );
-}
-
-.window-background.warning {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
 .window-title-ribbon {
   position: absolute;
   width: 100%;
@@ -139,6 +117,6 @@ export default {
 
 .window-title-ribbon.warning {
   border-bottom: 1px solid orangered;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 1);
 }
 </style>

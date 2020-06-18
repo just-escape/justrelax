@@ -11,34 +11,34 @@
 
 <script>
 export default {
-  name: 'ButtonBlue',
+  name: 'ButtonOrange',
 }
 </script>
 
 <style scoped>
 button {
-    background-color: rgba(00, 45, 80, 0.6);
-    color: rgba(0, 209, 182, 0.7);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: rgba(253, 126, 20, 0.7);
     border-top: none;
     border-bottom: none;
-    border-right: 3px solid rgba(0, 209, 182, 0.4);
-    border-left: 3px solid rgba(0, 209, 182, 0.4);
+    border-right: 3px solid rgba(253, 126, 20, 0.4);
+    border-left: 3px solid rgba(253, 126, 20, 0.4);
     border-radius: 0px;
     transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out;
 }
 
 button:hover:not(:disabled) {
-    background-color: rgba(00, 209, 182, 0.1);
-    border-right-color: rgba(0, 209, 182, 0.4);
-    border-left-color: rgba(0, 209, 182, 0.4);
-    color: rgba(0, 209, 182, 0.7);
+    background-color: rgba(253, 126, 20, 0.1);
+    border-right-color: rgba(253, 126, 20, 0.4);
+    border-left-color: rgba(253, 126, 20, 0.4);
+    color: rgba(253, 126, 20, 0.7);
 }
 
 button:not(:disabled):not(.disabled):active {
-    background-color: rgba(00, 209, 182, 0.1);
-    border-right-color: rgba(0, 209, 182, 0.4);
-    border-left-color: rgba(0, 209, 182, 0.4);
-    color: rgba(0, 209, 182, 0.7);
+    background-color: rgba(253, 126, 20, 0.1);
+    border-right-color: rgba(253, 126, 20, 0.4);
+    border-left-color: rgba(253, 126, 20, 0.4);
+    color: rgba(253, 126, 20, 0.7);
 }
 
 button:focus, button:not(:disabled):not(.disabled):active:focus {
@@ -48,7 +48,7 @@ button:focus, button:not(:disabled):not(.disabled):active:focus {
 .corner-top-left {
   position: absolute;
   width: 3px;
-  border-top: 3px solid rgba(0, 209, 182, 0.6);
+  border-top: 3px solid rgba(253, 126, 20, 0.6);
   top: 0;
   left: 0px;
 }
@@ -57,7 +57,7 @@ button:focus, button:not(:disabled):not(.disabled):active:focus {
   position: absolute;
   content: '';
   width: 3px;
-  border-top: 3px solid rgba(0, 209, 182, 0.35);
+  border-top: 3px solid rgba(253, 126, 20, 0.35);
   top: -3px;
   left: -3px;
 }
@@ -65,7 +65,7 @@ button:focus, button:not(:disabled):not(.disabled):active:focus {
 .corner-top-right {
   position: absolute;
   width: 3px;
-  border-top: 3px solid rgba(0, 209, 182, 0.6);
+  border-top: 3px solid rgba(253, 126, 20, 0.6);
   top: 0px;
   right: 0px;
 }
@@ -74,7 +74,7 @@ button:focus, button:not(:disabled):not(.disabled):active:focus {
   position: absolute;
   content: '';
   width: 3px;
-  border-top: 3px solid rgba(0, 209, 182, 0.35);
+  border-top: 3px solid rgba(253, 126, 20, 0.35);
   top: -3px;
   right: -3px;
 }
@@ -82,7 +82,7 @@ button:focus, button:not(:disabled):not(.disabled):active:focus {
 .corner-bottom-left {
   position: absolute;
   width: 3px;
-  border-top: 3px solid rgba(0, 209, 182, 0.6);
+  border-top: 3px solid rgba(253, 126, 20, 0.6);
   bottom: 0;
   left: 0px;
 }
@@ -91,7 +91,7 @@ button:focus, button:not(:disabled):not(.disabled):active:focus {
   position: absolute;
   content: '';
   width: 3px;
-  border-top: 3px solid rgba(0, 209, 182, 0.35);
+  border-top: 3px solid rgba(253, 126, 20, 0.35);
   bottom: 0px;
   left: -3px;
 }
@@ -99,7 +99,7 @@ button:focus, button:not(:disabled):not(.disabled):active:focus {
 .corner-bottom-right {
   position: absolute;
   width: 3px;
-  border-top: 3px solid rgba(0, 209, 182, 0.6);
+  border-top: 3px solid rgba(253, 126, 20, 0.6);
   bottom: 0;
   right: 0px;
 }
@@ -108,7 +108,7 @@ button:focus, button:not(:disabled):not(.disabled):active:focus {
   position: absolute;
   content: '';
   width: 3px;
-  border-top: 3px solid rgba(0, 209, 182, 0.35);
+  border-top: 3px solid rgba(253, 126, 20, 0.35);
   bottom: 0;
   right: -3px;
 }

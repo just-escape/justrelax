@@ -15,6 +15,7 @@
         <video
           :ref="'ad-' + videoIndex"
           :src="video.src" class="glowing-container"
+          :poster="video.poster"
           :style="{width: video.width + 'px', height: video.height + 'px'}"
           :controls="video.controls"
           loop
@@ -41,6 +42,7 @@ export default {
         {
           zIndex: 9,
           src: require("@/assets/Wireframe.mp4"),
+          poster: require("@/assets/zephyr_3000.png"),
           initialTop: 624,
           initialLeft: 1576,
           top: 624,
@@ -52,7 +54,8 @@ export default {
         },
         {
           zIndex: 9,
-          src: require("@/assets/Wireframe.mp4"),
+          src: require("@/assets/zephyr_3000.mp4"),
+          poster: require("@/assets/zephyr_3000.png"),
           initialTop: 763,
           initialLeft: 1576,
           top: 763,
@@ -65,6 +68,7 @@ export default {
         {
           zIndex: 9,
           src: require("@/assets/Wireframe.mp4"),
+          poster: require("@/assets/zephyr_3000.png"),
           initialTop: 902,
           initialLeft: 1576,
           top: 902,
@@ -87,10 +91,10 @@ export default {
   },
   methods: {
     expandVideo(videoIndex) {
-      this.videos[videoIndex].zIndex = 11
+      this.videos[videoIndex].zIndex = 31
       this.videos[videoIndex].controls = true
       this.videos[videoIndex].isExpanded = true
-      this.opacifierZIndex = 10
+      this.opacifierZIndex = 30
 
       let this_ = this
 
@@ -160,7 +164,7 @@ export default {
 .opacifier {
   top: 0px;
   left: 0px;
-  z-index: 10;
+  z-index: 30;
   background: black;
 }
 </style>

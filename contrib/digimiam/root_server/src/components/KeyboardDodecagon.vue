@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import keyboardStore from '@/store/keyboardStore.js'
+
 export default {
   name: "KeyboardDodecagon",
   data() {
@@ -104,21 +106,29 @@ export default {
   },
   methods: {
     press() {
-      this.$anime.timeline({
-        targets: this,
-      })
-      .add({
-        scale: 1.2,
-        fillOpacity: 0.2,
-        duration: 175,
-        easing: 'easeOutSine',
-      })
-      .add({
-        scale: 1,
-        fillOpacity: 0,
-        duration: 175,
-        easing: 'easeInSine',
-      })
+      if (keyboardStore.state.displayPasswordWindow || keyboardStore.state.displayPasswordRecoveryWindow) {
+        this.$anime.timeline({
+          targets: this,
+        })
+        .add({
+          scale: 1.2,
+          fillOpacity: 0.2,
+          duration: 175,
+          easing: 'easeOutSine',
+        })
+        .add({
+          scale: 1,
+          fillOpacity: 0,
+          duration: 175,
+          easing: 'easeInSine',
+        })
+
+        if (this.character === 'BACKSPACE') {
+          keyboardStore.commit('backspace')
+        } else if (this.character === 'CR') {
+          keyboardStore.commit('cr')
+        }
+      }
     },
   },
   props: {

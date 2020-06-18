@@ -3,18 +3,19 @@
     class="password-window z-index-20 position-absolute"
     :style="{top: top, left: left, transform: transform}"
   >
-    <Window :title="'AUTHENTIFICATION'" theme="warning">
+    <Window :title="'AUTHENTIFICATION AUXILIAIRE'" theme="warning">
       <div class="d-flex flex-column justify-content-between px-3 py-4 h-100 bg-back-transparent text-orange-light">
         <div class="text-18">
           <div>
-            L'ouverture du réseau requiert le mot de passe administrateur.
+            L'authenfication de secours est activée. Vous pouvez vous authentifier en répondant à votre question secrète :
           </div>
         </div>
         <div class="d-flex flex-column">
+          <div class="font-italic mb-2">Quel est l'ingrédient secret de la succulente gaufresque ?</div>
           <div
-            class="text-18 input-warning mb-2 p-1 rounded"
+            class="text-18 input-warning p-1 rounded"
           >
-            <span v-html="password"/>
+            <span v-html="secretAnswer"/>
             <span
               v-if="recordKeyPresses"
               :style="{
@@ -22,20 +23,19 @@
               }"
             >&#9608;</span>
           </div>
-          <div
-            @click="displayPasswordRecoveryWindow"
-            class="align-self-end text-underline"
-          >
-            Mot de passe oublié ?
-          </div>
         </div>
         <div class="d-flex flex-row justify-content-between">
           <div class="text-red align-self-center" :style="{opacity: errorMessageOpacity}">
-            Mot de passe incorrect.
+            Ce n'est pas la bonne réponse.
           </div>
-          <ButtonOrange @click="validate">
-            Valider
-          </ButtonOrange>
+          <div>
+            <ButtonOrange class="mr-4" @click="validate">
+              Valider
+            </ButtonOrange>
+            <ButtonOrange @click="hidePasswordRecoveryWindow">
+              Annuler
+            </ButtonOrange>
+          </div>
         </div>
       </div>
     </Window>
@@ -48,18 +48,18 @@ import ButtonOrange from '@/components/ButtonOrange.vue'
 import keyboardStore from '@/store/keyboardStore.js'
 
 export default {
-  name: "PasswordWindow",
+  name: "PasswordRecoveryWindow",
   components: {
     Window,
     ButtonOrange,
   },
   data() {
     return {
-      topOffset: 200,
+      topOffset: 350,
       leftOffset: 400,
       scaleX: 0,
       scaleY: 0,
-      password: '',
+      secretAnswer: '',
       fullBlockOpacity: 1,
       errorMessageOpacity: 0,
       errorMessageOpacityAnimation: this.$anime({}),
@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     displayed() {
-      return keyboardStore.state.displayPasswordWindow
+      return keyboardStore.state.displayPasswordRecoveryWindow
     },
     top() {
       return "calc(0px + " + this.topOffset + "px)"
@@ -77,6 +77,9 @@ export default {
     },
     transform() {
       return "scaleX(" + this.scaleX + ") scaleY(" + this.scaleY + ")"
+    },
+    lastPressedCharacter() {
+      return keyboardStore.state.lastPressedCharacter
     },
     pressSignal() {
       return keyboardStore.state.pressSignal
@@ -88,23 +91,34 @@ export default {
       return keyboardStore.state.crSignal
     },
     recordKeyPresses() {
-      return keyboardStore.state.displayPasswordWindow && !keyboardStore.state.displayPasswordRecoveryWindow
+      return keyboardStore.state.displayPasswordRecoveryWindow
     },
   },
   methods: {
     validate() {
-      this.errorMessageOpacityAnimation.pause()
-      this.errorMessageOpacity = 1
-      this.errorMessageOpacityAnimation = this.$anime({
-        targets: this,
-        errorMessageOpacity: 0,
-        duration: 7000,
-        easing: 'easeInQuad',
-      })
-      this.password = ''
+      if (keyboardStore.state.secretAnswers.includes(this.secretAnswer)) {
+        this.errorMessageOpacityAnimation.pause()
+        this.errorMessageOpacityAnimation = this.$anime({
+          targets: this,
+          errorMessageOpacity: 0,
+          duration: 500,
+          easing: 'easeInQuad',
+        })
+        keyboardStore.commit('success')
+      } else {
+        this.errorMessageOpacityAnimation.pause()
+        this.errorMessageOpacity = 1
+        this.errorMessageOpacityAnimation = this.$anime({
+          targets: this,
+          errorMessageOpacity: 0,
+          duration: 7000,
+          easing: 'easeInQuad',
+        })
+        this.secretAnswer = ''
+      }
     },
-    displayPasswordRecoveryWindow() {
-      keyboardStore.state.displayPasswordRecoveryWindow = true
+    hidePasswordRecoveryWindow() {
+      keyboardStore.commit('hidePasswordRecoveryWindow')
     },
   },
   watch: {
@@ -120,8 +134,8 @@ export default {
           easing: 'easeInQuad',
         })
         .add({
-          leftOffset: 70,
-          topOffset: 300,
+          leftOffset: 110,
+          topOffset: 340,
           duration: 700,
           easing: 'easeOutQuad',
         }, '-=700')
@@ -137,20 +151,20 @@ export default {
         })
         .add({
           leftOffset: 400,
-          topOffset: 200,
+          topOffset: 350,
           duration: 400,
           easing: 'easeInOutQuad',
         }, '-=300')
       }
     },
     pressSignal() {
-      if (this.recordKeyPresses && this.password.length < 42) {
-        this.password += '•'
+      if (this.recordKeyPresses && this.secretAnswer.length < 42) {
+        this.secretAnswer += this.lastPressedCharacter
       }
     },
     backspaceSignal() {
-      if (this.recordKeyPresses && this.password.length > 0) {
-        this.password = this.password.slice(0, this.password.length - 1)
+      if (this.recordKeyPresses && this.secretAnswer.length > 0) {
+        this.secretAnswer = this.secretAnswer.slice(0, this.secretAnswer.length - 1)
       }
     },
     crSignal() {

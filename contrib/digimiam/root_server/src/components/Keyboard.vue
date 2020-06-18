@@ -1,6 +1,10 @@
 <template>
   <div class="position-relative w-100 h-100 p-3">
-    <div class="position-absolute keyboard-offset">
+    <div
+      class="position-absolute keyboard-offset transition-1s"
+      :class="{'grayscale': !isKeyboardActive}"
+      :style="{opacity: opacity}"
+    >
       <KeyboardSpaceBar
         :top="149.5" :left="317"
         :width="227.5" :height="105"
@@ -25,6 +29,7 @@
 import KeyboardDodecagon from '@/components/KeyboardDodecagon.vue'
 import KeyboardSpaceBar from '@/components/KeyboardSpaceBar.vue'
 import KeyboardLetter from '@/components/KeyboardLetter.vue'
+import keyboardStore from '@/store/keyboardStore.js'
 
 export default {
   name: "Keyboard",
@@ -35,6 +40,7 @@ export default {
   },
   data() {
     return {
+      opacity: 0,
       specialActions: [
         {
           top: -4,
@@ -187,7 +193,24 @@ export default {
         },
       ],
     }
-  }
+  },
+  computed: {
+    isKeyboardActive() {
+      return keyboardStore.state.displayPasswordWindow || keyboardStore.state.displayPasswordRecoveryWindow
+    },
+  },
+  watch: {
+    isKeyboardActive(newValue) {
+      if (newValue) {
+        this.$anime({
+          targets: this,
+          opacity: 1,
+          duration: 5000,
+          easing: 'linear',
+        })
+      }
+    },
+  },
 }
 </script>
 
@@ -195,5 +218,9 @@ export default {
 .keyboard-offset {
   left: -80px;
   top: 0px;
+}
+
+.grayscale {
+  filter: grayscale(70%);
 }
 </style>
