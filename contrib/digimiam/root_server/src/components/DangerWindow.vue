@@ -6,11 +6,11 @@
     <Window :title="'DANGER'" theme="danger">
       <div class="d-flex flex-column h-100 justify-content-center align-items-center bg-black-transparent">
         <div class="d-flex flex-column align-items-center">
-          <i class="text-red fa fa-biohazard mb-4 text-biiig" :style="{opacity: opacity}"/>
-          <div class="text-big">
+          <i class="text-red fa fa-biohazard mb-4 text-big" :style="{opacity: opacity}"/>
+          <div>
             Air toxique détecté
           </div>
-          <div class="text-big">
+          <div>
             Évacuation immédiate des humains requise
           </div>
         </div>
@@ -57,8 +57,8 @@ export default {
         targets: this,
         opacity: 0,
         duration: 1,
-        delay: 80,
-        endDelay: 80,
+        delay: 100,
+        endDelay: 150,
         loop: true,
         direction: 'alternate',
         easing: 'easeInQuad',

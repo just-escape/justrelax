@@ -34,6 +34,7 @@
     <PasswordWindow/>
     <PasswordRecoveryWindow/>
     <DangerWindow/>
+    <OverlayVideo/>
 
     <ExpandableVideos/>
   </div>
@@ -51,6 +52,7 @@ import ConfigurationWindow from '@/components/ConfigurationWindow.vue'
 import AdsWindow from '@/components/AdsWindow.vue'
 import MenuWindow from '@/components/MenuWindow.vue'
 import Keyboard from '@/components/Keyboard.vue'
+import OverlayVideo from '@/components/OverlayVideo.vue'
 
 export default {
   name: 'PageRoot',
@@ -66,6 +68,7 @@ export default {
     AdsWindow,
     MenuWindow,
     Keyboard,
+    OverlayVideo,
   },
   created() {
     var lang = this.$route.query.lang

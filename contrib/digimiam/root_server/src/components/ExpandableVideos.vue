@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import businessStore from '@/store/businessStore.js'
+
 export default {
   name: "ExpandableVideos",
   data() {
@@ -91,34 +93,36 @@ export default {
   },
   methods: {
     expandVideo(videoIndex) {
-      this.videos[videoIndex].zIndex = 31
-      this.videos[videoIndex].controls = true
-      this.videos[videoIndex].isExpanded = true
-      this.opacifierZIndex = 30
+      if (!businessStore.state.success) {
+        this.videos[videoIndex].zIndex = 31
+        this.videos[videoIndex].controls = true
+        this.videos[videoIndex].isExpanded = true
+        this.opacifierZIndex = 30
 
-      let this_ = this
+        let this_ = this
 
-      this.$anime.timeline({
-        duration: 800,
-        easing: 'easeOutQuad',
-        complete: function() {
-          // Just in case someone toggles expand three times in 1 second.
-          if (this_.videos[videoIndex].isExpanded) {
-            this_.$refs['ad-' + videoIndex][0].play()
+        this.$anime.timeline({
+          duration: 800,
+          easing: 'easeOutQuad',
+          complete: function() {
+            // Just in case someone toggles expand three times in 1 second.
+            if (this_.videos[videoIndex].isExpanded) {
+              this_.$refs['ad-' + videoIndex][0].play()
+            }
           }
-        }
-      })
-      .add({
-        targets: this.videos[videoIndex],
-        top: this.videoExpandedTop,
-        left: this.videoExpandedLeft,
-        width: this.videoExpandedWidth,
-        height: this.videoExpandedHeight,
-      })
-      .add({
-        targets: this,
-        opacifierOpacity: 0.35,
-      }, '-=800')
+        })
+        .add({
+          targets: this.videos[videoIndex],
+          top: this.videoExpandedTop,
+          left: this.videoExpandedLeft,
+          width: this.videoExpandedWidth,
+          height: this.videoExpandedHeight,
+        })
+        .add({
+          targets: this,
+          opacifierOpacity: 0.35,
+        }, '-=800')
+      }
     },
     reduceVideo(videoIndex) {
       this.opacifierZIndex = -1

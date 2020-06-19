@@ -54,10 +54,6 @@ export default {
 }
 
 .text-big {
-  font-size: 28px;
-}
-
-.text-biiig {
   font-size: 300px;
 }
 

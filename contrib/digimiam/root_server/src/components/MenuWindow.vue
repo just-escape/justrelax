@@ -3,16 +3,16 @@
     <div class="d-flex flex-row justify-content-around mx-4 h-100">
       <div class="d-flex flex-column align-items-center justify-content-center h-100">
         <ServiceStatus class="mb-3" :label="'?'">
-          <i @click="togglePasswordWindow" class="fas fa-question size-50 text-teal"></i>
+          <i @click="animation1" class="fas fa-question size-50 text-teal"></i>
         </ServiceStatus>
         <ServiceStatus class="mb-3" :label="'?'">
-          <i @click="togglePasswordRecoveryWindow" class="fas fa-question size-50 text-teal"></i>
+          <i @click="animation2" class="fas fa-question size-50 text-teal"></i>
         </ServiceStatus>
         <ServiceStatus class="mb-3" :label="'?'">
-          <i @click="toggleDangerWindow" class="fas fa-question size-50 text-teal"></i>
+          <i @click="animation3" class="fas fa-question size-50 text-teal"></i>
         </ServiceStatus>
         <ServiceStatus class="mb-3" :label="'?'">
-          <i class="fas fa-question size-50 text-teal"></i>
+          <i @click="ms_pepper_mad" class="fas fa-question size-50 text-teal"></i>
         </ServiceStatus>
       </div>
       <div class="d-flex flex-column align-items-center justify-content-center h-100">
@@ -87,27 +87,18 @@ export default {
     }
   },
   methods: {
-    togglePasswordWindow() {
-      if (businessStore.state.displayPasswordWindow) {
-        businessStore.commit('hidePasswordWindow')
-      } else {
-        businessStore.commit('displayPasswordWindow')
-      }
+    animation1() {
+      businessStore.commit('playMarmitronAnimation', 'animation1')
     },
-    togglePasswordRecoveryWindow() {
-      if (businessStore.state.displayPasswordRecoveryWindow) {
-        businessStore.commit('hidePasswordRecoveryWindow')
-      } else {
-        businessStore.commit('displayPasswordRecoveryWindow')
-      }
+    animation2() {
+      businessStore.commit('playMarmitronAnimation', 'animation2')
     },
-    toggleDangerWindow() {
-      if (businessStore.state.displayDangerWindow) {
-        businessStore.commit('hideDangerWindow')
-      } else {
-        businessStore.commit('displayDangerWindow')
-      }
+    animation3() {
+      businessStore.commit('playMarmitronAnimation', 'animation3')
     },
+    ms_pepper_mad() {
+      businessStore.commit('playOverlayVideo', 'ms_pepper_mad')
+    }
   }
 }
 </script>

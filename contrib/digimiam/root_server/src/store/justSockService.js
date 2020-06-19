@@ -4,7 +4,9 @@ import Vuex from 'vuex'
 import i18n from '@/locales.js'
 import router from '@/router.js'
 
-Vue.use(Vuex);
+import businessStore from '@/store/businessStore.js'
+
+Vue.use(Vuex)
 
 const justSockService = new Vuex.Store({
   mutations: {
@@ -49,6 +51,12 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
+      } else if (event.category === 'display_password_window') {
+        businessStore.commit('displayPasswordWindow')
+      } else if (event.category === 'final_animation') {
+        businessStore.commit('finalAnimation')
+      } else if (event.category === 'display_danger_window') {
+        businessStore.commit('displayDangerWindow')
       }
     },
     SOCKET_RECONNECT (state, count) {
