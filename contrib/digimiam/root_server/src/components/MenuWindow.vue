@@ -1,104 +1,96 @@
 <template>
   <Window :title="$t('MENU')">
-    <div class="d-flex flex-row justify-content-around mx-4 h-100">
-      <div class="d-flex flex-column align-items-center justify-content-center h-100">
-        <ServiceStatus class="mb-3" :label="'?'">
-          <i @click="animation1" class="fas fa-question size-50 text-teal"></i>
-        </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="'?'">
-          <i @click="animation2" class="fas fa-question size-50 text-teal"></i>
-        </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="'?'">
-          <i @click="animation3" class="fas fa-question size-50 text-teal"></i>
-        </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="'?'">
-          <i @click="ms_pepper_mad" class="fas fa-question size-50 text-teal"></i>
-        </ServiceStatus>
+    <div class="d-flex flex-column justify-content-around align-items-center mx-4 h-100" style="font-size: 40px">
+      TODO
+      <!--<div class="d-flex flex-row justify-content-center">
+        <ResearchComponent
+          :shuffleSignal="components[0].shuffleSignal"
+          :possibilities="components[0].possibilities"
+          @stop="stop(0)"
+        />
       </div>
-      <div class="d-flex flex-column align-items-center justify-content-center h-100">
-        <ServiceStatus class="mb-3" :label="'?'">
-          <i class="fas fa-question size-50 text-teal"></i>
-        </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="'?'">
-          <i class="fas fa-question size-50 text-teal"></i>
-        </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="'?'">
-          <i class="fas fa-question size-50 text-teal"></i>
-        </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="'?'">
-          <i class="fas fa-question size-50 text-teal"></i>
-        </ServiceStatus>
+      <div class="d-flex flex-row justify-content-around mb-5">
+        <ResearchComponent
+          :shuffleSignal="components[1].shuffleSignal"
+          :possibilities="components[1].possibilities"
+          @stop="stop(1)"
+        />
+        <ResearchComponent
+          :shuffleSignal="components[2].shuffleSignal"
+          :possibilities="components[2].possibilities"
+          @stop="stop(2)"
+        />
       </div>
+      <div class="d-flex flex-row justify-content-center">
+        <i class="fa fa-times"/>
+      </div>-->
     </div>
   </Window>
 </template>
 
 <script>
 import Window from '@/components/Window.vue'
-import ServiceStatus from '@/components/ServiceStatus.vue'
-import businessStore from '@/store/businessStore.js'
+// import ResearchComponent from '@/components/ResearchComponent.vue'
 
 export default {
   name: "ServicesWindow",
   components: {
     Window,
-    ServiceStatus,
+    // ResearchComponent,
   },
   data() {
     return {
-      services: [
-        [
-          {
-            label: "Synchronisation",
-            picture: '<i class="fas fa-project-diagram fa-fw size-50 text-teal"></i>',
-          },
-          {
-            label: "Synchronisation",
-            picture: '<i class="fas fa-project-diagram fa-fw size-50 text-teal"></i>',
-          },
-          {
-            label: "Synchronisation",
-            picture: '<i class="fas fa-project-diagram fa-fw size-50 text-teal"></i>',
-          },
-          {
-            label: "Synchronisation",
-            picture: '<i class="fas fa-project-diagram fa-fw size-50 text-teal"></i>',
-          },
-        ],
-        [
-          {
-            label: "Menu",
-            picture: '',
-          },
-          {
-            label: "Synchronisation",
-            picture: '<i class="fas fa-project-diagram fa-fw size-50 text-teal"></i>',
-          },
-          {
-            label: "Synchronisation",
-            picture: '<i class="fas fa-project-diagram fa-fw size-50 text-teal"></i>',
-          },
-          {
-            label: "Synchronisation",
-            picture: '<i class="fas fa-project-diagram fa-fw size-50 text-teal"></i>',
-          },
-        ],
+      components: [
+        {
+          shuffleSignal: false,
+          possibilities: [
+            '<i class="fa fa-plus"/>',
+            '<i class="fa fa-minus"/>',
+            '<i class="fa fa-times"/>',
+          ],
+          shuffling: true,
+        },
+        {
+          shuffleSignal: false,
+          possibilities: [
+            '<i class="fa fa-plus"/>',
+            '<i class="fa fa-minus"/>',
+            '<i class="fa fa-times"/>',
+          ],
+          shuffling: true,
+        },
+        {
+          shuffleSignal: false,
+          possibilities: [
+            '<i class="fa fa-plus"/>',
+            '<i class="fa fa-minus"/>',
+            '<i class="fa fa-times"/>',
+          ],
+          shuffling: true,
+        }
       ]
     }
   },
   methods: {
-    animation1() {
-      businessStore.commit('playMarmitronAnimation', 'animation1')
+    shuffle() {
+      for (var c of this.components) {
+        c.shuffling = true
+        c.shuffleSignal = !c.shuffleSignal
+      }
     },
-    animation2() {
-      businessStore.commit('playMarmitronAnimation', 'animation2')
+    stop(componentIndex) {
+      this.components[componentIndex].shuffling = false
+      if (
+        this.components[0].shuffling === false &&
+        this.components[1].shuffling === false &&
+        this.components[2].shuffling === false
+      ) {
+        setTimeout(this.shuffle, 1000)
+      }
     },
-    animation3() {
-      businessStore.commit('playMarmitronAnimation', 'animation3')
-    },
-    ms_pepper_mad() {
-      businessStore.commit('playOverlayVideo', 'ms_pepper_mad')
-    }
-  }
+  },
+  mounted() {
+    this.shuffle()
+  },
 }
 </script>
