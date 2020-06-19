@@ -3,15 +3,15 @@
     class="password-window z-index-20 position-absolute"
     :style="{top: top, left: left, transform: transform}"
   >
-    <Window :title="'AUTHENTIFICATION AUXILIAIRE'" theme="warning">
+    <Window :title="$t('fallback_authentication')" theme="warning">
       <div class="d-flex flex-column justify-content-between px-3 py-4 h-100 bg-black-transparent text-orange-light">
         <div class="text-18">
           <div>
-            L'authenfication de secours est activée. Vous pouvez vous authentifier en répondant à votre question secrète :
+            {{ $t('fallback_authentication_is_enabled') }}
           </div>
         </div>
         <div class="d-flex flex-column">
-          <div class="font-italic mb-2">Quel est l'ingrédient secret de la succulente gaufresque ?</div>
+          <div class="font-italic mb-2">{{ $t('what_is_the_secret_ingredient') }}</div>
           <div
             class="text-18 input-warning p-1 rounded"
           >
@@ -26,14 +26,14 @@
         </div>
         <div class="d-flex flex-row justify-content-between">
           <div class="text-red align-self-center" :style="{opacity: errorMessageOpacity}">
-            Ce n'est pas la bonne réponse.
+            {{ $t('that_is_not_the_right_answer') }}
           </div>
           <div>
             <ButtonOrange class="mr-4" @click="validate">
-              Valider
+              {{ $t('confirm') }}
             </ButtonOrange>
             <ButtonOrange @click="hidePasswordRecoveryWindow">
-              Annuler
+              {{ $t('cancel') }}
             </ButtonOrange>
           </div>
         </div>

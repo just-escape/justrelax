@@ -5,6 +5,7 @@
     <OrderSummary class="position-absolute order-summary"/>
     <VentilatorsDocumentation class="position-absolute"/>
     <OverlayVideo class="position-absolute"/>
+    <DangerWindow/>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import ItemSelector from '@/components/ItemSelector.vue'
 import OrderSummary from '@/components/OrderSummary.vue'
 import VentilatorsDocumentation from '@/components/VentilatorsDocumentation.vue'
 import OverlayVideo from '@/components/OverlayVideo.vue'
+import DangerWindow from '@/components/DangerWindow.vue'
 
 export default {
   name: 'PageRoot',
@@ -23,6 +25,7 @@ export default {
     OrderSummary,
     VentilatorsDocumentation,
     OverlayVideo,
+    DangerWindow,
   },
   created() {
     var lang = this.$route.query.lang

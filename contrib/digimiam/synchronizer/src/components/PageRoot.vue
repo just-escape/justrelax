@@ -20,6 +20,7 @@
         <Logs/>
       </div>
     </div>
+    <DangerWindow/>
   </div>
 </template>
 
@@ -27,6 +28,7 @@
 import BackgroundLines from '@/components/BackgroundLines.vue'
 import LightPuzzle from '@/components/LightPuzzle.vue'
 import MenuPuzzle from '@/components/MenuPuzzle.vue'
+import DangerWindow from '@/components/DangerWindow.vue'
 import Logs from '@/components/Logs.vue'
 import menuStore from '@/store/menuStore.js'
 
@@ -37,6 +39,7 @@ export default {
     Logs,
     LightPuzzle,
     MenuPuzzle,
+    DangerWindow,
   },
   methods: {
     cursorMove: function(event) {

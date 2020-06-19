@@ -60,4 +60,20 @@ export default {
   border: 1px solid #00d1b6;
   box-shadow: 0px 0px 14px -6px rgba(0, 209, 182, 1);
 }
+
+.z-index-20 {
+  z-index: 20;
+}
+
+.bg-black-transparent {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.text-big {
+  font-size: 300px;
+}
+
+.text-red {
+  color: rgb(230, 0, 40);
+}
 </style>

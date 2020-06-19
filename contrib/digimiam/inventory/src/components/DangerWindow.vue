@@ -3,7 +3,7 @@
     class="danger-window z-index-20 position-absolute"
     :style="{top: top, left: left, transform: transform}"
   >
-    <Window :title="$t('danger')" theme="danger">
+    <Window :title="$t('danger')" class="text-light text-code-new-roman" theme="danger">
       <div class="d-flex flex-column h-100 justify-content-center align-items-center bg-black-transparent">
         <div class="d-flex flex-column align-items-center">
           <i class="text-red fa fa-biohazard mb-4 text-big" :style="{opacity: opacity}"/>
@@ -21,7 +21,7 @@
 
 <script>
 import Window from '@/components/Window.vue'
-import businessStore from '@/store/businessStore.js'
+import progressionStore from '@/store/progressionStore.js'
 
 export default {
   name: "DangerWindow",
@@ -30,8 +30,8 @@ export default {
   },
   data() {
     return {
-      topOffset: 180,
-      leftOffset: 420,
+      topOffset: 420,
+      leftOffset: 180,
       scaleX: 0,
       scaleY: 0,
       opacity: 1,
@@ -48,7 +48,7 @@ export default {
       return "scaleX(" + this.scaleX + ") scaleY(" + this.scaleY + ")"
     },
     displayed() {
-      return businessStore.state.displayDangerWindow
+      return progressionStore.state.displayDangerWindow
     },
   },
   methods: {
@@ -93,7 +93,7 @@ export default {
 
 <style scoped>
 .danger-window {
-  width: 1080px;
-  height: 720px;
+  width: 720px;
+  height: 1080px;
 }
 </style>

@@ -3,14 +3,13 @@
     <video src="@/assets/fond_marmitron.mp4" autoplay mute loop/>
     <video
       ref="idleVideo"
-      class="position-absolute top-left transition-1s"
+      class="position-absolute top-left"
       :style="{opacity: idleOpacity}"
       src="@/assets/Idle_marmitron_webm.webm" mute autoplay loop/>
     <video
       v-for="(action, actionIndex) in actions" :key="actionIndex"
-      :id="action.ref"
       :ref="action.ref"
-      class="position-absolute top-left transition-1s"
+      class="position-absolute top-left"
       :style="{opacity: action.opacity}"
       :src="action.video" mute/>
   </div>
@@ -108,6 +107,7 @@ export default {
     },
     resumeIdle() {
       orderStore.commit('unlockSelectorScroll')
+      this.$refs.idleVideo.play()
 
       let this_ = this
 
@@ -127,7 +127,6 @@ export default {
       .add({
         duration: 1,
         update() {
-          this_.$refs.idleVideo.play()
           this_.actionVideo.currentTime = 0
           this_.actionVideo.pause()
         }
@@ -150,9 +149,5 @@ export default {
 .top-left {
   top: 0px;
   left: 0px;
-}
-
-.transition-1s {
-  transition: all 0s;
 }
 </style>

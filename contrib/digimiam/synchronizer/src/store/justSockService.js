@@ -7,7 +7,8 @@ import router from '@/router.js'
 import lightStore from '@/store/lightStore.js'
 import logStore from '@/store/logStore.js'
 import difficultyStore from '@/store/difficultyStore.js'
-import menuStore from './menuStore'
+import menuStore from '@/store/menuStore.js'
+import progressionStore from '@/store/progressionStore.js'
 
 Vue.use(Vuex)
 
@@ -69,6 +70,8 @@ const justSockService = new Vuex.Store({
         let color = event['color']
         let activated = event.activated
         lightStore.dispatch('toggleColor', {color, activated})
+      } else if (event.category === 'display_danger_window') {
+        progressionStore.commit('displayDangerWindow')
       }
     },
     SOCKET_RECONNECT (state, count) {

@@ -37,6 +37,9 @@ const locales = {
     we_are_not_able_to_process_your_order: 'We are not able to process your order for an unknown reason.',
     this_information_has_been_teletransmitted: 'This information has been teletransmitted.',
     ok: 'Ok',
+    danger: 'DANGER',
+    toxic_air_detected: 'Toxic air detected',
+    immediate_evac: 'Humans are required to evacuate immediately',
   },
   fr: {
     Ḟ: 'Ḟ',
@@ -71,6 +74,9 @@ const locales = {
     we_are_not_able_to_process_your_order: 'Nous sommes dans l\'impossibilité de traiter votre commande pour une raison inconnue.',
     this_information_has_been_teletransmitted: 'Cette information a été télétransmise.',
     ok: 'Ok',
+    danger: 'DANGER',
+    toxic_air_detected: 'Air toxique détecté',
+    immediate_evac: 'Évacuation immédiate des humains requise',
   }
 }
 

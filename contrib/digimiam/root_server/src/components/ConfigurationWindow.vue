@@ -1,41 +1,41 @@
 <template>
-  <Window :title="$t('CONFIGURATION')" class="h-100">
+  <Window :title="$t('configuration')" class="h-100">
     <div class="d-flex h-100">
       <div class="d-flex flex-column lh-1 mx-4 justify-content-center h-100 w-100">
         <div class="d-flex flex-row mb-5">
-            <div>Mode</div>
+            <div>{{ $t('mode') }}</div>
             <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div><span class="opacity-25">Marmitron</span> / manuel</div>
+            <div><span class="opacity-25">{{ $t('marmitron') }}</span> / {{ $t('manual') }}</div>
         </div>
         <div class="d-flex flex-row mb-3">
-            <div>Sécurité</div>
+            <div>{{ $t('security') }}</div>
             <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div>activée / <span class="opacity-25">désactivée</span></div>
+            <div>{{ $t('on') }} / <span class="opacity-25">{{ $t('off') }}</span></div>
         </div>
         <div class="d-flex flex-row mb-3">
-            <div>Maintenance en cours</div>
+            <div>{{ $t('ongoing_maintenance') }}</div>
             <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div>oui / <span class="opacity-25">non</span></div>
+            <div>{{ $t('yes') }} / <span class="opacity-25">{{ $t('no') }}</span></div>
         </div>
         <div class="d-flex flex-row mb-5">
-            <div>Ouverture public</div>
+            <div>{{ $t('open') }}</div>
             <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div><span class="opacity-25">oui</span> / non</div>
+            <div><span class="opacity-25">{{ $t('yes') }}</span> / {{ $t('no') }}</div>
         </div>
         <div class="d-flex flex-row mb-3">
-            <div>Approvisionnement</div>
+            <div>{{ $t('supply') }}</div>
             <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div>Marmitron / <span class="opacity-25">manuel</span></div>
+            <div>{{ $t('marmitron') }} / <span class="opacity-25">{{ $t('manual') }}</span></div>
         </div>
         <div class="d-flex flex-row mb-3">
-            <div>Hydrogonflage des aliments</div>
+            <div>{{ $t('food_hydroinflation') }}</div>
             <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div>oui / <span class="opacity-25">non</span></div>
+            <div>{{ $t('yes') }} / <span class="opacity-25">{{ $t('no') }}</span></div>
         </div>
         <div class="d-flex flex-row">
-            <div>Qualité de l'air</div>
+            <div>{{ $t('air_quality') }}</div>
             <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div><span class="opacity-25">optimale</span> / économique</div>
+            <div><span class="opacity-25">{{ $t('optimal') }}</span> / {{ $t('economic') }}</div>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ let store = new Vuex.Store({
     round: 0,
     showDocumentation: false,
     isRestaurantClosed: false,
+    displayDangerWindow: false,
     runMsPepperPantryAfterNotificationAcknowledgement: false,
     overlayVideos: {
       glitching: {
@@ -65,6 +66,9 @@ let store = new Vuex.Store({
       }
 
       state.currentOverlayVideo = null
+    },
+    displayDangerWindow(state) {
+      state.displayDangerWindow = true
     },
   }
 })

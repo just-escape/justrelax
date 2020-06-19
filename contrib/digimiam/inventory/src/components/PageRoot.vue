@@ -7,6 +7,7 @@
         <Logs class="w-45 ml-4"/>
       </div>
       <Sokoban class="h-1250px"/>
+      <DangerWindow/>
     </div>
   </div>
 </template>
@@ -16,6 +17,7 @@ import BackgroundLines from '@/components/BackgroundLines.vue'
 import DecorationPanel from '@/components/DecorationPanel.vue'
 import Logs from '@/components/Logs.vue'
 import Sokoban from '@/components/Sokoban.vue'
+import DangerWindow from '@/components/DangerWindow.vue'
 
 export default {
   name: 'PageRoot',
@@ -24,6 +26,7 @@ export default {
     DecorationPanel,
     Logs,
     Sokoban,
+    DangerWindow,
   },
   created() {
     var lang = this.$route.query.lang

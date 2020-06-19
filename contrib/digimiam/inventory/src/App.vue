@@ -58,4 +58,20 @@ export default {
 .transition-400ms {
   transition: all 0.4s linear;
 }
+
+.z-index-20 {
+  z-index: 20;
+}
+
+.bg-black-transparent {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.text-big {
+  font-size: 300px;
+}
+
+.text-red {
+  color: rgb(230, 0, 40);
+}
 </style>

@@ -5,6 +5,7 @@ import i18n from '@/locales.js'
 import router from '@/router.js'
 import sokobanStore from '@/store/sokobanStore.js'
 import logStore from '@/store/logStore.js'
+import progressionStore from '@/store/progressionStore.js'
 
 Vue.use(Vuex)
 
@@ -61,6 +62,8 @@ const justSockService = new Vuex.Store({
         sokobanStore.commit('setDifficulty', event.difficulty)
       } else if (event.category === 'move') {
         sokobanStore.commit('move', event.direction)
+      } else if (event.category === 'display_danger_window') {
+        progressionStore.commit('displayDangerWindow')
       }
     },
     SOCKET_RECONNECT (state, count) {

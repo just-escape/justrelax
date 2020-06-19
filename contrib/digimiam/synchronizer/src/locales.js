@@ -29,6 +29,9 @@ const locales = {
     pizzalgue: 'Pizzalgue',
     algaufre: 'Algaufre',
     flubber: 'Flubber',
+    danger: 'DANGER',
+    toxic_air_detected: 'Toxic air detected',
+    immediate_evac: 'Humans are required to evacuate immediately',
   },
   fr: {
     warning: 'Attention:',
@@ -55,6 +58,9 @@ const locales = {
     pizzalgue: 'Pizzalgue',
     algaufre: 'Algaufre',
     flubber: 'Flubber',
+    danger: 'DANGER',
+    toxic_air_detected: 'Air toxique détecté',
+    immediate_evac: 'Évacuation immédiate des humains requise',
   }
 }
 

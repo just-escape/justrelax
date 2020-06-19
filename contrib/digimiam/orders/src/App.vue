@@ -24,6 +24,12 @@ export default {
   src: url('./assets/webfonts/gotham-book.woff') format('woff');
 }
 
+@font-face {
+  font-family: "Code New Roman";
+  font-style: normal;
+  src: url('./assets/webfonts/code-new-roman.woff2') format('woff2');
+}
+
 #app {
   font-family: 'Gotham', 'sans-serif';
   background-color: black;
@@ -46,5 +52,25 @@ button {
 
 video {
   display: block; /* Removes a mysterious margin bottom */
+}
+
+.z-index-20 {
+  z-index: 20;
+}
+
+.bg-black-transparent {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.text-big {
+  font-size: 300px;
+}
+
+.text-red {
+  color: rgb(230, 0, 40);
+}
+
+.text-code-new-roman {
+  font-family: 'Code New Roman';
 }
 </style>

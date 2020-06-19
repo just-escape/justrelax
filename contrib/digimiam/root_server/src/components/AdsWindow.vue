@@ -1,5 +1,5 @@
 <template>
-  <Window :title="$t('PUBLICITÉS')" class="h-100">
+  <Window :title="$t('ads')" class="h-100">
     <div class="d-flex flex-column justify-content-around mx-4 h-100">
       <div class="d-flex flex-column align-items-center">
         <div class="position-relative mb-1">
@@ -7,7 +7,7 @@
           <div class="glowing-container video-thumbnail"/>
         </div>
 
-        <div class="media-body">succulente_gaufresque.mp6</div>
+        <div class="media-body">{{ $t('succulente_gaufresque.mp6') }}</div>
       </div>
 
       <div class="d-flex flex-column align-items-center">
@@ -16,7 +16,7 @@
           <div class="glowing-container video-thumbnail"/>
         </div>
 
-        <div class="media-body">zéphyr_3000_version_épurée.mp6</div>
+        <div class="media-body">{{ $t('zéphyr_3000_version_épurée.mp6') }}</div>
       </div>
 
       <div class="d-flex flex-column align-items-center">
@@ -27,7 +27,7 @@
           </b-btn>
         </div>
 
-        <div class="media-body">soda wonka (muet).mp6</div>
+        <div class="media-body">{{ $t('soda wonka (muet).mp6') }}</div>
       </div>
     </div>
   </Window>

@@ -1,5 +1,5 @@
 <template>
-  <Window :title="$t('MENU')">
+  <Window :title="'MENU'">
     <div class="d-flex flex-column justify-content-around align-items-center mx-4 h-100" style="font-size: 40px">
       TODO
       <!--<div class="d-flex flex-row justify-content-center">

@@ -32,6 +32,9 @@ const locales = {
       short_warning: 'Cillum dolore eu fugiat nulla pariatur.',
       long_warning: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     },
+    danger: 'DANGER',
+    toxic_air_detected: 'Toxic air detected',
+    immediate_evac: 'Humans are required to evacuate immediately',
   },
   fr: {
     alimentary_statistics: 'STATISTIQUES ALIMENTAIRES',
@@ -61,6 +64,9 @@ const locales = {
       short_warning: 'Duis aute irure dolor in reprehenderit.',
       long_warning: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     },
+    danger: 'DANGER',
+    toxic_air_detected: 'Air toxique détecté',
+    immediate_evac: 'Évacuation immédiate des humains requise',
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <Window :title="$t('INTELLIGENCE CULINAIRE')" class="position-relative oveflow-hidden">
+  <Window :title="$t('cooking_ai')" class="position-relative oveflow-hidden">
     <video src="@/assets/marmitron_background.mp4" autoplay loop class="position-absolute"/>
     <video
       src="@/assets/marmitron.webm"

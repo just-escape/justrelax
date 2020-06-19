@@ -3,11 +3,11 @@
     class="password-window z-index-20 position-absolute"
     :style="{top: top, left: left, transform: transform}"
   >
-    <Window :title="'AUTHENTIFICATION'" theme="warning">
+    <Window :title="$t('authentication')" theme="warning">
       <div class="d-flex flex-column justify-content-between px-3 py-4 h-100 bg-black-transparent text-orange-light">
         <div class="text-18">
           <div>
-            L'ouverture du réseau requiert le mot de passe administrateur.
+            {{ $t('password_required') }}
           </div>
         </div>
         <div class="d-flex flex-column">
@@ -26,15 +26,15 @@
             @click="displayPasswordRecoveryWindow"
             class="align-self-end text-underline"
           >
-            Mot de passe oublié ?
+            {{ $t('forgot_your_password') }}
           </div>
         </div>
         <div class="d-flex flex-row justify-content-between">
           <div class="text-red align-self-center" :style="{opacity: errorMessageOpacity}">
-            Mot de passe incorrect.
+            {{ $t('incorrect_password') }}
           </div>
           <ButtonOrange @click="validate">
-            Valider
+            {{ $t('confirm') }}
           </ButtonOrange>
         </div>
       </div>
