@@ -1,0 +1,13 @@
+[Unit]
+Description=Lights node daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/lights.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o lights -c /etc/justrelax/lights.yaml
+
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

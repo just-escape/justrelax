@@ -1,0 +1,55 @@
+host: localhost
+port: 3031
+
+name: lights
+channel: digimiam1
+
+node_params:
+  fade_frequency: 0.05
+  colors:
+    green:
+      type: led
+      pin: 25
+      default_brightness: 0.3
+      off_by_default: yes
+    white:
+      type: led
+      pin: 8
+      default_brightness: 0.3
+      off_by_default: yes
+    red:
+      type: led
+      pin: 7
+      default_brightness: 0.3
+      off_by_default: yes
+    pink:
+      type: led
+      pin: 1
+      default_brightness: 0.3
+      off_by_default: yes
+    blue:
+      type: rgbled
+      pins:
+        r: 17
+        g: 27
+        b: 22
+      color:
+        r: 0
+        g: 0.1
+        b: 0.5
+      default_brightness: 1
+      off_by_default: yes
+    orange:
+      type: rgbled
+      pins:
+        r: 10
+        g: 9
+        b: 11
+      color:
+        r: 0.5
+        g: 0.1
+        b: 0
+      default_brightness: 1
+      off_by_default: yes
+
+logging: null
