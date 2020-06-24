@@ -49,8 +49,8 @@ class VolumeFaderMixin:
 
     def fade_volume(self, volume, duration=0, ease=pytweening.easeInOutSine):
         if duration == 0:
-            self.current_volume += volume
-            self.target_volume += volume
+            self.current_volume = volume
+            self.target_volume = volume
             self.set_volume()
         else:
             self._fade_volume(volume, duration, ease=ease)
