@@ -1,56 +1,64 @@
 <template>
   <div class="position-relative">
-    <video src="@/assets/fond_marmitron.mp4" autoplay mute loop/>
+    <video src="@/assets/background.mp4" autoplay mute loop/>
     <video
       ref="idleVideo"
       class="position-absolute top-left"
       :style="{opacity: idleOpacity}"
-      src="@/assets/Idle_marmitron_webm.webm" mute autoplay loop/>
+      src="@/assets/marmitron_idle.webm" mute autoplay loop/>
+    <img src="@/assets/conveyor.png" class="position-absolute bottom-left">
     <video
-      v-for="(action, actionIndex) in actions" :key="actionIndex"
-      :ref="action.ref"
+      v-for="(animation, animationIndex) in animations" :key="animationIndex"
+      :ref="animation.ref"
       class="position-absolute top-left"
-      :style="{opacity: action.opacity}"
-      :src="action.video" mute/>
+      :style="{opacity: animation.opacity}"
+      :src="animation.video" mute/>
   </div>
 </template>
 
 <script>
 import orderStore from '@/store/orderStore.js'
+import progressionStore from '@/store/progressionStore.js'
 
 export default {
   name: "Scene",
   data() {
     return {
       idleOpacity: 1,
-      actions: {
+      animations: {
         gaufresque: {
           video: require('@/assets/gaufresque.mp4'),
-          ref: 'actionGaufresque',
+          ref: 'animationGaufresque',
           opacity: 0,
           cartDelay: 7000,
           duration: 8000,
         },
         potjevleesch: {
           video: require('@/assets/potlevlesch.mp4'),
-          ref: 'actionPotjevleesch',
+          ref: 'animationPotjevleesch',
           opacity: 0,
           cartDelay: 7000,
           duration: 8000,
         },
         salade_flamande: {
           video: require('@/assets/salade.mp4'),
-          ref: 'actionSaladeFlamande',
+          ref: 'animationSaladeFlamande',
           opacity: 0,
           cartDelay: 7000,
           duration: 8000,
         },
         cambraisienne: {
-          video: require('@/assets/cambraisienne.mp4'),
-          ref: 'actionCambraisienne',
+          video: require('@/assets/cambraisienne.webm'),
+          ref: 'animationCambraisienne',
           opacity: 0,
           cartDelay: 7000,
           duration: 8000,
+        },
+        help: {
+          video: require('@/assets/marmitron_help_fr.webm'),
+          ref: 'animationHelpFr',
+          opacity: 0,
+          duration: 64000,
         },
       },
     }
@@ -62,27 +70,28 @@ export default {
     itemIdToAdd() {
       return orderStore.state.itemIdToAdd
     },
-    cartDelay() {
-      return this.actions[this.itemIdToAdd].cartDelay
-    },
-    actionDuration() {
-      return this.actions[this.itemIdToAdd].duration
-    },
-    actionVideo() {
-      return this.$refs[this.actions[this.itemIdToAdd].ref][0]
-    },
     items() {
       return orderStore.state.items
     },
+    fireHelpAnimation() {
+      return progressionStore.state.fireHelpAnimation
+    },
+    showMarmitron() {
+      return progressionStore.state.showMarmitron
+    },
   },
   methods: {
-    startAction() {
-      this.actionVideo.play()
+    startAnimation(animationId) {
+      this.$refs[this.animations[animationId].ref][0].play()
 
       let this_ = this
 
       this.$anime.timeline({
         easing: 'linear',
+        complete() {
+          this_.$refs.idleVideo.pause()
+          this_.$refs.idleVideo.currentTime = 0
+        },
       })
       .add({
         targets: this,
@@ -90,56 +99,61 @@ export default {
         duration: 1000,
       })
       .add({
-        targets: this.actions[this.itemIdToAdd],
+        targets: this.animations[animationId],
         opacity: 1,
-        duration: 1000,
+        duration: 300,
       }, '-=1000')
-      .add({
-        duration: 1,
-        update() {
-          this_.$refs.idleVideo.pause()
-          this_.$refs.idleVideo.currentTime = 0
-        }
-      })
     },
     displayItemInCart() {
       orderStore.commit('displayItemInCart', this.itemIdToAdd)
     },
-    resumeIdle() {
-      orderStore.commit('unlockSelectorScroll')
+    resumeIdle(animationId) {
       this.$refs.idleVideo.play()
 
       let this_ = this
 
       this.$anime.timeline({
         easing: 'linear',
+        complete() {
+          this_.$refs[this_.animations[animationId].ref][0].currentTime = 0
+          this_.$refs[this_.animations[animationId].ref][0].pause()
+          orderStore.commit('unlockSelectorScroll')
+        }
       })
       .add({
         targets: this,
         idleOpacity: 1,
-        duration: 1000,
+        duration: 300,
       })
       .add({
-        targets: this.actions[this.itemIdToAdd],
+        targets: this.animations[animationId],
         opacity: 0,
         duration: 1000,
-      }, '-=1000')
-      .add({
-        duration: 1,
-        update() {
-          this_.actionVideo.currentTime = 0
-          this_.actionVideo.pause()
-        }
-      })
+      }, '-=300')
     },
   },
   watch: {
     addItemToCartSignal() {
-      // 4 * 1000 is an idle loop
-      let timeBeforePosition = 0 // (4 - (this.$refs.idleVideo.currentTime % 4)) * 1000
-      setTimeout(this.startAction, timeBeforePosition)
-      setTimeout(this.displayItemInCart, timeBeforePosition + this.cartDelay)
-      setTimeout(this.resumeIdle, timeBeforePosition + this.actionDuration)
+      setTimeout(this.displayItemInCart, this.animations[this.itemIdToAdd].cartDelay)
+      setTimeout(this.resumeIdle, this.animations[this.itemIdToAdd].duration, this.itemIdToAdd)
+      this.startAnimation(this.itemIdToAdd)
+    },
+    fireHelpAnimation() {
+      this.startAnimation('help')
+      setTimeout(this.resumeIdle, this.animations.help.duration, 'help')
+    },
+    showMarmitron() {
+      let this_ = this
+      this.$anime({
+        easing: 'linear',
+        complete() {
+          this_.$refs.idleVideo.pause()
+          this_.$refs.idleVideo.currentTime = 0
+        },
+        targets: this,
+        idleOpacity: 0,
+        duration: 1000,
+      })
     },
   },
 }
@@ -148,6 +162,11 @@ export default {
 <style scoped>
 .top-left {
   top: 0px;
+  left: 0px;
+}
+
+.bottom-left {
+  bottom: 0px;
   left: 0px;
 }
 </style>

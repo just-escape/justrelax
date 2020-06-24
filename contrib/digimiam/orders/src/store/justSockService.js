@@ -59,6 +59,8 @@ const justSockService = new Vuex.Store({
         progressionStore.commit('setRound', event.round)
       } else if (event.category === 'set_documentation_visibility') {
         progressionStore.commit('setDocumentationVisibility', event.show)
+      } else if (event.category === 'set_marmitron_visibility') {
+        progressionStore.commit('setMarmitronVisibility', event.show)
       } else if (event.category === 'set_restaurant_status') {
         progressionStore.commit('setRestaurantStatus', event.closed)
       } else if (event.category === 'display_danger_window') {

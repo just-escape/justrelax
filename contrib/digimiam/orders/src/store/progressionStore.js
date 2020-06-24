@@ -35,6 +35,7 @@ let store = new Vuex.Store({
       },
     },
     currentOverlayVideo: null,
+    fireHelpAnimation: false,
   },
   mutations: {
     setRound (state, round) {
@@ -43,6 +44,9 @@ let store = new Vuex.Store({
     setDocumentationVisibility (state, show) {
       state.showDocumentation = show
     },
+    setMarmitronVisibility (state, show) {
+      state.showMarmitron = show
+    },
     setRestaurantStatus (state, closed) {
       state.isRestaurantClosed = closed
       orderStore.commit('resetOrder')
@@ -50,9 +54,23 @@ let store = new Vuex.Store({
     runMsPepperPantryAfterNotificationAcknowledgement (state) {
       state.runMsPepperPantryAfterNotificationAcknowledgement = true
     },
+    fireHelpAnimation (state) {
+      state.fireHelpAnimation = true
+    },
     playOverlayVideo(state, videoId) {
       if (state.overlayVideos[videoId]) {
         state.currentOverlayVideo = videoId
+      }
+
+      // Not clean :|
+      if (videoId === 'ms_pepper_thanks') {
+        let ms_pepper_thanks_duration = 5000
+        let idle_duration = 8000
+        let delay_between_animations = 5000
+        setTimeout(
+          store.commit,
+          ms_pepper_thanks_duration - (idle_duration - delay_between_animations),
+          'fireHelpAnimation')
       }
     },
     stopOverlayVideo(state) {

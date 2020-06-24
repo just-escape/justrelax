@@ -11,10 +11,10 @@ let store = new Vuex.Store({
     itemIdToAdd: null,
     addItemToCartSignal: false,
     cartItems: [
-      {itemId: 'salade_flamande', increment: -1},
+      {itemId: 'cambraisienne', increment: -1},
       {itemId: 'salade_flamande', increment: -2},
-      {itemId: 'salade_flamande', increment: -3},
-      {itemId: 'salade_flamande', increment: -4},
+      {itemId: 'gaufresque', increment: -3},
+      {itemId: 'potjevleesch', increment: -4},
     ],
     cartItemIncrement: 0,
     maxCartItems: 4,
@@ -22,18 +22,22 @@ let store = new Vuex.Store({
       gaufresque: {
         price: 4,
         img: require('@/assets/img/gaufresque.png'),
+        imgCart: require('@/assets/img/gaufresque.png'),
       },
       potjevleesch: {
         price: 10,
         img: require('@/assets/img/potlevlesch.png'),
+        imgCart: require('@/assets/img/potlevlesch.png'),
       },
       salade_flamande: {
         price: 11,
         img: require('@/assets/img/salade.png'),
+        imgCart: require('@/assets/img/salade.png'),
       },
       cambraisienne: {
         price: 12,
         img: require('@/assets/img/cambraisienne.png'),
+        imgCart: require('@/assets/img/cambraisienne_cart.png'),
       },
     },
     displayOrderNotification: false,

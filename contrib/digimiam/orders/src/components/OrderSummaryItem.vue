@@ -12,7 +12,7 @@ export default {
   name: "OrderSummaryItem",
   computed: {
     src() {
-      return orderStore.state.items[this.itemId].img
+      return orderStore.state.items[this.itemId].imgCart
     },
     price() {
       return orderStore.state.items[this.itemId].price
