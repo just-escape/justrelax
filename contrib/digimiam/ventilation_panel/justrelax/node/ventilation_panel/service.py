@@ -360,15 +360,12 @@ class VentilationController:
             return {self.air_sources["as1"]}
 
         elif displayed_color == "orange":
-            if self.round == 2:  # In round 3 (index = 2) the purified air stock price is high
+            duct = self.air_ducts[self.success_sequence[cursor]["air_duct"]]
+            lcs = duct.last_connected_sources
+            if self.air_sources["as0"] in lcs or self.air_sources["as1"] in lcs:
                 return {self.air_sources["as2"]}
             else:
-                duct = self.air_ducts[self.success_sequence[cursor]["air_duct"]]
-                lcs = duct.last_connected_sources
-                if self.air_sources["as0"] in lcs or self.air_sources["as1"] in lcs:
-                    return {self.air_sources["as2"]}
-                else:
-                    return {self.air_sources["as1"]}
+                return {self.air_sources["as1"]}
 
         elif displayed_color == "blue":
             duct = self.air_ducts[self.success_sequence[cursor]["air_duct"]]

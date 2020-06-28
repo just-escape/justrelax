@@ -174,7 +174,7 @@ export default {
           },
           {
             displayedChars: 0,
-            instruction: '* orange : brancher le conduit à la source d\'air pollué',
+            instruction: '* orange : si le conduit est déjà branché à l\'une des autres sources, le brancher à la source d\'air pollué. Sinon, le brancher à la source d\'air semi-purifié',
             typing: false,
           },
           {
@@ -206,7 +206,7 @@ export default {
           },
           {
             displayedChars: 0,
-            instruction: '* orange: plug the duct to the polluted air source',
+            instruction: '* orange: if the duct is already pluged to one of the other sources, plug it to the polluted air source. Otherwise, plug it to the half-purified air source',
             typing: false,
           },
           {
