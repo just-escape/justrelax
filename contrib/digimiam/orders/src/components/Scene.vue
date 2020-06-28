@@ -58,9 +58,15 @@ export default {
           hideImgItemDelay: 1000,
           duration: 8000,
         },
-        help: {
+        helpFr: {
           video: require('@/assets/marmitron_help_fr.webm'),
           ref: 'animationHelpFr',
+          opacity: 0,
+          duration: 64000,
+        },
+        helpEn: {
+          video: require('@/assets/marmitron_help_en.webm'),
+          ref: 'animationHelpEn',
           opacity: 0,
           duration: 64000,
         },
@@ -135,9 +141,6 @@ export default {
         duration: 1000,
       }, '-=300')
     },
-    pause() {
-      this.$refs.idleVideo.pause()
-    },
   },
   watch: {
     addItemToCartSignal() {
@@ -147,8 +150,9 @@ export default {
       this.startAnimation(this.itemIdToAdd)
     },
     fireHelpAnimation() {
-      this.startAnimation('help')
-      setTimeout(this.resumeIdle, this.animations.help.duration, 'help')
+      let helpAnimation = this.$i18n.locale == 'fr' ? 'helpFr' : 'helpEn'
+      this.startAnimation(helpAnimation)
+      setTimeout(this.resumeIdle, this.animations[helpAnimation].duration, 'help')
     },
     showMarmitron() {
       let this_ = this
@@ -164,9 +168,6 @@ export default {
       })
     },
   },
-  created() {
-    setTimeout(this.pause, 1350)
-  }
 }
 </script>
 
