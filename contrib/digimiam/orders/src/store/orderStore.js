@@ -77,13 +77,13 @@ let store = new Vuex.Store({
       state.displayOrderNotification = true
       if (!state.hasFirstOrderBeenIssued) {
         state.hasFirstOrderBeenIssued = true
-        progressionStore.commit('runMsPepperPantryAfterNotificationAcknowledgement')
+        progressionStore.commit('runMsPepperStockAfterNotificationAcknowledgement')
       }
     },
     acknowledgeOrderNotification (state) {
       state.displayOrderNotification = false
-      if (progressionStore.state.runMsPepperPantryAfterNotificationAcknowledgement) {
-        setTimeout(progressionStore.commit, 2000, 'playOverlayVideo', 'ms_pepper_pantry')
+      if (progressionStore.state.runMsPepperStockAfterNotificationAcknowledgement) {
+        setTimeout(progressionStore.commit, 2000, 'playOverlayVideo', 'ms_pepper_stock')
       }
     },
     addItemToCart (state, itemId) {

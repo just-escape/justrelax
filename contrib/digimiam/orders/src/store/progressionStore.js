@@ -11,7 +11,7 @@ let store = new Vuex.Store({
     showDocumentation: false,
     isRestaurantClosed: false,
     displayDangerWindow: false,
-    runMsPepperPantryAfterNotificationAcknowledgement: false,
+    runMsPepperStockAfterNotificationAcknowledgement: false,
     overlayVideos: {
       glitching: {
         fr: require('@/assets/glitch.mp4'),
@@ -23,14 +23,14 @@ let store = new Vuex.Store({
         en: require('@/assets/glitch_less.mp4'),
         loop: true,
       },
-      ms_pepper_pantry: {
-        fr: require('@/assets/mme_poivre_stock.mp4'),
-        en: require('@/assets/ms_pepper_pantry.mp4'),
+      ms_pepper_stock: {
+        fr: require('@/assets/ms_pepper_stock_fr.mp4'),
+        en: require('@/assets/ms_pepper_stock_en.mp4'),
         loop: false,
       },
-      ms_pepper_thanks: {
-        fr: require('@/assets/mme_poivre_merci.mp4'),
-        en: require('@/assets/ms_pepper_says_thanks.mp4'),
+      ms_pepper_says_thanks: {
+        fr: require('@/assets/ms_pepper_says_thanks_fr.mp4'),
+        en: require('@/assets/ms_pepper_says_thanks_en.mp4'),
         loop: false,
       },
     },
@@ -51,8 +51,8 @@ let store = new Vuex.Store({
       state.isRestaurantClosed = closed
       orderStore.commit('resetOrder')
     },
-    runMsPepperPantryAfterNotificationAcknowledgement (state) {
-      state.runMsPepperPantryAfterNotificationAcknowledgement = true
+    runMsPepperStockAfterNotificationAcknowledgement (state) {
+      state.runMsPepperStockAfterNotificationAcknowledgement = true
     },
     fireHelpAnimation (state) {
       state.fireHelpAnimation = true
@@ -63,13 +63,13 @@ let store = new Vuex.Store({
       }
 
       // Not clean :|
-      if (videoId === 'ms_pepper_thanks') {
-        let ms_pepper_thanks_duration = 5000
+      if (videoId === 'ms_pepper_says_thanks') {
+        let ms_pepper_says_thanks_duration = 5000
         let idle_duration = 8000
         let delay_between_animations = 5000
         setTimeout(
           store.commit,
-          ms_pepper_thanks_duration - (idle_duration - delay_between_animations),
+          ms_pepper_says_thanks_duration - (idle_duration - delay_between_animations),
           'fireHelpAnimation')
       }
     },
@@ -78,8 +78,8 @@ let store = new Vuex.Store({
     },
     onOverlayVideoEnd(state) {
       // Not clean :|
-      if (state.currentOverlayVideo === "ms_pepper_pantry") {
-        state.runMsPepperPantryAfterNotificationAcknowledgement = false
+      if (state.currentOverlayVideo === "ms_pepper_stock") {
+        state.runMsPepperStockAfterNotificationAcknowledgement = false
         setTimeout(store.commit, 800, 'setDocumentationVisibility', true)
       }
 
