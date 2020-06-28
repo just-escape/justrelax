@@ -1,18 +1,18 @@
 <template>
   <div class="position-relative">
-    <video src="@/assets/background.mp4" autoplay mute loop/>
+    <video src="@/assets/background.mp4" autoplay loop/>
     <video
       ref="idleVideo"
       class="position-absolute top-left"
       :style="{opacity: idleOpacity}"
-      src="@/assets/marmitron_idle.webm" mute autoplay loop/>
+      src="@/assets/marmitron_idle.webm" autoplay loop/>
     <img src="@/assets/conveyor.png" class="position-absolute bottom-left">
     <video
       v-for="(animation, animationIndex) in animations" :key="animationIndex"
       :ref="animation.ref"
       class="position-absolute top-left"
       :style="{opacity: animation.opacity}"
-      :src="animation.video" mute/>
+      :src="animation.video"/>
   </div>
 </template>
 
