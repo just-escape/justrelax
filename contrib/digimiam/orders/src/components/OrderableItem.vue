@@ -15,7 +15,12 @@
         <OrderItemButton @mousedown="$emit('orderMe')" :clickable="orderable && !isRestaurantClosed" :gray="isRestaurantClosed" class="size-11"/>
       </div>
     </div>
-    <img :src="src" :width="height + 'px'" class="img-fluid"/>
+    <img
+      :src="src"
+      :width="height + 'px'"
+      class="transition-02s img-fluid"
+      :style="{opacity: opacity, transform: transform}"
+    />
 
     <WarningClosed size="small" v-if="isRestaurantClosed"/>
   </div>
@@ -33,6 +38,12 @@ export default {
     OrderItemButton,
     WarningClosed,
   },
+  data() {
+    return {
+      scaleX: 1,
+      scaleY: 1,
+    }
+  },
   computed: {
     src: function() {
       return orderStore.state.items[this.itemId].img
@@ -40,8 +51,40 @@ export default {
     price: function() {
       return orderStore.state.items[this.itemId].price
     },
+    opacity: function() {
+      return orderStore.state.items[this.itemId].opacity
+    },
     isRestaurantClosed: function() {
       return progressionStore.state.isRestaurantClosed
+    },
+    transform: function() {
+      return 'scaleX(' + this.scaleX + ') scaleY(' + this.scaleY + ')'
+    },
+  },
+  methods: {
+    scaleXscaleY1() {
+      this.$anime({
+        targets: this,
+        scaleX: 1,
+        scaleY: 1,
+        // This timing is related a timing defined in Scene.vue
+        duration: 800,
+        easing: 'easeOutBounce',
+      })
+    },
+    scaleXscaleY0() {
+      this.scaleX = 0
+      this.scaleY = 0
+      orderStore.commit('setItemOpacity', {itemId: this.itemId, opacity: 1})
+    },
+  },
+  watch: {
+    opacity(newValue) {
+      if (newValue === 0) {
+        // Those timings are related to timings defined in Scene.vue
+        setTimeout(this.scaleXscaleY0, 1000)
+        setTimeout(this.scaleXscaleY1, 7000)
+      }
     },
   },
   props: {
@@ -73,5 +116,9 @@ export default {
 
 .glowing-text {
   filter: drop-shadow(0px 0px 1px rgba(255, 255, 255, 0.75));
+}
+
+.transition-02s {
+  transition: opacity 0.2s;
 }
 </style>

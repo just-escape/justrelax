@@ -23,21 +23,25 @@ let store = new Vuex.Store({
         price: 4,
         img: require('@/assets/img/gaufresque.png'),
         imgCart: require('@/assets/img/gaufresque.png'),
+        opacity: 1,
       },
       potjevleesch: {
         price: 10,
         img: require('@/assets/img/potlevlesch.png'),
         imgCart: require('@/assets/img/potlevlesch.png'),
+        opacity: 1,
       },
       salade_flamande: {
         price: 11,
         img: require('@/assets/img/salade.png'),
         imgCart: require('@/assets/img/salade.png'),
+        opacity: 1,
       },
       cambraisienne: {
         price: 12,
         img: require('@/assets/img/cambraisienne.png'),
         imgCart: require('@/assets/img/cambraisienne_cart.png'),
+        opacity: 1,
       },
     },
     displayOrderNotification: false,
@@ -85,6 +89,9 @@ let store = new Vuex.Store({
     addItemToCart (state, itemId) {
       state.itemIdToAdd = itemId
       state.addItemToCartSignal = !state.addItemToCartSignal
+    },
+    setItemOpacity (state, {itemId, opacity}) {
+      state.items[itemId].opacity = opacity
     },
   }
 })

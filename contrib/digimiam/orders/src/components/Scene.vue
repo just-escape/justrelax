@@ -27,31 +27,35 @@ export default {
       idleOpacity: 1,
       animations: {
         gaufresque: {
-          video: require('@/assets/gaufresque.mp4'),
+          video: require('@/assets/gaufresque_idle.webm'),
           ref: 'animationGaufresque',
           opacity: 0,
           cartDelay: 7000,
+          hideImgItemDelay: 1000,
           duration: 8000,
         },
         potjevleesch: {
-          video: require('@/assets/potlevlesch.mp4'),
+          video: require('@/assets/potjevleesch_idle.webm'),
           ref: 'animationPotjevleesch',
           opacity: 0,
           cartDelay: 7000,
+          hideImgItemDelay: 1000,
           duration: 8000,
         },
         salade_flamande: {
-          video: require('@/assets/salade.mp4'),
+          video: require('@/assets/salade_idle.webm'),
           ref: 'animationSaladeFlamande',
           opacity: 0,
           cartDelay: 7000,
+          hideImgItemDelay: 1000,
           duration: 8000,
         },
         cambraisienne: {
-          video: require('@/assets/cambraisienne.webm'),
+          video: require('@/assets/cambraisienne_idle.webm'),
           ref: 'animationCambraisienne',
           opacity: 0,
           cartDelay: 7000,
+          hideImgItemDelay: 1000,
           duration: 8000,
         },
         help: {
@@ -131,9 +135,13 @@ export default {
         duration: 1000,
       }, '-=300')
     },
+    pause() {
+      this.$refs.idleVideo.pause()
+    },
   },
   watch: {
     addItemToCartSignal() {
+      setTimeout(orderStore.commit, this.animations[this.itemIdToAdd].hideImgItemDelay, 'setItemOpacity', {itemId: this.itemIdToAdd, opacity: 0})
       setTimeout(this.displayItemInCart, this.animations[this.itemIdToAdd].cartDelay)
       setTimeout(this.resumeIdle, this.animations[this.itemIdToAdd].duration, this.itemIdToAdd)
       this.startAnimation(this.itemIdToAdd)
@@ -156,6 +164,9 @@ export default {
       })
     },
   },
+  created() {
+    setTimeout(this.pause, 1350)
+  }
 }
 </script>
 
