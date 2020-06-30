@@ -5,51 +5,56 @@ name: lights
 channel: digimiam1
 
 node_params:
-  fade_frequency: 0.05
+  arduino:
+    port: /dev/arduino
+    baud_rate: 9600
+  channels:
+    # Standalone white
+    - n: 1
+      rate: 100
+    # Standalone pink
+    - n: 2
+      rate: 100
+    # Standalone red
+    - n: 4
+      rate: 100
+    # Standalone green
+    - n: 8
+      rate: 100
+    # Blue's red
+    - n: 16
+      rate: 0
+    # Blue's green
+    - n: 32
+      rate: 10
+    # Blue's blue
+    - n: 64
+      rate: 50
+    # Orange's red
+    - n: 128
+      rate: 50
+    # Orange's green
+    - n: 256
+      rate: 10
+    # Orange's blue
+    - n: 512
+      rate: 0
   colors:
-    green:
-      type: led
-      pin: 25
-      default_brightness: 0.3
-      off_by_default: yes
+    all:
+      channel: 1023  # 2 ^ 0 + 2 ^ 1 + ... + 2 ^ 9
+      default_brightness: 5
+      on_by_default: yes
     white:
-      type: led
-      pin: 8
-      default_brightness: 0.3
-      off_by_default: yes
-    red:
-      type: led
-      pin: 7
-      default_brightness: 0.3
-      off_by_default: yes
+      channel: 1  # 2 ^ 0
     pink:
-      type: led
-      pin: 1
-      default_brightness: 0.3
-      off_by_default: yes
+      channel: 2  # 2 ^ 1
+    red:
+      channel: 4  # 2 ^ 2
+    green:
+      channel: 8  # 2 ^ 3
     blue:
-      type: rgbled
-      pins:
-        r: 17
-        g: 27
-        b: 22
-      color:
-        r: 0
-        g: 0.1
-        b: 0.5
-      default_brightness: 1
-      off_by_default: yes
+      channel: 112  # 2 ^ 4 + 2 ^ 5 + 2 ^ 6
     orange:
-      type: rgbled
-      pins:
-        r: 10
-        g: 9
-        b: 11
-      color:
-        r: 0.5
-        g: 0.1
-        b: 0
-      default_brightness: 1
-      off_by_default: yes
+      channel: 896  # 2 ^ 7 + 2 ^ 8 + 2 ^ 9
 
 logging: null

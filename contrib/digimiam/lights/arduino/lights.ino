@@ -6,7 +6,9 @@
 
 #define PROTOCOL_ON "n"
 #define PROTOCOL_OFF "f"
-#define PROTOCOL_CHANNEL "h"
+#define PROTOCOL_CHANNELS "h"
+#define PROTOCOL_SET_COLOR "s"
+#define PROTOCOL_COLOR "r"
 #define PROTOCOL_FADE_BRIGHTNESS "b"
 #define PROTOCOL_TARGET_BRIGHTNESS "t"
 
@@ -21,8 +23,10 @@ unsigned long deltaTimeModulus1000;
 unsigned long lastCycleStart;
 
 int pins[CHANNELS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-int highRatios[CHANNELS] = {0};
-int targetHighRatios[CHANNELS] = {0};
+int colors[CHANNELS] = {0};
+int colorsTimesBrightnesses[CHANNELS] = {0};
+int brightnesses[CHANNELS] = {0};
+int targetBrightnesses[CHANNELS] = {0};
 bool isOn[CHANNELS] = {false};
 bool isHigh[CHANNELS] = {false};
 
@@ -52,10 +56,12 @@ void loop() {
 
     if (cyclesCounter % 5 == 0) {
       for (int i = 0 ; i < CHANNELS ; i++) {
-        if (targetHighRatios[i] > highRatios[i]) {
-          highRatios[i]++;
-        } else if (targetHighRatios[i] < highRatios[i]) {
-          highRatios[i]--;
+        if (targetBrightnesses[i] > brightnesses[i]) {
+          brightnesses[i]++;
+          colorsTimesBrightnesses[i] = colors[i] * brightnesses[i];
+        } else if (targetBrightnesses[i] < brightnesses[i]) {
+          brightnesses[i]--;
+          colorsTimesBrightnesses[i] = colors[i] * brightnesses[i];
         }
       }
     }
@@ -64,7 +70,7 @@ void loop() {
   deltaTimeModulus1000 = deltaTime % 1000;
 
   for (int i = 0 ; i < CHANNELS ; i++) {
-    if (deltaTimeModulus1000 > highRatios[i]) {
+    if (deltaTimeModulus1000 > colorsTimesBrightnesses[i]) {
       isHigh[i] = false;
     }
 
@@ -84,15 +90,31 @@ void onEvent() {
     Serial.println();
   } else {
     String category = receivedDocument[PROTOCOL_CATEGORY];
-    int channel = receivedDocument[PROTOCOL_CHANNEL];
+    int channelsBitmask = receivedDocument[PROTOCOL_CHANNELS];
+    int currentChannelBit = 1;
 
     if (category == PROTOCOL_ON) {
-      isOn[channel] = true;
+      for (int i = 0 ; i < CHANNELS ; i++) {
+        if ((channelsBitmask & currentChannelBit) == currentChannelBit) {
+          isOn[i] = true;
+        }
+        currentChannelBit = currentChannelBit << 1;
+      }
     } else if (category == PROTOCOL_OFF) {
-      isOn[channel] = false;
+      for (int i = 0 ; i < CHANNELS ; i++) {
+        if ((channelsBitmask & currentChannelBit) == currentChannelBit) {
+          isOn[i] = false;
+        }
+        currentChannelBit = currentChannelBit << 1;
+      }
     } else if (category == PROTOCOL_FADE_BRIGHTNESS) {
       int targetBrightness = receivedDocument[PROTOCOL_TARGET_BRIGHTNESS];
-      targetHighRatios[channel] = targetBrightness;
+      for (int i = 0 ; i < CHANNELS ; i++) {
+        if ((channelsBitmask & currentChannelBit) == currentChannelBit) {
+          targetBrightnesses[i] = targetBrightness;
+        }
+        currentChannelBit = currentChannelBit << 1;
+      }
     }
   }
 }
