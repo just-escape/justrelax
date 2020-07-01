@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import difficultyStore from '@/store/difficultyStore.js'
+import justSockService from './justSockService'
 
 Vue.use(Vuex)
 
@@ -1685,9 +1686,11 @@ var store = new Vuex.Store({
     toggleColor (state, {currentVertice, color, activated}) {
       if (activated === true) {
         if (!state.activatedSensors.includes(color)) {
+          justSockService.commit('sendEvent', {'category': 'on', 'color': color})
           state.activatedSensors.push(color)
         }
       } else {
+        justSockService.commit('sendEvent', {'category': 'off', 'color': color})
         state.activatedSensors = state.activatedSensors.filter(
           function(ele) {
             return ele != color
