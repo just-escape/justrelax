@@ -40,14 +40,17 @@ const justSockService = new Vuex.Store({
         // Reload page
         router.go()
       } else if (event.category == 'l10n') {
+        let query = JSON.parse(JSON.stringify(router.app.$route.query))
         if (event.lang == 'fr') {
           if (i18n.locale != 'fr') {
-            router.push({path: '/', query: {'lang': 'fr'}})
+            query.lang = 'fr'
+            router.push({path: '/', query: query})
           }
           i18n.locale = 'fr'
         } else {
           if (i18n.locale != 'en') {
-            router.push({path: '/', query: {'lang': 'en'}})
+            query.lang = 'en'
+            router.push({path: '/', query: query})
           }
           i18n.locale = 'en'
         }

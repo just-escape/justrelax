@@ -8,7 +8,12 @@
 export default {
   name: 'App',
   mounted() {
-    this.$connect()
+    let ws_url = this.$route.query.ws_url
+    if (ws_url) {
+      this.$connect('ws://' + ws_url)
+    } else {
+      this.$connect('ws://localhost:3031')
+    }
   },
 }
 </script>
