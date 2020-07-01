@@ -1,0 +1,1 @@
+from justrelax.node.front_door_magnet.service import FrontDoorMagnet

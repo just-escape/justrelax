@@ -1,0 +1,12 @@
+host: localhost
+port: 3031
+
+name: front_door_magnet
+channel: digimiam1
+
+node_params:
+  magnet_pin: 4
+  emergency_button_pin: 2
+  emergency_button_hold_time: 1  # The button has to be pressed for 1 second to avoid mistakes
+
+logging: null
