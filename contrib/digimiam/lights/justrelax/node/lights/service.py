@@ -30,7 +30,7 @@ class Lights(EventCategoryToMethodMixin, JustSockClientService):
 
         # Delay everything to avoid a burst of characters on the arduino serial input, ensuring
         # all characters are read.
-        incremental_delay = 1
+        incremental_delay = 3
 
         for channel in self.node_params['channels']:
             reactor.callLater(

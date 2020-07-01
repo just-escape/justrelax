@@ -115,6 +115,14 @@ void onEvent() {
         }
         currentChannelBit = currentChannelBit << 1;
       }
+    } else if (category == PROTOCOL_SET_COLOR) {
+      int color = receivedDocument[PROTOCOL_COLOR];
+      for (int i = 0 ; i < CHANNELS ; i++) {
+        if ((channelsBitmask & currentChannelBit) == currentChannelBit) {
+          colors[i] = color;
+        }
+        currentChannelBit = currentChannelBit << 1;
+      }
     }
   }
 }
