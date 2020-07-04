@@ -20,8 +20,8 @@ let store = new Vuex.Store({
     success: false,
     overlayVideos: {
       ms_pepper_mad: {
-        fr: require('@/assets/ms_pepper_what_fr.mp4'),
-        en: require('@/assets/ms_pepper_what_en.mp4'),
+        fr: require('@/assets/videos/ms_pepper_what_fr.mp4'),
+        en: require('@/assets/videos/ms_pepper_what_en.mp4'),
       },
     },
     currentOverlayVideo: null,
