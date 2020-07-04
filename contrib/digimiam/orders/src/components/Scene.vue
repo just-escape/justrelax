@@ -1,11 +1,11 @@
 <template>
   <div class="position-relative">
-    <video src="@/assets/videos/background.mp4" autoplay loop/>
+    <video src="@/assets/videos/orders_background.mp4" autoplay loop/>
     <video
       ref="idleVideo"
       class="position-absolute top-left"
       :style="{opacity: idleOpacity}"
-      src="@/assets/videos/marmitron_idle_loop.webm" autoplay loop/>
+      src="@/assets/videos/marmitron_orders_idle_loop.webm" autoplay loop/>
     <img src="@/assets/img/conveyor.png" class="position-absolute bottom-left">
     <video
       v-for="(animation, animationIndex) in animations" :key="animationIndex"
