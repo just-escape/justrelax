@@ -14,7 +14,7 @@ No mouse cursor:
 
 Run chrome in kiosk mode:
 ```
-chromium --kiosk --app=<url> --window-position=0,0 --noerrdialogs --user-data-dir=/path/to/directory --password-store=basic --autoplay-policy=no-user-gesture-required
+chromium --kiosk --app=<url> --window-position=0,0 --noerrdialogs --user-data-dir=/path/to/directory --password-store=basic --autoplay-policy=no-user-gesture-required --disable-features=TranslateUI
 ```
 --noerrordialors for popups ("translate this page")
 --user-data-dir for separate instances (sound)
