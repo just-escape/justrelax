@@ -14,23 +14,23 @@ let store = new Vuex.Store({
     runMsPepperStockAfterNotificationAcknowledgement: false,
     overlayVideos: {
       glitching: {
-        fr: require('@/assets/glitch.mp4'),
-        en: require('@/assets/glitch.mp4'),
+        fr: require('@/assets/videos/glitch.mp4'),
+        en: require('@/assets/videos/glitch.mp4'),
         loop: true,
       },
       glitching_less: {
-        fr: require('@/assets/glitch_less.mp4'),
-        en: require('@/assets/glitch_less.mp4'),
+        fr: require('@/assets/videos/glitch_less.mp4'),
+        en: require('@/assets/videos/glitch_less.mp4'),
         loop: true,
       },
       ms_pepper_stock: {
-        fr: require('@/assets/ms_pepper_stock_fr.mp4'),
-        en: require('@/assets/ms_pepper_stock_en.mp4'),
+        fr: require('@/assets/videos/ms_pepper_stock_fr.mp4'),
+        en: require('@/assets/videos/ms_pepper_stock_en.mp4'),
         loop: false,
       },
       ms_pepper_says_thanks: {
-        fr: require('@/assets/ms_pepper_says_thanks_fr.mp4'),
-        en: require('@/assets/ms_pepper_says_thanks_en.mp4'),
+        fr: require('@/assets/videos/ms_pepper_says_thanks_fr.mp4'),
+        en: require('@/assets/videos/ms_pepper_says_thanks_en.mp4'),
         loop: false,
       },
     },
@@ -64,7 +64,7 @@ let store = new Vuex.Store({
 
       // Not clean :|
       if (videoId === 'ms_pepper_says_thanks') {
-        let ms_pepper_says_thanks_duration = 5000
+        let ms_pepper_says_thanks_duration = 16960
         let idle_duration = 8000
         let delay_between_animations = 5000
         setTimeout(

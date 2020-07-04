@@ -1,12 +1,12 @@
 <template>
   <div class="position-relative">
-    <video src="@/assets/background.mp4" autoplay loop/>
+    <video src="@/assets/videos/background.mp4" autoplay loop/>
     <video
       ref="idleVideo"
       class="position-absolute top-left"
       :style="{opacity: idleOpacity}"
-      src="@/assets/marmitron_idle.webm" autoplay loop/>
-    <img src="@/assets/conveyor.png" class="position-absolute bottom-left">
+      src="@/assets/videos/marmitron_idle_loop.webm" autoplay loop/>
+    <img src="@/assets/img/conveyor.png" class="position-absolute bottom-left">
     <video
       v-for="(animation, animationIndex) in animations" :key="animationIndex"
       :ref="animation.ref"
@@ -27,7 +27,7 @@ export default {
       idleOpacity: 1,
       animations: {
         gaufresque: {
-          video: require('@/assets/gaufresque_idle.webm'),
+          video: require('@/assets/videos/gaufresque_idle.webm'),
           ref: 'animationGaufresque',
           opacity: 0,
           cartDelay: 7000,
@@ -35,7 +35,7 @@ export default {
           duration: 8000,
         },
         potjevleesch: {
-          video: require('@/assets/potjevleesch_idle.webm'),
+          video: require('@/assets/videos/potjevleesch_idle.webm'),
           ref: 'animationPotjevleesch',
           opacity: 0,
           cartDelay: 7000,
@@ -43,7 +43,7 @@ export default {
           duration: 8000,
         },
         salade_flamande: {
-          video: require('@/assets/salade_idle.webm'),
+          video: require('@/assets/videos/salade_idle.webm'),
           ref: 'animationSaladeFlamande',
           opacity: 0,
           cartDelay: 7000,
@@ -51,7 +51,7 @@ export default {
           duration: 8000,
         },
         cambraisienne: {
-          video: require('@/assets/cambraisienne_idle.webm'),
+          video: require('@/assets/videos/cambraisienne_idle.webm'),
           ref: 'animationCambraisienne',
           opacity: 0,
           cartDelay: 7000,
@@ -59,13 +59,13 @@ export default {
           duration: 8000,
         },
         helpFr: {
-          video: require('@/assets/marmitron_help_fr.webm'),
+          video: require('@/assets/videos/idle_help_fr.webm'),
           ref: 'animationHelpFr',
           opacity: 0,
           duration: 64000,
         },
         helpEn: {
-          video: require('@/assets/marmitron_help_en.webm'),
+          video: require('@/assets/videos/idle_help_fr.webm'),
           ref: 'animationHelpEn',
           opacity: 0,
           duration: 64000,

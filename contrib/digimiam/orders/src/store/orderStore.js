@@ -10,12 +10,7 @@ let store = new Vuex.Store({
     lockSelectorScroll: false,
     itemIdToAdd: null,
     addItemToCartSignal: false,
-    cartItems: [
-      {itemId: 'cambraisienne', increment: -1},
-      {itemId: 'salade_flamande', increment: -2},
-      {itemId: 'gaufresque', increment: -3},
-      {itemId: 'potjevleesch', increment: -4},
-    ],
+    cartItems: [],
     cartItemIncrement: 0,
     maxCartItems: 4,
     items: {
