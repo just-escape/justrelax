@@ -2,6 +2,8 @@
   <Window :title="'MENU'">
     <div class="d-flex flex-column justify-content-around align-items-center mx-4 h-100" style="font-size: 40px">
       TODO
+      <span @click="cherche">cherche</span>
+      <span @click="gratte">gratte</span>
       <!--<div class="d-flex flex-row justify-content-center">
         <ResearchComponent
           :shuffleSignal="components[0].shuffleSignal"
@@ -31,6 +33,7 @@
 <script>
 import Window from '@/components/Window.vue'
 // import ResearchComponent from '@/components/ResearchComponent.vue'
+import businessStore from '@/store/businessStore.js'
 
 export default {
   name: "ServicesWindow",
@@ -87,6 +90,15 @@ export default {
       ) {
         setTimeout(this.shuffle, 1000)
       }
+    },
+    click() {
+      businessStore.commit('playMarmitronAnimation', 'reponse')
+    },
+    cherche() {
+      businessStore.commit('playMarmitronAnimation', 'cherche')
+    },
+    gratte() {
+      businessStore.commit('playMarmitronAnimation', 'gratte')
     },
   },
   mounted() {

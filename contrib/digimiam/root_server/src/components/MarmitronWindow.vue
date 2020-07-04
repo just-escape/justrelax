@@ -1,20 +1,22 @@
 <template>
   <Window :title="$t('cooking_ai')" class="position-relative oveflow-hidden">
-    <video src="@/assets/marmitron_background.mp4" autoplay loop class="position-absolute"/>
+    <video src="@/assets/videos/server_background_862x670.mp4" autoplay loop class="position-absolute"/>
     <video
-      src="@/assets/marmitron.webm"
+      src="@/assets/videos/marmitron_idle_loop_862x670.webm"
       ref="animationIdle"
       :style="{opacity: idleOpacity}"
       autoplay
       loop
       class="position-absolute"/>
-    <video
-      v-for="(animation, animationIndex) in animations" :key="animationIndex"
-      :ref="animation.ref"
-      class="position-absolute"
-      :style="{opacity: animation.opacity}"
-      :src="animation.video"
-    />
+    <div v-for="(animation, animationIndex) in animations" :key="animationIndex">
+      <video
+        v-for="(lang, langIndex) in langs" :key="langIndex"
+        :ref="animation.lang.ref"
+        class="position-absolute"
+        :style="{opacity: animation.lang.opacity}"
+        :src="animation.lang.video"
+      />
+    </div>
   </Window>
 </template>
 
@@ -29,25 +31,37 @@ export default {
   },
   data() {
     return {
+      // Is updated only when a video is not playing
+      videoLang: this.$i18n.locale,
       idleOpacity: 1,
       animations: {
-        animation1: {
-          video: require('@/assets/marmitron.webm'),
-          ref: 'animation1',
-          opacity: 0,
-          duration: 8000,
+        reponse: {
+          en: {
+            video: require('@/assets/videos/marmitron_password_en_862x670.webm'),
+            ref: 'reponse',
+            opacity: 0,
+            duration: 23960,
+          },
+          fr: {
+            video: require('@/assets/videos/marmitron_password_fr_862x670.webm'),
+            ref: 'reponse',
+            opacity: 0,
+            duration: 23960,
+          },
         },
-        animation2: {
-          video: require('@/assets/marmitron.webm'),
-          ref: 'animation2',
-          opacity: 0,
-          duration: 8000,
-        },
-        animation3: {
-          video: require('@/assets/marmitron.webm'),
-          ref: 'animation3',
-          opacity: 0,
-          duration: 8000,
+        liberation: {
+          en: {
+            video: require('@/assets/videos/marmitron_liberation_en_862x670.webm'),
+            ref: 'liberation',
+            opacity: 0,
+            duration: 8000,
+          },
+          fr: {
+            video: require('@/assets/videos/marmitron_liberation_fr_862x670.webm'),
+            ref: 'liberation',
+            opacity: 0,
+            duration: 8000,
+          },
         },
       },
       animationEndTask: null,
@@ -56,6 +70,9 @@ export default {
   computed: {
     playingAnimation() {
       return businessStore.state.playingMarmitronAnimation
+    },
+    locale() {
+      return this.$i18n.locale
     },
   },
   methods: {
@@ -69,20 +86,26 @@ export default {
           easing: 'linear',
           targets: this,
           idleOpacity: 1,
-          duration: 1000,
+          duration: 300,
         })
       }
     },
   },
   watch: {
+    locale(newValue) {
+      if (!this.animationEndTask) {
+        // Otherwise, wait for the end of the animation to update
+        this.videoLang = newValue
+      }
+    },
     playingAnimation(newValue, oldValue) {
       let this_ = this
 
       if (this.animations[newValue] !== undefined) {
         this.$refs[this.animations[newValue].ref][0].play()
 
-        // Animation 3 is the final Marmitron animation
-        let resumeIdle = newValue !== 'animation3'
+        // liberation is the final Marmitron animation
+        let resumeIdle = newValue !== 'liberation'
 
         clearTimeout(this.animationEndTask)
         this.animationEndTask = setTimeout(this.animationEnd, this.animations[newValue].duration, resumeIdle)
@@ -98,7 +121,7 @@ export default {
         .add({
           targets: this.animations[newValue],
           opacity: 1,
-          duration: 1000,
+          duration: 300,
         }, '-=1000')
         .add({
           duration: 1,
@@ -112,6 +135,9 @@ export default {
       if (this.animations[oldValue] !== undefined) {
         this.$anime.timeline({
           easing: 'linear',
+          complete() {
+            this_.videoLang = this.locale
+          },
         })
         .add({
           targets: this.animations[oldValue],

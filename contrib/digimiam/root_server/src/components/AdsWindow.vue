@@ -21,7 +21,7 @@
 
       <div class="d-flex flex-column align-items-center">
         <div class="position-relative mb-1">
-          <video src="@/assets/Wireframe.mp4" class="glowing-container video-thumbnail"/>
+          <video src="@/assets/videos/zephyr_3000.mp4" class="glowing-container video-thumbnail"/>
           <b-btn class="position-absolute lh-1 bottom-right" size="sm" variant="outline-info">
             <i class="text-teal fas fa-expand"/>
           </b-btn>

@@ -20,8 +20,8 @@ let store = new Vuex.Store({
     success: false,
     overlayVideos: {
       ms_pepper_mad: {
-        fr: require('@/assets/poivre_pas_contente.mp4'),
-        en: require('@/assets/pepper_not_happy.mp4'),
+        fr: require('@/assets/ms_pepper_what_fr.mp4'),
+        en: require('@/assets/ms_pepper_what_en.mp4'),
       },
     },
     currentOverlayVideo: null,
@@ -72,7 +72,7 @@ let store = new Vuex.Store({
       }
     },
     finalAnimation () {
-      store.commit('playMarmitronAnimation', 'animation3')
+      store.commit('playMarmitronAnimation', 'liberation')
       setTimeout(store.commit, 400, 'hidePasswordRecoveryWindow')
       setTimeout(store.commit, 500, 'hidePasswordWindow')
       setTimeout(store.commit, 12000, 'playOverlayVideo', 'ms_pepper_mad')

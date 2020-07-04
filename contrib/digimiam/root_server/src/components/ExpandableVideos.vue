@@ -43,8 +43,8 @@ export default {
       videos: [
         {
           zIndex: 9,
-          src: require("@/assets/Wireframe.mp4"),
-          poster: require("@/assets/zephyr_3000.png"),
+          src: require("@/assets/videos/zephyr_3000.mp4"),
+          poster: require("@/assets/img/zephyr_3000.png"),
           initialTop: 624,
           initialLeft: 1576,
           top: 624,
@@ -56,8 +56,8 @@ export default {
         },
         {
           zIndex: 9,
-          src: require("@/assets/zephyr_3000.mp4"),
-          poster: require("@/assets/zephyr_3000.png"),
+          src: require("@/assets/videos/zephyr_3000.mp4"),
+          poster: require("@/assets/img/zephyr_3000.png"),
           initialTop: 763,
           initialLeft: 1576,
           top: 763,
@@ -69,8 +69,8 @@ export default {
         },
         {
           zIndex: 9,
-          src: require("@/assets/Wireframe.mp4"),
-          poster: require("@/assets/zephyr_3000.png"),
+          src: require("@/assets/videos/zephyr_3000.mp4"),
+          poster: require("@/assets/img/zephyr_3000.png"),
           initialTop: 902,
           initialLeft: 1576,
           top: 902,
