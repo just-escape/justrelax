@@ -8,7 +8,7 @@ from justrelax.node.service import JustSockClientService, EventCategoryToMethodM
 
 class SerialEventBuffer:
     def __init__(self, protocol, serial, interval):
-        self.protocol = protocol
+        self.PROTOCOL = protocol
         self.serial = serial
         self.interval = interval
 
@@ -25,7 +25,7 @@ class SerialEventBuffer:
 
     def _send_event(self, base_event, channel):
         event = base_event
-        event[self.protocol.CHANNEL] = channel
+        event[self.PROTOCOL.CHANNEL] = channel
 
         self.serial.send_event(event)
         self.delay_task = reactor.callLater(self.interval, self.pop_event)
@@ -53,6 +53,20 @@ class SerialEventBuffer:
                     'channel': {channel},
                 }
             )
+
+        if base_event == {self.PROTOCOL.CATEGORY: self.PROTOCOL.ON}:
+            event_to_cancel = {self.PROTOCOL.CATEGORY: self.PROTOCOL.OFF}
+        elif base_event == {self.PROTOCOL.CATEGORY: self.PROTOCOL.OFF}:
+            event_to_cancel = {self.PROTOCOL.CATEGORY: self.PROTOCOL.ON}
+        else:
+            event_to_cancel = None
+
+        if event_to_cancel:
+            for index, queued_event in self.queue[:]:
+                if queued_event['base_event'] == event_to_cancel:
+                    queued_event.remove(channel)
+                    if not queued_event['channel']:
+                        self.queue.pop(index)
 
 
 class Lights(EventCategoryToMethodMixin, JustSockClientService):
