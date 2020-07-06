@@ -8,6 +8,7 @@ node_params:
   arduino:
     port: /dev/arduino
     baud_rate: 9600
+    buffering_interval: 0.1
   channels:
     # Standalone white
     - n: 1
