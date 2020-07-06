@@ -80,6 +80,9 @@ class Lights(EventCategoryToMethodMixin, JustSockClientService):
         self.serial = Serial(self, port, baud_rate)
         self.buffer = SerialEventBuffer(self.ARDUINO_PROTOCOL, self.serial, buffering_interval)
 
+        reactor.callLater(3, self.init_arduino)
+
+    def init_arduino(self):
         for channel in self.node_params['channels']:
             self.configure_channel_color(channel['n'], channel['rate'])
 
