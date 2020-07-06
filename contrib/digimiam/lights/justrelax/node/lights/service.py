@@ -62,7 +62,7 @@ class SerialEventBuffer:
             event_to_cancel = None
 
         if event_to_cancel:
-            for index, queued_event in self.queue[:]:
+            for index, queued_event in enumerate(self.queue[:]):
                 if queued_event['base_event'] == event_to_cancel:
                     queued_event.remove(channel)
                     if not queued_event['channel']:
