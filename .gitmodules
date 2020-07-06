@@ -13,9 +13,6 @@
 [submodule "contrib/digimiam/load_cells/arduino/libraries/HX711-multi"]
 	path = contrib/digimiam/load_cells/arduino/libraries/HX711-multi
 	url = https://github.com/compugician/HX711-multi
-[submodule "contrib/digimiam/load_cells/arduino/libraries/ArduinoJson"]
-	path = contrib/digimiam/load_cells/arduino/libraries/ArduinoJson
-	url = https://github.com/bblanchon/ArduinoJson
 [submodule "backend/proxuino/arduino/libraries/ArduinoJson"]
 	path = backend/proxuino/arduino/libraries/ArduinoJson
 	url = https://github.com/bblanchon/ArduinoJson
