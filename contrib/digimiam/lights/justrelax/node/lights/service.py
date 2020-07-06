@@ -62,11 +62,11 @@ class SerialEventBuffer:
             event_to_cancel = None
 
         if event_to_cancel:
-            for index, queued_event in enumerate(self.queue[:]):
+            for queued_event_index, queued_event in enumerate(self.queue[:]):
                 if queued_event['base_event'] == event_to_cancel:
-                    queued_event.remove(channel)
+                    queued_event['channel'].remove(channel)
                     if not queued_event['channel']:
-                        self.queue.pop(index)
+                        self.queue.pop(queued_event_index)
 
 
 class Lights(EventCategoryToMethodMixin, JustSockClientService):
