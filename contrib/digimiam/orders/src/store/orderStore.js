@@ -22,8 +22,8 @@ let store = new Vuex.Store({
       },
       potjevleesch: {
         price: 10,
-        img: require('@/assets/img/potlevlesch.png'),
-        imgCart: require('@/assets/img/potlevlesch.png'),
+        img: require('@/assets/img/potjevleesch.png'),
+        imgCart: require('@/assets/img/potjevleesch.png'),
         opacity: 1,
       },
       salade_flamande: {
