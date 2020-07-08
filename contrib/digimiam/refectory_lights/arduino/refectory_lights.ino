@@ -9,7 +9,7 @@ unsigned long lastCycleStart;
 int lightPins[CHANNELS][3] = {{2, -1, -1}, {3, -1, -1}, {4, -1, -1}, {5, -1, -1}, {6, 7, 8}, {9, 10, 11}};
 int brightnesses[CHANNELS][3] = {{300, 0, 0}, {300, 0, 0}, {300, 0, 0}, {300, 0, 0}, {0, 120, 300}, {600, 72, 0}};
 bool isOnPin[CHANNELS] = {48, 52, 46, 50, 42, 44};
-bool isHigh[CHANNELS] = {{false}};
+bool isHigh[CHANNELS][3] = {{false}};
 
 void setup() {
   for (int i = 0 ; i < CHANNELS ; i++) {
