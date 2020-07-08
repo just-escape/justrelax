@@ -27,7 +27,7 @@
     <rect
       x="42.5%" y="41.5%" width="16%" height="16%"
       filter="url(#locker)"
-      :style="{opacity: 0.7}"
+      :style="{opacity: lockerOpacity}"
     />
   </svg>
 </template>
