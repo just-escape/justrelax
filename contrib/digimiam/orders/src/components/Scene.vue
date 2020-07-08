@@ -59,16 +59,16 @@ export default {
           duration: 8000,
         },
         helpFr: {
-          video: require('@/assets/videos/idle_help_fr.webm'),
+          video: require('@/assets/videos/idle_help_idle_fr.webm'),
           ref: 'animationHelpFr',
           opacity: 0,
-          duration: 64000,
+          duration: 72000,
         },
         helpEn: {
-          video: require('@/assets/videos/idle_help_fr.webm'),
+          video: require('@/assets/videos/idle_help_idle_fr.webm'),
           ref: 'animationHelpEn',
           opacity: 0,
-          duration: 64000,
+          duration: 72000,
         },
       },
     }
@@ -152,7 +152,7 @@ export default {
     fireHelpAnimation() {
       let helpAnimation = this.$i18n.locale == 'fr' ? 'helpFr' : 'helpEn'
       this.startAnimation(helpAnimation)
-      setTimeout(this.resumeIdle, this.animations[helpAnimation].duration, 'help')
+      setTimeout(this.resumeIdle, this.animations[helpAnimation].duration, helpAnimation)
     },
     showMarmitron() {
       let this_ = this
