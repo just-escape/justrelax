@@ -9,20 +9,20 @@ node_params:
     blue:
       pin: 0
       off_by_default: false
-    orange: 5
-      pin: 0
+    orange:
+      pin: 5
       off_by_default: false
-    red: 6
-      pin: 0
+    red:
+      pin: 6
       off_by_default: false
-    white: 13
-      pin: 0
+    white:
+      pin: 13
       off_by_default: false
-    green: 19
-      pin: 0
+    green:
+      pin: 19
       off_by_default: false
-    pink: 26
-      pin: 0
+    pink:
+      pin: 26
       off_by_default: false
 
 logging: null
