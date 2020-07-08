@@ -14,12 +14,14 @@ No mouse cursor:
 
 Run chrome in kiosk mode:
 ```
-chromium --kiosk --app=<url> --window-position=0,0 --noerrdialogs --user-data-dir=/path/to/directory --password-store=basic --autoplay-policy=no-user-gesture-required --disable-features=TranslateUI
+chromium --kiosk --app=<url> --window-position=0,0 --noerrdialogs --user-data-dir=/path/to/directory --password-store=basic --autoplay-policy=no-user-gesture-required --disable-features=TranslateUI --disable-pinch
 ```
 --noerrordialors for popups ("translate this page")
 --user-data-dir for separate instances (sound)
 --password-store=basic to prevent error messages due to this autologin-user=jbb
 --autoplay-policy=no-user-gesture-required to allow html videos 'play' property to work all the time
+--disable-features=TranslateUI to prevent "Translate this page?" popup
+--disable-pinch to prevent the pinch-to-zoom feature
 
 Cinnamon startup application conf file:
 ~/.config/autostart/<name>.desktop
