@@ -1,0 +1,16 @@
+host: localhost
+port: 3031
+
+name: refectory_lights
+channel: digimiam1
+
+node_params:
+  pins:
+    blue: 0
+    orange: 5
+    red: 6
+    white: 13
+    green: 19
+    pink: 26
+
+logging: null

@@ -1,0 +1,13 @@
+[Unit]
+Description=Refectory lights node daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/refectory_lights.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o refectory_lights -c /etc/justrelax/refectory_lights.yaml
+
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
