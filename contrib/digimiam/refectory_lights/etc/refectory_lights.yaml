@@ -5,12 +5,24 @@ name: refectory_lights
 channel: digimiam1
 
 node_params:
-  pins:
-    blue: 0
+  colors:
+    blue:
+      pin: 0
+      off_by_default: false
     orange: 5
+      pin: 0
+      off_by_default: false
     red: 6
+      pin: 0
+      off_by_default: false
     white: 13
+      pin: 0
+      off_by_default: false
     green: 19
+      pin: 0
+      off_by_default: false
     pink: 26
+      pin: 0
+      off_by_default: false
 
 logging: null

@@ -51,7 +51,7 @@ void loop() {
     cyclesCounter++;
 
     for (int i = 0 ; i < CHANNELS ; i++) {
-      isHigh[i] = true && isOn[i];
+      isHigh[i] = isOn[i];
     }
 
     if (cyclesCounter % 5 == 0) {

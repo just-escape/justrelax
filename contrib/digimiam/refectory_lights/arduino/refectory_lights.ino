@@ -9,10 +9,10 @@ unsigned long lastCycleStart;
 int lightPins[CHANNELS][3] = {{2, -1, -1}, {3, -1, -1}, {4, -1, -1}, {5, -1, -1}, {6, 7, 8}, {9, 10, 11}};
 int brightnesses[CHANNELS][3] = {{300, 0, 0}, {300, 0, 0}, {300, 0, 0}, {300, 0, 0}, {0, 120, 300}, {600, 72, 0}};
 bool isOnPin[CHANNELS] = {48, 52, 46, 50, 42, 44};
-bool isHigh[CHANNELS][3] = {{false}};
 
 void setup() {
   for (int i = 0 ; i < CHANNELS ; i++) {
+    pinMode(isOnPin[i], INPUT);
     for (int j = 0 ; j < 3 ; j++) {
       if (lightPins[i][j] != -1) {
         pinMode(lightPins[i][j], OUTPUT);
@@ -20,6 +20,7 @@ void setup() {
     }
   }
 
+  Serial.begin(9600);
   lastCycleStart = micros();
 }
 
@@ -32,7 +33,7 @@ void loop() {
 
     for (int i = 0 ; i < CHANNELS ; i++) {
       for (int j = 0 ; j < 3 ; j++) {
-        isHigh[i][j] = digitalRead(isOnPin[i]);
+        digitalWrite(lightPins[i][j], digitalRead(isOnPin[i]));
       }
     }
   }
@@ -43,8 +44,7 @@ void loop() {
     for (int j = 0 ; j < 3 ; j++) {
       if (lightPins[i][j] != -1) {
         if (deltaTimeModulus1000 > brightnesses[i][j]) {
-          isHigh[i][j] = false;
-          digitalWrite(lightPins[i][j], isHigh[i][j]);
+          digitalWrite(lightPins[i][j], false);
         }
       }
     }
