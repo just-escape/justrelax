@@ -264,6 +264,25 @@ var store = new Vuex.Store({
       if (["easy", "normal", "hard"].includes(difficulty)) {
         if (!state.lockDifficulty) {
           state.difficulty = difficulty
+          if (state.difficulty === 'easy') {
+            state.currentBlocks = {
+              left: JSON.parse(JSON.stringify(INITIAL_BLOCKS_TUTORIAL_1)),
+              front: JSON.parse(JSON.stringify(INITIAL_BLOCKS_TUTORIAL_2)),
+              top: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_4_ROTATE_180)),
+            }
+          } else if (state.difficulty === 'normal') {
+            state.currentBlocks = {
+              left: JSON.parse(JSON.stringify(INITIAL_BLOCKS_TUTORIAL_1)),
+              front: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_4_ROTATE_270)),
+              top: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_11)),
+            }
+          } else if (state.difficulty === 'hard') {
+            state.currentBlocks = {
+              left: JSON.parse(JSON.stringify(INITIAL_BLOCKS_TUTORIAL_1)),
+              front: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_11_UPSIDE_DOWN)),
+              top: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_28)),
+            }
+          }
         }
       }
     },
