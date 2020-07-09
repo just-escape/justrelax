@@ -41,15 +41,34 @@ export default {
     MenuPuzzle,
     DangerWindow,
   },
+  data() {
+    return {
+      releaseTask: null,
+    }
+  },
+  computed: {
+    dragging() {
+      return menuStore.state.dragging
+    },
+  },
   methods: {
     cursorMove: function(event) {
       menuStore.commit('appCursorMove', event)
     },
     cursorRelease: function() {
+      clearTimeout(this.releaseTask)
+      this.releaseTask = setTimeout(this._cursorRelease, 0.2)
+    },
+    _cursorRelease: function() {
       menuStore.commit('appCursorRelease')
     },
     mouseleave: function() {
       menuStore.commit('appMouseleave')
+    },
+  },
+  watch: {
+    dragging() {
+      clearTimeout(this.releaseTask)
     },
   },
   created() {
