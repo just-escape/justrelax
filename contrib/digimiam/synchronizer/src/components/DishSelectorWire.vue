@@ -32,7 +32,7 @@ export default {
       }
     },
     x1: function() {
-      return this.item.cursorLeft + this.item.cursorWidth / 2
+      return this.item.cursorLeft + this.item.cursorWidth
     },
     y1: function() {
       return this.item.cursorTop + this.item.cursorHeight / 2

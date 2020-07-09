@@ -2,11 +2,11 @@
   <div class="position-relative">
     <div class="container-fluid px-0 h-100">
       <div class="row justify-content-center h-100">
-        <div class="col-8">
+        <div class="w-large">
           <DishMatrix/>
         </div>
 
-        <div class="col-3">
+        <div class="w-small">
           <MenuDisplay/>
         </div>
       </div>
@@ -26,3 +26,15 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.w-large {
+  width: 820px;
+  padding: 0px 15px;
+}
+
+.w-small {
+  width: 439.5px;
+  padding: 0px 15px;
+}
+</style>

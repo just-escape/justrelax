@@ -26,42 +26,42 @@ export default {
     return {
       hexagons: [
         {
-          x: 137,
+          x: 177,
           y: 0,
           color: 'white',
           hidden: true,
           blinkAnimation: false,
         },
         {
-          x: 157,
+          x: 197,
           y: 0,
           color: 'white',
           hidden: true,
           blinkAnimation: false,
         },
         {
-          x: 167,
+          x: 207,
           y: 17,
           color: 'white',
           hidden: true,
           blinkAnimation: false,
         },
         {
-          x: 157,
+          x: 197,
           y: 34,
           color: 'white',
           hidden: true,
           blinkAnimation: false,
         },
         {
-          x: 137,
+          x: 177,
           y: 34,
           color: 'white',
           hidden: true,
           blinkAnimation: false,
         },
         {
-          x: 127,
+          x: 167,
           y: 17,
           color: 'white',
           hidden: true,
