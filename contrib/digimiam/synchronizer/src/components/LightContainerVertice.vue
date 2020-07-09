@@ -86,13 +86,21 @@ export default {
         if (this.startingPoint) {
           return 'rgba(0, 0, 0, 0)'
         } else {
-          return 'rgba(' + this.r + ', ' + this.g + ', ' + this.b + ', ' + opacity + ')'
+          if (this.showGlobalError) {
+            return 'rgba(255, 20, 40)'
+          } else {
+            return 'rgba(' + this.r + ', ' + this.g + ', ' + this.b + ', ' + opacity + ')'
+          }
         }
       }
     },
     stroke: function() {
       if (this.startingPoint) {
-        return 'rgba(' + this.r + ', ' + this.g + ', ' + this.b + ', ' + this.a + ')'
+        if (this.showGlobalError) {
+          return 'rgba(255, 20, 40)'
+        } else {
+          return 'rgba(' + this.r + ', ' + this.g + ', ' + this.b + ', ' + this.a + ')'
+        }
       } else {
         return 'rgba(0, 0, 0, 0)'
       }
@@ -197,6 +205,7 @@ export default {
     g: Number,
     b: Number,
     a: Number,
+    showGlobalError: Boolean,
     glowing: String,
     pulse: Boolean,
   }

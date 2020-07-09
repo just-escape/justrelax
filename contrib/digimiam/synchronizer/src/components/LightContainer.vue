@@ -17,6 +17,7 @@
           :b="v.color.b"
           :a="v.color.a"
           :glowing="v.glowing"
+          :showGlobalError="showGlobalError"
           :pulse="v.pulse"
         />
       </svg>
@@ -42,6 +43,9 @@ export default {
   computed: {
     vertices() {
       return lightStore.state.vertices
+    },
+    showGlobalError() {
+      return lightStore.state.showGlobalError
     },
   },
   mounted() {

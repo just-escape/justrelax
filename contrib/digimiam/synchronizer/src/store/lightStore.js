@@ -216,10 +216,10 @@ function nextActivation() {
     if (store.state.activatedSensors.slice(0, 3).includes(store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId)) {
       activateEdge(edgeId)
     } else {
-      if (store.state.edges[store.state.currentActivationSequence[1]] == edgeId) {
-        gameOver(newActivationSequence)
+      if (store.state.currentActivationSequence[1] == edgeId) {
+        gameOver(setPlayable, true)
       } else {
-        gameOver(setPlayable)
+        gameOver(newActivationSequence, true)
       }
     }
   }
@@ -370,10 +370,59 @@ function newActivationSequence() {
   newActivationPath()
 }
 
-function gameOver(callback) {
+function gameOver(callback, blinkErrorAnimation) {
   store.commit('setUnplayable')
 
-  nextDeactivation(callback)
+  if (blinkErrorAnimation) {
+    Vue.prototype.$anime.timeline({
+      easing: 'linear',
+      complete() {
+        store.commit('hideGlobalError')
+        nextDeactivation(callback)
+      }
+    })
+    .add({
+      duration: 500,
+    })
+    .add({
+      duration: 1,
+      update() {
+        store.commit('showGlobalError')
+      },
+    })
+    .add({
+      duration: 150,
+    })
+    .add({
+      duration: 1,
+      update() {
+        store.commit('hideGlobalError')
+      }
+    })
+    .add({
+      duration: 150,
+    })
+    .add({
+      duration: 1,
+      update() {
+        store.commit('showGlobalError')
+      },
+    })
+    .add({
+      duration: 150,
+    })
+    .add({
+      duration: 1,
+      update() {
+        store.commit('hideGlobalError')
+      }
+    })
+    .add({
+      duration: 500
+    })
+  } else {
+    nextDeactivation(callback)
+  }
 }
 
 var store = new Vuex.Store({
@@ -1553,6 +1602,7 @@ var store = new Vuex.Store({
     activationAnimation: null,
     playable: true,
     transparentVertices: false,
+    showGlobalError: false,
   },
   getters: {
     currentActivationEdgeId (state) {
@@ -1709,14 +1759,20 @@ var store = new Vuex.Store({
           if (state.activationAnimation) {
             if (currentVertice.activationSensorId == color) {
               if (state.edges[state.currentActivationSequence[0]].validated) {
-                gameOver(newActivationSequence)
+                gameOver(newActivationSequence, true)
               } else {
-                gameOver(setPlayable)
+                gameOver(setPlayable, false)
               }
             }
           }
         }
       }
+    },
+    showGlobalError (state) {
+      state.showGlobalError = true
+    },
+    hideGlobalError (state) {
+      state.showGlobalError = false
     },
   },
   actions: {
