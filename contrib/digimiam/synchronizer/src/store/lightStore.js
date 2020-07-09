@@ -118,7 +118,7 @@ function activateEdgesForFinalAnimation(edgeIds) {
   .add({
     duration: 1500,
     targets: '#glowing-transition-intensity',
-    stdDeviation: "20",
+    stdDeviation: "12",
   }, '-=1500')
   .add({
     duration: 1,
@@ -133,7 +133,7 @@ function activateEdgesForFinalAnimation(edgeIds) {
   .add({
     duration: 1,
     targets: '#glowing-transition-intensity',
-    stdDeviation: "2",
+    stdDeviation: "1.7",
   }, '-=1')
 }
 
@@ -184,7 +184,7 @@ function activateEdge(edgeId) {
   .add({
     duration: 5000,
     targets: '#glowing-transition-intensity',
-    stdDeviation: "20",
+    stdDeviation: "12",
   }, '-=5000')
   .add({
     duration: 1,
@@ -199,7 +199,7 @@ function activateEdge(edgeId) {
   .add({
     duration: 1,
     targets: '#glowing-transition-intensity',
-    stdDeviation: "2",
+    stdDeviation: "1.7",
   }, '-=1')
 
   store.commit('setActivationAnimation', activationAnimation)
@@ -269,7 +269,7 @@ function _deactivateEdge(edgeId, callback) {
   .add({
     duration: 1000,
     targets: '#glowing-transition-intensity',
-    stdDeviation: "2",
+    stdDeviation: "1.7",
   }, '-=1000')
 }
 
@@ -298,7 +298,7 @@ function deactivateEdge(edgeId, callback) {
     .add({
       duration: 1,
       targets: '#glowing-transition-intensity',
-      stdDeviation: "20",
+      stdDeviation: "12",
     }, '-=1')
   } else {
     _deactivateEdge(edgeId, callback)
@@ -603,19 +603,19 @@ var store = new Vuex.Store({
         x: 17 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
-          r: 255,
-          g: 255,
-          b: 255,
+          r: 40,
+          g: 167,
+          b: 69,
           a: 1,
         },
         initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
+          r: 40,
+          g: 167,
+          b: 69,
           a: 1,
         },
         glowing: 'glowing',
-        activationSensorId: 'white',
+        activationSensorId: 'green',
         startingPoint: false,
         pulse: false,
       },
@@ -703,26 +703,6 @@ var store = new Vuex.Store({
         x: 14 / 4 * 120 - 37.5,
         y: 2 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
-          r: 255,
-          g: 255,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'white',
-        startingPoint: false,
-        pulse: false,
-      },
-      '35': {
-        x: 16 / 4 * 120 - 37.5,
-        y: 2 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
           r: 232,
           g: 62,
           b: 140,
@@ -736,6 +716,26 @@ var store = new Vuex.Store({
         },
         glowing: 'glowing',
         activationSensorId: 'pink',
+        startingPoint: false,
+        pulse: false,
+      },
+      '35': {
+        x: 16 / 4 * 120 - 37.5,
+        y: 2 / 2 * 60 * Math.sqrt(3) + 23,
+        color: {
+          r: 255,
+          g: 255,
+          b: 255,
+          a: 1,
+        },
+        initColor: {
+          r: 255,
+          g: 255,
+          b: 255,
+          a: 1,
+        },
+        glowing: 'glowing',
+        activationSensorId: 'white',
         startingPoint: false,
         pulse: false,
       },
@@ -883,19 +883,19 @@ var store = new Vuex.Store({
         x: 19 / 4 * 120 - 37.5,
         y: 3 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
-          r: 232,
-          g: 62,
-          b: 140,
+          r: 255,
+          g: 255,
+          b: 255,
           a: 1,
         },
         initColor: {
-          r: 232,
-          g: 62,
-          b: 140,
+          r: 255,
+          g: 255,
+          b: 255,
           a: 1,
         },
         glowing: 'glowing',
-        activationSensorId: 'pink',
+        activationSensorId: 'white',
         startingPoint: false,
         pulse: false,
       },

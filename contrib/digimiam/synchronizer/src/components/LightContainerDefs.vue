@@ -224,11 +224,11 @@
       <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
     </filter>
     <filter id="glowing-transition" x="-50" y="-50" width="150" height="150">
-      <feGaussianBlur id="glowing-transition-intensity" result="blurOut" in="offOut" stdDeviation="2" />
+      <feGaussianBlur id="glowing-transition-intensity" result="blurOut" in="offOut" stdDeviation="1.7" />
       <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
     </filter>
     <filter id="glowing-more" x="-50" y="-50" width="150" height="150">
-      <feGaussianBlur result="blurOut" in="offOut" stdDeviation="20" />
+      <feGaussianBlur result="blurOut" in="offOut" stdDeviation="12" />
       <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
     </filter>
   </defs>
