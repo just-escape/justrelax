@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import i18n from '@/locales.js'
 import router from '@/router.js'
 
-import lockerStore from '@/store/lockerStore.js'
+import lockStore from '@/store/lockStore.js'
 
 Vue.use(Vuex)
 
@@ -16,7 +16,7 @@ const justSockService = new Vuex.Store({
         message_type: "IAM",
         client_type: "node",
         channel: "digimiam1",
-        name: "digital_locker",
+        name: "digital_lock",
       }
       Vue.prototype.$socket.send(JSON.stringify(iamMessage))
     },
@@ -54,7 +54,7 @@ const justSockService = new Vuex.Store({
           i18n.locale = 'en'
         }
       } else if (event.category == 'enable') {
-        lockerStore.commit('enable')
+        lockStore.commit('enable')
       }
     },
     SOCKET_RECONNECT (state, count) {

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import lockerStore from '@/store/lockerStore.js'
+import lockStore from '@/store/lockStore.js'
 
 export default {
   name: 'PatternLine',
@@ -50,10 +50,10 @@ export default {
       return 'rotate(' + angle + 'deg)'
     },
     background() {
-      return 'rgba(' + lockerStore.state.connectorsColor.r + ', ' + lockerStore.state.connectorsColor.g + ', ' + lockerStore.state.connectorsColor.b + ', 0.5)'
+      return 'rgba(' + lockStore.state.connectorsColor.r + ', ' + lockStore.state.connectorsColor.g + ', ' + lockStore.state.connectorsColor.b + ', 0.5)'
     },
     transition() {
-      return 'background ' + lockerStore.state.connectorsColorTransition + 's ease-out'
+      return 'background ' + lockStore.state.connectorsColorTransition + 's ease-out'
     },
   },
   props: {

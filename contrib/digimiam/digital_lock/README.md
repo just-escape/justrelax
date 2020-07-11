@@ -1,4 +1,4 @@
-# digital_locker
+# digital_lock
 
 ## Project setup
 ```

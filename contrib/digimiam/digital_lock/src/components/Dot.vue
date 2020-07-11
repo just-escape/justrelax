@@ -19,7 +19,7 @@
 
 <script>
 import SvgHexagon from '@/components/SvgHexagon.vue'
-import lockerStore from '@/store/lockerStore.js'
+import lockStore from '@/store/lockStore.js'
 
 export default {
   name: "Dot",
@@ -35,32 +35,32 @@ export default {
       }
     },
     circleTransition() {
-      return 'border-color ' + lockerStore.state.connectorsColorTransition + 's ease-out, background ' + lockerStore.state.connectorsColorTransition + 's ease-out'
+      return 'border-color ' + lockStore.state.connectorsColorTransition + 's ease-out, background ' + lockStore.state.connectorsColorTransition + 's ease-out'
     },
     circleBorderColor() {
-      return 'rgba(' + lockerStore.state.connectorsColor.r + ', ' + lockerStore.state.connectorsColor.g + ', ' + lockerStore.state.connectorsColor.b + ', 0.7)'
+      return 'rgba(' + lockStore.state.connectorsColor.r + ', ' + lockStore.state.connectorsColor.g + ', ' + lockStore.state.connectorsColor.b + ', 0.7)'
     },
     circleBackground() {
-      return 'rgba(' + lockerStore.state.connectorsColor.r + ', ' + lockerStore.state.connectorsColor.g + ', ' + lockerStore.state.connectorsColor.b + ', 0.18)'
+      return 'rgba(' + lockStore.state.connectorsColor.r + ', ' + lockStore.state.connectorsColor.g + ', ' + lockStore.state.connectorsColor.b + ', 0.18)'
     },
   },
   methods: {
     connect() {
-      lockerStore.commit('connect', this.index)
+      lockStore.commit('connect', this.index)
 
-      if (lockerStore.state.enableSuccess) {
-        lockerStore.commit('checkPattern')
-        if (lockerStore.state.success) {
-          lockerStore.commit('setConnectorsColorTransition', 0.8)
-          lockerStore.commit('showSuccess')
-          setTimeout(lockerStore.commit, 801, 'setConnectorsColorTransition', 0)
-          setTimeout(lockerStore.commit, 1200, 'resetPattern')
-          setTimeout(lockerStore.commit, 1200, 'notifySuccess')
+      if (lockStore.state.enableSuccess) {
+        lockStore.commit('checkPattern')
+        if (lockStore.state.success) {
+          lockStore.commit('setConnectorsColorTransition', 0.8)
+          lockStore.commit('showSuccess')
+          setTimeout(lockStore.commit, 801, 'setConnectorsColorTransition', 0)
+          setTimeout(lockStore.commit, 1200, 'resetPattern')
+          setTimeout(lockStore.commit, 1200, 'notifySuccess')
         }
       }
     },
     startPattern() {
-      lockerStore.commit('startPattern', this.index)
+      lockStore.commit('startPattern', this.index)
     },
   },
   props: {
