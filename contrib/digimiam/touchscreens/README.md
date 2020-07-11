@@ -36,3 +36,8 @@ Name[en_US]=<name>
 Comment[en_US]=No description
 X-GNOME-Autostart-Delay=0
 ```
+
+Small monitors:
+```
+https://www.waveshare.com/wiki/Main_Page
+```
