@@ -2,8 +2,8 @@
   <Window :title="'MENU'">
     <div class="d-flex flex-column justify-content-around align-items-center mx-4 h-100" style="font-size: 40px">
       TODO
-      <span @click="cherche">cherche</span>
-      <span @click="gratte">gratte</span>
+      <span @click="reponse">reponse</span>
+      <span @click="liberation">liberation</span>
       <!--<div class="d-flex flex-row justify-content-center">
         <ResearchComponent
           :shuffleSignal="components[0].shuffleSignal"
@@ -91,14 +91,11 @@ export default {
         setTimeout(this.shuffle, 1000)
       }
     },
-    click() {
+    reponse() {
       businessStore.commit('playMarmitronAnimation', 'reponse')
     },
-    cherche() {
-      businessStore.commit('playMarmitronAnimation', 'cherche')
-    },
-    gratte() {
-      businessStore.commit('playMarmitronAnimation', 'gratte')
+    liberation() {
+      businessStore.commit('playMarmitronAnimation', 'liberation')
     },
   },
   mounted() {

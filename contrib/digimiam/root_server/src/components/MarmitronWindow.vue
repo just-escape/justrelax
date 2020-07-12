@@ -10,11 +10,11 @@
       class="position-absolute"/>
     <div v-for="(animation, animationIndex) in animations" :key="animationIndex">
       <video
-        v-for="(lang, langIndex) in langs" :key="langIndex"
-        :ref="animation.lang.ref"
+        v-for="(localizedAnimation, lang) in animation" :key="animationIndex + lang"
+        :ref="localizedAnimation.ref"
         class="position-absolute"
-        :style="{opacity: animation.lang.opacity}"
-        :src="animation.lang.video"
+        :style="{opacity: localizedAnimation.opacity}"
+        :src="localizedAnimation.video"
       />
     </div>
   </Window>
@@ -38,13 +38,13 @@ export default {
         reponse: {
           en: {
             video: require('@/assets/videos/marmitron_password_en_862x670.webm'),
-            ref: 'reponse',
+            ref: 'reponseEn',
             opacity: 0,
             duration: 23960,
           },
           fr: {
             video: require('@/assets/videos/marmitron_password_fr_862x670.webm'),
-            ref: 'reponse',
+            ref: 'reponseFr',
             opacity: 0,
             duration: 23960,
           },
@@ -52,13 +52,13 @@ export default {
         liberation: {
           en: {
             video: require('@/assets/videos/marmitron_liberation_en_862x670.webm'),
-            ref: 'liberation',
+            ref: 'liberationEn',
             opacity: 0,
             duration: 8000,
           },
           fr: {
             video: require('@/assets/videos/marmitron_liberation_fr_862x670.webm'),
-            ref: 'liberation',
+            ref: 'liberationFr',
             opacity: 0,
             duration: 8000,
           },
@@ -101,17 +101,21 @@ export default {
     playingAnimation(newValue, oldValue) {
       let this_ = this
 
-      if (this.animations[newValue] !== undefined) {
-        this.$refs[this.animations[newValue].ref][0].play()
+      if (newValue !== null) {
+        this.$refs[this.animations[newValue][this.videoLang].ref][0].play()
 
         // liberation is the final Marmitron animation
         let resumeIdle = newValue !== 'liberation'
 
         clearTimeout(this.animationEndTask)
-        this.animationEndTask = setTimeout(this.animationEnd, this.animations[newValue].duration, resumeIdle)
+        this.animationEndTask = setTimeout(this.animationEnd, this.animations[newValue][this.videoLang].duration, resumeIdle)
 
         this.$anime.timeline({
           easing: 'linear',
+          complete() {
+            this_.$refs.animationIdle.pause()
+            this_.$refs.animationIdle.currentTime = 0
+          },
         })
         .add({
           targets: this,
@@ -119,37 +123,25 @@ export default {
           duration: 1000,
         })
         .add({
-          targets: this.animations[newValue],
+          targets: this.animations[newValue][this.videoLang],
           opacity: 1,
           duration: 300,
         }, '-=1000')
-        .add({
-          duration: 1,
-          update() {
-            this_.$refs.animationIdle[0].pause()
-            this_.$refs.animationIdle[0].currentTime = 0
-          },
-        })
       }
 
-      if (this.animations[oldValue] !== undefined) {
+      if (oldValue !== null) {
         this.$anime.timeline({
           easing: 'linear',
           complete() {
-            this_.videoLang = this.locale
+            this_.$refs[this_.animations[newValue][this_.videoLang].ref][0].currentTime = 0
+            this_.$refs[this_.animations[newValue][this_.videoLang].ref][0].pause()
+            this_.videoLang = this_.locale
           },
         })
         .add({
-          targets: this.animations[oldValue],
+          targets: this.animations[oldValue][this.videoLang],
           opacity: 0,
           duration: 1000,
-        })
-        .add({
-          duration: 1,
-          update() {
-            this_.$refs[this.animations[newValue].ref][0].currentTime = 0
-            this_.$refs[this.animations[newValue].ref][0].pause()
-          }
         })
       }
     },
