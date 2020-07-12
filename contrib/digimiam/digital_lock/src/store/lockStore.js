@@ -68,14 +68,38 @@ var store = new Vuex.Store({
     success: false,
     successNotified: false,
     enableSuccess: false,
+    boxOffsetTop: 0,
+    boxOffsetLeft: 0,
   },
   mutations: {
+    setBoxOffset(state, {top, left}) {
+      state.boxOffsetTop = top
+      state.boxOffsetLeft = left
+    },
     enable(state) {
       state.enableSuccess = true
     },
     move(state, {x, y}) {
-      state.cursorPosition.x = x
-      state.cursorPosition.y = y
+      state.cursorPosition.x = x - state.boxOffsetLeft
+      state.cursorPosition.y = y - state.boxOffsetTop
+
+      for (var i = 0 ; i < state.dots.length ; i++) {
+        // 900 = 30^2
+        if (Math.pow(state.dots[i].x - state.cursorPosition.x, 2) + Math.pow(state.dots[i].y - state.cursorPosition.y, 2) < 900) {
+          store.commit('connect', i)
+
+          if (state.enableSuccess) {
+            store.commit('checkPattern')
+            if (state.success) {
+              store.commit('setConnectorsColorTransition', 0.8)
+              store.commit('showSuccess')
+              setTimeout(store.commit, 801, 'setConnectorsColorTransition', 0)
+              setTimeout(store.commit, 1200, 'resetPattern')
+              setTimeout(store.commit, 1200, 'notifySuccess')
+            }
+          }
+        }
+      }
     },
     startPattern(state, dotIndex) {
       if (state.lockActions) {
@@ -86,6 +110,8 @@ var store = new Vuex.Store({
         state.dots[dotIndex].connected = true
         state.lastConnectedDotIndex = dotIndex
         state.drawing = true
+        state.cursorPosition.x = state.dots[dotIndex].x
+        state.cursorPosition.y = state.dots[dotIndex].y
       }
     },
     connect(state, dotIndex) {

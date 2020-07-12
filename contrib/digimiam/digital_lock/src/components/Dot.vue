@@ -3,7 +3,6 @@
     <div class="position-relative">
       <SvgHexagon class="hexagon"/>
       <div
-        @mousemove="connect" @touchmove="connect"
         @mousedown="startPattern" @touchstart="startPattern"
         class="circle"
         :style="{
@@ -45,20 +44,6 @@ export default {
     },
   },
   methods: {
-    connect() {
-      lockStore.commit('connect', this.index)
-
-      if (lockStore.state.enableSuccess) {
-        lockStore.commit('checkPattern')
-        if (lockStore.state.success) {
-          lockStore.commit('setConnectorsColorTransition', 0.8)
-          lockStore.commit('showSuccess')
-          setTimeout(lockStore.commit, 801, 'setConnectorsColorTransition', 0)
-          setTimeout(lockStore.commit, 1200, 'resetPattern')
-          setTimeout(lockStore.commit, 1200, 'notifySuccess')
-        }
-      }
-    },
     startPattern() {
       lockStore.commit('startPattern', this.index)
     },

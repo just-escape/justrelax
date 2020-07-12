@@ -1,12 +1,6 @@
 <template>
   <div
-    id="draw-box"
-    @mousemove="mousemove"
-    @touchmove="touchmove"
-    @mouseleave="leave"
-    @touchleave="leave"
-    @mouseup="release"
-    @touchend="release"
+    ref="drawBox"
     class="position-relative"
   >
     <div class="box"></div>
@@ -44,12 +38,6 @@ export default {
     PatternLine,
     Dot,
   },
-  data() {
-    return {
-      boxOffsetTop: 0,
-      boxOffsetLeft: 0,
-    }
-  },
   computed: {
     dots() {
       return lockStore.state.dots
@@ -80,39 +68,9 @@ export default {
       return lines
     },
   },
-  methods: {
-    mousemove(event) {
-      let x = event.clientX - this.boxOffsetLeft
-      let y = event.clientY - this.boxOffsetTop
-      lockStore.commit('move', {x, y})
-    },
-    touchmove(event) {
-      let x = event.targetTouches[0].clientX - this.boxOffsetLeft
-      let y = event.targetTouches[0].clientY - this.boxOffsetTop
-      lockStore.commit('move', {x, y})
-    },
-    leave() {
-      if (!lockStore.state.lockActions) {
-        lockStore.commit('resetPattern')
-      }
-    },
-    release() {
-      if (!lockStore.state.lockActions) {
-        if (lockStore.state.showErrorOnRealse) {
-          lockStore.commit('setConnectorsColorTransition', 0.8)
-          lockStore.commit('showError')
-          setTimeout(lockStore.commit, 801, 'setConnectorsColorTransition', 0)
-          setTimeout(lockStore.commit, 1200, 'resetPattern')
-        } else {
-          lockStore.commit('resetPattern')
-        }
-      }
-    },
-  },
   mounted() {
-    let box = document.getElementById('draw-box')
-    this.boxOffsetLeft = box.offsetLeft
-    this.boxOffsetTop = box.offsetTop
+    let box = this.$refs.drawBox
+    lockStore.commit('setBoxOffset', {left: box.offsetLeft, top: box.offsetTop})
   },
 }
 </script>
