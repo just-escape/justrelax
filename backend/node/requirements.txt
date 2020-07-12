@@ -1,3 +1,7 @@
 RPi.GPIO
 gpiozero
 pyserial
+twisted
+autobahn
+yaml
+zope
