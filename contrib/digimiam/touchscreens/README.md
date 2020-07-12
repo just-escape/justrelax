@@ -3,14 +3,9 @@ No login screen at boot:
 /etc/lightdm/lightdm.conf
 ```
 [Seat:*]
-autologin-user=jbb
+autologin-user=jbb  # No login prompt
+xserver-command=X -s 0 dpms -nocursor  # No sleep mode, no cursor
 ```
-
-No sleep mode:
-???
-
-No mouse cursor:
-???
 
 Run chrome in kiosk mode:
 ```
