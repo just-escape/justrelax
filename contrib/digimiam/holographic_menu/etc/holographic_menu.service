@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 Type=simple
 
-ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/holographic_menu.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o holographic_menu -c /etc/justrelax/holographic_menu.yaml
+ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/holographic_menu.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o holographicmenu -c /etc/justrelax/holographic_menu.yaml
 
 TimeoutStopSec=15
 
