@@ -11,6 +11,7 @@
     "bootstrap-vue": "^2.5.0",
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
+    "vue-animejs": "^2.1.1",
     "vue-i18n": "^8.15.3",
     "vue-native-websocket": "^2.0.14",
     "vue-router": "^3.1.5",

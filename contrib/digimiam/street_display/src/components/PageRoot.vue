@@ -1,16 +1,25 @@
 <template>
-  <div class="bg-dark h-100">
-    <OverlayVideo/>
+  <div class="h-100 d-flex flex-column align-items-center">
+    <Title/>
+    <MenuFrame class="mb-4"/>
+    <ButtonsBottom/>
+    <!--<OverlayVideo/>-->
   </div>
 </template>
 
 <script>
-import OverlayVideo from '@/components/OverlayVideo.vue'
+//import OverlayVideo from '@/components/OverlayVideo.vue'
+import Title from '@/components/Title.vue'
+import MenuFrame from '@/components/MenuFrame.vue'
+import ButtonsBottom from '@/components/ButtonsBottom.vue'
 
 export default {
   name: 'PageRoot',
   components: {
-    OverlayVideo,
+    //OverlayVideo,
+    Title,
+    MenuFrame,
+    ButtonsBottom,
   },
   created() {
     let lang = this.$route.query.lang
