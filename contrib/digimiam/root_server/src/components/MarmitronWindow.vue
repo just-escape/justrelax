@@ -133,8 +133,8 @@ export default {
         this.$anime.timeline({
           easing: 'linear',
           complete() {
-            this_.$refs[this_.animations[newValue][this_.videoLang].ref][0].currentTime = 0
-            this_.$refs[this_.animations[newValue][this_.videoLang].ref][0].pause()
+            this_.$refs[this_.animations[oldValue][this_.videoLang].ref][0].currentTime = 0
+            this_.$refs[this_.animations[oldValue][this_.videoLang].ref][0].pause()
             this_.videoLang = this_.locale
           },
         })
