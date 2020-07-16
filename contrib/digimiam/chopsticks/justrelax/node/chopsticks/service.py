@@ -1,5 +1,8 @@
-from gpiozero import InputDevice, RGBLED
+from gpiozero import InputDevice
+import board
+import neopixel
 
+from twisted.internet.reactor import callLater
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
@@ -7,7 +10,12 @@ from justrelax.node.service import JustSockClientService, EventCategoryToMethodM
 
 
 class Letter:
-    # Each letter can access each other letter
+    """
+    A letter on the "control" panel.
+    Manage it's color, react to chopstick insertion, and interact with neighboring letters.
+    """
+
+    led_strip = None
     letters = []
     colors = {}
 
@@ -16,7 +24,7 @@ class Letter:
     def __init__(
             self,
             plug_reactions, unplug_reactions, periodic_reactions,
-            reaction_pin, led_pins, led_success_color,
+            reaction_pin, led_index, led_success_color,
     ):
         self._difficulty = None
         self._led_color = None
@@ -24,8 +32,8 @@ class Letter:
         self.reaction_pin = InputDevice(reaction_pin)
         self.is_chopstick_plugged = self.reaction_pin.is_active
 
-        self.led = RGBLED(led_pins["r"], led_pins["g"], led_pins["b"])
-        self.led.color = (0, 0, 0)
+        self.led_index = led_index
+        Letter.led_strip[self.led_index] = (0, 0, 0)
 
         self.led_success_color = led_success_color
 
@@ -45,6 +53,8 @@ class Letter:
             # in order to reduce possible surprises during the game session.
             reaction_task["reaction"] = getattr(self, "reaction_{}".format(reaction_task["reaction"]))
         self.periodic_task = None
+
+        self.delayed_reaction_task = None
 
     @property
     def difficulty(self):
@@ -71,12 +81,13 @@ class Letter:
     @led_color.setter
     def led_color(self, value):
         self._led_color = value
-        logger.debug("LED {}: {}".format(self.letters.index(self), value))
+        logger.debug("Letter {}: {}".format(self.letters.index(self), value))
 
+        # Get GRB values of given colors from settings
         red = self.colors.get(value, {}).get("r", 0)
         green = self.colors.get(value, {}).get("g", 0)
         blue = self.colors.get(value, {}).get("b", 0)
-        self.led.color = (red, green, blue)
+        Letter.led_strip[self.led_index] = (red, green, blue)
 
     def check_success(self):
         # A letter evaluates to True if its led_color equals to its success_color
@@ -122,12 +133,30 @@ class Letter:
 
     def on_chopstick_plug(self):
         logger.debug("Letter {} chopstick plugged".format(self.letters.index(self)))
+
+        if self.delayed_reaction_task and self.delayed_reaction_task.active():
+            logger.debug("Canceling previous reaction task")
+            self.delayed_reaction_task.cancel()
+        else:
+            self.delayed_reaction_task = callLater(0.2, self._on_chopstick_plug)
+
+    def _on_chopstick_plug(self):
+        logger.debug("Executing letter {} chopstick plug reaction".format(self.letters.index(self)))
         reaction = self.plug_reactions.get(self.difficulty, self.reaction_do_nothing)
         reaction()
         self.check_success()
 
     def on_chopstick_unplug(self):
         logger.debug("Letter {} chopstick unplugged".format(self.letters.index(self)))
+
+        if self.delayed_reaction_task and self.delayed_reaction_task.active():
+            logger.debug("Canceling previous reaction task")
+            self.delayed_reaction_task.cancel()
+        else:
+            self.delayed_reaction_task = callLater(0.2, self._on_chopstick_unplug)
+
+    def _on_chopstick_unplug(self):
+        logger.debug("Executing letter {} chopstick unplug reaction".format(self.letters.index(self)))
         reaction = self.unplug_reactions.get(self.difficulty, self.reaction_do_nothing)
         reaction()
         self.check_success()
@@ -154,6 +183,13 @@ class Chopsticks(EventCategoryToMethodMixin, JustSockClientService):
         self.colors = self.node_params['colors']
         self.letters_configuration = self.node_params['letters']
 
+        self.led_strip = neopixel.NeoPixel(board.D18, self.node_params['n_led'])
+
+        for led in self.node_params['static_blue']:
+            self.led_strip[led] = self.color('blue')
+        for led in self.node_params['static_orange']:
+            self.led_strip[led] = self.color('orange')
+
         self.letters = []
         self.init_letters()
 
@@ -161,7 +197,8 @@ class Chopsticks(EventCategoryToMethodMixin, JustSockClientService):
         self.watch_chopsticks.start(1 / self.node_params['watcher_frequency'])
 
     def init_letters(self):
-        Letter.letters = self.letters  # To allow interactions between letters
+        Letter.led_strip = self.led_strip
+        Letter.letters = self.letters
         Letter.colors = self.colors
         Letter.on_success = self.notify_success
 
@@ -171,12 +208,12 @@ class Chopsticks(EventCategoryToMethodMixin, JustSockClientService):
                 letter_conf.get('chopstick_unplug_reactions', {}),
                 letter_conf.get('periodic_reactions', {}),
                 letter_conf['reaction_pin'],
-                letter_conf['led_pins'],
+                letter_conf['led_index'],
                 letter_conf['led_success_color'],
             )
             self.letters.append(letter)
 
-        self.reset()
+        self.event_reset()
 
     def check_chopsticks(self):
         for letter in self.letters:
@@ -213,3 +250,9 @@ class Chopsticks(EventCategoryToMethodMixin, JustSockClientService):
 
     def event_set_difficulty(self, difficulty: str):
         self.set_difficulty(difficulty)
+    
+    def color(self, value):
+        red = self.colors.get(value, {}).get("r", 0)
+        green = self.colors.get(value, {}).get("g", 0)
+        blue = self.colors.get(value, {}).get("b", 0)
+        return red, green, blue
