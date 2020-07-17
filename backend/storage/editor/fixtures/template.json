@@ -2375,8 +2375,8 @@
     "index": 2,
     "type": "argument",
     "locale": null,
-    "key": "integer",
-    "value_type": "integer",
+    "key": "real",
+    "value_type": "real",
     "default_value": "1.5",
     "predefined_choices": ""
   }
