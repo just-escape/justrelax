@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import i18n from '@/locales.js'
 import router from '@/router.js'
+import businessStore from '@/store/businessStore.js'
 
 Vue.use(Vuex)
 
@@ -52,6 +53,8 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
+      } else if (event.category === 'set_session_time') {
+        businessStore.commit('setSessionTime', event.seconds)
       }
     },
     SOCKET_RECONNECT (state, count) {

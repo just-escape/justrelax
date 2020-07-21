@@ -16,6 +16,7 @@ const locales = {
     the_digimiam: 'Le Digimiam',
     subtitle: 'L\'Estaminet comme Autrefois',
     meals: 'Les Plats',
+    open_the_door: 'Ouvrir la porte',
   },
   en: {
     easy: 'Easy',
@@ -29,6 +30,7 @@ const locales = {
     the_digimiam: 'The Digimiam',
     subtitle: 'Estaminet as in the Olden Days',
     meals: 'Meals',
+    open_the_door: 'Open the door',
   },
 }
 

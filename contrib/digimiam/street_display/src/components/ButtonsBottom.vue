@@ -43,7 +43,7 @@
         >{{ $t('in') }}</div>&nbsp;
         <div
           :style="{'transform': 'translateX(' + difficultyTranslateX + 'px)'}"
-          class="d-inline-block transition-transform">{{ $t(difficulty) }}</div>
+          class="d-inline-block transition-transform text-teal">{{ $t(difficulty) }}</div>
         <div
           :style="{'transform': 'translateX(' + questionMarkTranslateX + 'px)'}"
           class="d-inline-block transition-transform"
@@ -63,11 +63,26 @@
         />
       </div>
     </div>
+
+    <div class="position-absolute d-flex flex-row justify-content-between w-100 pointer-events-none">
+      <div class="text-l align-self-center">
+        <div :style="{'transform': 'translateX(' + sessionTimeTranslateX + 'px)'}">{{ formattedSessionTime }}</div>
+      </div>
+      <div>
+        <FramedButton
+          :style="{'transform': 'translateX(' + openTranslateX + 'px)'}"
+          class="text-l mr-2 transition-transform pointer-events-auto" :fill="true" :label="$t('open_the_door')"
+          @mousedown="open"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import FramedButton from '@/components/FramedButton.vue'
+import businessStore from '@/store/businessStore.js'
+import justSockService from '@/store/justSockService.js'
 
 export default {
   name: "ButtonsBottom.vue",
@@ -88,11 +103,37 @@ export default {
       questionMarkTranslateX: -1080,
       yesTranslateX: -1080,
       noTranslateX: -1080,
+      openTranslateX: -1080,
+      sessionTimeTranslateX: -1080,
+    }
+  },
+  computed: {
+    sessionTime() {
+      return businessStore.state.sessionTime
+    },
+    formattedSessionTime() {
+      function pad(num) {
+        return ("0" + num).slice(-2);
+      }
+
+      var minutes = Math.floor(this.sessionTime / 60)
+      var secs = Math.round(this.sessionTime % 60)
+      var hours = Math.floor(minutes / 60)
+      minutes = minutes % 60
+      var time = pad(minutes) + ":" + pad(secs)
+
+      if (hours > 9)
+      {
+        time = ">10h"
+      } else if (hours > 0) {
+        time = hours + ":" + time
+      }
+
+      return time
     }
   },
   methods: {
     setDifficulty(difficulty) {
-        console.log('hey')
       if (!this.areActionsLocked) {
         this.difficulty = difficulty
       }
@@ -128,6 +169,8 @@ export default {
       }
     },
     confirm() {
+      justSockService.commit('sendEvent', {category: 'play'})
+
       this.areActionsLocked = true
 
       setTimeout(this.setData, 200, 'playWordTranslateX', -1080)
@@ -136,9 +179,15 @@ export default {
       setTimeout(this.setData, 800, 'questionMarkTranslateX', -1080)
       setTimeout(this.setData, 1000, 'yesTranslateX', -1080)
       setTimeout(this.setData, 1200, 'noTranslateX', -1080)
+
+      setTimeout(this.setData, 6000, 'openTranslateX', 0)
+      setTimeout(this.setData, 6000, 'sessionTimeTranslateX', 0)
     },
     setData(key, value) {
       this[key] = value
+    },
+    open() {
+      justSockService.commit('sendEvent', {category: 'unlock_front_door'})
     },
   },
 }
