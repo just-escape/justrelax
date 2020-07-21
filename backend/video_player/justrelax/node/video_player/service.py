@@ -1,27 +1,28 @@
-from omxplayer.player import OMXPlayer
+import pexpect
 
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 from justrelax.node.media.player import MediaPlayerMixin
 
 
 class Player(MediaPlayerMixin):
-    def __init__(self, media_path, loop=True):
+    def __init__(self, media_path, args=None):
         MediaPlayerMixin.__init__(self)
 
-        self.player = None
-        self.loop = loop
+        self.args = args
         self.video_path = media_path
-        self.new_player()
+        self.omx_cmd = '/usr/bin/omxplayer -s {}'.format(media_path)
+        if args:
+            self.omx_cmd += ' {}'.format(args)
+        self.player = None
 
         reactor.addSystemEventTrigger('before', 'shutdown', self.quit)
 
-    def new_player(self):
+    def get_new_player(self):
         logger.debug("Loading a new player")
-        args = ['--loop'] if self.loop else None
-        self.player = OMXPlayer(self.video_path, args=args, pause=True)
+        return pexpect.spawn(self.omx_cmd)
 
     def release_player(self):
         logger.debug("Releasing player")
@@ -29,61 +30,80 @@ class Player(MediaPlayerMixin):
 
     def _play(self):
         MediaPlayerMixin._play(self)
-        self.player.play()
+        self.player = self.get_new_player()
 
     def _resume(self):
         MediaPlayerMixin._resume(self)
-        self.player.play()
+        self.player.send('p')
 
     def _pause(self):
         MediaPlayerMixin._pause(self)
-        self.player.pause()
+        self.player.send('p')
 
     def _stop(self):
         MediaPlayerMixin._stop(self)
-        self.player.stop()
-        self.release_player()
-        self.new_player()
+        self.quit()
 
     def quit(self):
         if self.player:
-            self.player.quit()
+            self.player.send('q')
 
 
-class VideoPlayer(JustSockClientService):
+class VideoPlayer(EventCategoryToMethodMixin, JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(VideoPlayer, self).__init__(*args, **kwargs)
 
-        path = self.node_params['path']
-        loop = self.node_params['loop']
-        player = Player(media_path=path, loop=loop)
+        self.player = None
 
-        self.player = player
+        self.videos = {}
+        for video_id, video_params in self.node_params['videos'].items():
+            args = []
+            if video_params.get('loop', False):
+                args.append('--loop')
+            if 'layer' in video_params:
+                args.append('--layer {}'.format(video_params['layer']))
+            if 'orientation' in video_params:
+                args.append('--orientation {}'.format(video_params['orientation']))
+            if 'display' in video_params:
+                args.append('--display {} '.format(video_params['display']))
+            if 'window' in video_params:
+                args.append('--win {} '.format(','.join([x for x in video_params['window'].split()])))
+            self.videos[video_id] = Player(video_params['path'], ' '.join(args))
+            if video_params.get('autoplay', False):
+                self.videos[video_id].play()
 
-        autoplay = self.node_params.get('autoplay', False)
-        if autoplay:
-            self.event_play()
-
-    def event_play(self, delay=0):
+    def event_play(self, video_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
-        logger.info("Playing video")
+        if video_id not in self.videos:
+            raise ValueError("Video id={} is not configured: aborting".format(video_id))
 
-        reactor.callLater(delay, self.player.play)
+        if delay > 0:
+            logger.info("Scheduling to play video {} in {} seconds".format(video_id, delay))
 
-    def event_pause(self, delay=0):
+        reactor.callLater(delay, self.videos[video_id].play)
+
+    def event_pause(self, video_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
-        logger.info("Pausing video")
+        if video_id not in self.videos:
+            raise ValueError("Video id={} is not configured: aborting".format(video_id))
 
-        reactor.callLater(delay, self.player.pause)
+        if delay > 0:
+            logger.info("Scheduling to pause video {} in {} seconds".format(video_id, delay))
 
-    def event_stop(self, delay=0):
+        reactor.callLater(delay, self.videos[video_id].pause)
+
+    def event_stop(self, video_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
 
-        logger.info("Stopping video")
+        if video_id not in self.videos:
+            raise ValueError("Video id={} is not configured: aborting".format(video_id))
 
-        reactor.callLater(delay, self.player.stop)
+        if delay > 0:
+            logger.info("Scheduling to stop video {} in {} seconds".format(video_id, delay))
+
+        reactor.callLater(delay, self.videos[video_id].stop)

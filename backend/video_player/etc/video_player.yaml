@@ -1,12 +1,28 @@
 host: localhost
 port: 3031
 
-name: hologram_player
+name: video_player
 channel: digimiam1
 
 node_params:
-  path: /path/to/video.mp4
-  autoplay: yes
-  loop: yes
+  videos:
+    orders_background:
+      path: /home/pi/videos/orders_background.mp4
+      layer: 1
+      autoplay: yes
+      loop: yes
+      orientation: 270
+      window: 380 80 1680 1000
+      display: 2
+    orders_background2:
+      layer: 1
+      path: /home/pi/videos/orders_background.mp4
+      autoplay: yes
+      loop: yes
+      display: 7
+    ms_pepper_here_you_are:
+      layer: 2
+      path: /home/pi/videos/ms_pepper_here_you_are_fr.mp4
+      loop: no
 
 logging: null
