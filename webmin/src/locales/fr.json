@@ -26,6 +26,7 @@
       "admin": "Admin",
       "time": "Temps",
       "session": "Session",
+      "node": "Node",
       "object": "Objet",
       "conversion": "Conversion",
       "timer": "Minuteur",
@@ -76,6 +77,24 @@
       "session_resume": {
         "name": "Reprise de session",
         "the_session_is_resumed": "La session est reprise"
+      },
+      "node_connection": {
+        "name": "Connexion",
+        "a_node_has_connected": "Un node s'est connecté"
+      },
+      "specific_node_connection": {
+        "name": "Specific node connection",
+        "a_node_named_": "Le node ",
+        "_has_connected": " s'est connecté"
+      },
+      "node_disconnection": {
+        "name": "Déconnexion",
+        "a_node_has_disconnected": "Un node s'est déconnecté"
+      },
+      "specific_node_disconnection": {
+        "name": "Specific node disconnection",
+        "a_node_named_": "Le node ",
+        "_has_disconnected": " s'est déconnecté"
       },
       "simple_condition": {
         "name": "Condition simple",

@@ -30,6 +30,8 @@ I_AM_CLIENT_TYPE = 'client_type'
 I_AM_NAME = 'name'
 I_AM_CHANNEL = 'channel'
 
+LOG_CHANNEL = 'channel'
+LOG_NODE_NAME = 'node_name'
 LOG_LEVEL = 'level'
 LOG_LEVEL_INFO = 'info'
 LOG_LEVEL_ERROR = 'error'

@@ -29,23 +29,31 @@ class JustSockServerFactory(WebSocketServerFactory):
             self.nodes[(node.name, node.channel,)] = set()
         self.nodes[(node.name, node.channel,)].add(node)
 
+        for room_id, processor in self.service.processors.items():
+            if processor.is_subscribed_to_channel(node.channel):
+                processor.on_node_connection(node.name)
+
     def unregister_node(self, node):
         self.nodes[(node.name, node.channel,)].remove(node)
         if not self.nodes[(node.name, node.channel,)]:
             self.nodes.pop((node.name, node.channel,), None)
+
+        for room_id, processor in self.service.processors.items():
+            if processor.is_subscribed_to_channel(node.channel):
+                processor.on_node_disconnection(node.name)
 
     def process_event(self, name, channel, event):
         for _, processor in self.service.processors.items():
             if processor.is_subscribed_to_channel(channel):
                 processor.on_event(name, event)
 
-    def send_log_error(self, content):
+    def send_log_error(self, channel, node_name, content):
         for admin in self.admins:
-            admin.send_log_error(content)
+            admin.send_log_error(channel, node_name, content)
 
-    def send_log_info(self, content):
+    def send_log_info(self, channel, node_name, content):
         for admin in self.admins:
-            admin.send_log_info(content)
+            admin.send_log_info(channel, node_name, content)
 
     def process_run_room(self, room_id):
         self.service.processors[room_id].run_room()

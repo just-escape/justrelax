@@ -67,9 +67,9 @@ class JustSockServerProtocol(WebSocketServerProtocol):
                     level = message[P.LOG_LEVEL]
                     content = message[P.LOG_CONTENT]
                     if level == P.LOG_LEVEL_INFO:
-                        self.factory.send_log_info(content)
+                        self.factory.send_log_info(self.channel, self.name, content)
                     elif level == P.LOG_LEVEL_ERROR:
-                        self.factory.send_log_error(content)
+                        self.factory.send_log_error(self.channel, self.name, content)
 
             elif self.client_type == P.CLIENT_ADMIN:
                 room_id = message[P.ROOM_ID]
@@ -231,15 +231,17 @@ class JustSockServerProtocol(WebSocketServerProtocol):
         }
         self.send_json(message)
 
-    def send_log_info(self, content):
-        self.send_log(P.LOG_LEVEL_INFO, content)
+    def send_log_info(self, channel, node_name, content):
+        self.send_log(channel, node_name, P.LOG_LEVEL_INFO, content)
 
-    def send_log_error(self, content):
-        self.send_log(P.LOG_LEVEL_ERROR, content)
+    def send_log_error(self, channel, node_name, content):
+        self.send_log(channel, node_name, P.LOG_LEVEL_ERROR, content)
 
-    def send_log(self, level, content):
+    def send_log(self, channel, node_name, level, content):
         message = {
             P.MESSAGE_TYPE: P.MESSAGE_TYPE_LOG,
+            P.LOG_CHANNEL: channel,
+            P.LOG_NODE_NAME: node_name,
             P.LOG_LEVEL: level,
             P.LOG_CONTENT: content,
         }

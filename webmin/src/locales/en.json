@@ -27,6 +27,7 @@
       "admin": "Admin",
       "time": "Time",
       "session": "Session",
+      "node": "Node",
       "object": "Object",
       "conversion": "Conversion",
       "timer": "Timer",
@@ -41,7 +42,7 @@
       },
       "incoming_event_from_node": {
         "name": "Event received from node",
-        "an_event_has_been_received_from_node": "An event has been received from node "
+        "an_event_has_been_received_from_node": "An event has been received from the node "
       },
       "admin_button_press": {
         "name": "Button pressed",
@@ -78,6 +79,24 @@
         "name": "Session resume",
         "the_session_is_resumed": "The session is resumed"
       },
+      "node_connected": {
+        "name": "Connection",
+        "a_node_has_connected": "A node has connected"
+      },
+      "specific_node_connected": {
+        "name": "Specific node connection",
+        "a_node_named_": "The node ",
+        "_has_connected": " has connected"
+      },
+      "node_disconnected": {
+        "name": "Disconnection",
+        "a_node_has_disconnected": "A node has disconnected"
+      },
+      "specific_node_disconnected": {
+        "name": "Specific node disconnection",
+        "a_node_named_": "The node ",
+        "_has_disconnected": " has disconnected"
+      },
       "simple_condition": {
         "name": "Simple condition",
         "if": "If "
@@ -85,12 +104,12 @@
       "send_event_string": {
         "name": "Send string event to node",
         "send_event": "Send event ",
-        "to_node": " to node "
+        "to_node": " to the node "
       },
       "send_event_object": {
         "name": "Send object event to node",
         "send_event": "Send event ",
-        "to_node": " to node "
+        "to_node": " to the node "
       },
       "push_notification": {
         "name": "Push an admin notification",

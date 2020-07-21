@@ -155,6 +155,10 @@ class RulesProcessor:
         self.on_trigger_type_rules = {
             'incoming_event': [],
             'incoming_event_from_node': [],
+            'node_connection': [],
+            'specific_node_connection': [],
+            'node_disconnection': [],
+            'specific_node_disconnection': [],
             'admin_button_press': [],
             'admin_button_id_press': [],
             'session_start': [],
@@ -370,9 +374,35 @@ class RulesProcessor:
             self.fetch_and_init_rules()
             self.factory.send_notification('info', "Session reset")
 
+    def on_node_connection(self, node_name):
+        context = {
+            R.CONTEXT_TRIGGERING_NODE_NAME: node_name,
+        }
+
+        self.process_rules(self.on_trigger_type_rules['node_connection'], context)
+
+        for rule in self.on_trigger_type_rules['specific_node_connection']:
+            computed_triggering_node_name = self.compute(
+                rule['trigger']['arguments']['node_name'], context)
+            if computed_triggering_node_name == node_name:
+                self.process_rule(rule['rule'], context)
+
+    def on_node_disconnection(self, node_name):
+        context = {
+            R.CONTEXT_TRIGGERING_NODE_NAME: node_name,
+        }
+
+        self.process_rules(self.on_trigger_type_rules['node_disconnection'], context)
+
+        for rule in self.on_trigger_type_rules['specific_node_disconnection']:
+            computed_triggering_node_name = self.compute(
+                rule['trigger']['arguments']['node_name'], context)
+            if computed_triggering_node_name == node_name:
+                self.process_rule(rule['rule'], context)
+
     def on_event(self, from_, event):
         context = {
-            R.CONTEXT_TRIGGERING_EVENT_NODE_NAME: from_,
+            R.CONTEXT_TRIGGERING_NODE_NAME: from_,
             R.CONTEXT_TRIGGERING_EVENT: event,
         }
 
@@ -474,7 +504,7 @@ class RulesProcessor:
 
     @staticmethod
     def function_triggering_node_name(arguments, context):
-        return context.get(R.CONTEXT_TRIGGERING_EVENT_NODE_NAME, '')
+        return context.get(R.CONTEXT_TRIGGERING_NODE_NAME, '')
 
     @staticmethod
     def function_triggering_event_string(arguments, context):

@@ -46,9 +46,11 @@ const justSockService = new Vuex.Store({
         roomStore.commit('pushLiveData', {roomId, sessionTime, records})
       } else if (message.message_type == 'LOG') {
         if (message.level === 'info') {
-          notificationStore.commit('pushNotification', {type: 'info', message: message.content})
+          let logMessage = message.node_name + '@' + message.channel + ': ' + message.content
+          notificationStore.commit('pushNotification', {type: 'info', message: logMessage})
         } else if (message.level === 'error') {
-          notificationStore.commit('pushNotification', {type: 'error', message: message.content})
+          let logMessage = message.node_name + '@' + message.channel + ': ' + message.content
+          notificationStore.commit('pushNotification', {type: 'error', message: logMessage})
         }
       }
     },

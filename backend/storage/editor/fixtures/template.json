@@ -101,10 +101,50 @@
 },
 {
   "model": "editor.template",
+  "pk": 64,
+  "fields": {
+    "category": "node",
+    "index": 10,
+    "name": "node_connected",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 65,
+  "fields": {
+    "category": "node",
+    "index": 11,
+    "name": "specific_node_connected",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 66,
+  "fields": {
+    "category": "node",
+    "index": 12,
+    "name": "node_disconnected",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 67,
+  "fields": {
+    "category": "node",
+    "index": 13,
+    "name": "specific_node_disconnected",
+    "context": "trigger"
+  }
+},
+{
+  "model": "editor.template",
   "pk": 11,
   "fields": {
     "category": "",
-    "index": 10,
+    "index": 14,
     "name": "simple_condition",
     "context": "condition"
   }
@@ -114,7 +154,7 @@
   "pk": 12,
   "fields": {
     "category": "event",
-    "index": 11,
+    "index": 15,
     "name": "send_event_string",
     "context": "action"
   }
@@ -124,7 +164,7 @@
   "pk": 13,
   "fields": {
     "category": "event",
-    "index": 12,
+    "index": 16,
     "name": "send_event_object",
     "context": "action"
   }
@@ -134,7 +174,7 @@
   "pk": 14,
   "fields": {
     "category": "admin",
-    "index": 13,
+    "index": 17,
     "name": "push_notification",
     "context": "action"
   }
@@ -144,7 +184,7 @@
   "pk": 15,
   "fields": {
     "category": "admin",
-    "index": 14,
+    "index": 18,
     "name": "add_record_now",
     "context": "action"
   }
@@ -154,7 +194,7 @@
   "pk": 16,
   "fields": {
     "category": "admin",
-    "index": 15,
+    "index": 19,
     "name": "add_record",
     "context": "action"
   }
@@ -164,7 +204,7 @@
   "pk": 17,
   "fields": {
     "category": "object",
-    "index": 16,
+    "index": 20,
     "name": "create_a_new_object",
     "context": "action"
   }
@@ -174,7 +214,7 @@
   "pk": 18,
   "fields": {
     "category": "object",
-    "index": 17,
+    "index": 21,
     "name": "save_object_in_object",
     "context": "action"
   }
@@ -184,7 +224,7 @@
   "pk": 19,
   "fields": {
     "category": "object",
-    "index": 18,
+    "index": 22,
     "name": "save_string_in_object",
     "context": "action"
   }
@@ -194,7 +234,7 @@
   "pk": 20,
   "fields": {
     "category": "object",
-    "index": 19,
+    "index": 23,
     "name": "save_integer_in_object",
     "context": "action"
   }
@@ -204,7 +244,7 @@
   "pk": 21,
   "fields": {
     "category": "object",
-    "index": 20,
+    "index": 24,
     "name": "save_real_in_object",
     "context": "action"
   }
@@ -214,7 +254,7 @@
   "pk": 22,
   "fields": {
     "category": "object",
-    "index": 21,
+    "index": 25,
     "name": "save_boolean_in_object",
     "context": "action"
   }
@@ -224,7 +264,7 @@
   "pk": 23,
   "fields": {
     "category": "timer",
-    "index": 22,
+    "index": 26,
     "name": "start_timer",
     "context": "action"
   }
@@ -234,7 +274,7 @@
   "pk": 24,
   "fields": {
     "category": "timer",
-    "index": 23,
+    "index": 27,
     "name": "pause_timer",
     "context": "action"
   }
@@ -244,7 +284,7 @@
   "pk": 25,
   "fields": {
     "category": "timer",
-    "index": 24,
+    "index": 28,
     "name": "resume_timer",
     "context": "action"
   }
@@ -254,7 +294,7 @@
   "pk": 60,
   "fields": {
     "category": "game_session",
-    "index": 25,
+    "index": 29,
     "name": "run_game_session",
     "context": "action"
   }
@@ -264,7 +304,7 @@
   "pk": 61,
   "fields": {
     "category": "game_session",
-    "index": 26,
+    "index": 30,
     "name": "halt_game_session",
     "context": "action"
   }
@@ -274,7 +314,7 @@
   "pk": 62,
   "fields": {
     "category": "game_session",
-    "index": 27,
+    "index": 31,
     "name": "reset_game_session",
     "context": "action"
   }
@@ -284,7 +324,7 @@
   "pk": 26,
   "fields": {
     "category": "",
-    "index": 28,
+    "index": 32,
     "name": "if_then_else_multiple_functions",
     "context": "action"
   }
@@ -294,7 +334,7 @@
   "pk": 27,
   "fields": {
     "category": "",
-    "index": 29,
+    "index": 33,
     "name": "wait",
     "context": "action"
   }
@@ -304,7 +344,7 @@
   "pk": 28,
   "fields": {
     "category": "",
-    "index": 30,
+    "index": 34,
     "name": "set_variable",
     "context": "action"
   }
@@ -314,7 +354,7 @@
   "pk": 29,
   "fields": {
     "category": "",
-    "index": 31,
+    "index": 35,
     "name": "trigger_rule",
     "context": "action"
   }
@@ -324,7 +364,7 @@
   "pk": 30,
   "fields": {
     "category": "",
-    "index": 32,
+    "index": 36,
     "name": "do_nothing",
     "context": "action"
   }
@@ -334,7 +374,7 @@
   "pk": 31,
   "fields": {
     "category": "object",
-    "index": 33,
+    "index": 37,
     "name": "last_created_object",
     "context": "object"
   }
@@ -344,7 +384,7 @@
   "pk": 32,
   "fields": {
     "category": "object",
-    "index": 34,
+    "index": 38,
     "name": "object_get_object",
     "context": "object"
   }
@@ -354,7 +394,7 @@
   "pk": 33,
   "fields": {
     "category": "trigger",
-    "index": 35,
+    "index": 39,
     "name": "triggering_event_object",
     "context": "object"
   }
@@ -364,7 +404,7 @@
   "pk": 34,
   "fields": {
     "category": "object",
-    "index": 36,
+    "index": 40,
     "name": "object_get_string",
     "context": "string"
   }
@@ -374,7 +414,7 @@
   "pk": 35,
   "fields": {
     "category": "trigger",
-    "index": 37,
+    "index": 41,
     "name": "triggering_node_name",
     "context": "string"
   }
@@ -384,7 +424,7 @@
   "pk": 36,
   "fields": {
     "category": "trigger",
-    "index": 38,
+    "index": 42,
     "name": "triggering_event_string",
     "context": "string"
   }
@@ -394,7 +434,7 @@
   "pk": 37,
   "fields": {
     "category": "trigger",
-    "index": 39,
+    "index": 43,
     "name": "triggering_admin_button_id",
     "context": "string"
   }
@@ -404,7 +444,7 @@
   "pk": 38,
   "fields": {
     "category": "conversion",
-    "index": 40,
+    "index": 44,
     "name": "real_to_string",
     "context": "string"
   }
@@ -414,7 +454,7 @@
   "pk": 39,
   "fields": {
     "category": "conversion",
-    "index": 41,
+    "index": 45,
     "name": "boolean_to_string",
     "context": "string"
   }
@@ -424,7 +464,7 @@
   "pk": 40,
   "fields": {
     "category": "conversion",
-    "index": 42,
+    "index": 46,
     "name": "object_to_string",
     "context": "string"
   }
@@ -434,7 +474,7 @@
   "pk": 41,
   "fields": {
     "category": "conversion",
-    "index": 43,
+    "index": 47,
     "name": "integer_to_string",
     "context": "string"
   }
@@ -444,7 +484,7 @@
   "pk": 42,
   "fields": {
     "category": "object",
-    "index": 44,
+    "index": 48,
     "name": "object_get_integer",
     "context": "integer"
   }
@@ -454,7 +494,7 @@
   "pk": 43,
   "fields": {
     "category": "math",
-    "index": 45,
+    "index": 49,
     "name": "integer_arithmetic",
     "context": "integer"
   }
@@ -464,7 +504,7 @@
   "pk": 44,
   "fields": {
     "category": "conversion",
-    "index": 46,
+    "index": 50,
     "name": "real_to_integer",
     "context": "integer"
   }
@@ -474,7 +514,7 @@
   "pk": 45,
   "fields": {
     "category": "object",
-    "index": 47,
+    "index": 51,
     "name": "object_get_real",
     "context": "real"
   }
@@ -484,7 +524,7 @@
   "pk": 46,
   "fields": {
     "category": "math",
-    "index": 48,
+    "index": 52,
     "name": "real_arithmetic",
     "context": "real"
   }
@@ -494,7 +534,7 @@
   "pk": 47,
   "fields": {
     "category": "conversion",
-    "index": 49,
+    "index": 53,
     "name": "integer_to_real",
     "context": "real"
   }
@@ -504,7 +544,7 @@
   "pk": 48,
   "fields": {
     "category": "timer",
-    "index": 50,
+    "index": 54,
     "name": "timer_remaining_time",
     "context": "real"
   }
@@ -514,7 +554,7 @@
   "pk": 63,
   "fields": {
     "category": "game_session",
-    "index": 51,
+    "index": 55,
     "name": "session_time",
     "context": "integer"
   }
@@ -524,7 +564,7 @@
   "pk": 49,
   "fields": {
     "category": "object",
-    "index": 52,
+    "index": 56,
     "name": "object_get_boolean",
     "context": "boolean"
   }
@@ -534,7 +574,7 @@
   "pk": 50,
   "fields": {
     "category": "",
-    "index": 53,
+    "index": 57,
     "name": "boolean_not",
     "context": "boolean"
   }
@@ -544,7 +584,7 @@
   "pk": 51,
   "fields": {
     "category": "",
-    "index": 54,
+    "index": 58,
     "name": "boolean_or",
     "context": "boolean"
   }
@@ -554,7 +594,7 @@
   "pk": 52,
   "fields": {
     "category": "",
-    "index": 55,
+    "index": 59,
     "name": "boolean_and",
     "context": "boolean"
   }
@@ -564,7 +604,7 @@
   "pk": 53,
   "fields": {
     "category": "",
-    "index": 56,
+    "index": 60,
     "name": "integer_comparison",
     "context": "boolean"
   }
@@ -574,7 +614,7 @@
   "pk": 54,
   "fields": {
     "category": "",
-    "index": 57,
+    "index": 61,
     "name": "real_comparison",
     "context": "boolean"
   }
@@ -584,7 +624,7 @@
   "pk": 55,
   "fields": {
     "category": "",
-    "index": 58,
+    "index": 62,
     "name": "string_comparison",
     "context": "boolean"
   }
@@ -594,7 +634,7 @@
   "pk": 56,
   "fields": {
     "category": "",
-    "index": 59,
+    "index": 63,
     "name": "object_comparison",
     "context": "boolean"
   }
@@ -604,7 +644,7 @@
   "pk": 57,
   "fields": {
     "category": "",
-    "index": 60,
+    "index": 64,
     "name": "boolean_comparison",
     "context": "boolean"
   }
@@ -614,7 +654,7 @@
   "pk": 58,
   "fields": {
     "category": "timer",
-    "index": 61,
+    "index": 65,
     "name": "expiring_timer",
     "context": "timer"
   }
@@ -624,7 +664,7 @@
   "pk": 59,
   "fields": {
     "category": "timer",
-    "index": 62,
+    "index": 66,
     "name": "last_started_timer",
     "context": "timer"
   }
@@ -3227,6 +3267,118 @@
     "index": 0,
     "type": "text",
     "locale": "session_time",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 187,
+  "fields": {
+    "template": 64,
+    "index": 0,
+    "type": "text",
+    "locale": "a_node_has_connected",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 188,
+  "fields": {
+    "template": 65,
+    "index": 0,
+    "type": "text",
+    "locale": "a_node_named_",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 189,
+  "fields": {
+    "template": 65,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "node_name",
+    "value_type": "string",
+    "default_value": "\"node\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 190,
+  "fields": {
+    "template": 65,
+    "index": 2,
+    "type": "text",
+    "locale": "_has_connected",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 191,
+  "fields": {
+    "template": 66,
+    "index": 0,
+    "type": "text",
+    "locale": "a_node_has_disconnected",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 192,
+  "fields": {
+    "template": 67,
+    "index": 0,
+    "type": "text",
+    "locale": "a_node_named_",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 193,
+  "fields": {
+    "template": 67,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "node_name",
+    "value_type": "string",
+    "default_value": "\"node\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 194,
+  "fields": {
+    "template": 67,
+    "index": 2,
+    "type": "text",
+    "locale": "_has_disconnected",
     "key": null,
     "value_type": "string",
     "default_value": null,
