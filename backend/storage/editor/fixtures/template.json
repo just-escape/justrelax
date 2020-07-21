@@ -1868,7 +1868,7 @@
     "template": 29,
     "index": 0,
     "type": "text",
-    "locale": "trigger_rule_named",
+    "locale": "trigger_rule",
     "key": null,
     "value_type": "string",
     "default_value": null,
@@ -1883,9 +1883,9 @@
     "index": 1,
     "type": "argument",
     "locale": null,
-    "key": "rule_name",
+    "key": "rule",
     "value_type": "predefined",
-    "default_value": "null",
+    "default_value": "{\"rule\": null}",
     "predefined_choices": "<rules>"
   }
 },

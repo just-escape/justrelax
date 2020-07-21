@@ -18,7 +18,7 @@
           :value="args[link.key]"
           :inputType="link.value_type"
           :templateName="templateName"
-          :predefinedChoices="link.predefined_choices"
+          :predefinedChoices="getPredefinedChoices(link.predefined_choices)"
           @update="(value) => updateArgument(link.key, value)"
           @hidden="updateLastEditedArgument(link.key)"
         />
@@ -50,6 +50,15 @@ export default {
     getModalId() {
       return (index) => {
         return this.modalId + '-' + index
+      }
+    },
+    getPredefinedChoices() {
+      return function(link_predefined_choices) {
+        if (link_predefined_choices == '<rules>') {
+          return editorStore.getters.predfinedChoicesRules
+        } else {
+          return link_predefined_choices
+        }
       }
     },
   },
@@ -99,6 +108,15 @@ export default {
           } else {
             return value.variable
           }
+        } else if (value.rule !== undefined) {
+          let rules = editorStore.state.rules
+          for (var rule of rules) {
+            if (rule.id === value.rule) {
+              return rule.name
+            }
+          }
+          // Data is corrupted or the rule must have been deleted
+          return this.$t('editor.no_rule')
         }
       }
 

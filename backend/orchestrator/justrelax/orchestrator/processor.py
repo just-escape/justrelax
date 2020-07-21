@@ -435,6 +435,13 @@ class RulesProcessor:
                 raise ValueError('Unknown function {}'.format(value["template"]))
             return function(value["arguments"], context)
 
+        if "rule" in value:
+            for rule in self.rule_definitions:
+                if rule['id'] == value["rule"]:
+                    return rule
+            else:
+                raise ValueError('Rule id={} not found'.format(value["rule"]))
+
         return None
 
     def function_last_created_object(self, *args):
@@ -625,13 +632,11 @@ class RulesProcessor:
         self.reset_room()
 
     def action_trigger_rule(self, arguments, paragraphs, context):
-        computed_rule_name = self.compute(arguments['rule_name'], context)
-        for rule in self.rule_definitions:
-            if rule['name'] == computed_rule_name:
-                conditions = rule['content']['conditions']
-                actions = rule['content']['actions']
-                self.if_conditions_then_actions(conditions, actions, context)
-                break
+        computed_rule = self.compute(arguments['rule'], context)
+
+        conditions = computed_rule['content']['conditions']
+        actions = computed_rule['content']['actions']
+        self.if_conditions_then_actions(conditions, actions, context)
 
     def action_set_variable(self, arguments, paragraphs, context):
         variable_name = arguments['variable']['variable']

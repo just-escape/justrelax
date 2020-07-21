@@ -5,6 +5,7 @@
     "empty_string": "<Chaîne vide>",
     "nothing": "<Rien>",
     "no_variable": "<Pas de variable>",
+    "no_rule": "<Pas de règle>",
     "error": "<Error>",
     "rules": "Règles",
     "loading": "Chargement...",
@@ -147,7 +148,7 @@
       },
       "trigger_rule": {
         "name": "Déclencher une règle",
-        "trigger_rule_named": "Déclencher la règle nommée "
+        "trigger_rule": "Déclencher la règle "
       },
       "start_timer": {
         "name": "Démarrer un minuteur",

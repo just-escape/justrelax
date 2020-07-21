@@ -7,11 +7,11 @@
     <div class="col-9">
       <select v-model="selectedChoice" @focus="pushMyValue">
         <option
-          v-for="value in predefinedChoices"
-          :key="value"
+          v-for="(value, valueIndex) in predefinedChoices"
+          :key="valueIndex"
           :value="value"
         >
-          {{ $t('editor.templates.' + templateName + '.' + value) }}
+          {{ getChoice(value) }}
         </option>
       </select>
     </div>
@@ -20,6 +20,7 @@
 
 <script>
 import valueModalMixin from '@/components/editor/valueModalMixin.js'
+import editorStore from '@/store/editorStore.js'
 
 export default {
   name: "ValueModalPredefined",
@@ -34,18 +35,36 @@ export default {
         this.pushMyValue()
       },
     },
+    getChoice() {
+      return function(value) {
+        if (value.rule !== undefined) {
+          let rules = editorStore.state.rules
+          for (var rule of rules) {
+            if (rule.id === value.rule) {
+              return rule.name
+            }
+          }
+          // Data is corrupted or the rule must have been deleted
+          return this.$t('editor.no_rule')
+        } else {
+          return this.$t('editor.templates.' + this.templateName + '.' + value)
+        }
+      }
+    },
   },
   created() {
-    if (this.predefinedChoices.includes(this.parentValue)) {
-      this.valueBuffer = this.parentValue
-      this.pushMyValue()
-    } else {
-      this.valueBuffer = this.predefinedChoices[0]
+    for (let pc of this.predefinedChoices) {
+      if (JSON.stringify(pc) == JSON.stringify(this.parentValue)) {
+        this.valueBuffer = JSON.parse(JSON.stringify(this.parentValue))
+        this.pushMyValue()
+        return
+      }
     }
+    this.valueBuffer = this.predefinedChoices[0]
   },
   props: {
     predefinedChoices: Array,
     templateName: String,
-  }
+  },
 }
 </script>

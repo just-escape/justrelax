@@ -6,6 +6,7 @@
     "empty_string": "<Empty string>",
     "nothing": "<Nothing>",
     "no_variable": "<No variable>",
+    "no_rule": "<No rule>",
     "error": "<Error>",
     "rules": "Rules",
     "loading": "Loading...",
@@ -148,7 +149,7 @@
       },
       "trigger_rule": {
         "name": "Trigger rule",
-        "trigger_rule_named": "Trigger rule named "
+        "trigger_rule": "Trigger the rule "
       },
       "start_timer": {
         "name": "Start timer",

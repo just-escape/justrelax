@@ -101,6 +101,16 @@ export default new Vuex.Store({
         }
       }
     },
+    predfinedChoicesRules(state) {
+      var rules = []
+      rules.push({rule: null})
+      for (var r of state.rules) {
+        if (r.id !== undefined) {
+          rules.push({rule: r.id})
+        }
+      }
+      return rules
+    },
   },
   mutations: {
     loadTemplates (state, templates) {
