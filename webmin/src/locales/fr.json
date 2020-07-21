@@ -29,7 +29,8 @@
       "conversion": "Conversion",
       "timer": "Minuteur",
       "math": "Maths",
-      "trigger": "Déclencheur"
+      "trigger": "Déclencheur",
+      "game_session": "Session de jeu"
     },
     "templates": {
       "incoming_event": {
@@ -165,6 +166,18 @@
         "name": "Reprendre un minuteur",
         "resume": "Reprendre "
       },
+      "run_game_session": {
+        "name": "Démarrer",
+        "run_game_session": "Démarrer / reprendre la session de jeu"
+      },
+      "halt_game_session": {
+        "name": "Mettre en pause",
+        "halt_game_session": "Mettre en pause la session de jeu"
+      },
+      "reset_game_session": {
+        "name": "Réinitialiser",
+        "reset_game_session": "Réinitialiser la session de jeu"
+      },
       "if_then_else_multiple_functions": {
         "name": "Si / Alors / Sinon (Plusieurs fonctions)",
         "if_then_do_else_do": "Si (toutes les conditions sont True) alors (réaliser les actions) sinon (réaliser les actions)",
@@ -284,6 +297,10 @@
       "timer_remaining_time": {
         "name": "Temps restant de minuteur",
         "remaining_time_of": "Temps restant de "
+      },
+      "session_time": {
+        "name": "Temps de jeu",
+        "session_time": "Temps de jeu actuel (secondes)"
       },
       "integer_to_string": {
         "name": "Convertion d'entier en chaîne",

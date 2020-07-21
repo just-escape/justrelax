@@ -30,7 +30,8 @@
       "conversion": "Conversion",
       "timer": "Timer",
       "math": "Math",
-      "trigger": "Trigger"
+      "trigger": "Trigger",
+      "game_session": "Game session"
     },
     "templates": {
       "incoming_event": {
@@ -166,6 +167,18 @@
         "name": "Resume timer",
         "resume": "Resume "
       },
+      "run_game_session": {
+        "name": "Run",
+        "run_game_session": "Run / resume the game session"
+      },
+      "halt_game_session": {
+        "name": "Halt",
+        "halt_game_session": "Halt the game session"
+      },
+      "reset_game_session": {
+        "name": "Reset",
+        "reset_game_session": "Reset the game session"
+      },
       "if_then_else_multiple_functions": {
         "name": "If / Then / Else (Multiple functions)",
         "if_then_do_else_do": "If (all conditions are True) then do (perform actions) else do (perform actions)",
@@ -285,6 +298,10 @@
       "timer_remaining_time": {
         "name": "Remaining time of timer",
         "remaining_time_of": "Remaining time of "
+      },
+      "session_time": {
+        "name": "Current session time",
+        "session_time": "Current session time (seconds)"
       },
       "integer_to_string": {
         "name": "Convert integer to string",

@@ -191,6 +191,9 @@ class RulesProcessor:
             'start_timer': self.action_start_timer,
             'pause_timer': self.action_pause_timer,
             'resume_timer': self.action_resume_timer,
+            'run_game_session': self.action_run_game_session,
+            'halt_game_session': self.action_halt_game_session,
+            'reset_game_session': self.action_reset_game_session,
             'if_then_else_multiple_functions': self.action_if_then_else_multiple_functions,
             'wait': self.action_wait,
             'do_nothing': self.action_do_nothing,
@@ -215,6 +218,7 @@ class RulesProcessor:
             'object_comparison': self.function_object_comparison,
             'boolean_comparison': self.function_boolean_comparison,
             'timer_remaining_time': self.function_timer_remaining_time,
+            'session_time': self.function_session_time,
             'integer_to_string': self.function_integer_to_string,
             'real_to_string': self.function_real_to_string,
             'boolean_to_string': self.function_boolean_to_string,
@@ -533,6 +537,9 @@ class RulesProcessor:
         timer = self.compute(arguments['timer'], context)
         return timer.get_remaining_time() if timer else 0.
 
+    def function_session_time(self, arguments, context):
+        return int(self.session_timer.session_time)
+
     def function_integer_to_string(self, arguments, context):
         integer = self.compute(arguments['integer'], context)
         return str(integer)
@@ -607,6 +614,15 @@ class RulesProcessor:
         paragraphs = action.get('paragraphs', {})
 
         return action_method(arguments, paragraphs, context)
+
+    def action_run_game_session(self, arguments, paragraphs, context):
+        self.run_room()
+
+    def action_halt_game_session(self, arguments, paragraphs, context):
+        self.halt_room()
+
+    def action_reset_game_session(self, arguments, paragraphs, context):
+        self.reset_room()
 
     def action_trigger_rule(self, arguments, paragraphs, context):
         computed_rule_name = self.compute(arguments['rule_name'], context)

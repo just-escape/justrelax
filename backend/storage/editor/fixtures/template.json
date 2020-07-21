@@ -251,10 +251,40 @@
 },
 {
   "model": "editor.template",
+  "pk": 60,
+  "fields": {
+    "category": "game_session",
+    "index": 25,
+    "name": "run_game_session",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 61,
+  "fields": {
+    "category": "game_session",
+    "index": 26,
+    "name": "halt_game_session",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 62,
+  "fields": {
+    "category": "game_session",
+    "index": 27,
+    "name": "reset_game_session",
+    "context": "action"
+  }
+},
+{
+  "model": "editor.template",
   "pk": 26,
   "fields": {
     "category": "",
-    "index": 25,
+    "index": 28,
     "name": "if_then_else_multiple_functions",
     "context": "action"
   }
@@ -264,7 +294,7 @@
   "pk": 27,
   "fields": {
     "category": "",
-    "index": 26,
+    "index": 29,
     "name": "wait",
     "context": "action"
   }
@@ -274,7 +304,7 @@
   "pk": 28,
   "fields": {
     "category": "",
-    "index": 27,
+    "index": 30,
     "name": "set_variable",
     "context": "action"
   }
@@ -284,7 +314,7 @@
   "pk": 29,
   "fields": {
     "category": "",
-    "index": 28,
+    "index": 31,
     "name": "trigger_rule",
     "context": "action"
   }
@@ -294,7 +324,7 @@
   "pk": 30,
   "fields": {
     "category": "",
-    "index": 29,
+    "index": 32,
     "name": "do_nothing",
     "context": "action"
   }
@@ -304,7 +334,7 @@
   "pk": 31,
   "fields": {
     "category": "object",
-    "index": 30,
+    "index": 33,
     "name": "last_created_object",
     "context": "object"
   }
@@ -314,7 +344,7 @@
   "pk": 32,
   "fields": {
     "category": "object",
-    "index": 31,
+    "index": 34,
     "name": "object_get_object",
     "context": "object"
   }
@@ -324,7 +354,7 @@
   "pk": 33,
   "fields": {
     "category": "trigger",
-    "index": 32,
+    "index": 35,
     "name": "triggering_event_object",
     "context": "object"
   }
@@ -334,7 +364,7 @@
   "pk": 34,
   "fields": {
     "category": "object",
-    "index": 33,
+    "index": 36,
     "name": "object_get_string",
     "context": "string"
   }
@@ -344,7 +374,7 @@
   "pk": 35,
   "fields": {
     "category": "trigger",
-    "index": 34,
+    "index": 37,
     "name": "triggering_node_name",
     "context": "string"
   }
@@ -354,7 +384,7 @@
   "pk": 36,
   "fields": {
     "category": "trigger",
-    "index": 35,
+    "index": 38,
     "name": "triggering_event_string",
     "context": "string"
   }
@@ -364,7 +394,7 @@
   "pk": 37,
   "fields": {
     "category": "trigger",
-    "index": 36,
+    "index": 39,
     "name": "triggering_admin_button_id",
     "context": "string"
   }
@@ -374,7 +404,7 @@
   "pk": 38,
   "fields": {
     "category": "conversion",
-    "index": 37,
+    "index": 40,
     "name": "real_to_string",
     "context": "string"
   }
@@ -384,7 +414,7 @@
   "pk": 39,
   "fields": {
     "category": "conversion",
-    "index": 38,
+    "index": 41,
     "name": "boolean_to_string",
     "context": "string"
   }
@@ -394,7 +424,7 @@
   "pk": 40,
   "fields": {
     "category": "conversion",
-    "index": 39,
+    "index": 42,
     "name": "object_to_string",
     "context": "string"
   }
@@ -404,7 +434,7 @@
   "pk": 41,
   "fields": {
     "category": "conversion",
-    "index": 40,
+    "index": 43,
     "name": "integer_to_string",
     "context": "string"
   }
@@ -414,7 +444,7 @@
   "pk": 42,
   "fields": {
     "category": "object",
-    "index": 41,
+    "index": 44,
     "name": "object_get_integer",
     "context": "integer"
   }
@@ -424,7 +454,7 @@
   "pk": 43,
   "fields": {
     "category": "math",
-    "index": 42,
+    "index": 45,
     "name": "integer_arithmetic",
     "context": "integer"
   }
@@ -434,7 +464,7 @@
   "pk": 44,
   "fields": {
     "category": "conversion",
-    "index": 43,
+    "index": 46,
     "name": "real_to_integer",
     "context": "integer"
   }
@@ -444,7 +474,7 @@
   "pk": 45,
   "fields": {
     "category": "object",
-    "index": 44,
+    "index": 47,
     "name": "object_get_real",
     "context": "real"
   }
@@ -454,7 +484,7 @@
   "pk": 46,
   "fields": {
     "category": "math",
-    "index": 45,
+    "index": 48,
     "name": "real_arithmetic",
     "context": "real"
   }
@@ -464,7 +494,7 @@
   "pk": 47,
   "fields": {
     "category": "conversion",
-    "index": 46,
+    "index": 49,
     "name": "integer_to_real",
     "context": "real"
   }
@@ -474,9 +504,19 @@
   "pk": 48,
   "fields": {
     "category": "timer",
-    "index": 47,
+    "index": 50,
     "name": "timer_remaining_time",
     "context": "real"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 63,
+  "fields": {
+    "category": "game_session",
+    "index": 51,
+    "name": "session_time",
+    "context": "integer"
   }
 },
 {
@@ -484,7 +524,7 @@
   "pk": 49,
   "fields": {
     "category": "object",
-    "index": 48,
+    "index": 52,
     "name": "object_get_boolean",
     "context": "boolean"
   }
@@ -494,7 +534,7 @@
   "pk": 50,
   "fields": {
     "category": "",
-    "index": 49,
+    "index": 53,
     "name": "boolean_not",
     "context": "boolean"
   }
@@ -504,7 +544,7 @@
   "pk": 51,
   "fields": {
     "category": "",
-    "index": 50,
+    "index": 54,
     "name": "boolean_or",
     "context": "boolean"
   }
@@ -514,7 +554,7 @@
   "pk": 52,
   "fields": {
     "category": "",
-    "index": 51,
+    "index": 55,
     "name": "boolean_and",
     "context": "boolean"
   }
@@ -524,7 +564,7 @@
   "pk": 53,
   "fields": {
     "category": "",
-    "index": 52,
+    "index": 56,
     "name": "integer_comparison",
     "context": "boolean"
   }
@@ -534,7 +574,7 @@
   "pk": 54,
   "fields": {
     "category": "",
-    "index": 53,
+    "index": 57,
     "name": "real_comparison",
     "context": "boolean"
   }
@@ -544,7 +584,7 @@
   "pk": 55,
   "fields": {
     "category": "",
-    "index": 54,
+    "index": 58,
     "name": "string_comparison",
     "context": "boolean"
   }
@@ -554,7 +594,7 @@
   "pk": 56,
   "fields": {
     "category": "",
-    "index": 55,
+    "index": 59,
     "name": "object_comparison",
     "context": "boolean"
   }
@@ -564,7 +604,7 @@
   "pk": 57,
   "fields": {
     "category": "",
-    "index": 56,
+    "index": 60,
     "name": "boolean_comparison",
     "context": "boolean"
   }
@@ -574,7 +614,7 @@
   "pk": 58,
   "fields": {
     "category": "timer",
-    "index": 57,
+    "index": 61,
     "name": "expiring_timer",
     "context": "timer"
   }
@@ -584,7 +624,7 @@
   "pk": 59,
   "fields": {
     "category": "timer",
-    "index": 58,
+    "index": 62,
     "name": "last_started_timer",
     "context": "timer"
   }
@@ -3131,6 +3171,62 @@
     "index": 0,
     "type": "text",
     "locale": "last_started_timer",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 183,
+  "fields": {
+    "template": 60,
+    "index": 0,
+    "type": "text",
+    "locale": "run_game_session",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 184,
+  "fields": {
+    "template": 61,
+    "index": 0,
+    "type": "text",
+    "locale": "halt_game_session",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 185,
+  "fields": {
+    "template": 62,
+    "index": 0,
+    "type": "text",
+    "locale": "reset_game_session",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 186,
+  "fields": {
+    "template": 63,
+    "index": 0,
+    "type": "text",
+    "locale": "session_time",
     "key": null,
     "value_type": "string",
     "default_value": null,
