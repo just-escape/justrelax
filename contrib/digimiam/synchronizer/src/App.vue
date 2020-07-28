@@ -61,6 +61,10 @@ export default {
   color: orangered;
 }
 
+video {
+  display: block; /* Removes a mysterious margin bottom */
+}
+
 .glowing-container {
   border: 1px solid #00d1b6;
   box-shadow: 0px 0px 14px -6px rgba(0, 209, 182, 1);

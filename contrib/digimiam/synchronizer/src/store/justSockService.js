@@ -75,6 +75,10 @@ const justSockService = new Vuex.Store({
         lightStore.dispatch('toggleColor', {color, activated})
       } else if (event.category === 'display_danger_window') {
         progressionStore.commit('displayDangerWindow')
+      } else if (event.category === 'play_overlay_video') {
+        progressionStore.commit('playOverlayVideo', event.video_id)
+      } else if (event.category === 'stop_overlay_video') {
+        progressionStore.commit('stopOverlayVideo')
       }
     },
     SOCKET_RECONNECT (state, count) {
