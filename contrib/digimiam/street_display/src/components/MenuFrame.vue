@@ -66,7 +66,6 @@ export default {
 }
 
 .video-placeholder {
-  background: var(--light);
   width: 900px;
   height: 1150px;
   top: 160px;
