@@ -1,36 +1,36 @@
 <template>
   <div id="app" class="h-100">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
+  name: "app",
   mounted() {
     // Disable longtap (right click) menu to appear
     window.oncontextmenu = function() {
-      return false
-    }
-    let ws_url = this.$route.query.ws_url
+      return false;
+    };
+    let ws_url = this.$route.query.ws_url;
     if (ws_url) {
-      this.$connect('ws://' + ws_url)
+      this.$connect("ws://" + ws_url);
     } else {
-      this.$connect('ws://localhost:3031')
+      this.$connect("ws://localhost:3031");
     }
   }
-}
+};
 </script>
 
 <style>
 @font-face {
   font-family: "Code New Roman";
   font-style: normal;
-  src: url('./assets/webfonts/code-new-roman.woff2') format('woff2');
+  src: url("./assets/webfonts/code-new-roman.woff2") format("woff2");
 }
 
 #app {
-  font-family: 'Code New Roman', 'sans-serif';
+  font-family: "Code New Roman", "sans-serif";
   color: #ffffff;
   position: relative;
   display: block;
