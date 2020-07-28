@@ -1,18 +1,19 @@
 <template>
   <div class="menu position-relative">
-    <div class="frame"></div>
-    <div class="position-absolute video-placeholder">
-    </div>
-    <div class="position-absolute meals text-xl text-orange drop-shadow-orange text-las-enter">
-      {{ $t('meals') }}
-    </div>
+    <div
+      class="position-absolute video-placeholder"
+    />
+    <div
+      class="position-absolute pt-4 mt-5 w-100 pl-center position-absolute text-xl text-orange drop-shadow-orange text-las-enter"
+    >{{ $t('meals') }}</div>
+    <div class="frame"/>
   </div>
 </template>
 
 <script>
 export default {
-  name: "MenuFrame",
-}
+  name: "MenuFrame"
+};
 </script>
 
 <style scoped>
@@ -30,7 +31,7 @@ export default {
 }
 
 .frame::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -60,16 +61,15 @@ export default {
   z-index: 10;
 }
 
-.meals {
-  top: 80px;
-  right: 180px;
+.pl-center {
+  padding-left: 270px;
 }
 
 .video-placeholder {
   background: var(--light);
-  width: 920px;
-  height: 1300px;
-  top: 30px;
-  left: 30px;
+  width: 900px;
+  height: 1150px;
+  top: 160px;
+  left: 40px;
 }
 </style>

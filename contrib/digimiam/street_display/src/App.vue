@@ -55,7 +55,7 @@ export default {
 
 #app::before {
   content: "";
-  background: radial-gradient(ellipse at center, #03181f, rgb(3, 26, 34));
+  background: #03181f;
   position: absolute;
   right: 0;
   bottom: 0;
