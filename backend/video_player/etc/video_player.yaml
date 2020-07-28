@@ -6,17 +6,17 @@ channel: digimiam1
 
 node_params:
   videos:
-    orders_background:
-      path: /home/pi/videos/orders_background.mp4
+    street_idle:
+      path: /home/pi/videos/marmitron_street_idle.mp4
       layer: 1
       autoplay: yes
       loop: yes
       orientation: 270
-      window: 380 80 1680 1000
+      window: 510 90 1660 990
       display: 2
-    orders_background2:
+    ads_glitch:
       layer: 1
-      path: /home/pi/videos/orders_background.mp4
+      path: /home/pi/videos/ads_glitch.mp4
       autoplay: yes
       loop: yes
       display: 7
