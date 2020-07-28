@@ -19,8 +19,8 @@ let store = new Vuex.Store({
         loop: true,
       },
       glitching_less: {
-        fr: require('@/assets/videos/glitch_less.mp4'),
-        en: require('@/assets/videos/glitch_less.mp4'),
+        fr: require('@/assets/videos/orders_glitch_bios.webm'),
+        en: require('@/assets/videos/orders_glitch_bios.webm'),
         loop: true,
       },
       ms_pepper_stock: {
