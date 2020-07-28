@@ -16,6 +16,7 @@ import OrderSummary from '@/components/OrderSummary.vue'
 import VentilatorsDocumentation from '@/components/VentilatorsDocumentation.vue'
 import OverlayVideo from '@/components/OverlayVideo.vue'
 import DangerWindow from '@/components/DangerWindow.vue'
+import progressionStore from '@/store/progressionStore.js'
 
 export default {
   name: 'PageRoot',
@@ -34,7 +35,10 @@ export default {
     } else {
       this.$i18n.locale = 'en'
     }
-  }
+  },
+  mounted() {
+    progressionStore.commit('playOverlayVideo', 'glitching')
+  },
 }
 </script>
 

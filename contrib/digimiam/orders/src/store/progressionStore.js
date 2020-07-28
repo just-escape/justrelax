@@ -14,8 +14,8 @@ let store = new Vuex.Store({
     runMsPepperStockAfterNotificationAcknowledgement: false,
     overlayVideos: {
       glitching: {
-        fr: require('@/assets/videos/glitch.mp4'),
-        en: require('@/assets/videos/glitch.mp4'),
+        fr: require('@/assets/videos/orders_glitch.webm'),
+        en: require('@/assets/videos/orders_glitch.webm'),
         loop: true,
       },
       glitching_less: {
