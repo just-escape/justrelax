@@ -59,14 +59,22 @@ class AirDuct:
 class VentilationController:
     STATUSES = {"inactive", "playing", "success"}
 
-    def __init__(self, ventilation_panel_service, initial_difficulty, difficulties, air_ducts, air_sources, colors):
+    def __init__(
+            self, ventilation_panel_service, initial_difficulty, difficulties, round_leds, air_ducts, air_sources,
+            colors, magnet_pin, magnet_led_index,
+    ):
         self.service = ventilation_panel_service
+
+        self.electromagnet = gpiozero.OutputDevice(magnet_pin)
+        self.electromagnet_led_index = magnet_led_index
 
         self._status = None
 
         self.difficulties = difficulties
         self._difficulty = list(self.difficulties)[0]  # By default. Not reliable
         self.difficulty = initial_difficulty
+
+        self.round_leds = round_leds
 
         self.led_strip = neopixel.NeoPixel(board.D18, 6)
 
@@ -155,8 +163,15 @@ class VentilationController:
             ad.fan.off()
         self.led_strip.fill((0, 0, 0))
 
+        self.electromagnet.on()
+        self.led_strip[self.electromagnet_led_index] = self.get_color_rgb("light_red")
+
     def on_playing(self):
         self.led_strip.fill((0, 0, 0))
+
+        self.electromagnet.off()
+        self.led_strip[self.electromagnet_led_index] = self.get_color_rgb("light_green")
+
         self.sequence_cursor = -1
         self.round = 0
         self.try_counters = {}
@@ -222,11 +237,9 @@ class VentilationController:
         if self.sequence_cursor != -1:  # Game is running
             air_duct.fan.off()
             if self.success_sequence[self.sequence_cursor]["air_duct"] != air_duct.name:
-                # It was not necessary to disconnect this air duct: considering as an error
-                # TODO: reactivate this rule
-                logger.debug("Should be considered an error but ignoring for now")
-                # self.sequence_cursor = -1
-                # self.bad_move_failure_animation()
+                logger.debug("It was not necessary to disconnect this air duct: considering as an error")
+                self.sequence_cursor = -1
+                self.bad_move_failure_animation()
         else:  # Game is not running
             if all([ad.connected_source is None for ad in self.air_ducts.values()]):
                 logger.debug("All air ducts are disconnected")
@@ -247,7 +260,7 @@ class VentilationController:
             self.unskippable_animation_task = callLater(1.3, step3)
 
         def step3():
-            self.blink(self.round, "light_green", 5)
+            self.blink(self.round_leds[self.round], "light_green", 5)
             for ad in self.air_ducts.values():
                 ad.fan.off()
             self.unskippable_animation_task = callLater(1.3, step4)
@@ -605,6 +618,9 @@ class VentilationPanel(EventCategoryToMethodMixin, JustSockClientService):
         air_ducts = self.node_params["air_ducts"]
         air_sources = self.node_params["air_sources"]
         colors = self.node_params["colors"]
+        round_leds = self.node_params["round_leds"]
+        magnet_pin = self.node_params["lock"]["electromagnet_pin"]
+        magnet_led_index = self.node_params["lock"]["led_index"]
 
         difficulties = {}
         for difficulty, rounds in self.node_params["difficulties"].items():
@@ -628,7 +644,9 @@ class VentilationPanel(EventCategoryToMethodMixin, JustSockClientService):
 
                 difficulties[difficulty][round_index] = sequences
 
-        self.vc = VentilationController(self, initial_difficulty, difficulties, air_ducts, air_sources, colors)
+        self.vc = VentilationController(
+            self, initial_difficulty, difficulties, round_leds, air_ducts, air_sources, colors,
+            magnet_pin, magnet_led_index)
 
     def event_reset(self):
         self.vc.reset()

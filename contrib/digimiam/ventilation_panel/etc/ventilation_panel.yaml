@@ -5,6 +5,9 @@ name: ventilation_panel
 channel: digimiam1
 
 node_params:
+  lock:
+    led_index: 6
+    electromagnet_pin: 4
   air_ducts:
     ad0:
       jack_pin: 10
@@ -28,6 +31,10 @@ node_params:
   colors:
     red:
       r: 255
+      g: 0
+      b: 0
+    light_red:
+      r: 10
       g: 0
       b: 0
     orange:
@@ -67,6 +74,10 @@ node_params:
       g: 0
       b: 0
   initial_difficulty: normal
+  round_leds:
+    - 2
+    - 1
+    - 0
   difficulties:
     easy:
       round0:
