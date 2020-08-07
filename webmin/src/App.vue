@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import axios from 'axios'
 import Nav from '@/components/nav/Nav.vue'
 import roomStore from '@/store/roomStore.js'
 import 'vue-select/dist/vue-select.css'
@@ -15,7 +17,19 @@ export default {
   name: 'App',
   components: {Nav},
   created() {
+    let storage_url = this.$route.query.storage_url
+    if (storage_url) {
+      Vue.prototype.$justRestAPI = axios.create({
+        baseURL: 'http://' + storage_url
+      })
+    } else {
+      Vue.prototype.$justRestAPI = axios.create({
+        baseURL: 'http://localhost:8000'
+      })
+    }
+
     roomStore.dispatch('fetchScenarios')
+
     let ws_url = this.$route.query.ws_url
     if (ws_url) {
       this.$connect('ws://' + ws_url)

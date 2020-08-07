@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import justRestAPI from '@/store/justRestService.js'
 import notificationStore from '@/store/notificationStore.js'
 
 Vue.use(Vuex)
@@ -238,7 +237,7 @@ export default new Vuex.Store({
       context.dispatch('loadTemplates', roomId)
     },
     loadTemplates(context, roomId) {
-      justRestAPI.get('/get_templates/')
+      Vue.prototype.$justRestAPI.get('/get_templates/')
         .then(function(response) {
           context.commit('loadTemplates', response.data)
           context.dispatch('loadScenario', roomId)
@@ -248,7 +247,7 @@ export default new Vuex.Store({
         })
     },
     loadScenario(context, roomId) {
-      justRestAPI.get('/get_scenario/', {params: {room_id: roomId}})
+      Vue.prototype.$justRestAPI.get('/get_scenario/', {params: {room_id: roomId}})
         .then(function(response) {
           context.commit('loadScenario', response.data)
           if (context.state.rules.length > 0) {
@@ -264,7 +263,7 @@ export default new Vuex.Store({
       formData.append('room_id', roomId)
       formData.append('rules', JSON.stringify(context.state.rules))
       formData.append('variables', JSON.stringify(context.state.variables))
-      justRestAPI.post('/update_scenario/', formData)
+      Vue.prototype.$justRestAPI.post('/update_scenario/', formData)
         .then(function(response) {
           notificationStore.dispatch('pushNotification', 'Scenario saved with success!')
           context.commit('loadScenario', response.data)

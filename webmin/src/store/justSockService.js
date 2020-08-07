@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import roomStore from '@/store/roomStore.js'
 import notificationStore from '@/store/notificationStore.js'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const justSockService = new Vuex.Store({
   mutations: {

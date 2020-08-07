@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import justSockService from '@/store/justSockService.js'
-import justRestAPI from '@/store/justRestService.js'
 import notificationStore from '@/store/notificationStore.js'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
@@ -103,7 +102,7 @@ export default new Vuex.Store({
   },
   actions: {
     fetchScenarios (context) {
-      justRestAPI.get('/scenario/')
+      Vue.prototype.$justRestAPI.get('/scenario/')
         .then(function (response) {
           var scenarios = response.data
           context.dispatch('fetchRooms', scenarios[0].id)
@@ -113,7 +112,7 @@ export default new Vuex.Store({
         })
     },
     fetchRooms (context, scenarioId) {
-      justRestAPI.get('/room/?scenario=' + scenarioId)
+      Vue.prototype.$justRestAPI.get('/room/?scenario=' + scenarioId)
         .then(function (response) {
           var rooms = response.data
           for (var room of rooms) {
@@ -127,7 +126,7 @@ export default new Vuex.Store({
         })
     },
     fetchCameras (context, roomId) {
-      justRestAPI.get('/camera/?room=' + roomId)
+      Vue.prototype.$justRestAPI.get('/camera/?room=' + roomId)
         .then(function (response) {
           let cameras = response.data
           context.commit('setCameras', {roomId, cameras})
