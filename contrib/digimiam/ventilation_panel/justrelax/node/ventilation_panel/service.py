@@ -76,7 +76,7 @@ class VentilationController:
 
         self.round_leds = round_leds
 
-        self.led_strip = neopixel.NeoPixel(board.D18, 6)
+        self.led_strip = neopixel.NeoPixel(board.D18, 7)
 
         self.try_counters = {}  # keys are round indexes, values are counters
         self.sequence_cursor = -1  # -1 <=> game is not running
@@ -97,6 +97,8 @@ class VentilationController:
         self.check_jacks_task = callLater(1, self.check_jacks)
         self.animation_tasks = {}
         self.unskippable_animation_task = None
+
+        self.status = "inactive"
 
     @property
     def difficulty(self):
