@@ -7,10 +7,13 @@ from justrelax.common.logging_utils import logger
 
 
 class Serial:
-    def __init__(self, service, port, baud_rate=9600, on_event_callback=None):
+    def __init__(self, service, port, baud_rate=9600, on_event_callback=None, *cb_args, **cb_kwargs):
         self.service = service
         self.port = port
         self.baud_rate = baud_rate
+
+        self.cb_args = cb_args
+        self.cb_kwargs = cb_kwargs
 
         if on_event_callback is None:
             self.on_event_callback = self.service.process_serial_event
@@ -50,7 +53,7 @@ class Serial:
 
     def process_event(self, event):
         try:
-            self.on_event_callback(event)
+            self.on_event_callback(event, *self.cb_args, **self.cb_kwargs)
         except Exception as e:
             formatted_exception = "{}: {}".format(type(e).__name__, e)
             try:

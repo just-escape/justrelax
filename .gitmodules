@@ -22,3 +22,9 @@
 [submodule "contrib/digimiam/lights/arduino/libraries/ArduinoJson"]
 	path = contrib/digimiam/lights/arduino/libraries/ArduinoJson
 	url = https://github.com/bblanchon/ArduinoJson
+[submodule "contrib/digimiam/cylinders/arduino/libraries/ArduinoJson"]
+	path = contrib/digimiam/cylinders/arduino/libraries/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson
+[submodule "contrib/digimiam/cylinders/arduino/libraries/MFRC522"]
+	path = contrib/digimiam/cylinders/arduino/libraries/MFRC522
+	url = https://github.com/miguelbalboa/rfid
