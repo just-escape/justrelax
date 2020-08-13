@@ -1,7 +1,8 @@
 from twisted.internet import reactor
 
-from justrelax.common.logging_utils import logger
+from gpiozero import OutputDevice
 
+from justrelax.common.logging_utils import logger
 from justrelax.node.helper import Serial
 from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 
@@ -54,37 +55,20 @@ class SerialEventBuffer:
                 }
             )
 
-        if base_event == {self.PROTOCOL.CATEGORY: self.PROTOCOL.ON}:
-            event_to_cancel = {self.PROTOCOL.CATEGORY: self.PROTOCOL.OFF}
-        elif base_event == {self.PROTOCOL.CATEGORY: self.PROTOCOL.OFF}:
-            event_to_cancel = {self.PROTOCOL.CATEGORY: self.PROTOCOL.ON}
-        else:
-            event_to_cancel = None
-
-        if event_to_cancel:
-            for queued_event_index, queued_event in enumerate(self.queue[:]):
-                if queued_event['base_event'] == event_to_cancel:
-                    queued_event['channel'].discard(channel)
-                    if not queued_event['channel']:
-                        self.queue.pop(queued_event_index)
-
 
 class Lights(EventCategoryToMethodMixin, JustSockClientService):
     class ARDUINO_PROTOCOL:
         CATEGORY = 'c'
 
-        ON = 'n'
-        OFF = 'f'
         CHANNEL = 'h'
         SET_COLOR = 's'
         COLOR = 'r'
-        FADE_BRIGHTNESS = 'b'
-        TARGET_BRIGHTNESS = 't'
 
     def __init__(self, *args, **kwargs):
         super(Lights, self).__init__(*args, **kwargs)
 
         self.colors = {}
+        self.on_off_pins = {}
 
         port = self.node_params['arduino']['port']
         baud_rate = self.node_params['arduino']['baud_rate']
@@ -97,20 +81,23 @@ class Lights(EventCategoryToMethodMixin, JustSockClientService):
         reactor.callLater(3, self.init_arduino)
 
     def init_arduino(self):
-        for channel in self.node_params['channels']:
-            self.configure_channel_color(channel['n'], channel['rate'])
+        for channel_mask, color in self.node_params['channels'].items():
+            self.configure_channel_color(channel_mask, color)
 
         for color_name, color_params in self.node_params['colors'].items():
-            self.colors[color_name] = color_params['channel']
+            self.colors[color_name] = {
+                'on_off_pins': color_params['on_off_pins'],
+            }
 
-            on_by_default = color_params.get('on_by_default', False)
-            default_brightness = color_params.get('default_brightness', None)
+            for on_off_pin in color_params['on_off_pins']:
+                if on_off_pin not in self.on_off_pins:
+                    self.on_off_pins[on_off_pin] = OutputDevice(on_off_pin)
 
-            if on_by_default:
-                self.event_on(color_name)
-
-            if default_brightness is not None:
-                self.event_fade_brightness(color_name, default_brightness)
+            if color_params.get('on_by_default', None) is not None:
+                if color_params['on_by_default']:
+                    self.event_on(color_name)
+                else:
+                    self.event_off(color_name)
 
     def process_serial_event(self, event):
         # Error because events should not be received from the arduino
@@ -127,26 +114,11 @@ class Lights(EventCategoryToMethodMixin, JustSockClientService):
         )
 
     def event_on(self, color):
-        self.buffer.send_event(
-            base_event={
-                self.ARDUINO_PROTOCOL.CATEGORY: self.ARDUINO_PROTOCOL.ON,
-            },
-            channel=self.colors[color],
-        )
+        logger.info("Turning on {}".format(color))
+        for on_off_pin in self.colors[color]['on_off_pins']:
+            self.on_off_pins[on_off_pin].on()
 
     def event_off(self, color):
-        self.buffer.send_event(
-            base_event={
-                self.ARDUINO_PROTOCOL.CATEGORY: self.ARDUINO_PROTOCOL.OFF,
-            },
-            channel=self.colors[color],
-        )
-
-    def event_fade_brightness(self, color, brightness):
-        self.buffer.send_event(
-            base_event={
-                self.ARDUINO_PROTOCOL.CATEGORY: self.ARDUINO_PROTOCOL.FADE_BRIGHTNESS,
-                self.ARDUINO_PROTOCOL.TARGET_BRIGHTNESS: brightness,
-            },
-            channel=self.colors[color],
-        )
+        logger.info("Turning off {}".format(color))
+        for on_off_pin in self.colors[color]['on_off_pins']:
+            self.on_off_pins[on_off_pin].off()

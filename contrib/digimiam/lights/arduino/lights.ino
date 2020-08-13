@@ -4,13 +4,9 @@
 
 #define PROTOCOL_ERROR "e"
 
-#define PROTOCOL_ON "n"
-#define PROTOCOL_OFF "f"
-#define PROTOCOL_CHANNELS "h"
 #define PROTOCOL_SET_COLOR "s"
+#define PROTOCOL_CHANNELS "h"
 #define PROTOCOL_COLOR "r"
-#define PROTOCOL_FADE_BRIGHTNESS "b"
-#define PROTOCOL_TARGET_BRIGHTNESS "t"
 
 #define CHANNELS 10
 
@@ -22,20 +18,16 @@ unsigned long deltaTime;
 unsigned long deltaTimeModulus1000;
 unsigned long lastCycleStart;
 
-int pins[CHANNELS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-int colors[CHANNELS] = {0};
-int colorsTimesBrightnesses[CHANNELS] = {0};
-int brightnesses[CHANNELS] = {0};
-int targetBrightnesses[CHANNELS] = {0};
-bool isOn[CHANNELS] = {false};
+// White, Purple, Red, Green, Blue's red, Blue's green, Blue's blue, Orange's red, Orange's green, Orange's blue
+int lightPins[CHANNELS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+float colors[CHANNELS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+byte isOnPins[CHANNELS] = {48, 52, 46, 50, 42, 42, 42, 44, 44, 44};
 bool isHigh[CHANNELS] = {false};
-
-int cyclesCounter = 0;
 
 void setup() {
   for (int i = 0 ; i < CHANNELS ; i++) {
-    pinMode(pins[i], OUTPUT);
-    digitalWrite(pins[i], LOW);
+    pinMode(lightPins[i], OUTPUT);
+    pinMode(isOnPins[i], INPUT);
   }
 
   lastCycleStart = micros();
@@ -48,33 +40,20 @@ void loop() {
 
   if (deltaTime > 1000) {
     lastCycleStart = currentTime;
-    cyclesCounter++;
 
     for (int i = 0 ; i < CHANNELS ; i++) {
-      isHigh[i] = isOn[i];
-    }
-
-    if (cyclesCounter % 5 == 0) {
-      for (int i = 0 ; i < CHANNELS ; i++) {
-        if (targetBrightnesses[i] > brightnesses[i]) {
-          brightnesses[i]++;
-          colorsTimesBrightnesses[i] = colors[i] * brightnesses[i];
-        } else if (targetBrightnesses[i] < brightnesses[i]) {
-          brightnesses[i]--;
-          colorsTimesBrightnesses[i] = colors[i] * brightnesses[i];
-        }
-      }
+      isHigh[i] = digitalRead(isOnPins[i]);
     }
   }
 
   deltaTimeModulus1000 = deltaTime % 1000;
 
   for (int i = 0 ; i < CHANNELS ; i++) {
-    if (deltaTimeModulus1000 > colorsTimesBrightnesses[i]) {
+    if (deltaTimeModulus1000 > colors[i]) {
       isHigh[i] = false;
     }
 
-    digitalWrite(pins[i], isHigh[i]);
+    digitalWrite(lightPins[i], isHigh[i]);
   }
 }
 
@@ -93,29 +72,7 @@ void onEvent() {
     int channelsBitmask = receivedDocument[PROTOCOL_CHANNELS];
     int currentChannelBit = 1;
 
-    if (category == PROTOCOL_ON) {
-      for (int i = 0 ; i < CHANNELS ; i++) {
-        if ((channelsBitmask & currentChannelBit) == currentChannelBit) {
-          isOn[i] = true;
-        }
-        currentChannelBit = currentChannelBit << 1;
-      }
-    } else if (category == PROTOCOL_OFF) {
-      for (int i = 0 ; i < CHANNELS ; i++) {
-        if ((channelsBitmask & currentChannelBit) == currentChannelBit) {
-          isOn[i] = false;
-        }
-        currentChannelBit = currentChannelBit << 1;
-      }
-    } else if (category == PROTOCOL_FADE_BRIGHTNESS) {
-      int targetBrightness = receivedDocument[PROTOCOL_TARGET_BRIGHTNESS];
-      for (int i = 0 ; i < CHANNELS ; i++) {
-        if ((channelsBitmask & currentChannelBit) == currentChannelBit) {
-          targetBrightnesses[i] = targetBrightness;
-        }
-        currentChannelBit = currentChannelBit << 1;
-      }
-    } else if (category == PROTOCOL_SET_COLOR) {
+    if (category == PROTOCOL_SET_COLOR) {
       int color = receivedDocument[PROTOCOL_COLOR];
       for (int i = 0 ; i < CHANNELS ; i++) {
         if ((channelsBitmask & currentChannelBit) == currentChannelBit) {
