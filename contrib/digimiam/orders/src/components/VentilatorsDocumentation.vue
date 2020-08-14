@@ -184,12 +184,12 @@ export default {
           },
           {
             displayedChars: 0,
-            instruction: '* rose : appliquer à ce conduit le code séquence précédent',
+            instruction: '* rose : appliquer à ce conduit le code séquence du conduit précédent',
             typing: false,
           },
           {
             displayedChars: 0,
-            instruction: '* violet : appliquer à ce conduit le code séquence suivant',
+            instruction: '* violet : appliquer à ce conduit le code séquence du conduit suivant',
             typing: false,
           },
         ],
@@ -216,12 +216,12 @@ export default {
           },
           {
             displayedChars: 0,
-            instruction: '* pink: apply the previous sequence code to this duct',
+            instruction: '* pink: apply to this duct the sequence code of the previous duct',
             typing: false,
           },
           {
             displayedChars: 0,
-            instruction: '* purple: apply the next sequence code to this duct',
+            instruction: '* purple: apply to this duct the sequence code of the next duct',
             typing: false,
           },
         ],
