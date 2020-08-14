@@ -662,7 +662,7 @@ class VentilationPanel(EventCategoryToMethodMixin, JustSockClientService):
     def event_set_difficulty(self, difficulty: str):
         self.vc.difficulty = difficulty
 
-    def notify_set_status(self, status):
+    def notify_status(self, status):
         self.send_event({"category": "set_status", "status": status})
 
     def notify_start_new_round(self, round_):
