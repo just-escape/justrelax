@@ -146,6 +146,8 @@ class VentilationController:
         elif self._status == "success":
             self.on_success()
 
+        self.service.notify_status(self.status)
+
     def skip_skippable_animations(self):
         for ad in self.air_ducts.values():
             self.led_strip[ad.led_index] = (0, 0, 0)
@@ -271,6 +273,7 @@ class VentilationController:
             if self.round < 2:
                 logger.debug("Going to next round".format(self.round))
                 self.round += 1
+                self.service.notify_start_new_round(self.round)
                 if all([ad.connected_source is None for ad in self.air_ducts.values()]):
                     self.restart_round()
                 else:
@@ -658,6 +661,12 @@ class VentilationPanel(EventCategoryToMethodMixin, JustSockClientService):
 
     def event_set_difficulty(self, difficulty: str):
         self.vc.difficulty = difficulty
+
+    def notify_set_status(self, status):
+        self.send_event({"category": "set_status", "status": status})
+
+    def notify_start_new_round(self, round_):
+        self.send_event({"category": "start_new_round", "round": round_})
 
     def notify_success(self):
         self.send_event({"category": "success"})
