@@ -1,7 +1,7 @@
 <template>
   <div>
     <video
-      v-if="displayVideo"
+      v-if="false && displayVideo"
       :src="src"
       loop
       autoplay

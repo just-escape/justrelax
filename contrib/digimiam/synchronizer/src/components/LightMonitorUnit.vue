@@ -1,44 +1,72 @@
 <template>
-  <svg :viewBox="'0 0 ' + boxWidth + ' ' + boxHeight" class="position-absolute" :style="{top: positionY, left: positionX}">
-    <defs>
-      <filter :id="'mu-glowing-' + color" x="-50" y="-50" width="150" height="150">
-        <feGaussianBlur result="blurOut" in="offOut" :stdDeviation="glowIntensity"/>
-        <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
-      </filter>
-      <filter :id="'mu-grayscale-' + color">
-        <feColorMatrix
-          type="matrix"
-          :values="grayscaleMatrix"
+  <div>
+    <div class="position-absolute"
+            :style="{
+          height: width + 'px',
+          width: width + 'px',
+          left: trianglesPositionX + 'px',
+          top: (trianglesPositionY - 18) + 'px',
+          transform: 'rotate(' + trianglesRotation + ')',
+        }">
+      <div
+        class="d-flex flex-column align-items-center justify-self-center"
+      >
+        <LightMonitorUnitTriangle
+          v-for="(t, tIndex) in triangles"
+          :size="t.size"
+          :opacity="t.opacity"
+          :key="tIndex"
         />
-      </filter>
-      <filter id="locker">
-        <feImage :xlink:href="require('@/assets/img/locker.png')"/>
-      </filter>
-    </defs>
+      </div>
+    </div>
 
-    <g :filter="'url(#mu-glowing-' + color + ')'">
-      <path
-        :key="colorMainChannel"
-        :d="getEdges(size)"
-        :fill="fill"
-        :filter="'url(#mu-grayscale-' + color + ')'"
+    <svg @click="toggle" class="position-absolute" :viewBox="'0 0 ' + boxWidth + ' ' + boxHeight" :style="{width: width + 'px', top: positionY + 'px', left: positionX + 'px'}">
+      <defs>
+        <filter :id="'mu-glowing-' + color" x="-50" y="-50" width="150" height="150">
+          <feGaussianBlur result="blurOut" in="offOut" :stdDeviation="glowIntensity"/>
+          <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+        </filter>
+        <filter :id="'mu-grayscale-' + color">
+          <feColorMatrix
+            type="matrix"
+            :values="grayscaleMatrix"
+          />
+        </filter>
+        <filter id="locker">
+          <feImage :xlink:href="require('@/assets/img/locker.png')"/>
+        </filter>
+      </defs>
+
+      <g :filter="'url(#mu-glowing-' + color + ')'">
+        <path
+          :key="colorMainChannel"
+          :d="getEdges(size)"
+          :fill="fill"
+          :filter="'url(#mu-grayscale-' + color + ')'"
+        />
+      </g>
+      <rect
+        x="42.5%" y="41.5%" width="16%" height="16%"
+        filter="url(#locker)"
+        :style="{opacity: lockerOpacity}"
       />
-    </g>
-    <rect
-      x="42.5%" y="41.5%" width="16%" height="16%"
-      filter="url(#locker)"
-      :style="{opacity: lockerOpacity}"
-    />
-  </svg>
+    </svg>
+  </div>
 </template>
 
 <script>
+import LightMonitorUnitTriangle from '@/components/LightMonitorUnitTriangle.vue'
 import lightStore from '@/store/lightStore.js'
+import justSockService from '@/store/justSockService.js'
 
 export default {
   name: 'LightMonitorUnit',
+  components: {
+    LightMonitorUnitTriangle,
+  },
   data: function() {
     return {
+      toggled: false,
       boxWidth: 250,
       boxHeight: 250,
       size: 40,
@@ -79,18 +107,39 @@ export default {
           g: 53,
           b: 69,
         },
-      }
+      },
+      triangles: [
+        {
+          size: "lg",
+          opacity: 0,
+          animation: null,
+        },
+        {
+          size: "md",
+          opacity: 0,
+          animation: null,
+        },
+        {
+          size: "sm",
+          opacity: 0,
+          animation: null,
+        },
+      ],
+      hideTriangles: false,
     }
   },
   computed: {
+    blinkTriangles() {
+      return lightStore.state.colorTriangles[this.color]
+    },
     isActivated() {
-      return lightStore.state.activatedSensors.slice(0, 3).includes(this.color)
+      return lightStore.state.activatedSensors.slice(0, 4).includes(this.color)
     },
     isPressed() {
       return lightStore.state.activatedSensors.includes(this.color)
     },
     areSensorsLocked() {
-      return lightStore.state.activatedSensors.length >= 3
+      return lightStore.state.activatedSensors.length >= 4
     },
     h: function() {
       return function(size) {
@@ -124,7 +173,31 @@ export default {
       return 'rgba(' + r + ', ' + g + ', ' + b + ')'
     }
   },
+  methods: {
+    toggle() {
+      this.toggled = !this.toggled
+      lightStore.dispatch('toggleColor', {color: this.color, activated: this.toggled})
+    },
+    startTriangleAnimation(triangleIndex) {
+      if (!this.hideTriangles) {
+        this.triangles[triangleIndex].animation.play()
+      }
+    },
+    stopTriangleAnimation() {
+      this.hideTriangles = true
+    },
+  },
   watch: {
+    blinkTriangles(value) {
+      if (value) {
+        this.hideTriangles = false
+        this.startTriangleAnimation(0)
+        setTimeout(this.startTriangleAnimation, 133, 1)
+        setTimeout(this.startTriangleAnimation, 266, 2)
+      } else {
+        setTimeout(this.stopTriangleAnimation, 133)
+      }
+    },
     isPressed(newValue) {
       this.glowIntensityAnimation.pause()
 
@@ -146,6 +219,8 @@ export default {
     },
     isActivated(newValue) {
       if (newValue) {
+        justSockService.commit('sendEvent', {"category": "on", "color": this.color})
+
         this.grayscaleAnimation.pause()
 
         this.grayscaleAnimation = this.$anime({
@@ -156,17 +231,21 @@ export default {
           duration: 500,
           easing: 'linear',
         })
-      } else if (this.areSensorsLocked) {
-        this.grayscaleAnimation.pause()
+      } else {
+        justSockService.commit('sendEvent', {"category": "off", "color": this.color})
 
-        this.grayscaleAnimation = this.$anime({
-          targets: this,
-          colorMainChannel: 0.33,
-          colorOffChannel: 0.33,
-          lockerOpacity: 0.7,
-          duration: 500,
-          easing: 'linear',
-        })
+        if (this.areSensorsLocked) {
+          this.grayscaleAnimation.pause()
+
+          this.grayscaleAnimation = this.$anime({
+            targets: this,
+            colorMainChannel: 0.33,
+            colorOffChannel: 0.33,
+            lockerOpacity: 0.7,
+            duration: 500,
+            easing: 'linear',
+          })
+        }
       }
     },
     areSensorsLocked(newValue) {
@@ -198,6 +277,8 @@ export default {
     },
   },
   created() {
+    let this_ = this
+
     this.grayscaleAnimation = this.$anime({
       targets: this,
       autoplay: false,
@@ -214,11 +295,60 @@ export default {
       duration: 500,
       easing: 'linear',
     })
+
+    this.triangles[0].animation = this.$anime({
+      targets: this_.triangles[0],
+      loop: true,
+      opacity: 1,
+      direction: 'alternate',
+      autoplay: false,
+      duration: 399,
+      loopComplete: function(anim) {
+        if (this_.hideTriangles && anim.progress === 0) {
+          this_.triangles[0].animation.pause()
+        }
+      },
+      easing: 'linear',
+    })
+
+    this.triangles[1].animation = this.$anime({
+      targets: this_.triangles[1],
+      loop: true,
+      opacity: 1,
+      direction: 'alternate',
+      autoplay: false,
+      duration: 399,
+      loopComplete: function(anim) {
+        if (this_.hideTriangles && anim.progress === 0) {
+          this_.triangles[1].animation.pause()
+        }
+      },
+      easing: 'linear',
+    })
+
+    this.triangles[2].animation = this.$anime({
+      targets: this_.triangles[2],
+      loop: true,
+      opacity: 1,
+      direction: 'alternate',
+      autoplay: false,
+      duration: 399,
+      loopComplete: function(anim) {
+        if (this_.hideTriangles && anim.progress === 0) {
+          this_.triangles[2].animation.pause()
+        }
+      },
+      easing: 'linear',
+    })
   },
   props: {
     color: String,
     positionX: Number,
     positionY: Number,
+    width: Number,
+    trianglesPositionX: Number,
+    trianglesPositionY: Number,
+    trianglesRotation: String,
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="h-100">
     <div class="d-flex flex-column justify-content-between h-100 px-3">
-      <div class="flex-grow-1 mb-4 position-relative menu-container">
+      <div class="flex-grow-1 position-relative menu-container">
         <div class="glowing-wire top-wire"></div>
         <div class="glowing-wire bottom-wire"></div>
 
@@ -15,24 +15,17 @@
           <LightPuzzleMenuContent class="h-100"/>
         </div>
       </div>
-      <div class="position-relative">
-        <div class="glowing-wire center-wire"></div>
-
-        <ButtonBlue class="lh-13">{{ $t('start_manual_synchronization') }}</ButtonBlue>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import LightPuzzleMenuContent from '@/components/LightPuzzleMenuContent.vue'
-import ButtonBlue from '@/components/ButtonBlue.vue'
 
 export default {
   name: 'LightPuzzleMenu',
   components: {
     LightPuzzleMenuContent,
-    ButtonBlue,
   }
 }
 </script>
@@ -55,10 +48,6 @@ export default {
   bottom: 30%;
 }
 
-.center-wire {
-  top: 50%;
-}
-
 .lh-13 {
   line-height: 1.3;
 }
@@ -66,7 +55,7 @@ export default {
 .title-ribbon {
   position: absolute;
   width: 100%;
-  height: 58px;
+  height: 40px;
   top: 0;
   right: 0;
   border-bottom: 1px solid #00d1b6;
@@ -76,14 +65,14 @@ export default {
     100% 0%,
     100% 100%,
     0% 100%,
-    0% 54px,
-    54px 0%
+    0px calc(43px - 9px),
+    43px 0px
   );
 }
 
 .title {
   line-height: 1.3;
-  font-size: 18px;
+  font-size: 20px;
   text-align: right;
   width: 100%;
 }
@@ -106,12 +95,12 @@ export default {
     calc(100% + 10px) -10px,
     calc(100% + 10px) calc(100% + 10px),
     -10px calc(100% + 6px),
-    -10px 66px,
-    calc(66px + 8px) -10px,
+    -10px calc(48px - 7px - 6px),
+    calc(48px + 2px - 6px) -10px,
     calc(100% - 1px) -10px,
     calc(100% - 1px) 9px,
-    calc(66px + 1px) 9px,
-    1px 66px,
+    calc(48px + 1px) 9px,
+    1px 48px,
     1px calc(100% - 1px),
     calc(100% - 1px) calc(100% - 1px)
   );
@@ -127,16 +116,16 @@ export default {
   bottom: 0;
   background-color: #00d1b6;
   clip-path: polygon(
-    calc(100% - 1px) -10px,
-    calc(100% + 10px) -10px,
-    calc(100% + 10px) calc(100% + 10px),
-    -10px calc(100% + 6px),
-    -10px 66px,
-    calc(66px + 8px) -10px,
-    calc(100% - 1px) -10px,
+    calc(100% - 1px) 0%,
+    100% 0%,
+    100% 100%,
+    0% 100%,
+    0% calc(48px - 7px),
+    calc(48px + 2px) 0%,
+    calc(100% - 1px) 0%,
     calc(100% - 1px) 9px,
-    calc(66px + 1px) 9px,
-    1px 66px,
+    calc(48px + 1px) 9px,
+    1px 48px,
     1px calc(100% - 1px),
     calc(100% - 1px) calc(100% - 1px)
   );
@@ -154,8 +143,8 @@ export default {
     100% 0%,
     100% 100%,
     0% 100%,
-    0% 54px,
-    54px 0%
+    0px calc(43px - 6px),
+    calc(43px + 6px) 0px
   );
   z-index: -1;
 }

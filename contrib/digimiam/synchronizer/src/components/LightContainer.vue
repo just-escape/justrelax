@@ -1,11 +1,11 @@
 <template>
   <div class="glowing-container">
     <div>
-      <svg viewBox="65 0 574 305">
+      <svg viewBox="90 0 423 252">
         <LightContainerDefs/>
 
         <LightContainerGenerator/>
-        <LightContainerGenerator transform="translate(36 0) rotate(180 335 178)"/>
+        <LightContainerGenerator transform="translate(-20 0) rotate(180 335 178)"/>
         <LightContainerEdges/>
         <LightContainerVertice
           v-for="(v, verticeIndex) in vertices" :key="verticeIndex"

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import difficultyStore from '@/store/difficultyStore.js'
-import justSockService from './justSockService'
 
 Vue.use(Vuex)
 
@@ -13,7 +12,6 @@ const ACTIVATION_SEQUENCE_EASY_1 = [
   '23-24',
   '24-25',
   '25-26',
-  '26-27',
 ]
 
 const ACTIVATION_SEQUENCE_NORMAL_1 = [
@@ -25,17 +23,14 @@ const ACTIVATION_SEQUENCE_NORMAL_1 = [
   '33-24',
   '24-34',
   '34-35',
-  '35-46',
-  '46-36',
 ]
 
 const ACTIVATION_SEQUENCE_HARD_1 = [
-  '61-62',
-  '62-63',
-  '63-64',
-  '64-65',
-  '65-66',
-  '66-67',
+  '21-22',
+  '22-23',
+  '23-24',
+  '24-25',
+  '25-26',
 ]
 
 function setPlayable() {
@@ -213,7 +208,21 @@ function nextActivation() {
     store.commit('setUnplayable')
     confirmationAnimation()
   } else {
-    if (store.state.activatedSensors.slice(0, 3).includes(store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId)) {
+    if (store.state.activatedSensors.slice(0, 4).includes(store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId)) {
+      if (store.state.vertices[store.state.edges[edgeId].getVertice1()].activationSensorId) {
+        // Not the first vertice of the sequence
+        store.commit('hideColorTriangles', store.state.vertices[store.state.edges[edgeId].getVertice1()].activationSensorId)
+      } else {
+        // The first vertice of the sequence
+        store.commit('showColorTriangles', store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId)
+      }
+
+      let nextEdgeId = store.getters.nextActivationEdgeId
+      if (nextEdgeId) {
+        // This is not the final edge
+        store.commit('anticipateNextActivation', store.state.vertices[store.state.edges[nextEdgeId].getVertice2()])
+      }
+
       activateEdge(edgeId)
     } else {
       if (store.state.currentActivationSequence[1] == edgeId) {
@@ -227,6 +236,10 @@ function nextActivation() {
 
 function confirmationAnimation() {
   var timeout = 500
+
+  for (var color in store.state.colorTriangles) {
+    store.commit('hideColorTriangles', color)
+  }
 
   for (var i = 0 ; i < store.state.currentActivationSequence.length ; i++) {
     var verticeId = store.state.edges[store.state.currentActivationSequence[i]].getVertice2()
@@ -372,6 +385,11 @@ function newActivationSequence() {
 
 function gameOver(callback, blinkErrorAnimation) {
   store.commit('setUnplayable')
+
+  for (var color in store.state.colorTriangles) {
+    store.commit('hideColorTriangles', color)
+  }
+  store.commit('cancenlNextActivationAnticipation')
 
   if (blinkErrorAnimation) {
     Vue.prototype.$anime.timeline({
@@ -528,26 +546,6 @@ var store = new Vuex.Store({
         startingPoint: false,
         pulse: false,
       },
-      '16': {
-        x: 18 / 4 * 120 - 37.5,
-        y: 0 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'blue',
-        startingPoint: false,
-        pulse: false,
-      },
       '21': {
         x: 7 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
@@ -668,26 +666,6 @@ var store = new Vuex.Store({
         startingPoint: false,
         pulse: false,
       },
-      '27': {
-        x: 19 / 4 * 120 - 37.5,
-        y: 1 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        initColor: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'orange',
-        startingPoint: false,
-        pulse: false,
-      },
       '31': {
         x: 8 / 4 * 120 - 37.5,
         y: 2 / 2 * 60 * Math.sqrt(3) + 23,
@@ -785,26 +763,6 @@ var store = new Vuex.Store({
         },
         glowing: 'glowing',
         activationSensorId: 'white',
-        startingPoint: false,
-        pulse: false,
-      },
-      '36': {
-        x: 18 / 4 * 120 - 37.5,
-        y: 2 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'blue',
         startingPoint: false,
         pulse: false,
       },
@@ -928,26 +886,6 @@ var store = new Vuex.Store({
         startingPoint: false,
         pulse: false,
       },
-      '47': {
-        x: 19 / 4 * 120 - 37.5,
-        y: 3 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'white',
-        startingPoint: false,
-        pulse: false,
-      },
       '51': {
         x: 8 / 4 * 120 - 37.5,
         y: 4 / 2 * 60 * Math.sqrt(3) + 23,
@@ -1031,166 +969,6 @@ var store = new Vuex.Store({
       '55': {
         x: 16 / 4 * 120 - 37.5,
         y: 4 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 255,
-          g: 255,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 255,
-          g: 255,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'white',
-        startingPoint: false,
-        pulse: false,
-      },
-      '56': {
-        x: 18 / 4 * 120 - 37.5,
-        y: 4 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'blue',
-        startingPoint: false,
-        pulse: false,
-      },
-      '61': {
-        x: 7 / 4 * 120 - 37.5,
-        y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 0,
-          g: 209,
-          b: 182,
-          a: 0.7,
-        },
-        initColor: {
-          r: 0,
-          g: 209,
-          b: 182,
-          a: 0.7,
-        },
-        glowing: 'glowing',
-        activationSensorId: null,
-        startingPoint: true,
-        pulse: false,
-      },
-      '62': {
-        x: 9 / 4 * 120 - 37.5,
-        y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'blue',
-        startingPoint: false,
-        pulse: false,
-      },
-      '63': {
-        x: 11 / 4 * 120 - 37.5,
-        y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 220,
-          g: 53,
-          b: 69,
-          a: 1,
-        },
-        initColor: {
-          r: 220,
-          g: 53,
-          b: 69,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'red',
-        startingPoint: false,
-        pulse: false,
-      },
-      '64': {
-        x: 13 / 4 * 120 - 37.5,
-        y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'blue',
-        startingPoint: false,
-        pulse: false,
-      },
-      '65': {
-        x: 15 / 4 * 120 - 37.5,
-        y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        initColor: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'orange',
-        startingPoint: false,
-        pulse: false,
-      },
-      '66': {
-        x: 17 / 4 * 120 - 37.5,
-        y: 5 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
-          r: 220,
-          g: 53,
-          b: 69,
-          a: 1,
-        },
-        initColor: {
-          r: 220,
-          g: 53,
-          b: 69,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'red',
-        startingPoint: false,
-        pulse: false,
-      },
-      '67': {
-        x: 19 / 4 * 120 - 37.5,
-        y: 5 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
           r: 255,
           g: 255,
@@ -1338,38 +1116,6 @@ var store = new Vuex.Store({
           return 'left-right'
         },
       },
-      '35-46': {
-        getVertice1: function() {
-          return '35'
-        },
-        getVertice2: function() {
-          return '46'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'topleft-bottomright'
-        },
-      },
-      '46-36': {
-        getVertice1: function() {
-          return '46'
-        },
-        getVertice2: function() {
-          return '36'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomleft-topright'
-        },
-      },
       '21-22': {
         getVertice1: function() {
           return '21'
@@ -1458,130 +1204,6 @@ var store = new Vuex.Store({
           return 'left-right'
         },
       },
-      '26-27': {
-        getVertice1: function() {
-          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY_1) {
-            return '26'
-          } else {
-            return '26'
-          }
-        },
-        getVertice2: function() {
-          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY_1) {
-            return '27'
-          } else {
-            return '27'
-          }
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY_1) {
-            return 'left-right'
-          } else {
-            return 'left-right'
-          }
-        },
-      },
-      '61-62': {
-        getVertice1: function() {
-          return '61'
-        },
-        getVertice2: function() {
-          return '62'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '62-63': {
-        getVertice1: function() {
-          return '62'
-        },
-        getVertice2: function() {
-          return '63'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '63-64': {
-        getVertice1: function() {
-          return '63'
-        },
-        getVertice2: function() {
-          return '64'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '64-65': {
-        getVertice1: function() {
-          return '64'
-        },
-        getVertice2: function() {
-          return '65'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '65-66': {
-        getVertice1: function() {
-          return '65'
-        },
-        getVertice2: function() {
-          return '66'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '66-67': {
-        getVertice1: function() {
-          return '66'
-        },
-        getVertice2: function() {
-          return '67'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
     },
     activationSequences: {
       easy: [
@@ -1603,6 +1225,15 @@ var store = new Vuex.Store({
     playable: true,
     transparentVertices: false,
     showGlobalError: false,
+    colorTriangles: {
+      blue: false,
+      orange: false,
+      white: false,
+      green: false,
+      red: false,
+      pink: false,
+    },
+    nextActivationHelpTask: null,
   },
   getters: {
     currentActivationEdgeId (state) {
@@ -1612,6 +1243,23 @@ var store = new Vuex.Store({
 
         if (!edge.validated) {
           return edgeId
+        }
+      }
+
+      return null
+    },
+    nextActivationEdgeId (state) {
+      var thisIsTheNextOne = false
+
+      for (var i = 0 ; i < state.currentActivationSequence.length ; i++) {
+        var edgeId = state.currentActivationSequence[i]
+        if (thisIsTheNextOne) {
+          return edgeId
+        }
+
+        var edge = state.edges[edgeId]
+        if (!edge.validated) {
+          thisIsTheNextOne = true
         }
       }
 
@@ -1652,6 +1300,18 @@ var store = new Vuex.Store({
     },
   },
   mutations: {
+    showColorTriangles (state, color) {
+      state.colorTriangles[color] = true
+    },
+    hideColorTriangles (state, color) {
+      state.colorTriangles[color] = false
+    },
+    anticipateNextActivation (state, nextVertice) {
+      state.nextActivationHelpTask = setTimeout(store.commit, 4000, 'showColorTriangles', nextVertice.activationSensorId)
+    },
+    cancenlNextActivationAnticipation (state) {
+      clearTimeout(state.nextActivationHelpTask)
+    },
     setVerticesTransparent (state) {
       state.transparentVertices = true
     },
@@ -1736,11 +1396,9 @@ var store = new Vuex.Store({
     toggleColor (state, {currentVertice, color, activated}) {
       if (activated === true) {
         if (!state.activatedSensors.includes(color)) {
-          justSockService.commit('sendEvent', {'category': 'on', 'color': color})
           state.activatedSensors.push(color)
         }
       } else {
-        justSockService.commit('sendEvent', {'category': 'off', 'color': color})
         state.activatedSensors = state.activatedSensors.filter(
           function(ele) {
             return ele != color
@@ -1796,7 +1454,7 @@ var store = new Vuex.Store({
           complementaryColor = 'white'
         }
 
-        let isComplementaryColorActivated = context.state.activatedSensors.slice(0, 3).includes(complementaryColor)
+        let isComplementaryColorActivated = context.state.activatedSensors.slice(0, 4).includes(complementaryColor)
         let pinkActivation = activated && isComplementaryColorActivated
 
         // Only notify in case of diff

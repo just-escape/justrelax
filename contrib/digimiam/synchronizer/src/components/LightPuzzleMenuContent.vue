@@ -16,40 +16,58 @@
     />
 
     <LightMonitorUnit
-      :style="{width: monitorUnitSize + 'px'}"
+      :width="monitorUnitSize"
       color="blue"
-      :positionX="140 - monitorUnitSize / 2"
-      :positionY="0 + 135 - monitorUnitSize / 2"
+      :positionX="185 - monitorUnitSize / 2"
+      :positionY="40 + 135 - monitorUnitSize / 2"
+      :trianglesPositionX="185 - monitorUnitSize / 2"
+      :trianglesPositionY="40 + 135 - monitorUnitSize / 2"
+      :trianglesRotation="'0deg'"
     />
     <LightMonitorUnit
-      :style="{width: monitorUnitSize + 'px'}"
+      :width="monitorUnitSize"
       color="white"
-      :positionX="210 - monitorUnitSize / 2"
-      :positionY="40 + 135 - monitorUnitSize / 2"
+      :positionX="255 - monitorUnitSize / 2"
+      :positionY="80 + 135 - monitorUnitSize / 2"
+      :trianglesPositionX="270 - monitorUnitSize / 2"
+      :trianglesPositionY="80 + 143 - monitorUnitSize / 2"
+      :trianglesRotation="'60deg'"
     />
     <LightMonitorUnit
-      :style="{width: monitorUnitSize + 'px'}"
+      :width="monitorUnitSize"
       color="pink"
-      :positionX="210 - monitorUnitSize / 2"
-      :positionY="120 + 135 - monitorUnitSize / 2"
-    />
-    <LightMonitorUnit
-      :style="{width: monitorUnitSize + 'px'}"
-      color="red"
-      :positionX="140 - monitorUnitSize / 2"
+      :positionX="255 - monitorUnitSize / 2"
       :positionY="160 + 135 - monitorUnitSize / 2"
+      :trianglesPositionX="270 - monitorUnitSize / 2"
+      :trianglesPositionY="160 + 159 - monitorUnitSize / 2"
+      :trianglesRotation="'120deg'"
     />
     <LightMonitorUnit
-      :style="{width: monitorUnitSize + 'px'}"
+      :width="monitorUnitSize"
+      color="red"
+      :positionX="185 - monitorUnitSize / 2"
+      :positionY="200 + 135 - monitorUnitSize / 2"
+      :trianglesPositionX="185 - monitorUnitSize / 2"
+      :trianglesPositionY="200 + 170 - monitorUnitSize / 2"
+      :trianglesRotation="'180deg'"
+    />
+    <LightMonitorUnit
+      :width="monitorUnitSize"
       color="green"
-      :positionX="70 - monitorUnitSize / 2"
-      :positionY="120 + 135 - monitorUnitSize / 2"
+      :positionX="115 - monitorUnitSize / 2"
+      :positionY="160 + 135 - monitorUnitSize / 2"
+      :trianglesPositionX="102 - monitorUnitSize / 2"
+      :trianglesPositionY="160 + 159 - monitorUnitSize / 2"
+      :trianglesRotation="'240deg'"
     />
     <LightMonitorUnit
-      :style="{width: monitorUnitSize + 'px'}"
+      :width="monitorUnitSize"
       color="orange"
-      :positionX="70 - monitorUnitSize / 2"
-      :positionY="40 + 135 - monitorUnitSize / 2"
+      :positionX="115 - monitorUnitSize / 2"
+      :positionY="80 + 135 - monitorUnitSize / 2"
+      :trianglesPositionX="102 - monitorUnitSize / 2"
+      :trianglesPositionY="80 + 145 - monitorUnitSize / 2"
+      :trianglesRotation="'300deg'"
     />
   </div>
 </template>

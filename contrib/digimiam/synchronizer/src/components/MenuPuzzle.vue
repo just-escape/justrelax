@@ -26,15 +26,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.w-large {
-  width: 820px;
-  padding: 0px 15px;
-}
-
-.w-small {
-  width: 439.5px;
-  padding: 0px 15px;
-}
-</style>
