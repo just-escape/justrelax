@@ -247,6 +247,7 @@ class VentilationController:
         else:  # Game is not running
             if all([ad.connected_source is None for ad in self.air_ducts.values()]):
                 logger.debug("All air ducts are disconnected")
+                self.service.notify_game_start()
                 self.restart_round()
             else:
                 logger.debug("Some air ducts remain connected")
@@ -378,12 +379,7 @@ class VentilationController:
             return {self.air_sources["as1"]}
 
         elif displayed_color == "orange":
-            duct = self.air_ducts[self.success_sequence[cursor]["air_duct"]]
-            lcs = duct.last_connected_sources
-            if self.air_sources["as0"] in lcs or self.air_sources["as1"] in lcs:
-                return {self.air_sources["as2"]}
-            else:
-                return {self.air_sources["as1"]}
+            return {self.air_sources["as2"]}
 
         elif displayed_color == "blue":
             duct = self.air_ducts[self.success_sequence[cursor]["air_duct"]]
@@ -661,6 +657,9 @@ class VentilationPanel(EventCategoryToMethodMixin, JustSockClientService):
 
     def event_set_difficulty(self, difficulty: str):
         self.vc.difficulty = difficulty
+
+    def notify_game_start(self):
+        self.send_event({"category": "game_start"})
 
     def notify_status(self, status):
         self.send_event({"category": "set_status", "status": status})
