@@ -15,21 +15,21 @@
           <div v-for="(line, lineIndex) in tyrellVentimax" :key="lineIndex" v-html="getEscaped(line)"/>
         </div>
         <div class="pl-2">
-          <div class="mb-4">{{ $t('unplug_before_intervention') }}</div>
+          <div :style="{color: unplugBeforeInterventionColor}" class="mb-4">{{ $t('unplug_before_intervention') }}</div>
           <div class="mb-3">{{ $t('air_ducts') }}</div>
           <ul class="list-unstyled ml-3 mb-4">
-            <li><i class="fas fa-utensils fa-fw"/> {{ $t('refectory') }}</li>
-            <li><i class="fa fa-cubes fa-fw"/> {{ $t('pantry') }}</li>
-            <li><i class="fa fa-server fa-fw"/> {{ $t('server_room') }}</li>
+            <li><i class="text-primary fas fa-utensils fa-fw"/> {{ $t('refectory') }}</li>
+            <li><i class="text-green fa fa-cubes fa-fw"/> {{ $t('pantry') }}</li>
+            <li><i class="text-teal fa fa-server fa-fw"/> {{ $t('server_room') }}</li>
           </ul>
           <div class="mb-3">{{ $t('air_sources') }}</div>
           <ul class="list-unstyled ml-3 mb-4">
             <li><i class="fa fa-recycle fa-fw"/> {{ $t('purified_air') }}</li>
             <li class="position-relative">
-              <i class="position-absolute fa fa-recycle fa-fw half-left"/><i class="fa fa-biohazard fa-fw half-right"/>
+              <i class="text-yellow position-absolute fa fa-recycle fa-fw half-left"/><i class="text-yellow fa fa-biohazard fa-fw half-right"/>
               {{ $t('half_purified_air') }}
             </li>
-            <li><i class="fa fa-biohazard fa-fw"/> {{ $t('polluted_air') }}</li>
+            <li><i class="text-orange fa fa-biohazard fa-fw"/> {{ $t('polluted_air') }}</li>
           </ul>
           <div class="mb-3">{{ $t('sequence_code') }}</div>
           <ul class="list-unstyled ml-3 mb-4">
@@ -106,17 +106,17 @@ export default {
       ],
       panelIcons: [
         {
-          classes: "fas fa-utensils fa-fw fa-lg",
+          classes: "text-primary fas fa-utensils fa-fw fa-lg",
           top: "126px",
           left: "405px",
         },
         {
-          classes: "fa fa-cubes fa-fw fa-lg",
+          classes: "text-green fa fa-cubes fa-fw fa-lg",
           top: "319px",
           left: "405px",
         },
         {
-          classes: "fa fa-server fa-fw fa-lg",
+          classes: "text-teal fa fa-server fa-fw fa-lg",
           top: "512px",
           left: "405px",
         },
@@ -126,17 +126,17 @@ export default {
           left: "550px",
         },
         {
-          classes: "fa fa-recycle fa-fw half-left fa-lg",
+          classes: "text-yellow fa fa-recycle fa-fw half-left fa-lg",
           top: "305px",
           left: "550px",
         },
         {
-          classes: "fa fa-biohazard fa-fw half-right fa-lg",
+          classes: "text-yellow fa fa-biohazard fa-fw half-right fa-lg",
           top: "305px",
           left: "550px",
         },
         {
-          classes: "fa fa-biohazard fa-fw fa-lg",
+          classes: "text-orange fa fa-biohazard fa-fw fa-lg",
           top: "498px",
           left: "550px",
         },
@@ -174,7 +174,7 @@ export default {
           },
           {
             displayedChars: 0,
-            instruction: '* orange : si le conduit est déjà branché à l\'une des autres sources, le brancher à la source d\'air pollué. Sinon, le brancher à la source d\'air semi-purifié',
+            instruction: '* orange : brancher le conduit à la source d\'air pollué',
             typing: false,
           },
           {
@@ -206,7 +206,7 @@ export default {
           },
           {
             displayedChars: 0,
-            instruction: '* orange: if the duct is already pluged to one of the other sources, plug it to the polluted air source. Otherwise, plug it to the half-purified air source',
+            instruction: '* orange: plug the duct to the polluted air source polluted air source',
             typing: false,
           },
           {
@@ -226,9 +226,19 @@ export default {
           },
         ],
       },
+      unplugBeforeInterventionG: 255,
+      unplugBeforeInterventionB: 255,
+      continueHighlightingUnplugInstruction: true,
+      unplugInstructionAnimation: null,
     }
   },
   computed: {
+    highlightUnplugInstruction() {
+      return progressionStore.state.highlightUnplugInstruction
+    },
+    unplugBeforeInterventionColor() {
+      return "rgba(255, " + this.unplugBeforeInterventionG + ", " + this.unplugBeforeInterventionB + ", 1)"
+    },
     terminalTop() {
       if (progressionStore.state.showDocumentation) {
         return "-1px"
@@ -270,6 +280,14 @@ export default {
     },
   },
   watch: {
+    highlightUnplugInstruction(newValue) {
+      if (newValue) {
+        this.continueHighlightingUnplugInstruction = true
+        this.unplugInstructionAnimation.play()
+      } else {
+        this.continueHighlightingUnplugInstruction = false
+      }
+    },
     puzzleRound(newValue) {
       var lang
       if (newValue === 1) {
@@ -311,6 +329,24 @@ export default {
       loop: true,
       direction: 'alternate',
       easing: 'easeInOutExpo',
+    })
+
+    let this_ = this
+
+    this.unplugInstructionAnimation = this.$anime({
+      targets: this,
+      unplugBeforeInterventionG: 0,
+      unplugBeforeInterventionB: 0,
+      autoplay: false,
+      loop: true,
+      direction: 'alternate',
+      duration: 800,
+      loopComplete: function(anim) {
+        if (!this_.continueHighlightingUnplugInstruction && anim.progress === 0) {
+          this_.unplugInstructionAnimation.pause()
+        }
+      },
+      easing: 'easeInOutSine',
     })
   },
 }
@@ -390,5 +426,21 @@ export default {
   border-radius: 2px;
   line-height: 1;
   padding: 2px 2px 0px 2px;
+}
+
+.text-yellow {
+  color: var(--yellow);
+}
+
+.text-orange {
+  color: var(--orange);
+}
+
+.text-green {
+  color: var(--green);
+}
+
+.text-teal {
+  color: var(--teal);
 }
 </style>

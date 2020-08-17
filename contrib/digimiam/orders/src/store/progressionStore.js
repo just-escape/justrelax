@@ -36,6 +36,7 @@ let store = new Vuex.Store({
     },
     currentOverlayVideo: null,
     fireHelpAnimation: false,
+    highlightUnplugInstruction: false,
   },
   mutations: {
     setRound (state, round) {
@@ -87,6 +88,9 @@ let store = new Vuex.Store({
     },
     displayDangerWindow(state) {
       state.displayDangerWindow = true
+    },
+    highlightUnplugInstruction(state, highlight) {
+      state.highlightUnplugInstruction = highlight
     },
   }
 })

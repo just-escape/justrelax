@@ -68,6 +68,8 @@ const justSockService = new Vuex.Store({
         progressionStore.commit('setRestaurantStatus', event.closed)
       } else if (event.category === 'display_danger_window') {
         progressionStore.commit('displayDangerWindow')
+      } else if (event.category === 'documentation_unplug_instruction') {
+        progressionStore.commit('highlightUnplugInstruction', event.highlight)
       }
     },
     SOCKET_RECONNECT (state, count) {
