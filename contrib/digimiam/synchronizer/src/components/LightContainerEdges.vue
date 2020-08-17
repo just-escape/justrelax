@@ -95,29 +95,14 @@ export default {
         var rightPart = '50% 0%, 100% 0%, 100% 100%, 50% 100%'
 
         if (edge.getDirection() == 'left-right' || edge.getDirection() == 'right-left') {
-          if (lightStore.state.vertices[edge.getVertice1()].startingPoint || lightStore.state.transparentVertices) {
-            leftPart = '50% 100%, 22% 100%, 26% 50%, 22% 0%, 50% 0%'
-          }
-
-          if (lightStore.state.transparentVertices) {
-            rightPart = '50% 0%, 78% 0%, 74% 50%, 78% 100%, 50% 100%'
-          }
+          leftPart = '50% 100%, 22% 100%, 26% 50%, 22% 0%, 50% 0%'
+          rightPart = '50% 0%, 78% 0%, 74% 50%, 78% 100%, 50% 100%'
         } else if (edge.getDirection() == 'topleft-bottomright' || edge.getDirection() == 'bottomright-topleft') {
-          if (lightStore.state.vertices[edge.getVertice1()].startingPoint || lightStore.state.transparentVertices) {
-            leftPart = '0% 100%, 0% 28%, 27.5% 26.5%, 48% 0%, 100% 0%'
-          }
-
-          if (lightStore.state.transparentVertices) {
-            rightPart = '100% 0%, 100% 73%, 72.5% 73.5%, 52% 100%, 0% 100%'
-          }
+          leftPart = '0% 100%, 0% 28%, 27.5% 26.5%, 48% 0%, 100% 0%'
+          rightPart = '100% 0%, 100% 73%, 72.5% 73.5%, 52% 100%, 0% 100%'
         } else if (edge.getDirection() == 'topright-bottomleft' || edge.getDirection() == 'bottomleft-topright') {
-          if (lightStore.state.vertices[edge.getVertice1()].startingPoint || lightStore.state.transparentVertices) {
-            leftPart = '0% 0%, 0% 73.5%, 27.5% 73.5%, 50% 100%, 100% 100%'
-          }
-
-          if (lightStore.state.transparentVertices) {
-            rightPart = '100% 100%, 100% 27%, 75% 27%, 42% 0%, 0% 0%'
-          }
+          leftPart = '0% 0%, 0% 73.5%, 27.5% 73.5%, 50% 100%, 100% 100%'
+          rightPart = '100% 100%, 100% 27%, 75% 27%, 42% 0%, 0% 0%'
         }
 
         return 'clip-path: polygon(' + leftPart + ', ' + rightPart + ')'

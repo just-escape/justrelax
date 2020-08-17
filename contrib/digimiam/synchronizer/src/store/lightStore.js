@@ -6,31 +6,32 @@ import difficultyStore from '@/store/difficultyStore.js'
 Vue.use(Vuex)
 
 
-const ACTIVATION_SEQUENCE_EASY_1 = [
-  '21-22',
-  '22-23',
-  '23-24',
+const ACTIVATION_SEQUENCE_EASY = [
+  '31-32',
+  '32-33',
+  '33-24',
   '24-25',
   '25-26',
 ]
 
-const ACTIVATION_SEQUENCE_NORMAL_1 = [
-  '41-42',
-  '42-52',
+const ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1 = [
+  '51-52',
   '52-43',
   '43-32',
-  '32-33',
-  '33-24',
+  '32-23',
+  '23-24',
   '24-34',
   '34-35',
 ]
 
-const ACTIVATION_SEQUENCE_HARD_1 = [
-  '21-22',
-  '22-23',
-  '23-24',
-  '24-25',
-  '25-26',
+const ACTIVATION_SEQUENCE_HARD_2 = [
+  '11-12',
+  '12-23',
+  '32-23',
+  '43-32',
+  '43-44',
+  '44-34',
+  '34-35',
 ]
 
 function setPlayable() {
@@ -470,26 +471,6 @@ var store = new Vuex.Store({
         x: 10 / 4 * 120 - 37.5,
         y: 0 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        initColor: {
-          r: 0,
-          g: 123,
-          b: 255,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'blue',
-        startingPoint: false,
-        pulse: false,
-      },
-      '13': {
-        x: 12 / 4 * 120 - 37.5,
-        y: 0 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
           r: 253,
           g: 126,
           b: 20,
@@ -506,8 +487,8 @@ var store = new Vuex.Store({
         startingPoint: false,
         pulse: false,
       },
-      '14': {
-        x: 14 / 4 * 120 - 37.5,
+      '13': {
+        x: 12 / 4 * 120 - 37.5,
         y: 0 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
           r: 255,
@@ -526,8 +507,8 @@ var store = new Vuex.Store({
         startingPoint: false,
         pulse: false,
       },
-      '15': {
-        x: 16 / 4 * 120 - 37.5,
+      '14': {
+        x: 14 / 4 * 120 - 37.5,
         y: 0 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
           r: 253,
@@ -543,6 +524,26 @@ var store = new Vuex.Store({
         },
         glowing: 'glowing',
         activationSensorId: 'orange',
+        startingPoint: false,
+        pulse: false,
+      },
+      '15': {
+        x: 16 / 4 * 120 - 37.5,
+        y: 0 / 2 * 60 * Math.sqrt(3) + 23,
+        color: {
+          r: 255,
+          g: 255,
+          b: 255,
+          a: 1,
+        },
+        initColor: {
+          r: 255,
+          g: 255,
+          b: 255,
+          a: 1,
+        },
+        glowing: 'glowing',
+        activationSensorId: 'white',
         startingPoint: false,
         pulse: false,
       },
@@ -570,26 +571,6 @@ var store = new Vuex.Store({
         x: 9 / 4 * 120 - 37.5,
         y: 1 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        initColor: {
-          r: 253,
-          g: 126,
-          b: 20,
-          a: 1,
-        },
-        glowing: 'glowing',
-        activationSensorId: 'orange',
-        startingPoint: false,
-        pulse: false,
-      },
-      '23': {
-        x: 11 / 4 * 120 - 37.5,
-        y: 1 / 2 * 60 * Math.sqrt(3) + 23,
-        color: {
           r: 40,
           g: 167,
           b: 69,
@@ -603,6 +584,26 @@ var store = new Vuex.Store({
         },
         glowing: 'glowing',
         activationSensorId: 'green',
+        startingPoint: false,
+        pulse: false,
+      },
+      '23': {
+        x: 11 / 4 * 120 - 37.5,
+        y: 1 / 2 * 60 * Math.sqrt(3) + 23,
+        color: {
+          r: 0,
+          g: 123,
+          b: 255,
+          a: 1,
+        },
+        initColor: {
+          r: 0,
+          g: 123,
+          b: 255,
+          a: 1,
+        },
+        glowing: 'glowing',
+        activationSensorId: 'blue',
         startingPoint: false,
         pulse: false,
       },
@@ -710,19 +711,19 @@ var store = new Vuex.Store({
         x: 12 / 4 * 120 - 37.5,
         y: 2 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
-          r: 0,
-          g: 123,
-          b: 255,
+          r: 253,
+          g: 126,
+          b: 20,
           a: 1,
         },
         initColor: {
-          r: 0,
-          g: 123,
-          b: 255,
+          r: 253,
+          g: 126,
+          b: 20,
           a: 1,
         },
         glowing: 'glowing',
-        activationSensorId: 'blue',
+        activationSensorId: 'orange',
         startingPoint: false,
         pulse: false,
       },
@@ -830,19 +831,19 @@ var store = new Vuex.Store({
         x: 13 / 4 * 120 - 37.5,
         y: 3 / 2 * 60 * Math.sqrt(3) + 23,
         color: {
-          r: 253,
-          g: 126,
-          b: 20,
+          r: 220,
+          g: 53,
+          b: 69,
           a: 1,
         },
         initColor: {
-          r: 253,
-          g: 126,
-          b: 20,
+          r: 220,
+          g: 53,
+          b: 69,
           a: 1,
         },
         glowing: 'glowing',
-        activationSensorId: 'orange',
+        activationSensorId: 'red',
         startingPoint: false,
         pulse: false,
       },
@@ -988,28 +989,20 @@ var store = new Vuex.Store({
       },
     },
     edges: {
-      '41-42': {
-        getVertice1: function () {
-          return '41'
-        },
-        getVertice2: function() {
-          return '42'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '42-52': {
+      '31-32': {
         getVertice1: function() {
-          return '42'
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY) {
+            return '31'
+          } else {
+            return '32'
+          }
         },
         getVertice2: function() {
-          return '52'
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY) {
+            return '32'
+          } else {
+            return '31'
+          }
         },
         color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
@@ -1017,47 +1010,27 @@ var store = new Vuex.Store({
         validated: false,
         finalAnimation: false,
         getDirection: function() {
-          return 'topleft-bottomright'
-        },
-      },
-      '52-43': {
-        getVertice1: function() {
-          return '52'
-        },
-        getVertice2: function() {
-          return '43'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomleft-topright'
-        },
-      },
-      '43-32': {
-        getVertice1: function() {
-          return '43'
-        },
-        getVertice2: function() {
-          return '32'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'bottomright-topleft'
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY) {
+            return 'left-right'
+          } else {
+            return 'right-left'
+          }
         },
       },
       '32-33': {
         getVertice1: function() {
-          return '32'
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1 || store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY) {
+            return '32'
+          } else {
+            return '33'
+          }
         },
         getVertice2: function() {
-          return '33'
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1 || store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY) {
+            return '33'
+          } else {
+            return '32'
+          }
         },
         color: 'rgba(255, 255, 255, 0)',
         activationPathAnimation: false,
@@ -1065,7 +1038,11 @@ var store = new Vuex.Store({
         validated: false,
         finalAnimation: false,
         getDirection: function() {
-          return 'left-right'
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1 || store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY) {
+            return 'left-right'
+          } else {
+            return 'right-left'
+          }
         },
       },
       '33-24': {
@@ -1084,90 +1061,6 @@ var store = new Vuex.Store({
           return 'bottomleft-topright'
         },
       },
-      '24-34': {
-        getVertice1: function() {
-          return '24'
-        },
-        getVertice2: function() {
-          return '34'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'topleft-bottomright'
-        },
-      },
-      '34-35': {
-        getVertice1: function() {
-          return '34'
-        },
-        getVertice2: function() {
-          return '35'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '21-22': {
-        getVertice1: function() {
-          return '21'
-        },
-        getVertice2: function() {
-          return '22'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '22-23': {
-        getVertice1: function() {
-          return '22'
-        },
-        getVertice2: function() {
-          return '23'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          return 'left-right'
-        },
-      },
-      '23-24': {
-        getVertice1: function() {
-          return '23'
-        },
-        getVertice2: function() {
-          return '24'
-        },
-        color: 'rgba(255, 255, 255, 0)',
-        activationPathAnimation: false,
-        activated: false,
-        validated: false,
-        finalAnimation: false,
-        getDirection: function() {
-          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY_1) {
-            return 'left-right'
-          } else {
-            return 'left-right'
-          }
-        },
-      },
       '24-25': {
         getVertice1: function() {
           return '24'
@@ -1181,11 +1074,7 @@ var store = new Vuex.Store({
         validated: false,
         finalAnimation: false,
         getDirection: function() {
-          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY_1) {
-            return 'left-right'
-          } else {
-            return 'left-right'
-          }
+          return 'left-right'
         },
       },
       '25-26': {
@@ -1204,16 +1093,301 @@ var store = new Vuex.Store({
           return 'left-right'
         },
       },
+      '51-52': {
+        getVertice1: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return '51'
+          } else {
+            return '52'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return '52'
+          } else {
+            return '51'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return 'left-right'
+          } else {
+            return 'right-left'
+          }
+        },
+      },
+      '52-43': {
+        getVertice1: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return '52'
+          } else {
+            return '43'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return '43'
+          } else {
+            return '52'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return 'bottomleft-topright'
+          } else {
+            return 'topright-bottomleft'
+          }
+        },
+      },
+      '43-32': {
+        getVertice1: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return '43'
+          } else {
+            return '32'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return '32'
+          } else {
+            return '43'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return 'bottomright-topleft'
+          } else {
+            return 'topleft-bottomright'
+          }
+        },
+      },
+      '32-23': {
+        getVertice1: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return '32'
+          } else {
+            return '23'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return '23'
+          } else {
+            return '32'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1) {
+            return 'bottomleft-topright'
+          } else {
+            return 'topright-bottomleft'
+          }
+        },
+      },
+      '23-24': {
+        getVertice1: function() {
+          return '23'
+        },
+        getVertice2: function() {
+          return '24'
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          return 'left-right'
+        },
+      },
+      '24-34': {
+        getVertice1: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1 || store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY) {
+            return '24'
+          } else {
+            return '34'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1 || store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY) {
+            return '34'
+          } else {
+            return '24'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1 || store.state.currentActivationSequence == ACTIVATION_SEQUENCE_EASY) {
+            return 'topleft-bottomright'
+          } else {
+            return 'bottomright-topleft'
+          }
+        },
+      },
+      '34-35': {
+        getVertice1: function() {
+          return '34'
+        },
+        getVertice2: function() {
+          return '35'
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          return 'left-right'
+        },
+      },
+      '11-12': {
+        getVertice1: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return '11'
+          } else {
+            return '12'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return '12'
+          } else {
+            return '11'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return 'left-right'
+          } else {
+            return 'right-left'
+          }
+        },
+      },
+      '12-23': {
+        getVertice1: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return '12'
+          } else {
+            return '23'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return '23'
+          } else {
+            return '12'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return 'topleft-bottomright'
+          } else {
+            return 'bottomright-topleft'
+          }
+        },
+      },
+      '43-44': {
+        getVertice1: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return '43'
+          } else {
+            return '44'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return '44'
+          } else {
+            return '43'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return 'left-right'
+          } else {
+            return 'right-left'
+          }
+        },
+      },
+      '44-34': {
+        getVertice1: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return '44'
+          } else {
+            return '34'
+          }
+        },
+        getVertice2: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return '34'
+          } else {
+            return '44'
+          }
+        },
+        color: 'rgba(255, 255, 255, 0)',
+        activationPathAnimation: false,
+        activated: false,
+        validated: false,
+        finalAnimation: false,
+        getDirection: function() {
+          if (store.state.currentActivationSequence == ACTIVATION_SEQUENCE_HARD_2) {
+            return 'bottomleft-topright'
+          } else {
+            return 'topright-bottomleft'
+          }
+        },
+      }
     },
     activationSequences: {
       easy: [
-        ACTIVATION_SEQUENCE_EASY_1,
+        ACTIVATION_SEQUENCE_EASY,
       ],
       normal: [
-        ACTIVATION_SEQUENCE_NORMAL_1,
+        ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1,
       ],
       hard: [
-        ACTIVATION_SEQUENCE_HARD_1,
+        ACTIVATION_SEQUENCE_NORMAL_AND_HARD_1,
+        ACTIVATION_SEQUENCE_HARD_2,
       ],
     },
     activatedSensors: [],
@@ -1307,7 +1481,7 @@ var store = new Vuex.Store({
       state.colorTriangles[color] = false
     },
     anticipateNextActivation (state, nextVertice) {
-      state.nextActivationHelpTask = setTimeout(store.commit, 4000, 'showColorTriangles', nextVertice.activationSensorId)
+      state.nextActivationHelpTask = setTimeout(store.commit, 2500, 'showColorTriangles', nextVertice.activationSensorId)
     },
     cancenlNextActivationAnticipation (state) {
       clearTimeout(state.nextActivationHelpTask)

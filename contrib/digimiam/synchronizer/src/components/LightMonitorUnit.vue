@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="position-absolute"
-            :style="{
-          height: width + 'px',
-          width: width + 'px',
-          left: trianglesPositionX + 'px',
-          top: (trianglesPositionY - 18) + 'px',
-          transform: 'rotate(' + trianglesRotation + ')',
-        }">
+    <div
+      class="position-absolute"
+      :style="{
+        height: width + 'px',
+        width: width + 'px',
+        left: trianglesPositionX + 'px',
+        top: (trianglesPositionY - 18) + 'px',
+        transform: 'rotate(' + trianglesRotation + ')',
+      }"
+    >
       <div
         class="d-flex flex-column align-items-center justify-self-center"
       >
@@ -113,16 +115,19 @@ export default {
           size: "lg",
           opacity: 0,
           animation: null,
+          animationLoopCounter: 0,
         },
         {
           size: "md",
           opacity: 0,
           animation: null,
+          animationLoopCounter: 0,
         },
         {
           size: "sm",
           opacity: 0,
           animation: null,
+          animationLoopCounter: 0,
         },
       ],
       hideTriangles: false,
@@ -297,14 +302,17 @@ export default {
     })
 
     this.triangles[0].animation = this.$anime({
-      targets: this_.triangles[0],
       loop: true,
-      opacity: 1,
       direction: 'alternate',
       autoplay: false,
       duration: 399,
+      update: function(anim) {
+        this_.triangles[0].opacity = anim.progress * Math.min(this_.triangles[0].animationLoopCounter, 10) / 10 / 100
+      },
       loopComplete: function(anim) {
+        this_.triangles[0].animationLoopCounter += 1
         if (this_.hideTriangles && anim.progress === 0) {
+          this_.triangles[0].animationLoopCounter = 0
           this_.triangles[0].animation.pause()
         }
       },
@@ -312,14 +320,17 @@ export default {
     })
 
     this.triangles[1].animation = this.$anime({
-      targets: this_.triangles[1],
       loop: true,
-      opacity: 1,
       direction: 'alternate',
       autoplay: false,
       duration: 399,
+      update: function(anim) {
+        this_.triangles[1].opacity = anim.progress * Math.min(this_.triangles[1].animationLoopCounter, 10) / 10 / 100
+      },
       loopComplete: function(anim) {
+        this_.triangles[1].animationLoopCounter += 1
         if (this_.hideTriangles && anim.progress === 0) {
+          this_.triangles[1].animationLoopCounter = 0
           this_.triangles[1].animation.pause()
         }
       },
@@ -327,14 +338,17 @@ export default {
     })
 
     this.triangles[2].animation = this.$anime({
-      targets: this_.triangles[2],
       loop: true,
-      opacity: 1,
       direction: 'alternate',
       autoplay: false,
       duration: 399,
+      update: function(anim) {
+        this_.triangles[2].opacity = anim.progress * Math.min(this_.triangles[2].animationLoopCounter, 10) / 10 / 100
+      },
       loopComplete: function(anim) {
+        this_.triangles[2].animationLoopCounter += 1
         if (this_.hideTriangles && anim.progress === 0) {
+          this_.triangles[2].animationLoopCounter = 0
           this_.triangles[2].animation.pause()
         }
       },
