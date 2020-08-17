@@ -342,7 +342,12 @@ class RulesProcessor:
                     )
                 elif trigger['template'] == 'timer_trigger':
                     variable_timer_name = trigger['arguments']['timer']['variable']
-                    self.variables[variable_timer_name].callback_args[0].append(rule)
+                    self.variables[variable_timer_name].callback_args[0].append(
+                        {
+                            "trigger": {},
+                            "rule": rule,
+                        }
+                    )
                 else:
                     logger.warning("Unknown trigger type {}: skipping".format(trigger['template']))
 
