@@ -68,19 +68,19 @@ export default {
               buttons: [
                 {
                   id: "c1r1b1",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c1r1b2",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c1r1b3",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c1r1b4",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
               ],
             },
@@ -89,15 +89,15 @@ export default {
               buttons: [
                 {
                   id: "c1r2b1",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c1r2b2",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c1r2b3",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
               ],
             },
@@ -110,24 +110,25 @@ export default {
                 },
                 {
                   id: "c1r3b2",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c1r3b3",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c1r3b4",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c1r3b5",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
               ],
             },
           ],
-        },        {
+        },
+        {
           name: "Card 2",
           rows: [
             {
@@ -135,11 +136,11 @@ export default {
               buttons: [
                 {
                   id: "c2r1b1",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c2r1b2",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
               ],
             },
@@ -148,15 +149,212 @@ export default {
               buttons: [
                 {
                   id: "c2r2b1",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c2r2b2",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
                 },
                 {
                   id: "c2r2b3",
-                  icon: "fas fa-bullseye",
+                  icon: "fa-fw fas fa-bullseye",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: "Autres",
+          rows: [
+            {
+              name: "Table",
+              buttons: [
+                {
+                  id: "table_up",
+                  icon: "fa-fw fas fa-arrow-up",
+                },
+                {
+                  id: "table_down",
+                  icon: "fa-fw fas fa-arrow-down",
+                },
+                {
+                  id: "table_stop",
+                  icon: "fa-fw far fa-hand-paper",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: "Lumières",
+          rows: [
+            {
+              name: "Reset écran de synchro",
+              buttons: [
+                {
+                  id: "reset_synchronizer",
+                  icon: "fa-fw fas fa-undo-alt",
+                },
+              ],
+            },
+            {
+              name: "Blanc",
+              buttons: [
+                {
+                  id: "lights_on_white",
+                  icon: "fa-fw far fa-sun",
+                },
+                {
+                  id: "lights_off_white",
+                  icon: "fa-fw fas fa-power-off",
+                },
+              ],
+            },
+            {
+              name: "Bleu",
+              buttons: [
+                {
+                  id: "lights_on_blue",
+                  icon: "fa-fw far fa-sun",
+                },
+                {
+                  id: "lights_off_blue",
+                  icon: "fa-fw fas fa-power-off",
+                },
+              ],
+            },
+            {
+              name: "Orange",
+              buttons: [
+                {
+                  id: "lights_on_orange",
+                  icon: "fa-fw far fa-sun",
+                },
+                {
+                  id: "lights_off_orange",
+                  icon: "fa-fw fas fa-power-off",
+                },
+              ],
+            },
+            {
+              name: "Vert",
+              buttons: [
+                {
+                  id: "lights_on_green",
+                  icon: "fa-fw far fa-sun",
+                },
+                {
+                  id: "lights_off_green",
+                  icon: "fa-fw fas fa-power-off",
+                },
+              ],
+            },
+            {
+              name: "Rouge",
+              buttons: [
+                {
+                  id: "lights_on_red",
+                  icon: "fa-fw far fa-sun",
+                },
+                {
+                  id: "lights_off_red",
+                  icon: "fa-fw fas fa-power-off",
+                },
+              ],
+            },
+            {
+              name: "Rose",
+              buttons: [
+                {
+                  id: "lights_on_pink",
+                  icon: "fa-fw far fa-sun",
+                },
+                {
+                  id: "lights_off_pink",
+                  icon: "fa-fw fas fa-power-off",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: "Ventilation",
+          rows: [
+            {
+              name: "Status panel",
+              buttons: [
+                {
+                  id: "set_ventilation_panel_status_inactive",
+                  icon: "fa-fw fas fa-lock",
+                },
+                {
+                  id: "set_ventilation_panel_status_playing",
+                  icon: "fa-fw fas fa-gamepad",
+                },
+                {
+                  id: "set_ventilation_panel_status_success",
+                  icon: "fa-fw fas fa-check",
+                },
+              ],
+            },
+            {
+              name: "Difficulté",
+              buttons: [
+                {
+                  id: "set_ventilation_panel_difficulty_easy",
+                  icon: "fa-fw fas fa-dice-one",
+                },
+                {
+                  id: "set_ventilation_panel_difficulty_normal",
+                  icon: "fa-fw fas fa-dice-two",
+                },
+                {
+                  id: "set_ventilation_panel_difficulty_hard",
+                  icon: "fa-fw fas fa-dice-three",
+                },
+              ],
+            },
+            {
+              name: "Écran de commande",
+              buttons: [
+                {
+                  id: "reset_orders",
+                  icon: "fa-fw fas fa-undo-alt",
+                },
+                {
+                  id: "stop_orders_overlay_video",
+                  icon: "fa-fw fas fa-video-slash",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: "Sokoban",
+          rows: [
+            {
+              name: "Reset",
+              buttons: [
+                {
+                  id: "reset_inventory",
+                  icon: "fa-fw fas fa-undo-alt",
+                },
+              ],
+            },
+            {
+              name: "Difficulté",
+              buttons: [
+                {
+                  id: "set_inventory_difficulty_easy",
+                  icon: "fa-fw fas fa-dice-one",
+                },
+                {
+                  id: "set_inventory_difficulty_normal",
+                  icon: "fa-fw fas fa-dice-two",
+                },
+                {
+                  id: "set_inventory_difficulty_hard",
+                  icon: "fa-fw fas fa-dice-three",
                 },
               ],
             },
