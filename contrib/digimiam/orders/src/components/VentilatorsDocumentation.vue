@@ -18,9 +18,9 @@
           <div :style="{color: unplugBeforeInterventionColor}" class="mb-4">{{ $t('unplug_before_intervention') }}</div>
           <div class="mb-3">{{ $t('air_ducts') }}</div>
           <ul class="list-unstyled ml-3 mb-4">
-            <li><i class="text-primary fas fa-utensils fa-fw"/> {{ $t('refectory') }}</li>
-            <li><i class="text-green fa fa-cubes fa-fw"/> {{ $t('pantry') }}</li>
-            <li><i class="text-teal fa fa-server fa-fw"/> {{ $t('server_room') }}</li>
+            <li><i class="fas fa-utensils fa-fw"/> {{ $t('refectory') }}</li>
+            <li><i class="fa fa-cubes fa-fw"/> {{ $t('pantry') }}</li>
+            <li><i class="fa fa-server fa-fw"/> {{ $t('server_room') }}</li>
           </ul>
           <div class="mb-3">{{ $t('air_sources') }}</div>
           <ul class="list-unstyled ml-3 mb-4">
@@ -106,17 +106,17 @@ export default {
       ],
       panelIcons: [
         {
-          classes: "text-primary fas fa-utensils fa-fw fa-lg",
+          classes: "fas fa-utensils fa-fw fa-lg",
           top: "126px",
           left: "405px",
         },
         {
-          classes: "text-green fa fa-cubes fa-fw fa-lg",
+          classes: "fa fa-cubes fa-fw fa-lg",
           top: "319px",
           left: "405px",
         },
         {
-          classes: "text-teal fa fa-server fa-fw fa-lg",
+          classes: "fa fa-server fa-fw fa-lg",
           top: "512px",
           left: "405px",
         },
@@ -434,13 +434,5 @@ export default {
 
 .text-orange {
   color: var(--orange);
-}
-
-.text-green {
-  color: var(--green);
-}
-
-.text-teal {
-  color: var(--teal);
 }
 </style>
