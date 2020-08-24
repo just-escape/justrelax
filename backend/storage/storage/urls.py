@@ -20,6 +20,7 @@ from rest_framework.routers import SimpleRouter
 
 from scenario.views import ScenarioView, RoomView, CameraView
 from session.views import SessionView, RecordView
+from live.views import CardView, CardRowView
 from editor.views import get_templates, get_scenario, update_scenario
 
 router = SimpleRouter()
@@ -27,6 +28,8 @@ router.register(r'scenario', ScenarioView)
 router.register(r'room', RoomView)
 router.register(r'camera', CameraView)
 router.register(r'session', SessionView)
+router.register(r'card', CardView)
+router.register(r'card_row', CardRowView)
 router.register(r'record', RecordView)
 
 urlpatterns = [

@@ -231,4 +231,12 @@ thead {
 .padding-bottom-10rem {
   padding-bottom: 10rem;
 }
+
+.text-one-line-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
 </style>

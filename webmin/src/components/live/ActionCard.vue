@@ -1,65 +1,43 @@
 <template>
   <b-card
-    :header="header"
+    :header="card.name"
     header-tag="h3"
     header-class="big-noodle text-jaffa text-center"
     class="bgc-dark border-jaffa h-100"
   >
-    <ul class="list-unstyled mb-0">
-      <li
-        v-for="(subcategory, index) in subcategories"
-        :key="subcategory.id"
-        :class="getSubcategoryClasses(index)"
-      >
-        <div>
-          {{ subcategory.name }}
-        </div>
-        <b-button-group>
-          <ButtonJaffa
-            size="sm"
-            v-for="action in subcategory.actions"
-            :key="action.id"
-            @click="processAction(action.name)"
-          >
-            <i :class="action.icon"></i>
-          </ButtonJaffa>
-        </b-button-group>
+    <ul v-if="displayRows" class="list-unstyled mb-0">
+      <li v-for="(row, index) in card.rows" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
+        <WidgetButtonsGroup v-if="row.widget === 'buttons_group'" :row="row" :roomId="roomId"/>
       </li>
     </ul>
   </b-card>
 </template>
 
 <script>
-import ButtonJaffa from '@/components/common/ButtonJaffa.vue'
-import roomStore from '@/store/roomStore.js'
+import WidgetButtonsGroup from "@/components/live/WidgetButtonsGroup.vue"
+import roomStore from "@/store/roomStore.js"
 
 export default {
-  name: 'ActionCard',
+  name: "ActionCard",
   components: {
-    ButtonJaffa
+    WidgetButtonsGroup,
   },
   computed: {
-    lastSubcategoryIndex() {
-      return Object.keys(this.subcategories).length - 1;
-    }
+    displayRows() {
+      return this.card.rows !== undefined
+    },
   },
   methods: {
-    getSubcategoryClasses(index) {
-      var classes = 'd-flex justify-content-between align-items-center'
-      if (index != this.lastSubcategoryIndex) {
-        classes = classes + ' mb-2'
-      }
-      return classes
+    isLastRow (index) {
+      return index === Object.keys(this.card.rows).length - 1
     },
-    processAction (action) {
-      var roomId = this.roomId
-      roomStore.dispatch('processAction', {roomId, action})
-    }
   },
-  props: [
-    'roomId',
-    'header',
-    'subcategories',
-  ]
+  created() {
+    roomStore.dispatch("fetchCardRows", {
+      roomId: this.roomId,
+      cardId: this.card.id
+    })
+  },
+  props: ["roomId", "card"]
 }
 </script>

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'scenario',
     'session',
+    'live',
     'editor',
 ]
 

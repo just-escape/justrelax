@@ -99,6 +99,24 @@ export default new Vuex.Store({
         }
       }
     },
+    setCards (state, {roomId, cards}) {
+      for (var room of state.rooms) {
+        if (room.id === roomId) {
+          Vue.set(room, 'cards', cards)
+        }
+      }
+    },
+    setCardRows (state, {roomId, cardId, cardRows}) {
+      for (var room of state.rooms) {
+        if (room.id === roomId) {
+          for (var card of room.cards) {
+            if (card.id === cardId) {
+              Vue.set(card, 'rows', cardRows)
+            }
+          }
+        }
+      }
+    },
   },
   actions: {
     fetchScenarios (context) {
@@ -133,6 +151,26 @@ export default new Vuex.Store({
         })
         .catch(function (error) {
           notificationStore.dispatch('pushError', 'Error while fetching cameras: ' + error)
+        })
+    },
+    fetchActions (context, roomId) {
+      Vue.prototype.$justRestAPI.get('/card/?room=' + roomId)
+        .then(function (response) {
+          let cards = response.data
+          context.commit('setCards', {roomId, cards})
+        })
+        .catch(function (error) {
+          notificationStore.dispatch('pushError', 'Error while fetching cards: ' + error)
+        })
+    },
+    fetchCardRows (context, {roomId, cardId}) {
+      Vue.prototype.$justRestAPI.get('/card_row/?card=' + cardId)
+        .then(function (response) {
+          let cardRows = response.data
+          context.commit('setCardRows', {roomId, cardId, cardRows})
+        })
+        .catch(function (error) {
+          notificationStore.dispatch('pushError', 'Error while fetching card rows: ' + error)
         })
     },
     ticTac(context, {roomId, sessionTime}) {
