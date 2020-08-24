@@ -756,7 +756,7 @@ class RulesProcessor:
         computed_object = self.compute(arguments['object'], context)
         computed_key = self.compute(arguments['key'], context)
         computed_value = self.compute(arguments['value'], context)
-        computed_object[computed_key] = int(computed_value)
+        computed_object[computed_key] = bool(computed_value)
 
     def action_start_timer(self, arguments, paragraphs, context):
         timer = self.compute(arguments['timer'], context)
