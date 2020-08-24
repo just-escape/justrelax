@@ -151,6 +151,70 @@ TRIGGER_TEMPLATES = [
             },
         ],
     },
+    {
+        'category': 'node',
+        'name': 'node_connected',
+        'context': 'trigger',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'a_node_has_connected',
+            },
+        ],
+    },
+    {
+        'category': 'node',
+        'name': 'specific_node_connected',
+        'context': 'trigger',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'a_node_named_',
+            },
+            {
+                'type': 'argument',
+                'key': 'node_name',
+                'value_type': 'string',
+                'default_value': '\"node\"',
+            },
+            {
+                'type': 'text',
+                'locale': '_has_connected',
+            },
+        ],
+    },
+    {
+        'category': 'node',
+        'name': 'node_disconnected',
+        'context': 'trigger',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'a_node_has_disconnected',
+            },
+        ],
+    },
+    {
+        'category': 'node',
+        'name': 'specific_node_disconnected',
+        'context': 'trigger',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'a_node_named_',
+            },
+            {
+                'type': 'argument',
+                'key': 'node_name',
+                'value_type': 'string',
+                'default_value': '\"node\"',
+            },
+            {
+                'type': 'text',
+                'locale': '_has_disconnected',
+            },
+        ],
+    },
 ]
 
 CONDITION_TEMPLATES = [
@@ -573,6 +637,39 @@ ACTION_TEMPLATES = [
         ],
     },
     {
+        'category': 'game_session',
+        'name': 'run_game_session',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'run_game_session',
+            },
+        ],
+    },
+    {
+        'category': 'game_session',
+        'name': 'halt_game_session',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'halt_game_session',
+            },
+        ],
+    },
+    {
+        'category': 'game_session',
+        'name': 'reset_game_session',
+        'context': 'action',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'reset_game_session',
+            },
+        ],
+    },
+    {
         'category': '',
         'name': 'if_then_else_multiple_functions',
         'context': 'action',
@@ -652,13 +749,13 @@ ACTION_TEMPLATES = [
         'links': [
             {
                 'type': 'text',
-                'locale': 'trigger_rule_named',
+                'locale': 'trigger_rule',
             },
             {
                 'type': 'argument',
-                'key': 'rule_name',
+                'key': 'rule',
                 'value_type': 'predefined',
-                'default_value': 'null',
+                'default_value': '{\"rule\": null}',
                 'predefined_choices': '<rules>',
             },
         ],
@@ -729,6 +826,47 @@ OBJECT_TEMPLATES = [
 ]
 
 STRING_TEMPLATES = [
+    {
+        'category': '',
+        'name': 'substring',
+        'context': 'string',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'all_characters_of_string_',
+            },
+            {
+                'type': 'argument',
+                'key': 'string',
+                'value_type': 'string',
+                'default_value': '\"hello\"',
+            },
+            {
+                'type': 'text',
+                'locale': '_between_positions_',
+            },
+            {
+                'type': 'argument',
+                'key': 'first_char',
+                'value_type': 'integer',
+                'default_value': '0',
+            },
+            {
+                'type': 'text',
+                'locale': '_and_',
+            },
+            {
+                'type': 'argument',
+                'key': 'last_char',
+                'value_type': 'integer',
+                'default_value': '3',
+            },
+            {
+                'type': 'text',
+                'locale': '_included',
+            },
+        ],
+    },
     {
         'category': 'object',
         'name': 'object_get_string',
@@ -955,8 +1093,8 @@ INTEGER_TEMPLATES = [
             },
             {
                 'type': 'argument',
-                'key': 'integer',
-                'value_type': 'integer',
+                'key': 'real',
+                'value_type': 'real',
                 'default_value': '1.5',
             },
             {
@@ -1065,6 +1203,17 @@ REAL_TEMPLATES = [
                 'value_type': 'timer',
                 'default_value': '{"template": "last_started_timer", "arguments": {}}',
             }
+        ],
+    },
+    {
+        'category': 'game_session',
+        'name': 'session_time',
+        'context': 'integer',
+        'links': [
+            {
+                'type': 'text',
+                'locale': 'session_time',
+            },
         ],
     },
 ]

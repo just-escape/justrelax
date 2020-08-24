@@ -322,6 +322,13 @@
         "name": "Temps de jeu",
         "session_time": "Temps de jeu actuel (secondes)"
       },
+      "substring": {
+        "name": "Sous-chaîne",
+        "all_characters_of_string_": "Tous les caractères de la chaîne ",
+        "_between_positions_": " entre les positions ",
+        "_and_": " et ",
+        "_included": " (inclus)"
+      },
       "integer_to_string": {
         "name": "Convertion d'entier en chaîne",
         "string(": "Chaîne(",

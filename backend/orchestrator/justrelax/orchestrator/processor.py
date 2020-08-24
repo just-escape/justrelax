@@ -214,6 +214,7 @@ class RulesProcessor:
             'triggering_event_string': self.function_triggering_event_string,
             'triggering_event_object': self.function_triggering_event_object,
             'triggering_admin_button_id': self.function_triggering_admin_button_id,
+            'substring': self.function_substring,
             'integer_arithmetic': self.function_integer_arithmetic,
             'real_arithmetic': self.function_real_arithmetic,
             'integer_comparison': self.function_integer_comparison,
@@ -525,6 +526,18 @@ class RulesProcessor:
     def function_triggering_admin_button_id(arguments, context):
         admin_button_id = context.get(R.CONTEXT_TRIGGERING_ADMIN_BUTTON_ID, '')
         return admin_button_id
+
+    def function_substring(self, arguments, context):
+        computed_string = self.compute(arguments['string'], context)
+        computed_first_char = self.compute(arguments['first_char'], context)
+        computed_last_char = self.compute(arguments['last_char'], context)
+
+        # +1 on last char because it is more intuitive by default
+        # "abc"[0:0] returns ""
+        # "abc"[0:0+1] returns "a"
+        substring = computed_string[computed_first_char:computed_last_char+1]
+
+        return substring
 
     def function_integer_arithmetic(self, arguments, context):
         computed_left = self.compute(arguments['left'], context)

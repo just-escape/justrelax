@@ -323,6 +323,13 @@
         "name": "Current session time",
         "session_time": "Current session time (seconds)"
       },
+      "substring": {
+        "name": "Substring",
+        "all_characters_of_string_": "All characters of the string ",
+        "_between_positions_": " between positions ",
+        "_and_": " and ",
+        "_included": " (included)"
+      },
       "integer_to_string": {
         "name": "Convert integer to string",
         "string(": "String(",
