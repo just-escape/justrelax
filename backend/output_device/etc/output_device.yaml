@@ -6,5 +6,6 @@ channel: digimiam1
 
 node_params:
   pin: 4
+  on_by_default: yes
 
 logging: null

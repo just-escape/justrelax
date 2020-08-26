@@ -8,6 +8,7 @@ class OutputDevice(EventCategoryToMethodMixin, JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(OutputDevice, self).__init__(*args, **kwargs)
 
+        on_by_default = self.node_params.get("on_by_default", False)
         custom_keywords = self.node_params.get("custom_keywords", {})
 
         custom_high = custom_keywords.get("high", None)
@@ -36,6 +37,11 @@ class OutputDevice(EventCategoryToMethodMixin, JustSockClientService):
 
         pin = self.node_params["pin"]
         self.device = gpiozero.OutputDevice(pin)
+
+        if on_by_default:
+            self.event_high()
+        else:
+            self.event_low()
 
     def event_high(self):
         logger.debug("Setting device pin to high")
