@@ -1,57 +1,59 @@
-import random
-
-import board
+import gpiozero
 import neopixel
+import board
+import time
 
-from twisted.internet import reactor
-
-from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
-from justrelax.node.helper import Serial
+from twisted.internet.reactor import callLater
+from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
+from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 
 
-class NiryoController:
-    CHRONO_LEDS = 23
-    STATUSES = {"chaos", "mute", "playing", "success"}
+class Controller:
+    STATUSES = {"inactive", "playing"}
 
-    def __init__(self, control_panel_service, initial_difficulty, difficulties):
+    def __init__(
+            self, control_panel_service, led_indexes, electromagnet_pin, jack_pin, manual_mode_jack_port_pin,
+            marmitron_mode_jack_port_pin, table_button_pin, table_up_pin, table_down_pin, table_max_amplitude_duration,
+            table_up_down_minimum_delay, colors,
+    ):
         self.service = control_panel_service
-
-        self.tasks = {}
-
-        self.difficulties = difficulties
-        self._difficulty = list(self.difficulties)[0]  # By default. Not reliable.
-        self.difficulty = initial_difficulty
-
-        self.chrono_leds = neopixel.NeoPixel(board.D18, self.CHRONO_LEDS, auto_write=False)
-        self.chrono_leds.brightness = 0.1
-        self._status_leds = ["b"] * 3
-
-        self.current_chrono_led = -1  # -1 <=> game not started
-        self.success_sequence = [None, None, None, None, None]
-
-        self.floppy_readers = [None, None, None, None, None]
 
         self._status = None
 
-        def init_status():
-            self.status = "chaos"
+        self.led_strip = neopixel.NeoPixel(board.D18, 9)
+        self.led_tasks = {}
+        self.scene_led_indexes = led_indexes["scene"]
+        self.manual_mode_led_index = led_indexes["manual_mode"]
+        self.lights_status_led_index = led_indexes["lights_status"]
+        self.menu_status_led_index = led_indexes["menu_status"]
+        self.table_led_index = led_indexes["table"]
+        self.electromagnet_led_index = led_indexes["electromagnet"]
 
-        # Introduce a delay to ensure that arduino's serial is ready to process characters
-        reactor.callLater(1, init_status)
+        self.electromagnet = gpiozero.OutputDevice(electromagnet_pin)
 
-    @property
-    def difficulty(self):
-        return self._difficulty
+        self.table_button = gpiozero.Button(table_button_pin)
+        # Never have the table_up_pin and table_down_pin active at the same time or electronics might crash
+        self.table_motor_up = gpiozero.OutputDevice(table_up_pin)
+        self.table_motor_up.off()
+        self.table_motor_down = gpiozero.OutputDevice(table_down_pin)
+        self.table_motor_down.off()
+        self.table_max_amplitude_duration = table_max_amplitude_duration
+        self.table_up_down_minimum_delay = table_up_down_minimum_delay
+        self.table_stop_motor_task = None
+        self.table_led_task = None
+        self.table_watch_button_task = LoopingCall(self.check_table_button)
 
-    @difficulty.setter
-    def difficulty(self, value):
-        if value not in self.difficulties:
-            logger.warning("Difficulty {} not in {}: skipping".format(value, ", ".join(self.difficulties)))
-        else:
-            logger.debug("Setting difficulty to {}".format(value))
-            self._difficulty = value
+        self.has_manual_mode_been_set_once = False
+        self.jack = gpiozero.OutputDevice(jack_pin)
+        self.jack.on()
+        self.manual_mode_jack_port = gpiozero.InputDevice(manual_mode_jack_port_pin)
+        self.marmitron_mode_jack_port = gpiozero.InputDevice(marmitron_mode_jack_port_pin)
+
+        self.colors = colors
+
+        self.status = "inactive"
 
     @property
     def status(self):
@@ -60,7 +62,7 @@ class NiryoController:
     @status.setter
     def status(self, value):
         if value not in self.STATUSES:
-            logger.warning("Status {} not in {}: skipping".format(value, ", ".join(self.STATUSES)))
+            logger.warning("Status not in {}: skipping".format(value, ", ".join(self.STATUSES)))
             return
 
         if value == self.status:
@@ -70,420 +72,225 @@ class NiryoController:
         logger.debug("Setting status to {}".format(value))
         self._status = value
 
-        for task_name, task in self.tasks.items():
-            if task.active():
-                task.cancel()
-        self.tasks = {}
-
-        if self._status == "chaos":
-            self.on_chaos()
-        elif self._status == "mute":
-            self.on_mute()
+        if self._status == "inactive":
+            self.on_inactive()
         elif self._status == "playing":
             self.on_playing()
-        elif self._status == "success":
-            self.on_success()
 
-    def generate_success_sequence(self):
-        logger.debug("Generating new success sequence")
-        new_sequence = []
-        available_floppies = self.difficulties[self.difficulty]["available_floppies"]
-        if 6 > len(available_floppies):
-            # The algorithm below might end up in a deadlock
-            logger.error("Please submit at least 6 available floppies: skipping sequence generation")
-            return
+        self.service.notify_status(self.status)
 
-        for i in range(5):
-            valid_choice = False
-            while not valid_choice:
-                floppy = random.choice(available_floppies)
-                if self.success_sequence[i] != floppy and floppy not in new_sequence:
-                    new_sequence.append(floppy)
-                    valid_choice = True
+    def set_led_color(self, led_index, color):
+        predefined_color = self.colors.get(color, {})
 
-        self.success_sequence = new_sequence
-        logger.info("The new success sequence is {}".format(self.success_sequence))
+        blink_task = self.led_tasks.get(led_index, None)
+        if blink_task and blink_task.active():
+            blink_task.cancel()
 
-    def set_status_leds_color(self, first=None, second=None, third=None):
-        if first is not None:
-            self._status_leds[0] = first
-        if second is not None:
-            self._status_leds[1] = second
-        if third is not None:
-            self._status_leds[2] = third
-        self.service.set_status_leds_colors(self._status_leds)
+        if isinstance(predefined_color, list):
+            self._blink_led(led_index, color)
+        else:
+            r = predefined_color.get("r", 0)
+            g = predefined_color.get("g", 0)
+            b = predefined_color.get("b", 0)
+            self.led_strip[led_index] = r, g, b
 
-    def set_chrono_led_color(self, led_index, r=0, g=0, b=0, commit=True):
-        self.chrono_leds[self.CHRONO_LEDS - 1 - led_index] = (r, g, b)
-        if commit:
-            self.chrono_leds.show()
+    def _blink_led(self, led_index, color, counter=0):
+        current_color = color[counter % len(color)]
+        self.led_tasks[led_index] = callLater(
+            current_color['duration'],
+            self._blink_led, led_index, color, counter=counter+1)
+        rgb = self.colors.get(current_color['color'], {})
+        self.led_strip[led_index] = rgb['r'], rgb['g'], rgb['b']
 
-    def get_ordered_chrono_leds(self):
-        return reversed(self.chrono_leds)
+    def check_table_button(self):
+        if self.table_button.is_active and self.is_table_position_up():
+            logger.info("Table button has been pressed")
+            self.table_down()
+            self.service.notify_table_button_pressed()
 
-    def on_chaos(self):
-        self.set_status_leds_color(first="R", second="R", third="R")
+    def _cancel_table_tasks(self):
+        logger.debug("Cancelling table tasks")
+        if self.table_led_task and self.table_led_task.active():
+            logger.info("Cancelling table led task")
+            self.table_led_task.cancel()
 
-        def init_animation(chrono_led=0):
-            if chrono_led < 5:
-                self.set_chrono_led_color(chrono_led, r=255)
-                self.tasks["chaos_animation"] = reactor.callLater(
-                    0.1, init_animation, chrono_led + 1)
-            else:
-                animation_loop(chrono_led=5)
+        if self.table_stop_motor_task and self.table_stop_motor_task.active():
+            logger.info("Cancelling table stop motor task")
+            self.table_stop_motor_task.cancel()
 
-        def animation_loop(chrono_led=5):
-            next_chrono_led = (chrono_led + 1) % self.CHRONO_LEDS
-            self.tasks["chaos_animation"] = reactor.callLater(
-                0.1, animation_loop, next_chrono_led)
+    def table_up(self):
+        logger.info("Pulling table up")
+        if self.table_motor_down.is_active:
+            logger.info("Motor was in down position. Turning off the down position and sleeping for {} seconds".format(
+                self.table_up_down_minimum_delay))
+            self.table_motor_down.off()
+            time.sleep(self.table_up_down_minimum_delay)  # Dirty
 
-            self.set_chrono_led_color((chrono_led - 5) % self.CHRONO_LEDS, r=0, g=0, b=0)
-            self.set_chrono_led_color(chrono_led, r=255)
+        logger.info("Setting the motor in up position")
+        self.table_motor_up.on()
 
-        init_animation()
+        logger.info("Turning off the led")
+        self.set_led_color(self.table_led_index, "black")
 
-    def on_mute(self):
-        self.chrono_leds.fill((0, 0, 0))
-        self.chrono_leds.show()
-        self.set_status_leds_color(first="r", second="b", third="b")
+        self._cancel_table_tasks()
+
+        logger.info("Scheduling the motor to stop after {} seconds".format(self.table_max_amplitude_duration))
+        self.table_stop_motor_task = callLater(self.table_max_amplitude_duration, self.table_stop)
+
+    def table_down(self):
+        logger.info("Pulling table down")
+        if self.table_motor_up.is_active:
+            logger.info("Motor was in up position. Turning off the up position and sleeping for {} seconds".format(
+                self.table_up_down_minimum_delay))
+            self.table_motor_down.off()
+            time.sleep(self.table_up_down_minimum_delay)  # Dirty
+
+        logger.info("Setting the motor in down position")
+        self.table_motor_down.on()
+
+        logger.info("Blinking the table led green")
+        self.set_led_color(self.table_led_index, "green_blink")
+
+        self._cancel_table_tasks()
+
+        logger.info("Scheduling the led to turn on after {} seconds".format(self.table_max_amplitude_duration))
+        self.table_led_task = callLater(
+            self.table_max_amplitude_duration, self.set_led_color, self.table_led_index, "green")
+        logger.info("Scheduling the motor to stop after {} seconds".format(self.table_max_amplitude_duration))
+        self.table_stop_motor_task = callLater(self.table_max_amplitude_duration, self.table_stop)
+        if self.table_watch_button_task.running:
+            logger.info("Stop watching the table button")
+            self.table_watch_button_task.stop()
+
+    def table_stop(self):
+        logger.info("Stopping the motor")
+        self.table_motor_up.off()
+        self.table_motor_down.off()
+
+    def is_table_position_down(self):
+        return self.table_motor_down.is_active
+
+    def is_table_position_up(self):
+        return self.table_motor_up.is_active
+
+    def on_inactive(self):
+        self.led_strip.fill((0, 0, 0))
+
+        self.table_up()
+        self._cancel_table_tasks()
+        logger.info("Scheduling the motor to stop after {} seconds".format(self.table_max_amplitude_duration))
+        self.table_stop_motor_task = callLater(self.table_max_amplitude_duration, self.table_stop)
+
+        if self.table_watch_button_task.running:
+            self.table_watch_button_task.stop()
+
+        self.has_manual_mode_been_set_once = False
+
+        self.electromagnet.on()
+        self.set_led_color(self.electromagnet_led_index, "red")
+
+        # Do not switch on panel leds while the panel is inactive to avoid light from leaking
+        # through the panel edges
 
     def on_playing(self):
-        self.generate_success_sequence()
+        self.led_strip.fill((0, 0, 0))
 
-        self.current_chrono_led = -1
-        self.chrono_leds.fill((0, 0, 0))
-        self.chrono_leds.show()
+        self.table_watch_button_task.start(0.01)
 
-        self.set_status_leds_color(first="g", second="w", third="b")
+        self.electromagnet.off()
+        self.set_led_color(self.electromagnet_led_index, "green")
 
-        self.tic_tac()
+        for led_index in self.scene_led_indexes:
+            self.set_led_color(led_index, "white")
 
-    def on_success(self):
-        def post_delay():
-            starting_chrono_led = 0
-            for led_index, led_color in enumerate(self.get_ordered_chrono_leds()):
-                if led_color != (0, 255, 0):
-                    starting_chrono_led = led_index
-                    break
+        self.set_led_color(self.lights_status_led_index, "red")
+        self.set_led_color(self.menu_status_led_index, "red")
+        self.set_led_color(self.table_led_index, "table")
 
-            fill_green_animation(starting_chrono_led)
+    def set_lights_service_status(self, repaired):
+        self.set_led_color(self.lights_status_led_index, "green" if repaired else "red")
 
-        def fill_green_animation(chrono_led):
-            if chrono_led < self.CHRONO_LEDS:
-                self.tasks["success_animation"] = reactor.callLater(
-                    0.1, fill_green_animation, chrono_led + 1)
-                self.set_chrono_led_color(chrono_led, g=255)
-            else:
-                self.set_status_leds_color(second="G")
-
-                self.chrono_leds.fill((0, 0, 0))
-                init_chaser_animation()
-
-        def init_chaser_animation(chrono_led=0):
-            if chrono_led < 5:
-                self.set_chrono_led_color(chrono_led, g=255)
-                self.tasks["success_animation"] = reactor.callLater(
-                    0.1, init_chaser_animation, chrono_led + 1)
-            else:
-                self.set_status_leds_color(second="g")
-                main_chaser_animation(chrono_led=5)
-
-        def main_chaser_animation(chrono_led=5, repeat=4):
-            if chrono_led == 0:
-                repeat -= 1
-                if repeat == 0:
-                    finish_chaser_animation(chrono_led=18)
-                    return
-
-            self.tasks["success_animation"] = reactor.callLater(
-                0.1, main_chaser_animation, (chrono_led + 1) % self.CHRONO_LEDS, repeat)
-
-            self.set_chrono_led_color((chrono_led - 5) % self.CHRONO_LEDS, r=0, g=0, b=0)
-            self.set_chrono_led_color(chrono_led, g=255)
-
-        def finish_chaser_animation(chrono_led=18):
-            if chrono_led < self.CHRONO_LEDS:
-                self.set_chrono_led_color(chrono_led, r=0, g=0, b=0)
-                self.tasks["success_animation"] = reactor.callLater(
-                    0.1, finish_chaser_animation, chrono_led + 1)
-            else:
-                post_animation()
-
-        def post_animation():
-            self.service.notify_success()
-
-        self.tasks["success_animation"] = reactor.callLater(0.5, post_delay)
-
-    def insert_floppy(self, reader_index, floppy):
-        logger.info("Insert floppy {} in reader index={}".format(floppy, reader_index))
-        self.floppy_readers[reader_index] = floppy
-
-        if self.status != "playing":
-            logger.debug("Game is not started yet: nothing to do")
-            return
-
-        animation_task = self.tasks.get("animation", None)
-        if animation_task and animation_task.active():
-            animation_task.cancel()
-
-        # Chrono has not started <=> game is not started
-        chrono_task = self.tasks.get("chrono", None)
-        if not chrono_task or not chrono_task.active():
-            logger.debug("Chrono is not running: updating errors")
-            self.display_inserted_floppies_errors_before_restart()
-
-        # The game has started
-        else:
-            expected_reader_index = 4 - self.floppy_readers.count(None)
-            insert_in_expected_reader = reader_index == expected_reader_index
-            good_insert = self.floppy_readers[reader_index] == self.success_sequence[reader_index]
-
-            if not insert_in_expected_reader or not good_insert:
-                logger.debug("Bad insert: stopping chrono and running bad move animation")
-                chrono_task.cancel()
-                self.bad_move_failure_animation(reader_index)
-
-            else:
-                if expected_reader_index == 4:
-                    logger.debug("Good insert in the last reader: victory!")
-                    self.status = "success"
-                else:
-                    logger.debug("Good insert: running good move animation")
-                    self.good_move_animation(reader_index)
-
-    def eject_floppy(self, reader_index):
-        logger.info("Remove floppy {} from reader index={}".format(
-            self.floppy_readers[reader_index], reader_index))
-        self.floppy_readers[reader_index] = None
-
-        if self.status != "playing":
-            logger.debug("Game is not started yet: nothing to do")
-            return
-
-        animation_task = self.tasks.get("animation", None)
-        if animation_task and animation_task.active():
-            animation_task.cancel()
-
-        chrono_task = self.tasks.get("chrono", None)
-        if chrono_task and chrono_task.active():
-            logger.debug("Chrono is running: stopping chrono and running bad move animation")
-            chrono_task.cancel()
-            self.bad_move_failure_animation(reader_index)
-        else:
-            if all([floppy is None for floppy in self.floppy_readers]):
-                logger.debug("All floppies have been removed: restart the game")
-                self.restart_game()
-            else:
-                logger.debug("Some floppies remain inserted: updating errors")
-                self.display_inserted_floppies_errors_before_restart()
-
-    def good_move_animation(self, reader_index):
-        self.tasks["chrono"].delay(0.01)  # To be sure not to hit race conditions
-
-        # TODO: send the order to the niryo to move
-        # TODO: music effects
-
-        starting_chrono_led = 0
-        for led_index, led_color in enumerate(self.get_ordered_chrono_leds()):
-            if led_color != (0, 255, 0):
-                starting_chrono_led = led_index
-                break
-        target_chrono_led = reader_index * 5 + 3 - 1
-        self.current_chrono_led = target_chrono_led
-
-        def animation_loop(chrono_led):
-            if chrono_led <= target_chrono_led:
-                self.tasks["chrono"].delay(0.1)
-                self.tasks["animation"] = reactor.callLater(0.1, animation_loop, chrono_led + 1)
-                self.set_chrono_led_color(chrono_led, g=255)
-            else:
-                post_animation()
-
-        def post_animation():
-            # TODO: send the new pattern to the other device
-            pass
-
-        animation_loop(starting_chrono_led)
-
-    def display_inserted_floppies_errors_before_restart(self):
-        self.set_status_leds_color(second="r")
-
-        self.chrono_leds.fill((0, 0, 0))
-        for reader_index, floppy in enumerate(self.floppy_readers):
-            if floppy is not None:
-                self.set_chrono_led_color(5 * reader_index, r=255, commit=False)
-                self.set_chrono_led_color(5 * reader_index + 1, r=255, commit=False)
-                self.set_chrono_led_color(5 * reader_index + 2, r=255, commit=False)
-            else:
-                self.set_chrono_led_color(5 * reader_index, r=0, g=0, b=0, commit=False)
-                self.set_chrono_led_color(5 * reader_index + 1, r=0, g=0, b=0, commit=False)
-                self.set_chrono_led_color(5 * reader_index + 2, r=0, g=0, b=0, commit=False)
-        self.chrono_leds.show()
-
-    def tic_tac(self):
-        self.current_chrono_led += 1
-        if self.is_it_too_late():
-            self.time_elapsed_failure_animation()
-        else:
-            delay = self.difficulties[self.difficulty]["chrono_leds_frequency"]
-            self.tasks["chrono"] = reactor.callLater(delay, self.tic_tac)
-
-            self.set_chrono_led_color(self.current_chrono_led, r=255, g=255, b=255)
-
-    def is_it_too_late(self):
-        if self.current_chrono_led >= self.CHRONO_LEDS:
-            return True
-
-        checkpoints = {
-            3: 0,
-            8: 1,
-            13: 2,
-            18: 3,
-        }
-
-        if self.current_chrono_led in checkpoints:
-            checkpoint_reader = checkpoints[self.current_chrono_led]
-            if self.floppy_readers[checkpoint_reader] != self.success_sequence[checkpoint_reader]:
-                return True
-
-        return False
-
-    def time_elapsed_failure_animation(self):
-        self.set_status_leds_color(second="r")
-
-        def blink_chrono_leds_red(times=5, toggle=True):
-            for led_index in range(self.current_chrono_led):
-                self.set_chrono_led_color(led_index, r=255 if toggle else 0, commit=False)
-            self.chrono_leds.show()
-
-            times -= 1
-            if times > 0:
-                self.tasks["animation"] = reactor.callLater(
-                    0.1, blink_chrono_leds_red, times, not toggle)
-            else:
-                self.tasks["animation"] = reactor.callLater(1, post_animation)
-
-        def post_animation():
-            if all([floppy is None for floppy in self.floppy_readers]):
-                self.restart_game()
-            else:
-                self.display_inserted_floppies_errors_before_restart()
-
-        blink_chrono_leds_red()
-
-    def bad_move_failure_animation(self, reader_index):
-        self.set_status_leds_color(second="R")
-
-        def blink_reader_leds_red(times=5, toggle=True):
-            self.set_chrono_led_color(5 * reader_index, r=255 if toggle else 0)
-            self.set_chrono_led_color(5 * reader_index + 1, r=255 if toggle else 0)
-            self.set_chrono_led_color(5 * reader_index + 2, r=255 if toggle else 0)
-
-            times -= 1
-            if times > 0:
-                self.tasks["animation"] = reactor.callLater(
-                    0.1, blink_reader_leds_red, times, not toggle)
-            else:
-                self.tasks["animation"] = reactor.callLater(
-                    1, self.display_inserted_floppies_errors_before_restart)
-
-        blink_reader_leds_red()
-
-    def restart_game(self):
-        self.generate_success_sequence()
-        self.current_chrono_led = -1
-        self.chrono_leds.fill((0, 0, 0))
-        self.chrono_leds.show()
-        self.set_status_leds_color(second="w")
-        self.tasks["animation"] = reactor.callLater(3, self.tic_tac)
+    def set_menu_service_status(self, repaired):
+        self.set_led_color(self.menu_status_led_index, "green" if repaired else "red")
 
     def reset(self):
-        self.status = "chaos"
+        self.status = "inactive"
+
+    def check_jack_ports(self):
+        if self.status != "playing":
+            return
+
+        if self.marmitron_mode_jack_port.is_active:
+            if self.has_manual_mode_been_set_once:
+                self.set_led_color(self.marmitron_mode_jack_port, "red_blink")
+            else:
+                self.set_led_color(self.marmitron_mode_jack_port, "green")
+        else:
+            self.set_led_color(self.marmitron_mode_jack_port, "red")
+
+        if self.manual_mode_jack_port.is_active:
+            if not self.has_manual_mode_been_set_once:
+                self.has_manual_mode_been_set_once = True
+                self.service.notify_first_manual_mode()
+
+            self.set_led_color(self.manual_mode_led_index, "green")
+        else:
+            if self.has_manual_mode_been_set_once:
+                self.set_led_color(self.manual_mode_led_index, "green")
+            else:
+                self.set_led_color(self.manual_mode_led_index, "red")
 
 
 class ControlPanel(EventCategoryToMethodMixin, JustSockClientService):
-    class ARDUINO_PROTOCOL:
-        EVENT_TYPE = "e"
-
-        RESET = "r"
-
-        MODE_MANUAL = "m"
-
-        FLOPPY_READ = "f"
-        READER = "r"
-        TAG = "t"
-
-        PROTOCOL_SET_COLORS = "s"
-        PROTOCOL_COLORS = "c"
-
     def __init__(self, *args, **kwargs):
         super(ControlPanel, self).__init__(*args, **kwargs)
+        led_indexes = self.node_params["led_indexes"]
+        electromagnet_pin = self.node_params["electromagnet_pin"]
+        jack_pin = self.node_params["jack_pin"]
+        manual_mode_jack_port_pin = self.node_params["manual_mode_jack_port"]
+        marmitron_mode_jack_port_pin = self.node_params["marmitron_mode_jack_port"]
+        table_button_pin = self.node_params["table"]["button_pin"]
+        table_up_pin = self.node_params["table"]["up_pin"]
+        table_down_pin = self.node_params["table"]["down_pin"]
+        table_max_amplitude_duration = self.node_params["table"]["table_max_amplitude_duration"]
+        table_up_down_minimum_delay = self.node_params["table"]["table_up_down_minimum_delay"]
+        colors = self.node_params["colors"]
 
-        self.floppies = self.node_params["floppies"]
-
-        port = self.node_params['arduino']['port']
-        baud_rate = self.node_params['arduino']['baud_rate']
-        self.serial = Serial(self, port, baud_rate)
-
-        initial_difficulty = self.node_params["initial_difficulty"]
-        difficulties = self.node_params["difficulties"]
-        self.niryo_controller = NiryoController(self, initial_difficulty, difficulties)
-
-    def process_serial_event(self, event):
-        logger.debug("Processing event '{}'".format(event))
-
-        if self.ARDUINO_PROTOCOL.EVENT_TYPE not in event:
-            logger.error("Event has no event_type: skipping")
-            return
-
-        if event[self.ARDUINO_PROTOCOL.EVENT_TYPE] == self.ARDUINO_PROTOCOL.FLOPPY_READ:
-            if self.ARDUINO_PROTOCOL.READER not in event:
-                logger.error("Event has no reader: skipping")
-                return
-
-            if self.ARDUINO_PROTOCOL.TAG not in event:
-                logger.error("Event has no value: skipping")
-                return
-
-            reader = event[self.ARDUINO_PROTOCOL.READER]
-            tag = event[self.ARDUINO_PROTOCOL.TAG]
-            self.on_rfid_read(reader, tag)
-
-        elif event[self.ARDUINO_PROTOCOL.EVENT_TYPE] == self.ARDUINO_PROTOCOL.MODE_MANUAL:
-            self.notify_manual_mode()
+        self.controller = Controller(
+            self, led_indexes, electromagnet_pin, jack_pin, manual_mode_jack_port_pin, marmitron_mode_jack_port_pin,
+            table_button_pin, table_up_pin, table_down_pin, table_max_amplitude_duration, table_up_down_minimum_delay,
+            colors)
 
     def event_reset(self):
-        self.niryo_controller.reset()
-        self.serial.send_event({self.ARDUINO_PROTOCOL.EVENT_TYPE: self.ARDUINO_PROTOCOL.RESET})
+        self.controller.reset()
 
     def event_set_status(self, status: str):
-        self.niryo_controller.status = status
+        self.controller.status = status
 
-    def event_set_difficulty(self, difficulty: str):
-        self.niryo_controller.difficulty = difficulty
+    def event_set_lights_service_status(self, repaired: bool):
+        self.controller.set_lights_service_status(repaired)
 
-    def on_rfid_read(self, reader, tag):
-        if not tag:
-            self.niryo_controller.eject_floppy(reader)
-        else:
-            serialized_tag = "-".join([str(byte) for byte in tag])
+    def event_set_menu_service_status(self, repaired: bool):
+        self.controller.set_menu_service_status(repaired)
 
-            for floppy_name, floppy in self.floppies.items():
-                if floppy["tag"] == serialized_tag:
-                    self.niryo_controller.insert_floppy(reader, floppy_name)
-                    break
+    def event_table_up(self):
+        self.controller.table_up()
 
-    def set_status_leds_colors(self, status_leds):
-        colors = "".join(status_leds)
+    def event_table_down(self):
+        self.controller.table_down()
 
-        event = {
-            self.ARDUINO_PROTOCOL.EVENT_TYPE: self.ARDUINO_PROTOCOL.PROTOCOL_SET_COLORS,
-            self.ARDUINO_PROTOCOL.PROTOCOL_COLORS: colors,
-        }
-        self.serial.send_event(event)
+    def event_table_stop(self):
+        logger.info("Stopping the table")
+        self.controller.table_stop()
 
-    def notify_manual_mode(self):
-        self.send_event({"category": "manual_mode"})
+    def notify_status(self, status):
+        self.send_event({"category": "set_status", "status": status})
 
-    def notify_success(self):
-        self.send_event({"category": "success"})
+    def notify_table_button_pressed(self):
+        self.send_event({"category": "table_button_pressed"})
+
+    def notify_mode(self, mode):
+        self.send_event({"category": "set_mode", "mode": mode})
+
+    def notify_first_manual_mode(self):
+        self.send_event({"category": "first_manual_mode"})

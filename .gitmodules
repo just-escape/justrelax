@@ -1,23 +1,8 @@
-[submodule "contrib/digimiam/control_panel/arduino/libraries/FastLED"]
-	path = contrib/digimiam/control_panel/arduino/libraries/FastLED
-	url = https://github.com/FastLED/FastLED
-[submodule "contrib/digimiam/control_panel/arduino/libraries/MFRC522"]
-	path = contrib/digimiam/control_panel/arduino/libraries/MFRC522
-	url = https://github.com/miguelbalboa/rfid
-[submodule "contrib/digimiam/control_panel/arduino/libraries/ArduinoJson"]
-	path = contrib/digimiam/control_panel/arduino/libraries/ArduinoJson
-	url = https://github.com/bblanchon/ArduinoJson
-[submodule "contrib/digimiam/control_panel/arduino/libraries/HX711-multi"]
-	path = contrib/digimiam/control_panel/arduino/libraries/HX711-multi
-	url = https://github.com/compugician/HX711-multi
 [submodule "contrib/digimiam/load_cells/arduino/libraries/HX711-multi"]
 	path = contrib/digimiam/load_cells/arduino/libraries/HX711-multi
 	url = https://github.com/compugician/HX711-multi
 [submodule "backend/proxuino/arduino/libraries/ArduinoJson"]
 	path = backend/proxuino/arduino/libraries/ArduinoJson
-	url = https://github.com/bblanchon/ArduinoJson
-[submodule "contrib/digimiam/control_panel/arduino_floppy_patterns/libraries/ArduinoJson"]
-	path = contrib/digimiam/control_panel/arduino_floppy_patterns/libraries/ArduinoJson
 	url = https://github.com/bblanchon/ArduinoJson
 [submodule "contrib/digimiam/lights/arduino/libraries/ArduinoJson"]
 	path = contrib/digimiam/lights/arduino/libraries/ArduinoJson
