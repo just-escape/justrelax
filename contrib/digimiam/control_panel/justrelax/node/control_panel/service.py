@@ -193,11 +193,6 @@ class Controller:
 
         self.led_strip.fill((0, 0, 0))
 
-        self.table_up()
-        self._cancel_table_tasks()
-        logger.info("Scheduling the motor to stop after {} seconds".format(self.table_max_amplitude_duration))
-        self.table_stop_motor_task = callLater(self.table_max_amplitude_duration, self.table_stop)
-
         if self.table_watch_button_task.running:
             self.table_watch_button_task.stop()
 
