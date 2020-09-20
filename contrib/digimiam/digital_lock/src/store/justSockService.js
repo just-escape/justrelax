@@ -12,11 +12,24 @@ const justSockService = new Vuex.Store({
   mutations: {
     SOCKET_ONOPEN (state, event) {
       Vue.prototype.$socket = event.currentTarget
+
+      let query = JSON.parse(JSON.stringify(router.app.$route.query))
+
+      let name = "digital_lock"
+      if (query.name !== undefined) {
+        name = query.name
+      }
+
+      let channel = "digimiam1"
+      if (query.channel !== undefined) {
+        channel = query.channel
+      }
+
       let iamMessage = {
         message_type: "IAM",
         client_type: "node",
-        channel: "digimiam1",
-        name: "digital_lock",
+        channel: channel,
+        name: name,
       }
       Vue.prototype.$socket.send(JSON.stringify(iamMessage))
     },
