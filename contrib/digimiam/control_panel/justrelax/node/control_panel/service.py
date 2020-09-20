@@ -26,6 +26,7 @@ class Controller:
         self.led_tasks = {}
         self.scene_led_indexes = led_indexes["scene"]
         self.manual_mode_led_index = led_indexes["manual_mode"]
+        self.marmitron_mode_led_index = led_indexes["marmitron_mode"]
         self.lights_status_led_index = led_indexes["lights_status"]
         self.menu_status_led_index = led_indexes["menu_status"]
         self.table_led_index = led_indexes["table"]
@@ -52,6 +53,8 @@ class Controller:
         self.marmitron_mode_jack_port = gpiozero.InputDevice(marmitron_mode_jack_port_pin)
 
         self.colors = colors
+
+        self.check_jack_ports()
 
         self.status = "inactive"
 
@@ -82,28 +85,41 @@ class Controller:
     def set_led_color(self, led_index, color):
         predefined_color = self.colors.get(color, {})
 
-        blink_task = self.led_tasks.get(led_index, None)
-        if blink_task and blink_task.active():
-            blink_task.cancel()
-
         if isinstance(predefined_color, list):
-            self._blink_led(led_index, color)
+            if self.led_tasks.get(led_index, {}).get('last_blink_color', None) != color:
+                # Start a new blink cycle only if the blink color (or blink pattern) is a new one
+
+                blink_task = self.led_tasks.get(led_index, {}).get('task', None)
+                if blink_task and blink_task.active():
+                    blink_task.cancel()
+
+                self.led_tasks[led_index] = {'last_blink_color': color}
+                self._blink_led(led_index, color)
         else:
+            blink_task = self.led_tasks.get(led_index, {}).get('task', None)
+            if blink_task and blink_task.active():
+                blink_task.cancel()
+
+            if led_index in self.led_tasks:
+                self.led_tasks.pop(led_index)
+
             r = predefined_color.get("r", 0)
             g = predefined_color.get("g", 0)
             b = predefined_color.get("b", 0)
             self.led_strip[led_index] = r, g, b
 
     def _blink_led(self, led_index, color, counter=0):
-        current_color = color[counter % len(color)]
-        self.led_tasks[led_index] = callLater(
+        current_color = self.colors[color][counter % len(self.colors[color])]
+
+        self.led_tasks[led_index]['task'] = callLater(
             current_color['duration'],
-            self._blink_led, led_index, color, counter=counter+1)
+            self._blink_led, led_index, color, counter+1)
+
         rgb = self.colors.get(current_color['color'], {})
-        self.led_strip[led_index] = rgb['r'], rgb['g'], rgb['b']
+        self.led_strip[led_index] = rgb.get('r', 0), rgb.get('g', 0), rgb.get('b', 0)
 
     def check_table_button(self):
-        if self.table_button.is_active and self.is_table_position_up():
+        if self.table_button.is_active:
             logger.info("Table button has been pressed")
             self.table_down()
             self.service.notify_table_button_pressed()
@@ -124,7 +140,8 @@ class Controller:
             logger.info("Motor was in down position. Turning off the down position and sleeping for {} seconds".format(
                 self.table_up_down_minimum_delay))
             self.table_motor_down.off()
-            time.sleep(self.table_up_down_minimum_delay)  # Dirty
+            # Dirty but easy guaranty that the motor won't be activated in both directions
+            time.sleep(self.table_up_down_minimum_delay)
 
         logger.info("Setting the motor in up position")
         self.table_motor_up.on()
@@ -142,8 +159,9 @@ class Controller:
         if self.table_motor_up.is_active:
             logger.info("Motor was in up position. Turning off the up position and sleeping for {} seconds".format(
                 self.table_up_down_minimum_delay))
-            self.table_motor_down.off()
-            time.sleep(self.table_up_down_minimum_delay)  # Dirty
+            self.table_motor_up.off()
+            # Dirty but easy guaranty that the motor won't be activated in both directions
+            time.sleep(self.table_up_down_minimum_delay)
 
         logger.info("Setting the motor in down position")
         self.table_motor_down.on()
@@ -167,13 +185,12 @@ class Controller:
         self.table_motor_up.off()
         self.table_motor_down.off()
 
-    def is_table_position_down(self):
-        return self.table_motor_down.is_active
-
-    def is_table_position_up(self):
-        return self.table_motor_up.is_active
-
     def on_inactive(self):
+        for blink_task in self.led_tasks.values():
+            if blink_task['task'] and blink_task['task'].active():
+                blink_task['task'].cancel()
+        self.led_tasks = {}
+
         self.led_strip.fill((0, 0, 0))
 
         self.table_up()
@@ -217,21 +234,21 @@ class Controller:
         self.status = "inactive"
 
     def check_jack_ports(self):
+        callLater(0.1, self.check_jack_ports)
+
         if self.status != "playing":
             return
 
         if self.marmitron_mode_jack_port.is_active:
             if self.has_manual_mode_been_set_once:
-                self.set_led_color(self.marmitron_mode_jack_port, "red_blink")
+                self.set_led_color(self.marmitron_mode_led_index, "red_blink")
             else:
-                self.set_led_color(self.marmitron_mode_jack_port, "green")
+                self.set_led_color(self.marmitron_mode_led_index, "green")
         else:
-            self.set_led_color(self.marmitron_mode_jack_port, "red")
+            self.set_led_color(self.marmitron_mode_led_index, "red")
 
         if self.manual_mode_jack_port.is_active:
-            if not self.has_manual_mode_been_set_once:
-                self.has_manual_mode_been_set_once = True
-                self.service.notify_first_manual_mode()
+            self.on_manual_mode()
 
             self.set_led_color(self.manual_mode_led_index, "green")
         else:
@@ -240,6 +257,11 @@ class Controller:
             else:
                 self.set_led_color(self.manual_mode_led_index, "red")
 
+    def on_manual_mode(self):
+        if not self.has_manual_mode_been_set_once:
+            self.has_manual_mode_been_set_once = True
+            self.service.notify_first_manual_mode()
+
 
 class ControlPanel(EventCategoryToMethodMixin, JustSockClientService):
     def __init__(self, *args, **kwargs):
@@ -247,13 +269,13 @@ class ControlPanel(EventCategoryToMethodMixin, JustSockClientService):
         led_indexes = self.node_params["led_indexes"]
         electromagnet_pin = self.node_params["electromagnet_pin"]
         jack_pin = self.node_params["jack_pin"]
-        manual_mode_jack_port_pin = self.node_params["manual_mode_jack_port"]
-        marmitron_mode_jack_port_pin = self.node_params["marmitron_mode_jack_port"]
+        manual_mode_jack_port_pin = self.node_params["manual_mode_jack_port_pin"]
+        marmitron_mode_jack_port_pin = self.node_params["marmitron_mode_jack_port_pin"]
         table_button_pin = self.node_params["table"]["button_pin"]
         table_up_pin = self.node_params["table"]["up_pin"]
         table_down_pin = self.node_params["table"]["down_pin"]
-        table_max_amplitude_duration = self.node_params["table"]["table_max_amplitude_duration"]
-        table_up_down_minimum_delay = self.node_params["table"]["table_up_down_minimum_delay"]
+        table_max_amplitude_duration = self.node_params["table"]["max_amplitude_duration"]
+        table_up_down_minimum_delay = self.node_params["table"]["up_down_minimum_delay"]
         colors = self.node_params["colors"]
 
         self.controller = Controller(
@@ -282,6 +304,9 @@ class ControlPanel(EventCategoryToMethodMixin, JustSockClientService):
     def event_table_stop(self):
         logger.info("Stopping the table")
         self.controller.table_stop()
+
+    def event_force_manual_mode(self):
+        self.controller.on_manual_mode()
 
     def notify_status(self, status):
         self.send_event({"category": "set_status", "status": status})

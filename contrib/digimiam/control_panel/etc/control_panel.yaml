@@ -7,15 +7,13 @@ channel: digimiam1
 node_params:
   led_indexes:
     scene:
+      - 0
       - 1
       - 2
-      - 3
-    manual_mode: 4
-    marmitron_mode: 5
-    lights_status: 6
-    menu_status: 7
-    table: 8
-    electromagnet: 9
+    lights_status: 5
+    menu_status: 6
+    table: 7
+    electromagnet: 8
   table:
     button_pin: 13
     up_pin: 19
