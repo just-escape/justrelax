@@ -1,0 +1,18 @@
+[Unit]
+Description=Music player node daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
+
+User=justescape
+Group=justescape
+
+ExecStart=/home/justescape/venv_justrelax/bin/twistd -n --pidfile=/home/justescape/music/music_player.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o musicplayer -c /etc/justrelax/music_player.yaml
+
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

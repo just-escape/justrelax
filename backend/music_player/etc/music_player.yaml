@@ -5,16 +5,67 @@ name: music_player
 channel: digimiam1
 
 node_params:
-  master_volume: 80
-  default_volume: 50
+  master_volume: 100
+  default_volume: 40
+  mixer: Master
   player: vlc
   tracks:
-    - id: one_shot_track
-      path: /path/to/track.wav
-    - id: looping_track
-      path: /path/to/track.wav
+    - id: track1
+      path: /home/justescape/music/track1-ill.wav
       mode: loop
-      loop_a: 3.75
-      loop_b: 11.25
+      volume: 50
+      loop_a: 117.285
+      loop_b: 315.285
+    - id: track2
+      path: /home/justescape/music/track2-ll.wav
+      mode: loop
+      loop_a: 150
+      loop_b: 450
+    - id: track3
+      path: /home/justescape/music/track3-ll.wav
+      mode: loop
+      volume: 50
+      loop_a: 55
+      loop_b: 165
+    - id: track35
+      path: /home/justescape/music/track35.mp3
+    - id: track4
+      path: /home/justescape/music/track4-ill.wav
+      mode: loop
+      volume: 35
+      loop_a: 177.775
+      loop_b: 415.775
+    - id: track5
+      path: /home/justescape/music/track5-ll.wav
+      mode: loop
+      loop_a: 93.5
+      loop_b: 280.5
+    - id: track61
+      path: /home/justescape/music/track61-le.wav
+    - id: track62
+      path: /home/justescape/music/track62.wav
+    - id: track63
+      path: /home/justescape/music/track63.wav
+      volume: 30
+    - id: track7
+      path: /home/justescape/music/track7-ll.wav
+      mode: loop
+      volume: 50
+      loop_a: 64.5
+      loop_b: 193.5
+    - id: track8
+      path: /home/justescape/music/track8-ill.wav
+      mode: loop
+      loop_a: 129.369
+      loop_b: 346.369
+    - id: track91
+      path: /home/justescape/music/track91.wav
+      volume: 50
+    - id: track92
+      path: /home/justescape/music/track92-ll.wav
+      mode: loop
+      volume: 50
+      loop_a: 8
+      loop_b: 24
 
 logging: null
