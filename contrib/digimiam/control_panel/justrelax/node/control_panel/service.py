@@ -15,8 +15,8 @@ class Controller:
 
     def __init__(
             self, control_panel_service, led_indexes, electromagnet_pin, jack_pin, manual_mode_jack_port_pin,
-            marmitron_mode_jack_port_pin, table_button_pin, table_up_pin, table_down_pin, table_max_amplitude_duration,
-            table_up_down_minimum_delay, colors,
+            marmitron_mode_jack_port_pin, table_button_pin, table_up_pin, table_down_pin,
+            table_up_down_pins_active_high, table_max_amplitude_duration, table_up_down_minimum_delay, colors,
     ):
         self.service = control_panel_service
 
@@ -36,9 +36,9 @@ class Controller:
 
         self.table_button = gpiozero.Button(table_button_pin)
         # Never have the table_up_pin and table_down_pin active at the same time or electronics might crash
-        self.table_motor_up = gpiozero.OutputDevice(table_up_pin)
+        self.table_motor_up = gpiozero.OutputDevice(table_up_pin, active_high=table_up_down_pins_active_high)
         self.table_motor_up.off()
-        self.table_motor_down = gpiozero.OutputDevice(table_down_pin)
+        self.table_motor_down = gpiozero.OutputDevice(table_down_pin, active_high=table_up_down_pins_active_high)
         self.table_motor_down.off()
         self.table_max_amplitude_duration = table_max_amplitude_duration
         self.table_up_down_minimum_delay = table_up_down_minimum_delay
@@ -274,14 +274,15 @@ class ControlPanel(EventCategoryToMethodMixin, JustSockClientService):
         table_button_pin = self.node_params["table"]["button_pin"]
         table_up_pin = self.node_params["table"]["up_pin"]
         table_down_pin = self.node_params["table"]["down_pin"]
+        table_up_down_pins_active_high = self.node_params["table"]["up_down_pins_active_high"]
         table_max_amplitude_duration = self.node_params["table"]["max_amplitude_duration"]
         table_up_down_minimum_delay = self.node_params["table"]["up_down_minimum_delay"]
         colors = self.node_params["colors"]
 
         self.controller = Controller(
             self, led_indexes, electromagnet_pin, jack_pin, manual_mode_jack_port_pin, marmitron_mode_jack_port_pin,
-            table_button_pin, table_up_pin, table_down_pin, table_max_amplitude_duration, table_up_down_minimum_delay,
-            colors)
+            table_button_pin, table_up_pin, table_down_pin, table_up_down_pins_active_high,
+            table_max_amplitude_duration, table_up_down_minimum_delay, colors)
 
     def event_reset(self):
         self.controller.reset()

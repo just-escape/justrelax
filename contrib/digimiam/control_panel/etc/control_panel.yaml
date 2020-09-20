@@ -10,6 +10,8 @@ node_params:
       - 0
       - 1
       - 2
+    marmitron_mode: 3
+    manual_mode: 4
     lights_status: 5
     menu_status: 6
     table: 7
@@ -18,6 +20,7 @@ node_params:
     button_pin: 13
     up_pin: 19
     down_pin: 26
+    up_down_pins_active_high: no
     max_amplitude_duration: 37
     up_down_minimum_delay: 1
   electromagnet_pin: 4
