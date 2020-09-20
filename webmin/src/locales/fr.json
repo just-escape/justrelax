@@ -300,7 +300,9 @@
         "space": " ",
         "=": "est égal à",
         "!=": "n'est pas égal à",
-        "contains": "contient"
+        "contains": "contient",
+        "startswith": "commence par",
+        "endswith": "finit par"
       },
       "object_comparison": {
         "name": "Comparaison d'objets",

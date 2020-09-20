@@ -260,12 +260,6 @@ class RulesProcessor:
             '<=': operator.le,
         }
 
-        self.string_comparator_table = {
-            '=': operator.eq,
-            '!=': operator.ne,
-            'contains': operator.contains,
-        }
-
         self.object_comparator_table = {
             'is': operator.is_,
             'is_not': operator.is_not,
@@ -570,9 +564,20 @@ class RulesProcessor:
     def function_string_comparison(self, arguments, context):
         computed_left = self.compute(arguments['left'], context)
         comparator_name = arguments['operator']
-        comparator = self.string_comparator_table[comparator_name]
         computed_right = self.compute(arguments['right'], context)
-        return comparator(computed_left, computed_right)
+
+        if comparator_name == '=':
+            return computed_left == computed_right
+        elif comparator_name == '!=':
+            return computed_left != computed_right
+        elif comparator_name == 'contains':
+            return computed_right in computed_left
+        elif comparator_name == 'startswith':
+            return computed_left.startswith(computed_right)
+        elif comparator_name == 'endswith':
+            return computed_left.endswith(computed_right)
+        else:
+            return False
 
     def function_object_comparison(self, arguments, context):
         computed_left = self.compute(arguments['left'], context)

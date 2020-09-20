@@ -301,7 +301,9 @@
         "space": " ",
         "=": "is equal to",
         "!=": "is not equal to",
-        "contains": "contains"
+        "contains": "contains",
+        "startswith": "starts with",
+        "endswith": "ends with"
       },
       "object_comparison": {
         "name": "Object comparison",

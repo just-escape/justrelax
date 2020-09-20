@@ -1396,7 +1396,7 @@ BOOLEAN_TEMPLATES = [
                 'type': 'argument',
                 'key': 'operator',
                 'value_type': 'predefined',
-                'predefined_choices': '=,!=,contains',
+                'predefined_choices': '=,!=,contains,startswith,endswith',
                 'default_value': '"="',
             },
             {
