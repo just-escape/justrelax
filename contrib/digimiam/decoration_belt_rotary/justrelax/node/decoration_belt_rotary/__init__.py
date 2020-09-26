@@ -1,1 +1,0 @@
-from justrelax.node.decoration_belt_rotary.service import DecorationBeltRotary

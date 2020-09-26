@@ -5,7 +5,7 @@ from twisted.internet import reactor
 from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
 
 
-class Rotary:
+class Controller:
     POSITIONS = 20
 
     def __init__(self, clk_pin, dt_pin, callback):
@@ -41,7 +41,7 @@ class Rotary:
         self.task = reactor.callLater(0, self.check_delta, clk_value)
 
 
-class DecorationBeltRotary(EventCategoryToMethodMixin, JustSockClientService):
+class Rotary(EventCategoryToMethodMixin, JustSockClientService):
     class PROTOCOL:
         CATEGORY = "category"
 
@@ -49,12 +49,12 @@ class DecorationBeltRotary(EventCategoryToMethodMixin, JustSockClientService):
         POSITION = "position"
 
     def __init__(self, *args, **kwargs):
-        super(DecorationBeltRotary, self).__init__(*args, **kwargs)
+        super(Rotary, self).__init__(*args, **kwargs)
 
         clk_pin = self.node_params["clk_pin"]
         dt_pin = self.node_params["dt_pin"]
 
-        self.rotary = Rotary(clk_pin, dt_pin, self.notify_new_position)
+        self.rotary = Controller(clk_pin, dt_pin, self.notify_new_position)
 
     def notify_new_position(self, position):
         self.send_event(
