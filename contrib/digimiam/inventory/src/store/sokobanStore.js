@@ -298,6 +298,15 @@ var store = new Vuex.Store({
         store.commit('move', queuedMove)
       }
     },
+    control(state, {name, pressed}) {
+      if (pressed) {
+        if (name === 'reset') {
+          store.commit('reset')
+        } else if (["left", "right", "up", "down"].includes(name)) {
+          store.commit('move', name)
+        }
+      }
+    },
     move(state, direction) {
       if (state.animationLock) {
         return
@@ -472,13 +481,17 @@ var store = new Vuex.Store({
         state.currentBlocks[state.currentFace][i].y = state.initialBlocks[state.difficulty][state.currentFace][i].y
       }
 
-      if (state.currentFace === 'front') {
+      if (state.currentFace === 'left') {
+        // The first grid is the same for all difficulty levels
+        state.currentMarmitronPositions[state.currentFace].x = 3
+        state.currentMarmitronPositions[state.currentFace].y = 3
+      } else if (state.currentFace === 'front') {
         let initialFrontPosition = getSpecialPosition(state.currentFace, 'L')
 
         state.currentMarmitronPositions[state.currentFace].x = initialFrontPosition.x + 1
         state.currentMarmitronPositions[state.currentFace].y = initialFrontPosition.y
       } else {
-        // Current face is top, because reset is not allowed during the first grid
+        // Current face is top
         let initialFrontPosition = getSpecialPosition(state.currentFace, 'D')
 
         state.currentMarmitronPositions[state.currentFace].x = initialFrontPosition.x

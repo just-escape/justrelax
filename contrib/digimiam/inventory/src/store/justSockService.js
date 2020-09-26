@@ -76,8 +76,8 @@ const justSockService = new Vuex.Store({
         sokobanStore.commit('lockDifficulty')
       } else if (event.category === 'set_difficulty') {
         sokobanStore.commit('setDifficulty', event.difficulty)
-      } else if (event.category === 'move') {
-        sokobanStore.commit('move', event.direction)
+      } else if (event.category === 'control') {
+        sokobanStore.commit('control', {name: event.name, pressed: event.pressed})
       } else if (event.category === 'display_danger_window') {
         progressionStore.commit('displayDangerWindow')
       }
