@@ -12,11 +12,24 @@ const justSockService = new Vuex.Store({
     // eslint-disable-next-line
     SOCKET_ONOPEN (state, event) {
       Vue.prototype.$socket = event.currentTarget
+
+      let query = JSON.parse(JSON.stringify(router.app.$route.query))
+
+      let name = "street_display"
+      if (query.name !== undefined) {
+        name = query.name
+      }
+
+      let channel = "digimiam1"
+      if (query.channel !== undefined) {
+        channel = query.channel
+      }
+
       let iamMessage = {
         message_type: "IAM",
         client_type: "node",
-        channel: "digimiam1",
-        name: "street_display",
+        channel: channel,
+        name: name,
       }
       Vue.prototype.$socket.send(JSON.stringify(iamMessage))
     },
