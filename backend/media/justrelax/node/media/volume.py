@@ -63,7 +63,7 @@ class VolumeFaderMixin:
 
         def update():
             now = time.time()
-            progression = (now - t_start) * 1000 / duration
+            progression = (now - t_start) / duration
 
             nonlocal current_volume_diff
             if progression < 1:
