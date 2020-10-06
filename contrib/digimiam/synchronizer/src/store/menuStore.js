@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import justSockService from '@/store/justSockService.js'
+import progressionStore from '@/store/progressionStore.js'
 
 Vue.use(Vuex)
 
@@ -325,9 +326,7 @@ export default new Vuex.Store({
       }
 
       state.success = true
-      justSockService.commit('sendEvent', {
-        category: "menu_success"
-      })
+      progressionStore.commit("setMenuServiceSuccess")
     },
     forceSuccess (state) {
       if (state.success) {
@@ -339,9 +338,9 @@ export default new Vuex.Store({
       // TODO: notify hologram player
 
       state.success = true
-      justSockService.commit('sendEvent', {
+      /*justSockService.commit('sendEvent', {
         category: "menu_success"
-      })
+      })*/
     },
     setMenuCursorPosition (state, position) {
       state.cursorPosition = position

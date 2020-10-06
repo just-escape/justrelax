@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <svg @click="toggle" class="position-absolute" :viewBox="'0 0 ' + boxWidth + ' ' + boxHeight" :style="{width: width + 'px', top: positionY + 'px', left: positionX + 'px'}">
+    <svg class="position-absolute" :viewBox="'0 0 ' + boxWidth + ' ' + boxHeight" :style="{width: width + 'px', top: positionY + 'px', left: positionX + 'px'}">
       <defs>
         <filter :id="'mu-glowing-' + color" x="-50" y="-50" width="150" height="150">
           <feGaussianBlur result="blurOut" in="offOut" :stdDeviation="glowIntensity"/>
@@ -179,10 +179,6 @@ export default {
     }
   },
   methods: {
-    toggle() {
-      this.toggled = !this.toggled
-      lightStore.dispatch('toggleColor', {color: this.color, activated: this.toggled})
-    },
     startTriangleAnimation(triangleIndex) {
       if (!this.hideTriangles) {
         this.triangles[triangleIndex].animation.play()

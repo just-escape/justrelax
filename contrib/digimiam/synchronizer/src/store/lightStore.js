@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import difficultyStore from '@/store/difficultyStore.js'
+import progressionStore from '@/store/progressionStore.js'
 
 Vue.use(Vuex)
 
@@ -251,6 +252,8 @@ function confirmationAnimation() {
 
   timeout += 400
   setTimeout(propagateFinalAnimation, timeout)
+
+  progressionStore.commit("setLightServiceSuccess")
 }
 
 function _deactivateEdge(edgeId, callback) {
@@ -390,7 +393,7 @@ function gameOver(callback, blinkErrorAnimation) {
   for (var color in store.state.colorTriangles) {
     store.commit('hideColorTriangles', color)
   }
-  store.commit('cancenlNextActivationAnticipation')
+  store.commit('cancelNextActivationAnticipation')
 
   if (blinkErrorAnimation) {
     Vue.prototype.$anime.timeline({
@@ -1408,6 +1411,7 @@ var store = new Vuex.Store({
       pink: false,
     },
     nextActivationHelpTask: null,
+    isRestaurantInManualMode: false,
   },
   getters: {
     currentActivationEdgeId (state) {
@@ -1483,7 +1487,7 @@ var store = new Vuex.Store({
     anticipateNextActivation (state, nextVertice) {
       state.nextActivationHelpTask = setTimeout(store.commit, 2500, 'showColorTriangles', nextVertice.activationSensorId)
     },
-    cancenlNextActivationAnticipation (state) {
+    cancelNextActivationAnticipation (state) {
       clearTimeout(state.nextActivationHelpTask)
     },
     setVerticesTransparent (state) {
@@ -1567,7 +1571,14 @@ var store = new Vuex.Store({
         state.edges[edgeId].color = white
       }
     },
+    setRestaurantInManualMode(state) {
+      state.isRestaurantInManualMode = true
+    },
     toggleColor (state, {currentVertice, color, activated}) {
+      if (!state.isRestaurantInManualMode || progressionStore.state.lightServiceSuccess) {
+        return
+      }
+
       if (activated === true) {
         if (!state.activatedSensors.includes(color)) {
           state.activatedSensors.push(color)
