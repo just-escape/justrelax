@@ -7,6 +7,10 @@ HX711MULTI hx711Scales(2, HX711_DOUT_PINS, HX711_CLK);
 
 byte OUTPUT_PINS[2] = {5, 6};
 
+#define TARE_PIN 11
+bool isTarePinActivated = true;
+bool wasTarePinActivated = false;
+
 #define THRESHOLD 5
 
 void hx711_tare() {
@@ -26,6 +30,8 @@ void setup() {
         pinMode(OUTPUT_PINS[i], OUTPUT);
     }
 
+    pinMode(TARE_PIN, INPUT);
+
     delay(100);
 }
 
@@ -38,4 +44,11 @@ void loop() {
             digitalWrite(OUTPUT_PINS[i], LOW);
         }
     }
+
+    // Rising edge manual handling
+    isTarePinActivated = digitalRead(TARE_PIN);
+    if (isTarePinActivated && !wasTarePinActivated) {
+        hx711_tare();
+    }
+    wasTarePinActivated = isTarePinActivated;
 }
