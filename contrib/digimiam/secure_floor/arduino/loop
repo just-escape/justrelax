@@ -1,0 +1,77 @@
+int PIN_RED = 7;
+int PIN_GREEN = 8;
+int PIN_BLUE = 9;
+
+int RED_LVL = 10;
+int GREEN_LVL = 2;
+int BLUE_LVL = 0;
+int LUMINOSITY = 50;
+
+int red_gradiant_time= 0;
+int blue_gradiant_time= 0;
+int luminosity_gradiant_time= 0;
+
+int RED_FREQ;
+int GREEN_FREQ;
+int BLUE_FREQ;
+
+int RED_PWM;
+int GREEN_PWM;
+int BLUE_PWM;
+
+void setup() {
+  pinMode(PIN_RED, OUTPUT);
+  pinMode(PIN_GREEN, OUTPUT);
+  pinMode(PIN_BLUE, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  //Pour avoir un gradient de couleur ou de luminosité.
+  //Soit on fait varier la luminosité et on lui met 50 niveaux, soit on fait varier les couleurs et donc on met 50 niveaux sur les couleur et que 10 sur la luminosité.
+  //On ne peut pas varier les 2 en meme temps car 1000 niveaux différents est une freq trop rapide pour le processeur apres il y a pe des optis a faire pour atteindre les 1000 niveaux.
+  
+  
+  /*if(red_gradiant_time < 10){red_gradiant_time++;}
+  else{
+    if(RED_LVL==50){RED_LVL=0;}
+    else{RED_LVL++;}
+    red_gradiant_time=0;
+  }
+  if(blue_gradiant_time < 10){blue_gradiant_time++;}
+  else{
+    if(BLUE_LVL==50){BLUE_LVL=0;}
+    else{BLUE_LVL++;}
+    blue_gradiant_time=0;
+  }*/
+  if(luminosity_gradiant_time < 5){luminosity_gradiant_time++;}
+  else{
+    if(LUMINOSITY<=50){/*LUMINOSITY=0;*/}
+    else{LUMINOSITY++;}
+    luminosity_gradiant_time=0;
+  }
+
+//Je calcule la freq de chacune des couleur. Ca ne doit pas dépasser 500.
+  RED_FREQ = RED_LVL*LUMINOSITY;
+  GREEN_FREQ = GREEN_LVL*LUMINOSITY;
+  BLUE_FREQ = BLUE_LVL*LUMINOSITY;
+
+  digitalWrite(PIN_RED, HIGH);
+  digitalWrite(PIN_GREEN, HIGH);
+  digitalWrite(PIN_BLUE, HIGH);
+  
+  RED_PWM= 0;
+  GREEN_PWM= 0;
+  BLUE_PWM= 0;
+  
+  for(int ten_ms= 0 ; ten_ms < 500 ; ten_ms++) //je travaille sur une période de 10ms pour avoir du 100Hz
+  {
+    if(RED_PWM < RED_FREQ){RED_PWM++;}
+    else{digitalWrite(PIN_RED, LOW);} //pour augmenter les perf il faudrait peut être mettre le digitalwrite dans un else if et garder le else vide mais je suis pas sur ¯\_(ツ)_/¯
+    if(GREEN_PWM < GREEN_FREQ){GREEN_PWM++;}
+    else{digitalWrite(PIN_GREEN, LOW);}
+    if(BLUE_PWM < BLUE_FREQ){BLUE_PWM++;}
+    else{digitalWrite(PIN_BLUE, LOW);}
+    delayMicroseconds(20); //il y a 500 fois 20µs dans 10ms
+  }                    
+}

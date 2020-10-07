@@ -1,0 +1,7 @@
+host: localhost
+port: 3031
+
+name: secure_floor
+channel: digimiam1
+
+logging: null

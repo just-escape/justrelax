@@ -13,3 +13,9 @@
 [submodule "contrib/digimiam/cylinders/arduino/libraries/MFRC522"]
 	path = contrib/digimiam/cylinders/arduino/libraries/MFRC522
 	url = https://github.com/miguelbalboa/rfid
+[submodule "contrib/digimiam/secure_floor/arduino/libraries/HX711-multi"]
+	path = contrib/digimiam/secure_floor/arduino/libraries/HX711-multi
+	url = https://github.com/compugician/HX711-multi
+[submodule "contrib/digimiam/secure_floor/arduino/libraries/ArduinoJson"]
+	path = contrib/digimiam/secure_floor/arduino/libraries/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson
