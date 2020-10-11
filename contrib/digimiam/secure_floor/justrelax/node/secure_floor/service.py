@@ -1,3 +1,5 @@
+import time
+
 from twisted.internet import reactor
 
 from gpiozero import OutputDevice, InputDevice
@@ -79,7 +81,7 @@ class SecureFloor(EventCategoryToMethodMixin, JustSockClientService):
                 self.leds[cell['led_strip']] = 'black'
 
         # Init once we are sure the serial port will be able to receive data
-        self.reactor.callLater(3, self.set_led_color, "black", sum(self.leds.keys()))
+        reactor.callLater(3, self.set_led_color, "black", sum(self.leds.keys()))
 
     def process_serial_event(self, event):
         # Error by default because events should not be received from the arduino
@@ -112,11 +114,13 @@ class SecureFloor(EventCategoryToMethodMixin, JustSockClientService):
         logger.info("Triggering tare rising edge...")
         self.tare.on()
 
-        def event_tare_falling_edge():
-            logger.info("Triggering tare falling edge...")
-            self.tare.off()
+        # Blocking sleep (no reactor.callLater), because load cell pins will not behave deterministically during this
+        # operation. It has not a huge impact on the whole system, and this way, in the hypothetical case in which
+        # players toggle cells states (on/off), it should be transparent after the sleep.
+        time.sleep(0.5)
 
-        reactor.callLater(1, event_tare_falling_edge)
+        logger.info("Triggering tare falling edge...")
+        self.tare.off()
 
     def event_reset(self):
         logger.info("Resetting node")
@@ -135,6 +139,20 @@ class SecureFloor(EventCategoryToMethodMixin, JustSockClientService):
                         'red',
                         sum(led_strip for led_strip, led_color in self.leds.items() if led_color != 'black'))
 
+                    # If all cells are deactivated while an alarm has been raised. This case should not happen because
+                    # players are supposed to be walking on the floor to raise an alarm. But there might be corner cases
+                    # where a player extends their hand, is on a cell with no load sensor or if this event has been
+                    # triggered from the admin interface...
+                    if all(not c for c in self.cells):
+                        self.clear_alarm_task = reactor.callLater(
+                            self.clear_alarm_delay, self.event_set_status, "playing")
+
+                elif status == 'playing':
+                    self.event_set_led_color(
+                        'orange',
+                        sum(led_strip for led_strip, led_color in self.leds.items() if led_color != 'black'))
+                    self.notify_clear()
+
             else:
                 logger.info("Unknown status '{}': skipping".format(status))
         else:
@@ -145,13 +163,6 @@ class SecureFloor(EventCategoryToMethodMixin, JustSockClientService):
             logger.info("Setting node in success mode")
             self.success = True
             self.event_set_all_leds_color('white')
-
-    def _clear_alarm(self):
-        self.event_set_status('playing')
-        self.event_set_led_color(
-            'orange',
-            sum(led_strip for led_strip, led_color in self.leds.items() if led_color != 'black'))
-        self.notify_clear()
 
     def notify_clear(self):
         self.send_event({'category': 'clear'})
@@ -167,8 +178,7 @@ class SecureFloor(EventCategoryToMethodMixin, JustSockClientService):
         if self.status == 'alarm':
             if activated:
                 if self.clear_alarm_task and self.clear_alarm_task.active():
-                    logger.info("Cancelling clear alarm task")
                     self.clear_alarm_task.cancel()
             else:
                 if all(not c for c in self.cells):  # If all cells are deactivated
-                    self.clear_alarm_task = reactor.callLater(self.clear_alarm_delay, self._clear_alarm)
+                    self.clear_alarm_task = reactor.callLater(self.clear_alarm_delay, self.event_set_status, "playing")

@@ -7,15 +7,15 @@ channel: digimiam1
 node_params:
   clear_alarm_delay: 4
   load_cells:
-    tare_pin: 4
+    tare_pin: 12
     cells:
-      - pin: 6
+      - pin: 16
         led_strip: null
-      - pin: 12
+      - pin: 20
         led_strip: 1
-      - pin: 13
+      - pin: 21
         led_strip: 2
-  lights:
+  leds:
     arduino:
       port: /dev/arduino
       baud_rate: 9600
