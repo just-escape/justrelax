@@ -50,6 +50,6 @@ class SokobanControls(JustSockClientService):
                     {
                         'category': 'control',
                         'name': control['name'],
-                        'pressed': control['input'].is_presssed,
+                        'pressed': control['input'].is_pressed,
                     }
                 )
