@@ -19,6 +19,8 @@ class EmergencyExit(EventCategoryToMethodMixin, JustSockClientService):
         self.watch_emergency_button = LoopingCall(self.check_emergency_button)
         self.watch_emergency_button.start(0.01)
 
+        self.emergency_magnets = self.node_params["emergency_magnets"]
+
         self.magnets = {}
         for magnet_id, magnet_pin in self.node_params["magnet_pins"].items():
             self.magnets[magnet_id] = gpiozero.OutputDevice(magnet_pin)
@@ -42,9 +44,9 @@ class EmergencyExit(EventCategoryToMethodMixin, JustSockClientService):
 
     def event_unlock(self, magnet_id: str = None):
         if magnet_id is None:
-            logger.info("Unlocking all magnets ({})".format(", ".join(self.magnets.keys())))
-            for magnet in self.magnets.values():
-                magnet.off()
+            logger.info("Unlocking all emergency magnets ({})".format(", ".join(self.emergency_magnets)))
+            for magnet in self.emergency_magnets:
+                self.magnets[magnet].off()
         else:
             magnet = self.magnets.get(magnet_id, None)
             if magnet is None:
@@ -53,16 +55,16 @@ class EmergencyExit(EventCategoryToMethodMixin, JustSockClientService):
             logger.info("Unlocking magnet id={}".format(magnet_id))
             magnet.off()
 
-        logger.info("Scheduling a lock in {} seconds")
+        logger.info("Scheduling a lock in {} seconds".format(self.relock_delay))
         if self.lock_task and self.lock_task.active():
             self.lock_task.cancel()
         self.lock_task = callLater(self.relock_delay, self.event_lock)
 
     def event_lock(self, magnet_id: str = None):
         if magnet_id is None:
-            logger.info("Locking all magnets ({})".format(", ".join(self.magnets.keys())))
-            for magnet in self.magnets.values():
-                magnet.on()
+            logger.info("Locking all emergency magnets ({})".format(", ".join(self.emergency_magnets)))
+            for magnet in self.emergency_magnets:
+                self.magnets[magnet].on()
 
         else:
             magnet = self.magnets.get(magnet_id, None)
