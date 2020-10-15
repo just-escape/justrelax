@@ -62,9 +62,9 @@ class EmergencyExit(EventCategoryToMethodMixin, JustSockClientService):
 
     def event_lock(self, magnet_id: str = None):
         if magnet_id is None:
-            logger.info("Locking all emergency magnets ({})".format(", ".join(self.emergency_magnets)))
-            for magnet in self.emergency_magnets:
-                self.magnets[magnet].on()
+            logger.info("Locking all magnets ({})".format(", ".join(self.magnets.keys())))
+            for magnet in self.magnets.values():
+                magnet.on()
 
         else:
             magnet = self.magnets.get(magnet_id, None)
