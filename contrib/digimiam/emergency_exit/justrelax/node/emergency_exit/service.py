@@ -42,7 +42,7 @@ class EmergencyExit(EventCategoryToMethodMixin, JustSockClientService):
 
         self.is_emergency_button_held = self.emergency_button.is_held
 
-    def event_unlock(self, magnet_id: str = None):
+    def event_unlock(self, magnet_id: str = None, relock: bool = False):
         if magnet_id is None:
             logger.info("Unlocking all emergency magnets ({})".format(", ".join(self.emergency_magnets)))
             for magnet in self.emergency_magnets:
@@ -55,10 +55,11 @@ class EmergencyExit(EventCategoryToMethodMixin, JustSockClientService):
             logger.info("Unlocking magnet id={}".format(magnet_id))
             magnet.off()
 
-        logger.info("Scheduling a lock in {} seconds".format(self.relock_delay))
-        if self.lock_task and self.lock_task.active():
-            self.lock_task.cancel()
-        self.lock_task = callLater(self.relock_delay, self.event_lock)
+        if relock:
+            logger.info("Scheduling a lock in {} seconds".format(self.relock_delay))
+            if self.lock_task and self.lock_task.active():
+                self.lock_task.cancel()
+            self.lock_task = callLater(self.relock_delay, self.event_lock, magnet_id)
 
     def event_lock(self, magnet_id: str = None):
         if magnet_id is None:
