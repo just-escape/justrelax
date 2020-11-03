@@ -10,7 +10,7 @@
 #define PROTOCOL_LED_SET_COLOR_WHITE "w"
 #define PROTOCOL_LED_STRIP_BIT_MASK "s"
 
-#define N_STRIPS
+#define N_STRIPS 2
 
 byte LIGHT_RGB_PINS[N_STRIPS][3] = {{52, 50, 48}, {46, 44, 42}};
 float light_rgb_pwm[N_STRIPS][3] = {{0, 0, 0}, {0, 0, 0}};
