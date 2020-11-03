@@ -3,14 +3,177 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const cornerTopLeft = {
+  type: 'wall',
+  texture: require('@/assets/img/corner-top-left.png'),
+}
+
+const cornerTopRight = {
+  type: 'wall',
+  texture: require('@/assets/img/corner-top-right.png'),
+}
+
+const cornerBottomRight = {
+  type: 'wall',
+  texture: require('@/assets/img/corner-bottom-right.png'),
+}
+
+const cornerBottomLeft = {
+  type: 'wall',
+  texture: require('@/assets/img/corner-bottom-left.png'),
+}
+
+/*const iCornerTopLeft = {
+  type: 'wall',
+  texture: require('@/assets/img/inner-corner-top-left.png'),
+}
+
+const iCornerTopRight = {
+  type: 'wall',
+  texture: require('@/assets/img/inner-corner-top-right.png'),
+}
+
+const iCornerBottomRight = {
+  type: 'wall',
+  texture: require('@/assets/img/inner-corner-bottom-right.png'),
+}
+
+const iCornerBottomLeft = {
+  type: 'wall',
+  texture: require('@/assets/img/inner-corner-bottom-left.png'),
+}*/
+
+const wallTop = {
+  type: 'wall',
+  texture: require('@/assets/img/wall-top.png'),
+}
+
+const wallLeft = {
+  type: 'wall',
+  texture: require('@/assets/img/wall-left.png'),
+}
+
+const wallRight = {
+  type: 'wall',
+  texture: require('@/assets/img/wall-right.png'),
+}
+
+const wallBottom = {
+  type: 'wall',
+  texture: require('@/assets/img/wall-bottom.png'),
+}
+
+const gateTop = {
+  type: 'gate-top',
+  texture: require('@/assets/img/gate-top.png'),
+  animatedTexture: require('@/assets/img/gate-top.gif'),
+}
+
+const gateLeft = {
+  type: 'gate-left',
+  texture: require('@/assets/img/gate-left.png'),
+  animatedTexture: require('@/assets/img/gate-left.gif'),
+}
+
+const gateRight = {
+  type: 'gate-right',
+  texture: require('@/assets/img/gate-right.png'),
+  animatedTexture: require('@/assets/img/gate-right.gif'),
+}
+
+const gateBottom = {
+  type: 'gate-bottom',
+  texture: require('@/assets/img/gate-bottom.png'),
+  animatedTexture: require('@/assets/img/gate-bottom.gif'),
+}
+
+const column = {
+  type: 'wall',
+  texture: require('@/assets/img/column.png'),
+}
+
+const wall = {
+  type: 'wall',
+  texture: require('@/assets/img/wall.png'),
+}
+
+const floor = {
+  type: 'floor',
+  texture: require('@/assets/img/floor.png'),
+}
+
+const chamber0 = {
+  type: 'chamber',
+  id: 0,
+  texture: require('@/assets/img/chamber.png'),
+  successTexture: require('@/assets/img/cylinder.gif'),
+  foodTexture: require('@/assets/img/cinnamon.gif'),
+}
+
+const chamber1 = {
+  type: 'chamber',
+  id: 1,
+  texture: require('@/assets/img/chamber.png'),
+  successTexture: require('@/assets/img/cylinder.gif'),
+  foodTexture: require('@/assets/img/cinnamon-1.gif'),
+}
+
+const chamber2 = {
+  type: 'chamber',
+  id: 2,
+  texture: require('@/assets/img/chamber.png'),
+  successTexture: require('@/assets/img/cylinder.gif'),
+  foodTexture: require('@/assets/img/cinnamon-2.gif'),
+}
+
+const chamber3 = {
+  type: 'chamber',
+  id: 3,
+  texture: require('@/assets/img/chamber.png'),
+  successTexture: require('@/assets/img/cylinder.gif'),
+  foodTexture: require('@/assets/img/cinnamon-3.gif'),
+}
+
+const chamber4 = {
+  type: 'chamber',
+  id: 4,
+  texture: require('@/assets/img/chamber.png'),
+  successTexture: require('@/assets/img/cylinder.gif'),
+  foodTexture: require('@/assets/img/cinnamon-4.gif'),
+}
+
+const chamber5 = {
+  type: 'chamber',
+  id: 5,
+  texture: require('@/assets/img/chamber.png'),
+  successTexture: require('@/assets/img/cylinder.gif'),
+  foodTexture: require('@/assets/img/cinnamon-5.gif'),
+}
+
+const chamber6 = {
+  type: 'chamber',
+  id: 6,
+  texture: require('@/assets/img/chamber.png'),
+  successTexture: require('@/assets/img/cylinder.gif'),
+  foodTexture: require('@/assets/img/cinnamon-6.gif'),
+}
+
+const chamber7 = {
+  type: 'chamber',
+  id: 7,
+  texture: require('@/assets/img/chamber.png'),
+  successTexture: require('@/assets/img/cylinder.gif'),
+  foodTexture: require('@/assets/img/cinnamon-7.gif'),
+}
+
 const INITIAL_GRID_TUTORIAL_1 = [
-  'WWWWW1W',
-  'W.....R',
-  'W.W.W.W',
-  'W.....W',
-  'W.W.W.W',
-  'W.....0',
-  'WWWWWWW',
+  [cornerTopLeft,     wallTop,      wallTop,      wallTop,      wallTop,      chamber1,     cornerTopRight],
+  [wallLeft,          floor,        floor,        floor,        floor,        floor,        gateRight],
+  [wallLeft,          floor,        column,       floor,        column,       floor,        wallRight],
+  [wallLeft,          floor,        floor,        floor,        floor,        floor,        wallRight],
+  [wallLeft,          floor,        column,       floor,        column,       floor,        wallRight],
+  [wallLeft,          floor,        floor,        floor,        floor,        floor,        chamber0],
+  [cornerBottomLeft,  wallBottom,   wallBottom,   wallBottom,   wallBottom,   wallBottom,   cornerBottomRight],
 ]
 
 const INITIAL_BLOCKS_TUTORIAL_1 = [
@@ -25,23 +188,23 @@ const INITIAL_BLOCKS_TUTORIAL_1 = [
 ]
 
 const INITIAL_GRID_TUTORIAL_1_LOWER_PASSAGE = [
-  'WWWWW1W',
-  'W.....W',
-  'W.W.W.W',
-  'W.....R',
-  'W.W.W.W',
-  'W.....0',
-  'WWWWWWW',
+  [cornerTopLeft,     wallTop,      wallTop,      wallTop,      wallTop,      chamber1,     cornerTopRight],
+  [wallLeft,          floor,        floor,        floor,        floor,        floor,        wallRight],
+  [wallLeft,          floor,        column,       floor,        column,       floor,        wallRight],
+  [wallLeft,          floor,        floor,        floor,        floor,        floor,        gateRight],
+  [wallLeft,          floor,        column,       floor,        column,       floor,        wallRight],
+  [wallLeft,          floor,        floor,        floor,        floor,        floor,        chamber0],
+  [cornerBottomLeft,  wallBottom,   wallBottom,   wallBottom,   wallBottom,   wallBottom,   cornerBottomRight],
 ]
 
 const INITIAL_GRID_TUTORIAL_2 = [
-  'WWWUWWW',
-  'L.....W',
-  'W..W4.W',
-  'W..3..W',
-  'W.2W..W',
-  'W.....W',
-  'WWWWWWW',
+  [cornerTopLeft,     wallTop,      wallTop,      gateTop,      wallTop,      wallTop,      cornerTopRight],
+  [gateLeft,          floor,        floor,        floor,        floor,        floor,        wallRight],
+  [wallLeft,          floor,        floor,        column,       chamber4,     floor,        wallRight],
+  [wallLeft,          floor,        floor,        chamber3,     floor,        floor,        wallRight],
+  [wallLeft,          floor,        chamber2,     column,       floor,        floor,        wallRight],
+  [wallLeft,          floor,        floor,        floor,        floor,        floor,        wallRight],
+  [cornerBottomLeft,  wallBottom,   wallBottom,   wallBottom,   wallBottom,   wallBottom,   cornerBottomRight],
 ]
 
 const INITIAL_BLOCKS_TUTORIAL_2 = [
@@ -60,13 +223,13 @@ const INITIAL_BLOCKS_TUTORIAL_2 = [
 ]
 
 const INITIAL_GRID_SOKOGEN_4_ROTATE_180 = [
-  'WWWWWWW',
-  'WW.4.WW',
-  'W..3..W',
-  'W..2..W',
-  'W..W..W',
-  'WW...WW',
-  'WWWDWWW',
+  [cornerTopLeft,     wallTop,            wallTop,      wallTop,      wallTop,      wallTop,            cornerTopRight],
+  [wallLeft,          wall,               floor,        chamber7,     floor,        wall,               wallRight],
+  [wallLeft,          floor,              floor,        chamber6,     floor,        floor,              wallRight],
+  [wallLeft,          floor,              floor,        chamber5,     floor,        floor,              wallRight],
+  [wallLeft,          floor,              floor,        column,       floor,        floor,              wallRight],
+  [wallLeft,          wall,               floor,        floor,        floor,        wall,               wallRight],
+  [cornerBottomLeft,  wallBottom,         wallBottom,   gateBottom,   wallBottom,   wallBottom,         cornerBottomRight],
 ]
 
 const INITIAL_BLOCKS_SOKOGEN_4_ROTATE_180 = [
@@ -85,13 +248,13 @@ const INITIAL_BLOCKS_SOKOGEN_4_ROTATE_180 = [
 ]
 
 const INITIAL_GRID_SOKOGEN_4_ROTATE_270 = [
-  'WWWUWWW',
-  'WW...WW',
-  'W.....W',
-  'L.W234W',
-  'W.....W',
-  'WW...WW',
-  'WWWWWWW',
+  [cornerTopLeft,     wallTop,            wallTop,      gateTop,      wallTop,      wallTop,            cornerTopRight],
+  [wallLeft,          wall,               floor,        floor,        floor,        wall,               wallRight],
+  [wallLeft,          floor,              floor,        floor,        floor,        floor,              wallRight],
+  [gateLeft,          floor,              column,       chamber2,     chamber3,     chamber4,           wallRight],
+  [wallLeft,          floor,              floor,        floor,        floor,        floor,              wallRight],
+  [wallLeft,          wall,               floor,        floor,        floor,        wall,               wallRight],
+  [cornerBottomLeft,  wallBottom,         wallBottom,   wallBottom,   wallBottom,   wallBottom,         cornerBottomRight],
 ]
 
 const INITIAL_BLOCKS_SOKOGEN_4_ROTATE_270 = [
@@ -110,13 +273,13 @@ const INITIAL_BLOCKS_SOKOGEN_4_ROTATE_270 = [
 ]
 
 const INITIAL_GRID_SOKOGEN_11 = [
-  'WWWWWWW',
-  'W...WWW',
-  'W.W.WWW',
-  'W56...W',
-  'W..W..W',
-  'W....7W',
-  'WWWDWWW',
+  [cornerTopLeft,     wallTop,    wallTop,      wallTop,      wallTop,          wallTop,    cornerTopRight],
+  [wallLeft,          floor,      floor,        floor,        wall,             wall,       wallRight],
+  [wallLeft,          floor,      column,       floor,        wall,             wall,       wallRight],
+  [wallLeft,          chamber5,   chamber6,     floor,        floor,            floor,      wallRight],
+  [wallLeft,          floor,      floor,        column,       floor,            floor,      wallRight],
+  [wallLeft,          floor,      floor,        floor,        floor,            chamber7,   wallRight],
+  [cornerBottomLeft,  wallBottom, wallBottom,   gateBottom,   wallBottom,       wallBottom, cornerBottomRight],
 ]
 
 const INITIAL_BLOCKS_SOKOGEN_11 = [
@@ -135,13 +298,13 @@ const INITIAL_BLOCKS_SOKOGEN_11 = [
 ]
 
 const INITIAL_GRID_SOKOGEN_11_UPSIDE_DOWN = [
-  'WWWWUWW',
-  'L....4W',
-  'W..W..W',
-  'W23...W',
-  'W.W.WWW',
-  'W...WWW',
-  'WWWWWWW',
+  [cornerTopLeft,     wallTop,    wallTop,      gateTop,      wallTop,            wallTop,          cornerTopRight],
+  [gateLeft,          floor,      floor,        floor,        floor,              chamber4,         wallRight],
+  [wallLeft,          floor,      floor,        column,       floor,              floor,            wallRight],
+  [wallLeft,          chamber2,   chamber3,     floor,        floor,              floor,            wallRight],
+  [wallLeft,          floor,      column,       floor,        wall,               wall,             wallRight],
+  [wallLeft,          floor,      floor,        floor,        wall,               wall,             wallRight],
+  [cornerBottomLeft,  wallBottom, wallBottom,   wallBottom,   wallBottom,         wallBottom,       cornerBottomRight],
 ]
 
 const INITIAL_BLOCKS_SOKOGEN_11_UPSIDE_DOWN = [
@@ -160,13 +323,13 @@ const INITIAL_BLOCKS_SOKOGEN_11_UPSIDE_DOWN = [
 ]
 
 const INITIAL_GRID_SOKOGEN_28 = [
-  'WWWWWWW',
-  'W...WWW',
-  'W.W.WWW',
-  'W7....W',
-  'W6..W.W',
-  'W..5..W',
-  'WWWWDWW',
+  [cornerTopLeft,     wallTop,    wallTop,      wallTop,      wallTop,          wallTop,    cornerTopRight],
+  [wallLeft,          floor,      floor,        floor,        wall,             wall,       wallRight],
+  [wallLeft,          floor,      column,       floor,        wall,             wall,       wallRight],
+  [wallLeft,          chamber7,   floor,        floor,        floor,            floor,      wallRight],
+  [wallLeft,          chamber6,   floor,        floor,        column,           floor,      wallRight],
+  [wallLeft,          floor,      floor,        chamber5,     floor,            floor,      wallRight],
+  [cornerBottomLeft,  wallBottom, wallBottom,   wallBottom,   gateBottom,       wallBottom, cornerBottomRight],
 ]
 
 const INITIAL_BLOCKS_SOKOGEN_28 = [
@@ -243,6 +406,11 @@ var store = new Vuex.Store({
         y: 0,
         exist: false,
       },
+    },
+    faceAnimationFlags: {
+      left: [],
+      front: [],
+      top: [],
     },
     currentFace: 'left',
     currentLevel: 0,
@@ -376,17 +544,28 @@ var store = new Vuex.Store({
       if (state.currentLevel === 0) {
         if (checkSuccess("left")) {
           state.animationLock = true
-          setTimeout(store.commit, 1000, "setCurrentLevel", 1)
+          setTimeout(store.commit, 1000, "addFaceAnimationFlag", {face: "left", flag: "turnCylinders"})
+          setTimeout(store.commit, 3000, "addFaceAnimationFlag", {face: "left", flag: "displayFood"})
+          setTimeout(store.commit, 4500, "addFaceAnimationFlag", {face: "left", flag: "displayChamberIds"})
+          setTimeout(store.commit, 5500, "addFaceAnimationFlag", {face: "left", flag: "activateGates"})
+          setTimeout(store.commit, 5500, "setCurrentLevel", 1)
         }
       } else if (state.currentLevel === 1) {
         if (checkSuccess("front")) {
           state.animationLock = true
-          setTimeout(store.commit, 1000, "setCurrentLevel", 2)
+          setTimeout(store.commit, 1000, "addFaceAnimationFlag", {face: "front", flag: "turnCylinders"})
+          setTimeout(store.commit, 3000, "addFaceAnimationFlag", {face: "front", flag: "displayFood"})
+          setTimeout(store.commit, 4500, "addFaceAnimationFlag", {face: "front", flag: "displayChamberIds"})
+          setTimeout(store.commit, 5500, "addFaceAnimationFlag", {face: "front", flag: "activateGates"})
+          setTimeout(store.commit, 5500, "setCurrentLevel", 2)
         }
       } else if (state.currentLevel === 2 && state.success === false) {
         if (checkSuccess("top")) {
           state.animationLock = true
-          setTimeout(store.commit, 1000, "success")
+          setTimeout(store.commit, 1000, "addFaceAnimationFlag", {face: "top", flag: "turnCylinders"})
+          setTimeout(store.commit, 3000, "addFaceAnimationFlag", {face: "top", flag: "displayFood"})
+          setTimeout(store.commit, 4500, "addFaceAnimationFlag", {face: "top", flag: "displayChamberIds"})
+          setTimeout(store.commit, 5500, "success")
         }
       }
 
@@ -398,6 +577,9 @@ var store = new Vuex.Store({
         state.currentLevel = level
       }
     },
+    addFaceAnimationFlag(state, {face, flag}) {
+      state.faceAnimationFlags[face].push(flag)
+    },
     success(state) {
       if (state.success === false) {
         state.animationLock = false
@@ -408,37 +590,37 @@ var store = new Vuex.Store({
       let marmitronX = state.currentMarmitronPositions[state.currentFace].x
       let marmitronY = state.currentMarmitronPositions[state.currentFace].y
 
-      if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX] === 'R') {
+      if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX].type === 'gate-right') {
         state.animationLock = true
 
-        let passageDestinationPosition = getSpecialPosition('front', 'L')
+        let passageDestinationPosition = getSpecialPosition('front', 'gate-left')
         state.currentMarmitronPositions.front.x = passageDestinationPosition.x
         state.currentMarmitronPositions.front.y = passageDestinationPosition.y
         state.currentMarmitronPositions.front.exist = true
 
         setTimeout(store.commit, 400, "setFace", 'front')
-      } else if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX] === 'L') {
+      } else if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX].type === 'gate-left') {
         state.animationLock = true
 
-        let passageDestinationPosition = getSpecialPosition('left', 'R')
+        let passageDestinationPosition = getSpecialPosition('left', 'gate-right')
         state.currentMarmitronPositions.left.x = passageDestinationPosition.x
         state.currentMarmitronPositions.left.y = passageDestinationPosition.y
         state.currentMarmitronPositions.left.exist = true
 
         setTimeout(store.commit, 400, "setFace", 'left')
-      } else if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX] === 'U') {
+      } else if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX].type === 'gate-top') {
         state.animationLock = true
 
-        let passageDestinationPosition = getSpecialPosition('top', 'D')
+        let passageDestinationPosition = getSpecialPosition('top', 'gate-bottom')
         state.currentMarmitronPositions.top.x = passageDestinationPosition.x
         state.currentMarmitronPositions.top.y = passageDestinationPosition.y
         state.currentMarmitronPositions.top.exist = true
 
         setTimeout(store.commit, 400, "setFace", 'top')
-      } else if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX] === 'D') {
+      } else if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX].type === 'gate-bottom') {
         state.animationLock = true
 
-        let passageDestinationPosition = getSpecialPosition('front', 'U')
+        let passageDestinationPosition = getSpecialPosition('front', 'gate-top')
         state.currentMarmitronPositions.front.x = passageDestinationPosition.x
         state.currentMarmitronPositions.front.y = passageDestinationPosition.y
         state.currentMarmitronPositions.front.exist = true
@@ -486,13 +668,13 @@ var store = new Vuex.Store({
         state.currentMarmitronPositions[state.currentFace].x = 3
         state.currentMarmitronPositions[state.currentFace].y = 3
       } else if (state.currentFace === 'front') {
-        let initialFrontPosition = getSpecialPosition(state.currentFace, 'L')
+        let initialFrontPosition = getSpecialPosition(state.currentFace, 'gate-left')
 
         state.currentMarmitronPositions[state.currentFace].x = initialFrontPosition.x + 1
         state.currentMarmitronPositions[state.currentFace].y = initialFrontPosition.y
       } else {
         // Current face is top
-        let initialFrontPosition = getSpecialPosition(state.currentFace, 'D')
+        let initialFrontPosition = getSpecialPosition(state.currentFace, 'gate-bottom')
 
         state.currentMarmitronPositions[state.currentFace].x = initialFrontPosition.x
         state.currentMarmitronPositions[state.currentFace].y = initialFrontPosition.y - 1
@@ -504,7 +686,7 @@ var store = new Vuex.Store({
 function getSpecialPosition(face, passage) {
   for (var i = 0 ; i < store.state.grids[store.state.difficulty][face].length ; i++) {
     for (var j = 0 ; j < store.state.grids[store.state.difficulty][face][i].length ; j++) {
-      if (store.state.grids[store.state.difficulty][face][i][j] === passage) {
+      if (store.state.grids[store.state.difficulty][face][i][j].type === passage) {
         return {x: j, y: i}
       }
     }
@@ -523,17 +705,17 @@ function isWalkableAt(x, y, direction, walkablePassages) {
     return false
   }
 
-  let cellContent = store.state.grids[store.state.difficulty][store.state.currentFace][y][x]
+  let cellType = store.state.grids[store.state.difficulty][store.state.currentFace][y][x].type
 
-  if (cellContent === 'W') {
+  if (cellType === 'wall') {
     return false
   }
 
-  if (cellContent === 'R') {
+  if (cellType === 'gate-right') {
     return walkablePassages && store.state.currentLevel >= 1
-  } else if (cellContent === 'U') {
+  } else if (cellType === 'gate-top') {
     return walkablePassages && store.state.currentLevel >= 2
-  } else if (cellContent === 'L' || cellContent === 'D') {
+  } else if (cellType === 'gate-left' || cellType === 'gate-bottom') {
     return walkablePassages
   }
 
@@ -576,7 +758,7 @@ function moveBlockIfExist(xOrig, yOrig, xDestination, yDestination) {
 
 function checkSuccess(face) {
   for (var block of store.state.currentBlocks[face]) {
-    if (!['0', '1', '2', '3', '4', '5', '6', '7'].includes(store.state.grids[store.state.difficulty][store.state.currentFace][block.y][block.x])) {
+    if (store.state.grids[store.state.difficulty][store.state.currentFace][block.y][block.x].type != 'chamber') {
       return false
     }
   }
