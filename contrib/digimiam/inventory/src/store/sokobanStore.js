@@ -23,25 +23,25 @@ const cornerBottomLeft = {
   texture: require('@/assets/img/corner-bottom-left.png'),
 }
 
-/*const iCornerTopLeft = {
+const angleTopLeft = {
   type: 'wall',
-  texture: require('@/assets/img/inner-corner-top-left.png'),
+  texture: require('@/assets/img/angle-top-left.png'),
 }
 
-const iCornerTopRight = {
+const angleTopRight = {
   type: 'wall',
-  texture: require('@/assets/img/inner-corner-top-right.png'),
+  texture: require('@/assets/img/angle-top-right.png'),
 }
 
-const iCornerBottomRight = {
+const angleBottomRight = {
   type: 'wall',
-  texture: require('@/assets/img/inner-corner-bottom-right.png'),
+  texture: require('@/assets/img/angle-bottom-right.png'),
 }
 
-const iCornerBottomLeft = {
+const angleBottomLeft = {
   type: 'wall',
-  texture: require('@/assets/img/inner-corner-bottom-left.png'),
-}*/
+  texture: require('@/assets/img/angle-bottom-left.png'),
+}
 
 const wallTop = {
   type: 'wall',
@@ -106,64 +106,64 @@ const chamber0 = {
   type: 'chamber',
   id: 0,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/cylinder.gif'),
-  foodTexture: require('@/assets/img/cinnamon.gif'),
+  successTexture: require('@/assets/img/chamber.gif'),
+  foodTexture: require('@/assets/img/cinnamon.png'),
 }
 
 const chamber1 = {
   type: 'chamber',
   id: 1,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/cylinder.gif'),
-  foodTexture: require('@/assets/img/cinnamon-1.gif'),
+  successTexture: require('@/assets/img/chamber.gif'),
+  foodTexture: require('@/assets/img/coffee.png'),
 }
 
 const chamber2 = {
   type: 'chamber',
   id: 2,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/cylinder.gif'),
-  foodTexture: require('@/assets/img/cinnamon-2.gif'),
+  successTexture: require('@/assets/img/chamber.gif'),
+  foodTexture: require('@/assets/img/mint.png'),
 }
 
 const chamber3 = {
   type: 'chamber',
   id: 3,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/cylinder.gif'),
-  foodTexture: require('@/assets/img/cinnamon-3.gif'),
+  successTexture: require('@/assets/img/chamber.gif'),
+  foodTexture: require('@/assets/img/curry.png'),
 }
 
 const chamber4 = {
   type: 'chamber',
   id: 4,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/cylinder.gif'),
-  foodTexture: require('@/assets/img/cinnamon-4.gif'),
+  successTexture: require('@/assets/img/chamber.gif'),
+  foodTexture: require('@/assets/img/potatoe.png'),
 }
 
 const chamber5 = {
   type: 'chamber',
   id: 5,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/cylinder.gif'),
-  foodTexture: require('@/assets/img/cinnamon-5.gif'),
+  successTexture: require('@/assets/img/chamber.gif'),
+  foodTexture: require('@/assets/img/beer.png'),
 }
 
 const chamber6 = {
   type: 'chamber',
   id: 6,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/cylinder.gif'),
-  foodTexture: require('@/assets/img/cinnamon-6.gif'),
+  successTexture: require('@/assets/img/chamber.gif'),
+  foodTexture: require('@/assets/img/insect.png'),
 }
 
 const chamber7 = {
   type: 'chamber',
   id: 7,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/cylinder.gif'),
-  foodTexture: require('@/assets/img/cinnamon-7.gif'),
+  successTexture: require('@/assets/img/chamber.gif'),
+  foodTexture: require('@/assets/img/jelly.png'),
 }
 
 const INITIAL_GRID_TUTORIAL_1 = [
@@ -223,13 +223,13 @@ const INITIAL_BLOCKS_TUTORIAL_2 = [
 ]
 
 const INITIAL_GRID_SOKOGEN_4_ROTATE_180 = [
-  [cornerTopLeft,     wallTop,            wallTop,      wallTop,      wallTop,      wallTop,            cornerTopRight],
-  [wallLeft,          wall,               floor,        chamber7,     floor,        wall,               wallRight],
+  [wall,              cornerTopLeft,      wallTop,      wallTop,      wallTop,      cornerTopRight,     wall],
+  [cornerTopLeft,     angleTopLeft,       floor,        chamber7,     floor,        angleTopRight,      cornerTopRight],
   [wallLeft,          floor,              floor,        chamber6,     floor,        floor,              wallRight],
   [wallLeft,          floor,              floor,        chamber5,     floor,        floor,              wallRight],
   [wallLeft,          floor,              floor,        column,       floor,        floor,              wallRight],
-  [wallLeft,          wall,               floor,        floor,        floor,        wall,               wallRight],
-  [cornerBottomLeft,  wallBottom,         wallBottom,   gateBottom,   wallBottom,   wallBottom,         cornerBottomRight],
+  [cornerBottomLeft,  angleBottomLeft,    floor,        floor,        floor,        angleBottomRight,   cornerBottomRight],
+  [wall,              cornerBottomLeft,   wallBottom,   gateBottom,   wallBottom,   cornerBottomRight,  wall],
 ]
 
 const INITIAL_BLOCKS_SOKOGEN_4_ROTATE_180 = [
@@ -248,13 +248,13 @@ const INITIAL_BLOCKS_SOKOGEN_4_ROTATE_180 = [
 ]
 
 const INITIAL_GRID_SOKOGEN_4_ROTATE_270 = [
-  [cornerTopLeft,     wallTop,            wallTop,      gateTop,      wallTop,      wallTop,            cornerTopRight],
-  [wallLeft,          wall,               floor,        floor,        floor,        wall,               wallRight],
-  [wallLeft,          floor,              floor,        floor,        floor,        floor,              wallRight],
-  [gateLeft,          floor,              column,       chamber2,     chamber3,     chamber4,           wallRight],
-  [wallLeft,          floor,              floor,        floor,        floor,        floor,              wallRight],
-  [wallLeft,          wall,               floor,        floor,        floor,        wall,               wallRight],
-  [cornerBottomLeft,  wallBottom,         wallBottom,   wallBottom,   wallBottom,   wallBottom,         cornerBottomRight],
+  [wall,              cornerTopLeft,    wallTop,      gateTop,      wallTop,      cornerTopRight,     wall],
+  [cornerTopLeft,     angleTopLeft,     floor,        floor,        floor,        angleTopRight,      cornerTopRight],
+  [wallLeft,          floor,            floor,        floor,        floor,        floor,              wallRight],
+  [gateLeft,          floor,            column,       chamber2,     chamber3,     chamber4,           wallRight],
+  [wallLeft,          floor,            floor,        floor,        floor,        floor,              wallRight],
+  [cornerBottomLeft,  angleBottomLeft,  floor,        floor,        floor,        angleBottomRight,   cornerBottomRight],
+  [wall,              cornerBottomLeft, wallBottom,   wallBottom,   wallBottom,   cornerBottomRight,  wall],
 ]
 
 const INITIAL_BLOCKS_SOKOGEN_4_ROTATE_270 = [
@@ -273,9 +273,9 @@ const INITIAL_BLOCKS_SOKOGEN_4_ROTATE_270 = [
 ]
 
 const INITIAL_GRID_SOKOGEN_11 = [
-  [cornerTopLeft,     wallTop,    wallTop,      wallTop,      wallTop,          wallTop,    cornerTopRight],
-  [wallLeft,          floor,      floor,        floor,        wall,             wall,       wallRight],
-  [wallLeft,          floor,      column,       floor,        wall,             wall,       wallRight],
+  [cornerTopLeft,     wallTop,    wallTop,      wallTop,      cornerTopRight,   wall,       wall],
+  [wallLeft,          floor,      floor,        floor,        wallRight,        wall,       wall],
+  [wallLeft,          floor,      column,       floor,        angleTopRight,    wallTop,    cornerTopRight],
   [wallLeft,          chamber5,   chamber6,     floor,        floor,            floor,      wallRight],
   [wallLeft,          floor,      floor,        column,       floor,            floor,      wallRight],
   [wallLeft,          floor,      floor,        floor,        floor,            chamber7,   wallRight],
@@ -298,13 +298,13 @@ const INITIAL_BLOCKS_SOKOGEN_11 = [
 ]
 
 const INITIAL_GRID_SOKOGEN_11_UPSIDE_DOWN = [
-  [cornerTopLeft,     wallTop,    wallTop,      gateTop,      wallTop,            wallTop,          cornerTopRight],
-  [gateLeft,          floor,      floor,        floor,        floor,              chamber4,         wallRight],
-  [wallLeft,          floor,      floor,        column,       floor,              floor,            wallRight],
-  [wallLeft,          chamber2,   chamber3,     floor,        floor,              floor,            wallRight],
-  [wallLeft,          floor,      column,       floor,        wall,               wall,             wallRight],
-  [wallLeft,          floor,      floor,        floor,        wall,               wall,             wallRight],
-  [cornerBottomLeft,  wallBottom, wallBottom,   wallBottom,   wallBottom,         wallBottom,       cornerBottomRight],
+  [cornerTopLeft,     wallTop,    wallTop,      wallTop,      gateTop,            wallTop,      cornerTopRight],
+  [gateLeft,          floor,      floor,        floor,        floor,              chamber4,     wallRight],
+  [wallLeft,          floor,      floor,        column,       floor,              floor,        wallRight],
+  [wallLeft,          chamber2,   chamber3,     floor,        floor,              floor,        wallRight],
+  [wallLeft,          floor,      column,       floor,        angleBottomRight,   wallBottom,   cornerBottomRight],
+  [wallLeft,          floor,      floor,        floor,        wallRight,          wall,         wall],
+  [cornerBottomLeft,  wallBottom, wallBottom,   wallBottom,   cornerBottomRight,  wall,         wall],
 ]
 
 const INITIAL_BLOCKS_SOKOGEN_11_UPSIDE_DOWN = [
@@ -323,9 +323,9 @@ const INITIAL_BLOCKS_SOKOGEN_11_UPSIDE_DOWN = [
 ]
 
 const INITIAL_GRID_SOKOGEN_28 = [
-  [cornerTopLeft,     wallTop,    wallTop,      wallTop,      wallTop,          wallTop,    cornerTopRight],
-  [wallLeft,          floor,      floor,        floor,        wall,             wall,       wallRight],
-  [wallLeft,          floor,      column,       floor,        wall,             wall,       wallRight],
+  [cornerTopLeft,     wallTop,    wallTop,      wallTop,      cornerTopRight,   wall,       wall],
+  [wallLeft,          floor,      floor,        floor,        wallRight,        wall,       wall],
+  [wallLeft,          floor,      column,       floor,        angleTopRight,    wallTop,    cornerTopRight],
   [wallLeft,          chamber7,   floor,        floor,        floor,            floor,      wallRight],
   [wallLeft,          chamber6,   floor,        floor,        column,           floor,      wallRight],
   [wallLeft,          floor,      floor,        chamber5,     floor,            floor,      wallRight],

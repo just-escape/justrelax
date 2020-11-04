@@ -3,7 +3,8 @@
     <img :src="texture" class="img-fluid"/>
     <img
       v-if="isChamber"
-      class="position-absolute top-left img-fluid transition-1s"
+      class="position-absolute img-fluid top-left"
+      :style="{transform: foodTextureTransform}"
       :src="foodTexture"
     />
     <span
@@ -22,6 +23,14 @@ import sokobanStore from '@/store/sokobanStore.js'
 
 export default {
   name: "Cell",
+  data() {
+    return {
+      foodTextureStyle: {
+        scaleX: 0,
+        scaleY: 0,
+      }
+    }
+  },
   computed: {
     areCylindersMobile() {
       return !sokobanStore.state.faceAnimationFlags[this.face].includes("turnCylinders")
@@ -41,8 +50,11 @@ export default {
     isChamber() {
       return this.cell.type === 'chamber'
     },
+    foodTextureTransform() {
+      return "scaleX(" + this.foodTextureStyle.scaleX + ") scaleY(" + this.foodTextureStyle.scaleY + ")"
+    },
     foodTexture() {
-      return this.isFoodDisplayed ? this.cell.foodTexture : ""
+      return this.isChamber ? this.cell.foodTexture : ""
     },
     chamberIdOpacity() {
       return this.areChamberIdsDisplayed ? 1 : 0
@@ -75,6 +87,17 @@ export default {
     zIndex() {
       return this.isGate ? 10 : 0
     },
+  },
+  watch: {
+    isFoodDisplayed() {
+      this.$anime({
+        targets: this.foodTextureStyle,
+        scaleX: 1,
+        scaleY: 1,
+        duration: 1000,
+        easing: 'easeInQuad'
+      })
+    }
   },
   props: {
     cell: Object,
