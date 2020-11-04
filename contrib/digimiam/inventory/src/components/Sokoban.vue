@@ -1,7 +1,7 @@
 <template>
   <Window :title="$t('stock_management')">
     <div class="d-flex flex-column align-items-center justify-content-around h-100">
-      <div class="position-absolute w-100 d-flex flex-row justify-content-center" style="bottom: -44px; left: 0px">
+      <div v-if="buttons" class="position-absolute w-100 d-flex flex-row justify-content-center" style="bottom: -44px; left: 0px">
         <b-btn @click="move('left')" class="mr-2">gauche</b-btn>
         <b-btn @click="move('down')" class="mr-2">bas</b-btn>
         <b-btn @click="move('up')" class="mr-2">haut</b-btn>
@@ -57,6 +57,8 @@ export default {
   data() {
     return {
       sceneSize: 800,
+      keyboard: false,
+      buttons: false,
     }
   },
   computed: {
@@ -146,15 +148,15 @@ export default {
     },
     keypress(e) {
       if (e.code === "KeyA") {
-        sokobanStore.commit('move', "left")
+        this.move("left")
       } else if (e.code === "KeyS") {
-        sokobanStore.commit('move', "down")
+        this.move("down")
       } else if (e.code === "KeyD") {
-        sokobanStore.commit('move', "right")
+        this.move("right")
       } else if (e.code === "KeyW") {
-        sokobanStore.commit('move', 'up')
+        this.move('up')
       } else if (e.code === "KeyR") {
-        sokobanStore.commit('reset')
+        this.move('reset')
       }
     },
     reset() {
@@ -162,7 +164,19 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('keypress', (e) => this.keypress(e))
+    let keyboard = this.$route.query.keyboard
+    if (keyboard && keyboard !== "0") {
+      this.keyboard = true
+    }
+
+    let buttons = this.$route.query.buttons
+    if (buttons && buttons !== "0") {
+      this.buttons = true
+    }
+
+    if (this.keyboard) {
+      window.addEventListener('keypress', (e) => this.keypress(e))
+    }
 
     // Force sokobanStore.state.currentBlocks to take the appropriate value
     sokobanStore.commit('setDifficulty', sokobanStore.state.difficulty)
