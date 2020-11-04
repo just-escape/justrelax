@@ -163,6 +163,9 @@ export default {
   },
   mounted() {
     window.addEventListener('keypress', (e) => this.keypress(e))
+
+    // Force sokobanStore.state.currentBlocks to take the appropriate value
+    sokobanStore.commit('setDifficulty', sokobanStore.state.difficulty)
   }
 }
 </script>
