@@ -573,8 +573,8 @@ var store = new Vuex.Store({
     },
     setCurrentLevel(state, level) {
       if (state.currentLevel < level) {
-        state.animationLock = false
         state.currentLevel = level
+        state.animationLock = false
       }
     },
     addFaceAnimationFlag(state, {face, flag}) {
@@ -650,6 +650,10 @@ var store = new Vuex.Store({
       setTimeout(store.commit, 400, "animationUnlock")
     },
     reset(state) {
+      if (state.animationLock === true) {
+        return
+      }
+
       if (state.currentFace === 'left' && state.currentLevel >= 1) {
         return
       } else if (state.currentFace === 'front' && state.currentLevel >= 2) {

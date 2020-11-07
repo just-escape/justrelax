@@ -156,7 +156,7 @@ export default {
       } else if (e.code === "KeyW") {
         this.move('up')
       } else if (e.code === "KeyR") {
-        this.move('reset')
+        this.reset('reset')
       }
     },
     reset() {
