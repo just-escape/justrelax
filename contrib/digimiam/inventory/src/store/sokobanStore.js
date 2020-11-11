@@ -66,25 +66,33 @@ const wallBottom = {
 const gateTop = {
   type: 'gate-top',
   texture: require('@/assets/img/gate-top.png'),
-  animatedTexture: require('@/assets/img/gate-top.gif'),
+  animatedTextureFast: require('@/assets/img/gate-top-fast.gif'),
+  animatedTextureSlow: require('@/assets/img/gate-top-slow.gif'),
+  floorTexture: require('@/assets/img/floor.png'),
 }
 
 const gateLeft = {
   type: 'gate-left',
   texture: require('@/assets/img/gate-left.png'),
-  animatedTexture: require('@/assets/img/gate-left.gif'),
+  animatedTextureFast: require('@/assets/img/gate-left-fast.gif'),
+  animatedTextureSlow: require('@/assets/img/gate-left-slow.gif'),
+  floorTexture: require('@/assets/img/floor.png'),
 }
 
 const gateRight = {
   type: 'gate-right',
   texture: require('@/assets/img/gate-right.png'),
-  animatedTexture: require('@/assets/img/gate-right.gif'),
+  animatedTextureFast: require('@/assets/img/gate-right-fast.gif'),
+  animatedTextureSlow: require('@/assets/img/gate-right-slow.gif'),
+  floorTexture: require('@/assets/img/floor.png'),
 }
 
 const gateBottom = {
   type: 'gate-bottom',
   texture: require('@/assets/img/gate-bottom.png'),
-  animatedTexture: require('@/assets/img/gate-bottom.gif'),
+  animatedTextureFast: require('@/assets/img/gate-bottom-fast.gif'),
+  animatedTextureSlow: require('@/assets/img/gate-bottom-slow.gif'),
+  floorTexture: require('@/assets/img/floor.png'),
 }
 
 const column = {
@@ -106,7 +114,7 @@ const chamber0 = {
   type: 'chamber',
   id: 0,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber.gif'),
+  successTexture: require('@/assets/img/chamber-1.gif'),
   foodTexture: require('@/assets/img/cinnamon.png'),
 }
 
@@ -114,7 +122,7 @@ const chamber1 = {
   type: 'chamber',
   id: 1,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber.gif'),
+  successTexture: require('@/assets/img/chamber-2.gif'),
   foodTexture: require('@/assets/img/coffee.png'),
 }
 
@@ -122,7 +130,7 @@ const chamber2 = {
   type: 'chamber',
   id: 2,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber.gif'),
+  successTexture: require('@/assets/img/chamber-3.gif'),
   foodTexture: require('@/assets/img/mint.png'),
 }
 
@@ -130,7 +138,7 @@ const chamber3 = {
   type: 'chamber',
   id: 3,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber.gif'),
+  successTexture: require('@/assets/img/chamber-4.gif'),
   foodTexture: require('@/assets/img/curry.png'),
 }
 
@@ -138,7 +146,7 @@ const chamber4 = {
   type: 'chamber',
   id: 4,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber.gif'),
+  successTexture: require('@/assets/img/chamber-5.gif'),
   foodTexture: require('@/assets/img/potatoe.png'),
 }
 
@@ -146,7 +154,7 @@ const chamber5 = {
   type: 'chamber',
   id: 5,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber.gif'),
+  successTexture: require('@/assets/img/chamber-6.gif'),
   foodTexture: require('@/assets/img/beer.png'),
 }
 
@@ -154,7 +162,7 @@ const chamber6 = {
   type: 'chamber',
   id: 6,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber.gif'),
+  successTexture: require('@/assets/img/chamber-7.gif'),
   foodTexture: require('@/assets/img/insect.png'),
 }
 
@@ -162,7 +170,7 @@ const chamber7 = {
   type: 'chamber',
   id: 7,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber.gif'),
+  successTexture: require('@/assets/img/chamber-8.gif'),
   foodTexture: require('@/assets/img/jelly.png'),
 }
 

@@ -73,8 +73,20 @@ export default {
   left: 0;
 }
 
+.z-index-10 {
+  z-index: 10;
+}
+
 .z-index-20 {
   z-index: 20;
+}
+
+.z-index-30 {
+  z-index: 30;
+}
+
+.z-index-40 {
+  z-index: 40;
 }
 
 .bg-black-transparent {

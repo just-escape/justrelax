@@ -1,15 +1,22 @@
 <template>
-  <div class="position-relative transition-1s" :style="{'z-index': zIndex}">
-    <img :src="texture" class="img-fluid"/>
+  <div class="position-relative transition-1s">
+    <img :src="texture" class="img-fluid z-index-10"/>
+
+    <img
+      v-if="isGate"
+      class="position-absolute img-fluid top-left z-index-30"
+      :src="gateTexture"
+    />
+
     <img
       v-if="isChamber"
-      class="position-absolute img-fluid top-left"
+      class="position-absolute img-fluid top-left z-index-30"
       :style="{transform: foodTextureTransform}"
       :src="foodTexture"
     />
     <span
       v-if="isChamber"
-      class="position-absolute d-flex justify-content-end align-items-end w-100 h-100 p-id top-left transition-1s"
+      class="position-absolute d-flex justify-content-end align-items-end w-100 h-100 p-id top-left transition-1s z-index-40"
       style="font-size: 24px;"
       :style="{opacity: chamberIdOpacity}"
     >
@@ -33,6 +40,7 @@ export default {
   },
   computed: {
     areCylindersMobile() {
+      console.log("are they mobile ", this.face, this.cell.id)
       return !sokobanStore.state.faceAnimationFlags[this.face].includes("turnCylinders")
     },
     isFoodDisplayed() {
@@ -59,22 +67,30 @@ export default {
     chamberIdOpacity() {
       return this.areChamberIdsDisplayed ? 1 : 0
     },
-    isGateActive() {
+    gateTexture() {
       if (this.cell.type === 'gate-right') {
-        return this.areGatesActivated && sokobanStore.state.currentFace === 'left'
+        if (this.areGatesActivated && sokobanStore.state.currentFace === 'left') {
+          return this.cell.animatedTextureFast
+        }
       } else if (this.cell.type === 'gate-left') {
-        return sokobanStore.state.currentFace === 'front'
+        if (sokobanStore.state.currentFace === 'front') {
+          return this.cell.animatedTextureSlow
+        }
       } else if (this.cell.type === 'gate-top') {
-        return this.areGatesActivated && sokobanStore.state.currentFace === 'front'
+        if (this.areGatesActivated && sokobanStore.state.currentFace === 'front') {
+          return this.cell.animatedTextureFast
+        }
       } else if (this.cell.type === 'gate-bottom') {
-        return sokobanStore.state.currentFace === 'top'
-      } else {
-        return false
+        if (sokobanStore.state.currentFace === 'top') {
+          return this.cell.animatedTextureSlow
+        }
       }
+
+      return this.cell.texture
     },
     texture() {
       if (this.isGate) {
-        return this.isGateActive ? this.cell.animatedTexture : this.cell.texture
+        return this.cell.floorTexture
       } else if (this.isChamber) {
         return this.areCylindersMobile ? this.cell.texture : this.cell.successTexture
       } else {
@@ -83,9 +99,6 @@ export default {
     },
     currentLevel() {
       return sokobanStore.state.currentLevel
-    },
-    zIndex() {
-      return this.isGate ? 10 : 0
     },
   },
   watch: {
