@@ -40,7 +40,6 @@ export default {
   },
   computed: {
     areCylindersMobile() {
-      console.log("are they mobile ", this.face, this.cell.id)
       return !sokobanStore.state.faceAnimationFlags[this.face].includes("turnCylinders")
     },
     isFoodDisplayed() {
