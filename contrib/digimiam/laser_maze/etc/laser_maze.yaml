@@ -4,4 +4,15 @@ port: 3031
 name: laser_maze
 channel: digimiam1
 
+node_params:
+  arduino:
+    port: /dev/ttyUSB0
+    baud_rate: 9600
+    buffering_interval: 0.1
+  default_difficulty: normal
+  difficulty_settings:
+    easy: 7
+    normal: 15
+    hard: 31
+
 logging: null
