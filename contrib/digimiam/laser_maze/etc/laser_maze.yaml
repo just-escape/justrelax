@@ -1,0 +1,7 @@
+host: localhost
+port: 3031
+
+name: laser_maze
+channel: digimiam1
+
+logging: null
