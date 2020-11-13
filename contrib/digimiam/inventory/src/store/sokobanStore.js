@@ -175,34 +175,34 @@ const chamber7 = {
 }
 
 const INITIAL_GRID_TUTORIAL_1 = [
-  [cornerTopLeft,     wallTop,      wallTop,      wallTop,      angleTopLeft,   chamber1,     wallRight],
-  [wallLeft,          floor,        floor,        floor,        floor,          floor,        gateRight],
-  [wallLeft,          floor,        column,       floor,        column,         floor,        wallRight],
-  [wallLeft,          floor,        floor,        floor,        floor,          floor,        wallRight],
-  [wallLeft,          floor,        column,       floor,        column,         floor,        angleTopRight],
-  [wallLeft,          floor,        floor,        floor,        floor,          floor,        chamber0],
-  [cornerBottomLeft,  wallBottom,   wallBottom,   wallBottom,   wallBottom,     wallBottom,   wallBottom],
+  [wall,              wall,               cornerTopLeft,      wallTop,      wallTop,            wallTop,      cornerTopRight],
+  [wall,              wall,               wallLeft,           floor,        floor,              floor,        gateRight],
+  [cornerTopLeft,     wallTop,            angleTopLeft,       floor,        column,             floor,        wallRight],
+  [wallLeft,          chamber1,           floor,              floor,        floor,              floor,        wallRight],
+  [cornerBottomLeft,  angleBottomLeft,    floor,              floor,        angleBottomRight,   wallBottom,   cornerBottomRight],
+  [wall,              cornerBottomLeft,   angleBottomLeft,    chamber0,     wallRight,          wall,         wall],
+  [wall,              wall,               cornerBottomLeft,   wallBottom,   cornerBottomRight,  wall,         wall],
 ]
 
 const INITIAL_BLOCKS_TUTORIAL_1 = [
   {
-    x: 5,
-    y: 5,
+    x: 2,
+    y: 3,
   },
   {
-    x: 5,
-    y: 1,
+    x: 3,
+    y: 4,
   },
 ]
 
 const INITIAL_GRID_TUTORIAL_1_LOWER_PASSAGE = [
-  [cornerTopLeft,     wallTop,      wallTop,      wallTop,      angleTopLeft,   chamber1,     wallRight],
-  [wallLeft,          floor,        floor,        floor,        floor,          floor,        wallRight],
-  [wallLeft,          floor,        column,       floor,        column,         floor,        wallRight],
-  [wallLeft,          floor,        floor,        floor,        floor,          floor,        gateRight],
-  [wallLeft,          floor,        column,       floor,        column,         floor,        angleTopRight],
-  [wallLeft,          floor,        floor,        floor,        floor,          floor,        chamber0],
-  [cornerBottomLeft,  wallBottom,   wallBottom,   wallBottom,   wallBottom,     wallBottom,   wallBottom],
+  [wall,              wall,               cornerTopLeft,      wallTop,      wallTop,            wallTop,      cornerTopRight],
+  [wall,              wall,               wallLeft,           floor,        floor,              floor,        wallRight],
+  [cornerTopLeft,     wallTop,            angleTopLeft,       floor,        column,             floor,        wallRight],
+  [wallLeft,          chamber1,           floor,              floor,        floor,              floor,        gateRight],
+  [cornerBottomLeft,  angleBottomLeft,    floor,              floor,        angleBottomRight,   wallBottom,   cornerBottomRight],
+  [wall,              cornerBottomLeft,   angleBottomLeft,    chamber0,     wallRight,          wall,         wall],
+  [wall,              wall,               cornerBottomLeft,   wallBottom,   cornerBottomRight,  wall,         wall],
 ]
 
 const INITIAL_GRID_TUTORIAL_2 = [
