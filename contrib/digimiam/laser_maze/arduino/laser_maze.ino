@@ -18,6 +18,7 @@
 #define PROTOCOL_STOP_PLAYING "s"
 
 #define N_LASERS 5
+#define N_SAMPLES 5
 
 DynamicJsonDocument receivedDocument(JSON_OBJECT_SIZE(20));
 String receivedEvent = "";
@@ -27,6 +28,8 @@ bool playing = false;
 byte laserPins[N_LASERS] = {52, 50, 48, 46, 44};
 bool isLaserOn[N_LASERS] = {false};
 byte sensorPins[N_LASERS] = {53, 51, 49, 47, 45};
+bool sensorSamples[N_LASERS][N_SAMPLES];
+byte sensorSamplesCursor = 0;
 
 #define BLINK_INTERVAL 1000
 unsigned long previousMillis = 0;
@@ -61,6 +64,12 @@ void alarm(int laserIndex) {
   blinkingLaser = laserIndex;
   blinkingLaserState = true;
 
+  for (int i = 0 ; i < N_LASERS ; i++) {
+    if (i != laserIndex) {
+      digitalWrite(laserPins[i], LOW);
+    }
+  }
+
   StaticJsonDocument<JSON_OBJECT_SIZE(2)> event;
 
   event[PROTOCOL_CATEGORY] = PROTOCOL_ALARM;
@@ -82,14 +91,30 @@ void blinkLaser() {
 }
 
 void checkSensors() {
+  bool isAlarmConfirmed;
+
   for (int i = 0 ; i < N_LASERS ; i++) {
     if (isLaserOn[i]) {
       read = digitalRead(sensorPins[i]);
-      if (!read) {  // Or if read, depending on sensors
+      sensorSamples[i][sensorSamplesCursor] = read;
+
+      // By default alarm is confirmed. Checking sensor samples will validate or not this supposition.
+      isAlarmConfirmed = true;
+      for (int j = 0 ; j < N_SAMPLES ; j++) {
+        if (sensorSamples[i][j]) {
+          isAlarmConfirmed = false;
+          break;
+        }
+      }
+
+      if (isAlarmConfirmed) {
         alarm(i);
+        return;
       }
     }
   }
+
+  sensorSamplesCursor = (sensorSamplesCursor + 1) % N_SAMPLES;
 }
 
 // converts a hexadecimal value (encoded as ASCII string) to a numeric value
@@ -224,6 +249,10 @@ void onEvent() {
       for (int i = 0 ; i < N_LASERS ; i++) {
         isLaserOn[i] = (bitmask & currentBit) == currentBit;
         currentBit = currentBit << 1;
+
+        for (int j = 0 ; j < N_SAMPLES ; j++) {
+          sensorSamples[i][j] = true;
+        }
       }
 
       playing = true;
