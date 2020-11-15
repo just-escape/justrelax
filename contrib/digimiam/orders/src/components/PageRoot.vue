@@ -37,7 +37,10 @@ export default {
     }
   },
   mounted() {
-    progressionStore.commit('playOverlayVideo', 'glitching')
+    let video = this.$route.query.video
+    if (video && video !== "0") {
+      progressionStore.commit('playOverlayVideo', 'glitching')
+    }
   },
 }
 </script>
