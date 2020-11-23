@@ -1,7 +1,6 @@
 #include <ArduinoJson.h>
-
-// https://www.mschoeffler.de/2018/01/05/arduino-tutorial-how-to-use-the-rdm630-rdm6300-rfid-reader/
 #include <SoftwareSerial.h>
+#include <Adafruit_NeoPixel.h>
 
 #define PROTOCOL_CATEGORY "c"
 
@@ -11,11 +10,18 @@
 #define PROTOCOL_ALARM_LASER_INDEX "i"
 #define PROTOCOL_TAG "t"
 #define PROTOCOL_TAG_VALUE "v"
+#define PROTOCOL_TAG_READER_INDEX "i"
 
 // Received events
 #define PROTOCOL_LASER_ON "l"
 #define PROTOCOL_LASER_ON_BITMASK "b"
+#define PROTOCOL_DYNAMIC_LASER_ON_BITMASK "d"
+#define PROTOCOL_DYNAMIC_LASER_UPTIME "p"
+#define PROTOCOL_DYNAMIC_LASER_DOWNTIME "n"
+#define PROTOCOL_DYNAMIC_LASER_INCREMENTAL_OFFSET "o"
 #define PROTOCOL_STOP_PLAYING "s"
+#define PROTOCOL_SET_SUCCESS "w"
+#define PROTOCOL_SET_SUCCESS_VALUE "v"
 
 #define N_LASERS 5
 #define N_SAMPLES 5
@@ -23,6 +29,7 @@
 DynamicJsonDocument receivedDocument(JSON_OBJECT_SIZE(20));
 String receivedEvent = "";
 
+bool success = false;
 bool playing = false;
 
 byte laserPins[N_LASERS] = {52, 50, 48, 46, 44};
@@ -31,22 +38,69 @@ byte sensorPins[N_LASERS] = {53, 51, 49, 47, 45};
 bool sensorSamples[N_LASERS][N_SAMPLES];
 byte sensorSamplesCursor = 0;
 
+int dynamicLasers[N_LASERS] = {false};
+unsigned long dynamicPreviousMillis[N_LASERS] = {0};
+unsigned long dynamicLasersUptime = 7500;
+unsigned long dynamicLasersDowntime = 5500;
+unsigned long dynamicLasersIncrementalOffset = 300;
+
 #define BLINK_INTERVAL 1000
-unsigned long previousMillis = 0;
-unsigned long currentMillis = 0;
+unsigned long blinkPreviousMillis = 0;
 byte blinkingLaser = -1;
 bool blinkingLaserState = true;
 
 bool read;
+unsigned long currentMillis = 0;
 
-#define RFID_BUFFER_SIZE 14
-#define RFID_DATA_SIZE 10
-#define RFID_DATA_VERSION_SIZE 2
-#define RFID_DATA_TAG_SIZE 8
-#define RFID_CHECKSUM_SIZE 2
-SoftwareSerial ssrfid = SoftwareSerial(6, 8);
-uint8_t rfid_buffer[RFID_BUFFER_SIZE];
-int rfid_buffer_index = 0;
+#define N_READERS 2
+byte softwareSerialPins[N_READERS][2] = {{10, 11}, {12, 13}};
+SoftwareSerial *rfidReaders[N_READERS];
+unsigned long rfidPreviousMillis[N_LASERS] = {0};
+#define RFID_TIME_THRESHOLD 1300
+bool isSomethingBeingSent[N_READERS] = {false};
+bool pushedTag[N_READERS] = {false};
+
+#define LED_PIN 7
+#define N_LEDS 7
+#define LOADING_STEPS 30
+#define LOADING_STEPS_DELAY 100
+byte readerLedIndexes[N_READERS][3] = {{2, 1, 0}, {3, 4, 5}};
+byte loadingTag[N_READERS] = {false};
+byte loadingStep[N_READERS] = {0};
+unsigned long loadingStepPreviousMillis[N_READERS] = {0};
+byte loadingSteps[LOADING_STEPS][3][3] = {
+  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
+  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
+  {{0, 0, 0}, {10, 10, 10}, {10, 10, 10}},
+  {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+  {{10, 10, 10}, {0, 0, 0}, {0, 0, 0}},
+  {{10, 10, 10}, {10, 10, 10}, {0, 0, 0}},
+  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
+  {{0, 0, 0}, {10, 10, 10}, {10, 10, 10}},
+  {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+  {{10, 10, 10}, {0, 0, 0}, {0, 0, 0}},
+  {{10, 10, 10}, {10, 10, 10}, {0, 0, 0}},
+  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
+  {{0, 0, 0}, {10, 10, 10}, {10, 10, 10}},
+  {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+  {{10, 10, 10}, {0, 0, 0}, {0, 0, 0}},
+  {{10, 10, 10}, {10, 10, 10}, {0, 0, 0}},
+  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
+  {{0, 0, 0}, {10, 10, 10}, {10, 10, 10}},
+  {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+  {{10, 10, 10}, {0, 0, 0}, {0, 0, 0}},
+  {{10, 10, 10}, {10, 10, 10}, {0, 0, 0}},
+  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+  {{0, 10, 0}, {0, 10, 0}, {0, 10, 0}},
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
+  {{0, 10, 0}, {0, 10, 0}, {0, 10, 0}},
+};
+Adafruit_NeoPixel leds = Adafruit_NeoPixel(N_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   for (int i = 0 ; i < N_LASERS ; i++) {
@@ -55,8 +109,19 @@ void setup() {
   }
 
   Serial.begin(9600);
-  ssrfid.begin(9600);
-  ssrfid.listen();
+
+  for (int i = 0 ; i < N_READERS ; i++) {
+    rfidReaders[i] = new SoftwareSerial(softwareSerialPins[i][0], softwareSerialPins[i][1]);
+    rfidReaders[i]->begin(9600);
+    rfidPreviousMillis[i] = millis();
+    isSomethingBeingSent[i] = false;
+    loadingTag[i] = false;
+    pushedTag[i] = false;
+    loadingStep[i] = 0;
+    loadingStepPreviousMillis[i] = millis();
+  }
+
+  leds.begin();
 }
 
 void alarm(int laserIndex) {
@@ -82,8 +147,8 @@ void alarm(int laserIndex) {
 void blinkLaser() {
   if (blinkingLaser != -1) {
     currentMillis = millis();
-    if (currentMillis - previousMillis >= BLINK_INTERVAL) {
-      previousMillis = currentMillis;
+    if (currentMillis - blinkPreviousMillis >= BLINK_INTERVAL) {
+      blinkPreviousMillis = currentMillis;
       blinkingLaserState = !blinkingLaserState;
       digitalWrite(laserPins[blinkingLaser], blinkingLaserState);
     }
@@ -108,7 +173,7 @@ void checkSensors() {
       }
 
       if (isAlarmConfirmed) {
-        alarm(i);
+        // alarm(i);
         return;
       }
     }
@@ -117,113 +182,117 @@ void checkSensors() {
   sensorSamplesCursor = (sensorSamplesCursor + 1) % N_SAMPLES;
 }
 
-// converts a hexadecimal value (encoded as ASCII string) to a numeric value
-long hexstr_to_value(char *str, unsigned int length) {
-  char* copy = malloc((sizeof(char) * length) + 1);
-  memcpy(copy, str, sizeof(char) * length);
-  copy[length] = '\0';
-  // the variable "copy" is a copy of the parameter "str". "copy" has an additional '\0' element to make sure that "str" is null-terminated.
-  long value = strtol(copy, NULL, 16);  // strtol converts a null-terminated string to a long value
-  free(copy); // clean up
-  return value;
+void updateDynamicLasers() {
+  currentMillis = millis();
+
+  unsigned long incrementalOffset = 0;
+  for (int i = 0 ; i < N_LASERS ; i++) {
+    if (dynamicLasers[i]) {
+      if (
+          (isLaserOn[i] && currentMillis - dynamicPreviousMillis[i] >= dynamicLasersUptime + incrementalOffset) ||
+          (!isLaserOn[i] && currentMillis - dynamicPreviousMillis[i] >= dynamicLasersDowntime + incrementalOffset)
+      ) {
+        isLaserOn[i] = !isLaserOn[i];
+        digitalWrite(laserPins[i], isLaserOn[i]);
+        dynamicPreviousMillis[i] = currentMillis - incrementalOffset;
+
+        if (!isLaserOn[i]) {
+          for (int j = 0 ; j < N_SAMPLES ; j++) {
+            sensorSamples[i][j] = true;
+          }
+        }
+      }
+
+      incrementalOffset += dynamicLasersIncrementalOffset;
+    }
+  }
 }
 
-unsigned extract_tag() {
-    // uint8_t msg_head = rfid_buffer[0];
-    uint8_t *msg_data = rfid_buffer + 1; // 10 byte => data contains 2byte version + 8byte tag
-    // uint8_t *msg_data_version = msg_data;
-    uint8_t *msg_data_tag = msg_data + 2;
-    // uint8_t *msg_checksum = rfid_buffer + 11; // 2 byte
-    // uint8_t msg_tail = rfid_buffer[13];
-
-    // Serial.println("--------");
-    // Serial.print("Message-Head: ");
-    // Serial.println(msg_head);
-    // Serial.println("Message-Data (HEX): ");
-    // for (int i = 0; i < RFID_DATA_VERSION_SIZE; ++i) {
-    //   Serial.print(char(msg_data_version[i]));
-    // }
-    // Serial.println(" (version)");
-    // for (int i = 0; i < RFID_DATA_TAG_SIZE; ++i) {
-    //   Serial.print(char(msg_data_tag[i]));
-    // }
-    // Serial.println(" (tag)");
-    // Serial.print("Message-Checksum (HEX): ");
-    // for (int i = 0; i < RFID_CHECKSUM_SIZE; ++i) {
-    //   Serial.print(char(msg_checksum[i]));
-    // }
-    // Serial.println("");
-    // Serial.print("Message-Tail: ");
-    // Serial.println(msg_tail);
-    // Serial.println("--");
-    long tag = hexstr_to_value(msg_data_tag, RFID_DATA_TAG_SIZE);
-    // Serial.print("Extracted Tag: ");
-    // Serial.println(tag);
-    // long checksum = 0;
-    // for (int i = 0; i < RFID_DATA_SIZE; i+= RFID_CHECKSUM_SIZE) {
-    //   long val = hexstr_to_value(msg_data + i, RFID_CHECKSUM_SIZE);
-    //   checksum ^= val;
-    // }
-    // Serial.print("Extracted Checksum (HEX): ");
-    // Serial.print(checksum, HEX);
-    // if (checksum == hexstr_to_value(msg_checksum, CHECKSUM_SIZE)) { // compare calculated checksum to retrieved checksum
-    //   Serial.print(" (OK)"); // calculated checksum corresponds to transmitted checksum!
-    // } else {
-    //   Serial.print(" (NOT OK)"); // checksums do not match
-    // }
-    // Serial.println("");
-    // Serial.println("--------");
-    return tag;
-}
-
-void pushTag(unsigned tag) {
-  StaticJsonDocument<JSON_OBJECT_SIZE(2)> event;
+void pushBool(bool v, int i) {
+  StaticJsonDocument<JSON_OBJECT_SIZE(3)> event;
 
   event[PROTOCOL_CATEGORY] = PROTOCOL_TAG;
-  event[PROTOCOL_TAG_VALUE] = tag;
+  event[PROTOCOL_TAG_VALUE] = v;
+  event[PROTOCOL_TAG_READER_INDEX] = i;
 
   serializeJson(event, Serial);
   Serial.println();
 }
 
 void checkRFID() {
-  if (ssrfid.available() > 0) {
-    bool call_extract_tag = false;
+  for (int i = 0 ; i < N_READERS ; i++) {
+    currentMillis = millis();
 
-    int ssvalue = ssrfid.read(); // read
-    if (ssvalue == -1) { // no data was read
-      return;
-    }
-    if (ssvalue == 2) { // RDM630/RDM6300 found a tag => tag incoming
-      rfid_buffer_index = 0;
-    } else if (ssvalue == 3) { // tag has been fully transmitted
-      call_extract_tag = true; // extract tag at the end of the function call
-    }
-    if (rfid_buffer_index >= RFID_BUFFER_SIZE) { // checking for a buffer overflow (It's very unlikely that an buffer overflow comes up!)
-      return;
-    }
+    rfidReaders[i]->listen();
 
-    rfid_buffer[rfid_buffer_index++] = ssvalue; // everything is alright => copy current value to buffer
-    if (call_extract_tag == true) {
-      if (rfid_buffer_index == RFID_BUFFER_SIZE) {
-        unsigned tag = extract_tag();
-        pushTag(tag);
-      } else { // something is wrong... start again looking for preamble (value: 2)
-        rfid_buffer_index = 0;
-        return;
+    if (rfidReaders[i]->available() > 0) {
+      if (!isSomethingBeingSent[i]) {
+        isSomethingBeingSent[i] = true;
       }
+      rfidPreviousMillis[i] = currentMillis;
+    }
+
+    if (isSomethingBeingSent[i] && currentMillis - rfidPreviousMillis[i] >= RFID_TIME_THRESHOLD) {
+      isSomethingBeingSent[i] = false;
+      pushedTag[i] = false;
+      pushBool(false, i);
     }
   }
 }
 
+void updateLeds() {
+  for (int i = 0 ; i < N_READERS ; i++) {
+    if (isSomethingBeingSent[i]) {
+      loadingTag[i] = true;
+    } else {
+      loadingTag[i] = false;
+      loadingStep[i] = 0;
+    }
+
+    for (int j = 0 ; j < 3 ; j++) {
+      if (success) {
+        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(0, 10, 0));
+      } else if (!playing) {
+        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(10, 0, 0));
+      } else if (loadingTag[i] && loadingStep[i] < LOADING_STEPS - 1) {
+        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(
+          loadingSteps[loadingStep[i]][j][0],
+          loadingSteps[loadingStep[i]][j][1],
+          loadingSteps[loadingStep[i]][j][2]
+        ));
+
+        currentMillis = millis();
+
+        if (currentMillis - loadingStepPreviousMillis[i] >= LOADING_STEPS_DELAY) {
+          loadingStep[i]++;
+          loadingStepPreviousMillis[i] = currentMillis;
+        }
+      } else if (isSomethingBeingSent[i]) {
+        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(0, 10, 0));
+
+        if (!pushedTag[i]) {
+          pushedTag[i] = true;
+          pushBool(true, i);
+        }
+      } else if (playing) {
+        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(10, 1, 0));
+      }
+    }
+  }
+
+  leds.show();
+}
+
 void loop() {
-  if (playing) {
+  if (!success && playing) {
+    updateDynamicLasers();
     checkSensors();
+    checkRFID();
   } else {
     blinkLaser();
   }
 
-  checkRFID();
+  updateLeds();
 }
 
 void onEvent() {
@@ -241,13 +310,35 @@ void onEvent() {
 
     if (category == PROTOCOL_STOP_PLAYING) {
       playing = false;
+
       blinkingLaser = -1;
+
+      isSomethingBeingSent[i] = false;
+      pushedTag[i] = false;
+      pushBool(false, i);
+    } else if (category == PROTOCOL_SET_SUCCESS) {
+      success = receivedDocument[PROTOCOL_SET_SUCCESS_VALUE];
+
+      blinkingLaser = -1;
+
+      isSomethingBeingSent[i] = false;
+      pushedTag[i] = false;
+      pushBool(false, i);
     } else if (category == PROTOCOL_LASER_ON) {
-      int bitmask = receivedDocument[PROTOCOL_LASER_ON_BITMASK];
-      int currentBit = 1;
+      JsonVariant uncastBitmask = receivedDocument[PROTOCOL_LASER_ON_BITMASK];
+      unsigned int bitmask = uncastBitmask.as<unsigned int>();
+      int dynamicLasersBitmask = receivedDocument[PROTOCOL_DYNAMIC_LASER_ON_BITMASK];
+      dynamicLasersUptime = receivedDocument[PROTOCOL_DYNAMIC_LASER_UPTIME];
+      dynamicLasersDowntime = receivedDocument[PROTOCOL_DYNAMIC_LASER_DOWNTIME];
+      dynamicLasersIncrementalOffset = receivedDocument[PROTOCOL_DYNAMIC_LASER_INCREMENTAL_OFFSET];
+      currentMillis = millis();
+      unsigned int currentBit = 1;
 
       for (int i = 0 ; i < N_LASERS ; i++) {
         isLaserOn[i] = (bitmask & currentBit) == currentBit;
+        digitalWrite(laserPins[i], isLaserOn[i]);
+        dynamicLasers[i] = (dynamicLasersBitmask & currentBit) == currentBit;
+        dynamicPreviousMillis[i] = currentMillis;
         currentBit = currentBit << 1;
 
         for (int j = 0 ; j < N_SAMPLES ; j++) {
