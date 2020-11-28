@@ -313,17 +313,21 @@ void onEvent() {
 
       blinkingLaser = -1;
 
-      isSomethingBeingSent[i] = false;
-      pushedTag[i] = false;
-      pushBool(false, i);
+      for (int i = 0 ; i < N_READERS ; i++) {
+        isSomethingBeingSent[i] = false;
+        pushedTag[i] = false;
+        pushBool(false, i);
+      }
     } else if (category == PROTOCOL_SET_SUCCESS) {
       success = receivedDocument[PROTOCOL_SET_SUCCESS_VALUE];
 
       blinkingLaser = -1;
 
-      isSomethingBeingSent[i] = false;
-      pushedTag[i] = false;
-      pushBool(false, i);
+      for (int i = 0 ; i < N_READERS ; i++) {
+        isSomethingBeingSent[i] = false;
+        pushedTag[i] = false;
+        pushBool(false, i);
+      }
     } else if (category == PROTOCOL_LASER_ON) {
       JsonVariant uncastBitmask = receivedDocument[PROTOCOL_LASER_ON_BITMASK];
       unsigned int bitmask = uncastBitmask.as<unsigned int>();
