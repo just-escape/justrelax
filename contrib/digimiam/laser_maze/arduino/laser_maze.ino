@@ -56,7 +56,7 @@ unsigned long currentMillis = 0;
 byte softwareSerialPins[N_READERS][2] = {{10, 11}, {12, 13}};
 SoftwareSerial *rfidReaders[N_READERS];
 unsigned long rfidPreviousMillis[N_LASERS] = {0};
-#define RFID_TIME_THRESHOLD 1300
+#define RFID_TIME_THRESHOLD 2000
 bool isSomethingBeingSent[N_READERS] = {false};
 bool pushedTag[N_READERS] = {false};
 
@@ -173,7 +173,7 @@ void checkSensors() {
       }
 
       if (isAlarmConfirmed) {
-        // alarm(i);
+        alarm(i);
         return;
       }
     }
@@ -311,12 +311,17 @@ void onEvent() {
     if (category == PROTOCOL_STOP_PLAYING) {
       playing = false;
 
-      blinkingLaser = -1;
-
       for (int i = 0 ; i < N_READERS ; i++) {
         isSomethingBeingSent[i] = false;
         pushedTag[i] = false;
         pushBool(false, i);
+      }
+
+      for (int i = 0 ; i < N_LASERS ; i++) {
+        if (i != blinkingLaser) {
+          isLaserOn[i] = false;
+          digitalWrite(laserPins[i], LOW);
+        }
       }
     } else if (category == PROTOCOL_SET_SUCCESS) {
       success = receivedDocument[PROTOCOL_SET_SUCCESS_VALUE];
@@ -327,6 +332,13 @@ void onEvent() {
         isSomethingBeingSent[i] = false;
         pushedTag[i] = false;
         pushBool(false, i);
+      }
+
+      for (int i = 0 ; i < N_LASERS ; i++) {
+        if (i != blinkingLaser) {
+          isLaserOn[i] = false;
+          digitalWrite(laserPins[i], LOW);
+        }
       }
     } else if (category == PROTOCOL_LASER_ON) {
       JsonVariant uncastBitmask = receivedDocument[PROTOCOL_LASER_ON_BITMASK];

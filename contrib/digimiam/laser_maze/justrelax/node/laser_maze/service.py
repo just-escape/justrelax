@@ -65,7 +65,7 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
             self.tag_readers = None
         else:
             self.tag_readers = {}
-            for reader_index in self.node_params['tag_readers']:
+            for reader_index in range(self.node_params['tag_readers']):
                 self.tag_readers[reader_index] = False
 
         self.default_difficulty = self.node_params['default_difficulty']
