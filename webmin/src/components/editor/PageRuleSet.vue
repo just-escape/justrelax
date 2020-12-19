@@ -2,7 +2,7 @@
   <AppContent>
     <AppContentTitle class="d-flex flex-row" slot="header-left">
       <AppContentTitle class="mr-5">
-        {{ $t('editor.editor') }}
+        {{ ruleSet ? ruleSet.name + ' rule set' : 'Rule set not  found' }}
       </AppContentTitle>
       <b-button-group class="my-auto">
         <ButtonJaffa @click="save()">
@@ -10,8 +10,8 @@
         </ButtonJaffa>
       </b-button-group>
     </AppContentTitle>
-    <div slot="main" v-if="!room">
-      {{ $t('room_not_found') }}
+    <div slot="main" v-if="!ruleSet">
+      Rule set not found
     </div>
     <div slot="main" class="mt-2 h-100" v-else>
       <Rules/>
@@ -28,34 +28,32 @@ import roomStore from '@/store/roomStore.js'
 import editorStore from '@/store/editorStore.js'
 
 export default {
-  name: 'PageEditor',
+  name: 'PageRuleSet',
   components: {
     ButtonJaffa,
     AppContent,
     AppContentTitle,
     Rules,
   },
-  data() {
-    return {
-      rules: '',
-    }
-  },
   computed: {
-    room() {
-      return roomStore.getters.room(this.roomId)
+    ruleSet() {
+      for (var ruleSet of roomStore.state.ruleSets) {
+        if (ruleSet.id == this.ruleSetId) {
+          return ruleSet
+        }
+      }
+
+      return null
     },
   },
   methods: {
-    loadEditorData() {
-      editorStore.dispatch('loadEditorData', this.roomId)
-    },
     save() {
-      editorStore.dispatch('save', this.roomId)
+      editorStore.dispatch('save', this.ruleSetId)
     },
   },
   created() {
-    this.loadEditorData()
+    editorStore.dispatch('loadEditorData', this.ruleSetId)
   },
-  props: ['roomId']
+  props: ['ruleSetId'],
 }
 </script>

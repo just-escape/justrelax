@@ -21,7 +21,8 @@ from rest_framework.routers import SimpleRouter
 from scenario.views import ScenarioView, RoomView, CameraView
 from session.views import SessionView, RecordView
 from live.views import CardView, CardRowView
-from editor.views import get_templates, get_scenario, update_scenario
+from editor.views import RuleSetView
+from editor.views import get_templates, get_rules_from_room_id, get_rules_from_rule_set_id, update_rule_set
 
 router = SimpleRouter()
 router.register(r'scenario', ScenarioView)
@@ -31,11 +32,13 @@ router.register(r'session', SessionView)
 router.register(r'card', CardView)
 router.register(r'card_row', CardRowView)
 router.register(r'record', RecordView)
+router.register(r'rule_set', RuleSetView)
 
 urlpatterns = [
     url('^', include(router.urls)),
     url('^get_templates/$', get_templates),
-    url('^get_scenario/$', get_scenario),
-    url('^update_scenario/$', update_scenario),
+    url('^get_rules_from_room_id/$', get_rules_from_room_id),
+    url('^get_rules_from_rule_set_id/$', get_rules_from_rule_set_id),
+    url('^update_rule_set/$', update_rule_set),
     path('admin/', admin.site.urls),
 ]

@@ -29,6 +29,7 @@ export default {
     }
 
     roomStore.dispatch('fetchScenarios')
+    roomStore.dispatch('fetchRuleSets')
 
     let ws_url = this.$route.query.ws_url
     if (ws_url) {

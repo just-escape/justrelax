@@ -2,11 +2,20 @@ import json
 
 from django.db import transaction
 
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from scenario.models import Room
 from editor.models import Template, TemplateLink, TemplateContextParagraph, Variable, Rule
+from editor.models import RuleSet
+from editor.serializers import RuleSetSerializer
+
+
+class RuleSetView(ModelViewSet):
+    queryset = RuleSet.objects.all()
+    serializer_class = RuleSetSerializer
+    ordering_fields = ('index',)
+    ordering = ('index',)
 
 
 def get_serialized_templates():
@@ -56,9 +65,9 @@ def get_templates(request):
     return Response(response)
 
 
-def get_serialized_variables(room):
+def get_serialized_variables(rule_set):
     variables = []
-    for v in Variable.objects.filter(room=room).order_by('index'):
+    for v in Variable.objects.filter(rule_set=rule_set).order_by('index'):
         variable = {
             'id': v.id,
             'name': v.name,
@@ -71,9 +80,9 @@ def get_serialized_variables(room):
     return variables
 
 
-def get_serialized_rules(room):
+def get_serialized_rules(rule_set):
     rules = []
-    for r in Rule.objects.filter(room=room).order_by('index'):
+    for r in Rule.objects.filter(rule_set=rule_set).order_by('index'):
         rule = {
             'id': r.id,
             'name': r.name,
@@ -84,23 +93,42 @@ def get_serialized_rules(room):
 
 
 @api_view(['GET'])
-def get_scenario(request):
-    room_id = int(request.GET.get('room_id'))
-    room = Room.objects.get(id=room_id)
+def get_rules_from_room_id(request):
+    response = []
 
+    room_id = int(request.GET.get('room_id'))
+
+    rule_sets = RuleSet.objects.filter(rooms__id=room_id).order_by('index')
+    for rs in rule_sets:
+        response.append(
+            {
+                'ruleset_id': rs.id,
+                'rules': get_serialized_rules(rs),
+                'variables': get_serialized_variables(rs),
+            }
+        )
+
+    return Response(response)
+
+
+@api_view(['GET'])
+def get_rules_from_rule_set_id(request):
+    id_ = int(request.GET.get('id'))
+
+    rule_set = RuleSet.objects.get(id=id_)
     response = {
-        'variables': get_serialized_variables(room),
-        'rules': get_serialized_rules(room),
+        'rules': get_serialized_rules(rule_set),
+        'variables': get_serialized_variables(rule_set),
     }
 
     return Response(response)
 
 
-def update_rules(room, rules):
+def update_rules(rule_set, rules):
     rule_ids = {r.get('id', None) for r in rules}
     rule_ids.discard(None)
 
-    old_rules = Rule.objects.filter(room=room)
+    old_rules = Rule.objects.filter(rule_set=rule_set)
     old_rule_ids = {r.id for r in old_rules}
 
     # Delete
@@ -135,7 +163,7 @@ def update_rules(room, rules):
     for rule_index, rule in enumerate(rules):
         if rule.get('id', None) not in ids_to_update:
             new_rule = Rule(
-                room=room,
+                rule_set=rule_set,
                 name=rule['name'],
                 index=rule_index,
                 content=json.dumps(rule['content']),
@@ -143,11 +171,11 @@ def update_rules(room, rules):
             new_rule.save()
 
 
-def update_variables(room, variables):
+def update_variables(rule_set, variables):
     variable_ids = {v.get('id', None) for v in variables}
     variable_ids.discard(None)
 
-    old_variables = Variable.objects.filter(room=room)
+    old_variables = Variable.objects.filter(rule_set=rule_set)
     old_variable_ids = {v.id for v in old_variables}
 
     # Delete
@@ -189,7 +217,7 @@ def update_variables(room, variables):
     for index, v in enumerate(variables):
         if v.get('id', None) not in ids_to_update:
             new_variable = Variable(
-                room=room,
+                rule_set=rule_set,
                 name=v['name'],
                 index=index,
                 init_value=v['init_value'],
@@ -199,20 +227,20 @@ def update_variables(room, variables):
 
 
 @api_view(['POST'])
-def update_scenario(request):
-    room_id = int(request.POST.get('room_id'))
+def update_rule_set(request):
+    rule_set_id = int(request.POST.get('rule_set_id'))
     rules = json.loads(request.POST.get('rules'))
     variables = json.loads(request.POST.get('variables'))
 
     with transaction.atomic():
-        room = Room.objects.get(id=room_id)
+        rule_set = RuleSet.objects.get(id=rule_set_id)
 
-        update_rules(room, rules)
-        update_variables(room, variables)
+        update_rules(rule_set, rules)
+        update_variables(rule_set, variables)
 
         response = {
-            'variables': get_serialized_variables(room),
-            'rules': get_serialized_rules(room),
+            'variables': get_serialized_variables(rule_set),
+            'rules': get_serialized_rules(rule_set),
         }
 
     return Response(response)
