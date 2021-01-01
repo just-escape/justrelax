@@ -20,7 +20,7 @@ from rest_framework.routers import SimpleRouter
 
 from scenario.views import ScenarioView, RoomView, CameraView
 from session.views import SessionView, RecordView
-from live.views import CardView, CardRowView
+from live.views import CardView, CardRowView, get_cards_from_room_id
 from editor.views import RuleSetView
 from editor.views import get_templates, get_rules_from_room_id, get_rules_from_rule_set_id, update_rule_set
 
@@ -39,6 +39,7 @@ urlpatterns = [
     url('^get_templates/$', get_templates),
     url('^get_rules_from_room_id/$', get_rules_from_room_id),
     url('^get_rules_from_rule_set_id/$', get_rules_from_rule_set_id),
+    url('^get_cards_from_room_id/$', get_cards_from_room_id),
     url('^update_rule_set/$', update_rule_set),
     path('admin/', admin.site.urls),
 ]

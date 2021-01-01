@@ -177,7 +177,7 @@ class Rule(models.Model):
     content = models.TextField()
 
     def __str__(self):
-        return '{} - {}'.format(self.room, self.name)
+        return '{} - {}'.format(self.rule_set, self.name)
 
 
 class RuleForm(forms.ModelForm):

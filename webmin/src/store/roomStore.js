@@ -168,7 +168,7 @@ export default new Vuex.Store({
         })
     },
     fetchActions (context, roomId) {
-      Vue.prototype.$justRestAPI.get('/card/?room=' + roomId)
+      Vue.prototype.$justRestAPI.get('/get_cards_from_room_id/?room_id=' + roomId)
         .then(function (response) {
           let cards = response.data
           context.commit('setCards', {roomId, cards})
