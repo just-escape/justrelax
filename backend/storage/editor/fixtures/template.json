@@ -1,7 +1,7 @@
 [
 {
   "model": "editor.template",
-  "pk": 1,
+  "pk": 323,
   "fields": {
     "category": "event",
     "index": 0,
@@ -11,7 +11,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 2,
+  "pk": 324,
   "fields": {
     "category": "event",
     "index": 1,
@@ -21,7 +21,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 3,
+  "pk": 325,
   "fields": {
     "category": "admin",
     "index": 2,
@@ -31,7 +31,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 4,
+  "pk": 326,
   "fields": {
     "category": "admin",
     "index": 3,
@@ -41,7 +41,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 5,
+  "pk": 327,
   "fields": {
     "category": "time",
     "index": 4,
@@ -51,7 +51,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 6,
+  "pk": 328,
   "fields": {
     "category": "time",
     "index": 5,
@@ -61,7 +61,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 7,
+  "pk": 329,
   "fields": {
     "category": "time",
     "index": 6,
@@ -71,7 +71,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 8,
+  "pk": 330,
   "fields": {
     "category": "session",
     "index": 7,
@@ -81,7 +81,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 9,
+  "pk": 331,
   "fields": {
     "category": "session",
     "index": 8,
@@ -91,7 +91,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 10,
+  "pk": 332,
   "fields": {
     "category": "session",
     "index": 9,
@@ -101,7 +101,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 64,
+  "pk": 333,
   "fields": {
     "category": "node",
     "index": 10,
@@ -111,7 +111,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 65,
+  "pk": 334,
   "fields": {
     "category": "node",
     "index": 11,
@@ -121,7 +121,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 66,
+  "pk": 335,
   "fields": {
     "category": "node",
     "index": 12,
@@ -131,7 +131,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 67,
+  "pk": 336,
   "fields": {
     "category": "node",
     "index": 13,
@@ -141,7 +141,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 11,
+  "pk": 337,
   "fields": {
     "category": "",
     "index": 14,
@@ -151,7 +151,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 12,
+  "pk": 338,
   "fields": {
     "category": "event",
     "index": 15,
@@ -161,7 +161,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 13,
+  "pk": 339,
   "fields": {
     "category": "event",
     "index": 16,
@@ -171,7 +171,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 14,
+  "pk": 340,
   "fields": {
     "category": "admin",
     "index": 17,
@@ -181,7 +181,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 15,
+  "pk": 341,
   "fields": {
     "category": "admin",
     "index": 18,
@@ -191,7 +191,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 16,
+  "pk": 342,
   "fields": {
     "category": "admin",
     "index": 19,
@@ -201,7 +201,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 17,
+  "pk": 343,
   "fields": {
     "category": "object",
     "index": 20,
@@ -211,7 +211,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 18,
+  "pk": 344,
   "fields": {
     "category": "object",
     "index": 21,
@@ -221,7 +221,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 19,
+  "pk": 345,
   "fields": {
     "category": "object",
     "index": 22,
@@ -231,7 +231,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 20,
+  "pk": 346,
   "fields": {
     "category": "object",
     "index": 23,
@@ -241,7 +241,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 21,
+  "pk": 347,
   "fields": {
     "category": "object",
     "index": 24,
@@ -251,7 +251,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 22,
+  "pk": 348,
   "fields": {
     "category": "object",
     "index": 25,
@@ -261,7 +261,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 23,
+  "pk": 349,
   "fields": {
     "category": "timer",
     "index": 26,
@@ -271,7 +271,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 24,
+  "pk": 350,
   "fields": {
     "category": "timer",
     "index": 27,
@@ -281,7 +281,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 25,
+  "pk": 351,
   "fields": {
     "category": "timer",
     "index": 28,
@@ -291,7 +291,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 60,
+  "pk": 352,
   "fields": {
     "category": "game_session",
     "index": 29,
@@ -301,7 +301,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 61,
+  "pk": 353,
   "fields": {
     "category": "game_session",
     "index": 30,
@@ -311,7 +311,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 62,
+  "pk": 354,
   "fields": {
     "category": "game_session",
     "index": 31,
@@ -321,7 +321,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 26,
+  "pk": 355,
   "fields": {
     "category": "",
     "index": 32,
@@ -331,7 +331,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 27,
+  "pk": 356,
   "fields": {
     "category": "",
     "index": 33,
@@ -341,7 +341,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 28,
+  "pk": 357,
   "fields": {
     "category": "",
     "index": 34,
@@ -351,7 +351,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 29,
+  "pk": 358,
   "fields": {
     "category": "",
     "index": 35,
@@ -361,7 +361,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 30,
+  "pk": 359,
   "fields": {
     "category": "",
     "index": 36,
@@ -371,7 +371,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 31,
+  "pk": 360,
   "fields": {
     "category": "object",
     "index": 37,
@@ -381,7 +381,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 32,
+  "pk": 361,
   "fields": {
     "category": "object",
     "index": 38,
@@ -391,7 +391,7 @@
 },
 {
   "model": "editor.template",
-  "pk": 33,
+  "pk": 362,
   "fields": {
     "category": "trigger",
     "index": 39,
@@ -401,279 +401,289 @@
 },
 {
   "model": "editor.template",
-  "pk": 34,
+  "pk": 363,
+  "fields": {
+    "category": "",
+    "index": 40,
+    "name": "substring",
+    "context": "string"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 364,
   "fields": {
     "category": "object",
-    "index": 40,
+    "index": 41,
     "name": "object_get_string",
     "context": "string"
   }
 },
 {
   "model": "editor.template",
-  "pk": 35,
+  "pk": 365,
   "fields": {
     "category": "trigger",
-    "index": 41,
+    "index": 42,
     "name": "triggering_node_name",
     "context": "string"
   }
 },
 {
   "model": "editor.template",
-  "pk": 36,
+  "pk": 366,
   "fields": {
     "category": "trigger",
-    "index": 42,
+    "index": 43,
     "name": "triggering_event_string",
     "context": "string"
   }
 },
 {
   "model": "editor.template",
-  "pk": 37,
+  "pk": 367,
   "fields": {
     "category": "trigger",
-    "index": 43,
+    "index": 44,
     "name": "triggering_admin_button_id",
     "context": "string"
   }
 },
 {
   "model": "editor.template",
-  "pk": 38,
+  "pk": 368,
   "fields": {
     "category": "conversion",
-    "index": 44,
+    "index": 45,
     "name": "real_to_string",
     "context": "string"
   }
 },
 {
   "model": "editor.template",
-  "pk": 39,
+  "pk": 369,
   "fields": {
     "category": "conversion",
-    "index": 45,
+    "index": 46,
     "name": "boolean_to_string",
     "context": "string"
   }
 },
 {
   "model": "editor.template",
-  "pk": 40,
+  "pk": 370,
   "fields": {
     "category": "conversion",
-    "index": 46,
+    "index": 47,
     "name": "object_to_string",
     "context": "string"
   }
 },
 {
   "model": "editor.template",
-  "pk": 41,
+  "pk": 371,
   "fields": {
     "category": "conversion",
-    "index": 47,
+    "index": 48,
     "name": "integer_to_string",
     "context": "string"
   }
 },
 {
   "model": "editor.template",
-  "pk": 42,
+  "pk": 372,
   "fields": {
     "category": "object",
-    "index": 48,
+    "index": 49,
     "name": "object_get_integer",
     "context": "integer"
   }
 },
 {
   "model": "editor.template",
-  "pk": 43,
+  "pk": 373,
   "fields": {
     "category": "math",
-    "index": 49,
+    "index": 50,
     "name": "integer_arithmetic",
     "context": "integer"
   }
 },
 {
   "model": "editor.template",
-  "pk": 44,
+  "pk": 374,
   "fields": {
     "category": "conversion",
-    "index": 50,
+    "index": 51,
     "name": "real_to_integer",
     "context": "integer"
   }
 },
 {
   "model": "editor.template",
-  "pk": 45,
+  "pk": 375,
   "fields": {
     "category": "object",
-    "index": 51,
+    "index": 52,
     "name": "object_get_real",
     "context": "real"
   }
 },
 {
   "model": "editor.template",
-  "pk": 46,
+  "pk": 376,
   "fields": {
     "category": "math",
-    "index": 52,
+    "index": 53,
     "name": "real_arithmetic",
     "context": "real"
   }
 },
 {
   "model": "editor.template",
-  "pk": 47,
+  "pk": 377,
   "fields": {
     "category": "conversion",
-    "index": 53,
+    "index": 54,
     "name": "integer_to_real",
     "context": "real"
   }
 },
 {
   "model": "editor.template",
-  "pk": 48,
+  "pk": 378,
   "fields": {
     "category": "timer",
-    "index": 54,
+    "index": 55,
     "name": "timer_remaining_time",
     "context": "real"
   }
 },
 {
   "model": "editor.template",
-  "pk": 63,
+  "pk": 379,
   "fields": {
     "category": "game_session",
-    "index": 55,
+    "index": 56,
     "name": "session_time",
     "context": "integer"
   }
 },
 {
   "model": "editor.template",
-  "pk": 49,
+  "pk": 380,
   "fields": {
     "category": "object",
-    "index": 56,
+    "index": 57,
     "name": "object_get_boolean",
     "context": "boolean"
   }
 },
 {
   "model": "editor.template",
-  "pk": 50,
+  "pk": 381,
   "fields": {
     "category": "",
-    "index": 57,
+    "index": 58,
     "name": "boolean_not",
     "context": "boolean"
   }
 },
 {
   "model": "editor.template",
-  "pk": 51,
+  "pk": 382,
   "fields": {
     "category": "",
-    "index": 58,
+    "index": 59,
     "name": "boolean_or",
     "context": "boolean"
   }
 },
 {
   "model": "editor.template",
-  "pk": 52,
+  "pk": 383,
   "fields": {
     "category": "",
-    "index": 59,
+    "index": 60,
     "name": "boolean_and",
     "context": "boolean"
   }
 },
 {
   "model": "editor.template",
-  "pk": 53,
+  "pk": 384,
   "fields": {
     "category": "",
-    "index": 60,
+    "index": 61,
     "name": "integer_comparison",
     "context": "boolean"
   }
 },
 {
   "model": "editor.template",
-  "pk": 54,
+  "pk": 385,
   "fields": {
     "category": "",
-    "index": 61,
+    "index": 62,
     "name": "real_comparison",
     "context": "boolean"
   }
 },
 {
   "model": "editor.template",
-  "pk": 55,
+  "pk": 386,
   "fields": {
     "category": "",
-    "index": 62,
+    "index": 63,
     "name": "string_comparison",
     "context": "boolean"
   }
 },
 {
   "model": "editor.template",
-  "pk": 56,
+  "pk": 387,
   "fields": {
     "category": "",
-    "index": 63,
+    "index": 64,
     "name": "object_comparison",
     "context": "boolean"
   }
 },
 {
   "model": "editor.template",
-  "pk": 57,
+  "pk": 388,
   "fields": {
     "category": "",
-    "index": 64,
+    "index": 65,
     "name": "boolean_comparison",
     "context": "boolean"
   }
 },
 {
   "model": "editor.template",
-  "pk": 58,
+  "pk": 389,
   "fields": {
     "category": "timer",
-    "index": 65,
+    "index": 66,
     "name": "expiring_timer",
     "context": "timer"
   }
 },
 {
   "model": "editor.template",
-  "pk": 59,
+  "pk": 390,
   "fields": {
     "category": "timer",
-    "index": 66,
+    "index": 67,
     "name": "last_started_timer",
     "context": "timer"
   }
 },
 {
   "model": "editor.templatelink",
-  "pk": 1,
+  "pk": 968,
   "fields": {
-    "template": 1,
+    "template": 323,
     "index": 0,
     "type": "text",
     "locale": "an_event_has_been_received",
@@ -685,9 +695,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 2,
+  "pk": 969,
   "fields": {
-    "template": 2,
+    "template": 324,
     "index": 0,
     "type": "text",
     "locale": "an_event_has_been_received_from_node",
@@ -699,9 +709,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 3,
+  "pk": 970,
   "fields": {
-    "template": 2,
+    "template": 324,
     "index": 1,
     "type": "argument",
     "locale": null,
@@ -713,9 +723,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 4,
+  "pk": 971,
   "fields": {
-    "template": 3,
+    "template": 325,
     "index": 0,
     "type": "text",
     "locale": "an_admin_button_has_been_pressed",
@@ -727,9 +737,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 5,
+  "pk": 972,
   "fields": {
-    "template": 4,
+    "template": 326,
     "index": 0,
     "type": "text",
     "locale": "the_admin_button",
@@ -741,9 +751,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 6,
+  "pk": 973,
   "fields": {
-    "template": 4,
+    "template": 326,
     "index": 1,
     "type": "argument",
     "locale": null,
@@ -755,9 +765,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 7,
+  "pk": 974,
   "fields": {
-    "template": 4,
+    "template": 326,
     "index": 2,
     "type": "text",
     "locale": "has_been_pressed",
@@ -769,9 +779,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 8,
+  "pk": 975,
   "fields": {
-    "template": 5,
+    "template": 327,
     "index": 0,
     "type": "text",
     "locale": "after",
@@ -783,9 +793,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 9,
+  "pk": 976,
   "fields": {
-    "template": 5,
+    "template": 327,
     "index": 1,
     "type": "argument",
     "locale": null,
@@ -797,9 +807,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 10,
+  "pk": 977,
   "fields": {
-    "template": 5,
+    "template": 327,
     "index": 2,
     "type": "text",
     "locale": "seconds_of_session_time",
@@ -811,9 +821,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 11,
+  "pk": 978,
   "fields": {
-    "template": 6,
+    "template": 328,
     "index": 0,
     "type": "text",
     "locale": "every",
@@ -825,9 +835,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 12,
+  "pk": 979,
   "fields": {
-    "template": 6,
+    "template": 328,
     "index": 1,
     "type": "argument",
     "locale": null,
@@ -839,9 +849,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 13,
+  "pk": 980,
   "fields": {
-    "template": 6,
+    "template": 328,
     "index": 2,
     "type": "text",
     "locale": "seconds_of_session_time",
@@ -853,9 +863,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 14,
+  "pk": 981,
   "fields": {
-    "template": 7,
+    "template": 329,
     "index": 0,
     "type": "argument",
     "locale": null,
@@ -867,9 +877,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 15,
+  "pk": 982,
   "fields": {
-    "template": 7,
+    "template": 329,
     "index": 1,
     "type": "text",
     "locale": "expires",
@@ -881,9 +891,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 16,
+  "pk": 983,
   "fields": {
-    "template": 8,
+    "template": 330,
     "index": 0,
     "type": "text",
     "locale": "the_session_is_started",
@@ -895,9 +905,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 17,
+  "pk": 984,
   "fields": {
-    "template": 9,
+    "template": 331,
     "index": 0,
     "type": "text",
     "locale": "the_session_is_paused",
@@ -909,9 +919,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 18,
+  "pk": 985,
   "fields": {
-    "template": 10,
+    "template": 332,
     "index": 0,
     "type": "text",
     "locale": "the_session_is_resumed",
@@ -923,2361 +933,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 19,
+  "pk": 986,
   "fields": {
-    "template": 11,
-    "index": 0,
-    "type": "text",
-    "locale": "if",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 20,
-  "fields": {
-    "template": 11,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "condition",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 21,
-  "fields": {
-    "template": 12,
-    "index": 0,
-    "type": "text",
-    "locale": "send_event",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 22,
-  "fields": {
-    "template": 12,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "event",
-    "value_type": "string",
-    "default_value": "\"hello\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 23,
-  "fields": {
-    "template": 12,
-    "index": 2,
-    "type": "text",
-    "locale": "to_node",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 24,
-  "fields": {
-    "template": 12,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "node_name",
-    "value_type": "string",
-    "default_value": "\"node\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 25,
-  "fields": {
-    "template": 13,
-    "index": 0,
-    "type": "text",
-    "locale": "send_event",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 26,
-  "fields": {
-    "template": 13,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "event",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 27,
-  "fields": {
-    "template": 13,
-    "index": 2,
-    "type": "text",
-    "locale": "to_node",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 28,
-  "fields": {
-    "template": 13,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "node_name",
-    "value_type": "string",
-    "default_value": "\"node\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 29,
-  "fields": {
-    "template": 14,
-    "index": 0,
-    "type": "text",
-    "locale": "push_an",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 30,
-  "fields": {
-    "template": 14,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "type",
-    "value_type": "predefined",
-    "default_value": "\"info\"",
-    "predefined_choices": "info,error"
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 31,
-  "fields": {
-    "template": 14,
-    "index": 2,
-    "type": "text",
-    "locale": "notification_on_the_admin_interface_with_message",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 32,
-  "fields": {
-    "template": 14,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "message",
-    "value_type": "string",
-    "default_value": "\"message\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 33,
-  "fields": {
-    "template": 15,
-    "index": 0,
-    "type": "text",
-    "locale": "add_a_record_now_with_label",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 34,
-  "fields": {
-    "template": 15,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "label",
-    "value_type": "string",
-    "default_value": "\"label\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 35,
-  "fields": {
-    "template": 16,
-    "index": 0,
-    "type": "text",
-    "locale": "add_a_record_at",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 36,
-  "fields": {
-    "template": 16,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "session_time",
-    "value_type": "real",
-    "default_value": "0",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 37,
-  "fields": {
-    "template": 16,
-    "index": 2,
-    "type": "text",
-    "locale": "seconds_with_label",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 38,
-  "fields": {
-    "template": 16,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "label",
-    "value_type": "string",
-    "default_value": "\"label\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 39,
-  "fields": {
-    "template": 17,
-    "index": 0,
-    "type": "text",
-    "locale": "create_a_new_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 40,
-  "fields": {
-    "template": 18,
-    "index": 0,
-    "type": "text",
-    "locale": "save",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 41,
-  "fields": {
-    "template": 18,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "value",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 42,
-  "fields": {
-    "template": 18,
-    "index": 2,
-    "type": "text",
-    "locale": "with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 43,
-  "fields": {
-    "template": 18,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 44,
-  "fields": {
-    "template": 18,
-    "index": 4,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 45,
-  "fields": {
-    "template": 18,
-    "index": 5,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 46,
-  "fields": {
-    "template": 19,
-    "index": 0,
-    "type": "text",
-    "locale": "save",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 47,
-  "fields": {
-    "template": 19,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "value",
-    "value_type": "string",
-    "default_value": "\"hello\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 48,
-  "fields": {
-    "template": 19,
-    "index": 2,
-    "type": "text",
-    "locale": "with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 49,
-  "fields": {
-    "template": 19,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 50,
-  "fields": {
-    "template": 19,
-    "index": 4,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 51,
-  "fields": {
-    "template": 19,
-    "index": 5,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 52,
-  "fields": {
-    "template": 20,
-    "index": 0,
-    "type": "text",
-    "locale": "save",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 53,
-  "fields": {
-    "template": 20,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "value",
-    "value_type": "integer",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 54,
-  "fields": {
-    "template": 20,
-    "index": 2,
-    "type": "text",
-    "locale": "with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 55,
-  "fields": {
-    "template": 20,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 56,
-  "fields": {
-    "template": 20,
-    "index": 4,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 57,
-  "fields": {
-    "template": 20,
-    "index": 5,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 58,
-  "fields": {
-    "template": 21,
-    "index": 0,
-    "type": "text",
-    "locale": "save",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 59,
-  "fields": {
-    "template": 21,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "value",
-    "value_type": "real",
-    "default_value": "1.5",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 60,
-  "fields": {
-    "template": 21,
-    "index": 2,
-    "type": "text",
-    "locale": "with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 61,
-  "fields": {
-    "template": 21,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 62,
-  "fields": {
-    "template": 21,
-    "index": 4,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 63,
-  "fields": {
-    "template": 21,
-    "index": 5,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 64,
-  "fields": {
-    "template": 22,
-    "index": 0,
-    "type": "text",
-    "locale": "save",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 65,
-  "fields": {
-    "template": 22,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "value",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 66,
-  "fields": {
-    "template": 22,
-    "index": 2,
-    "type": "text",
-    "locale": "with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 67,
-  "fields": {
-    "template": 22,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 68,
-  "fields": {
-    "template": 22,
-    "index": 4,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 69,
-  "fields": {
-    "template": 22,
-    "index": 5,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 70,
-  "fields": {
-    "template": 23,
-    "index": 0,
-    "type": "text",
-    "locale": "start_timer",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 71,
-  "fields": {
-    "template": 23,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "timer",
-    "value_type": "timer",
-    "default_value": "{\"template\": \"expiring_timer\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 72,
-  "fields": {
-    "template": 23,
-    "index": 2,
-    "type": "text",
-    "locale": "as_a",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 73,
-  "fields": {
-    "template": 23,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "type",
-    "value_type": "predefined",
-    "default_value": "\"one_shot\"",
-    "predefined_choices": "one_shot,periodic"
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 74,
-  "fields": {
-    "template": 23,
-    "index": 4,
-    "type": "text",
-    "locale": "timer_that_will_expire_in",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 75,
-  "fields": {
-    "template": 23,
-    "index": 5,
-    "type": "argument",
-    "locale": null,
-    "key": "time",
-    "value_type": "real",
-    "default_value": "30.00",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 76,
-  "fields": {
-    "template": 23,
-    "index": 6,
-    "type": "text",
-    "locale": "seconds",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 77,
-  "fields": {
-    "template": 24,
-    "index": 0,
-    "type": "text",
-    "locale": "pause",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 78,
-  "fields": {
-    "template": 24,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "timer",
-    "value_type": "timer",
-    "default_value": "{\"template\": \"last_started_timer\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 79,
-  "fields": {
-    "template": 25,
-    "index": 0,
-    "type": "text",
-    "locale": "resume",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 80,
-  "fields": {
-    "template": 25,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "timer",
-    "value_type": "timer",
-    "default_value": "{\"template\": \"last_started_timer\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 81,
-  "fields": {
-    "template": 26,
-    "index": 0,
-    "type": "text",
-    "locale": "if_then_do_else_do",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 82,
-  "fields": {
-    "template": 27,
-    "index": 0,
-    "type": "text",
-    "locale": "wait",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 83,
-  "fields": {
-    "template": 27,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "time",
-    "value_type": "real",
-    "default_value": "1.5",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 84,
-  "fields": {
-    "template": 27,
-    "index": 2,
-    "type": "text",
-    "locale": "seconds",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 85,
-  "fields": {
-    "template": 28,
-    "index": 0,
-    "type": "text",
-    "locale": "set_value_of_variable",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 86,
-  "fields": {
-    "template": 28,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "variable",
-    "value_type": "variable",
-    "default_value": "null",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 87,
-  "fields": {
-    "template": 28,
-    "index": 2,
-    "type": "text",
-    "locale": "to",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 88,
-  "fields": {
-    "template": 28,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "value",
-    "value_type": "disabled",
-    "default_value": "null",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 89,
-  "fields": {
-    "template": 29,
-    "index": 0,
-    "type": "text",
-    "locale": "trigger_rule",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 90,
-  "fields": {
-    "template": 29,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "rule",
-    "value_type": "predefined",
-    "default_value": "{\"rule\": null}",
-    "predefined_choices": "<rules>"
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 91,
-  "fields": {
-    "template": 30,
-    "index": 0,
-    "type": "text",
-    "locale": "do_nothing",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 92,
-  "fields": {
-    "template": 31,
-    "index": 0,
-    "type": "text",
-    "locale": "last_created_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 93,
-  "fields": {
-    "template": 32,
-    "index": 0,
-    "type": "text",
-    "locale": "get_object_associated_with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 94,
-  "fields": {
-    "template": 32,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 95,
-  "fields": {
-    "template": 32,
-    "index": 2,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 96,
-  "fields": {
-    "template": 32,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 97,
-  "fields": {
-    "template": 33,
-    "index": 0,
-    "type": "text",
-    "locale": "triggering_event_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 98,
-  "fields": {
-    "template": 34,
-    "index": 0,
-    "type": "text",
-    "locale": "get_string_associated_with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 99,
-  "fields": {
-    "template": 34,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 100,
-  "fields": {
-    "template": 34,
-    "index": 2,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 101,
-  "fields": {
-    "template": 34,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 102,
-  "fields": {
-    "template": 35,
-    "index": 0,
-    "type": "text",
-    "locale": "triggering_node",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 103,
-  "fields": {
-    "template": 36,
-    "index": 0,
-    "type": "text",
-    "locale": "triggering_event_string",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 104,
-  "fields": {
-    "template": 37,
-    "index": 0,
-    "type": "text",
-    "locale": "triggering_admin_button_id",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 105,
-  "fields": {
-    "template": 38,
-    "index": 0,
-    "type": "text",
-    "locale": "string(",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 106,
-  "fields": {
-    "template": 38,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "real",
-    "value_type": "real",
-    "default_value": "1.5",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 107,
-  "fields": {
-    "template": 38,
-    "index": 2,
-    "type": "text",
-    "locale": ")",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 108,
-  "fields": {
-    "template": 39,
-    "index": 0,
-    "type": "text",
-    "locale": "string(",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 109,
-  "fields": {
-    "template": 39,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "boolean",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 110,
-  "fields": {
-    "template": 39,
-    "index": 2,
-    "type": "text",
-    "locale": ")",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 111,
-  "fields": {
-    "template": 40,
-    "index": 0,
-    "type": "text",
-    "locale": "string(",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 112,
-  "fields": {
-    "template": 40,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 113,
-  "fields": {
-    "template": 40,
-    "index": 2,
-    "type": "text",
-    "locale": ")",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 114,
-  "fields": {
-    "template": 41,
-    "index": 0,
-    "type": "text",
-    "locale": "string(",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 115,
-  "fields": {
-    "template": 41,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "integer",
-    "value_type": "integer",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 116,
-  "fields": {
-    "template": 41,
-    "index": 2,
-    "type": "text",
-    "locale": ")",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 117,
-  "fields": {
-    "template": 42,
-    "index": 0,
-    "type": "text",
-    "locale": "get_integer_associated_with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 118,
-  "fields": {
-    "template": 42,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 119,
-  "fields": {
-    "template": 42,
-    "index": 2,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 120,
-  "fields": {
-    "template": 42,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 121,
-  "fields": {
-    "template": 43,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "left",
-    "value_type": "integer",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 122,
-  "fields": {
-    "template": 43,
-    "index": 1,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 123,
-  "fields": {
-    "template": 43,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "operator",
-    "value_type": "predefined",
-    "default_value": "\"+\"",
-    "predefined_choices": "+,-,*,/"
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 124,
-  "fields": {
-    "template": 43,
-    "index": 3,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 125,
-  "fields": {
-    "template": 43,
-    "index": 4,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "integer",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 126,
-  "fields": {
-    "template": 44,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "operation",
-    "value_type": "predefined",
-    "default_value": "\"round\"",
-    "predefined_choices": "round,ceil,floor"
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 127,
-  "fields": {
-    "template": 44,
-    "index": 1,
-    "type": "text",
-    "locale": "(",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 128,
-  "fields": {
-    "template": 44,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "real",
-    "value_type": "real",
-    "default_value": "1.5",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 129,
-  "fields": {
-    "template": 44,
-    "index": 3,
-    "type": "text",
-    "locale": ")",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 130,
-  "fields": {
-    "template": 45,
-    "index": 0,
-    "type": "text",
-    "locale": "get_real_associated_with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 131,
-  "fields": {
-    "template": 45,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 132,
-  "fields": {
-    "template": 45,
-    "index": 2,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 133,
-  "fields": {
-    "template": 45,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 134,
-  "fields": {
-    "template": 46,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "left",
-    "value_type": "real",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 135,
-  "fields": {
-    "template": 46,
-    "index": 1,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 136,
-  "fields": {
-    "template": 46,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "operator",
-    "value_type": "predefined",
-    "default_value": "\"+\"",
-    "predefined_choices": "+,-,*,/"
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 137,
-  "fields": {
-    "template": 46,
-    "index": 3,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 138,
-  "fields": {
-    "template": 46,
-    "index": 4,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "real",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 139,
-  "fields": {
-    "template": 47,
-    "index": 0,
-    "type": "text",
-    "locale": "real(",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 140,
-  "fields": {
-    "template": 47,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "integer",
-    "value_type": "integer",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 141,
-  "fields": {
-    "template": 47,
-    "index": 2,
-    "type": "text",
-    "locale": ")",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 142,
-  "fields": {
-    "template": 48,
-    "index": 0,
-    "type": "text",
-    "locale": "remaining_time_of",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 143,
-  "fields": {
-    "template": 48,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "timer",
-    "value_type": "timer",
-    "default_value": "{\"template\": \"last_started_timer\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 144,
-  "fields": {
-    "template": 49,
-    "index": 0,
-    "type": "text",
-    "locale": "get_boolean_associated_with_key",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 145,
-  "fields": {
-    "template": 49,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "key",
-    "value_type": "string",
-    "default_value": "\"key\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 146,
-  "fields": {
-    "template": 49,
-    "index": 2,
-    "type": "text",
-    "locale": "in_object",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 147,
-  "fields": {
-    "template": 49,
-    "index": 3,
-    "type": "argument",
-    "locale": null,
-    "key": "object",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 148,
-  "fields": {
-    "template": 50,
-    "index": 0,
-    "type": "text",
-    "locale": "not",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 149,
-  "fields": {
-    "template": 50,
-    "index": 1,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 150,
-  "fields": {
-    "template": 51,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "left",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 151,
-  "fields": {
-    "template": 51,
-    "index": 1,
-    "type": "text",
-    "locale": "or",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 152,
-  "fields": {
-    "template": 51,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 153,
-  "fields": {
-    "template": 52,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "left",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 154,
-  "fields": {
-    "template": 52,
-    "index": 1,
-    "type": "text",
-    "locale": "and",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 155,
-  "fields": {
-    "template": 52,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 156,
-  "fields": {
-    "template": 53,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "left",
-    "value_type": "integer",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 157,
-  "fields": {
-    "template": 53,
-    "index": 1,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 158,
-  "fields": {
-    "template": 53,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "operator",
-    "value_type": "predefined",
-    "default_value": "\"=\"",
-    "predefined_choices": "=,!=,>,>=,<,<="
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 159,
-  "fields": {
-    "template": 53,
-    "index": 3,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 160,
-  "fields": {
-    "template": 53,
-    "index": 4,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "integer",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 161,
-  "fields": {
-    "template": 54,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "left",
-    "value_type": "real",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 162,
-  "fields": {
-    "template": 54,
-    "index": 1,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 163,
-  "fields": {
-    "template": 54,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "operator",
-    "value_type": "predefined",
-    "default_value": "\"=\"",
-    "predefined_choices": "=,!=,>,>=,<,<="
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 164,
-  "fields": {
-    "template": 54,
-    "index": 3,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 165,
-  "fields": {
-    "template": 54,
-    "index": 4,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "real",
-    "default_value": "1",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 166,
-  "fields": {
-    "template": 55,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "left",
-    "value_type": "string",
-    "default_value": "\"hello\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 167,
-  "fields": {
-    "template": 55,
-    "index": 1,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 168,
-  "fields": {
-    "template": 55,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "operator",
-    "value_type": "predefined",
-    "default_value": "\"=\"",
-    "predefined_choices": "=,!=,contains"
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 169,
-  "fields": {
-    "template": 55,
-    "index": 3,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 170,
-  "fields": {
-    "template": 55,
-    "index": 4,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "string",
-    "default_value": "\"hello\"",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 171,
-  "fields": {
-    "template": 56,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "left",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 172,
-  "fields": {
-    "template": 56,
-    "index": 1,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 173,
-  "fields": {
-    "template": 56,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "operator",
-    "value_type": "predefined",
-    "default_value": "\"is\"",
-    "predefined_choices": "is,is_not"
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 174,
-  "fields": {
-    "template": 56,
-    "index": 3,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 175,
-  "fields": {
-    "template": 56,
-    "index": 4,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "object",
-    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 176,
-  "fields": {
-    "template": 57,
-    "index": 0,
-    "type": "argument",
-    "locale": null,
-    "key": "left",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 177,
-  "fields": {
-    "template": 57,
-    "index": 1,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 178,
-  "fields": {
-    "template": 57,
-    "index": 2,
-    "type": "argument",
-    "locale": null,
-    "key": "operator",
-    "value_type": "predefined",
-    "default_value": "\"is\"",
-    "predefined_choices": "is,is_not"
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 179,
-  "fields": {
-    "template": 57,
-    "index": 3,
-    "type": "text",
-    "locale": "space",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 180,
-  "fields": {
-    "template": 57,
-    "index": 4,
-    "type": "argument",
-    "locale": null,
-    "key": "right",
-    "value_type": "boolean",
-    "default_value": "true",
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 181,
-  "fields": {
-    "template": 58,
-    "index": 0,
-    "type": "text",
-    "locale": "expiring_timer",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 182,
-  "fields": {
-    "template": 59,
-    "index": 0,
-    "type": "text",
-    "locale": "last_started_timer",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 183,
-  "fields": {
-    "template": 60,
-    "index": 0,
-    "type": "text",
-    "locale": "run_game_session",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 184,
-  "fields": {
-    "template": 61,
-    "index": 0,
-    "type": "text",
-    "locale": "halt_game_session",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 185,
-  "fields": {
-    "template": 62,
-    "index": 0,
-    "type": "text",
-    "locale": "reset_game_session",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 186,
-  "fields": {
-    "template": 63,
-    "index": 0,
-    "type": "text",
-    "locale": "session_time",
-    "key": null,
-    "value_type": "string",
-    "default_value": null,
-    "predefined_choices": ""
-  }
-},
-{
-  "model": "editor.templatelink",
-  "pk": 187,
-  "fields": {
-    "template": 64,
+    "template": 333,
     "index": 0,
     "type": "text",
     "locale": "a_node_has_connected",
@@ -3289,9 +947,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 188,
+  "pk": 987,
   "fields": {
-    "template": 65,
+    "template": 334,
     "index": 0,
     "type": "text",
     "locale": "a_node_named_",
@@ -3303,9 +961,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 189,
+  "pk": 988,
   "fields": {
-    "template": 65,
+    "template": 334,
     "index": 1,
     "type": "argument",
     "locale": null,
@@ -3317,9 +975,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 190,
+  "pk": 989,
   "fields": {
-    "template": 65,
+    "template": 334,
     "index": 2,
     "type": "text",
     "locale": "_has_connected",
@@ -3331,9 +989,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 191,
+  "pk": 990,
   "fields": {
-    "template": 66,
+    "template": 335,
     "index": 0,
     "type": "text",
     "locale": "a_node_has_disconnected",
@@ -3345,9 +1003,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 192,
+  "pk": 991,
   "fields": {
-    "template": 67,
+    "template": 336,
     "index": 0,
     "type": "text",
     "locale": "a_node_named_",
@@ -3359,9 +1017,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 193,
+  "pk": 992,
   "fields": {
-    "template": 67,
+    "template": 336,
     "index": 1,
     "type": "argument",
     "locale": null,
@@ -3373,9 +1031,9 @@
 },
 {
   "model": "editor.templatelink",
-  "pk": 194,
+  "pk": 993,
   "fields": {
-    "template": 67,
+    "template": 336,
     "index": 2,
     "type": "text",
     "locale": "_has_disconnected",
@@ -3386,10 +1044,2460 @@
   }
 },
 {
-  "model": "editor.templatecontextparagraph",
-  "pk": 1,
+  "model": "editor.templatelink",
+  "pk": 994,
   "fields": {
-    "template": 26,
+    "template": 337,
+    "index": 0,
+    "type": "text",
+    "locale": "if",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 995,
+  "fields": {
+    "template": 337,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "condition",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 996,
+  "fields": {
+    "template": 338,
+    "index": 0,
+    "type": "text",
+    "locale": "send_event",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 997,
+  "fields": {
+    "template": 338,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "event",
+    "value_type": "string",
+    "default_value": "\"hello\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 998,
+  "fields": {
+    "template": 338,
+    "index": 2,
+    "type": "text",
+    "locale": "to_node",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 999,
+  "fields": {
+    "template": 338,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "node_name",
+    "value_type": "string",
+    "default_value": "\"node\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1000,
+  "fields": {
+    "template": 339,
+    "index": 0,
+    "type": "text",
+    "locale": "send_event",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1001,
+  "fields": {
+    "template": 339,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "event",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1002,
+  "fields": {
+    "template": 339,
+    "index": 2,
+    "type": "text",
+    "locale": "to_node",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1003,
+  "fields": {
+    "template": 339,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "node_name",
+    "value_type": "string",
+    "default_value": "\"node\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1004,
+  "fields": {
+    "template": 340,
+    "index": 0,
+    "type": "text",
+    "locale": "push_an",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1005,
+  "fields": {
+    "template": 340,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "type",
+    "value_type": "predefined",
+    "default_value": "\"info\"",
+    "predefined_choices": "info,error"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1006,
+  "fields": {
+    "template": 340,
+    "index": 2,
+    "type": "text",
+    "locale": "notification_on_the_admin_interface_with_message",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1007,
+  "fields": {
+    "template": 340,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "message",
+    "value_type": "string",
+    "default_value": "\"message\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1008,
+  "fields": {
+    "template": 341,
+    "index": 0,
+    "type": "text",
+    "locale": "add_a_record_now_with_label",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1009,
+  "fields": {
+    "template": 341,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "label",
+    "value_type": "string",
+    "default_value": "\"label\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1010,
+  "fields": {
+    "template": 342,
+    "index": 0,
+    "type": "text",
+    "locale": "add_a_record_at",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1011,
+  "fields": {
+    "template": 342,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "session_time",
+    "value_type": "real",
+    "default_value": "0",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1012,
+  "fields": {
+    "template": 342,
+    "index": 2,
+    "type": "text",
+    "locale": "seconds_with_label",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1013,
+  "fields": {
+    "template": 342,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "label",
+    "value_type": "string",
+    "default_value": "\"label\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1014,
+  "fields": {
+    "template": 343,
+    "index": 0,
+    "type": "text",
+    "locale": "create_a_new_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1015,
+  "fields": {
+    "template": 344,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1016,
+  "fields": {
+    "template": 344,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1017,
+  "fields": {
+    "template": 344,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1018,
+  "fields": {
+    "template": 344,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1019,
+  "fields": {
+    "template": 344,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1020,
+  "fields": {
+    "template": 344,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1021,
+  "fields": {
+    "template": 345,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1022,
+  "fields": {
+    "template": 345,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "string",
+    "default_value": "\"hello\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1023,
+  "fields": {
+    "template": 345,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1024,
+  "fields": {
+    "template": 345,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1025,
+  "fields": {
+    "template": 345,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1026,
+  "fields": {
+    "template": 345,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1027,
+  "fields": {
+    "template": 346,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1028,
+  "fields": {
+    "template": 346,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1029,
+  "fields": {
+    "template": 346,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1030,
+  "fields": {
+    "template": 346,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1031,
+  "fields": {
+    "template": 346,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1032,
+  "fields": {
+    "template": 346,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1033,
+  "fields": {
+    "template": 347,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1034,
+  "fields": {
+    "template": 347,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "real",
+    "default_value": "1.5",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1035,
+  "fields": {
+    "template": 347,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1036,
+  "fields": {
+    "template": 347,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1037,
+  "fields": {
+    "template": 347,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1038,
+  "fields": {
+    "template": 347,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1039,
+  "fields": {
+    "template": 348,
+    "index": 0,
+    "type": "text",
+    "locale": "save",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1040,
+  "fields": {
+    "template": 348,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1041,
+  "fields": {
+    "template": 348,
+    "index": 2,
+    "type": "text",
+    "locale": "with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1042,
+  "fields": {
+    "template": 348,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1043,
+  "fields": {
+    "template": 348,
+    "index": 4,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1044,
+  "fields": {
+    "template": 348,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1045,
+  "fields": {
+    "template": 349,
+    "index": 0,
+    "type": "text",
+    "locale": "start_timer",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1046,
+  "fields": {
+    "template": 349,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "timer",
+    "value_type": "timer",
+    "default_value": "{\"template\": \"expiring_timer\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1047,
+  "fields": {
+    "template": 349,
+    "index": 2,
+    "type": "text",
+    "locale": "as_a",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1048,
+  "fields": {
+    "template": 349,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "type",
+    "value_type": "predefined",
+    "default_value": "\"one_shot\"",
+    "predefined_choices": "one_shot,periodic"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1049,
+  "fields": {
+    "template": 349,
+    "index": 4,
+    "type": "text",
+    "locale": "timer_that_will_expire_in",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1050,
+  "fields": {
+    "template": 349,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "time",
+    "value_type": "real",
+    "default_value": "30.00",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1051,
+  "fields": {
+    "template": 349,
+    "index": 6,
+    "type": "text",
+    "locale": "seconds",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1052,
+  "fields": {
+    "template": 350,
+    "index": 0,
+    "type": "text",
+    "locale": "pause",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1053,
+  "fields": {
+    "template": 350,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "timer",
+    "value_type": "timer",
+    "default_value": "{\"template\": \"last_started_timer\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1054,
+  "fields": {
+    "template": 351,
+    "index": 0,
+    "type": "text",
+    "locale": "resume",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1055,
+  "fields": {
+    "template": 351,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "timer",
+    "value_type": "timer",
+    "default_value": "{\"template\": \"last_started_timer\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1056,
+  "fields": {
+    "template": 352,
+    "index": 0,
+    "type": "text",
+    "locale": "run_game_session",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1057,
+  "fields": {
+    "template": 353,
+    "index": 0,
+    "type": "text",
+    "locale": "halt_game_session",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1058,
+  "fields": {
+    "template": 354,
+    "index": 0,
+    "type": "text",
+    "locale": "reset_game_session",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1059,
+  "fields": {
+    "template": 355,
+    "index": 0,
+    "type": "text",
+    "locale": "if_then_do_else_do",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1060,
+  "fields": {
+    "template": 356,
+    "index": 0,
+    "type": "text",
+    "locale": "wait",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1061,
+  "fields": {
+    "template": 356,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "time",
+    "value_type": "real",
+    "default_value": "1.5",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1062,
+  "fields": {
+    "template": 356,
+    "index": 2,
+    "type": "text",
+    "locale": "seconds",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1063,
+  "fields": {
+    "template": 357,
+    "index": 0,
+    "type": "text",
+    "locale": "set_value_of_variable",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1064,
+  "fields": {
+    "template": 357,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "variable",
+    "value_type": "variable",
+    "default_value": "null",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1065,
+  "fields": {
+    "template": 357,
+    "index": 2,
+    "type": "text",
+    "locale": "to",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1066,
+  "fields": {
+    "template": 357,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "value",
+    "value_type": "disabled",
+    "default_value": "null",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1067,
+  "fields": {
+    "template": 358,
+    "index": 0,
+    "type": "text",
+    "locale": "trigger_rule",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1068,
+  "fields": {
+    "template": 358,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "rule",
+    "value_type": "predefined",
+    "default_value": "{\"rule\": null}",
+    "predefined_choices": "<rules>"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1069,
+  "fields": {
+    "template": 359,
+    "index": 0,
+    "type": "text",
+    "locale": "do_nothing",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1070,
+  "fields": {
+    "template": 360,
+    "index": 0,
+    "type": "text",
+    "locale": "last_created_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1071,
+  "fields": {
+    "template": 361,
+    "index": 0,
+    "type": "text",
+    "locale": "get_object_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1072,
+  "fields": {
+    "template": 361,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1073,
+  "fields": {
+    "template": 361,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1074,
+  "fields": {
+    "template": 361,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1075,
+  "fields": {
+    "template": 362,
+    "index": 0,
+    "type": "text",
+    "locale": "triggering_event_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1076,
+  "fields": {
+    "template": 363,
+    "index": 0,
+    "type": "text",
+    "locale": "all_characters_of_string_",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1077,
+  "fields": {
+    "template": 363,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "string",
+    "value_type": "string",
+    "default_value": "\"hello\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1078,
+  "fields": {
+    "template": 363,
+    "index": 2,
+    "type": "text",
+    "locale": "_between_positions_",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1079,
+  "fields": {
+    "template": 363,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "first_char",
+    "value_type": "integer",
+    "default_value": "0",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1080,
+  "fields": {
+    "template": 363,
+    "index": 4,
+    "type": "text",
+    "locale": "_and_",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1081,
+  "fields": {
+    "template": 363,
+    "index": 5,
+    "type": "argument",
+    "locale": null,
+    "key": "last_char",
+    "value_type": "integer",
+    "default_value": "3",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1082,
+  "fields": {
+    "template": 363,
+    "index": 6,
+    "type": "text",
+    "locale": "_included",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1083,
+  "fields": {
+    "template": 364,
+    "index": 0,
+    "type": "text",
+    "locale": "get_string_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1084,
+  "fields": {
+    "template": 364,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1085,
+  "fields": {
+    "template": 364,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1086,
+  "fields": {
+    "template": 364,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1087,
+  "fields": {
+    "template": 365,
+    "index": 0,
+    "type": "text",
+    "locale": "triggering_node",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1088,
+  "fields": {
+    "template": 366,
+    "index": 0,
+    "type": "text",
+    "locale": "triggering_event_string",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1089,
+  "fields": {
+    "template": 367,
+    "index": 0,
+    "type": "text",
+    "locale": "triggering_admin_button_id",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1090,
+  "fields": {
+    "template": 368,
+    "index": 0,
+    "type": "text",
+    "locale": "string(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1091,
+  "fields": {
+    "template": 368,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "real",
+    "value_type": "real",
+    "default_value": "1.5",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1092,
+  "fields": {
+    "template": 368,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1093,
+  "fields": {
+    "template": 369,
+    "index": 0,
+    "type": "text",
+    "locale": "string(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1094,
+  "fields": {
+    "template": 369,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "boolean",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1095,
+  "fields": {
+    "template": 369,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1096,
+  "fields": {
+    "template": 370,
+    "index": 0,
+    "type": "text",
+    "locale": "string(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1097,
+  "fields": {
+    "template": 370,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1098,
+  "fields": {
+    "template": 370,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1099,
+  "fields": {
+    "template": 371,
+    "index": 0,
+    "type": "text",
+    "locale": "string(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1100,
+  "fields": {
+    "template": 371,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "integer",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1101,
+  "fields": {
+    "template": 371,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1102,
+  "fields": {
+    "template": 372,
+    "index": 0,
+    "type": "text",
+    "locale": "get_integer_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1103,
+  "fields": {
+    "template": 372,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1104,
+  "fields": {
+    "template": 372,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1105,
+  "fields": {
+    "template": 372,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1106,
+  "fields": {
+    "template": 373,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1107,
+  "fields": {
+    "template": 373,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1108,
+  "fields": {
+    "template": 373,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"+\"",
+    "predefined_choices": "+,-,*,/"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1109,
+  "fields": {
+    "template": 373,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1110,
+  "fields": {
+    "template": 373,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1111,
+  "fields": {
+    "template": 374,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "operation",
+    "value_type": "predefined",
+    "default_value": "\"round\"",
+    "predefined_choices": "round,ceil,floor"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1112,
+  "fields": {
+    "template": 374,
+    "index": 1,
+    "type": "text",
+    "locale": "(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1113,
+  "fields": {
+    "template": 374,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "real",
+    "value_type": "real",
+    "default_value": "1.5",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1114,
+  "fields": {
+    "template": 374,
+    "index": 3,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1115,
+  "fields": {
+    "template": 375,
+    "index": 0,
+    "type": "text",
+    "locale": "get_real_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1116,
+  "fields": {
+    "template": 375,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1117,
+  "fields": {
+    "template": 375,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1118,
+  "fields": {
+    "template": 375,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1119,
+  "fields": {
+    "template": 376,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "real",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1120,
+  "fields": {
+    "template": 376,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1121,
+  "fields": {
+    "template": 376,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"+\"",
+    "predefined_choices": "+,-,*,/"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1122,
+  "fields": {
+    "template": 376,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1123,
+  "fields": {
+    "template": 376,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "real",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1124,
+  "fields": {
+    "template": 377,
+    "index": 0,
+    "type": "text",
+    "locale": "real(",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1125,
+  "fields": {
+    "template": 377,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "integer",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1126,
+  "fields": {
+    "template": 377,
+    "index": 2,
+    "type": "text",
+    "locale": ")",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1127,
+  "fields": {
+    "template": 378,
+    "index": 0,
+    "type": "text",
+    "locale": "remaining_time_of",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1128,
+  "fields": {
+    "template": 378,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "timer",
+    "value_type": "timer",
+    "default_value": "{\"template\": \"last_started_timer\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1129,
+  "fields": {
+    "template": 379,
+    "index": 0,
+    "type": "text",
+    "locale": "session_time",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1130,
+  "fields": {
+    "template": 380,
+    "index": 0,
+    "type": "text",
+    "locale": "get_boolean_associated_with_key",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1131,
+  "fields": {
+    "template": 380,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "key",
+    "value_type": "string",
+    "default_value": "\"key\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1132,
+  "fields": {
+    "template": 380,
+    "index": 2,
+    "type": "text",
+    "locale": "in_object",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1133,
+  "fields": {
+    "template": 380,
+    "index": 3,
+    "type": "argument",
+    "locale": null,
+    "key": "object",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1134,
+  "fields": {
+    "template": 381,
+    "index": 0,
+    "type": "text",
+    "locale": "not",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1135,
+  "fields": {
+    "template": 381,
+    "index": 1,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1136,
+  "fields": {
+    "template": 382,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1137,
+  "fields": {
+    "template": 382,
+    "index": 1,
+    "type": "text",
+    "locale": "or",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1138,
+  "fields": {
+    "template": 382,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1139,
+  "fields": {
+    "template": 383,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1140,
+  "fields": {
+    "template": 383,
+    "index": 1,
+    "type": "text",
+    "locale": "and",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1141,
+  "fields": {
+    "template": 383,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1142,
+  "fields": {
+    "template": 384,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1143,
+  "fields": {
+    "template": 384,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1144,
+  "fields": {
+    "template": 384,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"=\"",
+    "predefined_choices": "=,!=,>,>=,<,<="
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1145,
+  "fields": {
+    "template": 384,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1146,
+  "fields": {
+    "template": 384,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "integer",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1147,
+  "fields": {
+    "template": 385,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "real",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1148,
+  "fields": {
+    "template": 385,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1149,
+  "fields": {
+    "template": 385,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"=\"",
+    "predefined_choices": "=,!=,>,>=,<,<="
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1150,
+  "fields": {
+    "template": 385,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1151,
+  "fields": {
+    "template": 385,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "real",
+    "default_value": "1",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1152,
+  "fields": {
+    "template": 386,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "string",
+    "default_value": "\"hello\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1153,
+  "fields": {
+    "template": 386,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1154,
+  "fields": {
+    "template": 386,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"=\"",
+    "predefined_choices": "=,!=,contains,startswith,endswith"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1155,
+  "fields": {
+    "template": 386,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1156,
+  "fields": {
+    "template": 386,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "string",
+    "default_value": "\"hello\"",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1157,
+  "fields": {
+    "template": 387,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1158,
+  "fields": {
+    "template": 387,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1159,
+  "fields": {
+    "template": 387,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"is\"",
+    "predefined_choices": "is,is_not"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1160,
+  "fields": {
+    "template": 387,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1161,
+  "fields": {
+    "template": 387,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "object",
+    "default_value": "{\"template\": \"last_created_object\", \"arguments\": {}}",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1162,
+  "fields": {
+    "template": 388,
+    "index": 0,
+    "type": "argument",
+    "locale": null,
+    "key": "left",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1163,
+  "fields": {
+    "template": 388,
+    "index": 1,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1164,
+  "fields": {
+    "template": 388,
+    "index": 2,
+    "type": "argument",
+    "locale": null,
+    "key": "operator",
+    "value_type": "predefined",
+    "default_value": "\"is\"",
+    "predefined_choices": "is,is_not"
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1165,
+  "fields": {
+    "template": 388,
+    "index": 3,
+    "type": "text",
+    "locale": "space",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1166,
+  "fields": {
+    "template": 388,
+    "index": 4,
+    "type": "argument",
+    "locale": null,
+    "key": "right",
+    "value_type": "boolean",
+    "default_value": "true",
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1167,
+  "fields": {
+    "template": 389,
+    "index": 0,
+    "type": "text",
+    "locale": "expiring_timer",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatelink",
+  "pk": 1168,
+  "fields": {
+    "template": 390,
+    "index": 0,
+    "type": "text",
+    "locale": "last_started_timer",
+    "key": null,
+    "value_type": "string",
+    "default_value": null,
+    "predefined_choices": ""
+  }
+},
+{
+  "model": "editor.templatecontextparagraph",
+  "pk": 16,
+  "fields": {
+    "template": 355,
     "index": 0,
     "key": "if_conditions",
     "type": "condition"
@@ -3397,9 +3505,9 @@
 },
 {
   "model": "editor.templatecontextparagraph",
-  "pk": 2,
+  "pk": 17,
   "fields": {
-    "template": 26,
+    "template": 355,
     "index": 1,
     "key": "then_actions",
     "type": "action"
@@ -3407,9 +3515,9 @@
 },
 {
   "model": "editor.templatecontextparagraph",
-  "pk": 3,
+  "pk": 18,
   "fields": {
-    "template": 26,
+    "template": 355,
     "index": 2,
     "key": "else_actions",
     "type": "action"
