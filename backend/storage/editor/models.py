@@ -94,10 +94,6 @@ class TemplateLink(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['template', 'index'],
-                name='template_index',
-            ),
-            models.UniqueConstraint(
                 fields=['template', 'key'],
                 name='template_key',
             )
@@ -144,25 +140,25 @@ class TemplateContextParagraphForm(forms.ModelForm):
         )
 
 
+class RuleSet(models.Model):
+    name = models.CharField(max_length=64)
+    index = models.IntegerField()
+    rooms = models.ManyToManyField(Room)
+
+
+class RuleSetForm(forms.ModelForm):
+    class Meta:
+        model = RuleSet
+        fields = ('name', 'index', 'rooms')
+
+
 class Variable(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    rule_set = models.ForeignKey(RuleSet, on_delete=models.CASCADE)
     index = models.IntegerField()
     name = models.CharField(max_length=64)
     type = models.CharField(choices=VALUE_TYPES, default=VALUE_TYPES[0][0], max_length=16)
     init_value = models.TextField(null=True, blank=True)
     list = models.BooleanField(default=False)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['room', 'index'],
-                name='variable_room_index',
-            ),
-            models.UniqueConstraint(
-                fields=['room', 'name'],
-                name='variable_room_name',
-            ),
-        ]
 
     def __str__(self):
         return '{} - {}'.format(self.room, self.name)
@@ -171,25 +167,20 @@ class Variable(models.Model):
 class VariableForm(forms.ModelForm):
     class Meta:
         model = Variable
-        fields = ('room', 'index', 'name', 'type', 'init_value', 'list',)
+        fields = ('rule_set', 'index', 'name', 'type', 'init_value', 'list',)
 
 
 class Rule(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    rule_set = models.ForeignKey(RuleSet, on_delete=models.CASCADE)
     index = models.IntegerField()
     name = models.CharField(max_length=64)
     content = models.TextField()
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['room', 'index'], name='rule_room_index'),
-        ]
-
     def __str__(self):
-        return '{} - {}'.format(self.room, self.name)
+        return '{} - {}'.format(self.rule_set, self.name)
 
 
 class RuleForm(forms.ModelForm):
     class Meta:
         model = Rule
-        fields = ('room', 'index', 'name', 'content')
+        fields = ('rule_set', 'index', 'name', 'content')

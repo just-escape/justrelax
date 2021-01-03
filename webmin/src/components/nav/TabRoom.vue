@@ -19,9 +19,6 @@
         <li class="bgc-dark">
           <Tab :url="'/rooms/' + room.id + '/stats'" :icon="'far fa-chart-bar'" :label="'Statistics'"/>
         </li>
-        <li class="bgc-dark">
-          <Tab :url="'/rooms/' + room.id + '/editor'" :icon="'far fa-file-code'" :label="'Editor'"/>
-        </li>
         <!--<li class="bgc-dark">
           <Tab :url="'/rooms/' + room.id + '/settings'" :icon="'fas fa-cog'" :label="'Settings'"/>
         </li>-->

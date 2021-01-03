@@ -64,8 +64,29 @@ export default {
   transition: all 0.4s linear;
 }
 
+.transition-opacity-200ms {
+  transition: opacity 0.2s;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+}
+
+.z-index-10 {
+  z-index: 10;
+}
+
 .z-index-20 {
   z-index: 20;
+}
+
+.z-index-30 {
+  z-index: 30;
+}
+
+.z-index-40 {
+  z-index: 40;
 }
 
 .bg-black-transparent {

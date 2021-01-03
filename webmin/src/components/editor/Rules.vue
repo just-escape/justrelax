@@ -8,10 +8,6 @@
             <i class="far fa-file fa-fw"></i>
             <i class="fas fa-plus bottom-right"></i>
           </ButtonSmall>
-          <ButtonSmall class="position-relative">
-            <i class="far fa-folder-open fa-fw"></i>
-            <i class="fas fa-plus bottom-right"></i>
-          </ButtonSmall>
         </b-button-group>
       </div>
       <div class="d-flex flex-column">

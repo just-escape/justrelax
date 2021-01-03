@@ -93,6 +93,9 @@ export default {
       } else if (typeof value === "object") {
         if (value.template !== undefined) {
           var formattedValue = ""
+          if (editorStore.state.templatesByName[value.template] === undefined) {
+            console.log(value.template)
+          }
           let links = editorStore.state.templatesByName[value.template].links
           for (var link of links) {
             if (link.type === 'text') {

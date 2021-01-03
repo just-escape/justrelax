@@ -1,12 +1,12 @@
 <template>
-  <div class="glowing-container h-100 w-100 position-absolute" :style="{transform: transform}">
+  <div class="h-100 w-100 position-absolute" :style="{transform: transform}">
     <div class="d-flex flex-column h-100">
       <div v-for="(row, rowIndex) in map" :key="rowIndex" class="d-flex flex-row flex-grow-1">
-        <Cell v-for="(cellContent, cellIndex) in row" :key="cellIndex" class="flex-grow-1" :content="cellContent" :face="face"/>
+        <Cell v-for="(cell, cellIndex) in row" :key="cellIndex" class="flex-grow-1" :cell="cell" :face="face"/>
       </div>
     </div>
 
-    <MobileBlock
+    <Cylinder
       v-for="(block, blockIndex) in blocks" :key="blockIndex"
       class="position-absolute" :style="{width: width, height: height, top: getTop(block.y), left: getLeft(block.x)}"
       :face="face"
@@ -24,7 +24,7 @@
 
 <script>
 import Cell from '@/components/Cell.vue'
-import MobileBlock from '@/components/MobileBlock.vue'
+import Cylinder from '@/components/Cylinder.vue'
 import Marmitron from '@/components/Marmitron.vue'
 import sokobanStore from '@/store/sokobanStore.js'
 
@@ -32,7 +32,7 @@ export default {
   name: "Level",
   components: {
     Cell,
-    MobileBlock,
+    Cylinder,
     Marmitron,
   },
   computed: {

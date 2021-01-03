@@ -122,9 +122,9 @@ export default new Vuex.Store({
         state.templatesByContext[t.context].push(t)
       }
     },
-    loadScenario (state, scenario) {
-      Vue.set(state, 'variables', scenario.variables)
-      Vue.set(state, 'rules', scenario.rules)
+    loadRuleSet (state, ruleSet) {
+      Vue.set(state, 'variables', ruleSet.variables)
+      Vue.set(state, 'rules', ruleSet.rules)
     },
     setDataFromFQDN (state, {fqdn, data}) {
       let copiedFQDN = JSON.parse(JSON.stringify(fqdn))
@@ -233,43 +233,43 @@ export default new Vuex.Store({
 
       context.commit('pushDataFromFQDN', {fqdn, data})
     },
-    loadEditorData(context, roomId) {
-      context.dispatch('loadTemplates', roomId)
+    loadEditorData(context, ruleSetId) {
+      context.dispatch('loadTemplates', ruleSetId)
     },
-    loadTemplates(context, roomId) {
+    loadTemplates(context, ruleSetId) {
       Vue.prototype.$justRestAPI.get('/get_templates/')
         .then(function(response) {
           context.commit('loadTemplates', response.data)
-          context.dispatch('loadScenario', roomId)
+          context.dispatch('loadRuleSet', ruleSetId)
         })
         .catch(function(error) {
           notificationStore.dispatch('pushError', 'Error while fetching templates: ' + error)
         })
     },
-    loadScenario(context, roomId) {
-      Vue.prototype.$justRestAPI.get('/get_scenario/', {params: {room_id: roomId}})
+    loadRuleSet(context, ruleSetId) {
+      Vue.prototype.$justRestAPI.get('/get_rules_from_rule_set_id/?id=' + ruleSetId)
         .then(function(response) {
-          context.commit('loadScenario', response.data)
+          context.commit('loadRuleSet', response.data)
           if (context.state.rules.length > 0) {
             context.commit('setSelectedFQDN', ['rules', 0])
           }
         })
         .catch(function(error) {
-          notificationStore.dispatch('pushError', 'Error while fetching scenario: ' + error)
+          notificationStore.dispatch('pushError', 'Error while fetching rule set: ' + error)
         })
     },
-    save(context, roomId) {
+    save(context, ruleSetId) {
       var formData = new FormData()
-      formData.append('room_id', roomId)
+      formData.append('rule_set_id', ruleSetId)
       formData.append('rules', JSON.stringify(context.state.rules))
       formData.append('variables', JSON.stringify(context.state.variables))
-      Vue.prototype.$justRestAPI.post('/update_scenario/', formData)
+      Vue.prototype.$justRestAPI.post('/update_rule_set/', formData)
         .then(function(response) {
-          notificationStore.dispatch('pushNotification', 'Scenario saved with success!')
-          context.commit('loadScenario', response.data)
+          notificationStore.dispatch('pushNotification', 'Rule set saved with success!')
+          context.commit('loadRuleSet', response.data)
         })
         .catch(function(error) {
-          notificationStore.dispatch('pushError', 'Error while saving scenario: ' + error)
+          notificationStore.dispatch('pushError', 'Error while saving rule set: ' + error)
         })
     }
   },

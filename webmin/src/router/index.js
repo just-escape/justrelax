@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import PageHome from '@/components/home/PageHome.vue'
-import PageEditor from '@/components/editor/PageEditor.vue'
+import PageRuleSet from '@/components/editor/PageRuleSet.vue'
 import PageLive from '@/components/live/PageLive.vue'
 import PageScore from '@/components/score/PageScore.vue'
 import PageStats from '@/components/stats/PageStats.vue'
@@ -15,7 +15,7 @@ const routes = [
   {path: '/rooms/:roomId/live', component: PageLive, props: true},
   {path: '/rooms/:roomId/scores', component: PageScore, props: true},
   {path: '/rooms/:roomId/stats', component: PageStats, props: true},
-  {path: '/rooms/:roomId/editor', component: PageEditor, props: true},
+  {path: '/editor/:ruleSetId', component: PageRuleSet, props: true},
   // {path: '/rooms/:roomId/settings', component: PageSettings, props: true},
 ]
 

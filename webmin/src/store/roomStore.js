@@ -8,6 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     rooms: [],
+    ruleSets: [],
     onHoldLiveData: {},
   },
   getters: {
@@ -117,6 +118,9 @@ export default new Vuex.Store({
         }
       }
     },
+    setRuleSets (state, ruleSets) {
+      state.ruleSets = ruleSets
+    },
   },
   actions: {
     fetchScenarios (context) {
@@ -127,6 +131,16 @@ export default new Vuex.Store({
         })
         .catch(function (error) {
           notificationStore.dispatch('pushError', 'Error while fetching scenarios: ' + error)
+        })
+    },
+    fetchRuleSets (context) {
+      Vue.prototype.$justRestAPI.get('/rule_set/')
+        .then(response => {
+          var ruleSets = response.data
+          context.commit('setRuleSets', ruleSets)
+        })
+        .catch(error => {
+          notificationStore.dispatch('pushError', 'Error while fetching rule sets: ' + error)
         })
     },
     fetchRooms (context, scenarioId) {
@@ -154,7 +168,7 @@ export default new Vuex.Store({
         })
     },
     fetchActions (context, roomId) {
-      Vue.prototype.$justRestAPI.get('/card/?room=' + roomId)
+      Vue.prototype.$justRestAPI.get('/get_cards_from_room_id/?room_id=' + roomId)
         .then(function (response) {
           let cards = response.data
           context.commit('setCards', {roomId, cards})

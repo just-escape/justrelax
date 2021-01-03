@@ -285,20 +285,23 @@ class RulesProcessor:
         self.factory.send_to_node(to, self.channel, event)
 
     def fetch_and_init_rules(self):
-        scenario_rules = requests.get(
-            '{}/get_scenario/'.format(self.storage_url),
-            params={'room_id': self.room_id},
-        ).json()
+        rule_sets = requests.get(
+            '{}/get_rules_from_room_id/?room_id={}'.format(self.storage_url, self.room_id)).json()
 
-        self.rule_definitions = scenario_rules['rules']
+        activated_rules = []
+        activated_variables = []
+        for rule_set in rule_sets:
+            activated_rules.extend(rule_set['rules'])
+            activated_variables.extend(rule_set['variables'])
+
+        self.rule_definitions = activated_rules
 
         for trigger_type in self.on_trigger_type_rules:
             self.on_trigger_type_rules[trigger_type] = []
         self.timers = set()
 
         self.variables = {}
-        variable_definitions = scenario_rules['variables']
-        for variable in variable_definitions:
+        for variable in activated_variables:
             if variable['type'] == 'timer':
                 context = {R.CONTEXT_EXPIRING_TIMER: variable['name']}
                 init_value = Timer(

@@ -6,8 +6,8 @@ from live.models import CardRow, CardRowForm
 
 class CardAdmin(admin.ModelAdmin):
     form = CardForm
-    list_display = ('room', 'name', 'index',)
-    search_fields = ('room', 'name',)
+    list_display = ('rule_set', 'name', 'index',)
+    search_fields = ('rule_set', 'name',)
 
 
 class CardRowAdmin(admin.ModelAdmin):

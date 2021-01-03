@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 
-from scenario.models import Room
+from editor.models import RuleSet
 
 
 WIDGET_TYPES = (
@@ -10,7 +10,7 @@ WIDGET_TYPES = (
 
 
 class Card(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    rule_set = models.ForeignKey(RuleSet, on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
     index = models.IntegerField()
 
@@ -21,7 +21,7 @@ class Card(models.Model):
 class CardForm(forms.ModelForm):
     class Meta:
         model = Card
-        fields = ('room', 'name', 'index',)
+        fields = ('rule_set', 'name', 'index',)
 
 
 class CardRow(models.Model):
