@@ -110,35 +110,27 @@ const floor = {
   texture: require('@/assets/img/floor.png'),
 }
 
-const chamber0 = {
-  type: 'chamber',
-  id: 0,
-  texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber-1.gif'),
-  foodTexture: require('@/assets/img/cinnamon.png'),
-}
-
 const chamber1 = {
   type: 'chamber',
   id: 1,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber-2.gif'),
-  foodTexture: require('@/assets/img/coffee.png'),
+  successTexture: require('@/assets/img/chamber-1.gif'),
+  foodTexture: require('@/assets/img/potatoe.png'),
 }
 
 const chamber2 = {
   type: 'chamber',
   id: 2,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber-3.gif'),
-  foodTexture: require('@/assets/img/mint.png'),
+  successTexture: require('@/assets/img/chamber-2.gif'),
+  foodTexture: require('@/assets/img/cinnamon.png'),
 }
 
 const chamber3 = {
   type: 'chamber',
   id: 3,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber-4.gif'),
+  successTexture: require('@/assets/img/chamber-3.gif'),
   foodTexture: require('@/assets/img/lemon.png'),
 }
 
@@ -146,41 +138,49 @@ const chamber4 = {
   type: 'chamber',
   id: 4,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber-5.gif'),
-  foodTexture: require('@/assets/img/potatoe.png'),
+  successTexture: require('@/assets/img/chamber-4.gif'),
+  foodTexture: require('@/assets/img/mint.png'),
 }
 
 const chamber5 = {
   type: 'chamber',
   id: 5,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber-6.gif'),
-  foodTexture: require('@/assets/img/beer.png'),
+  successTexture: require('@/assets/img/chamber-5.gif'),
+  foodTexture: require('@/assets/img/insect.png'),
 }
 
 const chamber6 = {
   type: 'chamber',
   id: 6,
   texture: require('@/assets/img/chamber.png'),
-  successTexture: require('@/assets/img/chamber-7.gif'),
-  foodTexture: require('@/assets/img/insect.png'),
+  successTexture: require('@/assets/img/chamber-6.gif'),
+  foodTexture: require('@/assets/img/algua.png'),
 }
 
 const chamber7 = {
   type: 'chamber',
   id: 7,
   texture: require('@/assets/img/chamber.png'),
+  successTexture: require('@/assets/img/chamber-7.gif'),
+  foodTexture: require('@/assets/img/coffee.png'),
+}
+
+const chamber8 = {
+  type: 'chamber',
+  id: 8,
+  texture: require('@/assets/img/chamber.png'),
   successTexture: require('@/assets/img/chamber-8.gif'),
-  foodTexture: require('@/assets/img/algua.png'),
+  foodTexture: require('@/assets/img/beer.png'),
 }
 
 const INITIAL_GRID_TUTORIAL_1 = [
   [wall,              wall,               cornerTopLeft,      wallTop,      wallTop,            wallTop,      cornerTopRight],
   [wall,              wall,               wallLeft,           floor,        floor,              floor,        gateRight],
   [cornerTopLeft,     wallTop,            angleTopLeft,       floor,        column,             floor,        wallRight],
-  [wallLeft,          chamber1,           floor,              floor,        floor,              floor,        wallRight],
+  [wallLeft,          chamber3,           floor,              floor,        floor,              floor,        wallRight],
   [cornerBottomLeft,  angleBottomLeft,    floor,              floor,        angleBottomRight,   wallBottom,   cornerBottomRight],
-  [wall,              cornerBottomLeft,   angleBottomLeft,    chamber0,     wallRight,          wall,         wall],
+  [wall,              cornerBottomLeft,   angleBottomLeft,    chamber5,     wallRight,          wall,         wall],
   [wall,              wall,               cornerBottomLeft,   wallBottom,   cornerBottomRight,  wall,         wall],
 ]
 
@@ -199,18 +199,18 @@ const INITIAL_GRID_TUTORIAL_1_LOWER_PASSAGE = [
   [wall,              wall,               cornerTopLeft,      wallTop,      wallTop,            wallTop,      cornerTopRight],
   [wall,              wall,               wallLeft,           floor,        floor,              floor,        wallRight],
   [cornerTopLeft,     wallTop,            angleTopLeft,       floor,        column,             floor,        wallRight],
-  [wallLeft,          chamber1,           floor,              floor,        floor,              floor,        gateRight],
+  [wallLeft,          chamber3,           floor,              floor,        floor,              floor,        gateRight],
   [cornerBottomLeft,  angleBottomLeft,    floor,              floor,        angleBottomRight,   wallBottom,   cornerBottomRight],
-  [wall,              cornerBottomLeft,   angleBottomLeft,    chamber0,     wallRight,          wall,         wall],
+  [wall,              cornerBottomLeft,   angleBottomLeft,    chamber5,     wallRight,          wall,         wall],
   [wall,              wall,               cornerBottomLeft,   wallBottom,   cornerBottomRight,  wall,         wall],
 ]
 
 const INITIAL_GRID_TUTORIAL_2 = [
   [cornerTopLeft,     wallTop,      wallTop,      gateTop,      wallTop,      wallTop,      cornerTopRight],
   [gateLeft,          floor,        floor,        floor,        floor,        floor,        wallRight],
-  [wallLeft,          floor,        floor,        column,       chamber4,     floor,        wallRight],
-  [wallLeft,          floor,        floor,        chamber3,     floor,        floor,        wallRight],
-  [wallLeft,          floor,        chamber2,     column,       floor,        floor,        wallRight],
+  [wallLeft,          floor,        floor,        column,       chamber6,     floor,        wallRight],
+  [wallLeft,          floor,        floor,        chamber4,     floor,        floor,        wallRight],
+  [wallLeft,          floor,        chamber1,     column,       floor,        floor,        wallRight],
   [wallLeft,          floor,        floor,        floor,        floor,        floor,        wallRight],
   [cornerBottomLeft,  wallBottom,   wallBottom,   wallBottom,   wallBottom,   wallBottom,   cornerBottomRight],
 ]
@@ -232,9 +232,9 @@ const INITIAL_BLOCKS_TUTORIAL_2 = [
 
 const INITIAL_GRID_SOKOGEN_4_ROTATE_180 = [
   [wall,              cornerTopLeft,      wallTop,      wallTop,      wallTop,      cornerTopRight,     wall],
-  [cornerTopLeft,     angleTopLeft,       floor,        chamber7,     floor,        angleTopRight,      cornerTopRight],
-  [wallLeft,          floor,              floor,        chamber6,     floor,        floor,              wallRight],
-  [wallLeft,          floor,              floor,        chamber5,     floor,        floor,              wallRight],
+  [cornerTopLeft,     angleTopLeft,       floor,        chamber8,     floor,        angleTopRight,      cornerTopRight],
+  [wallLeft,          floor,              floor,        chamber2,     floor,        floor,              wallRight],
+  [wallLeft,          floor,              floor,        chamber7,     floor,        floor,              wallRight],
   [wallLeft,          floor,              floor,        column,       floor,        floor,              wallRight],
   [cornerBottomLeft,  angleBottomLeft,    floor,        floor,        floor,        angleBottomRight,   cornerBottomRight],
   [wall,              cornerBottomLeft,   wallBottom,   gateBottom,   wallBottom,   cornerBottomRight,  wall],
@@ -259,7 +259,7 @@ const INITIAL_GRID_SOKOGEN_4_ROTATE_270 = [
   [wall,              cornerTopLeft,    wallTop,      gateTop,      wallTop,      cornerTopRight,     wall],
   [cornerTopLeft,     angleTopLeft,     floor,        floor,        floor,        angleTopRight,      cornerTopRight],
   [wallLeft,          floor,            floor,        floor,        floor,        floor,              wallRight],
-  [gateLeft,          floor,            column,       chamber2,     chamber3,     chamber4,           wallRight],
+  [gateLeft,          floor,            column,       chamber1,     chamber6,     chamber4,           wallRight],
   [wallLeft,          floor,            floor,        floor,        floor,        floor,              wallRight],
   [cornerBottomLeft,  angleBottomLeft,  floor,        floor,        floor,        angleBottomRight,   cornerBottomRight],
   [wall,              cornerBottomLeft, wallBottom,   wallBottom,   wallBottom,   cornerBottomRight,  wall],
@@ -284,9 +284,9 @@ const INITIAL_GRID_SOKOGEN_11 = [
   [cornerTopLeft,     wallTop,    wallTop,      wallTop,      cornerTopRight,   wall,       wall],
   [wallLeft,          floor,      floor,        floor,        wallRight,        wall,       wall],
   [wallLeft,          floor,      column,       floor,        angleTopRight,    wallTop,    cornerTopRight],
-  [wallLeft,          chamber5,   chamber6,     floor,        floor,            floor,      wallRight],
+  [wallLeft,          chamber7,   chamber2,     floor,        floor,            floor,      wallRight],
   [wallLeft,          floor,      floor,        column,       floor,            floor,      wallRight],
-  [wallLeft,          floor,      floor,        floor,        floor,            chamber7,   wallRight],
+  [wallLeft,          floor,      floor,        floor,        floor,            chamber8,   wallRight],
   [cornerBottomLeft,  wallBottom, wallBottom,   gateBottom,   wallBottom,       wallBottom, cornerBottomRight],
 ]
 
@@ -309,7 +309,7 @@ const INITIAL_GRID_SOKOGEN_11_UPSIDE_DOWN = [
   [cornerTopLeft,     wallTop,    wallTop,      wallTop,      gateTop,            wallTop,      cornerTopRight],
   [gateLeft,          floor,      floor,        floor,        floor,              chamber4,     wallRight],
   [wallLeft,          floor,      floor,        column,       floor,              floor,        wallRight],
-  [wallLeft,          chamber2,   chamber3,     floor,        floor,              floor,        wallRight],
+  [wallLeft,          chamber1,   chamber6,     floor,        floor,              floor,        wallRight],
   [wallLeft,          floor,      column,       floor,        angleBottomRight,   wallBottom,   cornerBottomRight],
   [wallLeft,          floor,      floor,        floor,        wallRight,          wall,         wall],
   [cornerBottomLeft,  wallBottom, wallBottom,   wallBottom,   cornerBottomRight,  wall,         wall],
@@ -334,9 +334,9 @@ const INITIAL_GRID_SOKOGEN_28 = [
   [cornerTopLeft,     wallTop,    wallTop,      wallTop,      cornerTopRight,   wall,       wall],
   [wallLeft,          floor,      floor,        floor,        wallRight,        wall,       wall],
   [wallLeft,          floor,      column,       floor,        angleTopRight,    wallTop,    cornerTopRight],
-  [wallLeft,          chamber7,   floor,        floor,        floor,            floor,      wallRight],
-  [wallLeft,          chamber6,   floor,        floor,        column,           floor,      wallRight],
-  [wallLeft,          floor,      floor,        chamber5,     floor,            floor,      wallRight],
+  [wallLeft,          chamber8,   floor,        floor,        floor,            floor,      wallRight],
+  [wallLeft,          chamber2,   floor,        floor,        column,           floor,      wallRight],
+  [wallLeft,          floor,      floor,        chamber7,     floor,            floor,      wallRight],
   [cornerBottomLeft,  wallBottom, wallBottom,   wallBottom,   gateBottom,       wallBottom, cornerBottomRight],
 ]
 
