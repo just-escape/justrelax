@@ -139,7 +139,7 @@ const chamber3 = {
   id: 3,
   texture: require('@/assets/img/chamber.png'),
   successTexture: require('@/assets/img/chamber-4.gif'),
-  foodTexture: require('@/assets/img/curry.png'),
+  foodTexture: require('@/assets/img/lemon.png'),
 }
 
 const chamber4 = {
@@ -171,7 +171,7 @@ const chamber7 = {
   id: 7,
   texture: require('@/assets/img/chamber.png'),
   successTexture: require('@/assets/img/chamber-8.gif'),
-  foodTexture: require('@/assets/img/jelly.png'),
+  foodTexture: require('@/assets/img/algua.png'),
 }
 
 const INITIAL_GRID_TUTORIAL_1 = [
