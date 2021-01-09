@@ -88,6 +88,7 @@ const justSockService = new Vuex.Store({
         lightStore.dispatch('toggleColor', {color, activated})
       } else if (event.category === 'restaurant_in_manual_mode') {
         lightStore.commit('setRestaurantInManualMode')
+        lightStore.dispatch('init')
       } else if (event.category === 'display_danger_window') {
         progressionStore.commit('displayDangerWindow')
       } else if (event.category === 'play_overlay_video') {

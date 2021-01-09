@@ -1629,6 +1629,10 @@ var store = new Vuex.Store({
       }
     },
     toggleColor (context, {color, activated}) {
+      if (!context.state.isRestaurantInManualMode) {
+        return
+      }
+
       var currentVertice = context.state.vertices[context.state.edges[context.getters.currentActivationEdgeId].getVertice2()]
 
       context.commit('toggleColor', {currentVertice, color, activated})

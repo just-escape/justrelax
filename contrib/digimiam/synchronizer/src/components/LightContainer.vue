@@ -48,9 +48,6 @@ export default {
       return lightStore.state.showGlobalError
     },
   },
-  mounted() {
-    lightStore.dispatch('init')
-  }
 }
 </script>
 
