@@ -39,7 +39,7 @@ class Cylinders(EventCategoryToMethodMixin, JustSockClientService):
             }
 
     def process_serial_event(self, event, index_mapping):
-        logger.debug("Processing event '{}'".format(event))
+        logger.debug("Processing event '{}' (index_mapping={})".format(event, index_mapping))
 
         if self.ARDUINO_PROTOCOL.CATEGORY not in event:
             logger.error("Event has no category: skipping")
