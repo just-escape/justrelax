@@ -96,12 +96,12 @@ void onEvent() {
     if (category == PROTOCOL_LED_SET_COLOR_BLACK) {
       for (int i = 0 ; i < N_STRIPS ; i++) {
         if ((led_strip_bit_mask & current_strip_bit) == current_strip_bit) {
+          light_rgb_freq[i][0] = 0;
+          light_rgb_freq[i][1] = 0;
+          light_rgb_freq[i][2] = 0;
           light_rgb_target_freq[i][0] = 0;
           light_rgb_target_freq[i][1] = 0;
           light_rgb_target_freq[i][2] = 0;
-          light_rgb_target_freq_step[i][0] = 0.1;
-          light_rgb_target_freq_step[i][1] = 0.1;
-          light_rgb_target_freq_step[i][2] = 0.1;
         }
         current_strip_bit = current_strip_bit << 1;
       }
@@ -123,8 +123,8 @@ void onEvent() {
           light_rgb_target_freq[i][0] = 50;
           light_rgb_target_freq[i][1] = 0;
           light_rgb_target_freq[i][2] = 0;
-          light_rgb_target_freq_step[i][0] = 0;
-          light_rgb_target_freq_step[i][1] = 0.4;
+          light_rgb_target_freq_step[i][0] = 0.4;
+          light_rgb_target_freq_step[i][1] = 0.2;
           light_rgb_target_freq_step[i][2] = 0;
         }
         current_strip_bit = current_strip_bit << 1;
@@ -135,8 +135,8 @@ void onEvent() {
           light_rgb_target_freq[i][0] = 50;
           light_rgb_target_freq[i][1] = 50;
           light_rgb_target_freq[i][2] = 50;
-          light_rgb_target_freq_step[i][0] = 0;
-          light_rgb_target_freq_step[i][1] = 0.4;
+          light_rgb_target_freq_step[i][0] = 0.5;
+          light_rgb_target_freq_step[i][1] = 0.5;
           light_rgb_target_freq_step[i][2] = 0.5;
         }
         current_strip_bit = current_strip_bit << 1;

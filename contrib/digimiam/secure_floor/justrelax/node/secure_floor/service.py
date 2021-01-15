@@ -99,6 +99,10 @@ class SecureFloor(EventCategoryToMethodMixin, JustSockClientService):
 
         event_color = color_mapping.get(color, self.ARDUINO_PROTOCOL.SET_COLOR_BLACK)
 
+        for led_index in self.leds.keys():
+            if led_index & bit_mask:
+                self.leds[led_index] = color
+
         self.serial.send_event({
             self.ARDUINO_PROTOCOL.CATEGORY: event_color,
             self.ARDUINO_PROTOCOL.STRIP_BIT_MASK: bit_mask,
