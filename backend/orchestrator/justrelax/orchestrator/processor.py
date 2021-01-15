@@ -354,9 +354,9 @@ class RulesProcessor:
         self.buttons = {}
 
         cards = requests.get('{}/get_cards_from_room_id/?room_id={}'.format(self.storage_url, self.room_id)).json()
-        for card in cards.json():
-            card_rows = requests.get('{}/card_row/?card={}'.format(self.storage_url, card['id']))
-            for row in card_rows.json():
+        for card in cards:
+            card_rows = requests.get('{}/card_row/?card={}'.format(self.storage_url, card['id'])).json()
+            for row in card_rows:
                 if row['widget'] == 'buttons_group':
                     for button in row['widget_params']:
                         self.buttons[button['id']] = button
