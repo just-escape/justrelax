@@ -3,6 +3,7 @@ import math
 import requests
 import operator
 import time
+import json
 
 from twisted.internet import reactor
 from twisted.internet.defer import Deferred, inlineCallbacks
@@ -440,7 +441,8 @@ class RulesProcessor:
             event = button_params.get('event', None)  # Hardcoded event. Writing admin rules is not necessary
 
             if node and event:
-                self.send_event(node, event)
+                event_dict = json.loads(event)
+                self.send_event(node, event_dict)
 
         self.process_rules(self.on_trigger_type_rules['admin_button_press'], context)
 
