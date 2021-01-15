@@ -82,7 +82,7 @@ class Lights(EventCategoryToMethodMixin, JustSockClientService):
 
     def init_arduino(self):
         for channel_mask, color in self.node_params['channels'].items():
-            self.configure_channel_color(channel_mask, color)
+            self.event_configure_channel_color(channel_mask, color)
 
         for color_name, color_params in self.node_params['colors'].items():
             self.colors[color_name] = {
@@ -104,7 +104,8 @@ class Lights(EventCategoryToMethodMixin, JustSockClientService):
         logger.error(event)
         self.send_event(event)
 
-    def configure_channel_color(self, channel, rate):
+    def event_configure_channel_color(self, channel: int, rate: int):
+        logger.info("Configuring channel {} with rate {}".format(channel, rate))
         self.buffer.send_event(
             base_event={
                 self.ARDUINO_PROTOCOL.CATEGORY: self.ARDUINO_PROTOCOL.SET_COLOR,
