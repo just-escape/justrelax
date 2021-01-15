@@ -4,21 +4,22 @@
 
 #define PROTOCOL_ERROR "e"
 
-#define PROTOCOL_WHITE_HIGH "b"
-#define PROTOCOL_WHITE_LOW "o"
-#define PROTOCOL_WHITE_OFF "r"
+#define PROTOCOL_SET_TARGET_FREQ "t"
+#define PROTOCOL_SET_FREQ "f"
+#define PROTOCOL_VALUE "v"
+#define PROTOCOL_STEP "s"
 
-byte LIGHT_RGB_PIN = 48;
-float light_rgb_pwm = 0;
-float light_rgb_freq = 0;
-float light_rgb_target_freq = 0;
-float light_rgb_target_freq_step = 0;
+byte PIN = 2;
+float light_pwm = 0;
+float light_freq = 0;
+float light_target_freq = 0;
+float light_target_freq_step = 0;
 
 DynamicJsonDocument receivedDocument(JSON_OBJECT_SIZE(20));
 String receivedEvent = "";
 
 void setup() {
-  pinMode(LIGHT_RGB_PIN, OUTPUT);
+  pinMode(PIN, OUTPUT);
 
   Serial.begin(9600);
 
@@ -26,36 +27,36 @@ void setup() {
 }
 
 void loop() {
-  if (light_rgb_freq > light_rgb_target_freq) {
-    if (light_rgb_target_freq_step == 0) {
+  if (light_freq > light_target_freq) {
+    if (light_target_freq_step == 0) {
       // Just in case a transition that was not planned is triggered
-      light_rgb_freq -= 0.1;
+      light_freq -= 0.1;
     } else {
-      light_rgb_freq -= light_rgb_target_freq_step;
+      light_freq -= light_target_freq_step;
     }
-  } else if (light_rgb_freq < light_rgb_target_freq) {
-    if (light_rgb_target_freq_step == 0) {
+  } else if (light_freq < light_target_freq) {
+    if (light_target_freq_step == 0) {
       // Just in case a transition that was not planned is triggered
-      light_rgb_freq += 0.1;
+      light_freq += 0.1;
     } else {
-      light_rgb_freq += light_rgb_target_freq_step;
+      light_freq += light_target_freq_step;
     }
   }
 
-  light_rgb_pwm = 0;
+  light_pwm = 0;
 
-  if (light_rgb_freq > 0) {
-    digitalWrite(LIGHT_RGB_PIN, HIGH);
+  if (light_freq > 0) {
+    digitalWrite(PIN, HIGH);
   }
 
   for (int cycle = 0 ; cycle < 50 ; cycle++) {
-    if (light_rgb_pwm < light_rgb_freq) {
-      light_rgb_pwm++;
+    if (light_pwm < light_freq) {
+      light_pwm++;
     } else {
-      digitalWrite(LIGHT_RGB_PIN, LOW);
+      digitalWrite(PIN, LOW);
     }
 
-    delayMicroseconds(200);
+    delayMicroseconds(100);
   }
 }
 
@@ -72,15 +73,15 @@ void onEvent() {
   } else {
     String category = receivedDocument[PROTOCOL_CATEGORY];
 
-    if (category == PROTOCOL_WHITE_HIGH) {
-      light_rgb_target_freq = 0;
-      light_rgb_target_freq_step = 0;
-    } else if (category == PROTOCOL_WHITE_LOW) {
-      light_rgb_target_freq = 0;
-      light_rgb_target_freq_step = 0;
-    } else if (category == PROTOCOL_WHITE_OFF) {
-      light_rgb_target_freq = 0;
-      light_rgb_target_freq_step = 0;
+    if (category == PROTOCOL_SET_TARGET_FREQ) {
+      float value = receivedDocument[PROTOCOL_VALUE];
+      float step = receivedDocument[PROTOCOL_STEP];
+      light_target_freq = value;
+      light_target_freq_step = step;
+    } else if (category == PROTOCOL_SET_FREQ) {
+      float value = receivedDocument[PROTOCOL_VALUE];
+      light_freq = value;
+      light_target_freq = value;
     }
   }
 }
