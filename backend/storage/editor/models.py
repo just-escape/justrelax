@@ -161,7 +161,7 @@ class Variable(models.Model):
     list = models.BooleanField(default=False)
 
     def __str__(self):
-        return '{} - {}'.format(self.room, self.name)
+        return '{} - {}'.format(self.rule_set, self.name)
 
 
 class VariableForm(forms.ModelForm):
