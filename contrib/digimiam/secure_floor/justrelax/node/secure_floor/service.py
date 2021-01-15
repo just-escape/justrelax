@@ -83,10 +83,10 @@ class SecureFloor(EventCategoryToMethodMixin, JustSockClientService):
         # Init once we are sure the serial port will be able to receive data
         reactor.callLater(3, self.set_led_color, "black", sum(self.leds.keys()))
 
-    def process_serial_event(self, event):
+    @staticmethod
+    def process_serial_event(event):
         # Error by default because events should not be received from the arduino
         logger.error(event)
-        self.send_event(event)
 
     def set_led_color(self, color, bit_mask):
         logger.info("Setting led bit_mask={} color={}".format(bit_mask, color))

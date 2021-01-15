@@ -26,10 +26,10 @@ class StockLights(EventCategoryToMethodMixin, JustSockClientService):
             # Init once we are sure the serial port will be able to receive data
             reactor.callLater(3, self.event_high)
 
-    def process_serial_event(self, event):
+    @staticmethod
+    def process_serial_event(event):
         # Error by default because events should not be received from the arduino
         logger.error(event)
-        self.send_event(event)
 
     def event_set_target_freq(self, value: float, step: float):
         value = min(value, 50.)

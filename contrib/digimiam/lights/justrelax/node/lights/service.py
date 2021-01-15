@@ -99,10 +99,10 @@ class Lights(EventCategoryToMethodMixin, JustSockClientService):
                 else:
                     self.event_off(color_name)
 
-    def process_serial_event(self, event):
+    @staticmethod
+    def process_serial_event(event):
         # Error because events should not be received from the arduino
         logger.error(event)
-        self.send_event(event)
 
     def event_configure_channel_color(self, channel: int, rate: int):
         logger.info("Configuring channel {} with rate {}".format(channel, rate))
