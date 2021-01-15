@@ -170,6 +170,8 @@ class RulesProcessor:
 
         self.variables = {}
 
+        self.buttons = {}
+
         self.last_created_object = {}
         # The variable name or None is no timer was ever started
         self.last_started_timer = None
@@ -349,6 +351,16 @@ class RulesProcessor:
                 else:
                     logger.warning("Unknown trigger type {}: skipping".format(trigger['template']))
 
+        self.buttons = {}
+
+        cards = requests.get('{}/get_cards_from_room_id/?room_id={}'.format(self.storage_url, self.room_id)).json()
+        for card in cards.json():
+            card_rows = requests.get('{}/card_row/?card={}'.format(self.storage_url, card['id']))
+            for row in card_rows.json():
+                if row['widget'] == 'buttons_group':
+                    for button in row['widget_params']:
+                        self.buttons[button['id']] = button
+
     def run_room(self):
         if self.session_timer.state == STATE_NOT_STARTED:
             self.process_rules(self.on_trigger_type_rules['session_start'], {})
@@ -421,6 +433,14 @@ class RulesProcessor:
         context = {
             R.CONTEXT_TRIGGERING_ADMIN_BUTTON_ID: button_id,
         }
+
+        button_params = self.buttons.get(button_id, None)
+        if button_params:
+            node = button_params.get('node', None)
+            event = button_params.get('event', None)  # Hardcoded event. Writing admin rules is not necessary
+
+            if node and event:
+                self.send_event(node, event)
 
         self.process_rules(self.on_trigger_type_rules['admin_button_press'], context)
 
