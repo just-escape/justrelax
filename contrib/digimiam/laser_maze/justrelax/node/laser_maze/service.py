@@ -153,8 +153,8 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
         self.difficulty = self.default_difficulty
 
     def event_laser_on(
-            self, bitmask: int, dynamic_bitmask: int, dynamic_downtime: int,
-            dynamic_uptime: int, dynamic_incremental_offset: int,
+            self, bitmask: int = 0, dynamic_bitmask: int = 0, dynamic_downtime: int = 0,
+            dynamic_uptime: int = 0, dynamic_incremental_offset: int = 0,
     ):
         logger.info("Set bitmask={}".format(bitmask))
         self.buffer.send_event(
