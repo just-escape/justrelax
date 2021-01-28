@@ -10,5 +10,6 @@ node_params:
   fog_pin: 11
   on_by_default: no
   send_fog_default_duration: 1
+  send_fog_forever_default_frequency: 15
 
 logging: null
