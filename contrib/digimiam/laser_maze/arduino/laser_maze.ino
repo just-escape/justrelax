@@ -19,12 +19,14 @@
 #define PROTOCOL_DYNAMIC_LASER_UPTIME "p"
 #define PROTOCOL_DYNAMIC_LASER_DOWNTIME "n"
 #define PROTOCOL_DYNAMIC_LASER_INCREMENTAL_OFFSET "o"
+#define PROTOCOL_SAMPLE_DELAY "y"
 #define PROTOCOL_STOP_PLAYING "s"
 #define PROTOCOL_SET_SUCCESS "w"
 #define PROTOCOL_SET_SUCCESS_VALUE "v"
+#define PROTOCOL_SET_SAMPLE_DELAY "ssd"
 
 #define N_LASERS 5
-#define N_SAMPLES 5
+#define N_SAMPLES 10
 
 DynamicJsonDocument receivedDocument(JSON_OBJECT_SIZE(20));
 String receivedEvent = "";
@@ -36,6 +38,8 @@ byte laserPins[N_LASERS] = {52, 50, 48, 46, 44};
 bool isLaserOn[N_LASERS] = {false};
 byte sensorPins[N_LASERS] = {53, 51, 49, 47, 45};
 bool sensorSamples[N_LASERS][N_SAMPLES];
+unsigned long sensorSamplesMillis;
+unsigned long sampleDelay 10;
 byte sensorSamplesCursor = 0;
 
 int dynamicLasers[N_LASERS] = {false};
@@ -121,6 +125,8 @@ void setup() {
     loadingStepPreviousMillis[i] = millis();
   }
 
+  sensorSamplesMillis[0] = millis();
+
   leds.begin();
 }
 
@@ -158,28 +164,33 @@ void blinkLaser() {
 void checkSensors() {
   bool isAlarmConfirmed;
 
-  for (int i = 0 ; i < N_LASERS ; i++) {
-    if (isLaserOn[i]) {
-      read = digitalRead(sensorPins[i]);
-      sensorSamples[i][sensorSamplesCursor] = read;
+  currentMillis = millis();
 
-      // By default alarm is confirmed. Checking sensor samples will validate or not this supposition.
-      isAlarmConfirmed = true;
-      for (int j = 0 ; j < N_SAMPLES ; j++) {
-        if (sensorSamples[i][j]) {
-          isAlarmConfirmed = false;
-          break;
+  if (currentMillis - sensorSamplesMillis >= sampleDelay) {
+    for (int i = 0 ; i < N_LASERS ; i++) {
+      if (isLaserOn[i]) {
+        read = digitalRead(sensorPins[i]);
+        sensorSamples[i][sensorSamplesCursor] = read;
+
+        // By default alarm is confirmed. Checking sensor samples will validate or not this supposition.
+        isAlarmConfirmed = true;
+        for (int j = 0 ; j < N_SAMPLES ; j++) {
+          if (sensorSamples[i][j]) {
+            isAlarmConfirmed = false;
+            break;
+          }
+        }
+
+        if (isAlarmConfirmed) {
+          alarm(i);
+          return;
         }
       }
-
-      if (isAlarmConfirmed) {
-        alarm(i);
-        return;
-      }
     }
-  }
 
-  sensorSamplesCursor = (sensorSamplesCursor + 1) % N_SAMPLES;
+    sensorSamplesCursor = (sensorSamplesCursor + 1) % N_SAMPLES;
+    sensorSamplesMillis = currentMillis;
+  }
 }
 
 void updateDynamicLasers() {
@@ -347,6 +358,7 @@ void onEvent() {
       dynamicLasersUptime = receivedDocument[PROTOCOL_DYNAMIC_LASER_UPTIME];
       dynamicLasersDowntime = receivedDocument[PROTOCOL_DYNAMIC_LASER_DOWNTIME];
       dynamicLasersIncrementalOffset = receivedDocument[PROTOCOL_DYNAMIC_LASER_INCREMENTAL_OFFSET];
+      sampleDelay = receivedDocument[PROTOCOL_SAMPLE_DELAY];
       currentMillis = millis();
       unsigned int currentBit = 1;
 
@@ -364,6 +376,8 @@ void onEvent() {
 
       playing = true;
       blinkingLaser = -1;
+    } else if (category == PROTOCOL_SET_SAMPLE_DELAY) {
+      sampleDelay = receivedDocument[PROTOCOL_SAMPLE_DELAY];
     }
   }
 }

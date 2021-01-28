@@ -50,9 +50,11 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
         DYNAMIC_LASER_UPTIME = "p"
         DYNAMIC_LASER_DOWNTIME = "n"
         DYNAMIC_LASER_INCREMENTAL_OFFSET = "o"
+        SAMPLE_DELAY = "y"
         STOP_PLAYING = "s"
         SET_SUCCESS = "w"
         SET_SUCCESS_VALUE = "v"
+        SET_SAMPLE_DELAY = "ssd"
 
     def __init__(self, *args, **kwargs):
         super(LaserMaze, self).__init__(*args, **kwargs)
@@ -155,6 +157,7 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
     def event_laser_on(
             self, bitmask: int = 0, dynamic_bitmask: int = 0, dynamic_downtime: int = 0,
             dynamic_uptime: int = 0, dynamic_incremental_offset: int = 0,
+            sample_delay: int = 10,
     ):
         logger.info("Set bitmask={}".format(bitmask))
         self.buffer.send_event(
@@ -165,6 +168,7 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
                 self.ARDUINO_PROTOCOL.DYNAMIC_LASER_DOWNTIME: dynamic_downtime,
                 self.ARDUINO_PROTOCOL.DYNAMIC_LASER_UPTIME: dynamic_uptime,
                 self.ARDUINO_PROTOCOL.DYNAMIC_LASER_INCREMENTAL_OFFSET: dynamic_incremental_offset,
+                self.ARDUINO_PROTOCOL.SAMPLE_DELAY: sample_delay,
             }
         )
 
@@ -195,6 +199,15 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
             {
                 self.ARDUINO_PROTOCOL.CATEGORY: self.ARDUINO_PROTOCOL.SET_SUCCESS,
                 self.ARDUINO_PROTOCOL.SET_SUCCESS_VALUE: value,
+            }
+        )
+
+    def event_set_sample_delay(self, value: int):
+        logger.info("Setting sample delay={}".format(value))
+        self.buffer.send_event(
+            {
+                self.ARDUINO_PROTOCOL.CATEGORY: self.ARDUINO_PROTOCOL.SET_SAMPLE_DELAY,
+                self.ARDUINO_PROTOCOL.SAMPLE_DELAY: value,
             }
         )
 
