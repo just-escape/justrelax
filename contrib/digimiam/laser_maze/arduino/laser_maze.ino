@@ -39,7 +39,7 @@ bool isLaserOn[N_LASERS] = {false};
 byte sensorPins[N_LASERS] = {53, 51, 49, 47, 45};
 bool sensorSamples[N_LASERS][N_SAMPLES];
 unsigned long sensorSamplesMillis;
-unsigned long sampleDelay 10;
+unsigned long sampleDelay = 10;
 byte sensorSamplesCursor = 0;
 
 int dynamicLasers[N_LASERS] = {false};
@@ -125,7 +125,7 @@ void setup() {
     loadingStepPreviousMillis[i] = millis();
   }
 
-  sensorSamplesMillis[0] = millis();
+  sensorSamplesMillis = millis();
 
   leds.begin();
 }
