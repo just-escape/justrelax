@@ -58,9 +58,10 @@ class FogMachine(EventCategoryToMethodMixin, JustSockClientService):
             self.send_fog_forever_task.cancel()
 
         frequency = frequency if frequency is not None else self.send_fog_forever_default_frequency
-        logger.info("Scheduling to send fog for {} second(s) every {} second(s)".format(send_duration, frequency))
-        self.send_fog_forever_task = callLater(frequency, self.event_send_fog, send_duration)
-        self.event_send_fog(send_duration)
+        duration = send_duration if send_duration is not None else self.send_fog_default_duration
+        logger.info("Scheduling to send fog for {} second(s) every {} second(s)".format(duration, frequency))
+        self.send_fog_forever_task = callLater(frequency, self.event_send_fog, duration)
+        self.event_send_fog(duration)
 
     def event_stop_sending_fog_forever(self):
         if self.send_fog_forever_task and self.send_fog_forever_task.active():
