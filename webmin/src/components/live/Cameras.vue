@@ -2,7 +2,8 @@
   <div>
     <h2 class="big-noodle text-jaffa text-center">Cameras</h2>
     <div v-if="displayCameras" class="container-fluid">
-      <div v-if="focusCamera" class="row">
+      <!-- TODO: Implement again the focus widget, while not duplicating streams this time ^.^' -->
+      <!--<div v-if="focusCamera && isFocusEnbaled" class="row">
         <div class="col text-center px-0">
           <div class="position-absolute text-center w-100">
             {{ focusCamera.name }}
@@ -13,10 +14,23 @@
             :src="focusCamera.url"
           >
         </div>
-      </div>
+      </div>-->
 
       <div class="row">
-        <div
+        <div v-for="camera in room.cameras" :key="camera.id" :class="getCameraClasses">
+          <!-- TODO: handle the text color vs background color -->
+          <!--<div class="position-absolute text-center w-100">
+            {{ camera.name }} {{camera.type}}
+          </div>-->
+          <Camera
+            v-if="camera.type === 'webrtc_janus'"
+            :params="camera.params"
+          />
+          <!--<Camera :class="getCameraClasses" :url="'http://172.16.4.102:8088/janus'" :streamId="10"/>
+          <Camera :class="getCameraClasses" :url="'http://172.16.4.103:8088/janus'" :streamId="10"/>-->
+        </div>
+        <!-- TODO: handle MJPEG type (alongside the Janus WebRTC type) -->
+        <!--<div
           v-for="(camera, index) in room.cameras"
           :key="camera.id"
           :class="getCameraClasses"
@@ -29,7 +43,7 @@
             class="img-fluid pointer"
             :src="camera.url"
           >
-        </div>
+        </div>-->
       </div>
     </div>
     <div v-else class="container-fluid text-center">
@@ -39,13 +53,18 @@
 </template>
 
 <script>
+import Camera from '@/components/live/Camera.vue'
 import roomStore from '@/store/roomStore.js'
 
 export default {
   name: 'Cameras',
+  components: {
+    Camera,
+  },
   data: function() {
     return {
       focusCameraIndex: -1,
+      isFocusEnbaled: false,
     }
   },
   computed: {
