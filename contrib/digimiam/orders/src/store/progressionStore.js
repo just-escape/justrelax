@@ -8,6 +8,7 @@ Vue.use(Vuex)
 let store = new Vuex.Store({
   state: {
     round: 0,
+    showMarmitron: true,
     showDocumentation: false,
     isRestaurantClosed: false,
     displayDangerWindow: false,
