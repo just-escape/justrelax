@@ -33,5 +33,6 @@ class CameraSerializer(ModelSerializer):
             'index',
             'room',
             'name',
-            'url',
+            'type',
+            'params',
         )
