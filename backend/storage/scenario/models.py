@@ -34,24 +34,23 @@ class RoomForm(forms.ModelForm):
         fields = ('scenario', 'cardinal', 'channel', 'index',)
 
 
+CAMERA_TYPES = (
+    ('mjpeg', 'MJPEG'),
+    ('webrtc_janus', 'WebRTC (Janus)'),
+)
+
+
 class Camera(models.Model):
     name = models.CharField(max_length=64)
-    url = models.CharField(max_length=1024)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     index = models.IntegerField()
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['room', 'index'],
-                name='room_index',
-            ),
-        ]
+    type = models.CharField(max_length=64, choices=CAMERA_TYPES, default=CAMERA_TYPES[0][0])
+    params = models.TextField(null=True, blank=True)  # JSON
 
 
 class CameraForm(forms.ModelForm):
     class Meta:
         model = Camera
-        fields = ('name', 'url', 'room', 'index',)
+        fields = ('name', 'room', 'index', 'type', 'params')
 
 # TODO: sessions, and sessions records (rule, action, alarm, message, record)

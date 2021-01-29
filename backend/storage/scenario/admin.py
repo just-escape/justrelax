@@ -31,12 +31,14 @@ class CameraAdmin(admin.ModelAdmin):
     list_display = (
         'index',
         'name',
-        'url',
         'room',
+        'type',
+        'params',
     )
     search_fields = (
         'name',
-        'url',
+        'params',
+        'type',
         'room__scenario__name',
         'room__cardinal',
     )
