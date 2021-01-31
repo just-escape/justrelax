@@ -2,7 +2,7 @@ from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.helper import Serial
-from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
+from justrelax.node.service import JustSockClientService, event
 
 
 class SerialEventBuffer:
@@ -33,7 +33,7 @@ class SerialEventBuffer:
         self._send_event(event)
 
 
-class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
+class LaserMaze(JustSockClientService):
     class ARDUINO_PROTOCOL:
         CATEGORY = "c"
 
@@ -154,6 +154,7 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
     def init_arduino(self):
         self.difficulty = self.default_difficulty
 
+    @event(filter={'category': 'laser_on'})
     def event_laser_on(
             self, bitmask: int = 0, dynamic_bitmask: int = 0, dynamic_downtime: int = 0,
             dynamic_uptime: int = 0, dynamic_incremental_offset: int = 0,
@@ -172,9 +173,11 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
             }
         )
 
+    @event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
         self.difficulty = difficulty
 
+    @event(filter={'category': 'stop_playing'})
     def event_stop_playing(self):
         logger.info("Stop playing")
         self.buffer.send_event(
@@ -183,6 +186,7 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
             }
         )
 
+    @event(filter={'category': 'playing'})
     def event_playing(self):
         bitmask = self.difficulty_settings[self.difficulty]['laser_bitmask']
         dynamic_bitmask = self.difficulty_settings[self.difficulty]['dynamic_laser_bitmask']
@@ -192,6 +196,7 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
         self.event_laser_on(
             bitmask, dynamic_bitmask, dynamic_downtime, dynamic_uptime, dynamic_incremental_offset)
 
+    @event(filter={'category': 'set_success'})
     def event_set_success(self, value: bool):
         logger.info("Setting success={}".format(value))
         self.success = value
@@ -202,6 +207,7 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
             }
         )
 
+    @event(filter={'category': 'set_sample_delay'})
     def event_set_sample_delay(self, value: int):
         logger.info("Setting sample delay={}".format(value))
         self.buffer.send_event(
@@ -211,6 +217,7 @@ class LaserMaze(EventCategoryToMethodMixin, JustSockClientService):
             }
         )
 
+    @event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Resetting")
         self.event_set_success(False)

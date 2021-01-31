@@ -3,7 +3,7 @@ import pexpect
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
+from justrelax.node.service import JustSockClientService, event
 from justrelax.node.media.player import MediaPlayerMixin
 
 
@@ -49,7 +49,7 @@ class Player(MediaPlayerMixin):
             self.player.send('q')
 
 
-class VideoPlayer(EventCategoryToMethodMixin, JustSockClientService):
+class VideoPlayer(JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(VideoPlayer, self).__init__(*args, **kwargs)
 
@@ -72,6 +72,7 @@ class VideoPlayer(EventCategoryToMethodMixin, JustSockClientService):
             if video_params.get('autoplay', False):
                 self.videos[video_id].play()
 
+    @event(filter={'category': 'play'})
     def event_play(self, video_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
@@ -84,6 +85,7 @@ class VideoPlayer(EventCategoryToMethodMixin, JustSockClientService):
 
         reactor.callLater(delay, self.videos[video_id].play)
 
+    @event(filter={'category': 'pause'})
     def event_pause(self, video_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
@@ -96,6 +98,7 @@ class VideoPlayer(EventCategoryToMethodMixin, JustSockClientService):
 
         reactor.callLater(delay, self.videos[video_id].pause)
 
+    @event(filter={'category': 'stop'})
     def event_stop(self, video_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))

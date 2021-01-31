@@ -4,7 +4,7 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
+from justrelax.node.service import JustSockClientService, event
 from justrelax.node.media.volume import EASE_MAPPING, MasterVolume
 from justrelax.node.music_player.vlc_player import VLCSelfReleasingTrackPlayer
 from justrelax.node.music_player.vlc_player import VLCLoopingTrackPlayer
@@ -12,7 +12,7 @@ from justrelax.node.music_player.pyglet_player import PygletTrackPlayer
 from justrelax.node.music_player.pyglet_player import PygletLoopingTrackPlayer
 
 
-class MusicPlayer(EventCategoryToMethodMixin, JustSockClientService):
+class MusicPlayer(JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(MusicPlayer, self).__init__(*args, **kwargs)
 
@@ -84,15 +84,19 @@ class MusicPlayer(EventCategoryToMethodMixin, JustSockClientService):
 
         reactor.callLater(delay, getattr(track, method))
 
+    @event(filter={'category': 'play'})
     def event_play(self, track_id: str, delay=0):
         self.play_pause_stop("Playing", "play", track_id, delay)
 
+    @event(filter={'category': 'pause'})
     def event_pause(self, track_id: str, delay=0):
         self.play_pause_stop("Pausing", "pause", track_id, delay)
 
+    @event(filter={'category': 'stop'})
     def event_stop(self, track_id: str, delay=0):
         self.play_pause_stop("Stopping", "stop", track_id, delay)
 
+    @event(filter={'category': 'set_volume'})
     def event_set_volume(self, volume: int, track_id=None, duration=0, ease: str = 'easeInOutSine', delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))

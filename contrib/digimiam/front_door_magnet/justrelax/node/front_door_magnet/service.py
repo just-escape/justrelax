@@ -3,11 +3,11 @@ import gpiozero
 from twisted.internet.reactor import callLater
 from twisted.internet.task import LoopingCall
 
-from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
+from justrelax.node.service import JustSockClientService, event
 from justrelax.common.logging_utils import logger
 
 
-class FrontDoorMagnet(EventCategoryToMethodMixin, JustSockClientService):
+class FrontDoorMagnet(JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(FrontDoorMagnet, self).__init__(*args, **kwargs)
 
@@ -39,6 +39,7 @@ class FrontDoorMagnet(EventCategoryToMethodMixin, JustSockClientService):
 
         self.is_emergency_button_held = self.emergency_button.is_held
 
+    @event(filter={'category': 'unlock'})
     def event_unlock(self):
         logger.info("Unlocking the front door")
         self.magnet.off()
@@ -47,6 +48,7 @@ class FrontDoorMagnet(EventCategoryToMethodMixin, JustSockClientService):
             self.lock_task.cancel()
         self.lock_task = callLater(self.relock_delay, self.event_lock)
 
+    @event(filter={'category': 'lock'})
     def event_lock(self):
         logger.info("Locking the front door")
         self.magnet.on()

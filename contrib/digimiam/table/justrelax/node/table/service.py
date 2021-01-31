@@ -5,7 +5,7 @@ from twisted.internet.reactor import callLater
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, EventCategoryToMethodMixin
+from justrelax.node.service import JustSockClientService, event
 
 
 class Motor:
@@ -49,7 +49,7 @@ class Motor:
         return self.motor_up.is_active
 
 
-class Table(EventCategoryToMethodMixin, JustSockClientService):
+class Table(JustSockClientService):
     def __init__(self, *args, **kwargs):
         super(Table, self).__init__(*args, **kwargs)
         self.switch = InputDevice(self.node_params["switch_pin"])
@@ -81,6 +81,7 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
             logger.info("Cancelling stop motor task")
             self.stop_motor_task.cancel()
 
+    @event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Resetting")
         self.motor.position_up()
@@ -93,6 +94,7 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
         if not self.check_switch_task.running:
             self.check_switch_task.start(1 / 25)
 
+    @event(filter={'category': 'up'})
     def event_up(self):
         logger.info("Pulling table up")
         self.motor.position_up()
@@ -102,6 +104,7 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
         logger.info("Scheduling the motor to stop after {} seconds".format(self.pull_delay))
         self.stop_motor_task = callLater(self.pull_delay, self.motor.stop)
 
+    @event(filter={'category': 'down'})
     def event_down(self):
         logger.info("Pulling table down")
         self.motor.position_down()
@@ -114,6 +117,7 @@ class Table(EventCategoryToMethodMixin, JustSockClientService):
             logger.info("Stop listening to the switch")
             self.check_switch_task.stop()
 
+    @event(filter={'category': 'stop'})
     def event_stop(self):
         logger.info("Stopping the table")
         self.motor.stop()

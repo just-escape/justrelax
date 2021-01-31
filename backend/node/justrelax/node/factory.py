@@ -55,7 +55,7 @@ class JustSockClientFactory(WebSocketClientFactory, ReconnectingClientFactory):
 
     def process_event(self, event):
         try:
-            self.service.process_event(event)
+            self.service._process_event(event)
         except Exception as e:
             formatted_exception = "{}: {}".format(type(e).__name__, e)
             try:
