@@ -9,7 +9,7 @@ from justrelax.common.logging_utils import logger
 from justrelax.node.factory import JustSockClientFactory
 
 
-def event(f=None, filter=None):
+def orchestrator_event(f=None, filter=None):
     def wrapper(f_):
         f_.filter = filter if type(filter) is dict else {}
         return f_

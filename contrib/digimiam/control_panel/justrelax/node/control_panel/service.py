@@ -7,7 +7,7 @@ from twisted.internet.reactor import callLater
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
 class Controller:
@@ -279,36 +279,36 @@ class ControlPanel(JustSockClientService):
             table_button_pin, table_up_pin, table_down_pin, table_up_down_pins_active_high,
             table_max_amplitude_duration, table_up_down_minimum_delay, colors)
 
-    @event(filter={'category': 'reset'})
+    @orchestrator_event(filter={'category': 'reset'})
     def event_reset(self):
         self.controller.reset()
 
-    @event(filter={'category': 'set_status'})
+    @orchestrator_event(filter={'category': 'set_status'})
     def event_set_status(self, status: str):
         self.controller.status = status
 
-    @event(filter={'category': 'set_lights_service_status'})
+    @orchestrator_event(filter={'category': 'set_lights_service_status'})
     def event_set_lights_service_status(self, repaired: bool):
         self.controller.set_lights_service_status(repaired)
 
-    @event(filter={'category': 'set_menu_service_status'})
+    @orchestrator_event(filter={'category': 'set_menu_service_status'})
     def event_set_menu_service_status(self, repaired: bool):
         self.controller.set_menu_service_status(repaired)
 
-    @event(filter={'category': 'table_up'})
+    @orchestrator_event(filter={'category': 'table_up'})
     def event_table_up(self):
         self.controller.table_up()
 
-    @event(filter={'category': 'table_down'})
+    @orchestrator_event(filter={'category': 'table_down'})
     def event_table_down(self):
         self.controller.table_down()
 
-    @event(filter={'category': 'table_stop'})
+    @orchestrator_event(filter={'category': 'table_stop'})
     def event_table_stop(self):
         logger.info("Stopping the table")
         self.controller.table_stop()
 
-    @event(filter={'category': 'force_manual_mode'})
+    @orchestrator_event(filter={'category': 'force_manual_mode'})
     def event_force_manual_mode(self):
         self.controller.on_manual_mode()
 

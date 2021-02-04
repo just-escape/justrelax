@@ -1,7 +1,7 @@
 import gpiozero
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 from justrelax.node.helper import Serial
 
 
@@ -68,11 +68,11 @@ class Cylinders(JustSockClientService):
         else:
             logger.error("Unknown event category '{}': skipping".format(self.ARDUINO_PROTOCOL.CATEGORY))
 
-    @event(filter={'category': 'reset'})
+    @orchestrator_event(filter={'category': 'reset'})
     def event_reset(self):
         self.success = False
 
-    @event(filter={'category': 'set_difficulty'})
+    @orchestrator_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty):
         self.difficulty = difficulty
         self.update_leds()

@@ -6,7 +6,7 @@ from gpiozero import OutputDevice, InputDevice
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.helper import Serial
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
 class Cell:
@@ -108,15 +108,15 @@ class SecureFloor(JustSockClientService):
             self.ARDUINO_PROTOCOL.STRIP_BIT_MASK: bit_mask,
         })
 
-    @event(filter={'category': 'set_led_color'})
+    @orchestrator_event(filter={'category': 'set_led_color'})
     def event_set_led_color(self, color: str, bit_mask: int):
         self.set_led_color(color, bit_mask)
 
-    @event(filter={'category': 'set_all_leds_color'})
+    @orchestrator_event(filter={'category': 'set_all_leds_color'})
     def event_set_all_leds_color(self, color: str):
         self.set_led_color(color, sum(self.leds.keys()))
 
-    @event(filter={'category': 'tare'})
+    @orchestrator_event(filter={'category': 'tare'})
     def event_tare(self):
         logger.info("Triggering tare rising edge...")
         self.tare.on()
@@ -129,7 +129,7 @@ class SecureFloor(JustSockClientService):
         logger.info("Triggering tare falling edge...")
         self.tare.off()
 
-    @event(filter={'category': 'reset'})
+    @orchestrator_event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Resetting node")
         self.success = False
@@ -137,7 +137,7 @@ class SecureFloor(JustSockClientService):
         self.event_tare()
         self.event_set_status('playing')
 
-    @event(filter={'category': 'set_status'})
+    @orchestrator_event(filter={'category': 'set_status'})
     def event_set_status(self, status: str):
         if self.success is False:
             if status in self.STATUSES:
@@ -167,7 +167,7 @@ class SecureFloor(JustSockClientService):
         else:
             logger.info("Node is in success mode: ignoring set status to '{}'".format(status))
 
-    @event(filter={'category': 'success'})
+    @orchestrator_event(filter={'category': 'success'})
     def event_success(self):
         if self.success is False:
             logger.info("Setting node in success mode")

@@ -3,7 +3,7 @@ from gpiozero import OutputDevice
 from twisted.internet.reactor import callLater
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
 class FogMachine(JustSockClientService):
@@ -26,13 +26,13 @@ class FogMachine(JustSockClientService):
         self.send_fog_task = None
         self.send_fog_forever_task = None
 
-    @event(filter={'category': 'on'})
+    @orchestrator_event(filter={'category': 'on'})
     def event_on(self):
         logger.info("Heating machine and turning on fan")
         self.fan.on()
         self.machine.on()
 
-    @event(filter={'category': 'off'})
+    @orchestrator_event(filter={'category': 'off'})
     def event_off(self):
         logger.info("Stop heating machine and turning off fan")
         self.fan.off()
@@ -42,7 +42,7 @@ class FogMachine(JustSockClientService):
         logger.info("Stop sending fog")
         self.fog_pin.off()
 
-    @event(filter={'category': 'send_fog'})
+    @orchestrator_event(filter={'category': 'send_fog'})
     def event_send_fog(self, duration: int = None):
         delay = duration if duration is not None else self.send_fog_default_duration
 
@@ -55,7 +55,7 @@ class FogMachine(JustSockClientService):
             self.fog_pin.on()
             self.send_fog_task = callLater(delay, self._release_fog_pin)
 
-    @event(filter={'category': 'send_fog_forever'})
+    @orchestrator_event(filter={'category': 'send_fog_forever'})
     def event_send_fog_forever(self, frequency: int = None, send_duration: int = None):
         if self.send_fog_forever_task and self.send_fog_forever_task.active():
             logger.info("Already sending fog forever: stopping previous task")
@@ -67,7 +67,7 @@ class FogMachine(JustSockClientService):
         self.send_fog_forever_task = callLater(frequency, self.event_send_fog, duration)
         self.event_send_fog(duration)
 
-    @event(filter={'category': 'stop_sending_fog_forever'})
+    @orchestrator_event(filter={'category': 'stop_sending_fog_forever'})
     def event_stop_sending_fog_forever(self):
         if self.send_fog_forever_task and self.send_fog_forever_task.active():
             logger.info("Stop sending fog forever task")

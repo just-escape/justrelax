@@ -3,7 +3,7 @@ from twisted.internet import reactor
 from justrelax.node.helper import Serial
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
 class SerialEventBuffer:
@@ -105,12 +105,12 @@ class HumanAuthenticator(JustSockClientService):
         logger.info("Success")
         self.send_event({"category": "success"})
 
-    @event(filter={"category": "set_status"})
+    @orchestrator_event(filter={"category": "set_status"})
     def event_set_status(self, status: str):
         logger.info("Setting status to {}".format(status))
         self.status = status
 
-    @event(filter={"category": "reset"})
+    @orchestrator_event(filter={"category": "reset"})
     def event_reset(self):
         logger.info("Resetting")
         self.status = "playing"

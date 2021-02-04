@@ -6,7 +6,7 @@ import board
 from twisted.internet.reactor import callLater
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
 class AirSource:
@@ -649,15 +649,15 @@ class VentilationPanel(JustSockClientService):
             self, initial_difficulty, difficulties, round_leds, air_ducts, air_sources, colors,
             magnet_pin, magnet_led_index)
 
-    @event(filter={'category': 'reset'})
+    @orchestrator_event(filter={'category': 'reset'})
     def event_reset(self):
         self.vc.reset()
 
-    @event(filter={'category': 'set_status'})
+    @orchestrator_event(filter={'category': 'set_status'})
     def event_set_status(self, status: str):
         self.vc.status = status
 
-    @event(filter={'category': 'set_difficulty'})
+    @orchestrator_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
         self.vc.difficulty = difficulty
 

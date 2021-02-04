@@ -1,7 +1,7 @@
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 from justrelax.node.holographic_menu.vlc_player import VLCDynamicSlidesPlayer
 
 
@@ -29,19 +29,19 @@ class HolographicMenu(JustSockClientService):
 
         reactor.callLater(delay, getattr(self.player, method_name))
 
-    @event(filter={'category': 'play'})
+    @orchestrator_event(filter={'category': 'play'})
     def event_play(self, delay=0):
         self.play_pause_stop("Playing", "play", delay)
 
-    @event(filter={'category': 'pause'})
+    @orchestrator_event(filter={'category': 'pause'})
     def event_pause(self, delay=0):
         self.play_pause_stop("Pausing", "pause", delay)
 
-    @event(filter={'category': 'stop'})
+    @orchestrator_event(filter={'category': 'stop'})
     def event_stop(self, delay=0):
         self.play_pause_stop("Stopping", "stop", delay)
 
-    @event(filter={'category': 'set_slide'})
+    @orchestrator_event(filter={'category': 'set_slide'})
     def event_set_slide(self, slide_index: int, chapter_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise TypeError("Delay must be int or float (received={}): skipping".format(delay))

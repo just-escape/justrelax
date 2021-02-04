@@ -2,7 +2,7 @@ import gpiozero
 
 from twisted.internet import reactor
 
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
 class Controller:
@@ -64,10 +64,10 @@ class Rotary(JustSockClientService):
             }
         )
 
-    @event(filter={'category': 'enable'})
+    @orchestrator_event(filter={'category': 'enable'})
     def event_enable(self):
         self.rotary.enable()
 
-    @event(filter={'category': 'disable'})
+    @orchestrator_event(filter={'category': 'disable'})
     def event_disable(self):
         self.rotary.disable()

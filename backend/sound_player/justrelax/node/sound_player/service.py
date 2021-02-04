@@ -5,7 +5,7 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 from justrelax.node.media.volume import EASE_MAPPING, MasterVolume
 
 
@@ -69,7 +69,7 @@ class SoundPlayer(JustSockClientService):
         pyglet.clock.tick()
         pyglet.app.platform_event_loop.dispatch_posted_events()
 
-    @event(filter={'category': 'play'})
+    @orchestrator_event(filter={'category': 'play'})
     def event_play(self, sound_id: str, delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
@@ -82,7 +82,7 @@ class SoundPlayer(JustSockClientService):
 
         reactor.callLater(delay, self.sound_player, sound)
 
-    @event(filter={'category': 'set_volume'})
+    @orchestrator_event(filter={'category': 'set_volume'})
     def event_set_volume(self, volume: int, duration, ease: str = 'easeInOutSine', delay=0):
         if not isinstance(delay, (int, float)):
             raise ValueError("Delay must be int or float (received={}): skipping".format(delay))

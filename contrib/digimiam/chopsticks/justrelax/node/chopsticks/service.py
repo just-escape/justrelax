@@ -6,7 +6,7 @@ from twisted.internet.reactor import callLater
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
 class Letter:
@@ -236,7 +236,7 @@ class Chopsticks(JustSockClientService):
         for letter in self.letters:
             letter.difficulty = difficulty
 
-    @event(filter={'category': 'reset'})
+    @orchestrator_event(filter={'category': 'reset'})
     def event_reset(self):
         Letter.success = False
 
@@ -244,19 +244,19 @@ class Chopsticks(JustSockClientService):
             letter.difficulty = self.initial_difficulty
             letter.led_color = self.letters_configuration[letter_index]['led_initial_color']
 
-    @event(filter={'category': 'emulate_chopstick_plug'})
+    @orchestrator_event(filter={'category': 'emulate_chopstick_plug'})
     def event_emulate_chopstick_plug(self, letter_index: int):
         self.letters[letter_index].on_chopstick_plug()
 
-    @event(filter={'category': 'emulate_chopstick_unplug'})
+    @orchestrator_event(filter={'category': 'emulate_chopstick_unplug'})
     def event_emulate_chopstick_unplug(self, letter_index: int):
         self.letters[letter_index].on_chopstick_unplug()
 
-    @event(filter={'category': 'force_success'})
+    @orchestrator_event(filter={'category': 'force_success'})
     def event_force_success(self):
         self.letters[0].on_success()
 
-    @event(filter={'category': 'set_difficulty'})
+    @orchestrator_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
         self.set_difficulty(difficulty)
     

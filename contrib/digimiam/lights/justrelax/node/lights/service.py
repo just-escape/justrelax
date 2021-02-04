@@ -4,7 +4,7 @@ from gpiozero import OutputDevice
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.helper import Serial
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
 class SerialEventBuffer:
@@ -104,7 +104,7 @@ class Lights(JustSockClientService):
         # Error because events should not be received from the arduino
         logger.error(event)
 
-    @event(filter={'category': 'configure_channel_color'})
+    @orchestrator_event(filter={'category': 'configure_channel_color'})
     def event_configure_channel_color(self, channel: int, rate: int):
         logger.info("Configuring channel {} with rate {}".format(channel, rate))
         self.buffer.send_event(
@@ -115,18 +115,18 @@ class Lights(JustSockClientService):
             channel=channel,
         )
 
-    @event(filter={'category': 'on'})
+    @orchestrator_event(filter={'category': 'on'})
     def event_on(self, color):
         logger.info("Turning on {}".format(color))
         for on_off_pin in self.colors[color]['on_off_pins']:
             self.on_off_pins[on_off_pin].on()
 
-    @event(filter={'category': 'off'})
+    @orchestrator_event(filter={'category': 'off'})
     def event_off(self, color):
         logger.info("Turning off {}".format(color))
         for on_off_pin in self.colors[color]['on_off_pins']:
             self.on_off_pins[on_off_pin].off()
 
-    @event(filter={'category': 'play_animation'})
+    @orchestrator_event(filter={'category': 'play_animation'})
     def event_play_animation(self):
         pass

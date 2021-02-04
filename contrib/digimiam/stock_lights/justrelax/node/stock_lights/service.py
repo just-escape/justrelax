@@ -1,6 +1,6 @@
 from twisted.internet import reactor
 
-from justrelax.node.service import JustSockClientService, event
+from justrelax.node.service import JustSockClientService, orchestrator_event
 from justrelax.node.helper import Serial
 from justrelax.common.logging_utils import logger
 
@@ -31,7 +31,7 @@ class StockLights(JustSockClientService):
         # Error by default because events should not be received from the arduino
         logger.error(event)
 
-    @event(filter={'category': 'set_target_freq'})
+    @orchestrator_event(filter={'category': 'set_target_freq'})
     def event_set_target_freq(self, value: float, step: float):
         value = min(value, 50.)
         logger.info("Set lights target freq to {}/50 with a step of {}".format(value, step))
@@ -41,7 +41,7 @@ class StockLights(JustSockClientService):
             self.ARDUINO_PROTOCOL.STEP: step,
         })
 
-    @event(filter={'category': 'set_freq'})
+    @orchestrator_event(filter={'category': 'set_freq'})
     def event_set_freq(self, value: float):
         value = min(value, 50.)
         logger.info("Set lights freq to {}/50".format(value))
@@ -50,17 +50,17 @@ class StockLights(JustSockClientService):
             self.ARDUINO_PROTOCOL.VALUE: value,
         })
 
-    @event(filter={'category': 'high'})
+    @orchestrator_event(filter={'category': 'high'})
     def event_high(self):
         logger.info("Set lights intensity to high")
         self.event_set_target_freq(50., 0.2)
 
-    @event(filter={'category': 'low'})
+    @orchestrator_event(filter={'category': 'low'})
     def event_low(self):
         logger.info("Set lights intensity to low")
         self.event_set_target_freq(1., 0.2)
 
-    @event(filter={'category': 'off'})
+    @orchestrator_event(filter={'category': 'off'})
     def event_off(self):
         logger.info("Set lights off")
         self.event_set_freq(0.,)
