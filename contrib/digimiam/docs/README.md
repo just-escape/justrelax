@@ -9,7 +9,7 @@ xserver-command=X -s 0 dpms -nocursor  # No sleep mode, no cursor
 
 Run chrome in kiosk mode:
 ```
-chromium --kiosk --app=<url> --window-position=0,0 --noerrdialogs --user-data-dir=/path/to/directory --password-store=basic --autoplay-policy=no-user-gesture-required --disable-features=TranslateUI --disable-pinch
+chromium --kiosk --app=<url> --window-position=0,0 --noerrdialogs --user-data-dir=/path/to/directory --password-store=basic --autoplay-policy=no-user-gesture-required --disable-features=TranslateUI --disable-pinch  --check-for-update-interval=315360000
 ```
 --noerrordialors for popups ("translate this page")
 --user-data-dir for separate instances (sound)

@@ -1,0 +1,58 @@
+host: d2orchestrator.justescape
+port: 3031
+
+name: control_panel
+channel: digimiam2
+
+node_params:
+  led_indexes:
+    scene:
+      - 0
+      - 1
+      - 2
+    marmitron_mode: 3
+    manual_mode: 4
+    lights_status: 5
+    menu_status: 6
+    table: 7
+    electromagnet: 8
+  table:
+    button_pin: 13
+    up_pin: 19
+    down_pin: 26
+    up_down_pins_active_high: yes
+    max_amplitude_duration: 31
+    up_down_minimum_delay: 1
+  electromagnet_pin: 4
+  jack_pin: 16
+  manual_mode_jack_port_pin: 20
+  marmitron_mode_jack_port_pin: 21
+  colors:
+    white:
+      r: 10
+      g: 10
+      b: 10
+    red:
+      r: 10
+      g: 0
+      b: 0
+    green:
+      r: 0
+      g: 10
+      b: 0
+    black:
+      r: 0
+      g: 0
+      b: 0
+    red_blink:
+      - color: red
+        duration: 0.1
+      - color: black
+        duration: 0.1
+    green_blink:
+      - color: green
+        duration: 0.1
+      - color: black
+        duration: 0.1
+
+logging: /etc/justrelax/control_panel_logging.yaml

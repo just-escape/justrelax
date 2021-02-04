@@ -1,4 +1,4 @@
-host: localhost
+host: d1orchestrator.justescape
 port: 3031
 
 name: cylinders
@@ -54,4 +54,4 @@ node_params:
       red_pin: 6
       green_pin: 13
 
-logging: null
+logging: /etc/justrelax/cylinders_logging.yaml

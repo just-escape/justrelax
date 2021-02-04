@@ -56,6 +56,9 @@ class Letter:
 
         self.delayed_reaction_task = None
 
+        self.update_color_task = LoopingCall(self._update_color)
+        self.update_color_task.start(0.2)
+
     @property
     def difficulty(self):
         return self._difficulty
@@ -83,10 +86,11 @@ class Letter:
         self._led_color = value
         logger.debug("Letter {}: {}".format(self.letters.index(self), value))
 
+    def _update_color(self):
         # Get GRB values of given colors from settings
-        red = self.colors.get(value, {}).get("r", 0)
-        green = self.colors.get(value, {}).get("g", 0)
-        blue = self.colors.get(value, {}).get("b", 0)
+        red = self.colors.get(self._led_color, {}).get("r", 0)
+        green = self.colors.get(self._led_color, {}).get("g", 0)
+        blue = self.colors.get(self._led_color, {}).get("b", 0)
         Letter.led_strip[self.led_index] = (red, green, blue)
 
     def check_success(self):

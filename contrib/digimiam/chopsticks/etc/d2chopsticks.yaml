@@ -1,8 +1,8 @@
-host: localhost
+host: d2orchestrator.justescape
 port: 3031
 
 name: chopsticks
-channel: digimiam1
+channel: digimiam2
 
 node_params:
   watcher_frequency: 100
@@ -25,12 +25,12 @@ node_params:
       r: 255
       g: 5
       b: 0
-  n_led: 21
+  n_led: 25
   static_blue:
     - 0
     - 1
-  static_orange:
     - 2
+  static_orange:
     - 3
     - 4
     - 5
@@ -42,21 +42,25 @@ node_params:
     - 11
     - 12
     - 13
+    - 14
+    - 15
+    - 16
+    - 17
   letters:
     - chopstick_plug_reactions:
         easy: toggle_blue_orange
         normal: toggle_blue_orange
         hard: toggle_blue_orange
       reaction_pin: 21
-      led_index: 14
+      led_index: 24
       led_initial_color: blue
-      led_success_color: blue
+      led_success_color: orange
     - chopstick_plug_reactions:
         easy: toggle_blue_orange
         normal: toggle_blue_orange
         hard: toggle_blue_orange
       reaction_pin: 20
-      led_index: 15
+      led_index: 23
       led_initial_color: blue
       led_success_color: orange
     - chopstick_plug_reactions:
@@ -64,7 +68,7 @@ node_params:
         normal: toggle_blue_orange
         hard: toggle_blue_orange
       reaction_pin: 16
-      led_index: 16
+      led_index: 20
       led_initial_color: blue
       led_success_color: orange
     - chopstick_plug_reactions:
@@ -72,7 +76,7 @@ node_params:
         normal: toggle_blue_orange
         hard: toggle_blue_orange
       reaction_pin: 26
-      led_index: 17
+      led_index: 21
       led_initial_color: orange
       led_success_color: orange
     - chopstick_plug_reactions:
@@ -80,14 +84,6 @@ node_params:
         normal: toggle_blue_orange
         hard: toggle_blue_orange
       reaction_pin: 19
-      led_index: 18
-      led_initial_color: blue
-      led_success_color: orange
-    - chopstick_plug_reactions:
-        easy: toggle_blue_orange
-        normal: toggle_blue_orange
-        hard: toggle_blue_orange
-      reaction_pin: 13
       led_index: 19
       led_initial_color: blue
       led_success_color: orange
@@ -95,9 +91,17 @@ node_params:
         easy: toggle_blue_orange
         normal: toggle_blue_orange
         hard: toggle_blue_orange
-      reaction_pin: 6
-      led_index: 20
-      led_initial_color: orange
+      reaction_pin: 13
+      led_index: 18
+      led_initial_color: blue
       led_success_color: orange
+    - chopstick_plug_reactions:
+        easy: toggle_blue_orange
+        normal: toggle_blue_orange
+        hard: toggle_blue_orange
+      reaction_pin: 6
+      led_index: 22
+      led_initial_color: orange
+      led_success_color: blue
 
-logging: null
+logging: /etc/justrelax/chopsticks_logging.yaml

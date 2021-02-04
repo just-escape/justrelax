@@ -1,8 +1,8 @@
-host: localhost
+host: d2orchestrator.justescape
 port: 3031
 
-name: lights
-channel: digimiam1
+name: street_lights
+channel: digimiam2
 
 node_params:
   arduino:
@@ -10,10 +10,6 @@ node_params:
     baud_rate: 9600
     buffering_interval: 0.1
   channels:
-    1: 1000  # white
-    2: 300  # pink
-    4: 300  # red
-    8: 300  # green
     16: 0  # blue_r
     32: 300  # blue_g
     64: 1000  # blue_b
@@ -24,29 +20,13 @@ node_params:
     all:
       on_by_default: yes
       on_off_pins:
-        - 26
-        - 19
-        - 13
         - 6
-        - 5
         - 0
-    white:
-      on_off_pins:
-        - 13
-    pink:
-      on_off_pins:
-        - 26
-    red:
-      on_off_pins:
-        - 6
-    green:
-      on_off_pins:
-        - 19
     blue:
       on_off_pins:
         - 0
     orange:
       on_off_pins:
-        - 5
+        - 6
 
-logging: null
+logging: /etc/justrelax/street_lights_logging.yaml

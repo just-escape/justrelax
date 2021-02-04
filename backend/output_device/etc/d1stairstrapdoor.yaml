@@ -1,0 +1,10 @@
+host: d1orchestrator.justescape
+port: 3031
+
+name: stairs_trapdoor
+channel: digimiam1
+
+node_params:
+  pin: 10
+
+logging: /etc/justrelax/stairs_trapdoor_logging.yaml

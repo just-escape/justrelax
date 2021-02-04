@@ -1,7 +1,7 @@
 host: localhost
 port: 3031
 
-name: video_player
+name: advertiser
 channel: digimiam1
 
 node_params:
@@ -17,12 +17,19 @@ node_params:
     ads_glitch:
       layer: 1
       path: /home/pi/videos/ads_glitch.mp4
-      autoplay: yes
+      autoplay: no
+      loop: yes
+      display: 7
+    ads_loop:
+      layer: 1
+      path: /home/pi/videos/ads_loop.mp4
+      autoplay: no
       loop: yes
       display: 7
     ms_pepper_here_you_are:
       layer: 2
       path: /home/pi/videos/ms_pepper_here_you_are_fr.mp4
       loop: no
+      display: 2
 
 logging: null

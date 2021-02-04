@@ -126,3 +126,7 @@ class Lights(JustSockClientService):
         logger.info("Turning off {}".format(color))
         for on_off_pin in self.colors[color]['on_off_pins']:
             self.on_off_pins[on_off_pin].off()
+
+    @event(filter={'category': 'play_animation'})
+    def event_play_animation(self):
+        pass
