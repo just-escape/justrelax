@@ -1,6 +1,4 @@
 #include <ArduinoJson.h>
-#include <SoftwareSerial.h>
-#include <Adafruit_NeoPixel.h>
 
 #define PROTOCOL_CATEGORY "c"
 
@@ -8,9 +6,6 @@
 #define PROTOCOL_ERROR "e"
 #define PROTOCOL_ALARM "a"
 #define PROTOCOL_ALARM_LASER_INDEX "i"
-#define PROTOCOL_TAG "t"
-#define PROTOCOL_TAG_VALUE "v"
-#define PROTOCOL_TAG_READER_INDEX "i"
 
 // Received events
 #define PROTOCOL_LASER_ON "l"
@@ -56,56 +51,6 @@ bool blinkingLaserState = true;
 bool read;
 unsigned long currentMillis = 0;
 
-#define N_READERS 2
-byte softwareSerialPins[N_READERS][2] = {{10, 11}, {12, 13}};
-SoftwareSerial *rfidReaders[N_READERS];
-unsigned long rfidPreviousMillis[N_LASERS] = {0};
-#define RFID_TIME_THRESHOLD 2000
-bool isSomethingBeingSent[N_READERS] = {false};
-bool pushedTag[N_READERS] = {false};
-
-#define LED_PIN 7
-#define N_LEDS 7
-#define LOADING_STEPS 30
-#define LOADING_STEPS_DELAY 100
-byte readerLedIndexes[N_READERS][3] = {{2, 1, 0}, {3, 4, 5}};
-byte loadingTag[N_READERS] = {false};
-byte loadingStep[N_READERS] = {0};
-unsigned long loadingStepPreviousMillis[N_READERS] = {0};
-byte loadingSteps[LOADING_STEPS][3][3] = {
-  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
-  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
-  {{0, 0, 0}, {10, 10, 10}, {10, 10, 10}},
-  {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
-  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
-  {{10, 10, 10}, {0, 0, 0}, {0, 0, 0}},
-  {{10, 10, 10}, {10, 10, 10}, {0, 0, 0}},
-  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
-  {{0, 0, 0}, {10, 10, 10}, {10, 10, 10}},
-  {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
-  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
-  {{10, 10, 10}, {0, 0, 0}, {0, 0, 0}},
-  {{10, 10, 10}, {10, 10, 10}, {0, 0, 0}},
-  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
-  {{0, 0, 0}, {10, 10, 10}, {10, 10, 10}},
-  {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
-  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
-  {{10, 10, 10}, {0, 0, 0}, {0, 0, 0}},
-  {{10, 10, 10}, {10, 10, 10}, {0, 0, 0}},
-  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
-  {{0, 0, 0}, {10, 10, 10}, {10, 10, 10}},
-  {{0, 0, 0}, {0, 0, 0}, {10, 10, 10}},
-  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
-  {{10, 10, 10}, {0, 0, 0}, {0, 0, 0}},
-  {{10, 10, 10}, {10, 10, 10}, {0, 0, 0}},
-  {{10, 10, 10}, {10, 10, 10}, {10, 10, 10}},
-  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
-  {{0, 10, 0}, {0, 10, 0}, {0, 10, 0}},
-  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
-  {{0, 10, 0}, {0, 10, 0}, {0, 10, 0}},
-};
-Adafruit_NeoPixel leds = Adafruit_NeoPixel(N_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
-
 void setup() {
   for (int i = 0 ; i < N_LASERS ; i++) {
     pinMode(laserPins[i], OUTPUT);
@@ -114,20 +59,7 @@ void setup() {
 
   Serial.begin(9600);
 
-  for (int i = 0 ; i < N_READERS ; i++) {
-    rfidReaders[i] = new SoftwareSerial(softwareSerialPins[i][0], softwareSerialPins[i][1]);
-    rfidReaders[i]->begin(9600);
-    rfidPreviousMillis[i] = millis();
-    isSomethingBeingSent[i] = false;
-    loadingTag[i] = false;
-    pushedTag[i] = false;
-    loadingStep[i] = 0;
-    loadingStepPreviousMillis[i] = millis();
-  }
-
   sensorSamplesMillis = millis();
-
-  leds.begin();
 }
 
 void alarm(int laserIndex) {
@@ -219,91 +151,13 @@ void updateDynamicLasers() {
   }
 }
 
-void pushBool(bool v, int i) {
-  StaticJsonDocument<JSON_OBJECT_SIZE(3)> event;
-
-  event[PROTOCOL_CATEGORY] = PROTOCOL_TAG;
-  event[PROTOCOL_TAG_VALUE] = v;
-  event[PROTOCOL_TAG_READER_INDEX] = i;
-
-  serializeJson(event, Serial);
-  Serial.println();
-}
-
-void checkRFID() {
-  for (int i = 0 ; i < N_READERS ; i++) {
-    currentMillis = millis();
-
-    rfidReaders[i]->listen();
-
-    if (rfidReaders[i]->available() > 0) {
-      if (!isSomethingBeingSent[i]) {
-        isSomethingBeingSent[i] = true;
-      }
-      rfidPreviousMillis[i] = currentMillis;
-    }
-
-    if (isSomethingBeingSent[i] && currentMillis - rfidPreviousMillis[i] >= RFID_TIME_THRESHOLD) {
-      isSomethingBeingSent[i] = false;
-      pushedTag[i] = false;
-      pushBool(false, i);
-    }
-  }
-}
-
-void updateLeds() {
-  for (int i = 0 ; i < N_READERS ; i++) {
-    if (isSomethingBeingSent[i]) {
-      loadingTag[i] = true;
-    } else {
-      loadingTag[i] = false;
-      loadingStep[i] = 0;
-    }
-
-    for (int j = 0 ; j < 3 ; j++) {
-      if (success) {
-        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(0, 10, 0));
-      } else if (!playing) {
-        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(10, 0, 0));
-      } else if (loadingTag[i] && loadingStep[i] < LOADING_STEPS - 1) {
-        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(
-          loadingSteps[loadingStep[i]][j][0],
-          loadingSteps[loadingStep[i]][j][1],
-          loadingSteps[loadingStep[i]][j][2]
-        ));
-
-        currentMillis = millis();
-
-        if (currentMillis - loadingStepPreviousMillis[i] >= LOADING_STEPS_DELAY) {
-          loadingStep[i]++;
-          loadingStepPreviousMillis[i] = currentMillis;
-        }
-      } else if (isSomethingBeingSent[i]) {
-        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(0, 10, 0));
-
-        if (!pushedTag[i]) {
-          pushedTag[i] = true;
-          pushBool(true, i);
-        }
-      } else if (playing) {
-        leds.setPixelColor(readerLedIndexes[i][j], leds.Color(10, 1, 0));
-      }
-    }
-  }
-
-  leds.show();
-}
-
 void loop() {
   if (!success && playing) {
     updateDynamicLasers();
     checkSensors();
-    checkRFID();
   } else {
     blinkLaser();
   }
-
-  updateLeds();
 }
 
 void onEvent() {
@@ -322,12 +176,6 @@ void onEvent() {
     if (category == PROTOCOL_STOP_PLAYING) {
       playing = false;
 
-      for (int i = 0 ; i < N_READERS ; i++) {
-        isSomethingBeingSent[i] = false;
-        pushedTag[i] = false;
-        pushBool(false, i);
-      }
-
       for (int i = 0 ; i < N_LASERS ; i++) {
         if (i != blinkingLaser) {
           isLaserOn[i] = false;
@@ -338,12 +186,6 @@ void onEvent() {
       success = receivedDocument[PROTOCOL_SET_SUCCESS_VALUE];
 
       blinkingLaser = -1;
-
-      for (int i = 0 ; i < N_READERS ; i++) {
-        isSomethingBeingSent[i] = false;
-        pushedTag[i] = false;
-        pushBool(false, i);
-      }
 
       for (int i = 0 ; i < N_LASERS ; i++) {
         if (i != blinkingLaser) {

@@ -9,7 +9,6 @@ node_params:
     port: /dev/ttyUSB0
     baud_rate: 9600
     buffering_interval: 0.1
-  tag_readers: 2
   default_difficulty: normal
   laser_prefix: A
   difficulty_settings:

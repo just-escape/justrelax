@@ -40,9 +40,6 @@ class LaserMaze(JustSockClientService):
         ERROR = "e"
         ALARM = "a"
         ALARM_LASER_INDEX = "i"
-        TAG = "t"
-        TAG_VALUE = "v"
-        TAG_READER_INDEX = "i"
 
         LASER_ON = "l"
         LASER_ON_BITMASK = "b"
@@ -57,21 +54,15 @@ class LaserMaze(JustSockClientService):
         SET_SAMPLE_DELAY = "ssd"
 
     def __init__(self, *args, **kwargs):
+        self._difficulty = None
+
         super(LaserMaze, self).__init__(*args, **kwargs)
 
         self.success = False
 
         self.laser_prefix = self.node_params['laser_prefix']
 
-        if self.node_params['tag_readers'] is None:
-            self.tag_readers = None
-        else:
-            self.tag_readers = {}
-            for reader_index in range(self.node_params['tag_readers']):
-                self.tag_readers[reader_index] = False
-
         self.default_difficulty = self.node_params['default_difficulty']
-        self._difficulty = None
         self.difficulty_settings = self.node_params['difficulty_settings']
 
         port = self.node_params['arduino']['port']
@@ -120,32 +111,8 @@ class LaserMaze(JustSockClientService):
             laser_index = event[self.ARDUINO_PROTOCOL.ALARM_LASER_INDEX]
             self.on_alarm(laser_index)
 
-        elif event[self.ARDUINO_PROTOCOL.CATEGORY] == self.ARDUINO_PROTOCOL.TAG:
-            if self.ARDUINO_PROTOCOL.TAG_READER_INDEX not in event:
-                logger.error("Event has no tag reader index: skipping")
-                return
-
-            if self.ARDUINO_PROTOCOL.TAG_VALUE not in event:
-                logger.error("Event has no tag value: skipping")
-                return
-
-            reader_index = event[self.ARDUINO_PROTOCOL.TAG_READER_INDEX]
-            tag = event[self.ARDUINO_PROTOCOL.TAG_VALUE]
-            self.on_tag_read(reader_index, tag)
-
         else:
-            logger.error("Unknown event category '{}': skipping".format(self.ARDUINO_PROTOCOL.CATEGORY))
-
-    def on_tag_read(self, reader_index, tag):
-        logger.info("Tag read={} from reader index={}".format(tag, reader_index))
-        if self.tag_readers is None:
-            logger.info("Tag readers has been disabled: skipping")
-            return
-
-        self.tag_readers[reader_index] = tag
-        if all(self.tag_readers.values()):
-            logger.info("All tags are enabled: triggering success")
-            self.send_event({"category": "success"})
+            logger.error("Unknown event category '{}': skipping".format(event[self.ARDUINO_PROTOCOL.CATEGORY]))
 
     def on_alarm(self, laser_index):
         logger.info("Alarm from laser index={}".format(laser_index))
