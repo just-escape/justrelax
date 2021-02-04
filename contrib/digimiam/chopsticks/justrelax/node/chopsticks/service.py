@@ -88,9 +88,9 @@ class Letter:
 
     def _update_color(self):
         # Get GRB values of given colors from settings
-        red = self.colors.get(self._led_color, {}).get("r", 0)
-        green = self.colors.get(self._led_color, {}).get("g", 0)
-        blue = self.colors.get(self._led_color, {}).get("b", 0)
+        red = self.colors.get(self.led_color, {}).get("r", 0)
+        green = self.colors.get(self.led_color, {}).get("g", 0)
+        blue = self.colors.get(self.led_color, {}).get("b", 0)
         Letter.led_strip[self.led_index] = (red, green, blue)
 
     def check_success(self):
