@@ -1,0 +1,17 @@
+host: d2orchestrator.justescape
+port: 3031
+
+name: load_cells
+channel: digimiam2
+
+node_params:
+  deactivation_delay: 0.2
+  cells:
+    0: blue
+    5: green
+    20: white
+    21: white
+    19: red
+    26: orange
+
+logging: /etc/justrelax/load_cells_logging.yaml

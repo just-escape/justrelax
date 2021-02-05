@@ -1,0 +1,34 @@
+host: d2orchestrator.justescape
+port: 3031
+
+name: laser_maze
+channel: digimiam2
+
+node_params:
+  arduino:
+    port: /dev/ttyUSB0
+    baud_rate: 9600
+    buffering_interval: 0.1
+  default_difficulty: normal
+  laser_prefix: A
+  difficulty_settings:
+    easy:
+      laser_bitmask: 22527
+      dynamic_laser_bitmask: 63
+      dynamic_laser_downtime: 9000
+      dynamic_laser_uptime: 6000
+      dynamic_laser_incremental_offset: 1000
+    normal:
+      laser_bitmask: 32767
+      dynamic_laser_bitmask: 63
+      dynamic_laser_downtime: 3500
+      dynamic_laser_uptime: 5500
+      dynamic_laser_incremental_offset: 500
+    hard:
+      laser_bitmask: 26623
+      dynamic_laser_bitmask: 63
+      dynamic_laser_downtime: 5300
+      dynamic_laser_uptime: 5800
+      dynamic_laser_incremental_offset: 800
+
+logging: /etc/justrelax/laser_maze_logging.yaml

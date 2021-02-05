@@ -1,4 +1,4 @@
-host: localhost
+host: d1orchestrator.justescape
 port: 3031
 
 name: secure_floor
@@ -17,7 +17,7 @@ node_params:
         led_strip: 2
   leds:
     arduino:
-      port: /dev/arduino
+      port: /dev/ttyUSB0
       baud_rate: 9600
 
-logging: null
+logging: /etc/justrelax/secure_floor_logging.yaml

@@ -1,0 +1,23 @@
+host: d2orchestrator.justescape
+port: 3031
+
+name: secure_floor
+channel: digimiam2
+
+node_params:
+  clear_alarm_delay: 4
+  load_cells:
+    tare_pin: 12
+    cells:
+      - pin: 16
+        led_strip: null
+      - pin: 20
+        led_strip: null
+      - pin: 21
+        led_strip: 1
+  leds:
+    arduino:
+      port: /dev/ttyUSB0
+      baud_rate: 9600
+
+logging: /etc/justrelax/secure_floor_logging.yaml
