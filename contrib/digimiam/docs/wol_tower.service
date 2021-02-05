@@ -1,0 +1,14 @@
+# Installed on d1advertiser.justescape and d2advertiser.justescape
+
+[Unit]
+Description=Wake-on-LAN for the tower
+Requires=network-online.target
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/home/pi/wol.sh
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
