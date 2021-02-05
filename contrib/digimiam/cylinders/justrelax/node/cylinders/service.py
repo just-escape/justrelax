@@ -1,5 +1,7 @@
 import gpiozero
 
+from twisted.internet import reactor
+
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService, orchestrator_event
 from justrelax.node.helper import Serial
@@ -18,6 +20,7 @@ class Cylinders(JustSockClientService):
 
         self.success = False
         self.difficulty = 'normal'
+        self.delay = self.node_params['delay']
 
         self.serials = []
 
@@ -36,6 +39,7 @@ class Cylinders(JustSockClientService):
                 'expected_tag': slot['expected_tag'],
                 'red_led': red_led,
                 'green_led': green_led,
+                'delayed_task': None,
             }
 
     def process_serial_event(self, event, index_mapping):
@@ -113,7 +117,11 @@ class Cylinders(JustSockClientService):
     def on_nfc_read(self, reader_index, tag):
         serialized_tag = "-".join([str(byte) for byte in tag]) if tag else None
         self.slots[reader_index]['current_tag'] = serialized_tag
-        self.update_leds()
+
+        if self.slots[reader_index]['delayed_task'] and self.slots[reader_index]['delayed_task'].active():
+            self.slots[reader_index]['delayed_task'].cancel()
+
+        self.slots[reader_index]['delayed_task'] = reactor.callLater(self.delay, self.update_leds)
 
     def notify_success(self):
         self.send_event({"category": "success"})

@@ -1,4 +1,4 @@
-host: localhost
+host: d1orchestrator.justescape
 port: 3031
 
 name: emergency_exit
@@ -14,4 +14,4 @@ node_params:
   emergency_button_hold_time: 1  # The button has to be pressed for 1 second to avoid mistakes
   relock_delay: 3
 
-logging: null
+logging: /etc/justrelax/emergency_exit_logging.yaml

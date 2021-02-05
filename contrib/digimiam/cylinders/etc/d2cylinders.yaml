@@ -5,6 +5,7 @@ name: cylinders
 channel: digimiam2
 
 node_params:
+  delay: 0.1
   readers:
     - port: /dev/arduino1
       baud_rate: 19200
