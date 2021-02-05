@@ -164,6 +164,7 @@ class RulesProcessor:
             'session_start': [],
             'session_pause': [],
             'session_resume': [],
+            'session_reset': [],
         }
 
         self.timers = set()
@@ -382,6 +383,7 @@ class RulesProcessor:
 
     def reset_room(self):
         if self.session_timer.state == STATE_PAUSED:
+            self.process_rules(self.on_trigger_type_rules['session_reset'], {})
             self.factory.send_reset(self.room_id)
             self.cancel_timers()
             self.session_timer.cancel()

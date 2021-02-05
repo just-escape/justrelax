@@ -78,6 +78,10 @@
         "name": "Reprise de session",
         "the_session_is_resumed": "La session est reprise"
       },
+      "session_reset": {
+        "name": "Réinitialisation de session",
+        "the_session_is_reset": "La session est réinitialisée"
+      },
       "node_connection": {
         "name": "Connexion",
         "a_node_has_connected": "Un node s'est connecté"

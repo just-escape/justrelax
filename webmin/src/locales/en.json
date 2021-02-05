@@ -79,6 +79,10 @@
         "name": "Session resume",
         "the_session_is_resumed": "The session is resumed"
       },
+      "session_reset": {
+        "name": "Session reset",
+        "the_session_is_reset": "The session is reset"
+      },
       "node_connected": {
         "name": "Connection",
         "a_node_has_connected": "A node has connected"
