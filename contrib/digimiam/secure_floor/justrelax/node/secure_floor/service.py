@@ -5,7 +5,7 @@ from twisted.internet import reactor
 from gpiozero import OutputDevice, InputDevice
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.helper import Serial
+from justrelax.node.helper import BufferedSerial
 from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
@@ -43,16 +43,17 @@ class Cell:
         return str(self.pin)
 
 
+class ArduinoProtocol:
+    CATEGORY = 'c'
+
+    SET_COLOR_BLACK = 'b'
+    SET_COLOR_ORANGE = 'o'
+    SET_COLOR_RED = 'r'
+    SET_COLOR_WHITE = 'w'
+    STRIP_BIT_MASK = 's'
+
+
 class SecureFloor(JustSockClientService):
-    class ARDUINO_PROTOCOL:
-        CATEGORY = 'c'
-
-        SET_COLOR_BLACK = 'b'
-        SET_COLOR_ORANGE = 'o'
-        SET_COLOR_RED = 'r'
-        SET_COLOR_WHITE = 'w'
-        STRIP_BIT_MASK = 's'
-
     STATUSES = {'playing', 'alarm'}
 
     def __init__(self, *args, **kwargs):
@@ -61,7 +62,8 @@ class SecureFloor(JustSockClientService):
         port = self.node_params['leds']['arduino']['port']
         baud_rate = self.node_params['leds']['arduino']['baud_rate']
 
-        self.serial = Serial(self, port, baud_rate)
+        self.serial = BufferedSerial(self, port, baud_rate)
+        self.serial.process_event = self.process_serial_event
 
         self.status = 'playing'
         self.success = False
@@ -92,20 +94,20 @@ class SecureFloor(JustSockClientService):
         logger.info("Setting led bit_mask={} color={}".format(bit_mask, color))
 
         color_mapping = {
-            'orange': self.ARDUINO_PROTOCOL.SET_COLOR_ORANGE,
-            'red': self.ARDUINO_PROTOCOL.SET_COLOR_RED,
-            'white': self.ARDUINO_PROTOCOL.SET_COLOR_WHITE,
+            'orange': ArduinoProtocol.SET_COLOR_ORANGE,
+            'red': ArduinoProtocol.SET_COLOR_RED,
+            'white': ArduinoProtocol.SET_COLOR_WHITE,
         }
 
-        event_color = color_mapping.get(color, self.ARDUINO_PROTOCOL.SET_COLOR_BLACK)
+        event_color = color_mapping.get(color, ArduinoProtocol.SET_COLOR_BLACK)
 
         for led_index in self.leds.keys():
             if led_index & bit_mask:
                 self.leds[led_index] = color
 
         self.serial.send_event({
-            self.ARDUINO_PROTOCOL.CATEGORY: event_color,
-            self.ARDUINO_PROTOCOL.STRIP_BIT_MASK: bit_mask,
+            ArduinoProtocol.CATEGORY: event_color,
+            ArduinoProtocol.STRIP_BIT_MASK: bit_mask,
         })
 
     @orchestrator_event(filter={'category': 'set_led_color'})

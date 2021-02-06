@@ -4,17 +4,18 @@ from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService, orchestrator_event
-from justrelax.node.helper import Serial
+from justrelax.node.helper import BufferedSerial, serial_event
+
+
+class ArduinoProtocol:
+    CATEGORY = "c"
+
+    READ = "r"
+    READER_INDEX = "i"
+    TAG = "t"
 
 
 class Cylinders(JustSockClientService):
-    class ARDUINO_PROTOCOL:
-        CATEGORY = "c"
-
-        READ = "r"
-        READER_INDEX = "i"
-        TAG = "t"
-
     def __init__(self, *args, **kwargs):
         super(Cylinders, self).__init__(*args, **kwargs)
 
@@ -22,13 +23,15 @@ class Cylinders(JustSockClientService):
         self.difficulty = 'normal'
         self.delay = self.node_params['delay']
 
+        self.port_index_mapping = {}
+
         self.serials = []
 
         for reader in self.node_params.get('readers', []):
-            index_mapping = reader['index_mapping']
             port = reader['port']
             baud_rate = reader['baud_rate']
-            self.serials.append(Serial(self, port, baud_rate, self.process_serial_event, index_mapping))
+            self.port_index_mapping[port] = reader['index_mapping']
+            self.serials.append(BufferedSerial(self, port, baud_rate))
 
         self.slots = {}
         for key, slot in self.node_params['slots'].items():
@@ -42,35 +45,28 @@ class Cylinders(JustSockClientService):
                 'delayed_task': None,
             }
 
-    def process_serial_event(self, event, index_mapping):
-        logger.debug("Processing event '{}' (index_mapping={})".format(event, index_mapping))
+    @serial_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.READ})
+    def event_read(self, port, i: int, t: str):
+        reader_index = i
+        tag = t
 
-        if self.ARDUINO_PROTOCOL.CATEGORY not in event:
-            logger.error("Event has no category: skipping")
+        global_reader_index = self.port_index_mapping[port].get(reader_index, None)
+
+        if global_reader_index is None:
+            logger.error("Undeclared local reader index '{}' for port {}: skipping".format(reader_index, port))
             return
 
-        if event[self.ARDUINO_PROTOCOL.CATEGORY] == self.ARDUINO_PROTOCOL.READ:
-            if self.ARDUINO_PROTOCOL.READER_INDEX not in event:
-                logger.error("Event has no reader index: skipping")
-                return
+        if global_reader_index not in self.slots:
+            logger.error("Undeclared global reader index '{}': skipping".format(global_reader_index))
+            return
 
-            if self.ARDUINO_PROTOCOL.TAG not in event:
-                logger.error("Event has no tag: skipping")
-                return
+        serialized_tag = "-".join([str(byte) for byte in tag]) if tag else None
+        self.slots[global_reader_index]['current_tag'] = serialized_tag
 
-            local_reader_index = event[self.ARDUINO_PROTOCOL.READER_INDEX]
-            global_reader_index = index_mapping.get(local_reader_index, None)
-            if global_reader_index is None:
-                logger.error("Undeclared local reader index '{}': skipping".format(local_reader_index))
-                return
-            if global_reader_index not in self.slots:
-                logger.error("Undeclared global reader index '{}': skipping".format(global_reader_index))
-                return
-            tag = event[self.ARDUINO_PROTOCOL.TAG]
-            self.on_nfc_read(global_reader_index, tag)
+        if self.slots[global_reader_index]['delayed_task'] and self.slots[global_reader_index]['delayed_task'].active():
+            self.slots[global_reader_index]['delayed_task'].cancel()
 
-        else:
-            logger.error("Unknown event category '{}': skipping".format(self.ARDUINO_PROTOCOL.CATEGORY))
+        self.slots[global_reader_index]['delayed_task'] = reactor.callLater(self.delay, self.update_leds)
 
     @orchestrator_event(filter={'category': 'reset'})
     def event_reset(self):
@@ -113,15 +109,6 @@ class Cylinders(JustSockClientService):
                 for slot in self.slots.values():
                     slot['green_led'].off()
                     slot['red_led'].off()
-
-    def on_nfc_read(self, reader_index, tag):
-        serialized_tag = "-".join([str(byte) for byte in tag]) if tag else None
-        self.slots[reader_index]['current_tag'] = serialized_tag
-
-        if self.slots[reader_index]['delayed_task'] and self.slots[reader_index]['delayed_task'].active():
-            self.slots[reader_index]['delayed_task'].cancel()
-
-        self.slots[reader_index]['delayed_task'] = reactor.callLater(self.delay, self.update_leds)
 
     def notify_success(self):
         self.send_event({"category": "success"})

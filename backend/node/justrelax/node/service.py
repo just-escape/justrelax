@@ -11,7 +11,7 @@ from justrelax.node.factory import JustSockClientFactory
 
 def orchestrator_event(f=None, filter=None):
     def wrapper(f_):
-        f_.filter = filter if type(filter) is dict else {}
+        f_.orchestrator_event_filter = filter if type(filter) is dict else {}
         return f_
 
     if f is None:
@@ -35,15 +35,7 @@ class JustSockClientService(internet.TCPClient):
             Device.pin_factory.pin_class = MockPWMPin
 
         self.event_callbacks = []
-        for attribute_name in dir(self):
-            attribute = getattr(self, attribute_name)
-            if not callable(attribute):
-                continue
-
-            # attribute is a method
-
-            if hasattr(attribute, 'filter'):
-                self.event_callbacks.append({'callback': attribute, 'filter': attribute.filter})
+        self._gather_event_callbacks()
 
         super(JustSockClientService, self).__init__(host, port, self.factory, *args, **kwargs)
 
@@ -61,6 +53,17 @@ class JustSockClientService(internet.TCPClient):
 
     def stop(self):
         pass
+
+    def _gather_event_callbacks(self):
+        for attribute_name in dir(self):
+            attribute = getattr(self, attribute_name)
+            if not callable(attribute):
+                continue
+
+            # attribute is a method
+
+            if hasattr(attribute, 'orchestrator_event_filter'):
+                self.event_callbacks.append({'callback': attribute, 'filter': attribute.filter})
 
     def _get_callbacks(self, event):
         callbacks = []
@@ -113,18 +116,16 @@ class JustSockClientService(internet.TCPClient):
 
     def _process_event(self, event):
         logger.debug("Processing event '{}'".format(event))
-        if type(event) is not dict:
-            logger.error("Unknown event: skipping")
-            return
 
-        callbacks = self._get_callbacks(event)
+        if type(event) is dict:
+            callbacks = self._get_callbacks(event)
 
-        for callback in callbacks:
-            if not self._check_arguments(event, callback):
-                continue
-            trimmed_event = self._get_trimmed_version_for_callback(event, callback)
+            for callback in callbacks:
+                if not self._check_arguments(event, callback):
+                    continue
+                trimmed_event = self._get_trimmed_version_for_callback(event, callback)
 
-            callback(**trimmed_event)
+                callback(**trimmed_event)
 
         self.process_event(event)
 

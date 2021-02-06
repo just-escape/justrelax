@@ -136,12 +136,11 @@ class JustSockClientProtocol(WebSocketClientProtocol):
         return "{}@{}".format(self.name, self.channel)
 
 
-class JSONSerialProtocol(LineOnlyReceiver):
+class SimpleSerialProtocol(LineOnlyReceiver):
     delimiter = b'\n'
 
-    def __init__(self, on_event_callback, on_parse_exception, on_connection_lost=None):
-        self.on_event_callback = on_event_callback
-        self.on_parse_exception = on_parse_exception
+    def __init__(self, on_line_callback, on_connection_lost=None):
+        self.on_line_callback = on_line_callback
         self.on_connection_lost = on_connection_lost
 
     def connectionLost(self, reason=connectionDone):
@@ -149,15 +148,4 @@ class JSONSerialProtocol(LineOnlyReceiver):
             self.on_connection_lost(reason)
 
     def lineReceived(self, line):
-        try:
-            decoded_line = line.decode('ascii')
-            event = json.loads(decoded_line)
-        except Exception as e:
-            self.on_parse_exception(line, e)
-        else:
-            self.on_event_callback(event)
-
-    def send_event(self, event):
-        encoded_event = json.dumps(event, separators=(',', ':')).encode()
-        logger.debug("Sending {}".format(encoded_event))
-        self.sendLine(encoded_event)
+        self.on_line_callback(line)

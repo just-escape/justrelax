@@ -7,63 +7,65 @@ from justrelax.node.helper import Serial
 from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
-class SerialEventBuffer:
-    def __init__(self, protocol, serial, interval):
-        self.PROTOCOL = protocol
-        self.serial = serial
-        self.interval = interval
+class ArduinoProtocol:
+    CATEGORY = 'c'
+
+    CHANNEL = 'h'
+    SET_COLOR = 's'
+    COLOR = 'r'
+
+
+class LightsSerialBuffer:
+    def __init__(self, buffering_interval):
+        self.buffering_interval = buffering_interval
 
         self.queue = []
 
         self.delay_task = None
 
-    def send_event(self, base_event, channel):
+    def send_event(self, event):
         if self.delay_task and self.delay_task.active():
-            self.queue_event(base_event, channel)
+            self.queue_event(event)
 
         else:
-            self._send_event(base_event, channel)
-
-    def _send_event(self, base_event, channel):
-        event = base_event
-        event[self.PROTOCOL.CHANNEL] = channel
-
-        self.serial.send_event(event)
-        self.delay_task = reactor.callLater(self.interval, self.pop_event)
+            self._send_event(event)
+            self.delay_task = reactor.callLater(self.buffering_interval, self.pop_event)
 
     def pop_event(self):
         if not self.queue:
             return
 
-        event = self.queue.pop(0)
-        base_event = event['base_event']
-        channel = sum(event['channel'])
+        split_event = self.queue.pop(0)
+        event = split_event['base_event']
+        event[ArduinoProtocol.CHANNEL] = sum(split_event['channel'])
 
-        self._send_event(base_event, channel)
+        self._send_event(event)
+        self.delay_task = reactor.callLater(self.buffering_interval, self.pop_event)
 
-    def queue_event(self, base_event, channel):
+    def queue_event(self, event):
+        channel = event.pop(ArduinoProtocol.CHANNEL)
+
         for queued_event in self.queue:
-            if queued_event['base_event'] == base_event:
+            if queued_event['base_event'] == event:
                 queued_event['channel'].add(channel)
                 return
 
         else:
             self.queue.append(
                 {
-                    'base_event': base_event,
+                    'base_event': event,
                     'channel': {channel},
                 }
             )
 
 
+class LightsBufferedSerial(LightsSerialBuffer, Serial):
+    def __init__(self, service, port, baud_rate=9600, buffering_interval=0.1):
+        LightsSerialBuffer.__init__(self, buffering_interval)
+        Serial.__init__(self, service, port, baud_rate)
+
+
 class Lights(JustSockClientService):
-    class ARDUINO_PROTOCOL:
-        CATEGORY = 'c'
-
-        CHANNEL = 'h'
-        SET_COLOR = 's'
-        COLOR = 'r'
-
     def __init__(self, *args, **kwargs):
         super(Lights, self).__init__(*args, **kwargs)
 
@@ -75,8 +77,8 @@ class Lights(JustSockClientService):
 
         buffering_interval = self.node_params['arduino']['buffering_interval']
 
-        self.serial = Serial(self, port, baud_rate)
-        self.buffer = SerialEventBuffer(self.ARDUINO_PROTOCOL, self.serial, buffering_interval)
+        self.serial = LightsBufferedSerial(self, port, baud_rate, buffering_interval)
+        self.serial.process_event = self.process_serial_event
 
         reactor.callLater(3, self.init_arduino)
 
@@ -107,12 +109,12 @@ class Lights(JustSockClientService):
     @orchestrator_event(filter={'category': 'configure_channel_color'})
     def event_configure_channel_color(self, channel: int, rate: int):
         logger.info("Configuring channel {} with rate {}".format(channel, rate))
-        self.buffer.send_event(
-            base_event={
-                self.ARDUINO_PROTOCOL.CATEGORY: self.ARDUINO_PROTOCOL.SET_COLOR,
-                self.ARDUINO_PROTOCOL.COLOR: rate,
-            },
-            channel=channel,
+        self.serial.send_event(
+            {
+                ArduinoProtocol.CATEGORY: ArduinoProtocol.SET_COLOR,
+                ArduinoProtocol.CHANNEL: channel,
+                ArduinoProtocol.COLOR: rate,
+            }
         )
 
     @orchestrator_event(filter={'category': 'on'})

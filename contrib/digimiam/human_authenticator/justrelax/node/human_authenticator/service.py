@@ -1,68 +1,40 @@
 from twisted.internet import reactor
 
-from justrelax.node.helper import Serial
+from justrelax.node.helper import BufferedSerial, serial_event
 
 from justrelax.common.logging_utils import logger
 from justrelax.node.service import JustSockClientService, orchestrator_event
 
 
-class SerialEventBuffer:
-    def __init__(self, serial, interval):
-        self.queue = []
+class ArduinoProtocol:
+    CATEGORY = "c"
 
-        self.serial = serial
-        self.interval = interval
+    ERROR = "e"
+    AUTHENTICATE = "a"
+    CANCEL_AUTHENTICATION = "c"
 
-        self.delay_task = None
-
-    def _send_event(self, event):
-        self.serial.send_event(event)
-        self.delay_task = reactor.callLater(self.interval, self.pop_event)
-
-    def send_event(self, event):
-        if self.delay_task and self.delay_task.active():
-            self.queue.append(event)
-
-        else:
-            self._send_event(event)
-
-    def pop_event(self):
-        if not self.queue:
-            return
-
-        event = self.queue.pop(0)
-        self._send_event(event)
+    PLAYING = "p"
+    DISABLED = "d"
+    SUCCESS = "w"
 
 
 class HumanAuthenticator(JustSockClientService):
     STATUSES = {'playing', 'disabled', 'success'}
-
-    class ARDUINO_PROTOCOL:
-        CATEGORY = "c"
-
-        ERROR = "e"
-        AUTHENTICATE = "a"
-        CANCEL_AUTHENTICATION = "c"
-
-        PLAYING = "p"
-        DISABLED = "d"
-        SUCCESS = "w"
 
     def __init__(self, *args, **kwargs):
         self._status = None
 
         super(HumanAuthenticator, self).__init__(*args, **kwargs)
 
-        self.authenticators = []
+        self.authenticators = {}
         for authenticator_index, authenticator in enumerate(self.node_params['authenticators']):
             port = authenticator['port']
             baud_rate = authenticator['baud_rate']
             buffering_interval = authenticator['buffering_interval']
 
-            serial = Serial(self, port, baud_rate, self.process_serial_event, authenticator_index)
-            buffer = SerialEventBuffer(serial, buffering_interval)
+            serial = BufferedSerial(self, port, baud_rate, buffering_interval)
 
-            self.authenticators.append({'arduino': buffer, 'authenticated': False})
+            self.authenticators[port] = {'arduino': serial, 'authenticated': False}
 
         reactor.callLater(3, self.event_reset)
 
@@ -85,20 +57,20 @@ class HumanAuthenticator(JustSockClientService):
         self._status = value
 
         if self.status == 'playing':
-            category = self.ARDUINO_PROTOCOL.PLAYING
+            category = ArduinoProtocol.PLAYING
             self.on_playing()
         elif self.status == 'success':
-            category = self.ARDUINO_PROTOCOL.SUCCESS
+            category = ArduinoProtocol.SUCCESS
             self.on_success()
         else:
             # status is disabled
-            category = self.ARDUINO_PROTOCOL.DISABLED
+            category = ArduinoProtocol.DISABLED
 
-        for authenticator in self.authenticators:
-            authenticator['arduino'].send_event({self.ARDUINO_PROTOCOL.CATEGORY: category})
+        for authenticator in self.authenticators.values():
+            authenticator['arduino'].send_event({ArduinoProtocol.CATEGORY: category})
 
     def on_playing(self):
-        for authenticator in self.authenticators:
+        for authenticator in self.authenticators.values():
             authenticator["authenticated"] = False
 
     def on_success(self):
@@ -115,27 +87,13 @@ class HumanAuthenticator(JustSockClientService):
         logger.info("Resetting")
         self.status = "playing"
 
-    def process_serial_event(self, event, authenticator_index):
-        logger.debug("Processing event '{}' (from authenticator index={})".format(event, authenticator_index))
+    @serial_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.CANCEL_AUTHENTICATION})
+    def cancel_authentication(self, port):
+        self.authenticators[port]['authenticated'] = False
 
-        if self.ARDUINO_PROTOCOL.CATEGORY not in event:
-            logger.error("Event has not category: skipping")
-            return
+    @serial_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.AUTHENTICATE})
+    def authenticate(self, port):
+        self.authenticators[port]['authenticated'] = True
 
-        if event[self.ARDUINO_PROTOCOL.CATEGORY] == self.ARDUINO_PROTOCOL.AUTHENTICATE:
-            self.authenticate(authenticator_index)
-
-        elif event[self.ARDUINO_PROTOCOL.CATEGORY] == self.ARDUINO_PROTOCOL.CANCEL_AUTHENTICATION:
-            self.cancel_authentication(authenticator_index)
-
-        else:
-            logger.error("Unknown event category '{}': skipping".format(event[self.ARDUINO_PROTOCOL.CATEGORY]))
-
-    def cancel_authentication(self, authenticator_index):
-        self.authenticators[authenticator_index]['authenticated'] = False
-
-    def authenticate(self, authenticator_index):
-        self.authenticators[authenticator_index]['authenticated'] = True
-
-        if all(authenticator['authenticated'] for authenticator in self.authenticators):
+        if all(authenticator['authenticated'] for authenticator in self.authenticators.values()):
             self.status = "success"
