@@ -7,7 +7,7 @@ from twisted.python import usage
 from twisted.plugin import IPlugin
 from twisted.application.service import IServiceMaker
 
-from justrelax.common.logging_utils import init_logging
+from justrelax.common.logging_utils import init_logging_legacy
 
 
 class Options(usage.Options):
@@ -84,6 +84,6 @@ class AbstractNodeServiceMaker(object):
 
         config = self.get_config(options)
         logging_config = config.pop("logging")
-        init_logging(logging_config)
+        init_logging_legacy(logging_config)
 
         return self.service(**config)

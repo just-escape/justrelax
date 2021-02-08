@@ -1,6 +1,7 @@
 import yaml
 import logging
 import logging.config
+import logging.handlers
 
 from zope.interface import implementer
 from twisted.logger import ILogObserver
@@ -46,7 +47,7 @@ class Logger:
 logger = Logger
 
 
-def init_logging(config_path):
+def init_logging_legacy(config_path):
     if config_path is not None:
         with open(config_path, "rt") as f:
             config = yaml.safe_load(f.read())
@@ -60,6 +61,25 @@ def init_logging(config_path):
 
     observer = log.PythonLoggingObserver()
     observer.start()
+
+
+def init_logging(level='INFO', file='/dev/null', twisted_logs=False):
+    root_logger = logging.getLogger()
+    root_logger.setLevel(level)
+
+    line_formatter = logging.Formatter("[%(asctime)s][%(levelname)s] %(message)s", datefmt="%Y-%m-%dT%H:%M:%S%z")
+
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(line_formatter)
+    root_logger.addHandler(stream_handler)
+
+    rotating_file_handler = logging.handlers.RotatingFileHandler(file, maxBytes=10485760, backupCount=10)
+    rotating_file_handler.setFormatter(line_formatter)
+    root_logger.addHandler(rotating_file_handler)
+
+    if twisted_logs:
+        observer = log.PythonLoggingObserver()
+        observer.start()
 
 
 @implementer(ILogObserver)
