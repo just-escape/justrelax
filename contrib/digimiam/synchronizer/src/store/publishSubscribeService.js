@@ -12,7 +12,10 @@ import progressionStore from '@/store/progressionStore.js'
 
 Vue.use(Vuex)
 
-const justSockService = new Vuex.Store({
+const publishSubscribeService = new Vuex.Store({
+  state: {
+    name: "synchronizer",
+  },
   mutations: {
     // eslint-disable-next-line
     SOCKET_ONOPEN (state, event) {
@@ -20,23 +23,22 @@ const justSockService = new Vuex.Store({
 
       let query = JSON.parse(JSON.stringify(router.app.$route.query))
 
-      let name = "synchronizer"
       if (query.name !== undefined) {
-        name = query.name
+        state.name = query.name
       }
 
-      let channel = "digimiam1"
-      if (query.channel !== undefined) {
-        channel = query.channel
+      let channel = ""
+      if (query.channelPrefix !== undefined) {
+        channel = query.channelPrefix + state.name
+      } else {
+        channel = state.name
       }
 
-      let iamMessage = {
-        message_type: "IAM",
-        client_type: "node",
+      let subscribeEvent = {
+        action: "subscribe",
         channel: channel,
-        name: name,
       }
-      Vue.prototype.$socket.send(JSON.stringify(iamMessage))
+      Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
     },
     SOCKET_ONCLOSE (state, event) {
       // eslint-disable-next-line
@@ -48,11 +50,8 @@ const justSockService = new Vuex.Store({
     },
     SOCKET_ONMESSAGE (state, rawMessage) {
       let message = JSON.parse(rawMessage.data)
-      if (message.message_type != 'EVENT') {
-        return
-      }
-
       let event = message.event
+
       if (event.category == 'reset') {
         // Reload page
         router.go()
@@ -106,15 +105,12 @@ const justSockService = new Vuex.Store({
       // eslint-disable-next-line
       console.error("Reconnect error")
     },
-    sendEvent (state, event) {
-      let message = {
-        message_type: "EVENT",
-        event: event,
-      }
-      let jsonMessage = JSON.stringify(message)
-      Vue.prototype.$socket.send(jsonMessage)
+    publish (state, event) {
+      event.from = state.name
+      let json = JSON.stringify({action: "publish", event: event})
+      Vue.prototype.$socket.send(json)
     },
   },
 })
 
-export default justSockService
+export default publishSubscribeService

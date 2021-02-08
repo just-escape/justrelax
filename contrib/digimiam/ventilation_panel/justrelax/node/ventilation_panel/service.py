@@ -6,7 +6,7 @@ import board
 from twisted.internet.reactor import callLater
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, orchestrator_event
+from justrelax.node.service import PublishSubscribeClientService, on_event
 
 
 class AirSource:
@@ -611,7 +611,7 @@ class VentilationController:
                 ad.check_connection()
 
 
-class VentilationPanel(JustSockClientService):
+class VentilationPanel(PublishSubscribeClientService):
     def __init__(self, *args, **kwargs):
         super(VentilationPanel, self).__init__(*args, **kwargs)
 
@@ -649,26 +649,26 @@ class VentilationPanel(JustSockClientService):
             self, initial_difficulty, difficulties, round_leds, air_ducts, air_sources, colors,
             magnet_pin, magnet_led_index)
 
-    @orchestrator_event(filter={'category': 'reset'})
+    @on_event(filter={'category': 'reset'})
     def event_reset(self):
         self.vc.reset()
 
-    @orchestrator_event(filter={'category': 'set_status'})
+    @on_event(filter={'category': 'set_status'})
     def event_set_status(self, status: str):
         self.vc.status = status
 
-    @orchestrator_event(filter={'category': 'set_difficulty'})
+    @on_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
         self.vc.difficulty = difficulty
 
     def notify_game_start(self):
-        self.send_event({"category": "game_start"})
+        self.publish({"category": "game_start"})
 
     def notify_status(self, status):
-        self.send_event({"category": "set_status", "status": status})
+        self.publish({"category": "set_status", "status": status})
 
     def notify_start_new_round(self, round_):
-        self.send_event({"category": "start_new_round", "round": round_})
+        self.publish({"category": "start_new_round", "round": round_})
 
     def notify_success(self):
-        self.send_event({"category": "success"})
+        self.publish({"category": "success"})

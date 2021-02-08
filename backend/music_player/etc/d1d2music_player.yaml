@@ -1,8 +1,9 @@
 host: localhost
 port: 3031
 
-name: music_player
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.music_player
 
 node_params:
   master_volume: 100

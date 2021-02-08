@@ -7,7 +7,7 @@
         size="sm"
         v-for="button in row.widget_params"
         :key="button.id"
-        @click="pressedAdminButton(button.id)"
+        @click="click(button)"
       >
         <i :class="button.icon"></i>
       </ButtonJaffa>
@@ -25,15 +25,14 @@ export default {
     ButtonJaffa,
   },
   methods: {
-    pressedAdminButton(buttonId) {
-      var roomId = this.roomId
-      roomStore.dispatch("pressedAdminButton", {roomId, buttonId})
+    click(button) {
+      roomStore.dispatch('widgetAction', {channel: this.defaultChannel, widgetId: button.id, widgetType: 'button', action: "click"})
     }
   },
-  props: {
-    roomId: Number,
-    row: Object,
-  }
+  props: [
+    "defaultChannel",
+    "row",
+  ]
 }
 </script>
 

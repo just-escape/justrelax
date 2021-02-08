@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="big-noodle text-jaffa text-center">Cameras</h2>
-    <div v-if="displayCameras" class="container-fluid">
+    <div class="container-fluid text-center">
       <!-- TODO: Implement again the focus widget, while not duplicating streams this time ^.^' -->
       <!--<div v-if="focusCamera && isFocusEnbaled" class="row">
         <div class="col text-center px-0">
@@ -15,9 +15,11 @@
           >
         </div>
       </div>-->
-
-      <div class="row">
-        <div v-for="camera in room.cameras" :key="camera.id" :class="getCameraClasses">
+      <div v-if="cameras === undefined">
+        Loading...
+      </div>
+      <div v-else class="row">
+        <div v-for="camera in cameras" :key="camera.id" class="px-0 bordered col-4">
           <!-- TODO: handle the text color vs background color -->
           <!--<div class="position-absolute text-center w-100">
             {{ camera.name }} {{camera.type}}
@@ -46,15 +48,12 @@
         </div>-->
       </div>
     </div>
-    <div v-else class="container-fluid text-center">
-      Fetching...
-    </div>
   </div>
 </template>
 
 <script>
 import Camera from '@/components/live/Camera.vue'
-import roomStore from '@/store/roomStore.js'
+import notificationStore from '@/store/notificationStore.js'
 
 export default {
   name: 'Cameras',
@@ -63,32 +62,30 @@ export default {
   },
   data: function() {
     return {
-      focusCameraIndex: -1,
-      isFocusEnbaled: false,
+      cameras: undefined,
+      /*focusCameraIndex: -1,
+      isFocusEnbaled: false,*/
     }
   },
   computed: {
-    displayCameras: function() {
-      return this.room.cameras != undefined
-    },
-    getCameraClasses: function() {
+    /*getCameraClasses: function() {
       var classes = ['px-0', 'bordered']
-      if (this.focusCamera) {
+      /*if (this.focusCamera) {
         classes.push('col')
       } else {
         classes.push('col-4')
-      }
+      // }
       return classes
-    },
-    focusCamera: function() {
+    },*/
+    /*focusCamera: function() {
       if (this.focusCameraIndex < 0) {
         return undefined
       } else {
         return this.cameras[this.focusCameraIndex]
       }
-    },
+    },*/
   },
-  methods: {
+  /*methods: {
     focus: function(cameraIndex) {
       this.focusCameraIndex = cameraIndex
     },
@@ -98,11 +95,18 @@ export default {
     toggleDisplayCameras: function() {
       this.displayCameras = !this.displayCameras
     },
+  },*/
+  mounted() {
+    let this_ = this
+    this.$justRestAPI.get('/camera/?room=' + this.roomId)
+      .then(function (response) {
+        this_.cameras = response.data
+      })
+      .catch(function (error) {
+        notificationStore.dispatch('pushError', 'Error while fetching cameras: ' + error)
+      })
   },
-  created() {
-    roomStore.dispatch('fetchCameras', this.room.id)
-  },
-  props: ['room']
+  props: ['roomId']
 }
 </script>
 

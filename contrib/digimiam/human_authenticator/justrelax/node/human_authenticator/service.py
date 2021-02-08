@@ -1,9 +1,7 @@
 from twisted.internet import reactor
 
-from justrelax.node.helper import BufferedSerial, serial_event
-
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, orchestrator_event
+from justrelax.node.service import MagicNode, on_event
 
 
 class ArduinoProtocol:
@@ -18,7 +16,7 @@ class ArduinoProtocol:
     SUCCESS = "w"
 
 
-class HumanAuthenticator(JustSockClientService):
+class HumanAuthenticator(MagicNode):
     STATUSES = {'playing', 'disabled', 'success'}
 
     def __init__(self, *args, **kwargs):
@@ -27,14 +25,9 @@ class HumanAuthenticator(JustSockClientService):
         super(HumanAuthenticator, self).__init__(*args, **kwargs)
 
         self.authenticators = {}
-        for authenticator_index, authenticator in enumerate(self.node_params['authenticators']):
-            port = authenticator['port']
-            baud_rate = authenticator['baud_rate']
-            buffering_interval = authenticator['buffering_interval']
-
-            serial = BufferedSerial(self, port, baud_rate, buffering_interval)
-
-            self.authenticators[port] = {'arduino': serial, 'authenticated': False}
+        for serial in self.serials:
+            port = serial['port']
+            self.authenticators[port] = False
 
         reactor.callLater(3, self.event_reset)
 
@@ -66,34 +59,34 @@ class HumanAuthenticator(JustSockClientService):
             # status is disabled
             category = ArduinoProtocol.DISABLED
 
-        for authenticator in self.authenticators.values():
-            authenticator['arduino'].send_event({ArduinoProtocol.CATEGORY: category})
+        for port in self.authenticators.keys():
+            self.send_serial({ArduinoProtocol.CATEGORY: category}, port)
 
     def on_playing(self):
-        for authenticator in self.authenticators.values():
-            authenticator["authenticated"] = False
+        for authenticator in self.authenticators:
+            self.authenticators[authenticator] = False
 
     def on_success(self):
         logger.info("Success")
-        self.send_event({"category": "success"})
+        self.publish({"category": "success"})
 
-    @orchestrator_event(filter={"category": "set_status"})
+    @on_event(filter={"category": "set_status"})
     def event_set_status(self, status: str):
         logger.info("Setting status to {}".format(status))
         self.status = status
 
-    @orchestrator_event(filter={"category": "reset"})
+    @on_event(filter={"category": "reset"})
     def event_reset(self):
         logger.info("Resetting")
         self.status = "playing"
 
-    @serial_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.CANCEL_AUTHENTICATION})
-    def cancel_authentication(self, port):
-        self.authenticators[port]['authenticated'] = False
+    @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.CANCEL_AUTHENTICATION})
+    def cancel_authentication(self, port, /):
+        self.authenticators[port] = False
 
-    @serial_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.AUTHENTICATE})
-    def authenticate(self, port):
-        self.authenticators[port]['authenticated'] = True
+    @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.AUTHENTICATE})
+    def authenticate(self, port, /):
+        self.authenticators[port] = True
 
-        if all(authenticator['authenticated'] for authenticator in self.authenticators.values()):
+        if all(is_authenticated for is_authenticated in self.authenticators.values()):
             self.status = "success"

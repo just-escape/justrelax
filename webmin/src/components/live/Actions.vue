@@ -1,15 +1,18 @@
 <template>
   <div>
     <h2 class="big-noodle text-jaffa text-center">Actions</h2>
-    <div v-if="displayCards" class="container-fluid">
-      <div class="row">
+    <div class="container-fluid">
+      <div v-if="cards === undefined">
+        Loading...
+      </div>
+      <div v-else class="row">
         <div
-          v-for="card in room.cards"
+          v-for="card in cards"
           :key="card.id"
           class="col-12 col-lg-6 col-xl-3 mb-4"
         >
           <ActionCard
-            :roomId="room.id"
+            :roomId="roomId"
             :card="card"
           />
         </div>
@@ -20,21 +23,28 @@
 
 <script>
 import ActionCard from '@/components/live/ActionCard.vue'
-import roomStore from '@/store/roomStore.js'
+import notificationStore from '@/store/notificationStore.js'
 
 export default {
   name: 'Actions',
   components: {
     ActionCard
   },
-  computed: {
-    displayCards() {
-      return this.room.cards !== undefined
-    },
+  data() {
+    return {
+      cards: undefined,
+    }
   },
-  created() {
-    roomStore.dispatch('fetchActions', this.room.id)
+  mounted() {
+    let this_ = this
+    this.$justRestAPI.get('/get_cards_from_room_id/?room_id=' + this.roomId)
+      .then(function (response) {
+        this_.cards = response.data
+      })
+      .catch(function (error) {
+        notificationStore.dispatch('pushError', 'Error while fetching cards: ' + error)
+      })
   },
-  props: ['room']
+  props: ['roomId']
 }
 </script>

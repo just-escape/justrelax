@@ -1,8 +1,9 @@
 host: d1orchestrator.justescape
 port: 3031
 
-name: laser_maze
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.laser_maze
 
 node_params:
   arduino:

@@ -1,30 +1,39 @@
 <template>
-  <AppContent v-if="!room">
+  <AppContent v-if="room === undefined">
     <AppContentTitle slot="header-left">
-      Room not found
+      {{ 'Loading...' }}
     </AppContentTitle>
     <div class="text-center font-italic" slot="main">
-      No actions available
+      {{ 'Loading...' }}
+    </div>
+  </AppContent>
+
+  <AppContent v-else-if="room === null">
+    <AppContentTitle slot="header-left">
+      {{ 'Room not found' }}
+    </AppContentTitle>
+    <div class="text-center font-italic" slot="main">
+      {{ 'No actions available' }}
     </div>
   </AppContent>
 
   <AppContent v-else>
     <div class="d-flex flex-row" slot="header-left">
       <AppContentTitle class="mr-5">
-        {{ title }}
+        {{ room.name }}
       </AppContentTitle>
-      <StartStop :roomId="room.id" class="my-auto"/>
+      <StartStop :channel="room.default_publication_channel" class="my-auto"/>
     </div>
     <div class="d-flex flex-row" slot="header-right">
-      <SessionTimeClock :sessionTime="room.liveData.sessionTime" :displayZero="false" class="size-25 big-noodle mr-3"/>
+      <Clock :roomId="room.id" :data="'gameTime'" :displayZero="false" class="size-25 big-noodle mr-3"/>
       <NotificationButton class="my-auto"/>
     </div>
 
     <div slot="main">
-      <Cameras :room="room" class="mb-4"/>
-      <Timeline :room="room" class="mb-4"/>
-      <SendEvent :room="room" class="mb-4"/>
-      <Actions :room="room"/>
+      <Cameras :roomId="room.id" class="mb-4"/>
+      <!--<Timeline :room="room" class="mb-4"/>-->
+      <PublishEvent :defaultChannel="room.default_publication_channel" class="mb-4"/>
+      <Actions :roomId="room.id"/>
     </div>
   </AppContent>
 </template>
@@ -33,11 +42,11 @@
 import AppContent from '@/components/common/AppContent.vue'
 import AppContentTitle from '@/components/common/AppContentTitle.vue'
 import NotificationButton from '@/components/notification/Button.vue'
-import SessionTimeClock from '@/components/common/SessionTimeClock.vue'
+import Clock from '@/components/common/Clock.vue'
 import StartStop from '@/components/live/StartStop.vue'
 import Cameras from '@/components/live/Cameras.vue'
-import Timeline from '@/components/live/Timeline.vue'
-import SendEvent from '@/components/live/SendEvent.vue'
+// import Timeline from '@/components/live/Timeline.vue'
+import PublishEvent from '@/components/live/PublishEvent.vue'
 import Actions from '@/components/live/Actions.vue'
 import roomStore from '@/store/roomStore.js'
 
@@ -47,26 +56,32 @@ export default {
     AppContent,
     AppContentTitle,
     NotificationButton,
-    SessionTimeClock,
+    Clock,
     StartStop,
     Cameras,
-    Timeline,
-    SendEvent,
+    // Timeline,
+    PublishEvent,
     Actions,
   },
   computed: {
     room() {
-      return roomStore.getters.room(this.roomId)
-    },
-    title() {
-      var title = this.room.scenario
-
-      if (this.room.cardinal) {
-        title = title + " - " + this.room.cardinal
+      if (roomStore.state.rooms === undefined) {
+        return undefined
       }
 
-      return title
-    }
+      var parsedRoomId = parseInt(this.roomId, 10)
+      if (Number.isNaN(parsedRoomId)) {
+        return null
+      }
+
+      for (var room of roomStore.state.rooms) {
+        if (room.id === parsedRoomId) {
+          return room
+        }
+      }
+
+      return null
+    },
   },
   props: ['roomId']
 }

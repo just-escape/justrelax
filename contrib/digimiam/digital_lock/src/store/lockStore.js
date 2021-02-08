@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import justSockService from '@/store/justSockService.js'
+import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 Vue.use(Vuex)
 
@@ -161,7 +161,7 @@ var store = new Vuex.Store({
     notifySuccess(state) {
       if (!state.successNotified) {
         state.successNotified = true
-        justSockService.commit('sendEvent', {category: 'success'})
+        publishSubscribeService.commit('publish', {category: 'success'})
       }
     },
     setConnectorsColorTransition(state, value) {

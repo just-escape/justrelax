@@ -1,8 +1,13 @@
 host: d1orchestrator.justescape
 port: 3031
 
-name: secure_floor
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.secure_floor
+
+serials:
+  - port: /dev/ttyUSB0
+    baud_rate: 9600
 
 node_params:
   clear_alarm_delay: 4
@@ -15,9 +20,5 @@ node_params:
         led_strip: 1
       - pin: 21
         led_strip: 2
-  leds:
-    arduino:
-      port: /dev/ttyUSB0
-      baud_rate: 9600
 
 logging: /etc/justrelax/secure_floor_logging.yaml

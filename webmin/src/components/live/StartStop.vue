@@ -1,12 +1,12 @@
 <template>
   <b-button-group>
-    <ButtonJaffa @click="run()">
+    <ButtonJaffa @click="action('run')">
       <i class="fas fa-play"></i>
     </ButtonJaffa>
-    <ButtonJaffa @click="halt()">
+    <ButtonJaffa @click="action('halt')">
       <i class="fas fa-pause"></i>
     </ButtonJaffa>
-    <ButtonJaffa @click="reset()">
+    <ButtonJaffa @click="action('reset')">
       <i class="fas fa-undo-alt"></i>
     </ButtonJaffa>
   </b-button-group>
@@ -22,16 +22,10 @@ export default {
     ButtonJaffa
   },
   methods: {
-    run: function () {
-      roomStore.dispatch('runRoom', this.roomId)
+    action(actionName) {
+      roomStore.dispatch('widgetAction', {channel: this.channel, widgetId: 'start_stop', widgetType: 'start_stop', action: actionName})
     },
-    halt: function () {
-      roomStore.dispatch('haltRoom', this.roomId)
-    },
-    reset: function () {
-      roomStore.dispatch('resetRoom', this.roomId)
-    }
   },
-  props: ['roomId']
+  props: ['channel']
 }
 </script>

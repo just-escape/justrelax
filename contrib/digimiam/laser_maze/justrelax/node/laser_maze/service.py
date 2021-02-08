@@ -1,8 +1,7 @@
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.helper import BufferedSerial, serial_event
-from justrelax.node.service import JustSockClientService, orchestrator_event
+from justrelax.node.service import MagicNode, on_event
 
 
 class ArduinoProtocol:
@@ -25,7 +24,7 @@ class ArduinoProtocol:
     SET_SAMPLE_DELAY = "ssd"
 
 
-class LaserMaze(JustSockClientService):
+class LaserMaze(MagicNode):
     def __init__(self, *args, **kwargs):
         self._difficulty = None
 
@@ -37,12 +36,6 @@ class LaserMaze(JustSockClientService):
 
         self.default_difficulty = self.node_params['default_difficulty']
         self.difficulty_settings = self.node_params['difficulty_settings']
-
-        port = self.node_params['arduino']['port']
-        baud_rate = self.node_params['arduino']['baud_rate']
-        buffering_interval = self.node_params['arduino']['buffering_interval']
-
-        self.serial = BufferedSerial(self, port, baud_rate, buffering_interval)
 
         reactor.callLater(3, self.init_arduino)
 
@@ -68,24 +61,24 @@ class LaserMaze(JustSockClientService):
         self.event_laser_on(
             bitmask, dynamic_bitmask, dynamic_downtime, dynamic_uptime, dynamic_incremental_offset)
 
-    @serial_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.ALARM})
+    @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.ALARM})
     def serial_event_alarm(self, i: int):
         laser_index = i
 
         logger.info("Alarm from laser index={}".format(laser_index))
-        self.send_event({"category": "alarm", "laser": "{}{}".format(self.laser_prefix, laser_index)})
+        self.publish({"category": "alarm", "laser": "{}{}".format(self.laser_prefix, laser_index)})
 
     def init_arduino(self):
         self.difficulty = self.default_difficulty
 
-    @orchestrator_event(filter={'category': 'laser_on'})
+    @on_event(filter={'category': 'laser_on'})
     def event_laser_on(
             self, bitmask: int = 0, dynamic_bitmask: int = 0, dynamic_downtime: int = 0,
             dynamic_uptime: int = 0, dynamic_incremental_offset: int = 0,
             sample_delay: int = 10,
     ):
         logger.info("Set bitmask={}".format(bitmask))
-        self.serial.send_event(
+        self.send_serial(
             {
                 ArduinoProtocol.CATEGORY: ArduinoProtocol.LASER_ON,
                 ArduinoProtocol.LASER_ON_BITMASK: bitmask,
@@ -97,20 +90,20 @@ class LaserMaze(JustSockClientService):
             }
         )
 
-    @orchestrator_event(filter={'category': 'set_difficulty'})
+    @on_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
         self.difficulty = difficulty
 
-    @orchestrator_event(filter={'category': 'stop_playing'})
+    @on_event(filter={'category': 'stop_playing'})
     def event_stop_playing(self):
         logger.info("Stop playing")
-        self.serial.send_event(
+        self.send_serial(
             {
                 ArduinoProtocol.CATEGORY: ArduinoProtocol.STOP_PLAYING,
             }
         )
 
-    @orchestrator_event(filter={'category': 'playing'})
+    @on_event(filter={'category': 'playing'})
     def event_playing(self):
         bitmask = self.difficulty_settings[self.difficulty]['laser_bitmask']
         dynamic_bitmask = self.difficulty_settings[self.difficulty]['dynamic_laser_bitmask']
@@ -120,28 +113,28 @@ class LaserMaze(JustSockClientService):
         self.event_laser_on(
             bitmask, dynamic_bitmask, dynamic_downtime, dynamic_uptime, dynamic_incremental_offset)
 
-    @orchestrator_event(filter={'category': 'set_success'})
+    @on_event(filter={'category': 'set_success'})
     def event_set_success(self, value: bool):
         logger.info("Setting success={}".format(value))
         self.success = value
-        self.serial.send_event(
+        self.send_serial(
             {
                 ArduinoProtocol.CATEGORY: ArduinoProtocol.SET_SUCCESS,
                 ArduinoProtocol.SET_SUCCESS_VALUE: value,
             }
         )
 
-    @orchestrator_event(filter={'category': 'set_sample_delay'})
+    @on_event(filter={'category': 'set_sample_delay'})
     def event_set_sample_delay(self, value: int):
         logger.info("Setting sample delay={}".format(value))
-        self.serial.send_event(
+        self.send_serial(
             {
                 ArduinoProtocol.CATEGORY: ArduinoProtocol.SET_SAMPLE_DELAY,
                 ArduinoProtocol.SAMPLE_DELAY: value,
             }
         )
 
-    @orchestrator_event(filter={'category': 'reset'})
+    @on_event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Resetting")
         self.event_set_success(False)

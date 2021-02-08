@@ -3,7 +3,7 @@ import time
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, orchestrator_event
+from justrelax.node.service import PublishSubscribeClientService, on_event
 
 
 class Timer:
@@ -84,9 +84,11 @@ class Timer:
         self.callback(*self.callback_args, **self.callback_kwargs)
 
 
-class Scenario(JustSockClientService):
+class Scenario(PublishSubscribeClientService):
     def __init__(self, *args, **kwargs):
         super(Scenario, self).__init__(*args, **kwargs)
+
+        self.dx = self.node_params['publication_channel_prefix']
 
         self.timers = {
             'update_street_time': Timer(1, True, self.update_street_time),
@@ -97,179 +99,175 @@ class Scenario(JustSockClientService):
 
     def update_street_time(self):
         self.seconds += 1
-        self.send_event({'to': 'street_display', 'category': 'set_session_time', 'seconds': self.seconds})
+        self.publish({'category': 'set_session_time', 'seconds': self.seconds}, f'{self.dx}street_display')
 
     def give_ventilation_instruction(self):
-        self.send_event({'to': 'orders', 'category': 'documentation_unplug_instruction', 'highlight': True})
+        self.publish({'category': 'documentation_unplug_instruction', 'highlight': True}, f'{self.dx}orders')
 
-    @orchestrator_event(filter={'from': 'orchestrator', 'category': 'start'})
+    @on_event(filter={'from': 'orchestrator', 'category': 'start'})
     def start(self):
         self.timers['update_street_time'].start()
 
-    @orchestrator_event(filter={'from': 'orchestrator', 'category': 'pause'})
+    @on_event(filter={'from': 'orchestrator', 'category': 'pause'})
     def pause(self):
         for timer_name, timer in self.timers.items():
             timer.session_pause()
 
-    @orchestrator_event(filter={'from': 'orchestrator', 'category': 'resume'})
+    @on_event(filter={'from': 'orchestrator', 'category': 'resume'})
     def resume(self):
         for timer_name, timer in self.timers.items():
             timer.session_resume()
 
-    @orchestrator_event(filter={'from': 'orchestrator', 'category': 'reset'})
+    @on_event(filter={'from': 'orchestrator', 'category': 'reset'})
     def reset(self):
         self.seconds = 0
 
-    @orchestrator_event(filter={'from': 'street_display', 'category': 'play'})
+    @on_event(filter={'from': 'street_display', 'category': 'play'})
     def street_display_event_play(self):
         def play_ms_pepper_here_you_are():
-            self.send_event({'to': 'advertiser', 'category': 'play', 'video_id': 'ms_pepper_here_you_are'})
+            self.publish({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, f'{self.dx}advertiser')
             reactor.callLater(35, after_ms_pepper_here_you_are)
 
         def after_ms_pepper_here_you_are():
-            self.send_event({'to': 'advertiser', 'category': 'play', 'video_id': 'ads_glitch'})
-            self.send_event({'to': 'music_player', 'category': 'set_volume', 'track_id': 'track1', 'volume': 70})
-            self.send_event(
-                {
-                    'to': 'music_player', 'category': 'set_volume', 'track_id': 'track1', 'volume': 50, 'duration': 10,
-                    'delay': 5
-                }
+            self.publish({'category': 'play', 'video_id': 'ads_glitch'}, f'{self.dx}advertiser')
+            self.publish({'category': 'set_volume', 'track_id': 'track1', 'volume': 70}, f'{self.dx}music_player')
+            self.publish(
+                {'category': 'set_volume', 'track_id': 'track1', 'volume': 50, 'duration': 10, 'delay': 5},
+                f'{self.dx}music_player'
             )
-            self.send_event(
-                {
-                    'to': 'music_player', 'category': 'set_volume', 'track_id': 'track1', 'volume': 30, 'duration': 60,
-                    'delay': 90
-                }
+            self.publish(
+                {'category': 'set_volume', 'track_id': 'track1', 'volume': 30, 'duration': 60, 'delay': 90},
+                f'{self.dx}music_player'
             )
-            self.send_event({'to': 'music_player', 'category': 'play', 'track_id': 'track1'})
+            self.publish({'category': 'play', 'track_id': 'track1'}, f'{self.dx}music_player')
             reactor.callLater(5, open_the_door)
 
         def open_the_door():
-            self.send_event({'to': 'front_door_magnet', 'category': 'unlock'})
-            self.send_event({'to': 'orchestrator', 'category': 'play'})
+            self.publish({'category': 'unlock'}, f'{self.dx}front_door_magnet')
+            self.publish({'category': 'play'}, f'{self.dx}orchestrator')
 
         play_ms_pepper_here_you_are()
 
-    @orchestrator_event(filter={'from': 'street_display', 'category': 'unlock_front_door'})
+    @on_event(filter={'from': 'street_display', 'category': 'unlock_front_door'})
     def street_display_event_unlock_front_door(self):
-        self.send_event({'to': 'front_door_magnet', 'category': 'unlock'})
+        self.publish({'category': 'unlock'}, f'{self.dx}front_door_magnet')
 
-    @orchestrator_event(filter={'from': 'chopsticks', 'category': 'success'})
+    @on_event(filter={'from': 'chopsticks', 'category': 'success'})
     def chopsticks_event_success(self):
-        self.send_event({'to': 'control_panel', 'category': 'set_status', 'status': 'playing'})
+        self.publish({'category': 'set_status', 'status': 'playing'}, f'{self.dx}control_panel')
 
-    @orchestrator_event(filter={'from': 'control_panel', 'category': 'manual_mode'})
+    @on_event(filter={'from': 'control_panel', 'category': 'manual_mode'})
     def control_panel_event_manual_mode(self):
-        self.send_event({'to': 'music_player', 'category': 'stop', 'track_id': 'track1'})
-        self.send_event({'to': 'music_player', 'category': 'set_volume', 'track_id': 'track2', 'volume': 0})
-        self.send_event(
-            {'to': 'music_player', 'category': 'set_volume', 'track_id': 'track2', 'volume': 40, 'duration': 15})
-        self.send_event({'to': 'music_player', 'category': 'play', 'track_id': 'track2', 'delay': 2})
-        self.send_event({'to': 'orders', 'category': 'play_overlay_video', 'video_id': 'glitching_less'})
-        self.send_event({'to': 'synchronizer', 'category': 'stop_overlay_video'})
-        self.send_event({'to': 'advertiser', 'category': 'play', 'video_id': 'ads_loop'})
-        self.send_event({'to': 'advertiser', 'category': 'stop', 'video_id': 'ads_glitch'})
-        self.send_event({'to': 'synchronizer', 'category': 'restaurant_in_manual_mode'})
-        reactor.callLater(0.2, self.send_event, {'to': 'refectory_lights', 'category': 'off', 'color': 'all'})
+        self.publish({'category': 'stop', 'track_id': 'track1'}, f'{self.dx}music_player')
+        self.publish({'category': 'set_volume', 'track_id': 'track2', 'volume': 0}, f'{self.dx}music_player')
+        self.publish(
+            {'category': 'set_volume', 'track_id': 'track2', 'volume': 40, 'duration': 15}, f'{self.dx}music_player')
+        self.publish({'category': 'play', 'track_id': 'track2', 'delay': 2}, f'{self.dx}music_player')
+        self.publish({'category': 'play_overlay_video', 'video_id': 'glitching_less'}, f'{self.dx}orders')
+        self.publish({'category': 'stop_overlay_video'}, f'{self.dx}synchronizer')
+        self.publish({'category': 'play', 'video_id': 'ads_loop'}, f'{self.dx}advertiser')
+        self.publish({'category': 'stop', 'video_id': 'ads_glitch'}, f'{self.dx}advertiser')
+        self.publish({'category': 'restaurant_in_manual_mode'}, f'{self.dx}synchronizer')
+        reactor.callLater(0.2, self.publish, {'to': 'refectory_lights', 'category': 'off', 'color': 'all'})
 
-    @orchestrator_event(filter={'from': 'synchronizer', 'category': 'set_menu_entry'})
+    @on_event(filter={'from': 'synchronizer', 'category': 'set_menu_entry'})
     def synchronizer_event_set_menu_entry(self, dish: str, index: int):
-        self.send_event({'to': 'holographic_menu', 'category': 'set_slide', 'chapter_id': dish, 'slide_index': index})
+        self.publish({'category': 'set_slide', 'chapter_id': dish, 'slide_index': index}, f'{self.dx}holographic_menu')
 
-    @orchestrator_event(filter={'from': 'synchronizer', 'category': 'light_service_success'})
+    @on_event(filter={'from': 'synchronizer', 'category': 'light_service_success'})
     def synchronizer_event_light_service_success(self):
-        self.send_event({'to': 'control_panel', 'category': 'set_light_service_status', 'repaired': True})
+        self.publish({'category': 'set_light_service_status', 'repaired': True}, f'{self.dx}control_panel')
 
-    @orchestrator_event(filter={'from': 'synchronizer', 'category': 'menu_service_success'})
+    @on_event(filter={'from': 'synchronizer', 'category': 'menu_service_success'})
     def synchronizer_event_menu_service_success(self):
-        self.send_event({'to': 'control_panel', 'category': 'set_menu_service_status', 'repaired': False})
+        self.publish({'category': 'set_menu_service_status', 'repaired': False}, f'{self.dx}control_panel')
 
         def light_animation_step_1():
-            self.send_event({'to': 'refectory_lights', 'category': 'on', 'color': 'all'})
+            self.publish({'category': 'on', 'color': 'all'}, f'{self.dx}refectory_lights')
             reactor.callLater(0.1, light_animation_step_2)
 
         def light_animation_step_2():
-            self.send_event({'to': 'refectory_lights', 'category': 'off', 'color': 'all'})
+            self.publish({'category': 'off', 'color': 'all'}, f'{self.dx}refectory_lights')
             reactor.callLater(0.1, light_animation_step_3)
 
         def light_animation_step_3():
-            self.send_event({'to': 'refectory_lights', 'category': 'on', 'color': 'all'})
+            self.publish({'category': 'on', 'color': 'all'}, f'{self.dx}refectory_lights')
 
         reactor.callLater(1.5, light_animation_step_1)
 
-    @orchestrator_event(filter={'from': 'synchronizer', 'category': 'services_synchronization_success'})
+    @on_event(filter={'from': 'synchronizer', 'category': 'services_synchronization_success'})
     def synchronizer_event_services_synchronization_success(self):
         def post_delay():
-            self.send_event({'to': 'orders', 'category': 'stop_overlay_video'})
+            self.publish({'category': 'stop_overlay_video'}, f'{self.dx}orders')
 
         reactor.callLater(4, post_delay)
 
-    @orchestrator_event(filter={'from': 'holographic_menu', 'category': 'play_slide'})
+    @on_event(filter={'from': 'holographic_menu', 'category': 'play_slide'})
     def holographic_menu_event_play_slide(self, slide: int):
-        self.send_event({'to': 'synchronizer', 'category': 'set_menu_cursor_position', 'position': slide})
+        self.publish({'category': 'set_menu_cursor_position', 'position': slide}, f'{self.dx}synchronizer')
 
-    @orchestrator_event(filter={'from': 'load_cells', 'category': 'load_cell'})
+    @on_event(filter={'from': 'load_cells', 'category': 'load_cell'})
     def load_cells_event_load_cell(self, color: str, activated: bool):
-        self.send_event({'to': 'synchronizer', 'color': color, 'activated': activated})
+        self.publish({'color': color, 'activated': activated}, f'{self.dx}synchronizer')
 
-    @orchestrator_event(filter={'from': 'synchronizer', 'category': 'on'})
+    @on_event(filter={'from': 'synchronizer', 'category': 'on'})
     def synchronizer_event_on(self, color: str):
-        self.send_event({'to': 'refectory_lights', 'category': 'on', 'color': color})
+        self.publish({'category': 'on', 'color': color}, f'{self.dx}refectory_lights')
 
-    @orchestrator_event(filter={'from': 'synchronizer', 'category': 'off'})
+    @on_event(filter={'from': 'synchronizer', 'category': 'off'})
     def synchronizer_event_off(self, color: str):
-        self.send_event({'to': 'refectory_lights', 'category': 'off', 'color': color})
+        self.publish({'category': 'off', 'color': color}, f'{self.dx}refectory_lights')
 
-    @orchestrator_event(filter={'from': 'ventilation_panel', 'category': 'game_start'})
+    @on_event(filter={'from': 'ventilation_panel', 'category': 'game_start'})
     def ventilation_panel_event_game_start(self):
         self.timers['ventilation_instruction'].cancel()
-        self.send_event({'to': 'orders', 'category': 'documentation_unplug_instruction', 'highlight': False})
+        self.publish({'category': 'documentation_unplug_instruction', 'highlight': False}, f'{self.dx}orders')
 
-    @orchestrator_event(filter={'from': 'ventilation_panel', 'category': 'start_new_round'})
+    @on_event(filter={'from': 'ventilation_panel', 'category': 'start_new_round'})
     def ventilation_panel_event_start_new_round(self, round: int):
-        self.send_event({'to': 'orders', 'category': 'set_ventilation_panel_round', 'round': round})
+        self.publish({'category': 'set_ventilation_panel_round', 'round': round}, f'{self.dx}orders')
 
-    @orchestrator_event(filter={'from': 'ventilation_panel', 'category': 'set_status'})
+    @on_event(filter={'from': 'ventilation_panel', 'category': 'set_status'})
     def ventilation_panel_event_set_status(self, status: str):
         if status == 'playing':
-            self.send_event({'to': 'orders', 'category': 'set_documentation_visibility', 'show': True})
+            self.publish({'category': 'set_documentation_visibility', 'show': True}, f'{self.dx}orders')
             self.timers['ventilation_instruction'].start()
         else:
-            self.send_event({'to': 'orders', 'category': 'set_documentation_visibility', 'show': False})
+            self.publish({'category': 'set_documentation_visibility', 'show': False}, f'{self.dx}orders')
 
-    @orchestrator_event(filter={'from': 'sokoban_controls', 'category': 'control'})
+    @on_event(filter={'from': 'sokoban_controls', 'category': 'control'})
     def sokoban_controls_event(self, name: str, pressed: bool):
-        self.send_event({'to': 'inventory', 'category': 'control', 'name': name, 'pressed': pressed})
+        self.publish({'category': 'control', 'name': name, 'pressed': pressed}, f'{self.dx}inventory')
 
-    @orchestrator_event(filter={'from': 'secure_floor', 'category': 'clear'})
+    @on_event(filter={'from': 'secure_floor', 'category': 'clear'})
     def secure_floor_event_clear(self):
-        self.send_event({'to': 'laser_maze', 'category': 'playing'})
-        self.send_event({'to': 'human_authenticator', 'category': 'set_status', 'status': 'playing'})
+        self.publish({'category': 'playing'}, f'{self.dx}laser_maze')
+        self.publish({'category': 'set_status', 'status': 'playing'}, f'{self.dx}human_authenticator')
 
-    @orchestrator_event(filter={'from': 'laser_maze', 'category': 'alarm'})
+    @on_event(filter={'from': 'laser_maze', 'category': 'alarm'})
     def laser_maze_event_alarm(self):
-        self.send_event({'to': 'laser_maze', 'category': 'stop_playing'})
-        self.send_event({'to': 'secure_floor', 'category': 'set_status', 'status': 'alarm'})
-        self.send_event({'to': 'human_authenticator', 'category': 'set_status', 'status': 'disabled'})
+        self.publish({'category': 'stop_playing'}, f'{self.dx}laser_maze')
+        self.publish({'category': 'set_status', 'status': 'alarm'}, f'{self.dx}secure_floor')
+        self.publish({'category': 'set_status', 'status': 'disabled'}, f'{self.dx}human_authenticator')
 
-    @orchestrator_event(filter={'from': 'human_authenticator', 'category': 'success'})
+    @on_event(filter={'from': 'human_authenticator', 'category': 'success'})
     def human_authenticator_event_success(self):
-        self.send_event({'to': 'laser_maze', 'category': 'set_success', 'value': True})
-        self.send_event({'to': 'secure_floor', 'category': 'success'})
+        self.publish({'category': 'set_success', 'value': True}, f'{self.dx}laser_maze')
+        self.publish({'category': 'success'}, f'{self.dx}secure_floor')
 
-    @orchestrator_event(filter={'from': 'root_server', 'category': 'success'})
+    @on_event(filter={'from': 'root_server', 'category': 'success'})
     def root_server_event_success(self):
         def post_delay():
-            self.send_event({'to': 'root_server', 'category': 'final_animation'})
+            self.publish({'category': 'final_animation'}, f'{self.dx}root_server')
 
         reactor.callLater(0.5, post_delay)
 
-    @orchestrator_event(filter={'from': 'root_server', 'category': 'ms_pepper_mad_end'})
+    @on_event(filter={'from': 'root_server', 'category': 'ms_pepper_mad_end'})
     def root_server_event_ms_pepper_mad_end(self):
         def post_delay():
-            self.send_event({'to': 'synchronizer', 'category': 'display_danger_window'})
-            self.send_event({'to': 'orders', 'category': 'display_danger_window'})
-            self.send_event({'to': 'inventory', 'category': 'display_danger_window'})
-            self.send_event({'to': 'root_server', 'category': 'display_danger_window'})
+            self.publish({'category': 'display_danger_window'}, f'{self.dx}synchronizer')
+            self.publish({'category': 'display_danger_window'}, f'{self.dx}orders')
+            self.publish({'category': 'display_danger_window'}, f'{self.dx}inventory')
+            self.publish({'category': 'display_danger_window'}, f'{self.dx}root_server')
 
         reactor.callLater(2, post_delay)

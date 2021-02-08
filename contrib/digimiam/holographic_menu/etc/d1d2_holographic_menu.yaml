@@ -1,8 +1,9 @@
 host: d1orchestrator.justescape
 port: 3031
 
-name: holographic_menu
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.holographic_menu
 
 node_params:
   path: /home/pi/menu.mp4

@@ -7,7 +7,7 @@ from twisted.plugin import IPlugin
 from twisted.application import service
 
 from justrelax.common.logging_utils import init_logging
-from justrelax.orchestrator.service import JustSockServerService
+from justrelax.orchestrator.service import PublishSubscribeServerService
 
 
 class Options(usage.Options):
@@ -35,7 +35,7 @@ def get_config_dict(options):
 
 
 @implementer(service.IServiceMaker, IPlugin)
-class OrchestratorServiceMaker(object):
+class PublishSubscribeServerServiceMaker(object):
     tapname = "orchestrator"
     description = "Launch an orchestrator."
     options = Options
@@ -44,9 +44,8 @@ class OrchestratorServiceMaker(object):
         config = get_config_dict(options)
 
         websocket_port = config.get("websocket_port", 3031)
-        storage_url = config.get("storage_url", "http://localhost:8000")
 
         init_logging(config.get("logging", None))
 
-        s = JustSockServerService(websocket_port, storage_url)
+        s = PublishSubscribeServerService(websocket_port)
         return s

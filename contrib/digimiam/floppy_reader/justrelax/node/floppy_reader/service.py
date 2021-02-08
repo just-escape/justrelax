@@ -10,10 +10,10 @@ from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import PublishSubscribeClientService
 
 
-class FloppyReader(JustSockClientService):
+class FloppyReader(PublishSubscribeClientService):
     def __init__(self, *args, **kwargs):
         super(FloppyReader, self).__init__(*args, **kwargs)
 

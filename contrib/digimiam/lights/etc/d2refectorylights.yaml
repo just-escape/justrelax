@@ -1,14 +1,16 @@
 host: d2orchestrator.justescape
 port: 3031
 
-name: refectory_lights
-channel: digimiam2
+default_publication_channel: d2.scenario
+subscribe:
+  - d2.refectory_lights
 
-node_params:
-  arduino:
-    port: /dev/arduino
+serials:
+  - port: /dev/arduino
     baud_rate: 9600
     buffering_interval: 0.1
+
+node_params:
   channels:
     1: 1000  # white
     2: 300  # pink

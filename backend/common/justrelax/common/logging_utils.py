@@ -25,10 +25,22 @@ class Logger:
     @staticmethod
     def error(message):
         Logger.logger.error(message)
+        try:
+            self.notify_error()
+        except Exception:
+            pass
 
     @staticmethod
     def exception(message=""):
         Logger.logger.exception(message)
+        self.notify_error()
+
+    @staticmethod
+    def notify_error(message):
+        try:
+            self.notify_error()
+        except Exception:
+            pass
 
 
 logger = Logger

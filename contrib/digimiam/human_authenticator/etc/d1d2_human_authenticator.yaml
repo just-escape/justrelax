@@ -1,16 +1,18 @@
 host: localhost
 port: 3031
 
-name: human_authenticator
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.human_authenticator
 
-node_params:
-  authenticators:
-    - port: /dev/arduino1
-      baud_rate: 9600
-      buffering_interval: 0.1
-    - port: /dev/arduino2
-      baud_rate: 9600
-      buffering_interval: 0.1
+serials:
+  - port: /dev/arduino1
+    baud_rate: 9600
+    buffering_interval: 0.1
+  - port: /dev/arduino2
+    baud_rate: 9600
+    buffering_interval: 0.1
+
+node_params: null
 
 logging: null

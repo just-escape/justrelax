@@ -4,7 +4,7 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-import justSockService from '@/store/justSockService.js'
+import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 import router from '@/router.js'
 import i18n from '@/locales.js'
@@ -12,7 +12,7 @@ import i18n from '@/locales.js'
 import App from './App.vue'
 
 Vue.use(VueNativeSock, 'ws://localhost:3031', {
-  store: justSockService,
+  store: publishSubscribeService,
   connectManually: true,
   reconnection: true,
   reconnectionDelay: 10000,

@@ -1,8 +1,9 @@
 host: d2orchestrator.justescape
 port: 3031
 
-name: emergency_exit
-channel: digimiam2
+default_publication_channel: d2.scenario
+subscribe:
+  - d2.emergency_exit
 
 node_params:
   magnet_pins:

@@ -6,16 +6,16 @@
     <li v-for="room in rooms" :key="room.id">
       <TabRoom :room="room"/>
     </li>
-    <li>
+    <!--<li>
       <TabEditor/>
-    </li>
+    </li>-->
   </ul>
 </template>
 
 <script>
 import Tab from '@/components/nav/Tab.vue'
 import TabRoom from '@/components/nav/TabRoom.vue'
-import TabEditor from '@/components/nav/TabEditor.vue'
+// import TabEditor from '@/components/nav/TabEditor.vue'
 import roomStore from '@/store/roomStore.js'
 
 export default {
@@ -23,11 +23,11 @@ export default {
   components: {
     Tab,
     TabRoom,
-    TabEditor,
+    // TabEditor,
   },
   computed: {
-    rooms: function() {
-      return roomStore.state.rooms
+    rooms() {
+      return roomStore.state.rooms ? roomStore.state.rooms : []
     }
   },
 }

@@ -3,11 +3,11 @@ import gpiozero
 from twisted.internet.reactor import callLater
 from twisted.internet.task import LoopingCall
 
-from justrelax.node.service import JustSockClientService, orchestrator_event
+from justrelax.node.service import PublishSubscribeClientService, on_event
 from justrelax.common.logging_utils import logger
 
 
-class EmergencyExit(JustSockClientService):
+class EmergencyExit(PublishSubscribeClientService):
     def __init__(self, *args, **kwargs):
         super(EmergencyExit, self).__init__(*args, **kwargs)
 
@@ -42,7 +42,7 @@ class EmergencyExit(JustSockClientService):
 
         self.is_emergency_button_held = self.emergency_button.is_held
 
-    @orchestrator_event(filter={'category': 'unlock'})
+    @on_event(filter={'category': 'unlock'})
     def event_unlock(self, magnet_id: str = None, relock: bool = False):
         if magnet_id is None:
             logger.info("Unlocking all emergency magnets ({})".format(", ".join(self.emergency_magnets)))
@@ -62,7 +62,7 @@ class EmergencyExit(JustSockClientService):
                 self.lock_task.cancel()
             self.lock_task = callLater(self.relock_delay, self.event_lock, magnet_id)
 
-    @orchestrator_event(filter={'category': 'lock'})
+    @on_event(filter={'category': 'lock'})
     def event_lock(self, magnet_id: str = None):
         if magnet_id is None:
             logger.info("Locking all magnets ({})".format(", ".join(self.magnets.keys())))

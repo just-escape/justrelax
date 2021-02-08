@@ -3,7 +3,7 @@ from gpiozero import InputDevice
 from twisted.internet.reactor import callLater
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import PublishSubscribeClientService
 
 
 class Cell:
@@ -100,7 +100,7 @@ class Color:
         return str(self.name)
 
 
-class LoadCells(JustSockClientService):
+class LoadCells(PublishSubscribeClientService):
     def __init__(self, *args, **kwargs):
         super(LoadCells, self).__init__(*args, **kwargs)
 
@@ -113,4 +113,4 @@ class LoadCells(JustSockClientService):
             self.colors[color].add_cell(pin)
 
     def notify(self, color, activated):
-        self.send_event({'category': 'load_cell', 'color': color, 'activated': activated})
+        self.publish({'category': 'load_cell', 'color': color, 'activated': activated})

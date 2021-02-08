@@ -4,10 +4,12 @@ port: 3031
 name: control_panel
 channel: digimiam1
 
-node_params:
-  arduino:
-    port: /dev/arduino
+serials:
+  - port: /dev/arduino
     baud_rate: 19200
+    buffering_interval: 0.1
+
+node_params:
   initial_difficulty: easy
   difficulties:
     easy:

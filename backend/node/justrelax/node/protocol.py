@@ -5,17 +5,10 @@ from twisted.internet.protocol import connectionDone
 
 from autobahn.twisted.websocket import WebSocketClientProtocol
 
-from justrelax.common.constants import JUST_SOCK_PROTOCOL as P
 from justrelax.common.logging_utils import logger
 
 
-class JustSockClientProtocol(WebSocketClientProtocol):
-    def __init__(self, factory, name, channel):
-        super(JustSockClientProtocol, self).__init__()
-        self.factory = factory
-        self.name = name
-        self.channel = channel
-
+class PublishSubscribeClientProtocol(WebSocketClientProtocol):
     def onConnect(self, response):
         logger.info("Connected to server: {}".format(response.peer))
 
@@ -25,115 +18,38 @@ class JustSockClientProtocol(WebSocketClientProtocol):
     def onOpen(self):
         logger.debug("WebSocket connection opened")
 
-        self.send_i_am_node()
-
-    def log_message(self, message, to_server=True):
-        identifier = "{}@{}".format(self.name, self.channel)
-
-        if to_server:
-            from_ = identifier
-            to = P.SERVER
-        else:
-            from_ = P.SERVER
-            to = identifier
-
-        type_ = message[P.MESSAGE_TYPE]
-
-        content = message.get(P.EVENT, "")
-
-        logger.info("[{} > {}] {} {}".format(from_, to, type_, content))
+        for subscription in self.factory.subscriptions:
+            self.send_message(
+                {
+                    "action": "subscribe",
+                    "channel": subscription,
+                }
+            )
 
     def onMessage(self, payload, isBinary):
         if isBinary:
             logger.warning("Binary message received ({} bytes): ignoring".format(len(payload)))
             return
 
-        try:
-            unicode_message = payload.decode('utf8')
-        except UnicodeDecodeError:
-            logger.exception("Cannot decode {}: ignoring".format(payload))
-            return
+        unicode_message = payload.decode('utf8', 'replace')
 
         try:
             message = json.loads(unicode_message)
         except json.JSONDecodeError:
-            logger.exception("Cannot load {}: ignoring".format(unicode_message))
+            logger.warning("Cannot load {}: ignoring".format(unicode_message))
             return
 
-        ok, warning = self.validate_message(message)
-        if not ok:
-            logger.info("Received {}".format(message))
-            logger.warning(warning)
-            logger.info("Ignoring")
-        else:
-            logger.debug("Received {}".format(message))
-            self.log_message(message, to_server=False)
-            self.factory.process_event(message[P.EVENT])
+        # message could be validated here with something like pydantic
 
-    @staticmethod
-    def validate_message(message):
-        try:
-            message[P.MESSAGE_TYPE]
-        except KeyError:
-            return False, "Message has no type"
-
-        if message[P.MESSAGE_TYPE] != P.MESSAGE_TYPE_EVENT:
-            return False, "Only event messages are handled"
-
-        try:
-            message[P.EVENT]
-        except KeyError:
-            return False, "Message has no event"
-
-        return True, None
+        self.factory.process_event(message['event'], message['channel'])
 
     def onClose(self, wasClean, code, reason):
         logger.info("WebSocket connection closed: {}".format(reason))
 
-    def send_i_am_node(self):
-        message = {
-            P.MESSAGE_TYPE: P.MESSAGE_TYPE_I_AM,
-            P.I_AM_CLIENT_TYPE: P.CLIENT_NODE,
-            P.I_AM_NAME: self.name,
-            P.I_AM_CHANNEL: self.channel,
-        }
-        logger.debug("Declaring as a node")
-        self.send_json(message)
-
-    def send_log_info(self, content):
-        self.send_log(P.LOG_LEVEL_INFO, content)
-
-    def send_log_error(self, content):
-        self.send_log(P.LOG_LEVEL_ERROR, content)
-
-    def send_log(self, level, content):
-        message = {
-            P.MESSAGE_TYPE: P.MESSAGE_TYPE_LOG,
-            P.LOG_LEVEL: level,
-            P.LOG_CONTENT: content,
-        }
-        logger.debug("Sending message to the server: {}".format(message))
-        self.send_json(message)
-
-    def send_event(self, event):
-        message = {
-            P.MESSAGE_TYPE: P.MESSAGE_TYPE_EVENT,
-            P.EVENT: event,
-        }
-        logger.debug("Sending message to the server: {}".format(message))
-        self.send_json(message)
-
-    def send_json(self, dict_):
-        unicode_json = json.dumps(dict_, ensure_ascii=False)
-        bytes_ = unicode_json.encode("utf8")
-
-        logger.debug("Sending {}".format(dict_))
-        self.log_message(dict_, to_server=True)
-
+    def send_message(self, event):
+        unicode_json = json.dumps(event, ensure_ascii=False)
+        bytes_ = unicode_json.encode("utf8", "replace")
         self.sendMessage(bytes_)
-
-    def __str__(self):
-        return "{}@{}".format(self.name, self.channel)
 
 
 class SimpleSerialProtocol(LineOnlyReceiver):

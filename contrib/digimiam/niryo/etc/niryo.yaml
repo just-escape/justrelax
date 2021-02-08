@@ -1,7 +1,8 @@
 host: localhost
 port: 3031
 
-name: niryo
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.niryo
 
 logging: null

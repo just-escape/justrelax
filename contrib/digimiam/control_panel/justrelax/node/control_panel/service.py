@@ -7,7 +7,7 @@ from twisted.internet.reactor import callLater
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, orchestrator_event
+from justrelax.node.service import PublishSubscribeClientService, on_event
 
 
 class Controller:
@@ -258,7 +258,7 @@ class Controller:
             self.service.notify_first_manual_mode()
 
 
-class ControlPanel(JustSockClientService):
+class ControlPanel(PublishSubscribeClientService):
     def __init__(self, *args, **kwargs):
         super(ControlPanel, self).__init__(*args, **kwargs)
         led_indexes = self.node_params["led_indexes"]
@@ -279,47 +279,47 @@ class ControlPanel(JustSockClientService):
             table_button_pin, table_up_pin, table_down_pin, table_up_down_pins_active_high,
             table_max_amplitude_duration, table_up_down_minimum_delay, colors)
 
-    @orchestrator_event(filter={'category': 'reset'})
+    @on_event(filter={'category': 'reset'})
     def event_reset(self):
         self.controller.reset()
 
-    @orchestrator_event(filter={'category': 'set_status'})
+    @on_event(filter={'category': 'set_status'})
     def event_set_status(self, status: str):
         self.controller.status = status
 
-    @orchestrator_event(filter={'category': 'set_lights_service_status'})
+    @on_event(filter={'category': 'set_lights_service_status'})
     def event_set_lights_service_status(self, repaired: bool):
         self.controller.set_lights_service_status(repaired)
 
-    @orchestrator_event(filter={'category': 'set_menu_service_status'})
+    @on_event(filter={'category': 'set_menu_service_status'})
     def event_set_menu_service_status(self, repaired: bool):
         self.controller.set_menu_service_status(repaired)
 
-    @orchestrator_event(filter={'category': 'table_up'})
+    @on_event(filter={'category': 'table_up'})
     def event_table_up(self):
         self.controller.table_up()
 
-    @orchestrator_event(filter={'category': 'table_down'})
+    @on_event(filter={'category': 'table_down'})
     def event_table_down(self):
         self.controller.table_down()
 
-    @orchestrator_event(filter={'category': 'table_stop'})
+    @on_event(filter={'category': 'table_stop'})
     def event_table_stop(self):
         logger.info("Stopping the table")
         self.controller.table_stop()
 
-    @orchestrator_event(filter={'category': 'force_manual_mode'})
+    @on_event(filter={'category': 'force_manual_mode'})
     def event_force_manual_mode(self):
         self.controller.on_manual_mode()
 
     def notify_status(self, status):
-        self.send_event({"category": "set_status", "status": status})
+        self.publish({"category": "set_status", "status": status})
 
     def notify_table_button_pressed(self):
-        self.send_event({"category": "table_button_pressed"})
+        self.publish({"category": "table_button_pressed"})
 
     def notify_mode(self, mode):
-        self.send_event({"category": "set_mode", "mode": mode})
+        self.publish({"category": "set_mode", "mode": mode})
 
     def notify_first_manual_mode(self):
-        self.send_event({"category": "first_manual_mode"})
+        self.publish({"category": "first_manual_mode"})

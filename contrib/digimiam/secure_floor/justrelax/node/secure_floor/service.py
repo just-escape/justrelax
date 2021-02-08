@@ -5,8 +5,7 @@ from twisted.internet import reactor
 from gpiozero import OutputDevice, InputDevice
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.helper import BufferedSerial
-from justrelax.node.service import JustSockClientService, orchestrator_event
+from justrelax.node.service import MagicNode, on_event
 
 
 class Cell:
@@ -53,17 +52,11 @@ class ArduinoProtocol:
     STRIP_BIT_MASK = 's'
 
 
-class SecureFloor(JustSockClientService):
+class SecureFloor(MagicNode):
     STATUSES = {'playing', 'alarm'}
 
     def __init__(self, *args, **kwargs):
         super(SecureFloor, self).__init__(*args, **kwargs)
-
-        port = self.node_params['leds']['arduino']['port']
-        baud_rate = self.node_params['leds']['arduino']['baud_rate']
-
-        self.serial = BufferedSerial(self, port, baud_rate)
-        self.serial.process_event = self.process_serial_event
 
         self.status = 'playing'
         self.success = False
@@ -85,11 +78,6 @@ class SecureFloor(JustSockClientService):
         # Init once we are sure the serial port will be able to receive data
         reactor.callLater(3, self.set_led_color, "black", sum(self.leds.keys()))
 
-    @staticmethod
-    def process_serial_event(event):
-        # Error by default because events should not be received from the arduino
-        logger.error(event)
-
     def set_led_color(self, color, bit_mask):
         logger.info("Setting led bit_mask={} color={}".format(bit_mask, color))
 
@@ -105,20 +93,20 @@ class SecureFloor(JustSockClientService):
             if led_index & bit_mask:
                 self.leds[led_index] = color
 
-        self.serial.send_event({
+        self.send_serial({
             ArduinoProtocol.CATEGORY: event_color,
             ArduinoProtocol.STRIP_BIT_MASK: bit_mask,
         })
 
-    @orchestrator_event(filter={'category': 'set_led_color'})
+    @on_event(filter={'category': 'set_led_color'})
     def event_set_led_color(self, color: str, bit_mask: int):
         self.set_led_color(color, bit_mask)
 
-    @orchestrator_event(filter={'category': 'set_all_leds_color'})
+    @on_event(filter={'category': 'set_all_leds_color'})
     def event_set_all_leds_color(self, color: str):
         self.set_led_color(color, sum(self.leds.keys()))
 
-    @orchestrator_event(filter={'category': 'tare'})
+    @on_event(filter={'category': 'tare'})
     def event_tare(self):
         logger.info("Triggering tare rising edge...")
         self.tare.on()
@@ -131,7 +119,7 @@ class SecureFloor(JustSockClientService):
         logger.info("Triggering tare falling edge...")
         self.tare.off()
 
-    @orchestrator_event(filter={'category': 'reset'})
+    @on_event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Resetting node")
         self.success = False
@@ -139,7 +127,7 @@ class SecureFloor(JustSockClientService):
         self.event_tare()
         self.event_set_status('playing')
 
-    @orchestrator_event(filter={'category': 'set_status'})
+    @on_event(filter={'category': 'set_status'})
     def event_set_status(self, status: str):
         if self.success is False:
             if status in self.STATUSES:
@@ -169,7 +157,7 @@ class SecureFloor(JustSockClientService):
         else:
             logger.info("Node is in success mode: ignoring set status to '{}'".format(status))
 
-    @orchestrator_event(filter={'category': 'success'})
+    @on_event(filter={'category': 'success'})
     def event_success(self):
         if self.success is False:
             logger.info("Setting node in success mode")
@@ -177,7 +165,7 @@ class SecureFloor(JustSockClientService):
             self.event_set_all_leds_color('white')
 
     def notify_clear(self):
-        self.send_event({'category': 'clear'})
+        self.publish({'category': 'clear'})
 
     def on_load_cell_toggle(self, activated, led_strip):
         if self.success:

@@ -1,8 +1,9 @@
 host: localhost
 port: 3031
 
-name: floppy_reader
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.floppy_reader
 
 node_params:
   # Based on GPIO.BOARD mode

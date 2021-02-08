@@ -1,4 +1,4 @@
-from justrelax.orchestrator.plugin import OrchestratorServiceMaker
+from justrelax.orchestrator.plugin import PublishSubscribeServerServiceMaker
 
 
-orchestrator_service_maker = OrchestratorServiceMaker()
+orchestrator_service_maker = PublishSubscribeServerServiceMaker()

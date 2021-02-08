@@ -3,8 +3,7 @@ import gpiozero
 from twisted.internet import reactor
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, orchestrator_event
-from justrelax.node.helper import BufferedSerial, serial_event
+from justrelax.node.service import MagicNode, on_event
 
 
 class ArduinoProtocol:
@@ -15,7 +14,7 @@ class ArduinoProtocol:
     TAG = "t"
 
 
-class Cylinders(JustSockClientService):
+class Cylinders(MagicNode):
     def __init__(self, *args, **kwargs):
         super(Cylinders, self).__init__(*args, **kwargs)
 
@@ -23,15 +22,7 @@ class Cylinders(JustSockClientService):
         self.difficulty = 'normal'
         self.delay = self.node_params['delay']
 
-        self.port_index_mapping = {}
-
-        self.serials = []
-
-        for reader in self.node_params.get('readers', []):
-            port = reader['port']
-            baud_rate = reader['baud_rate']
-            self.port_index_mapping[port] = reader['index_mapping']
-            self.serials.append(BufferedSerial(self, port, baud_rate))
+        self.index_mapping = self.node_params['index_mapping']
 
         self.slots = {}
         for key, slot in self.node_params['slots'].items():
@@ -45,12 +36,12 @@ class Cylinders(JustSockClientService):
                 'delayed_task': None,
             }
 
-    @serial_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.READ})
-    def event_read(self, port, i: int, t: str):
+    @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.READ})
+    def serial_event_read(self, port, /, i: int, t):
         reader_index = i
         tag = t
 
-        global_reader_index = self.port_index_mapping[port].get(reader_index, None)
+        global_reader_index = self.index_mapping[port].get(reader_index, None)
 
         if global_reader_index is None:
             logger.error("Undeclared local reader index '{}' for port {}: skipping".format(reader_index, port))
@@ -68,11 +59,11 @@ class Cylinders(JustSockClientService):
 
         self.slots[global_reader_index]['delayed_task'] = reactor.callLater(self.delay, self.update_leds)
 
-    @orchestrator_event(filter={'category': 'reset'})
+    @on_event(filter={'category': 'reset'})
     def event_reset(self):
         self.success = False
 
-    @orchestrator_event(filter={'category': 'set_difficulty'})
+    @on_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty):
         self.difficulty = difficulty
         self.update_leds()
@@ -111,4 +102,4 @@ class Cylinders(JustSockClientService):
                     slot['red_led'].off()
 
     def notify_success(self):
-        self.send_event({"category": "success"})
+        self.publish({"category": "success"})

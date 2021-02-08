@@ -3,10 +3,10 @@ from gpiozero import Button
 from twisted.internet.reactor import callLater
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import PublishSubscribeClientService
 
 
-class SokobanControls(JustSockClientService):
+class SokobanControls(PublishSubscribeClientService):
     def __init__(self, *args, **kwargs):
         super(SokobanControls, self).__init__(*args, **kwargs)
         self.controls = [
@@ -46,7 +46,7 @@ class SokobanControls(JustSockClientService):
                 control['was_pressed_last_time'] = control['input'].is_pressed
                 verb = 'pressed' if control['input'].is_pressed else 'released'
                 logger.info('{} button has been {}'.format(control['name'], verb))
-                self.send_event(
+                self.publish(
                     {
                         'category': 'control',
                         'name': control['name'],

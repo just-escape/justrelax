@@ -1,8 +1,9 @@
 host: d1orchestrator.justescape
 port: 3031
 
-name: front_door_magnet
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.front_door_magnet
 
 node_params:
   magnet_pins:

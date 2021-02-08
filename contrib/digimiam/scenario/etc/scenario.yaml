@@ -1,7 +1,10 @@
 host: localhost
 port: 3031
 
-name: scenario
-channel: digimiam1
+subscribe:
+  - d1.scenario
+
+node_params:
+  publication_channel_prefix: d1.
 
 logging: null

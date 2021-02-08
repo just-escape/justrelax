@@ -3,11 +3,11 @@
     <div class="d-flex flex-row justify-content-between p-3">
       <div>
         <a :href="'/rooms/' + room.id + '/live'">
-          <i class="text-jaffa fas fa-door-open fa-fw fa-lg mr-3"></i>{{ getDisplayName }}
+          <i class="text-jaffa fas fa-door-open fa-fw fa-lg mr-3"></i>{{ room.name }}
         </a>
       </div>
       <div class="d-flex flex-row">
-        <SessionTimeClock class="mr-2" :sessionTime="room.liveData.sessionTime" :displayZero="false"/>
+        <Clock class="mr-2" :roomId="room.id" :data="'gameTime'" :displayZero="true"/>
         <CollapseChevron class="align-self-center" v-b-toggle="'collapse-rooms-' + room.id"/>
       </div>
     </div>
@@ -30,20 +30,16 @@
 <script>
 import Tab from '@/components/nav/Tab.vue'
 import CollapseChevron from '@/components/common/CollapseChevron.vue'
-import SessionTimeClock from '@/components/common/SessionTimeClock.vue'
-import { getRoomDisplayName } from '@/helper/room.js'
+import Clock from '@/components/common/Clock.vue'
 
 export default {
   name: 'TabRoom',
   components: {
     CollapseChevron,
-    SessionTimeClock,
+    Clock,
     Tab,
   },
   computed: {
-    getDisplayName: function() {
-      return getRoomDisplayName(this.room)
-    },
     isVisible: function() {
       return this.$route.params.roomId == this.room.id
     },

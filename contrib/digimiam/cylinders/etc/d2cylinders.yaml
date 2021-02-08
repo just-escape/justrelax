@@ -1,26 +1,29 @@
 host: d2orchestrator.justescape
 port: 3031
 
-name: cylinders
-channel: digimiam2
+default_publication_channel: d2.scenario
+subscribe:
+  - d2.cylinders
+
+serials:
+  - port: /dev/arduino1
+    baud_rate: 19200
+  - port: /dev/arduino2
+    baud_rate: 19200
 
 node_params:
   delay: 0.1
-  readers:
-    - port: /dev/arduino1
-      baud_rate: 19200
-      index_mapping:
-        0: 6
-        1: 2
-        2: 5
-        3: 8
-    - port: /dev/arduino2
-      baud_rate: 19200
-      index_mapping:
-        0: 3
-        1: 1
-        2: 4
-        3: 7
+  index_mapping:
+    /dev/arduino1:
+      0: 6
+      1: 2
+      2: 5
+      3: 8
+    /dev/arduino2:
+      0: 3
+      1: 1
+      2: 4
+      3: 7
   slots:
     1:
       expected_tag: 112-128-229-50

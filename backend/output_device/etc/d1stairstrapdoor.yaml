@@ -1,8 +1,9 @@
 host: d1orchestrator.justescape
 port: 3031
 
-name: stairs_trapdoor
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.stairs_trapdoor
 
 node_params:
   pin: 10

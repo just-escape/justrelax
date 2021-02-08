@@ -1,8 +1,9 @@
 host: d2orchestrator.justescape
 port: 3031
 
-name: chopsticks
-channel: digimiam2
+default_publication_channel: d2.scenario
+subscribe:
+  - d2.chopsticks
 
 node_params:
   watcher_frequency: 100

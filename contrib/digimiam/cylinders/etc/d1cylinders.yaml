@@ -1,58 +1,61 @@
 host: d1orchestrator.justescape
 port: 3031
 
-name: cylinders
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.cylinders
+
+serials:
+  - port: /dev/arduino1
+    baud_rate: 19200
+  - port: /dev/arduino2
+    baud_rate: 19200
 
 node_params:
   delay: 0.1
-  readers:
-    - port: /dev/arduino1
-      baud_rate: 19200
-      index_mapping:
-        0: 0
-        1: 1
-        2: 2
-        3: 3
-    - port: /dev/arduino2
-      baud_rate: 19200
-      index_mapping:
-        0: 4
-        1: 5
-        2: 6
-        3: 7
+  index_mapping:
+    /dev/arduino1:
+      0: 0
+      1: 1
+      2: 2
+      3: 3
+    /dev/arduino2:
+      0: 4
+      1: 5
+      2: 6
+      3: 7
   slots:
-    0:
-      expected_tag: 1-1-1-1
-      red_pin: 14
-      green_pin: 15
     1:
-      expected_tag: 1-1-1-1
-      red_pin: 23
-      green_pin: 24
+      expected_tag: 231-122-230-25
+      red_pin: 24
+      green_pin: 23
     2:
-      expected_tag: 1-1-1-1
-      red_pin: 25
-      green_pin: 8
-    3:
-      expected_tag: 1-1-1-1
+      expected_tag: 144-14-103-50
       red_pin: 7
       green_pin: 1
+    3:
+      expected_tag: 183-223-205-25
+      red_pin: 0
+      green_pin: 5
     4:
-      expected_tag: 1-1-1-1
-      red_pin: 12
-      green_pin: 16
-    5:
-      expected_tag: 1-1-1-1
-      red_pin: 20
-      green_pin: 21
-    6:
-      expected_tag: 1-1-1-1
-      red_pin: 19
-      green_pin: 26
-    7:
-      expected_tag: 1-1-1-1
+      expected_tag: 128-101-193-50
       red_pin: 6
       green_pin: 13
+    5:
+      expected_tag: 144-1-126-50
+      red_pin: 16
+      green_pin: 12
+    6:
+      expected_tag: 112-243-97-50
+      red_pin: 26
+      green_pin: 19
+    7:
+      expected_tag: 195-213-82-2
+      red_pin: 21
+      green_pin: 20
+    8:
+      expected_tag: 128-185-17-50
+      red_pin: 8
+      green_pin: 25
 
 logging: /etc/justrelax/cylinders_logging.yaml

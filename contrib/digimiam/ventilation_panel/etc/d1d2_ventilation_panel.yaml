@@ -1,8 +1,9 @@
 host: localhost
 port: 3031
 
-name: ventilation_panel
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.ventilation_panel
 
 node_params:
   lock:

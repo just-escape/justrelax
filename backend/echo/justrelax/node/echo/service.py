@@ -1,6 +1,7 @@
-from justrelax.node.service import JustSockClientService
+from justrelax.node.service import MagicNode, on_event
 
 
-class Echo(JustSockClientService):
-    def process_event(self, event):
-        self.send_event(event)
+class Echo(MagicNode):
+    @on_event
+    def any_event(self, channel, /, **kwargs):
+        logger.info("{}: {}".format(channel, kwargs))

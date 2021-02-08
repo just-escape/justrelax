@@ -1,14 +1,16 @@
 host: d1orchestrator.justescape
 port: 3031
 
-name: street_lights
-channel: digimiam1
+default_publication_channel: d1.scenario
+subscribe:
+  - d1.street_lights
 
-node_params:
-  arduino:
-    port: /dev/arduino
+serials:
+  - port: /dev/arduino
     baud_rate: 9600
     buffering_interval: 0.2
+
+node_params:
   channels:
     16: 0  # blue_r
     32: 300  # blue_g

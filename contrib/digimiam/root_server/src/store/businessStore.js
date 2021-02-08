@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import justSockService from '@/store/justSockService.js'
+import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 Vue.use(Vuex)
 
@@ -68,7 +68,7 @@ let store = new Vuex.Store({
         let event = {
           category: 'success',
         }
-        justSockService.commit('sendEvent', event)
+        publishSubscribeService.commit('publish', event)
       }
     },
     finalAnimation () {
@@ -88,7 +88,7 @@ let store = new Vuex.Store({
         let event = {
           category: 'ms_pepper_mad_end',
         }
-        justSockService.commit('sendEvent', event)
+        publishSubscribeService.commit('publish', event)
       }
 
       state.currentOverlayVideo = null

@@ -6,7 +6,7 @@ from twisted.internet.reactor import callLater
 from twisted.internet.task import LoopingCall
 
 from justrelax.common.logging_utils import logger
-from justrelax.node.service import JustSockClientService, orchestrator_event
+from justrelax.node.service import PublishSubscribeClientService, on_event
 
 
 class Letter:
@@ -178,7 +178,7 @@ class Letter:
         return self.led_color == self.led_success_color
 
 
-class Chopsticks(JustSockClientService):
+class Chopsticks(PublishSubscribeClientService):
     def __init__(self, *args, **kwargs):
         super(Chopsticks, self).__init__(*args, **kwargs)
 
@@ -224,7 +224,7 @@ class Chopsticks(JustSockClientService):
             letter.check_chopstick()
 
     def notify_success(self):
-        self.send_event({"category": "success"})
+        self.publish({"category": "success"})
 
     def set_difficulty(self, difficulty):
         if difficulty not in self.available_difficulties:
@@ -236,7 +236,7 @@ class Chopsticks(JustSockClientService):
         for letter in self.letters:
             letter.difficulty = difficulty
 
-    @orchestrator_event(filter={'category': 'reset'})
+    @on_event(filter={'category': 'reset'})
     def event_reset(self):
         Letter.success = False
 
@@ -244,19 +244,19 @@ class Chopsticks(JustSockClientService):
             letter.difficulty = self.initial_difficulty
             letter.led_color = self.letters_configuration[letter_index]['led_initial_color']
 
-    @orchestrator_event(filter={'category': 'emulate_chopstick_plug'})
+    @on_event(filter={'category': 'emulate_chopstick_plug'})
     def event_emulate_chopstick_plug(self, letter_index: int):
         self.letters[letter_index].on_chopstick_plug()
 
-    @orchestrator_event(filter={'category': 'emulate_chopstick_unplug'})
+    @on_event(filter={'category': 'emulate_chopstick_unplug'})
     def event_emulate_chopstick_unplug(self, letter_index: int):
         self.letters[letter_index].on_chopstick_unplug()
 
-    @orchestrator_event(filter={'category': 'force_success'})
+    @on_event(filter={'category': 'force_success'})
     def event_force_success(self):
         self.letters[0].on_success()
 
-    @orchestrator_event(filter={'category': 'set_difficulty'})
+    @on_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
         self.set_difficulty(difficulty)
     

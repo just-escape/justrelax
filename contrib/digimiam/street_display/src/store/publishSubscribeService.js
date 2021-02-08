@@ -3,35 +3,37 @@ import Vuex from 'vuex'
 
 import i18n from '@/locales.js'
 import router from '@/router.js'
-
-import lockStore from '@/store/lockStore.js'
+import businessStore from '@/store/businessStore.js'
 
 Vue.use(Vuex)
 
-const justSockService = new Vuex.Store({
+const publishSubscribeService = new Vuex.Store({
+  state: {
+    name: "street_display",
+  },
   mutations: {
+    // eslint-disable-next-line
     SOCKET_ONOPEN (state, event) {
       Vue.prototype.$socket = event.currentTarget
 
       let query = JSON.parse(JSON.stringify(router.app.$route.query))
 
-      let name = "digital_lock"
       if (query.name !== undefined) {
-        name = query.name
+        state.name = query.name
       }
 
-      let channel = "digimiam1"
-      if (query.channel !== undefined) {
-        channel = query.channel
+      let channel = ""
+      if (query.channelPrefix !== undefined) {
+        channel = query.channelPrefix + state.name
+      } else {
+        channel = state.name
       }
 
-      let iamMessage = {
-        message_type: "IAM",
-        client_type: "node",
+      let subscribeEvent = {
+        action: "subscribe",
         channel: channel,
-        name: name,
       }
-      Vue.prototype.$socket.send(JSON.stringify(iamMessage))
+      Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
     },
     SOCKET_ONCLOSE (state, event) {
       // eslint-disable-next-line
@@ -43,15 +45,12 @@ const justSockService = new Vuex.Store({
     },
     SOCKET_ONMESSAGE (state, rawMessage) {
       let message = JSON.parse(rawMessage.data)
-      if (message.message_type != 'EVENT') {
-        return
-      }
-
       let event = message.event
-      if (event.category == 'reset') {
+
+      if (event.type == 'reset') {
         // Reload page
         router.go()
-      } else if (event.category == 'l10n') {
+      } else if (event.type == 'l10n') {
         let query = JSON.parse(JSON.stringify(router.app.$route.query))
         if (event.lang == 'fr') {
           if (i18n.locale != 'fr') {
@@ -66,8 +65,8 @@ const justSockService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
-      } else if (event.category == 'enable') {
-        lockStore.commit('enable')
+      } else if (event.category === 'set_session_time') {
+        businessStore.commit('setSessionTime', event.seconds)
       }
     },
     SOCKET_RECONNECT (state, count) {
@@ -79,15 +78,12 @@ const justSockService = new Vuex.Store({
       // eslint-disable-next-line
       console.error("Reconnect error")
     },
-    sendEvent (state, event) {
-      let message = {
-        message_type: "EVENT",
-        event: event,
-      }
-      let jsonMessage = JSON.stringify(message)
-      Vue.prototype.$socket.send(jsonMessage)
+    publish (state, event) {
+      event.from = state.name
+      let json = JSON.stringify({action: "publish", event: event})
+      Vue.prototype.$socket.send(json)
     },
   },
 })
 
-export default justSockService
+export default publishSubscribeService

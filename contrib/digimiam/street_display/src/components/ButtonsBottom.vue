@@ -82,7 +82,7 @@
 <script>
 import FramedButton from '@/components/FramedButton.vue'
 import businessStore from '@/store/businessStore.js'
-import justSockService from '@/store/justSockService.js'
+import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 export default {
   name: "ButtonsBottom.vue",
@@ -169,7 +169,7 @@ export default {
       }
     },
     confirm() {
-      justSockService.commit('sendEvent', {category: 'play'})
+      publishSubscribeService.commit('publish', {category: 'play'})
 
       this.areActionsLocked = true
 
@@ -187,7 +187,7 @@ export default {
       this[key] = value
     },
     open() {
-      justSockService.commit('sendEvent', {category: 'unlock_front_door'})
+      publishSubscribeService.commit('publish', {category: 'unlock_front_door'})
     },
   },
 }
