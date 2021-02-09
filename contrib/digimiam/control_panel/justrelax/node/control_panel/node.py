@@ -57,8 +57,6 @@ class Controller:
 
         self.check_jack_ports()
 
-        self.status = "inactive"
-
     @property
     def status(self):
         return self._status
@@ -279,6 +277,10 @@ class ControlPanel(MagicNode):
             self, led_indexes, electromagnet_pin, jack_pin, manual_mode_jack_port_pin, marmitron_mode_jack_port_pin,
             table_button_pin, table_up_pin, table_down_pin, table_up_down_pins_active_high,
             table_max_amplitude_duration, table_up_down_minimum_delay, colors)
+
+    def connection_opened(self):
+        self.controller.status = "inactive"
+        super().connection_opened()
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
