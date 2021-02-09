@@ -4,6 +4,7 @@ import socket
 import argparse
 from copy import deepcopy
 
+import yaml
 from gpiozero import Device
 from gpiozero.pins.mock import MockFactory, MockPWMPin
 
