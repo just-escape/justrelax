@@ -1,1 +1,1 @@
-from justrelax.node.human_authenticator.service import HumanAuthenticator
+from justrelax.node.human_authenticator.node import HumanAuthenticator

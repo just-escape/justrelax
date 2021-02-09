@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 Type=simple
 
-ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/ventilation_panel.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o ventilationpanel -c /etc/justrelax/ventilation_panel.yaml
+ExecStart=/home/pi/venv_justrelax/bin/start-node-ventilation-panel -c /etc/justrelax/ventilation_panel.yaml
 
 TimeoutStopSec=15
 

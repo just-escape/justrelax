@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 Type=simple
 
-ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/load_cells.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o loadcells -c /etc/justrelax/load_cells.yaml
+ExecStart=/home/pi/venv_justrelax/bin/start-node-load-cells -c /etc/justrelax/load_cells.yaml
 
 TimeoutStopSec=15
 

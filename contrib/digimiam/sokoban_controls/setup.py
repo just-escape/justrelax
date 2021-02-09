@@ -10,7 +10,8 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_sokoban_controls",
         version="0.1",
-        packages=["justrelax.node.sokoban_controls", "twisted.plugins"],
+        packages=["justrelax.node.sokoban_controls"],
+        scripts=["scripts/start-node-sokoban-controls"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

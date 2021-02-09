@@ -1,68 +1,66 @@
-host: d1orchestrator.justescape
-port: 3031
+name: holographic_menu
 
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.holographic_menu
 
-node_params:
-  path: /home/pi/menu.mp4
-  initial_slides:
-    - error
-    - error
-    - error
-    - error
-  chapters:
-    - id: salade_flamande
-      start: 0.72
-      end: 13.24
-    - id: insectosteak
-      start: 13.72
-      end: 22
-    - id: pizzalgue
-      start: 22.72
-      end: 35.24
-    - id: pizzaliere
-      start: 35.72
-      end: 48
-    - id: steakfie
-      start: 48.72
-      end: 61
-    - id: potjevleesch
-      start: 61.72
-      end: 73
-    - id: pizzage
-      start: 73.72
-      end: 83.56
-    - id: cambraisienne
-      start: 84.28
-      end: 96.56
-    - id: chtite_gelee
-      start: 97.32
-      end: 107.6
-    - id: flubber
-      start: 108.32
-      end: 120.6
-    - id: protobulle
-      start: 121.32
-      end: 131.6
-    - id: spider_gaufre
-      start: 132.32
-      end: 142.56
-    - id: puddy_puddy
-      start: 143.24
-      end: 155.52
-    - id: nano_gaufre
-      start: 156.24
-      end: 164.76
-    - id: gaufresque
-      start: 165.44
-      end: 175.72
-    - id: algaufre
-      start: 176.44
-      end: 186.72
-    - id: error
-      start: 187.44
-      end: 197.72
+path: /home/pi/menu.mp4
 
-logging: null
+initial_slides:
+  - error
+  - error
+  - error
+  - error
+
+chapters:
+  - id: salade_flamande
+    start: 0.72
+    end: 13.24
+  - id: insectosteak
+    start: 13.72
+    end: 22
+  - id: pizzalgue
+    start: 22.72
+    end: 35.24
+  - id: pizzaliere
+    start: 35.72
+    end: 48
+  - id: steakfie
+    start: 48.72
+    end: 61
+  - id: potjevleesch
+    start: 61.72
+    end: 73
+  - id: pizzage
+    start: 73.72
+    end: 83.56
+  - id: cambraisienne
+    start: 84.28
+    end: 96.56
+  - id: chtite_gelee
+    start: 97.32
+    end: 107.6
+  - id: flubber
+    start: 108.32
+    end: 120.6
+  - id: protobulle
+    start: 121.32
+    end: 131.6
+  - id: spider_gaufre
+    start: 132.32
+    end: 142.56
+  - id: puddy_puddy
+    start: 143.24
+    end: 155.52
+  - id: nano_gaufre
+    start: 156.24
+    end: 164.76
+  - id: gaufresque
+    start: 165.44
+    end: 175.72
+  - id: algaufre
+    start: 176.44
+    end: 186.72
+  - id: error
+    start: 187.44
+    end: 197.72

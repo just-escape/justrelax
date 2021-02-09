@@ -1,15 +1,12 @@
-host: localhost
-port: 3031
+name: sound_player
 
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.sound_player
 
-node_params:
-  master_volume: 80
-  default_volume: 50
-  sounds:
-    - id: sound
-      path: /path/to/sound.wav
+master_volume: 80
+default_volume: 50
 
-logging: null
+sounds:
+  - id: sound
+    path: /path/to/sound.wav

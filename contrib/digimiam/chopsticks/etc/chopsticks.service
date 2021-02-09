@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 Type=simple
 
-ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/chopsticks.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o chopsticks -c /etc/justrelax/chopsticks.yaml
+ExecStart=/home/pi/venv_justrelax/bin/start-node-chopsticks -c /etc/justrelax/chopsticks.yaml
 
 TimeoutStopSec=15
 

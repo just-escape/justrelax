@@ -1,1 +1,1 @@
-from justrelax.node.sokoban_controls.service import SokobanControls
+from justrelax.node.sokoban_controls.node import SokobanControls

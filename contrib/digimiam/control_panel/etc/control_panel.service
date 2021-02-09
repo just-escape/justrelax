@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 Type=simple
 
-ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/control_panel.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o controlpanel -c /etc/justrelax/control_panel.yaml
+ExecStart=/home/pi/venv_justrelax/bin/start-node-control-panel -c /etc/justrelax/control_panel.yaml
 
 TimeoutStopSec=15
 

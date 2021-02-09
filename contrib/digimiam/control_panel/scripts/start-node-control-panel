@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+
+from justrelax.core.node import run_node
+from justrelax.node.control_panel import ControlPanel
+
+
+if __name__ == '__main__':
+    run_node(ControlPanel)

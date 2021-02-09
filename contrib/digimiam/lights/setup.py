@@ -10,7 +10,8 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_lights",
         version="0.1",
-        packages=["justrelax.node.lights", "twisted.plugins"],
+        packages=["justrelax.node.lights"],
+        scripts=["scripts/start-node-lights"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

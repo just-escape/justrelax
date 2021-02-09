@@ -10,7 +10,8 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_fog_machine",
         version="0.1",
-        packages=["justrelax.node.fog_machine", "twisted.plugins"],
+        packages=["justrelax.node.fog_machine"],
+        scripts=["scripts/start-node-fog-machine"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

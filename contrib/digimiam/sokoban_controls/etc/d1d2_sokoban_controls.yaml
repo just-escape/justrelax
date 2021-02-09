@@ -1,15 +1,11 @@
-host: localhost
-port: 3031
+name: sokoban_controls
 
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.sokoban_controls
 
-node_params:
-  left_pin: 25
-  right_pin: 8
-  up_pin: 7
-  down_pin: 1
-  reset_pin: 12
-
-logging: null
+left_pin: 25
+right_pin: 8
+up_pin: 7
+down_pin: 1
+reset_pin: 12

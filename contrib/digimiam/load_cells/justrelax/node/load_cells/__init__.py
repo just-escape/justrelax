@@ -1,1 +1,1 @@
-from justrelax.node.load_cells.service import LoadCells
+from justrelax.node.load_cells.node import LoadCells

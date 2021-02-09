@@ -1,1 +1,1 @@
-from justrelax.node.rotary.service import Rotary
+from justrelax.node.rotary.node import Rotary

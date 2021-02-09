@@ -11,7 +11,7 @@ from twisted.internet import reactor
 from twisted.internet.protocol import ReconnectingClientFactory
 from autobahn.twisted.websocket import WebSocketClientProtocol, WebSocketClientFactory
 
-from justrelax.common.logging_utils import init_logging, logger
+from justrelax.core.logging_utils import init_logging, logger
 
 
 class NodeProtocol(WebSocketClientProtocol):

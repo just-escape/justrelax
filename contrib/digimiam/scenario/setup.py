@@ -10,7 +10,8 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_scenario",
         version="0.1",
-        packages=["justrelax.node.scenario", "twisted.plugins"],
+        packages=["justrelax.node.scenario"],
+        scripts=["scripts/start-node-scenario"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

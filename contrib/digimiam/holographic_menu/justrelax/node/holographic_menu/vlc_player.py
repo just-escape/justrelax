@@ -2,8 +2,8 @@ import vlc
 
 from twisted.internet import reactor
 
-from justrelax.common.logging_utils import logger
-from justrelax.node.media.player import MediaPlayerMixin
+from justrelax.core.logging_utils import logger
+from justrelax.core.media import MediaPlayerMixin
 
 
 class VLCVideoPlayer(MediaPlayerMixin):

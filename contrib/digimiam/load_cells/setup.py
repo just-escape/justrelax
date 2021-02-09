@@ -10,7 +10,8 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_load_cells",
         version="0.1",
-        packages=["justrelax.node.load_cells", "twisted.plugins"],
+        packages=["justrelax.node.load_cells"],
+        scripts=["scripts/start-node-load-cells"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

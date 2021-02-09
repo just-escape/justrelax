@@ -4,3 +4,5 @@ PyYAML
 RPi.GPIO
 gpiozero
 pyserial
+pyalsaaudio
+pytweening

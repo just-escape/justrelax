@@ -1,19 +1,18 @@
-host: d2orchestrator.justescape
-port: 3031
+name: emergency_exit
 
 default_publication_channel: d2.scenario
-subscribe:
+subscriptions:
   - d2.emergency_exit
 
-node_params:
-  magnet_pins:
-    stock_to_machine: 3
-    to_outside: 4
-  emergency_magnets:
-    - stock_to_machine
-    - to_outside
-  emergency_button_pin: 2
-  emergency_button_hold_time: 1  # The button has to be pressed for 1 second to avoid mistakes
-  relock_delay: 3
+magnet_pins:
+  stock_to_machine: 3
+  to_outside: 4
 
-logging: /etc/justrelax/emergency_exit_logging.yaml
+emergency_magnets:
+  - stock_to_machine
+  - to_outside
+
+emergency_button_pin: 2
+emergency_button_hold_time: 1  # The button has to be pressed for 1 second to avoid mistakes
+
+relock_delay: 3

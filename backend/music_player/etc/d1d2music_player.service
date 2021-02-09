@@ -10,7 +10,7 @@ Environment="XDG_RUNTIME_DIR=/run/user/1000"
 User=justescape
 Group=justescape
 
-ExecStart=/home/justescape/venv_justrelax/bin/twistd -n --pidfile=/home/justescape/music/music_player.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o musicplayer -c /etc/justrelax/music_player.yaml
+ExecStart=/home/justescape/venv_justrelax/bin/start-node-music-player -c /etc/justrelax/music_player.yaml --log-level DEBUG
 
 TimeoutStopSec=15
 

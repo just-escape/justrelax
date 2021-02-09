@@ -1,3 +1,1 @@
-from justrelax.node.holographic_menu.service import HolographicMenu
-from justrelax.node.holographic_menu.vlc_player import VLCVideoPlayer
-from justrelax.node.holographic_menu.vlc_player import VLCLoopingChapterVideoPlayer
+from justrelax.node.holographic_menu.node import HolographicMenu

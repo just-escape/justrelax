@@ -1,1 +1,1 @@
-from justrelax.node.echo.service import Echo
+from justrelax.node.echo.node import Echo

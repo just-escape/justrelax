@@ -1,1 +1,1 @@
-from justrelax.node.scenario.service import Scenario
+from justrelax.node.scenario.node import Scenario

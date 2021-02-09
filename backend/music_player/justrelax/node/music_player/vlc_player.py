@@ -2,9 +2,9 @@ import vlc
 
 from twisted.internet import reactor
 
-from justrelax.common.logging_utils import logger
-from justrelax.node.media.player import MediaPlayerMixin
-from justrelax.node.media.volume import VolumeFaderMixin
+from justrelax.core.logging_utils import logger
+from justrelax.core.media import MediaPlayerMixin
+from justrelax.core.media import VolumeFaderMixin
 
 
 class VLCTrackPlayer(VolumeFaderMixin, MediaPlayerMixin):

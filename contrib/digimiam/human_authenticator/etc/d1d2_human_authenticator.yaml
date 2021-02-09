@@ -1,8 +1,7 @@
-host: localhost
-port: 3031
+name: human_authenticator
 
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.human_authenticator
 
 serials:
@@ -12,7 +11,3 @@ serials:
   - port: /dev/arduino2
     baud_rate: 9600
     buffering_interval: 0.1
-
-node_params: null
-
-logging: null

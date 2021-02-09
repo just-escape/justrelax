@@ -1,1 +1,1 @@
-from justrelax.node.secure_floor.service import SecureFloor
+from justrelax.node.secure_floor.node import SecureFloor

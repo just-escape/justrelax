@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 Type=simple
 
-ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/output_device.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o outputdevice -c /etc/justrelax/output_device.yaml
+ExecStart=/home/pi/venv_justrelax/bin/start-node-output-device -c /etc/justrelax/output_device.yaml
 
 TimeoutStopSec=15
 

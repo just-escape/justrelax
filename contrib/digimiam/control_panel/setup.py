@@ -10,7 +10,8 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_control_panel",
         version="0.1",
-        packages=["justrelax.node.control_panel", "twisted.plugins"],
+        packages=["justrelax.node.control_panel"],
+        scripts=["scripts/start-node-control-panel"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

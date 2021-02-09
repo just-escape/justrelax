@@ -1,1 +1,1 @@
-from justrelax.node.video_player.service import VideoPlayer
+from justrelax.node.video_player.node import VideoPlayer

@@ -1,1 +1,1 @@
-from justrelax.node.chopsticks.service import Chopsticks
+from justrelax.node.chopsticks.node import Chopsticks

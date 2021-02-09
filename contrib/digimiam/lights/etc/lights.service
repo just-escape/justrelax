@@ -5,7 +5,7 @@ After=network-online.target
 [Service]
 Type=simple
 
-ExecStart=/home/pi/venv_justrelax/bin/twistd -n --pidfile=/var/run/lights.pid --logger=justrelax.common.logging_utils.DisableTwistdLogs -o lights -c /etc/justrelax/lights.yaml
+ExecStart=/home/pi/venv_justrelax/bin/start-node-lights -c /etc/justrelax/lights.yaml
 
 TimeoutStopSec=15
 

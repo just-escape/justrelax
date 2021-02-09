@@ -1,24 +1,21 @@
-host: d2orchestrator.justescape
-port: 3031
+name: secure_floor
 
 default_publication_channel: d2.scenario
-subscribe:
+subscriptions:
   - d2.secure_floor
 
 serials:
   - port: /dev/ttyUSB0
     baud_rate: 9600
 
-node_params:
-  clear_alarm_delay: 4
-  load_cells:
-    tare_pin: 12
-    cells:
-      - pin: 16
-        led_strip: null
-      - pin: 20
-        led_strip: null
-      - pin: 21
-        led_strip: 1
+clear_alarm_delay: 4
 
-logging: /etc/justrelax/secure_floor_logging.yaml
+load_cells:
+  tare_pin: 12
+  cells:
+    - pin: 16
+      led_strip: null
+    - pin: 20
+      led_strip: null
+    - pin: 21
+      led_strip: 1

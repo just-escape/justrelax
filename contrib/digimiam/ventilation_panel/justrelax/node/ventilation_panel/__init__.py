@@ -1,1 +1,1 @@
-from justrelax.node.ventilation_panel.service import VentilationPanel
+from justrelax.node.ventilation_panel.node import VentilationPanel

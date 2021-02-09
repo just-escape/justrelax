@@ -1,11 +1,7 @@
-host: d1orchestrator.justescape
-port: 3031
+name: stairs_trapdoor
 
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.stairs_trapdoor
 
-node_params:
-  pin: 10
-
-logging: /etc/justrelax/stairs_trapdoor_logging.yaml
+pin: 10

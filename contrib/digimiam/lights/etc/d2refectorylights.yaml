@@ -1,8 +1,7 @@
-host: d2orchestrator.justescape
-port: 3031
+name: refectory_lights
 
 default_publication_channel: d2.scenario
-subscribe:
+subscriptions:
   - d2.refectory_lights
 
 serials:
@@ -10,45 +9,43 @@ serials:
     baud_rate: 9600
     buffering_interval: 0.1
 
-node_params:
-  channels:
-    1: 1000  # white
-    2: 300  # pink
-    4: 300  # red
-    8: 300  # green
-    16: 0  # blue_r
-    32: 300  # blue_g
-    64: 1000  # blue_b
-    128: 1000  # orange_r
-    256: 110  # orange_g
-    512: 0  # orange_b
-  colors:
-    all:
-      on_by_default: yes
-      on_off_pins:
-        - 26
-        - 19
-        - 13
-        - 6
-        - 5
-        - 0
-    white:
-      on_off_pins:
-        - 13
-    pink:
-      on_off_pins:
-        - 26
-    red:
-      on_off_pins:
-        - 6
-    green:
-      on_off_pins:
-        - 19
-    blue:
-      on_off_pins:
-        - 0
-    orange:
-      on_off_pins:
-        - 5
+channels:
+  1: 1000  # white
+  2: 300  # pink
+  4: 300  # red
+  8: 300  # green
+  16: 0  # blue_r
+  32: 300  # blue_g
+  64: 1000  # blue_b
+  128: 1000  # orange_r
+  256: 110  # orange_g
+  512: 0  # orange_b
 
-logging: /etc/justrelax/refectory_lights_logging.yaml
+colors:
+  all:
+    on_by_default: yes
+    on_off_pins:
+      - 26
+      - 19
+      - 13
+      - 6
+      - 5
+      - 0
+  white:
+    on_off_pins:
+      - 13
+  pink:
+    on_off_pins:
+      - 26
+  red:
+    on_off_pins:
+      - 6
+  green:
+    on_off_pins:
+      - 19
+  blue:
+    on_off_pins:
+      - 0
+  orange:
+    on_off_pins:
+      - 5

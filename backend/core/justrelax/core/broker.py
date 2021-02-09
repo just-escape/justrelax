@@ -4,7 +4,7 @@ import argparse
 from twisted.internet import reactor
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
-from justrelax.common.logging_utils import init_logging, logger
+from justrelax.core.logging_utils import init_logging, logger
 
 
 class BrokerProtocol(WebSocketServerProtocol):

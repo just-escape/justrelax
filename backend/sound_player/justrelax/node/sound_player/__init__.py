@@ -1,1 +1,1 @@
-from justrelax.node.sound_player.service import SoundPlayer
+from justrelax.node.sound_player.node import SoundPlayer

@@ -1,1 +1,1 @@
-from justrelax.node.stock_lights.service import StockLights
+from justrelax.node.stock_lights.node import StockLights

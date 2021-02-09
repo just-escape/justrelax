@@ -1,1 +1,1 @@
-from justrelax.node.lights.service import Lights
+from justrelax.node.lights.node import Lights

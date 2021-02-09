@@ -1,20 +1,17 @@
-host: localhost
-port: 3031
+name: load_cells
 
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.load_cells
 
-node_params:
-  deactivation_delay: 0.1
-  cells:
-    6: blue
-    12: blue
-    13: white
-    16: white
-    19: orange
-    20: orange
-    21: red
-    26: green
+deactivation_delay: 0.1
 
-logging: null
+cells:
+  6: blue
+  12: blue
+  13: white
+  16: white
+  19: orange
+  20: orange
+  21: red
+  26: green

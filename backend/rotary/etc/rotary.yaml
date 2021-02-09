@@ -1,12 +1,6 @@
-host: localhost
-port: 3031
-
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.rotary
 
-node_params:
-  clk_pin: 23
-  dt_pin: 24
-
-logging: null
+clk_pin: 23
+dt_pin: 24

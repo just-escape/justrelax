@@ -1,17 +1,16 @@
-host: d1orchestrator.justescape
-port: 3031
+name: front_door_magnet
 
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.front_door_magnet
 
-node_params:
-  magnet_pins:
-    front_door: 4
-  emergency_magnets:
-    - front_door
-  emergency_button_pin: 2
-  emergency_button_hold_time: 1  # The button has to be pressed for 1 second to avoid mistakes
-  relock_delay: 3
+magnet_pins:
+  front_door: 4
 
-logging: /etc/justrelax/front_door_magnet_logging.yaml
+emergency_magnets:
+  - front_door
+
+emergency_button_pin: 2
+emergency_button_hold_time: 1  # The button has to be pressed for 1 second to avoid mistakes
+
+relock_delay: 3

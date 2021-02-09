@@ -10,7 +10,8 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_output_device",
         version="0.1",
-        packages=["justrelax.node.output_device", "twisted.plugins"],
+        packages=["justrelax.node.output_device"],
+        scripts=["scripts/start-node-output-device"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

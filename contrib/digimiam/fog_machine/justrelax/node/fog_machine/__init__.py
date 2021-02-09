@@ -1,1 +1,1 @@
-from justrelax.node.fog_machine.service import FogMachine
+from justrelax.node.fog_machine.node import FogMachine

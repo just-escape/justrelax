@@ -1,36 +1,32 @@
-host: localhost
-port: 3031
+name: advertiser
 
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.advertiser
 
-node_params:
-  videos:
-    street_idle:
-      path: /home/pi/videos/marmitron_street_idle.mp4
-      layer: 1
-      autoplay: yes
-      loop: yes
-      orientation: 270
-      window: 510 90 1660 990
-      display: 2
-    ads_glitch:
-      layer: 1
-      path: /home/pi/videos/ads_glitch.mp4
-      autoplay: no
-      loop: yes
-      display: 7
-    ads_loop:
-      layer: 1
-      path: /home/pi/videos/ads_loop.mp4
-      autoplay: no
-      loop: yes
-      display: 7
-    ms_pepper_here_you_are:
-      layer: 2
-      path: /home/pi/videos/ms_pepper_here_you_are_fr.mp4
-      loop: no
-      display: 2
-
-logging: null
+videos:
+  street_idle:
+    path: /home/pi/videos/marmitron_street_idle.mp4
+    layer: 1
+    autoplay: yes
+    loop: yes
+    orientation: 270
+    window: 510 90 1660 990
+    display: 2
+  ads_glitch:
+    layer: 1
+    path: /home/pi/videos/ads_glitch.mp4
+    autoplay: no
+    loop: yes
+    display: 7
+  ads_loop:
+    layer: 1
+    path: /home/pi/videos/ads_loop.mp4
+    autoplay: no
+    loop: yes
+    display: 7
+  ms_pepper_here_you_are:
+    layer: 2
+    path: /home/pi/videos/ms_pepper_here_you_are_fr.mp4
+    loop: no
+    display: 2

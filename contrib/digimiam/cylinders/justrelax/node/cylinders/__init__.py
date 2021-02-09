@@ -1,1 +1,1 @@
-from justrelax.node.cylinders.service import Cylinders
+from justrelax.node.cylinders.node import Cylinders

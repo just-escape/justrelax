@@ -10,7 +10,8 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_chopsticks",
         version="0.1",
-        packages=["justrelax.node.chopsticks", "twisted.plugins"],
+        packages=["justrelax.node.chopsticks"],
+        scripts=["scripts/start-node-chopsticks"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

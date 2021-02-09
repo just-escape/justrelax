@@ -1,8 +1,5 @@
-host: localhost
-port: 3031
+name: echo
 
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.echo
-
-logging: null

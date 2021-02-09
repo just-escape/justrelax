@@ -1,1 +1,1 @@
-from justrelax.node.emergency_exit.service import EmergencyExit
+from justrelax.node.emergency_exit.node import EmergencyExit

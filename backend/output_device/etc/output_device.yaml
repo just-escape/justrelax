@@ -1,12 +1,8 @@
-host: localhost
-port: 3031
+name: output_device
 
 default_publication_channel: d1.scenario
-subscribe:
+subscriptions:
   - d1.output_device
 
-node_params:
-  pin: 4
-  on_by_default: yes
-
-logging: null
+pin: 4
+on_by_default: yes
