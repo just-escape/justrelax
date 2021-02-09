@@ -251,13 +251,22 @@ class MagicNode(EventFilterMixin, Node):
             self._serials[serial['port']] = Serial(port, baud_rate, buffering_interval)
             self._serials[serial['port']].process_event = self.process_event  # magic
 
+        self._first_connection = False
+
         EventFilterMixin.__init__(self)
         Node.__init__(self, *args, **kwargs)
 
     def connection_opened(self):
+        if not self._first_connection:
+            self._first_connection = True
+            self.on_first_connection()
+
         for channel in self._subscriptions:
             logger.info("Subscribing to {}".format(channel))
             self.subscribe(channel)
+
+    def on_first_connection(self):
+        pass
 
     def subscribe(self, channel):
         self.protocol.send_message(
@@ -309,7 +318,6 @@ def run_node(klass):
     if args.config:
         with open(args.config, "rt") as f:
             config = yaml.safe_load(f.read())
-        return config
 
     kwargs = {'config': config} if args.config else {}
 

@@ -278,9 +278,8 @@ class ControlPanel(MagicNode):
             table_button_pin, table_up_pin, table_down_pin, table_up_down_pins_active_high,
             table_max_amplitude_duration, table_up_down_minimum_delay, colors)
 
-    def connection_opened(self):
+    def on_first_connection(self):
         self.controller.status = "inactive"
-        super().connection_opened()
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
