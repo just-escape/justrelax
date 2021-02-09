@@ -2,7 +2,6 @@ import json
 import argparse
 
 from twisted.internet import reactor
-from twisted.internet.endpoints import TCP4ServerEndpoint
 from autobahn.twisted.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
 from justrelax.common.logging_utils import init_logging, logger
@@ -74,13 +73,12 @@ class BrokerFactory(WebSocketServerFactory):
         super(BrokerFactory, self).__init__(*args, **kwargs)
         self.protocol = BrokerProtocol
         self.nodes = set()
-        logger.notify_error = self.publish_error
 
     def register(self, protocol):
         self.nodes.add(protocol)
 
     def unregister(self, protocol):
-        self.nodes.remove(protocol)
+        self.nodes.discard(protocol)
 
     def publish(self, event, channel):
         logger.info("{} <<< {}".format(channel, event))
@@ -88,9 +86,6 @@ class BrokerFactory(WebSocketServerFactory):
         for node in self.nodes:
             if node.is_subscribed_to(channel):
                 node.send_message(message)
-
-    def publish_error(self, message):
-        self.publish({'event': {'from': 'orchestrator', 'log': message}}, 'error')
 
 
 def run_broker():
@@ -103,10 +98,9 @@ def run_broker():
 
     init_logging(level=args.log_level, file=args.log_file, twisted_logs=args.twisted_logs)
 
-    logger.info("Starting")
+    logger.info("Starting broker")
 
-    endpoint = TCP4ServerEndpoint(reactor, args.port)
-    endpoint.listen(BrokerFactory())
+    reactor.listenTCP(args.port, BrokerFactory())
 
     logger.info("Listening on port {}".format(args.port))
 

@@ -1,6 +1,5 @@
 import json
 
-from twisted.protocols.basic import LineOnlyReceiver
 from twisted.internet.protocol import connectionDone
 
 from autobahn.twisted.websocket import WebSocketClientProtocol
@@ -10,7 +9,7 @@ from justrelax.common.logging_utils import logger
 
 class PublishSubscribeClientProtocol(WebSocketClientProtocol):
     def onConnect(self, response):
-        logger.info("Connected to server: {}".format(response.peer))
+        logger.info("Connected to broker at {}".format(response.peer))
 
     def onConnecting(self, transport_details):
         logger.debug("Connecting. Transport details: {}".format(transport_details))
@@ -19,6 +18,7 @@ class PublishSubscribeClientProtocol(WebSocketClientProtocol):
         logger.debug("WebSocket connection opened")
 
         for subscription in self.factory.subscriptions:
+            logger.info("Subscribing to {}".format(subscription))
             self.send_message(
                 {
                     "action": "subscribe",
@@ -50,18 +50,3 @@ class PublishSubscribeClientProtocol(WebSocketClientProtocol):
         unicode_json = json.dumps(event, ensure_ascii=False)
         bytes_ = unicode_json.encode("utf8", "replace")
         self.sendMessage(bytes_)
-
-
-class SimpleSerialProtocol(LineOnlyReceiver):
-    delimiter = b'\n'
-
-    def __init__(self, on_line_callback, on_connection_lost=None):
-        self.on_line_callback = on_line_callback
-        self.on_connection_lost = on_connection_lost
-
-    def connectionLost(self, reason=connectionDone):
-        if self.on_connection_lost:
-            self.on_connection_lost(reason)
-
-    def lineReceived(self, line):
-        self.on_line_callback(line)

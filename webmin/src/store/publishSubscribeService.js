@@ -34,7 +34,7 @@ const publishSubscribeService = new Vuex.Store({
 
       // Listening on the error channel is hardcoded
       if (message.channel === 'error') {
-        let logMessage = message.event.from + ': ' + message.event.log
+        let logMessage = message.event.hostname + ': ' + message.event.log
         notificationStore.commit('pushNotification', {type: 'error', message: logMessage})
       }
 

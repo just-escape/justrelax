@@ -1,0 +1,6 @@
+twisted
+autobahn
+PyYAML
+RPi.GPIO
+gpiozero
+pyserial
