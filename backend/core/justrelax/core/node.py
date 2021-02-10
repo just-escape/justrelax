@@ -13,6 +13,7 @@ from twisted.internet.protocol import ReconnectingClientFactory
 from autobahn.twisted.websocket import WebSocketClientProtocol, WebSocketClientFactory
 
 from justrelax.core.logging_utils import init_logging, logger
+from justrelax.core.serial import Serial
 
 
 class NodeProtocol(WebSocketClientProtocol):
