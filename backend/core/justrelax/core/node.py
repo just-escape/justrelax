@@ -42,9 +42,9 @@ class NodeProtocol(WebSocketClientProtocol):
 
         # message could be validated here with something like pydantic
 
-        logger.info("{} >>> {}".format(channel, event))
-
         try:
+            logger.info("{} >>> {}".format(message['channel'], message['event']))
+
             self.factory.process_event(message['event'], message['channel'])
         except Exception as e:
             formatted_exception = "{}: {}".format(type(e).__name__, e)
