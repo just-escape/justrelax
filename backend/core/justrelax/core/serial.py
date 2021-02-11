@@ -3,7 +3,7 @@ from twisted.internet import reactor
 from twisted.protocols.basic import LineOnlyReceiver
 from twisted.internet.serialport import SerialPort
 
-from justrelax.common.logging_utils import logger
+from justrelax.core.logging_utils import logger
 
 
 class SimpleSerialProtocol(LineOnlyReceiver):
