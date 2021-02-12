@@ -172,11 +172,17 @@ class EventFilterMixin:
             if channel is not ... or channel != callback['channel']:
                 continue
 
-            for key, value in callback['filter'].items():
-                if key not in event or event[key] != value:
-                    break
+            if isinstance(event, dict):
+                for key, value in callback['filter'].items():
+                    if key not in event or event[key] != value:
+                        break
+                else:
+                    callbacks.append(callback)
+
             else:
-                callbacks.append(callback)
+                if not callback['filter']:
+                    # filter is {} <=> no filtering
+                    callbacks.append(callback)
 
         return callbacks
 
@@ -203,24 +209,16 @@ class EventFilterMixin:
         return args, kwargs
 
     def process_event(self, event, channel):
-        if isinstance(event, dict):
-            callbacks = self._get_callbacks(event, channel)
+        callbacks = self._get_callbacks(event, channel)
 
-            for callback in callbacks:
-                try:
-                    args, kwargs = self._get_args_for_callback(event, channel, callback)
-                except ValueError as e:
-                    logger.error("Could not execute callback {} ({}): ignoring".format(callback.__name__, e))
-                    continue
+        for callback in callbacks:
+            try:
+                args, kwargs = self._get_args_for_callback(event, channel, callback)
+            except ValueError as e:
+                logger.error("Could not execute callback {} ({}): ignoring".format(callback.__name__, e))
+                continue
 
-                callback['callable'](*args, **kwargs)
-
-        else:
-            # The event parameter has not been verified. This code is not really safe but it handles the case...
-            if callback['pass_channel']:
-                callback['callable'](channel, event)
-            else:
-                callback['callable'](event)
+            callback['callable'](*args, **kwargs)
 
 
 class MagicNode(EventFilterMixin, Node):
