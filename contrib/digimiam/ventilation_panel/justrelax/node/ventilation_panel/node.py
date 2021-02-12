@@ -99,8 +99,6 @@ class VentilationController:
         self.animation_tasks = {}
         self.unskippable_animation_task = None
 
-        self.status = "inactive"
-
     @property
     def difficulty(self):
         return self._difficulty
@@ -649,6 +647,9 @@ class VentilationPanel(MagicNode):
         self.vc = VentilationController(
             self, initial_difficulty, difficulties, round_leds, air_ducts, air_sources, colors,
             magnet_pin, magnet_led_index)
+
+    def on_first_connection(self):
+        self.vc.status = "inactive"
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
