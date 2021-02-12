@@ -22,7 +22,7 @@ videos:
   ads_loop:
     layer: 1
     path: /home/pi/videos/ads_loop.mp4
-    autoplay: no
+    autoplay: yes
     loop: yes
     display: 7
   ms_pepper_here_you_are:
