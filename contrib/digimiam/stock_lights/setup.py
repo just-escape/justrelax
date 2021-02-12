@@ -11,7 +11,7 @@ if __name__ == '__main__':
         name="justrelax_node_stock_lights",
         version="0.1",
         packages=["justrelax.node.stock_lights"],
-        scripts=["scripts/start-stock-lights"],
+        scripts=["scripts/start-node-stock-lights"],
         install_requires=get_requirements(),
         zip_safe=False,
     )
