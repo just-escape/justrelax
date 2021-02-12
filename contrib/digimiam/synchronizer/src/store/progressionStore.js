@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-import justSockService from '@/store/justSockService.js'
+import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 let store = new Vuex.Store({
   state: {
@@ -30,20 +30,20 @@ let store = new Vuex.Store({
     setLightServiceSuccess(state) {
       if (!state.lightServiceSuccess) {
         state.lightServiceSuccess = true
-        justSockService.commit("sendEvent", {"category": "light_service_success"})
+        publishSubscribeService.commit("sendEvent", {"category": "light_service_success"})
 
         if (state.menuServiceSuccess) {
-          justSockService.commit("sendEvent", {"category": "services_synchronization_success"})
+          publishSubscribeService.commit("sendEvent", {"category": "services_synchronization_success"})
         }
       }
     },
     setMenuServiceSuccess(state) {
       if (!state.menuServiceSuccess) {
         state.menuServiceSuccess = true
-        justSockService.commit("sendEvent", {"category": "menu_service_success"})
+        publishSubscribeService.commit("sendEvent", {"category": "menu_service_success"})
 
         if (state.lightServiceSuccess) {
-          justSockService.commit("sendEvent", {"category": "services_synchronization_success"})
+          publishSubscribeService.commit("sendEvent", {"category": "services_synchronization_success"})
         }
       }
     },

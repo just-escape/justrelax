@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     click(button) {
-      roomStore.dispatch('widgetAction', {channel: this.defaultChannel, widgetId: button.id, widgetType: 'button', action: "click"})
+      roomStore.dispatch('widgetAction', {channel: this.defaultChannel, widgetId: button.id, widgetType: 'button', action: "click", ...button.extra})
     }
   },
   props: [

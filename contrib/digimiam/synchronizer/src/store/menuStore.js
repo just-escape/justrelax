@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import justSockService from '@/store/justSockService.js'
+import publishSubscribeService from '@/store/publishSubscribeService.js'
 import progressionStore from '@/store/progressionStore.js'
 
 Vue.use(Vuex)
@@ -308,7 +308,7 @@ export default new Vuex.Store({
         dish = "error"
       }
 
-      justSockService.commit('sendEvent', {
+      publishSubscribeService.commit('sendEvent', {
         category: "set_menu_entry",
         index: index,
         dish: dish,
@@ -338,7 +338,7 @@ export default new Vuex.Store({
       // TODO: notify hologram player
 
       state.success = true
-      /*justSockService.commit('sendEvent', {
+      /*publishSubscribeService.commit('sendEvent', {
         category: "menu_success"
       })*/
     },

@@ -59,7 +59,7 @@
 <script>
 import LightMonitorUnitTriangle from '@/components/LightMonitorUnitTriangle.vue'
 import lightStore from '@/store/lightStore.js'
-import justSockService from '@/store/justSockService.js'
+import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 export default {
   name: 'LightMonitorUnit',
@@ -220,7 +220,7 @@ export default {
     },
     isActivated(newValue) {
       if (newValue) {
-        justSockService.commit('sendEvent', {"category": "on", "color": this.color})
+        publishSubscribeService.commit('sendEvent', {"category": "on", "color": this.color})
 
         this.grayscaleAnimation.pause()
 
@@ -233,7 +233,7 @@ export default {
           easing: 'linear',
         })
       } else {
-        justSockService.commit('sendEvent', {"category": "off", "color": this.color})
+        publishSubscribeService.commit('sendEvent', {"category": "off", "color": this.color})
 
         if (this.areSensorsLocked) {
           this.grayscaleAnimation.pause()

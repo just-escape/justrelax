@@ -11,8 +11,16 @@ Vue.use(Vuex)
 const publishSubscribeService = new Vuex.Store({
   state: {
     name: "root_server",
+    subscriptionChannel: undefined,
+    publicationChannel: undefined,
   },
   mutations: {
+    setSubscriptionChannel (state, subscriptionChannel) {
+      state.subscriptionChannel = subscriptionChannel
+    },
+    setPublicationChannel (state, publicationChannel) {
+      state.publicationChannel = publicationChannel
+    },
     // eslint-disable-next-line
     SOCKET_ONOPEN (state, event) {
       Vue.prototype.$socket = event.currentTarget
@@ -23,16 +31,9 @@ const publishSubscribeService = new Vuex.Store({
         state.name = query.name
       }
 
-      let channel = ""
-      if (query.channelPrefix !== undefined) {
-        channel = query.channelPrefix + state.name
-      } else {
-        channel = state.name
-      }
-
       let subscribeEvent = {
         action: "subscribe",
-        channel: channel,
+        channel: state.subscriptionChannel,
       }
       Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
     },
@@ -85,7 +86,7 @@ const publishSubscribeService = new Vuex.Store({
     },
     publish (state, event) {
       event.from = state.name
-      let json = JSON.stringify({action: "publish", event: event})
+      let json = JSON.stringify({action: "publish", channel: state.publicationChannel, event: event})
       Vue.prototype.$socket.send(json)
     },
   },

@@ -5,9 +5,24 @@
 </template>
 
 <script>
+import publishSubscribeService from '@/store/publishSubscribeService.js'
+
 export default {
   name: 'App',
   mounted() {
+    // Disable longtap (right click) menu to appear
+    window.oncontextmenu = function() {
+      return false
+    }
+
+    if (this.$route.query.channel_prefix !== undefined) {
+      publishSubscribeService.commit('setSubscriptionChannel', this.$route.query.channel_prefix + '.' + publishSubscribeService.state.name)
+      publishSubscribeService.commit('setPublicationChannel', this.$route.query.channel_prefix + '.scenario')
+    } else {
+      publishSubscribeService.commit('setSubscriptionChannel', publishSubscribeService.state.name)
+      publishSubscribeService.commit('setPublicationChannel', 'scenario')
+    }
+
     let ws_url = this.$route.query.ws_url
     if (ws_url) {
       this.$connect('ws://' + ws_url)

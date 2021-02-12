@@ -16,6 +16,7 @@
 <script>
 import ButtonJaffa from "@/components/common/ButtonJaffa"
 import publishSubscribeService from "@/store/publishSubscribeService.js"
+import notificationStore from "@/store/notificationStore.js"
 
 export default {
   name: "PublishEvent",
@@ -30,7 +31,13 @@ export default {
   },
   methods: {
     publish() {
-      publishSubscribeService.dispatch('publish', {channel: this.channel, event: this.event})
+      try {
+        let parsedEvent = JSON.parse(this.event)
+        publishSubscribeService.commit('publish', {channel: this.channel, event: parsedEvent})
+      } catch {
+        notificationStore.pushError(this.event + " l'événement n'est pas sérialisable en JSON")
+        return
+      }
     },
   },
   props: ["defaultChannel"],

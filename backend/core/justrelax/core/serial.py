@@ -61,7 +61,7 @@ class Serial:
 
             # port is passed as argument to mimic the pub/sub channel behaviour and have the same interface as
             # the node service process_event method. It allows as well to use the same callback for several serial ports
-            self.process_event(event_to_process, port)
+            self.process_event(event_to_process, self.port)
 
         except Exception as e:
             formatted_exception = "{}: {}".format(type(e).__name__, e)
