@@ -24,7 +24,7 @@ export default {
     return {
       // Is updated only when a video is not playing
       videoLang: this.$i18n.locale,
-      blackScreenOpacity: 1,
+      blackScreenOpacity: 0,
     }
   },
   computed: {
