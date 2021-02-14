@@ -130,6 +130,7 @@ class EventFilterMixin:
         callback_parameters = inspect.signature(callable).parameters
         inspection_data = {
             'callable': callable,
+            'channel': callable.channel,
             'filter': callable.filter,
             'pass_channel': False,
             'variable_kwargs': False,
@@ -169,7 +170,7 @@ class EventFilterMixin:
         callbacks = []
 
         for callback in self._event_callbacks:
-            if channel is not ... or channel != callback['channel']:
+            if callback['channel'] is not ... and channel != callback['channel']:
                 continue
 
             if isinstance(event, dict):
