@@ -199,7 +199,7 @@ class EventFilterMixin:
         for callback_kwarg in callback['kwargs']:
             if callback_kwarg in kwargs:
                 annotation = callback['kwargs'][callback_kwarg]['annotation']
-                if not isinstance(kwargs[callback_kwarg], annotation):
+                if annotation is not ... and not isinstance(kwargs[callback_kwarg], annotation):
                     raise ValueError("Event field {} type is not {} (received={})".format(
                         callback_kwarg, annotation, kwargs[callback_kwarg]))
 
