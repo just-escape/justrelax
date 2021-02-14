@@ -103,10 +103,11 @@ class Color:
 class LoadCells(MagicNode):
     def __init__(self, *args, **kwargs):
         super(LoadCells, self).__init__(*args, **kwargs)
+        self.colors = {}
 
+    def on_first_connection(self):
         deactivation_delay = self.config['deactivation_delay']
 
-        self.colors = {}
         for pin, color in self.config['cells'].items():
             if color not in self.colors:
                 self.colors[color] = Color(color, deactivation_delay, self.notify)
