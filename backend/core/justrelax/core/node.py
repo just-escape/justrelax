@@ -290,7 +290,7 @@ class MagicNode(EventFilterMixin, Node):
                 logger.error("No serial instance available: skipping")
                 return
 
-            serial = self._serials.values()[0]
+            serial = list(self._serials.values())[0]
 
         else:
             if port not in self._serials:
