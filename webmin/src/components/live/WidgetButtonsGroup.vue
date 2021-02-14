@@ -5,8 +5,8 @@
     <b-button-group>
       <ButtonJaffa
         size="sm"
-        v-for="button in row.widget_params"
-        :key="button.id"
+        v-for="(button, index) in row.widget_params"
+        :key="index"
         @click="click(button)"
       >
         <i :class="button.icon"></i>
