@@ -43,7 +43,7 @@ class NodeProtocol(WebSocketClientProtocol):
         # message could be validated here with something like pydantic
 
         try:
-            logger.info("{} >>> {}".format(message['channel'], message['event']))
+            logger.info("{} <<< {}".format(message['channel'], message['event']))
 
             self.factory.process_event(message['event'], message['channel'])
         except Exception as e:
@@ -87,7 +87,7 @@ class Node(WebSocketClientFactory, ReconnectingClientFactory):
         ReconnectingClientFactory.clientConnectionFailed(self, connector, reason)
 
     def publish(self, event, channel):
-        logger.info("{} <<< {}".format(channel, event))
+        logger.info("{} >>> {}".format(channel, event))
         self.protocol.send_message({'action': 'publish', 'channel': channel, 'event': event})
 
     def process_event(self, event, channel):
