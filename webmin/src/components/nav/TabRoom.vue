@@ -7,7 +7,7 @@
         </a>
       </div>
       <div class="d-flex flex-row">
-        <Clock class="mr-2" :roomId="room.id" :data="'gameTime'" :displayZero="true"/>
+        <Clock class="mr-2" :roomId="room.id" :data="'game_time'" :displayZero="true"/>
         <CollapseChevron class="align-self-center" v-b-toggle="'collapse-rooms-' + room.id"/>
       </div>
     </div>

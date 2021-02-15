@@ -5,6 +5,10 @@ from twisted.internet import reactor
 from justrelax.core.logging_utils import logger
 from justrelax.core.node import MagicNode, on_event
 
+STATE_NOT_STARTED = 'not_started'
+STATE_TICKING = 'ticking'
+STATE_PAUSED = 'paused'
+
 
 class Timer:
     def __init__(self, delay, repeat=False, callback=None, *args, **kwargs):
@@ -84,49 +88,99 @@ class Timer:
         self.callback(*self.callback_args, **self.callback_kwargs)
 
 
+class SessionTimer:
+    def __init__(self, tic_tac_callback=None):
+        self.tic_tac_callback = tic_tac_callback
+
+        self.tic_tac_period = 1  # seconds
+
+        self.state = STATE_NOT_STARTED
+        self.session_time = 0.
+
+        self.task = None
+        self.last_computed_delay = 0.
+        self.last_schedule_timestamp = 0.
+
+    def start(self):
+        if self.state == STATE_NOT_STARTED:
+            self.last_schedule_timestamp = time.monotonic()
+            self.schedule_next_tic_tac()
+            self.state = STATE_TICKING
+
+    def schedule_next_tic_tac(self):
+        now = time.monotonic()
+        delta_since_last_schedule = now - self.last_schedule_timestamp
+        self.last_schedule_timestamp = now
+
+        self.session_time += delta_since_last_schedule
+        delay_before_next_call = self.tic_tac_period - self.session_time % self.tic_tac_period
+        self.task = reactor.callLater(delay_before_next_call, self.tic_tac)
+
+    def pause(self):
+        if self.state == STATE_TICKING:
+            delta_since_last_schedule = time.monotonic() - self.last_schedule_timestamp
+            self.last_computed_delay = self.tic_tac_period - delta_since_last_schedule
+            self.session_time += delta_since_last_schedule
+            self.task.cancel()
+            self.state = STATE_PAUSED
+
+    def resume(self):
+        if self.state == STATE_PAUSED:
+            now = time.monotonic()
+            self.last_schedule_timestamp = now
+            self.task = reactor.callLater(self.last_computed_delay, self.tic_tac)
+            self.state = STATE_TICKING
+
+    def cancel(self):
+        if self.state == STATE_PAUSED:
+            self.session_time = 0.
+            self.state = STATE_NOT_STARTED
+
+    def tic_tac(self):
+        self.schedule_next_tic_tac()
+        if self.tic_tac_callback:
+            self.tic_tac_callback(self.session_time)
+
+
 class Scenario(MagicNode):
     def __init__(self, *args, **kwargs):
         super(Scenario, self).__init__(*args, **kwargs)
 
         self.publication_channel_prefix = self.config['publication_channel_prefix']
 
+        self.session_timer = SessionTimer(self.tic_tac_callback)
+        self.session_time = None
+
         self.timers = {
-            'update_street_time': Timer(1, True, self.update_street_time),
             'ventilation_instruction': Timer(30, False, self.give_ventilation_instruction),
         }
-
-        self.seconds = 0
 
     def publish_prefix(self, event, channel):
         self.publish(event, "{}{}".format(self.publication_channel_prefix, channel))
 
-    def update_street_time(self):
-        self.seconds += 1
-        self.publish_prefix({'category': 'set_session_time', 'seconds': self.seconds}, 'street_display')
-
     def give_ventilation_instruction(self):
         self.publish_prefix({'category': 'documentation_unplug_instruction', 'highlight': True}, 'orders')
 
-    @on_event(filter={'from': 'orchestrator', 'category': 'start'})
-    def start(self):
-        self.timers['update_street_time'].start()
+    def tic_tac_callback(self, seconds):
+        self.session_time = int(seconds)
+        self.publish_prefix({'category': 'set_session_time', 'seconds': self.session_time}, 'street_display')
+        self.publish_game_time_to_webmin()
 
-    @on_event(filter={'from': 'orchestrator', 'category': 'pause'})
-    def pause(self):
-        for timer_name, timer in self.timers.items():
-            timer.session_pause()
-
-    @on_event(filter={'from': 'orchestrator', 'category': 'resume'})
-    def resume(self):
-        for timer_name, timer in self.timers.items():
-            timer.session_resume()
-
-    @on_event(filter={'from': 'orchestrator', 'category': 'reset'})
-    def reset(self):
-        self.seconds = 0
+    @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'run'})
+    def run_room_from_webmin(self):
+        self.run_room()
 
     @on_event(filter={'from': 'street_display', 'category': 'play'})
-    def street_display_event_play(self):
+    def run_room_from_street_display(self):
+        self.run_room()
+
+    def run_room(self):
+        if self.session_timer.state == STATE_NOT_STARTED:
+            self.start_room()
+        elif self.session_timer.state == STATE_PAUSED:
+            self.resume_room()
+
+    def start_room(self):
         def play_ms_pepper_here_you_are():
             self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
             reactor.callLater(35, after_ms_pepper_here_you_are)
@@ -149,7 +203,37 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'unlock'}, 'front_door_magnet')
             self.publish_prefix({'category': 'play'}, 'orchestrator')
 
-        play_ms_pepper_here_you_are()
+        self.session_timer.start()
+        # play_ms_pepper_here_you_are()
+
+    def resume_room(self):
+        self.session_timer.resume()
+        for timer_name, timer in self.timers.items():
+            timer.session_resume()
+
+    @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'halt'})
+    def halt_room(self):
+        if self.session_timer.state == STATE_TICKING:
+            for timer_name, timer in self.timers.items():
+                timer.session_pause()
+            self.session_timer.pause()
+
+    @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'reset'})
+    def reset_room(self):
+        if self.session_timer.state == STATE_PAUSED:
+            for timer_name, timer in self.timers.items():
+                timer.cancel()
+            self.session_timer.cancel()
+            self.session_time = None
+
+            self.publish_game_time_to_webmin()
+
+    @on_event(filter={'from': 'webmin', 'category': 'request_session_data'})
+    def on_request_session_data(self):
+        self.publish_game_time_to_webmin()
+
+    def publish_game_time_to_webmin(self):
+        self.publish_prefix({'category': 'set_session_data', 'key': 'game_time', 'data': self.session_time}, 'webmin')
 
     @on_event(filter={'from': 'street_display', 'category': 'unlock_front_door'})
     def street_display_event_unlock_front_door(self):

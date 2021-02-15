@@ -35,9 +35,9 @@ export default new Vuex.Store({
     },*/
     processEvent(state, {channel, event}) {
       for (var room of state.rooms) {
-        if (room.subscription_channels.contains(channel)) {
+        if (room.subscription_channels.includes(channel)) {
           if (event.category === 'set_session_data') {
-            state.sessionData[room.id][event.key] = event.data
+            Vue.set(state.sessionData[room.id], event.key, event.data)
           }
         }
       }
@@ -93,6 +93,16 @@ export default new Vuex.Store({
         })
     },*/
     fetchRooms() {
+      publishSubscribeService.commit('subscribe', 'd1.webmin')
+      publishSubscribeService.commit('subscribe', 'd2.webmin')
+      publishSubscribeService.commit('addOnConnectionPublication', {channel: 'd1.scenario', event: {'category': 'request_session_data'}})
+      publishSubscribeService.commit('addOnConnectionPublication', {channel: 'd2.scenario', event: {'category': 'request_session_data'}})
+
+      /*for (var room of rooms) {
+        for (var channel of room.subscription_channels) {
+          publishSubscribeService.commit('subscribe', channel)
+        }
+      }*/
       /*Vue.prototype.$justRestAPI.get('/room')
         .then(function (response) {
           var rooms = response.data

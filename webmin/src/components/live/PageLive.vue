@@ -25,7 +25,7 @@
       <StartStop :channel="room.default_publication_channel" class="my-auto"/>
     </div>
     <div class="d-flex flex-row" slot="header-right">
-      <Clock :roomId="room.id" :data="'gameTime'" :displayZero="false" class="size-25 big-noodle mr-3"/>
+      <Clock :roomId="room.id" :data="'game_time'" :displayZero="true" class="size-25 big-noodle mr-3"/>
       <NotificationButton class="my-auto"/>
     </div>
 

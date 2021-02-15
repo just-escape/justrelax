@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ this.formattedTime }}
+    {{ formattedTime }}
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
         return ("0" + num).slice(-2);
       }
 
-      if (this.seconds === undefined) {
+      if (this.seconds === undefined || this.seconds === null) {
         return ""
       }
 

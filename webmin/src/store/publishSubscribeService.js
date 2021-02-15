@@ -7,26 +7,36 @@ Vue.use(Vuex)
 
 const publishSubscribeService = new Vuex.Store({
   state: {
+    isWebSocketOpened: false,
     name: "webmin",
     subscriptions: [],
+    onConnectionPublications: [],
   },
   mutations: {
     SOCKET_ONOPEN (state, event) {
+      state.isWebSocketOpened = true
+
       Vue.prototype.$socket = event.currentTarget
-      for (let channel in state.subscriptions) {
+      for (let channel of state.subscriptions) {
         let subscribeEvent = {
           action: "subscribe",
           channel: channel,
         }
         Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
       }
+
+      for (let connectionPublication of state.onConnectionPublications) {
+        publishSubscribeService.commit('publish', {channel: connectionPublication.channel, event: connectionPublication.event})
+      }
     },
     // eslint-disable-next-line
     SOCKET_ONCLOSE (state, event) {
+      state.isWebSocketOpened = false
       notificationStore.dispatch('pushError', 'Websocket connection lost')
     },
     // eslint-disable-next-line
     SOCKET_ONERROR (state, event) {
+      state.isWebSocketOpened = false
       notificationStore.dispatch('pushError', 'Websocket error')
     },
     SOCKET_ONMESSAGE (state, rawMessage) {
@@ -48,14 +58,26 @@ const publishSubscribeService = new Vuex.Store({
     SOCKET_RECONNECT_ERROR (state) {
       notificationStore.dispatch('pushError', 'Websocket reconnection error')
     },
+    addOnConnectionPublication(state, {channel, event}) {
+      state.onConnectionPublications.push({channel: channel, event: event})
+
+      if (state.isWebSocketOpened) {
+        // If it's already opened we should send it directly or we will never see it
+        publishSubscribeService.commit('publish', {channel: channel, event: event})
+      }
+    },
     subscribe (state, channel) {
       if (!state.subscriptions.includes(channel)) {
         state.subscriptions.push(channel)
-        let subscribeEvent = {
-          action: "subscribe",
-          channel: channel,
+
+        if (state.isWebSocketOpened) {
+          // If the web socket is not opened, the subscription event will be sent in SOCKET_ONOPEN
+          let subscribeEvent = {
+            action: "subscribe",
+            channel: channel,
+          }
+          Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
         }
-        Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
       }
     },
     // eslint-disable-next-line
