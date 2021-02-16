@@ -32,12 +32,12 @@ const publishSubscribeService = new Vuex.Store({
     // eslint-disable-next-line
     SOCKET_ONCLOSE (state, event) {
       state.isWebSocketOpened = false
-      notificationStore.dispatch('pushError', 'Websocket connection lost')
+      notificationStore.dispatch('pushError', 'Web socket connection lost')
     },
     // eslint-disable-next-line
     SOCKET_ONERROR (state, event) {
       state.isWebSocketOpened = false
-      notificationStore.dispatch('pushError', 'Websocket error')
+      notificationStore.dispatch('pushError', 'Web socket error')
     },
     SOCKET_ONMESSAGE (state, rawMessage) {
       let message = JSON.parse(rawMessage.data)
@@ -52,11 +52,11 @@ const publishSubscribeService = new Vuex.Store({
     },
     // eslint-disable-next-line
     SOCKET_RECONNECT (state, count) {
-      notificationStore.dispatch('pushError', 'Attempting reconnection to websocket (' + count + ')')
+      notificationStore.dispatch('pushError', 'Attempting reconnection to web socket (' + count + ')')
     },
     // eslint-disable-next-line
     SOCKET_RECONNECT_ERROR (state) {
-      notificationStore.dispatch('pushError', 'Websocket reconnection error')
+      notificationStore.dispatch('pushError', 'Web socket reconnection error')
     },
     addOnConnectionPublication(state, {channel, event}) {
       state.onConnectionPublications.push({channel: channel, event: event})
@@ -82,9 +82,13 @@ const publishSubscribeService = new Vuex.Store({
     },
     // eslint-disable-next-line
     publish (state, {channel, event}) {
-      event.from = state.name
-      let json = JSON.stringify({action: "publish", channel: channel, event: event})
-      Vue.prototype.$socket.send(json)
+      if (state.isWebSocketOpened) {
+        event.from = state.name
+        let json = JSON.stringify({action: "publish", channel: channel, event: event})
+        Vue.prototype.$socket.send(json)
+      } else {
+        notificationStore.dispatch('pushError', 'Web socket connection is not established: event has not been sent')
+      }
     },
   },
 })
