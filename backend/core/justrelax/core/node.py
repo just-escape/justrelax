@@ -46,9 +46,8 @@ class NodeProtocol(WebSocketClientProtocol):
             logger.info("{} <<< {}".format(message['channel'], message['event']))
 
             self.factory.process_event(message['event'], message['channel'])
-        except Exception as e:
-            formatted_exception = "{}: {}".format(type(e).__name__, e)
-            logger.error("Error while trying to process message={} ({})".format(message, formatted_exception))
+        except Exception:
+            logger.error("Error while trying to process message={}".format(message), exc_info=True)
 
     def onClose(self, wasClean, code, reason):
         logger.info("WebSocket connection closed (reason={})".format(reason))
@@ -215,8 +214,10 @@ class EventFilterMixin:
         for callback in callbacks:
             try:
                 args, kwargs = self._get_args_for_callback(event, channel, callback)
-            except ValueError as e:
-                logger.error("Could not execute callback {} ({}): ignoring".format(callback.__name__, e))
+            except ValueError:
+                logger.error(
+                    "Error while executing callback {}: ignoring".format(callback['callable'].__name__),
+                    exc_info=True)
                 continue
 
             callback['callable'](*args, **kwargs)

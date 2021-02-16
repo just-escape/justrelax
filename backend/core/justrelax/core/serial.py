@@ -37,8 +37,10 @@ class Serial:
                 self.port, self.baud_rate, self.buffering_interval))
         except Exception as e:
             reactor.callLater(self.reconnection_delay, self.connect)
-            formatted_exception = "{}: {}".format(type(e).__name__, e)
-            logger.error("Error while trying to connect to serial port {} ({})".format(self.port, formatted_exception))
+            logger.error(
+                "Error while trying to connect to serial port {}: retrying after {} seconds".format(
+                    self.port, self.reconnection_delay),
+                exc_info=True)
 
     def connection_lost(self, reason):
         logger.error("Serial port {} disconnected (reason={})".format(self.port, reason))
@@ -65,9 +67,8 @@ class Serial:
             # the node service process_event method. It allows as well to use the same callback for several serial ports
             self.process_event(event_to_process, self.port)
 
-        except Exception as e:
-            formatted_exception = "{}: {}".format(type(e).__name__, e)
-            logger.error("Error while trying to process arduino event={} ({})".format(event, formatted_exception))
+        except Exception:
+            logger.error("Error while trying to process arduino event={}".format(event), exc_info=True)
 
     def process_event(self, event, port):
         pass
@@ -102,10 +103,9 @@ class Serial:
         if isinstance(event, dict):
             try:
                 formatted_event = json.dumps(event, separators=(',', ':'))
-            except TypeError as e:
-                formatted_exception = "{}: {}".format(type(e).__name__, e)
+            except TypeError:
                 logger.error(
-                    "Error while trying to convert {} as json ({}): skipping".format(event, formatted_exception))
+                    "Error while trying to convert {} as json: skipping".format(event), exc_info=True)
                 return
 
         else:

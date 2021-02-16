@@ -48,9 +48,8 @@ class BrokerProtocol(WebSocketServerProtocol):
             elif message["action"] == "subscribe":
                 self.subscribe(message["channel"])
 
-        except Exception as e:
-            formatted_exception = "{}: {}".format(type(e).__name__, e)
-            logger.error("Error while trying to process message={} ({})".format(message, formatted_exception))
+        except Exception:
+            logger.error("Error while trying to process message={}: skipping".format(message), exc_info=True)
 
     def subscribe(self, channel):
         self.channels.add(channel)
