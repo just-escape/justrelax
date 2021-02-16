@@ -609,11 +609,11 @@ class Scenario(MagicNode):
 
     @on_event(filter={'widget_id': 'music_player_set_volume'})
     def buttons_music_player_set_volume(self, track_id: str, volume: int):
-        self.publish_prefix({'category': 'set_volume', 'track_id': track_id, 'volume': volume}, 'music_player')
+        self.publish_prefix({'category': 'set_volume', 'track_id': track_id, 'volume': volume, 'duration': 10}, 'music_player')
 
     @on_event(filter={'widget_id': 'music_player_set_master_volume'})
     def buttons_music_player_set_master_volume(self, volume: int):
-        self.publish_prefix({'category': 'set_volume', 'volume': volume}, 'music_player')
+        self.publish_prefix({'category': 'set_volume', 'volume': volume, 'duration': 10}, 'music_player')
 
     @on_event(filter={'widget_id': 'set_inventory_difficulty_easy'})
     def button_set_inventory_difficulty_easy(self):
