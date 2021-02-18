@@ -570,7 +570,7 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'control_force_manual_mode'})
     def button_control_force_manual_mode(self):
         self.publish_prefix({'category': 'force_manual_mode'}, 'control_panel')
-        self.publish_prefix({'category': 'restaurant_in_manual_mode'})  # TODO: bad
+        self.publish_prefix({'category': 'restaurant_in_manual_mode'}, 'synchronizer')  # TODO: bad
 
     @on_event(filter={'widget_id': 'control_menu_set_status_repaired_0'})
     def button_control_menu_set_status_repaired_0(self):
