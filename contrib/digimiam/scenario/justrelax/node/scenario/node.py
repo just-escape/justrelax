@@ -296,7 +296,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'load_cells', 'category': 'load_cell'})
     def load_cells_event_load_cell(self, color: str, activated: bool):
-        self.publish_prefix({'color': color, 'activated': activated}, 'synchronizer')
+        self.publish_prefix({'category': 'load_cell', 'color': color, 'activated': activated}, 'synchronizer')
 
     @on_event(filter={'from': 'synchronizer', 'category': 'on'})
     def synchronizer_event_on(self, color: str):
@@ -570,6 +570,7 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'control_force_manual_mode'})
     def button_control_force_manual_mode(self):
         self.publish_prefix({'category': 'force_manual_mode'}, 'control_panel')
+        self.publish_prefix({'category': 'restaurant_in_manual_mode'})  # TODO: bad
 
     @on_event(filter={'widget_id': 'control_menu_set_status_repaired_0'})
     def button_control_menu_set_status_repaired_0(self):
