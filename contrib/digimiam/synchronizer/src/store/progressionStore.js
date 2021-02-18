@@ -30,20 +30,20 @@ let store = new Vuex.Store({
     setLightServiceSuccess(state) {
       if (!state.lightServiceSuccess) {
         state.lightServiceSuccess = true
-        publishSubscribeService.commit("sendEvent", {"category": "light_service_success"})
+        publishSubscribeService.commit("publish", {"category": "light_service_success"})
 
         if (state.menuServiceSuccess) {
-          publishSubscribeService.commit("sendEvent", {"category": "services_synchronization_success"})
+          publishSubscribeService.commit("publish", {"category": "services_synchronization_success"})
         }
       }
     },
     setMenuServiceSuccess(state) {
       if (!state.menuServiceSuccess) {
         state.menuServiceSuccess = true
-        publishSubscribeService.commit("sendEvent", {"category": "menu_service_success"})
+        publishSubscribeService.commit("publish", {"category": "menu_service_success"})
 
         if (state.lightServiceSuccess) {
-          publishSubscribeService.commit("sendEvent", {"category": "services_synchronization_success"})
+          publishSubscribeService.commit("publish", {"category": "services_synchronization_success"})
         }
       }
     },

@@ -1627,6 +1627,8 @@ var store = new Vuex.Store({
         var edgeId = context.state.currentActivationSequence[i]
         context.commit('setEdgeColor', {edgeId, color})
       }
+
+      context.commit('setRestaurantInManualMode')
     },
     toggleColor (context, {color, activated}) {
       if (!context.state.isRestaurantInManualMode) {

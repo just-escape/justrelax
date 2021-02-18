@@ -308,7 +308,7 @@ export default new Vuex.Store({
         dish = "error"
       }
 
-      publishSubscribeService.commit('sendEvent', {
+      publishSubscribeService.commit('publish', {
         category: "set_menu_entry",
         index: index,
         dish: dish,
@@ -338,7 +338,7 @@ export default new Vuex.Store({
       // TODO: notify hologram player
 
       state.success = true
-      /*publishSubscribeService.commit('sendEvent', {
+      /*publishSubscribeService.commit('publish', {
         category: "menu_success"
       })*/
     },

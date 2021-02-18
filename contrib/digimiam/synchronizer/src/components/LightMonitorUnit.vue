@@ -220,7 +220,7 @@ export default {
     },
     isActivated(newValue) {
       if (newValue) {
-        publishSubscribeService.commit('sendEvent', {"category": "on", "color": this.color})
+        publishSubscribeService.commit('publish', {"category": "on", "color": this.color})
 
         this.grayscaleAnimation.pause()
 
@@ -233,7 +233,7 @@ export default {
           easing: 'linear',
         })
       } else {
-        publishSubscribeService.commit('sendEvent', {"category": "off", "color": this.color})
+        publishSubscribeService.commit('publish', {"category": "off", "color": this.color})
 
         if (this.areSensorsLocked) {
           this.grayscaleAnimation.pause()
