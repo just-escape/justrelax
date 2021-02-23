@@ -17,7 +17,7 @@ export default {
 
     if (this.$route.query.channel_prefix !== undefined) {
       publishSubscribeService.commit('addSubscriptionChannel', this.$route.query.channel_prefix + '.' + publishSubscribeService.state.name)
-      publishSubscribeService.commit('addSubscriptionChannel', this.$route.query.channel_prefix + '.' + '.broadcast')
+      publishSubscribeService.commit('addSubscriptionChannel', this.$route.query.channel_prefix + '.broadcast')
       publishSubscribeService.commit('setPublicationChannel', this.$route.query.channel_prefix + '.scenario')
     } else {
       publishSubscribeService.commit('addSubscriptionChannel', publishSubscribeService.state.name)
