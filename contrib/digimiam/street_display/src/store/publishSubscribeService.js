@@ -50,10 +50,10 @@ const publishSubscribeService = new Vuex.Store({
       let message = JSON.parse(rawMessage.data)
       let event = message.event
 
-      if (event.type === 'reset') {
+      if (event.category === 'reset') {
         // Reload page
         router.go()
-      } else if (event.type === 'l10n') {
+      } else if (event.category === 'set_locale') {
         let query = JSON.parse(JSON.stringify(router.app.$route.query))
         if (event.locale == 'fr') {
           if (i18n.locale != 'fr') {
