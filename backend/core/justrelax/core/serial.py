@@ -113,7 +113,7 @@ class Serial:
             formatted_event = "{}".format(event)
 
         # If some characters cannot be encoded, they are replaced by '?' (thanks to 'replace')
-        encoded_event = "{}".format(event).encode('ascii', 'replace')
+        encoded_event = "{}".format(formatted_event).encode('ascii', 'replace')
 
         logger.info("{} <<< {}".format(self.port, encoded_event))
         self.protocol.sendLine(encoded_event)
