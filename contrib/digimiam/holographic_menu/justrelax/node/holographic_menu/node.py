@@ -1,3 +1,5 @@
+from copy import copy
+
 from twisted.internet import reactor
 
 from justrelax.core.logging_utils import logger
@@ -10,11 +12,11 @@ class HolographicMenu(MagicNode):
         super(HolographicMenu, self).__init__(*args, **kwargs)
 
         path = self.config['path']
-        self.initial_slides = self.config['initial_slides']
+        initial_slides = copy(self.config['initial_slides'])
         chapters = self.config['chapters']
 
         self.player = VLCDynamicSlidesPlayer(
-            media_path=path, initial_slides=self.initial_slides, chapters=chapters, service=self)
+            media_path=path, initial_slides=initial_slides, chapters=chapters, service=self)
 
         reactor.callLater(1, self.event_play)
 
@@ -58,5 +60,6 @@ class HolographicMenu(MagicNode):
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
-        for slide_index, chapter_id in enumerate(self.initial_slides):
+        logger.info("Reset")
+        for slide_index, chapter_id in enumerate(self.config['initial_slides']):
             self.player.set_slide(slide_index, chapter_id)
