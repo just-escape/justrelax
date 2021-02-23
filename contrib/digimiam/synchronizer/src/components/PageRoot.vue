@@ -76,8 +76,8 @@ export default {
     },
   },
   created() {
-    var lang = this.$route.query.lang
-    if (lang === undefined || lang == 'fr') {
+    var locale = this.$route.query.locale
+    if (locale === undefined || locale == 'fr') {
       this.$i18n.locale = 'fr'
     } else {
       this.$i18n.locale = 'en'

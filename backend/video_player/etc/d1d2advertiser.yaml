@@ -3,6 +3,7 @@ name: advertiser
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.advertiser
+  - d1.broadcast
 
 videos:
   street_idle:

@@ -23,6 +23,7 @@ class Lights(MagicNode):
 
         reactor.callLater(3, self.init_arduino)
 
+    @on_event(filter={'category': 'reset'})
     def init_arduino(self):
         for channel_mask, color in self.config['channels'].items():
             self.event_configure_channel_color(channel_mask, color)

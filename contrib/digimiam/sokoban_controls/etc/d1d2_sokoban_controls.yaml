@@ -3,6 +3,7 @@ name: sokoban_controls
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.sokoban_controls
+  - d1.broadcast
 
 left_pin: 25
 right_pin: 8

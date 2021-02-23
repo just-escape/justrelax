@@ -3,6 +3,7 @@ name: refectory_lights
 default_publication_channel: d2.scenario
 subscriptions:
   - d2.refectory_lights
+  - d2.broadcast
 
 serials:
   - port: /dev/arduino

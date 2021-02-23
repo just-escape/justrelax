@@ -3,6 +3,7 @@ name: secure_floor
 default_publication_channel: d2.scenario
 subscriptions:
   - d2.secure_floor
+  - d2.broadcast
 
 serials:
   - port: /dev/ttyUSB0

@@ -1,6 +1,9 @@
+name: rotary
+
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.rotary
+  - d1.broadcast
 
 clk_pin: 23
 dt_pin: 24

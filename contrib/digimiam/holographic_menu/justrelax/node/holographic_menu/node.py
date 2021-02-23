@@ -10,11 +10,11 @@ class HolographicMenu(MagicNode):
         super(HolographicMenu, self).__init__(*args, **kwargs)
 
         path = self.config['path']
-        initial_slides = self.config['initial_slides']
+        self.initial_slides = self.config['initial_slides']
         chapters = self.config['chapters']
 
         self.player = VLCDynamicSlidesPlayer(
-            media_path=path, initial_slides=initial_slides, chapters=chapters, service=self)
+            media_path=path, initial_slides=self.initial_slides, chapters=chapters, service=self)
 
         reactor.callLater(1, self.event_play)
 
@@ -42,10 +42,7 @@ class HolographicMenu(MagicNode):
         self.play_pause_stop("Stopping", "stop", delay)
 
     @on_event(filter={'category': 'set_slide'})
-    def event_set_slide(self, slide_index: int, chapter_id: str, delay=0):
-        if not isinstance(delay, (int, float)):
-            raise TypeError("Delay must be int or float (received={}): skipping".format(delay))
-
+    def event_set_slide(self, slide_index: int, chapter_id: str):
         if slide_index >= len(self.player.slides):
             raise ValueError("Video has only {} slides ({} is out of range): skipping".format(
                 len(self.player.slides), slide_index))
@@ -57,4 +54,9 @@ class HolographicMenu(MagicNode):
         logger.info("Setting chapter id={} in slide index={}".format(
             chapter_id, slide_index))
 
-        reactor.callLater(delay, self.player.set_slide, slide_index, chapter_id)
+        self.player.set_slide(slide_index, chapter_id)
+
+    @on_event(filter={'category': 'reset'})
+    def event_reset(self):
+        for slide_index, chapter_id in enumerate(self.initial_slides):
+            self.player.set_slide(slide_index, chapter_id)

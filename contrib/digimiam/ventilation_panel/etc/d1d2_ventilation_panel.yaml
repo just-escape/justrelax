@@ -3,6 +3,7 @@ name: ventilation_panel
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.ventilation_panel
+  - d1.broadcast
 
 lock:
   led_index: 6

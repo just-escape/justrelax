@@ -122,6 +122,10 @@ class SecureFloor(MagicNode):
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Resetting node")
+
+        if self.clear_alarm_task and self.clear_alarm_task.active():
+            self.clear_alarm_task.cancel()
+
         self.success = False
         self.set_led_color("black", sum(self.leds.keys()))
         self.event_tare()

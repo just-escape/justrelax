@@ -3,6 +3,7 @@ name: load_cells
 default_publication_channel: d2.scenario
 subscriptions:
   - d2.load_cells
+  - d2.broadcast
 
 deactivation_delay: 0.2
 

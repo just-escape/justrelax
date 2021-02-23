@@ -53,8 +53,6 @@ class VideoPlayer(MagicNode):
     def __init__(self, *args, **kwargs):
         super(VideoPlayer, self).__init__(*args, **kwargs)
 
-        self.player = None
-
         self.videos = {}
         for video_id, video_params in self.config['videos'].items():
             args = []
@@ -73,40 +71,22 @@ class VideoPlayer(MagicNode):
                 self.videos[video_id].play()
 
     @on_event(filter={'category': 'play'})
-    def event_play(self, video_id: str, delay=0):
-        if not isinstance(delay, (int, float)):
-            raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
-
-        if video_id not in self.videos:
-            raise ValueError("Video id={} is not configured: aborting".format(video_id))
-
-        if delay > 0:
-            logger.info("Scheduling to play video {} in {} seconds".format(video_id, delay))
-
-        reactor.callLater(delay, self.videos[video_id].play)
+    def event_play(self, video_id: str):
+        self.videos[video_id].play()
 
     @on_event(filter={'category': 'pause'})
-    def event_pause(self, video_id: str, delay=0):
-        if not isinstance(delay, (int, float)):
-            raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
-
-        if video_id not in self.videos:
-            raise ValueError("Video id={} is not configured: aborting".format(video_id))
-
-        if delay > 0:
-            logger.info("Scheduling to pause video {} in {} seconds".format(video_id, delay))
-
-        reactor.callLater(delay, self.videos[video_id].pause)
+    def event_pause(self, video_id: str):
+        self.videos[video_id].pause()
 
     @on_event(filter={'category': 'stop'})
-    def event_stop(self, video_id: str, delay=0):
-        if not isinstance(delay, (int, float)):
-            raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
+    def event_stop(self, video_id: str):
+        self.videos[video_id].stop()
 
-        if video_id not in self.videos:
-            raise ValueError("Video id={} is not configured: aborting".format(video_id))
+    @on_event(filter={'category': 'reset'})
+    def event_reset(self):
+        for video in self.videos.values():
+            video.stop()
 
-        if delay > 0:
-            logger.info("Scheduling to stop video {} in {} seconds".format(video_id, delay))
-
-        reactor.callLater(delay, self.videos[video_id].stop)
+        for video_id, video_params in self.config['videos'].items():
+            if video_params.get('autoplay', False):
+                self.videos[video_id].play()

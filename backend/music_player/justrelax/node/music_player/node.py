@@ -1,6 +1,5 @@
 import pyglet
 
-from twisted.internet import reactor
 from twisted.internet.task import LoopingCall
 
 from justrelax.core.logging_utils import logger
@@ -72,37 +71,31 @@ class MusicPlayer(MagicNode):
         pyglet.clock.tick()
         pyglet.app.platform_event_loop.dispatch_posted_events()
 
-    def play_pause_stop(self, action, method, track_id, delay=0):
-        if not isinstance(delay, (int, float)):
-            raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
-
+    def play_pause_stop(self, action, method, track_id):
         logger.info("{} track id={}".format(action, track_id))
 
         track = self.tracks.get(track_id, None)
         if track is None:
             raise ValueError("Unknown track id={}: aborting".format(track_id))
 
-        reactor.callLater(delay, getattr(track, method))
+        getattr(track, method)()
 
     @on_event(filter={'category': 'play'})
-    def event_play(self, track_id: str, delay=0):
-        self.play_pause_stop("Playing", "play", track_id, delay)
+    def event_play(self, track_id: str):
+        self.play_pause_stop("Playing", "play", track_id)
 
     @on_event(filter={'category': 'pause'})
-    def event_pause(self, track_id: str, delay=0):
-        self.play_pause_stop("Pausing", "pause", track_id, delay)
+    def event_pause(self, track_id: str):
+        self.play_pause_stop("Pausing", "pause", track_id)
 
     @on_event(filter={'category': 'stop'})
-    def event_stop(self, track_id: str, delay=0):
-        self.play_pause_stop("Stopping", "stop", track_id, delay)
+    def event_stop(self, track_id: str):
+        self.play_pause_stop("Stopping", "stop", track_id)
 
     @on_event(filter={'category': 'set_volume'})
-    def event_set_volume(self, volume: int, track_id=None, duration=0, ease: str = 'easeInOutSine', delay=0):
-        if not isinstance(delay, (int, float)):
-            raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
-
+    def event_set_volume(self, volume: int, track_id=None, duration=0, ease: str = 'easeInOutSine'):
         if not isinstance(duration, (int, float)):
-            raise ValueError("Delay must be int or float (received={}): skipping".format(delay))
+            raise ValueError("Delay must be int or float (received={}): skipping".format(duration))
 
         if ease not in EASE_MAPPING:
             raise ValueError('Unknown easing function (received={}): aborting'.format(ease))
@@ -125,4 +118,22 @@ class MusicPlayer(MagicNode):
         else:
             callable_ = self.tracks[track_id].fade_volume
 
-        reactor.callLater(delay, callable_, volume, duration, ease)
+        callable_(volume, duration, ease)
+
+    @on_event(filter={'category': 'reset'})
+    def event_reset(self):
+        logger.info("Resetting")
+        for track in self.tracks.values():
+            track.stop()
+
+        default_initial_volume = self.config.get('default_volume', 100)
+        for track in self.config.get('tracks', []):
+            track_id = track['id']
+            initial_volume = track.get('volume', default_initial_volume)
+            self.tracks[track_id].cancel_fades()
+            self.tracks[track_id].fade_volume(initial_volume, 0)
+
+        initial_master_volume = self.config.get('master_volume', None)
+        if initial_master_volume is not None and self.master_volume is not None:
+            self.master_volume.cancel_fades()
+            self.master_volume.fade_volume(initial_master_volume, 0)

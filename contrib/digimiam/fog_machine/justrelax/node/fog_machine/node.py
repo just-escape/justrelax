@@ -74,3 +74,15 @@ class FogMachine(MagicNode):
             self.send_fog_forever_task.cancel()
         else:
             logger.info("Fog was not already being sent forever: skipping")
+
+    @on_event(filter={'category': 'reset'})
+    def event_reset(self):
+        logger.info("Resetting")
+        if self.send_fog_task and self.send_fog_task.active():
+            self.send_fog_task.cancel()
+
+        if self.send_fog_forever_task and self.send_fog_forever_task.active():
+            self.send_fog_forever_task.cancel()
+
+        self._release_fog_pin()
+        self.event_off()

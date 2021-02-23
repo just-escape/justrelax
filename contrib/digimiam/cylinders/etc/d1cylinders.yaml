@@ -3,6 +3,7 @@ name: cylinders
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.cylinders
+  - d1.broadcast
 
 serials:
   - port: /dev/arduino1

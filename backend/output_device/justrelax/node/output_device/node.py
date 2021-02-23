@@ -8,15 +8,21 @@ class OutputDevice(MagicNode):
     def __init__(self, *args, **kwargs):
         super(OutputDevice, self).__init__(*args, **kwargs)
 
-        on_by_default = self.config.get("on_by_default", False)
-
         pin = self.config["pin"]
         self.device = gpiozero.OutputDevice(pin)
 
-        if on_by_default:
+        self._reset()
+
+    def _reset(self):
+        if self.config.get("on_by_default", False):
             self.event_high()
         else:
             self.event_low()
+
+    @on_event(filter={'category': 'reset'})
+    def event_reset(self):
+        logger.info("Reset")
+        self._reset()
 
     @on_event(filter={'category': 'high'})
     def event_high(self):

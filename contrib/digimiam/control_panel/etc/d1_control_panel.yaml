@@ -3,6 +3,7 @@ name: control_panel
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.control_panel
+  - d1.broadcast
 
 led_indexes:
   scene:

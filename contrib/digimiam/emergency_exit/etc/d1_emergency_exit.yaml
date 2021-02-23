@@ -3,6 +3,7 @@ name: emergency_exit
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.emergency_exit
+  - d1.broadcast
 
 magnet_pins:
   stock_to_machine: 3

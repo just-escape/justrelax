@@ -1,4 +1,5 @@
 import time
+import uuid
 
 from twisted.internet import reactor
 
@@ -151,6 +152,9 @@ class Scenario(MagicNode):
         self.session_timer = SessionTimer(self.tic_tac_callback)
         self.session_time = None
 
+        # Those delayed calls are canceled on a room reset
+        self.registered_delayed_tasks = {}
+
         self.timers = {
             'ventilation_instruction': Timer(30, False, self.give_ventilation_instruction),
         }
@@ -158,8 +162,14 @@ class Scenario(MagicNode):
     def publish_prefix(self, event, channel):
         self.publish(event, "{}{}".format(self.publication_channel_prefix, channel))
 
-    def give_ventilation_instruction(self):
-        self.publish_prefix({'category': 'documentation_unplug_instruction', 'highlight': True}, 'orders')
+    def register_delayed_task(self, delay, callable, *callable_args, **callable_kwargs):
+        task_id = str(uuid.uuid4())
+
+        def unregistered_and_call():
+            self.registered_delayed_tasks.pop(task_id)
+            callable(*callable_args, **callable_kwargs)
+
+        self.registered_delayed_tasks[task_id] = reactor.callLater(delay, unregistered_and_call)
 
     def tic_tac_callback(self, seconds):
         self.session_time = int(seconds)
@@ -184,28 +194,28 @@ class Scenario(MagicNode):
         def play_ms_pepper_here_you_are():
             self.publish_prefix({'category': 'pause', 'video_id': 'ads_glitch'}, 'advertiser')
             self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
-            reactor.callLater(35, after_ms_pepper_here_you_are)
+            self.register_delayed_task(35, after_ms_pepper_here_you_are)
 
         def after_ms_pepper_here_you_are():
             self.publish_prefix({'category': 'play', 'video_id': 'ads_glitch'}, 'advertiser')
             self.publish_prefix({'category': 'set_volume', 'track_id': 'track1', 'volume': 70}, 'music_player')
-            self.publish_prefix(
-                {'category': 'set_volume', 'track_id': 'track1', 'volume': 50, 'duration': 10, 'delay': 5},
-                'music_player'
-            )
-            self.publish_prefix(
-                {'category': 'set_volume', 'track_id': 'track1', 'volume': 30, 'duration': 60, 'delay': 90},
-                'music_player'
-            )
             self.publish_prefix({'category': 'play', 'track_id': 'track1'}, 'music_player')
-            reactor.callLater(5, open_the_door)
+            self.register_delayed_task(5, open_the_door)
 
         def open_the_door():
+            self.publish_prefix(
+                {'category': 'set_volume', 'track_id': 'track1', 'volume': 50, 'duration': 10}, 'music_player')
             self.publish_prefix({'category': 'unlock'}, 'front_door_magnet')
-            self.publish_prefix({'category': 'play'}, 'orchestrator')
+            self.session_timer.start()
 
-        self.session_timer.start()
-        # play_ms_pepper_here_you_are()
+            self.register_delayed_task(
+                85,
+                self.publish_prefix,
+                {'category': 'set_volume', 'track_id': 'track1', 'volume': 30, 'duration': 60},
+                'music_player'
+            )
+
+        play_ms_pepper_here_you_are()
 
     def resume_room(self):
         self.session_timer.resume()
@@ -221,13 +231,23 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'reset'})
     def reset_room(self):
-        if self.session_timer.state == STATE_PAUSED:
-            for timer_name, timer in self.timers.items():
-                timer.cancel()
-            self.session_timer.cancel()
-            self.session_time = None
+        if self.session_timer.state != STATE_PAUSED:
+            return
 
-            self.publish_game_time_to_webmin()
+        for timer_name, timer in self.timers.items():
+            timer.cancel()
+        self.session_timer.cancel()
+        self.session_time = None
+
+        registered_delayed_task_ids = list(self.registered_delayed_tasks)
+        for registered_delayed_task_id in registered_delayed_task_ids:
+            task = self.registered_delayed_tasks.pop(registered_delayed_task_id)
+            task.cancel()
+
+        self.publish_game_time_to_webmin()
+
+        # Note: the table is not automatically reset
+        self.publish_prefix({'category': 'reset'}, 'broadcast')
 
     @on_event(filter={'from': 'webmin', 'category': 'request_session_data'})
     def on_request_session_data(self):
@@ -244,19 +264,19 @@ class Scenario(MagicNode):
     def chopsticks_event_success(self):
         self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'control_panel')
 
-    @on_event(filter={'from': 'control_panel', 'category': 'manual_mode'})
+    @on_event(filter={'from': 'control_panel', 'category': 'first_manual_mode'})
     def control_panel_event_manual_mode(self):
         self.publish_prefix({'category': 'stop', 'track_id': 'track1'}, 'music_player')
         self.publish_prefix({'category': 'set_volume', 'track_id': 'track2', 'volume': 0}, 'music_player')
         self.publish_prefix(
             {'category': 'set_volume', 'track_id': 'track2', 'volume': 40, 'duration': 15}, 'music_player')
-        self.publish_prefix({'category': 'play', 'track_id': 'track2', 'delay': 2}, 'music_player')
         self.publish_prefix({'category': 'play_overlay_video', 'video_id': 'glitching_less'}, 'orders')
         self.publish_prefix({'category': 'stop_overlay_video'}, 'synchronizer')
         self.publish_prefix({'category': 'play', 'video_id': 'ads_loop'}, 'advertiser')
         self.publish_prefix({'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
         self.publish_prefix({'category': 'restaurant_in_manual_mode'}, 'synchronizer')
-        reactor.callLater(0.2, self.publish_prefix, {'category': 'off', 'color': 'all'}, 'refectory_lights')
+        self.register_delayed_task(2, self.publish_prefix, {'category': 'play', 'track_id': 'track2'}, 'music_player')
+        self.register_delayed_task(0.2, self.publish_prefix, {'category': 'off', 'color': 'all'}, 'refectory_lights')
 
     @on_event(filter={'from': 'synchronizer', 'category': 'set_menu_entry'})
     def synchronizer_event_set_menu_entry(self, dish: str, index: int):
@@ -272,23 +292,25 @@ class Scenario(MagicNode):
 
         def light_animation_step_1():
             self.publish_prefix({'category': 'on', 'color': 'all'}, 'refectory_lights')
-            reactor.callLater(0.1, light_animation_step_2)
+            self.register_delayed_task(0.1, light_animation_step_2)
 
         def light_animation_step_2():
             self.publish_prefix({'category': 'off', 'color': 'all'}, 'refectory_lights')
-            reactor.callLater(0.1, light_animation_step_3)
+            self.register_delayed_task(0.1, light_animation_step_3)
 
         def light_animation_step_3():
             self.publish_prefix({'category': 'on', 'color': 'all'}, 'refectory_lights')
 
-        reactor.callLater(1.5, light_animation_step_1)
+        self.register_delayed_task(1.5, light_animation_step_1)
 
     @on_event(filter={'from': 'synchronizer', 'category': 'services_synchronization_success'})
     def synchronizer_event_services_synchronization_success(self):
         def post_delay():
             self.publish_prefix({'category': 'stop_overlay_video'}, 'orders')
+            self.publish_prefix({'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
+            self.publish_prefix({'category': 'start', 'video_id': 'ads_loop'}, 'advertiser')
 
-        reactor.callLater(4, post_delay)
+        self.register_delayed_task(4, post_delay)
 
     @on_event(filter={'from': 'holographic_menu', 'category': 'play_slide'})
     def holographic_menu_event_play_slide(self, slide: int):
@@ -323,6 +345,9 @@ class Scenario(MagicNode):
         else:
             self.publish_prefix({'category': 'set_documentation_visibility', 'show': False}, 'orders')
 
+    def give_ventilation_instruction(self):
+        self.publish_prefix({'category': 'documentation_unplug_instruction', 'highlight': True}, 'orders')
+
     @on_event(filter={'from': 'sokoban_controls', 'category': 'control'})
     def sokoban_controls_event(self, name: str, pressed: bool):
         self.publish_prefix({'category': 'control', 'name': name, 'pressed': pressed}, 'inventory')
@@ -348,7 +373,7 @@ class Scenario(MagicNode):
         def post_delay():
             self.publish_prefix({'category': 'final_animation'}, 'root_server')
 
-        reactor.callLater(0.5, post_delay)
+        self.register_delayed_task(0.5, post_delay)
 
     @on_event(filter={'from': 'root_server', 'category': 'ms_pepper_mad_end'})
     def root_server_event_ms_pepper_mad_end(self):
@@ -358,7 +383,7 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'display_danger_window'}, 'inventory')
             self.publish_prefix({'category': 'display_danger_window'}, 'root_server')
 
-        reactor.callLater(2, post_delay)
+        self.register_delayed_task(2, post_delay)
 
     @on_event(filter={'widget_id': 'front_door_open'})
     def button_front_door_open(self):
@@ -570,7 +595,10 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'control_force_manual_mode'})
     def button_control_force_manual_mode(self):
         self.publish_prefix({'category': 'force_manual_mode'}, 'control_panel')
-        self.publish_prefix({'category': 'restaurant_in_manual_mode'}, 'synchronizer')  # TODO: bad
+
+    @on_event(filter={'widget_id': 'synchronizer_restaurant_in_manual_mode'})
+    def button_synchronizer_restaurant_in_manual_mode(self):
+        self.publish_prefix({'category': 'restaurant_in_manual_mode'}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'control_menu_set_status_repaired_0'})
     def button_control_menu_set_status_repaired_0(self):
@@ -683,3 +711,11 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'refectory_lights'})
     def buttons_refectory_lights(self, color: str, on: bool):
         self.publish_prefix({'category': 'on' if on else 'off', 'color': color}, 'refectory_lights')
+
+
+class ScenarioD1(Scenario):
+    pass
+
+
+class ScenarioD2(Scenario):
+    pass

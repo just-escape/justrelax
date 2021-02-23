@@ -3,6 +3,7 @@ name: front_door_magnet
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.front_door_magnet
+  - d1.broadcast
 
 magnet_pins:
   front_door: 4

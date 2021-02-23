@@ -11,7 +11,7 @@ if __name__ == '__main__':
         name="justrelax_node_scenario",
         version="0.1",
         packages=["justrelax.node.scenario"],
-        scripts=["scripts/start-node-scenario"],
+        scripts=["scripts/start-node-scenario-d1", "scripts/start-node-scenario-d2"],
         install_requires=get_requirements(),
         zip_safe=False,
     )

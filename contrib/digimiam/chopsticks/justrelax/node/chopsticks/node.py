@@ -241,6 +241,12 @@ class Chopsticks(MagicNode):
         Letter.success = False
 
         for letter_index, letter in enumerate(self.letters):
+            if letter.delayed_reaction_task and letter.delayed_reaction_task.active():
+                letter.delayed_reaction_task.cancel()
+
+            if letter.periodic_task:
+                letter.periodic_task.stop()
+
             letter.difficulty = self.initial_difficulty
             letter.led_color = self.letters_configuration[letter_index]['led_initial_color']
 

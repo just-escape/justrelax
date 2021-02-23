@@ -3,6 +3,7 @@ name: laser_maze
 default_publication_channel: d2.scenario
 subscriptions:
   - d2.laser_maze
+  - d2.broadcast
 
 serials:
   - port: /dev/ttyUSB0

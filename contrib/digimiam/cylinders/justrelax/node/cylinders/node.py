@@ -62,6 +62,7 @@ class Cylinders(MagicNode):
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
         self.success = False
+        self.difficulty = "normal"
 
     @on_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty):

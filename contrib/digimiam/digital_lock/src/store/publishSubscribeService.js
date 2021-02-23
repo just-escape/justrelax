@@ -11,12 +11,12 @@ Vue.use(Vuex)
 const publishSubscribeService = new Vuex.Store({
   state: {
     name: "digital_lock",
-    subscriptionChannel: undefined,
+    subscriptionChannels: [],
     publicationChannel: undefined,
   },
   mutations: {
-    setSubscriptionChannel (state, subscriptionChannel) {
-      state.subscriptionChannel = subscriptionChannel
+    addSubscriptionChannel (state, subscriptionChannel) {
+      state.subscriptionChannels.push(subscriptionChannel)
     },
     setPublicationChannel (state, publicationChannel) {
       state.publicationChannel = publicationChannel
@@ -30,11 +30,13 @@ const publishSubscribeService = new Vuex.Store({
         state.name = query.name
       }
 
-      let subscribeEvent = {
-        action: "subscribe",
-        channel: state.subscriptionChannel,
+      for (let channel of state.subscriptionChannels) {
+        let subscribeEvent = {
+          action: "subscribe",
+          channel: channel,
+        }
+        Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
       }
-      Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
     },
     SOCKET_ONCLOSE (state, event) {
       // eslint-disable-next-line
@@ -48,25 +50,25 @@ const publishSubscribeService = new Vuex.Store({
       let message = JSON.parse(rawMessage.data)
       let event = message.event
 
-      if (event.category == 'reset') {
+      if (event.category === 'reset') {
         // Reload page
         router.go()
-      } else if (event.category == 'l10n') {
+      } else if (event.category === 'set_locale') {
         let query = JSON.parse(JSON.stringify(router.app.$route.query))
-        if (event.lang == 'fr') {
+        if (event.locale == 'fr') {
           if (i18n.locale != 'fr') {
-            query.lang = 'fr'
+            query.locale = 'fr'
             router.push({path: '/', query: query})
           }
           i18n.locale = 'fr'
         } else {
           if (i18n.locale != 'en') {
-            query.lang = 'en'
+            query.locale = 'en'
             router.push({path: '/', query: query})
           }
           i18n.locale = 'en'
         }
-      } else if (event.category == 'enable') {
+      } else if (event.category === 'enable') {
         lockStore.commit('enable')
       }
     },

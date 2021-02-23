@@ -76,3 +76,8 @@ class EmergencyExit(MagicNode):
                 return
             logger.info("Locking magnet id={}".format(magnet_id))
             magnet.on()
+
+    @on_event(filter={'category': 'reset'})
+    def event_reset(self):
+        logger.info("Resetting")
+        self.event_lock()

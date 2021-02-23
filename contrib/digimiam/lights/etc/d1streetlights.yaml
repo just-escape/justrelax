@@ -3,6 +3,7 @@ name: street_lights
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.street_lights
+  - d1.broadcast
 
 serials:
   - port: /dev/arduino

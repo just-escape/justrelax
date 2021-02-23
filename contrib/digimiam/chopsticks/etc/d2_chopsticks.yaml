@@ -3,6 +3,7 @@ name: chopsticks
 default_publication_channel: d2.scenario
 subscriptions:
   - d2.chopsticks
+  - d2.session
 
 watcher_frequency: 100
 

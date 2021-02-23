@@ -1,4 +1,5 @@
 import time
+import uuid
 
 import pytweening
 import alsaaudio
@@ -113,6 +114,8 @@ class VolumeFaderMixin:
 
         self.update_frequency = update_frequency
 
+        self.fade_tasks = {}
+
     def fade_volume(self, volume, duration=0, ease=pytweening.easeInOutSine):
         if duration == 0:
             self.current_volume = volume
@@ -127,16 +130,17 @@ class VolumeFaderMixin:
         target_volume_diff = volume - self.target_volume
         self.target_volume = self.target_volume + target_volume_diff
 
-        def update():
+        def update(task_id):
             now = time.time()
             progression = (now - t_start) / duration
 
             nonlocal current_volume_diff
             if progression < 1:
                 eased_progression = ease(progression)
-                reactor.callLater(self.update_frequency, update)
+                self.fade_tasks[task_id] = reactor.callLater(self.update_frequency, update, task_id)
             else:
                 eased_progression = 1
+                self.fade_tasks.pop(task_id)
 
             new_volume_diff = target_volume_diff * eased_progression - current_volume_diff
             self.current_volume += new_volume_diff
@@ -144,7 +148,14 @@ class VolumeFaderMixin:
 
             self.set_volume()
 
-        reactor.callLater(self.update_frequency, update)
+        task_id = str(uuid.uuid4())
+        self.fade_tasks[task_id] = reactor.callLater(self.update_frequency, update, task_id)
+
+    def cancel_fades(self):
+        task_ids = list(self.fade_tasks)
+        for task_id in task_ids:
+            task = self.fade_tasks.pop(task_id)
+            task.cancel()
 
     def set_volume(self):
         pass

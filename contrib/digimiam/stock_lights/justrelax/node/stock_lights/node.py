@@ -54,3 +54,11 @@ class StockLights(MagicNode):
     def event_off(self):
         logger.info("Set lights off")
         self.event_set_freq(0.,)
+
+    @on_event(filter={'category': 'reset'})
+    def event_reset(self):
+        logger.info("Reset")
+        if self.config['on_by_default']:
+            self.event_high()
+        else:
+            self.event_off()

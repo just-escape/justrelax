@@ -3,5 +3,6 @@ name: stairs_trapdoor
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.stairs_trapdoor
+  - d1.broadcast
 
 pin: 10
