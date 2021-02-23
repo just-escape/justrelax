@@ -124,6 +124,8 @@ class SessionTimer:
             self.session_time += delta_since_last_schedule
             self.task.cancel()
             self.state = STATE_PAUSED
+        elif self.state == STATE_NOT_STARTED:
+            self.state = STATE_PAUSED
 
     def resume(self):
         if self.state == STATE_PAUSED:
@@ -224,7 +226,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'halt'})
     def halt_room(self):
-        if self.session_timer.state == STATE_TICKING:
+        if self.session_timer.state in [STATE_NOT_STARTED, STATE_TICKING]:
             for timer_name, timer in self.timers.items():
                 timer.session_pause()
             self.session_timer.pause()
