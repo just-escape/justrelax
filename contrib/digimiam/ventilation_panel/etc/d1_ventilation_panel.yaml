@@ -11,7 +11,7 @@ lock:
 
 air_ducts:
   ad0:
-    jack_pin: 10
+    jack_pin: 11
     fan_pin: 22
     led_index: 5
   ad1:
@@ -19,7 +19,7 @@ air_ducts:
     fan_pin: 27
     led_index: 4
   ad2:
-    jack_pin: 11
+    jack_pin: 10
     fan_pin: 17
     led_index: 3
 
