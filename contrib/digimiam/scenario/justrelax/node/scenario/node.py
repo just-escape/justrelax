@@ -393,7 +393,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'widget_id': 'front_door_close'})
     def button_front_door_close(self):
-        self.publish_prefix({'category': 'unlock'}, 'front_door_magnet')
+        self.publish_prefix({'category': 'lock'}, 'front_door_magnet')
 
     @on_event(filter={'widget_id': 'street_display_reset'})
     def button_street_display_reset(self):
