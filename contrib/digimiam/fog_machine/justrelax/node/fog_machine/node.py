@@ -43,8 +43,12 @@ class FogMachine(MagicNode):
         self.fog_pin.off()
 
     @on_event(filter={'category': 'send_fog'})
-    def event_send_fog(self, duration: int = None):
+    def event_send_fog(self, duration: int = None, forever: bool = False, forever_frequency: int = 15):
         delay = duration if duration is not None else self.send_fog_default_duration
+
+        if forever:
+            if not self.send_fog_forever_task or not self.send_fog_forever_task.active():
+                self.send_fog_forever_task = callLater(forever_frequency, self.event_send_fog, duration, True)
 
         if self.send_fog_task and self.send_fog_task.active():
             logger.info("Fog is already being sent: adding {} seconds to the timer".format(delay))
@@ -64,7 +68,7 @@ class FogMachine(MagicNode):
         frequency = frequency if frequency is not None else self.send_fog_forever_default_frequency
         duration = send_duration if send_duration is not None else self.send_fog_default_duration
         logger.info("Scheduling to send fog for {} second(s) every {} second(s)".format(duration, frequency))
-        self.send_fog_forever_task = callLater(frequency, self.event_send_fog, duration)
+        self.send_fog_forever_task = callLater(frequency, self.event_send_fog, duration, True)
         self.event_send_fog(duration)
 
     @on_event(filter={'category': 'stop_sending_fog_forever'})
