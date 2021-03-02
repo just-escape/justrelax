@@ -1,0 +1,34 @@
+name: waffle_factory
+
+default_publication_channel: d1.scenario
+subscriptions:
+  - d1.waffle_factory
+  - d1.broadcast
+
+serials:
+  - port: /dev/ttyUSB0
+    baud_rate: 9600
+    buffering_interval: 0.1
+
+conveyor_default_clock_period: 400
+conveyors:
+  printer:
+    index: 0
+  basket:
+    index: 1
+
+servos:
+  basket:
+    index: 0
+    pull: X
+    push: X
+  reset_left:
+    index: 1
+    pull: 180
+    push: 70
+  reset_right:
+    index: 2
+    pull: 60
+    push: 170
+
+led_on_by_default: no
