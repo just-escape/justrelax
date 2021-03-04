@@ -104,17 +104,17 @@ class WaffleFactory(MagicNode):
         logger.info("Stopping conveyor {})".format(conveyor_id))
         self.event_conveyor_set_clock(conveyor_id, 0, 0)
 
-    @on_event(filter={'category': 'pull_servo'})
-    def event_pull_servo(self, servo_id: str):
-        logger.info("Pulling servo {}".format(servo_id))
-        pull_position = self.servos[servo_id]['pull']
-        self.set_servo_position(servo_id, pull_position)
+    @on_event(filter={'category': 'raise_servo'})
+    def event_raise_servo(self, servo_id: str):
+        logger.info("Raising servo {}".format(servo_id))
+        raise_position = self.servos[servo_id]['raise']
+        self.event_move_servo(servo_id, raise_position)
 
-    @on_event(filter={'category': 'push_servo'})
-    def event_push_servo(self, servo_id: str):
-        logger.info("Pushing servo {}".format(servo_id))
-        push_position = self.servos[servo_id]['push']
-        self.set_servo_position(servo_id, push_position)
+    @on_event(filter={'category': 'lower_servo'})
+    def event_lower_servo(self, servo_id: str):
+        logger.info("Lowering servo {}".format(servo_id))
+        lower_position = self.servos[servo_id]['lower']
+        self.event_move_servo(servo_id, lower_position)
 
     @on_event(filter={'category': 'move_servo'})
     def event_move_servo(self, servo_id: str, position: int):

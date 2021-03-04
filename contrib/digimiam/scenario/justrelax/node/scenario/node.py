@@ -714,6 +714,36 @@ class Scenario(MagicNode):
     def buttons_refectory_lights(self, color: str, on: bool):
         self.publish_prefix({'category': 'on' if on else 'off', 'color': color}, 'refectory_lights')
 
+    @on_event(filter={'widget_id': 'waffle_factory_conveyor'})
+    def buttons_waffle_factory_conveyor(self, conveyor_id: str, action: str):
+        if action == 'forward':
+            self.publish_prefix({'category': 'conveyor_forward', 'conveyor_id': conveyor_id}, 'waffle_factory')
+        elif action == 'backward':
+            self.publish_prefix({'category': 'conveyor_backward', 'conveyor_id': conveyor_id}, 'waffle_factory')
+        elif action == 'stop':
+            self.publish_prefix({'category': 'conveyor_stop', 'conveyor_id': conveyor_id}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'waffle_factory_servo'})
+    def buttons_waffle_factory_servo(self, servo_id: str, action: str):
+        if action == 'raise':
+            category = 'raise_servo'
+        elif action == 'lower':
+            category = 'lower_servo'
+        else:
+            category = None
+
+        if servo_id == 'printer':
+            self.publish_prefix({'category': category, 'servo_id': 'printer_left'}, 'waffle_factory')
+            self.publish_prefix({'category': category, 'servo_id': 'printer_right'}, 'waffle_factory')
+        elif servo_id == 'basket':
+            self.publish_prefix({'category': category, 'servo_id': 'basket'}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'waffle_factory_led'})
+    def buttons_waffle_factory_led(self, on: bool):
+        if on:
+            self.publish_prefix({'category': 'led_on'}, 'waffle_factory')
+        else:
+            self.publish_prefix({'category': 'led_off'}, 'waffle_factory')
 
 class ScenarioD1(Scenario):
     pass
