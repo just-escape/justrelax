@@ -4,6 +4,7 @@ import VueAnime from 'vue-animejs'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import VueTypedJs from 'vue-typed-js'
 
 import publishSubscribeService from '@/store/publishSubscribeService.js'
 
@@ -18,6 +19,7 @@ Vue.use(VueNativeSock, 'ws://localhost:3031', {
 })
 Vue.use(VueAnime)
 Vue.use(BootstrapVue)
+Vue.use(VueTypedJs)
 
 Vue.config.productionTip = false
 

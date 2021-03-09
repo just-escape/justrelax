@@ -5,6 +5,7 @@
       :class="{
         warning: theme === 'warning',
         danger: theme === 'danger',
+        primary: theme === 'primary',
       }"
     >
       <div
@@ -12,6 +13,7 @@
         :class="{
           warning: theme === 'warning',
           danger: theme === 'danger',
+          primary: theme === 'primary',
         }"
       />
       <div
@@ -19,6 +21,7 @@
         :class="{
           warning: theme === 'warning',
           danger: theme === 'danger',
+          primary: theme === 'primary',
         }"
       >
         {{ title }}
@@ -84,6 +87,10 @@ export default {
   filter: drop-shadow(1px 1px 4px rgba(230, 0, 40, 1));
 }
 
+.window-frame.primary {
+  filter: drop-shadow(1px 1px 4px rgba(23, 162, 184, 0.75));
+}
+
 .window-frame::before {
   content: '';
   position: absolute;
@@ -117,6 +124,10 @@ export default {
   background-color: rgb(230, 0, 40);
 }
 
+.window-frame.primary::before {
+  background-color: rgba(23, 162, 184);
+}
+
 .window-title-ribbon {
   position: absolute;
   width: 100%;
@@ -142,6 +153,11 @@ export default {
 
 .window-title-ribbon.danger {
   border-bottom: 1px solid rgb(230, 0, 40);
+  background-color: rgba(0, 0, 0, 1);
+}
+
+.window-title-ribbon.primary {
+  border-bottom: 1px solid rgba(23, 162, 184);
   background-color: rgba(0, 0, 0, 1);
 }
 </style>

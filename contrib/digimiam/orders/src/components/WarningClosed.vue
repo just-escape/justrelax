@@ -27,7 +27,7 @@ export default {
 
 <style scoped>
 .closed {
-  background-color: rgba(240, 25, 25, 0.75);
+  background-color: orangered;
   color: white;
   font-size: 40px;
   height: 65px;

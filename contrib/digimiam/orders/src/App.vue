@@ -80,6 +80,10 @@ video {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+.bg-black {
+  background-color: #000000;
+}
+
 .text-big {
   font-size: 300px;
 }
@@ -90,5 +94,47 @@ video {
 
 .text-code-new-roman {
   font-family: 'Code New Roman';
+}
+
+.blinking {
+  animation: blinker 4s linear infinite;
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.blinking-longer {
+  animation: blinker-longer 6s linear infinite;
+}
+
+@keyframes blinker-longer {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.typed-element .typed-cursor {
+  animation-duration: 1s
 }
 </style>

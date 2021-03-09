@@ -11,7 +11,7 @@
         {{ $t(itemId + '_desc') }}
       </div>
       <div class="d-flex flex-row justify-content-end align-items-center">
-        <div class="size-11 glowing-text pr-3">{{ price }} {{ $t('Ḟ') }}</div>
+        <div class="size-11 glowing-text pr-3">{{ price }} {{ $t('nF') }}</div>
         <OrderItemButton @mousedown="$emit('orderMe')" :clickable="orderable && !isRestaurantClosed" :gray="isRestaurantClosed" class="size-11"/>
       </div>
     </div>

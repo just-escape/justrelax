@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import i18n from '@/locales.js'
 import router from '@/router.js'
 
+import orderStore from '@/store/orderStore.js'
 import progressionStore from '@/store/progressionStore.js'
 
 Vue.use(Vuex)
@@ -83,8 +84,18 @@ const publishSubscribeService = new Vuex.Store({
         progressionStore.commit('setRestaurantStatus', event.closed)
       } else if (event.category === 'display_danger_window') {
         progressionStore.commit('displayDangerWindow')
-      } else if (event.category === 'documentation_unplug_instruction') {
-        progressionStore.commit('highlightUnplugInstruction', event.highlight)
+      } else if (event.category === 'set_display_empty_cart_help') {
+        orderStore.commit('setDisplayEmptyCartHelp', event.value)
+      } else if (event.category === 'set_credits') {
+        orderStore.commit('setCredits', event.value)
+      } else if (event.category === 'set_documentation_current_instruction') {
+        let instructionMessage
+        if (!Array.isArray(event.message)) {
+          instructionMessage = [event.message]
+        } else {
+          instructionMessage = event.message
+        }
+        progressionStore.commit('setDocumentationCurrentInstruction', {message: instructionMessage, useLocale: event.use_locale})
       }
     },
     SOCKET_RECONNECT (state, count) {

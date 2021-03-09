@@ -9,7 +9,7 @@ let store = new Vuex.Store({
   state: {
     round: 0,
     showMarmitron: true,
-    showDocumentation: false,
+    showDocumentation: true,
     isRestaurantClosed: false,
     displayDangerWindow: false,
     runMsPepperStockAfterNotificationAcknowledgement: false,
@@ -37,7 +37,8 @@ let store = new Vuex.Store({
     },
     currentOverlayVideo: null,
     fireHelpAnimation: false,
-    highlightUnplugInstruction: false,
+    currentInstructionStrings: ['unplug_before_intervention'],
+    currentInstructionStringsUseLocale: true,
   },
   mutations: {
     setRound (state, round) {
@@ -92,6 +93,10 @@ let store = new Vuex.Store({
     },
     highlightUnplugInstruction(state, highlight) {
       state.highlightUnplugInstruction = highlight
+    },
+    setDocumentationCurrentInstruction(state, {message, useLocale}) {
+      state.currentInstructionStrings = message
+      state.currentInstructionStringsUseLocale = useLocale
     },
   }
 })

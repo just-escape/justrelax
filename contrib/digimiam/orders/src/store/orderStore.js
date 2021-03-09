@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 let store = new Vuex.Store({
   state: {
+    credits: 0,
     lockSelectorScroll: false,
     itemIdToAdd: null,
     addItemToCartSignal: false,
@@ -40,6 +41,7 @@ let store = new Vuex.Store({
       },
     },
     displayOrderNotification: false,
+    displayEmptyCartHelp: false,
     hasFirstOrderBeenIssued: false,
     orderSomething: false,
   },
@@ -87,6 +89,12 @@ let store = new Vuex.Store({
     },
     setItemOpacity (state, {itemId, opacity}) {
       state.items[itemId].opacity = opacity
+    },
+    setDisplayEmptyCartHelp (state, value) {
+      state.displayEmptyCartHelp = value
+    },
+    setCredits (state, value) {
+      state.credits = value
     },
   }
 })

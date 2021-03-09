@@ -3,7 +3,7 @@
     <Scene class="position-absolute"/>
     <ItemSelector class="position-absolute"/>
     <OrderSummary class="position-absolute order-summary"/>
-    <VentilatorsDocumentation class="position-absolute"/>
+    <DocumentationWindow class="position-absolute"/>
     <OverlayVideo class="position-absolute"/>
     <DangerWindow/>
   </div>
@@ -13,7 +13,7 @@
 import Scene from '@/components/Scene.vue'
 import ItemSelector from '@/components/ItemSelector.vue'
 import OrderSummary from '@/components/OrderSummary.vue'
-import VentilatorsDocumentation from '@/components/VentilatorsDocumentation.vue'
+import DocumentationWindow from '@/components/DocumentationWindow.vue'
 import OverlayVideo from '@/components/OverlayVideo.vue'
 import DangerWindow from '@/components/DangerWindow.vue'
 import progressionStore from '@/store/progressionStore.js'
@@ -24,7 +24,7 @@ export default {
     Scene,
     ItemSelector,
     OrderSummary,
-    VentilatorsDocumentation,
+    DocumentationWindow,
     OverlayVideo,
     DangerWindow,
   },

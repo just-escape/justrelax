@@ -1,6 +1,6 @@
 <template>
   <div class="position-relative">
-    <div class="position-absolute price bg-info rounded">{{ price }} {{ $t('Ḟ') }}</div>
+    <div class="position-absolute price bg-info rounded">{{ price }} {{ $t('nF') }}</div>
     <img :src="src" class="img-fluid">
   </div>
 </template>

@@ -52,7 +52,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: "var(--warning)",
+      default: "orangered",
     }
   },
 }

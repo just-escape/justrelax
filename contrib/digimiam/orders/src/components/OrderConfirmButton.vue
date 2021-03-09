@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     boxShadow: function() {
-      return '0 0 0 ' + this.boxShadowRadius + 'px rgba(23, 162, 184, ' + this.boxOpacity + ')'
+      return '0 0 0 ' + this.boxShadowRadius + 'px rgba(23, 162, 184, ' + this.boxOpacity + ') !important'
     },
   },
   methods: {
@@ -47,6 +47,7 @@ export default {
       targets: this_,
       loop: true,
       loopComplete: function() {
+      console.log('loop complete')
         this_.boxShadowRadius = 0
         this_.boxOpacity = 0.5
         if (!this_.pulse) {
