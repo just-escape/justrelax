@@ -242,13 +242,8 @@ export default {
     }
   },
   mounted() {
-    this.$anime({
-      targets: this,
-      scaleX: 1,
-      scaleY: 1,
-      duration: 400,
-      easing: 'easeInQuad',
-    })
+    // Those lines are not supposed to do anything but are just in case one day some instruction
+    // needs to be displayed while still being at PROGRESSION_START
     this.computeCurrentProgressionInstructionsToDisplay()
     this.nextInstruction()
   },

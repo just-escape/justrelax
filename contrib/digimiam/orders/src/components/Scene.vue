@@ -5,7 +5,7 @@
       ref="idleVideo"
       class="position-absolute top-left"
       :style="{opacity: idleOpacity}"
-      src="@/assets/videos/marmitron_orders_idle_loop.webm" loop/>
+      src="@/assets/videos/marmitron_orders_idle_loop.webm" autoplay loop/>
     <img src="@/assets/img/conveyor.png" class="position-absolute bottom-left">
     <video
       v-for="(animation, animationIndex) in animations" :key="animationIndex"
