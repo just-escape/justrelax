@@ -40,6 +40,21 @@ let store = new Vuex.Store({
         opacity: 1,
       },
     },
+    waffrescoVariations: {
+      happy: require('@/assets/img/happy.svg'),
+      heart: require('@/assets/img/heart.svg'),
+      infinite: require('@/assets/img/infinite.svg'),
+      konoha: require('@/assets/img/konoha.svg'),
+      laughing: require('@/assets/img/laughing.svg'),
+      relics: require('@/assets/img/relics.svg'),
+      sad: require('@/assets/img/sad.svg'),
+      spiral: require('@/assets/img/spiral.svg'),
+      star: require('@/assets/img/star.svg'),
+      sun: require('@/assets/img/sun.svg'),
+      surprised: require('@/assets/img/surprised.svg'),
+      triforce: require('@/assets/img/triforce.svg'),
+    },
+    selectedWaffrescoPatternId: 'happy',
     displayOrderNotification: false,
     displayEmptyCartHelp: false,
     hasFirstOrderBeenIssued: false,
@@ -58,6 +73,9 @@ let store = new Vuex.Store({
     },
   },
   mutations: {
+    setSelectedWaffrescoPatternId (state, patternId) {
+      state.selectedWaffrescoPatternId = patternId
+    },
     lockSelectorScroll (state) {
       state.lockSelectorScroll = true
     },
@@ -65,7 +83,13 @@ let store = new Vuex.Store({
       state.lockSelectorScroll = false
     },
     displayItemInCart (state, itemId) {
-      state.cartItems.unshift({itemId: itemId, increment: state.cartItemIncrement++})
+      state.cartItems.unshift(
+        {
+          itemId: itemId,
+          variation: itemId === 'gaufresque' ? state.selectedWaffrescoPatternId : null,
+          increment: state.cartItemIncrement++,
+        }
+      )
     },
     resetOrder (state) {
       state.cartItems = []

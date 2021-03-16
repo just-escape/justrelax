@@ -11,9 +11,12 @@
         :itemId="item.id"
         :height="itemHeight"
         :translate="item.translate"
+        :isVisible="item.isVisible"
         :orderable="item.orderable && !isCartFull && !lockScroll"
         @orderMe="order(itemIndex)"
-      />
+        :scrollSignal="scrollSignal"
+        :style="{'z-index': item.id == 'gaufresque' ? 15: 10}"
+      /> <!-- z-index for waffresco pattern selector -->
     </div>
   </div>
 </template>
@@ -29,6 +32,7 @@ export default {
   },
   data() {
     return {
+      scrollSignal: false,
       itemContainer: undefined,
       itemHeight: 270,
       items: [
@@ -36,41 +40,49 @@ export default {
           id: "gaufresque",
           translate: 0,
           orderable: false,
+          isVisible: false,
         },
         {
           id: "potjevleesch",
           translate: 0,
           orderable: false,
+          isVisible: false,
         },
         {
           id: "salade_flamande",
           translate: 0,
           orderable: false,
+          isVisible: false,
         },
         {
           id: "cambraisienne",
           translate: 0,
           orderable: false,
+          isVisible: false,
         },
         {
           id: "gaufresque",
           translate: 0,
           orderable: false,
+          isVisible: false,
         },
         {
           id: "potjevleesch",
           translate: 0,
           orderable: false,
+          isVisible: false,
         },
         {
           id: "salade_flamande",
           translate: 0,
           orderable: false,
+          isVisible: false,
         },
         {
           id: "cambraisienne",
           translate: 0,
           orderable: false,
+          isVisible: false,
         },
       ],
     }
@@ -85,6 +97,8 @@ export default {
   },
   methods: {
     scroll: function() {
+      this.scrollSignal = !this.scrollSignal
+
       if (!this.lockScroll) {
         // Ensures infinite scrolling
         if (this.$refs.itemContainer.scrollTop == 0) {
@@ -102,6 +116,8 @@ export default {
       let centerPosition = firstItem + 1
       for (var i = 0 ; i < this.items.length ; i++) {
         var itemPositionFromCenter = centerPosition - i
+
+        this.items[i].isVisible = itemPositionFromCenter >= -1.5 && itemPositionFromCenter <= 1.5
 
         // Circular scrolling effect
         this.items[i].translate = Math.abs(itemPositionFromCenter * 15)

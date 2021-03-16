@@ -17,13 +17,13 @@
         </div>
 
         <div class="btn-group h-100" role="group" :class="{shaking: creditsShaking}" :style="{opacity: !cartItems.length || isRestaurantClosed ? 0.4 : 1}">
-          <b-btn :variant="getCreditsVariant" class="text-left py-2" style="width: 110px">
+          <b-btn :variant="getCreditsVariant" class="text-left py-2" style="width: 110px" disabled>
             {{ "Crédits" }}
           </b-btn>
-          <b-btn :variant="getCreditsVariant" class="py-2 pr-0" style="width: 50px">
+          <b-btn :variant="getCreditsVariant" class="py-2 pr-0" style="width: 50px" disabled>
             {{ credits }}
           </b-btn>
-          <b-btn :variant="getCreditsVariant" class="py-2">
+          <b-btn :variant="getCreditsVariant" class="py-2" disabled>
             {{ $t('nF') }}
           </b-btn>
         </div>
@@ -44,13 +44,13 @@
         </div>
 
         <div class="btn-group" role="group" :style="{opacity: !cartItems.length || isRestaurantClosed ? 0.4 : 1}">
-          <b-btn :variant="isRestaurantClosed ? 'outline-secondary' : 'outline-info'" class="py-2" style="width: 110px">
+          <b-btn :variant="isRestaurantClosed ? 'outline-secondary' : 'outline-info'" class="py-2" style="width: 110px" disabled>
             {{ $t('total_price') }}
           </b-btn>
-          <b-btn :variant="isRestaurantClosed ? 'outline-secondary' : 'outline-info'" class="py-2 pr-0" style="width: 50px">
+          <b-btn :variant="isRestaurantClosed ? 'outline-secondary' : 'outline-info'" class="py-2 pr-0" style="width: 50px" disabled>
             {{ totalPrice }}
           </b-btn>
-          <b-btn :variant="isRestaurantClosed ? 'outline-secondary' : 'outline-info'" class="py-2">
+          <b-btn :variant="isRestaurantClosed ? 'outline-secondary' : 'outline-info'" class="py-2" disabled>
             {{ $t('nF') }}
           </b-btn>
         </div>
@@ -66,6 +66,7 @@
             v-for="item in cartItems"
             :key="item.increment"
             :itemId="item.itemId"
+            :variation="item.variation"
             class="col-3 list-complete-item p-0"
           />
         </transition-group>
@@ -223,6 +224,15 @@ export default {
 
 .very-small {
   font-size: 0.7rem;
+}
+
+.btn-outline-danger {
+  border-color: orangered;
+  color: orangered;
+}
+
+.btn:disabled {
+  opacity: 1;
 }
 
 .shaking {

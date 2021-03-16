@@ -47,7 +47,6 @@ export default {
       targets: this_,
       loop: true,
       loopComplete: function() {
-      console.log('loop complete')
         this_.boxShadowRadius = 0
         this_.boxOpacity = 0.5
         if (!this_.pulse) {

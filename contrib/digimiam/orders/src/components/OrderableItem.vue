@@ -7,12 +7,12 @@
       <div class="item-title">
         <span class="uppercase">{{ $t(itemId) }}</span>
       </div>
-      <div class="size-11 glowing-text mb-1">
+      <div class="glowing-text mb-1">
         {{ $t(itemId + '_desc') }}
       </div>
       <div class="d-flex flex-row justify-content-end align-items-center">
-        <div class="size-11 glowing-text pr-3">{{ price }} {{ $t('nF') }}</div>
-        <OrderItemButton @mousedown="$emit('orderMe')" :clickable="orderable && !isRestaurantClosed" :gray="isRestaurantClosed" class="size-11"/>
+        <div class="glowing-text pr-3">{{ price }} {{ $t('nF') }}</div>
+        <OrderItemButton @mousedown="orderMe" :clickable="orderable && !isRestaurantClosed && !showDocumentation" :gray="isRestaurantClosed"/>
       </div>
     </div>
     <img
@@ -21,12 +21,21 @@
       class="transition-02s img-fluid"
       :style="{opacity: opacity, transform: transform}"
     />
+    <!-- Conditionning the customizer not only to the fact that a waffresco is displayed, but also to its visibility forces it to be regenerated.
+         Otherwise there would be synchronization issues between the 2 waffresco customizers. -->
+    <WaffrescoCustomizer
+      v-if="itemId === 'gaufresque' && isVisible"
+      :clickable="orderable && !isRestaurantClosed && !showDocumentation"
+      :gray="isRestaurantClosed"
+      :collapseSignal="JSON.stringify([scrollSignal, orderSignal])"
+    />
 
     <WarningClosed size="small" v-if="isRestaurantClosed"/>
   </div>
 </template>
 
 <script>
+import WaffrescoCustomizer from '@/components/WaffrescoCustomizer.vue'
 import OrderItemButton from '@/components/OrderItemButton.vue'
 import WarningClosed from '@/components/WarningClosed.vue'
 import orderStore from '@/store/orderStore.js'
@@ -37,11 +46,13 @@ export default {
   components: {
     OrderItemButton,
     WarningClosed,
+    WaffrescoCustomizer,
   },
   data() {
     return {
       scaleX: 1,
       scaleY: 1,
+      orderSignal: false,
     }
   },
   computed: {
@@ -54,6 +65,12 @@ export default {
     opacity: function() {
       return orderStore.state.items[this.itemId].opacity
     },
+    variation: function() {
+      return orderStore.state.items[this.itemId].variation
+    },
+    showDocumentation: function() {
+      return progressionStore.state.showDocumentation
+    },
     isRestaurantClosed: function() {
       return progressionStore.state.isRestaurantClosed
     },
@@ -62,6 +79,10 @@ export default {
     },
   },
   methods: {
+    orderMe() {
+      this.orderSignal = !this.orderSignal
+      this.$emit('orderMe')
+    },
     scaleXscaleY1() {
       this.$anime({
         targets: this,
@@ -92,6 +113,8 @@ export default {
     height: Number,
     translate: Number,
     orderable: Boolean,
+    scrollSignal: Boolean,
+    isVisible: Boolean,
   },
 }
 </script>
