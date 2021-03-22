@@ -18,6 +18,7 @@
 
 #define PROTOCOL_SET_LED_TARGET_FREQ "t"
 #define PROTOCOL_SET_LED_FREQ "q"
+#define PROTOCOL_LED_INDEX "i"
 #define PROTOCOL_LED_FREQ_VALUE "v"
 #define PROTOCOL_LED_FREQ_STEP "s"
 
@@ -26,24 +27,26 @@ String receivedEvent = "";
 
 unsigned long currentMicros = 0;
 
-const int conveyorStepPins[2] = {50, 48};
-const int conveyorDirPins[2] = {51, 49};
-bool conveyorIsStepHigh[2] = {false, false};
-unsigned long conveyorStepHighMicros[2] = {0, 0};
-unsigned long conveyorStepLowMicros[2] = {0, 0};
-unsigned long conveyorPreviousMicros[2] = {0};
+#define N_CONVEYORS 3
+const int conveyorStepPins[N_CONVEYORS] = {50, 48, 46};
+const int conveyorDirPins[N_CONVEYORS] = {51, 49, 47};
+bool conveyorIsStepHigh[N_CONVEYORS] = {false, false, false};
+unsigned long conveyorStepHighMicros[N_CONVEYORS] = {0, 0, 0};
+unsigned long conveyorStepLowMicros[N_CONVEYORS] = {0, 0, 0};
+unsigned long conveyorPreviousMicros[N_CONVEYORS] = {0, 0, 0};
 
 #define N_SERVOS 3
 Servo servos[N_SERVOS];
 int servoPins[N_SERVOS] = {40, 38, 36};
 
-#define LED_PIN 2
-float ledPWM = 0;
-float ledFreq = 0;
-float ledTargetFreq = 0;
-float ledTargetFreqStep = 0;
-int ledCycle = 0;
-unsigned long ledPreviousMicros = 0;
+#define N_LED 2
+byte ledPins[N_LED] = {2, 3};
+float ledPWM[N_LED] = 0;
+float ledFreq[N_LED] = 0;
+float ledTargetFreq[N_LED] = 0;
+float ledTargetFreqStep[N_LED] = 0;
+int ledCycle[N_LED] = 0;
+unsigned long ledPreviousMicros[N_LED] = 0;
 
 void setConveyorForward(int conveyorIndex) {
     digitalWrite(conveyorDirPins[conveyorIndex], HIGH);
@@ -59,7 +62,7 @@ void setConveyorSpeed(int conveyorIndex, unsigned long lowPeriod, unsigned long 
 }
 
 void setup() {
-    for (int i = 0 ; i < 2 ; i++) {
+    for (int i = 0 ; i < N_CONVEYORS ; i++) {
         pinMode(conveyorStepPins[i], OUTPUT);
         pinMode(conveyorDirPins[i], OUTPUT);
         conveyorPreviousMicros[i] = micros();
@@ -73,7 +76,9 @@ void setup() {
         servos[i].attach(servoPins[i]);
     }
 
-    pinMode(LED_PIN, OUTPUT);
+    for (int i = 0 ; i < N_LED ; i++) {
+        pinMode(ledPins[i], OUTPUT);
+    }
 
     Serial.begin(9600);
 
@@ -83,7 +88,7 @@ void setup() {
 void updateConveyorClocks() {
     currentMicros = micros();
 
-    for (int i = 0 ; i < 2 ; i++) {
+    for (int i = 0 ; i < N_CONVEYORS ; i++) {
         if (conveyorIsStepHigh[i]) {
             if (
                 conveyorStepHighMicros[i] > 0 &&
@@ -107,41 +112,43 @@ void updateConveyorClocks() {
 }
 
 void processLEDPWM() {
-    currentMicros = micros();
+    for (var i = 0 ; i < N_LED; i++) {
+        currentMicros = micros();
 
-    if (currentMicros - ledPreviousMicros >= 100) {
-        if (ledCycle == 0) {
-            if (ledFreq > ledTargetFreq) {
-                if (ledTargetFreqStep == 0) {
-                    // Just in case a transition that was not planned is triggered
-                    ledFreq -= 0.1;
-                } else {
-                    ledFreq -= ledTargetFreqStep;
+        if (currentMicros - ledPreviousMicros[i] >= 100) {
+            if (ledCycle[i] == 0) {
+                if (ledFreq[i] > ledTargetFreq[i]) {
+                    if (ledTargetFreqStep[i] == 0) {
+                        // Just in case a transition that was not planned is triggered
+                        ledFreq[i] -= 0.1;
+                    } else {
+                        ledFreq[i] -= ledTargetFreqStep[i];
+                    }
+                } else if (ledFreq[i] < ledTargetFreq[i]) {
+                    if (ledTargetFreqStep[i] == 0) {
+                        // Just in case a transition that was not planned is triggered
+                        ledFreq[i] += 0.1;
+                    } else {
+                        ledFreq[i] += ledTargetFreqStep[i];
+                    }
                 }
-            } else if (ledFreq < ledTargetFreq) {
-                if (ledTargetFreqStep == 0) {
-                    // Just in case a transition that was not planned is triggered
-                    ledFreq += 0.1;
-                } else {
-                    ledFreq += ledTargetFreqStep;
+
+                ledPWM[i] = 0;
+
+                if (ledFreq[i] > 0) {
+                    digitalWrite(ledPins[i], HIGH);
                 }
             }
 
-            ledPWM = 0;
-
-            if (ledFreq > 0) {
-                digitalWrite(LED_PIN, HIGH);
+            if (ledPWM[i] < ledFreq[i]) {
+                ledPWM[i]++;
+            } else {
+                digitalWrite(ledPins[i], LOW);
             }
-        }
 
-        if (ledPWM < ledFreq) {
-            ledPWM++;
-        } else {
-            digitalWrite(LED_PIN, LOW);
+            ledCycle[i] = (ledCycle[i] + 1) % 50;
+            ledPreviousMicros[i] = currentMicros;
         }
-
-        ledCycle = (ledCycle + 1) % 50;
-        ledPreviousMicros = currentMicros;
     }
 }
 
@@ -185,14 +192,16 @@ void onEvent() {
       int position = receivedDocument[PROTOCOL_SERVO_POSITION];
       servos[servoIndex].write(position);
     } else if (category == PROTOCOL_SET_LED_TARGET_FREQ) {
+      int ledIndex = receivedDocument[PROTOCOL_LED_INDEX];
       float value = receivedDocument[PROTOCOL_LED_FREQ_VALUE];
       float step = receivedDocument[PROTOCOL_LED_FREQ_STEP];
-      ledTargetFreq = value;
-      ledTargetFreqStep = step;
+      ledTargetFreq[i] = value;
+      ledTargetFreqStep[i] = step;
     } else if (category == PROTOCOL_SET_LED_FREQ) {
+      int ledIndex = receivedDocument[PROTOCOL_LED_INDEX];
       float value = receivedDocument[PROTOCOL_LED_FREQ_VALUE];
-      ledFreq = value;
-      ledTargetFreq = value;
+      ledFreq[i] = value;
+      ledTargetFreq[i] = value;
     }
   }
 }
