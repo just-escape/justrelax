@@ -1,0 +1,9 @@
+name: waffle_trapdoor
+
+default_publication_channel: d1.scenario
+subscriptions:
+  - d1.waffle_trapdoor
+  - d1.broadcast
+
+pin: 4
+on_by_default: yes
