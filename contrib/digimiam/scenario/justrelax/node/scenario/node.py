@@ -330,6 +330,10 @@ class Scenario(MagicNode):
     def synchronizer_event_off(self, color: str):
         self.publish_prefix({'category': 'off', 'color': color}, 'refectory_lights')
 
+    @on_event(filter={'from': 'payment_module', 'category': 'set_credits'})
+    def payment_module_event_set_credits(self, value):
+        self.publish_prefix({'category': 'set_credits', 'value': value}, 'orders')
+
     @on_event(filter={'from': 'ventilation_panel', 'category': 'game_start'})
     def ventilation_panel_event_game_start(self):
         self.timers['ventilation_instruction'].cancel()
@@ -729,6 +733,8 @@ class Scenario(MagicNode):
             category = 'raise_servo'
         elif action == 'lower':
             category = 'lower_servo'
+        elif action == 'flip':
+            category = 'flip_servo'
         else:
             category = None
 
@@ -738,12 +744,47 @@ class Scenario(MagicNode):
         elif servo_id == 'basket':
             self.publish_prefix({'category': category, 'servo_id': 'basket'}, 'waffle_factory')
 
-    @on_event(filter={'widget_id': 'waffle_factory_led'})
-    def buttons_waffle_factory_led(self, on: bool):
+    @on_event(filter={'widget_id': 'waffle_factory_light'})
+    def buttons_waffle_factory_light(self, led_id: str, on: bool):
         if on:
-            self.publish_prefix({'category': 'led_on'}, 'waffle_factory')
+            self.publish_prefix({'category': 'light_on', 'led_id': led_id}, 'waffle_factory')
         else:
-            self.publish_prefix({'category': 'led_off'}, 'waffle_factory')
+            self.publish_prefix({'category': 'light_off', 'led_id': led_id}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'waffle_factory_basket_led'})
+    def buttons_waffle_factory_led(self, action):
+        if action == 'on':
+            self.publish_prefix({'category': 'basket_led_on'}, 'waffle_factory')
+        elif action == 'off':
+            self.publish_prefix({'category': 'basket_led_off'}, 'waffle_factory')
+        elif action == 'blink':
+            self.publish_prefix({'category': 'basket_led_blink'}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'waffle_trapdoor_open'})
+    def buttons_waffle_trapdoor_open(self):
+        self.publish_prefix({'category': 'low'}, 'waffle_trapdoor')
+
+    @on_event(filter={'widget_id': 'waffle_trapdoor_close'})
+    def buttons_waffle_trapdoor_close(self):
+        self.publish_prefix({'category': 'high'}, 'waffle_trapdoor')
+
+    @on_event(filter={'widget_id': 'waffle_factory_printer_move'})
+    def buttons_waffle_printer_move(self, direction: str):
+        self.publish_prefix({'category': 'printer_move', 'direction': direction}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'waffle_factory_print_pattern'})
+    def buttons_waffle_print_pattern(self, pattern: str):
+        self.publish_prefix({'category': 'print_pattern', 'pattern': pattern}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'waffle_factory_printer'})
+    def buttons_waffle_printer(self, action: str):
+        if action == 'halt':
+            self.publish_prefix({'category': 'printer_halt'}, 'waffle_factory')
+        elif action == 'resume':
+            self.publish_prefix({'category': 'printer_resume'}, 'waffle_factory')
+        elif action == 'stop':
+            self.publish_prefix({'category': 'printer_stop'}, 'waffle_factory')
+
 
 class ScenarioD1(Scenario):
     pass

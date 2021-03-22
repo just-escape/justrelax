@@ -326,6 +326,10 @@ class WaffleFactory(MagicNode):
 
     @on_event(filter={'category': 'printer_resume'})
     def event_printer_resume(self):
+        if not self.printer_is_halted:
+            logger.info("Printer is not halted: skipping")
+            return
+
         self.printer_is_halted = False
 
         if not self.printer_gcode_instructions:
