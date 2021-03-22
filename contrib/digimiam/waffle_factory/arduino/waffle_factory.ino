@@ -41,12 +41,12 @@ int servoPins[N_SERVOS] = {40, 38, 36};
 
 #define N_LED 2
 byte ledPins[N_LED] = {2, 3};
-float ledPWM[N_LED] = 0;
-float ledFreq[N_LED] = 0;
-float ledTargetFreq[N_LED] = 0;
-float ledTargetFreqStep[N_LED] = 0;
-int ledCycle[N_LED] = 0;
-unsigned long ledPreviousMicros[N_LED] = 0;
+float ledPWM[N_LED] = {0, 0};
+float ledFreq[N_LED] = {0, 0};
+float ledTargetFreq[N_LED] = {0, 0};
+float ledTargetFreqStep[N_LED] = {0, 0};
+int ledCycle[N_LED] = {0, 0};
+unsigned long ledPreviousMicros[N_LED] = {0, 0};
 
 void setConveyorForward(int conveyorIndex) {
     digitalWrite(conveyorDirPins[conveyorIndex], HIGH);
@@ -112,7 +112,7 @@ void updateConveyorClocks() {
 }
 
 void processLEDPWM() {
-    for (var i = 0 ; i < N_LED; i++) {
+    for (int i = 0 ; i < N_LED; i++) {
         currentMicros = micros();
 
         if (currentMicros - ledPreviousMicros[i] >= 100) {
@@ -195,13 +195,13 @@ void onEvent() {
       int ledIndex = receivedDocument[PROTOCOL_LED_INDEX];
       float value = receivedDocument[PROTOCOL_LED_FREQ_VALUE];
       float step = receivedDocument[PROTOCOL_LED_FREQ_STEP];
-      ledTargetFreq[i] = value;
-      ledTargetFreqStep[i] = step;
+      ledTargetFreq[ledIndex] = value;
+      ledTargetFreqStep[ledIndex] = step;
     } else if (category == PROTOCOL_SET_LED_FREQ) {
       int ledIndex = receivedDocument[PROTOCOL_LED_INDEX];
       float value = receivedDocument[PROTOCOL_LED_FREQ_VALUE];
-      ledFreq[i] = value;
-      ledTargetFreq[i] = value;
+      ledFreq[ledIndex] = value;
+      ledTargetFreq[ledIndex] = value;
     }
   }
 }
