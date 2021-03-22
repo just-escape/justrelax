@@ -190,10 +190,14 @@ class EventFilterMixin:
     def _get_args_for_callback(event, channel, callback):
         args = (channel,) if callback['pass_channel'] else ()
 
-        if callback['variable_kwargs']:
-            kwargs = event
+        if isinstance(event, dict):
+            if callback['variable_kwargs']:
+                kwargs = event
+            else:
+                kwargs = {k: v for k, v in event.items() if k in callback['kwargs']}
         else:
-            kwargs = {k: v for k, v in event.items() if k in callback['kwargs']}
+            # There might be a more elegant solution thanks to a more precise inspection of callback signatures
+            kwargs = {'event': event}
 
         for callback_kwarg in callback['kwargs']:
             if callback_kwarg in kwargs:
