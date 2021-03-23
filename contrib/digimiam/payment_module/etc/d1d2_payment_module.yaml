@@ -13,6 +13,6 @@ credits:
   - 7.3
 
 serials:
-  - port: /dev/ttyUBS0
+  - port: /dev/ttyUSB0
     baud_rate: 9600
     buffering_interval: 0.1
