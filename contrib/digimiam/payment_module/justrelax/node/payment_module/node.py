@@ -73,14 +73,14 @@ class PaymentModule(MagicNode):
         self.publish({"category": "set_credits", "value": 0})
 
     @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.AUTHENTICATE})
-    def authenticate(self, tag):
-        if tag not in self.tag_credits:
+    def authenticate(self, t):
+        if t not in self.tag_credits:
             if not self.credits_filo:
                 # Should not happen because sessions are supposed to be limited to 4 players but just in case a fifth
                 # slips in...
                 shuffle(self.credits)
                 self.credits_filo = copy(self.config['credits'])
 
-            self.tag_credits[tag] = self.credits_filo.pop()
+            self.tag_credits[t] = self.credits_filo.pop()
 
-        self.publish({"category": "set_credits", "value": self.tag_credits[tag]})
+        self.publish({"category": "set_credits", "value": self.tag_credits[t]})
