@@ -130,6 +130,7 @@ class Chopsticks(MagicNode):
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Reset")
+        self.success = False
         self.send_serial({ArduinoProtocol.CATEGORY: ArduinoProtocol.PLAYING})
         for letter in self.letters:
             letter.color = self.letters_configuration[letter.index]['led_initial_color']
