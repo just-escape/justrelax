@@ -23,7 +23,7 @@ table:
   down_pin: 26
   up_down_pins_active_high: yes
   max_amplitude_duration: 31
-  up_down_minimum_delay:
+  up_down_minimum_delay: 1
 
 electromagnet_pin: 4
 
