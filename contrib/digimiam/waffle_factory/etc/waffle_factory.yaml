@@ -45,10 +45,4 @@ light_led:
     index: 0
     on_by_default: no
 
-basket_led_blink_freq: 1
-basket_led_color:
-  r: 10
-  g: 10
-  b: 10
-
 printer_patterns_directory: /etc/justrelax/patterns

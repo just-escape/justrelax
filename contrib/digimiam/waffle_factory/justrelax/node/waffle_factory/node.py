@@ -1,8 +1,5 @@
 import os
 
-import neopixel
-import board
-
 from twisted.internet import reactor
 
 from justrelax.core.logging_utils import logger
@@ -29,6 +26,10 @@ class ArduinoProtocol:
     LED_FREQ_VALUE = "v"
     LED_FREQ_STEP = "s"
 
+    BASKET_LED_ON = "kon"
+    BASKET_LED_OFF = "koff"
+    BASKET_LED_BLINK = "kblink"
+
 
 class WaffleFactory(MagicNode):
     def __init__(self, *args, **kwargs):
@@ -40,15 +41,6 @@ class WaffleFactory(MagicNode):
         self.conveyor_default_clock_period = self.config['conveyor_default_clock_period']
 
         self.light_led = self.config['light_led']
-
-        self.basket_led_blink_freq = self.config['basket_led_blink_freq']
-        self.basket_led_color = (
-            self.config['basket_led_color']['r'],
-            self.config['basket_led_color']['g'],
-            self.config['basket_led_color']['b'],
-        )
-        self.basket_led_strip = neopixel.NeoPixel(board.D18, 4)
-        self.basket_led_blink_task = None
 
         self.printer_patterns = {}
         self.printer_is_halted = False
@@ -223,39 +215,17 @@ class WaffleFactory(MagicNode):
     @on_event(filter={'category': 'basket_led_on'})
     def event_basket_led_on(self):
         logger.info("Turning basket led on")
-        if self.basket_led_blink_task and self.basket_led_blink_task.active():
-            logger.info("Basket led were blinking: canceling")
-            self.basket_led_blink_task.cancel()
-        self.basket_led_strip.fill(self.basket_led_color)
+        self.send_serial({ArduinoProtocol.CATEGORY: ArduinoProtocol.BASKET_LED_ON}, port='/dev/factory')
 
     @on_event(filter={'category': 'basket_led_off'})
     def event_basket_led_off(self):
         logger.info("Turning basket led off")
-        if self.basket_led_blink_task and self.basket_led_blink_task.active():
-            logger.info("Basket led were blinking: canceling")
-            self.basket_led_blink_task.cancel()
-        self.basket_led_strip.fill((0, 0, 0))
+        self.send_serial({ArduinoProtocol.CATEGORY: ArduinoProtocol.BASKET_LED_OFF}, port='/dev/factory')
 
     @on_event(filter={'category': 'basket_led_blink'})
-    def event_basket_led_blink(self, frequency: int = None):
-        if self.basket_led_blink_task and self.basket_led_blink_task.active():
-            logger.info("Already blinking: skipping")
-            return
-
-        freq = frequency or self.basket_led_blink_freq
-        logger.info("Blinking basket led (freq={}s)".format(freq))
-
-        def blink_on(freq):
-            logger.info("Blink on")
-            self.basket_led_strip.fill(self.basket_led_color)
-            self.basket_led_blink_task = reactor.callLater(freq, blink_off, freq)
-
-        def blink_off(freq):
-            logger.info("Blink off")
-            self.basket_led_strip.fill((0, 0, 0))
-            self.basket_led_blink_task = reactor.callLater(freq, blink_on, freq)
-
-        blink_on(freq)
+    def event_basket_led_blink(self):
+        logger.info("Blinking basket led (freq=1s)")
+        self.send_serial({ArduinoProtocol.CATEGORY: ArduinoProtocol.BASKET_LED_BLINK}, port='/dev/factory')
 
     def process_gcode_instruction(self, instruction):
         logger.info("Processing instruction {}".format(instruction))

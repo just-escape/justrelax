@@ -1,5 +1,6 @@
 #include <Servo.h>
 #include <ArduinoJson.h>
+#include <Adafruit_NeoPixel.h>
 
 #define PROTOCOL_CATEGORY "c"
 
@@ -21,6 +22,10 @@
 #define PROTOCOL_LED_INDEX "i"
 #define PROTOCOL_LED_FREQ_VALUE "v"
 #define PROTOCOL_LED_FREQ_STEP "s"
+
+#define PROTOCOL_BASKET_LED_ON "kon"
+#define PROTOCOL_BASKET_LED_OFF "koff"
+#define PROTOCOL_BASKET_LED_BLINK "kblink"
 
 DynamicJsonDocument receivedDocument(JSON_OBJECT_SIZE(20));
 String receivedEvent = "";
@@ -47,6 +52,13 @@ float ledTargetFreq[N_LED] = {0, 0};
 float ledTargetFreqStep[N_LED] = {0, 0};
 int ledCycle[N_LED] = {0, 0};
 unsigned long ledPreviousMicros[N_LED] = {0, 0};
+
+#define N_BASKET_LED 4
+#define BASKET_LED_PIN 8
+bool basketLedBlinking = false;
+bool basketLedBlinkOn = false;
+Adafruit_NeoPixel basketLed = Adafruit_NeoPixel(N_BASKET_LED, BASKET_LED_PIN, NEO_GRB + NEO_KHZ800);
+unsigned long basketLedPreviousMicros = 0;
 
 void setConveyorForward(int conveyorIndex) {
     digitalWrite(conveyorDirPins[conveyorIndex], HIGH);
@@ -79,6 +91,8 @@ void setup() {
     for (int i = 0 ; i < N_LED ; i++) {
         pinMode(ledPins[i], OUTPUT);
     }
+
+    basketLed.begin();
 
     Serial.begin(9600);
 
@@ -152,9 +166,34 @@ void processLEDPWM() {
     }
 }
 
+void blinkBasketLedIfNecessary() {
+    if (basketLedBlinking) {
+        currentMicros = micros();
+        if (currentMicros - basketLedPreviousMicros >= 1000000) {
+            basketLedPreviousMicros = currentMicros;
+            basketLedBlinkOn = !basketLedBlinkOn;
+
+            for (int i = 0 ; i < N_BASKET_LED - 1 ; i++) {
+                if (basketLedBlinkOn) {
+                    basketLed.setPixelColor(i, basketLed.Color(0, 255, 0));
+                } else {
+                    basketLed.setPixelColor(i, basketLed.Color(0, 0, 0));
+                }
+            }
+            if (basketLedBlinkOn) {
+                basketLed.setPixelColor(N_BASKET_LED - 1, basketLed.Color(255, 255, 255));
+            } else {
+                basketLed.setPixelColor(N_BASKET_LED - 1, basketLed.Color(0, 0, 0));
+            }
+            basketLed.show();
+        }
+    }
+}
+
 void loop() {
     updateConveyorClocks();
     processLEDPWM();
+    blinkBasketLedIfNecessary();
 }
 
 void onEvent() {
@@ -202,6 +241,21 @@ void onEvent() {
       float value = receivedDocument[PROTOCOL_LED_FREQ_VALUE];
       ledFreq[ledIndex] = value;
       ledTargetFreq[ledIndex] = value;
+    } else if (category == PROTOCOL_BASKET_LED_ON) {
+      basketLedBlinking = false;
+      for (int i = 0 ; i < N_BASKET_LED - 1 ; i++) {
+        basketLed.setPixelColor(i, basketLed.Color(0, 255, 0));
+      }
+      basketLed.setPixelColor(N_BASKET_LED - 1, basketLed.Color(255, 255, 255));
+      basketLed.show();
+    } else if (category == PROTOCOL_BASKET_LED_OFF) {
+      basketLedBlinking = false;
+      for (int i = 0 ; i < N_BASKET_LED ; i++) {
+        basketLed.setPixelColor(i, basketLed.Color(0, 0, 0));
+      }
+      basketLed.show();
+    } else if (category == PROTOCOL_BASKET_LED_BLINK) {
+      basketLedBlinking = true;
     }
   }
 }
