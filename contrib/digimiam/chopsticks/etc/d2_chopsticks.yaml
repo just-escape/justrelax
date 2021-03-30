@@ -3,9 +3,11 @@ name: chopsticks
 default_publication_channel: d2.scenario
 subscriptions:
   - d2.chopsticks
-  - d2.session
+  - d2.broadcast
 
-watcher_frequency: 100
+serials:
+  - port: /dev/ttyUSB0
+    baud_rate: 9600
 
 difficulty:
   initial: easy
@@ -14,66 +16,24 @@ difficulty:
     - normal
     - hard
 
-colors:
-  switched_off:
-    r: 0
-    g: 0
-    b: 0
-  blue:
-    r: 0
-    g: 0
-    b: 255
-  orange:
-    r: 255
-    g: 5
-    b: 0
-
-n_led: 25
-
-static_blue:
-  - 0
-  - 1
-  - 2
-static_orange:
-  - 3
-  - 4
-  - 5
-  - 6
-  - 7
-  - 8
-  - 9
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
-  - 16
-  - 17
+static_blue: 3
+static_orange: 15
 
 letters:
   - chopstick_plug_reactions:
       easy: toggle_blue_orange
       normal: toggle_blue_orange
       hard: toggle_blue_orange
-    reaction_pin: 21
-    led_index: 24
-    led_initial_color: blue
-    led_success_color: orange
-  - chopstick_plug_reactions:
-      easy: toggle_blue_orange
-      normal: toggle_blue_orange
-      hard: toggle_blue_orange
     reaction_pin: 20
-    led_index: 23
+    led_pin: 24
     led_initial_color: blue
-    led_success_color: orange
+    led_success_color: blue
   - chopstick_plug_reactions:
       easy: toggle_blue_orange
       normal: toggle_blue_orange
       hard: toggle_blue_orange
     reaction_pin: 16
-    led_index: 20
+    led_pin: 10
     led_initial_color: blue
     led_success_color: orange
   - chopstick_plug_reactions:
@@ -81,23 +41,31 @@ letters:
       normal: toggle_blue_orange
       hard: toggle_blue_orange
     reaction_pin: 26
-    led_index: 21
-    led_initial_color: orange
-    led_success_color: orange
-  - chopstick_plug_reactions:
-      easy: toggle_blue_orange
-      normal: toggle_blue_orange
-      hard: toggle_blue_orange
-    reaction_pin: 19
-    led_index: 19
+    led_pin: 27
     led_initial_color: blue
     led_success_color: orange
   - chopstick_plug_reactions:
       easy: toggle_blue_orange
       normal: toggle_blue_orange
       hard: toggle_blue_orange
+    reaction_pin: 19
+    led_pin: 9
+    led_initial_color: orange
+    led_success_color: orange
+  - chopstick_plug_reactions:
+      easy: toggle_blue_orange
+      normal: toggle_blue_orange
+      hard: toggle_blue_orange
     reaction_pin: 13
-    led_index: 18
+    led_pin: 11
+    led_initial_color: blue
+    led_success_color: orange
+  - chopstick_plug_reactions:
+      easy: toggle_blue_orange
+      normal: toggle_blue_orange
+      hard: toggle_blue_orange
+    reaction_pin: 21
+    led_pin: 17
     led_initial_color: blue
     led_success_color: orange
   - chopstick_plug_reactions:
@@ -105,6 +73,6 @@ letters:
       normal: toggle_blue_orange
       hard: toggle_blue_orange
     reaction_pin: 6
-    led_index: 22
+    led_pin: 22
     led_initial_color: orange
-    led_success_color: blue
+    led_success_color: orange
