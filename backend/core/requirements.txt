@@ -1,5 +1,5 @@
 cryptography==3.2.1
-twisted
+twisted==20.3.0
 autobahn
 PyYAML
 RPi.GPIO

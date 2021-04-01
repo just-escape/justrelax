@@ -30,6 +30,9 @@ class ArduinoProtocol:
     BASKET_LED_OFF = "koff"
     BASKET_LED_BLINK = "kblink"
 
+    OVEN_TURN_ON = "oon"
+    OVEN_TURN_OFF = "ooff"
+
 
 class WaffleFactory(MagicNode):
     def __init__(self, *args, **kwargs):
@@ -312,3 +315,11 @@ class WaffleFactory(MagicNode):
     @on_event(filter={'category': 'printer_stop'})
     def event_printer_stop(self):
         self.printer_gcode_instructions = []
+
+    @on_event(filter={'category': 'oven_turn_on'})
+    def event_oven_turn_on(self):
+        self.send_serial({ArduinoProtocol.CATEGORY: ArduinoProtocol.OVEN_TURN_ON}, '/dev/factory')
+
+    @on_event(filter={'category': 'oven_turn_off'})
+    def event_oven_turn_off(self):
+        self.send_serial({ArduinoProtocol.CATEGORY: ArduinoProtocol.OVEN_TURN_OFF}, '/dev/factory')

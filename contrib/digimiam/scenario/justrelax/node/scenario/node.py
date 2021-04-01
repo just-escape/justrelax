@@ -785,6 +785,33 @@ class Scenario(MagicNode):
         elif action == 'stop':
             self.publish_prefix({'category': 'printer_stop'}, 'waffle_factory')
 
+    @on_event(filter={'widget_id': 'chopsticks_success'})
+    def buttons_chopsticks_success(self):
+        self.publish_prefix({'category': 'force_success'}, 'chopsticks')
+
+    @on_event(filter={'widget_id': 'chopsticks_reset'})
+    def buttons_chopsticks_reset(self):
+        self.publish_prefix({'category': 'reset'}, 'chopsticks')
+
+    @on_event(filter={'widget_id': 'set_chopsticks_difficulty'})
+    def buttons_chopsticks_set_difficulty(self, difficulty: str):
+        self.publish_prefix({'category': 'set_difficulty', 'difficulty': difficulty}, 'chopsticks')
+
+    @on_event(filter={'widget_id': 'chopsticks_emulate_plug'})
+    def buttons_chopsticks_emulate_plug(self, letter_index: int):
+        self.publish_prefix({'category': 'emulate_chopstick_plug', 'letter_index': letter_index}, 'chopsticks')
+
+    @on_event(filter={'widget_id': 'chopsticks_emulate_unplug'})
+    def buttons_chopsticks_emulate_unplug(self, letter_index: int):
+        self.publish_prefix({'category': 'emulate_chopstick_unplug', 'letter_index': letter_index}, 'chopsticks')
+
+    @on_event(filter={'widget_id': 'oven_turn_on'})
+    def button_oven_turn_on(self):
+        self.publish_prefix({'category': 'oven_turn_on'}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'oven_turn_off'})
+    def button_oven_turn_off(self):
+        self.publish_prefix({'category': 'oven_turn_off'}, 'waffle_factory')
 
 class ScenarioD1(Scenario):
     pass
