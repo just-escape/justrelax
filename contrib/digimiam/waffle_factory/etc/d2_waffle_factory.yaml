@@ -1,0 +1,48 @@
+name: waffle_factory
+
+default_publication_channel: d2.scenario
+subscriptions:
+  - d2.waffle_factory
+  - d2.broadcast
+
+serials:
+  - port: /dev/factory
+    baud_rate: 9600
+    buffering_interval: 0.1
+  - port: /dev/printer
+    baud_rate: 115200
+    buffering_interval: 0.1
+
+conveyor_default_clock_period: 400
+conveyors:
+  niryo:
+    index: 0
+  printer:
+    index: 1
+  basket:
+    index: 2
+
+servo_flip_delay: 0.5
+servos:
+  basket:
+    index: 0
+    raise: 45
+    lower: 160
+  printer_left:
+    index: 1
+    raise: 180
+    lower: 75
+  printer_right:
+    index: 2
+    raise: 60
+    lower: 178
+
+light_led:
+  niryo:
+    index: 1
+    on_by_default: no
+  printer:
+    index: 0
+    on_by_default: no
+
+printer_patterns_directory: /etc/justrelax/patterns

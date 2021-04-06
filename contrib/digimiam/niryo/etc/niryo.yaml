@@ -1,8 +1,0 @@
-host: localhost
-port: 3031
-
-default_publication_channel: d1.scenario
-subscribe:
-  - d1.niryo
-
-logging: null

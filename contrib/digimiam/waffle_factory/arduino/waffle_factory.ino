@@ -15,6 +15,7 @@
 #define PROTOCOL_CONVEYOR_INDEX "i"
 
 #define PROTOCOL_MOVE_SERVO "s"
+#define PROTOCOL_DETACH_SERVO "h"
 #define PROTOCOL_SERVO_POSITION "p"
 #define PROTOCOL_SERVO_INDEX "i"
 
@@ -116,10 +117,6 @@ void setup() {
     }
 
     currentMicros = micros();
-
-    for (int i = 0 ; i < N_SERVOS ; i++) {
-        servos[i].attach(servoPins[i]);
-    }
 
     for (int i = 0 ; i < N_LED ; i++) {
         pinMode(ledPins[i], OUTPUT);
@@ -329,7 +326,11 @@ void onEvent() {
     } else if (category == PROTOCOL_MOVE_SERVO) {
       int servoIndex = receivedDocument[PROTOCOL_SERVO_INDEX];
       int position = receivedDocument[PROTOCOL_SERVO_POSITION];
+      servos[servoIndex].attach(servoPins[servoIndex]);
       servos[servoIndex].write(position);
+    } else if (category == PROTOCOL_DETACH_SERVO) {
+      int servoIndex = receivedDocument[PROTOCOL_SERVO_INDEX];
+      servos[servoIndex].detach();
     } else if (category == PROTOCOL_SET_LED_TARGET_FREQ) {
       int ledIndex = receivedDocument[PROTOCOL_LED_INDEX];
       float value = receivedDocument[PROTOCOL_LED_FREQ_VALUE];

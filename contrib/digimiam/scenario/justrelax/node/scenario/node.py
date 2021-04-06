@@ -161,6 +161,25 @@ class Scenario(MagicNode):
             'ventilation_instruction': Timer(30, False, self.give_ventilation_instruction),
         }
 
+        self.holomenu_slide = None
+        self.holomenu_x = None
+        self.holomenu_y = None
+        self.holomenu_error = None
+        self.holomenu_slides_mapping = [
+            [
+                'salade_flamande', 'protobulle', 'insectosteak', 'steakfie'
+            ],
+            [
+                'pizzalgue', 'cambraisienne', 'pizzaliere', 'pizzage'
+            ],
+            [
+                'algaufre', 'nano_gaufre', 'spider_gaufre', 'gaufresque'
+            ],
+            [
+                'flubber', 'chtite_gelee', 'potjevleesch', 'puddy_puddy'
+            ],
+        ]
+
     def publish_prefix(self, event, channel):
         self.publish(event, "{}{}".format(self.publication_channel_prefix, channel))
 
@@ -813,8 +832,80 @@ class Scenario(MagicNode):
     def button_oven_turn_off(self):
         self.publish_prefix({'category': 'oven_turn_off'}, 'waffle_factory')
 
+    @on_event(filter={'widget_id': 'street_lights_on'})
+    def button_street_lights_on(self):
+        self.publish_prefix({'category': 'on', 'color': 'all'}, 'street_lights')
+
+    @on_event(filter={'widget_id': 'street_lights_off'})
+    def button_street_lights_off(self):
+        self.publish_prefix({'category': 'off', 'color': 'all'}, 'street_lights')
+
+    @on_event(filter={'widget_id': 'holomenu_set_part'})
+    def buttons_holomenu_set_part(self, part: str, **kwargs):
+        if part == 'slide':
+            self.holomenu_slide = kwargs['slide']
+        elif part == 'x':
+            self.holomenu_x = kwargs['x']
+        elif part == 'y':
+            self.holomenu_y = kwargs['y']
+        elif part == 'error':
+            self.holomenu_error = True
+
+        if self.holomenu_slide is not None:
+            if self.holomenu_error is not None:
+                self.publish_prefix(
+                    {
+                        'category': 'set_slide',
+                        'slide_index': self.holomenu_slide,
+                        'chapter_id': 'error',
+                    },
+                    'holographic_menu'
+                )
+                self.holomenu_slide = None
+                self.holomenu_x = None
+                self.holomenu_y = None
+                self.holomenu_error = None
+
+            if self.holomenu_x is not None and self.holomenu_y is not None:
+                chapter_id = self.holomenu_slides_mapping[self.holomenu_x][self.holomenu_y]
+                self.publish_prefix(
+                    {
+                        'category': 'set_slide',
+                        'slide_index': self.holomenu_slide,
+                        'chapter_id': chapter_id,
+                    },
+                    'holographic_menu'
+                )
+                self.holomenu_slide = None
+                self.holomenu_x = None
+                self.holomenu_y = None
+                self.holomenu_error = None
+
+    @on_event(filter={'widget_id': 'niryo_calibrate'})
+    def button_niryo_calibrate(self):
+        self.publish_prefix({'category': 'calibrate'}, 'niryo')
+
+    @on_event(filter={'widget_id': 'niryo_toggle_magnetize'})
+    def button_niryo_toggle_magnetize(self):
+        self.publish_prefix({'category': 'toggle_magnetize'}, 'niryo')
+
+    @on_event(filter={'widget_id': 'niryo_learning_mode'})
+    def button_niryo_learning_mode(self):
+        self.publish_prefix({'category': 'learning_mode'}, 'niryo')
+
+    @on_event(filter={'widget_id': 'niryo_move'})
+    def buttons_niryo_move(self, position: str):
+        self.publish_prefix({'category': 'move_position', 'position': position}, 'niryo')
+
+
 class ScenarioD1(Scenario):
-    pass
+    @on_event(filter={'widget_id': 'stairs_trapdoor_open'})
+    def button_stairs_trapdoor_open(self):
+        self.publish_prefix({'category': 'low'}, 'stairs_trapdoor')
+
+    @on_event(filter={'widget_id': 'stairs_trapdoor_close'})
+    def button_stairs_trapdoor_close(self):
+        self.publish_prefix({'category': 'high'}, 'stairs_trapdoor')
 
 
 class ScenarioD2(Scenario):

@@ -17,6 +17,7 @@ class ArduinoProtocol:
     CONVEYOR_INDEX = "i"
 
     MOVE_SERVO = "s"
+    DETACH_SERVO = "h"
     SERVO_POSITION = "p"
     SERVO_INDEX = "i"
 
@@ -140,25 +141,25 @@ class WaffleFactory(MagicNode):
         self.event_conveyor_set_clock(conveyor_id, 0, 0)
 
     @on_event(filter={'category': 'raise_servo'})
-    def event_raise_servo(self, servo_id: str):
+    def event_raise_servo(self, servo_id: str, detach: bool = True):
         logger.info("Raising servo {}".format(servo_id))
         raise_position = self.servos[servo_id]['raise']
-        self.event_move_servo(servo_id, raise_position)
+        self.event_move_servo(servo_id, raise_position, detach)
 
     @on_event(filter={'category': 'lower_servo'})
-    def event_lower_servo(self, servo_id: str):
+    def event_lower_servo(self, servo_id: str, detach: bool = True):
         logger.info("Lowering servo {}".format(servo_id))
         lower_position = self.servos[servo_id]['lower']
-        self.event_move_servo(servo_id, lower_position)
+        self.event_move_servo(servo_id, lower_position, detach)
 
     @on_event(filter={'category': 'flip_servo'})
-    def event_flip_servo(self, servo_id: str):
+    def event_flip_servo(self, servo_id: str, detach: bool = True):
         logger.info("Flipping servo {}".format(servo_id))
-        self.event_lower_servo(servo_id)
-        reactor.callLater(self.servo_flip_delay, self.event_raise_servo, servo_id)
+        self.event_lower_servo(servo_id, False)
+        reactor.callLater(self.servo_flip_delay, self.event_raise_servo, servo_id, detach)
 
     @on_event(filter={'category': 'move_servo'})
-    def event_move_servo(self, servo_id: str, position: int):
+    def event_move_servo(self, servo_id: str, position: int, detach: bool = True):
         logger.info("Setting servo {} position to {}".format(servo_id, position))
 
         servo_index = self.servos[servo_id]['index']
@@ -168,6 +169,22 @@ class WaffleFactory(MagicNode):
                 ArduinoProtocol.CATEGORY: ArduinoProtocol.MOVE_SERVO,
                 ArduinoProtocol.SERVO_INDEX: servo_index,
                 ArduinoProtocol.SERVO_POSITION: position,
+            },
+            port='/dev/factory',
+        )
+
+        if detach:
+            reactor.callLater(self.servo_flip_delay, self.detach_servo, servo_id)
+
+    def detach_servo(self, servo_id: str):
+        logger.info("Detaching servo {}".format(servo_id))
+
+        servo_index = self.servos[servo_id]['index']
+
+        self.send_serial(
+            {
+                ArduinoProtocol.CATEGORY: ArduinoProtocol.DETACH_SERVO,
+                ArduinoProtocol.SERVO_INDEX: servo_index,
             },
             port='/dev/factory',
         )

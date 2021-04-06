@@ -1,0 +1,22 @@
+[Unit]
+Description=Niryo node daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+Environment="PYTHONPATH=/home/niryo/catkin_ws/devel/lib/python2.7/dist-packages:/opt/ros/kinetic/lib/python2.7/dist-packages:/home/niryo/catkin_ws/src/niryo_one_python_api/src/niryo_one_python_api"
+Environment="ROS_ROOT=/opt/ros/kinetic/share/ros"
+Environment="ROS_PACKAGE_PATH=/home/niryo/catkin_ws/src:/opt/ros/kinetic/share"
+Environment="ROS_MASTER_URI=http://localhost:11311"
+Environment="ROS_VERSION=1"
+
+User=niryo
+Group=niryo
+
+ExecStart=/home/niryo/venv_justrelax/bin/start-node-niryo --host d1broker.justescape --port 3032 --config /etc/justrelax/niryo.yaml --log-file /var/log/justrelax/niryo.log
+
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
