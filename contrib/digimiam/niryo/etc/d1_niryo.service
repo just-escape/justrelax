@@ -1,6 +1,6 @@
 [Unit]
 Description=Niryo node daemon
-After=network-online.target
+After=After=network-online.target niryo_one_ros.service
 
 [Service]
 Type=simple

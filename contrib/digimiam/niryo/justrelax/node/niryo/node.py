@@ -46,8 +46,7 @@ class Niryo(object):
 
         self.magnetized = False
 
-        rospy.init_node('justrelax')
-        self.niryo = NiryoOne()
+        self.niryo = None
 
     def on_message(self, ws, message):
         logger.info(message)
@@ -96,6 +95,8 @@ class Niryo(object):
 
     def calibrate(self):
         logger.info("Calibrating")
+        rospy.init_node('justrelax')
+        self.niryo = NiryoOne()
         self.niryo.calibrate_auto()
         logger.info("Calibration finished")
         logger.info("Equipping electromagnet")
