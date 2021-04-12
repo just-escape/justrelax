@@ -897,6 +897,16 @@ class Scenario(MagicNode):
     def buttons_niryo_move(self, position: str):
         self.publish_prefix({'category': 'move_position', 'position': position}, 'niryo')
 
+    @on_event(filter={'widget_id': 'payment_authenticate'})
+    def button_payment_authenticate(self):
+        # 't': 0, for tag=0 is a value that is not supposed to be possible if real rings are used. It acts as a new
+        # ring being authenticated, triggering a new credit value to be provided on the order interface.
+        self.publish_prefix({'c': 'a', 't': 0}, 'payment_module')
+
+    @on_event(filter={'widget_id': 'payment_cancel_authentication'})
+    def button_payment_cancel_authentication(self):
+        self.publish_prefix({'c': 'c'}, 'payment_module')
+
 
 class ScenarioD1(Scenario):
     @on_event(filter={'widget_id': 'stairs_trapdoor_open'})
