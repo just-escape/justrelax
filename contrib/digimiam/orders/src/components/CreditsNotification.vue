@@ -16,7 +16,7 @@
           </div>
           <b-btn
             variant="warning"
-            style="background: orangered"
+            style="background: orangered; border-color: orangered;"
             class="align-self-center py-2 px-5 mr-5 text-light"
             @click="$emit('ok')"
           >{{ $t('ok') }}</b-btn>

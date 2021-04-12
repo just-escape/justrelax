@@ -111,6 +111,7 @@ export default {
   },
   data() {
     return {
+      creditsNotificationCounter: 0,
       displayCreditsNotification: false,
       creditsNotificationShaking: false,
       creditsNotificationShakingTask: null,
@@ -173,7 +174,10 @@ export default {
         orderStore.commit('confirmOrder')
       } else {
         if (this.displayCreditsNotification === false) {
-          this.displayCreditsNotification = true
+          this.creditsNotificationCounter++
+          if (this.creditsNotificationCounter % 3 == 0) {
+            this.displayCreditsNotification = true
+          }
         } else {
           this.creditsNotificationShaking = true
           clearTimeout(this.creditsShaking)
