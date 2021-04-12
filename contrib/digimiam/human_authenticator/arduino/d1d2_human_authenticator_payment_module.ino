@@ -212,6 +212,7 @@ void checkRFID() {
   if (isSomethingBeingSent && currentMillis - rfidPreviousMillis >= RFID_TIME_THRESHOLD) {
     isSomethingBeingSent = false;
     pushEvent(PROTOCOL_CANCEL_AUTHENTICATION);
+    lastReadTag = 0;  // Not supposed to matter but...
   }
 }
 
