@@ -37,8 +37,9 @@ let store = new Vuex.Store({
     },
     currentOverlayVideo: null,
     fireHelpAnimation: false,
-    currentInstructionStrings: ['unplug_before_intervention'],
+    currentInstructionStrings: [''],
     currentInstructionStringsUseLocale: true,
+    currentInstructionLoop: false,
   },
   mutations: {
     setRound (state, round) {
@@ -94,9 +95,10 @@ let store = new Vuex.Store({
     highlightUnplugInstruction(state, highlight) {
       state.highlightUnplugInstruction = highlight
     },
-    setDocumentationCurrentInstruction(state, {message, useLocale}) {
+    setDocumentationCurrentInstruction(state, {message, useLocale, loop}) {
       state.currentInstructionStrings = message
       state.currentInstructionStringsUseLocale = useLocale
+      state.currentInstructionLoop = loop
     },
   }
 })

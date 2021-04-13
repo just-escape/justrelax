@@ -158,7 +158,7 @@ class Scenario(MagicNode):
         self.registered_delayed_tasks = {}
 
         self.timers = {
-            'ventilation_instruction': Timer(30, False, self.give_ventilation_instruction),
+            # 'ventilation_instruction': Timer(30, False, self.give_ventilation_instruction),
         }
 
         self.holomenu_slide = None
@@ -353,10 +353,10 @@ class Scenario(MagicNode):
     def payment_module_event_set_credits(self, value):
         self.publish_prefix({'category': 'set_credits', 'value': value}, 'orders')
 
-    @on_event(filter={'from': 'ventilation_panel', 'category': 'game_start'})
-    def ventilation_panel_event_game_start(self):
-        self.timers['ventilation_instruction'].cancel()
-        self.publish_prefix({'category': 'documentation_unplug_instruction', 'highlight': False}, 'orders')
+    # @on_event(filter={'from': 'ventilation_panel', 'category': 'game_start'})
+    # def ventilation_panel_event_game_start(self):
+    #    self.timers['ventilation_instruction'].cancel()
+    #     self.publish_prefix({'category': 'documentation_unplug_instruction', 'highlight': False}, 'orders')
 
     @on_event(filter={'from': 'ventilation_panel', 'category': 'start_new_round'})
     def ventilation_panel_event_start_new_round(self, round: int):
@@ -366,12 +366,23 @@ class Scenario(MagicNode):
     def ventilation_panel_event_set_status(self, status: str):
         if status == 'playing':
             self.publish_prefix({'category': 'set_documentation_visibility', 'show': True}, 'orders')
-            self.timers['ventilation_instruction'].start()
+            # self.timers['ventilation_instruction'].start()
         else:
             self.publish_prefix({'category': 'set_documentation_visibility', 'show': False}, 'orders')
 
     def give_ventilation_instruction(self):
         self.publish_prefix({'category': 'documentation_unplug_instruction', 'highlight': True}, 'orders')
+
+    @on_event(filter={'from': 'ventilation_panel', 'category': 'notify_instruction'})
+    def ventilation_panel_notify_instruction(self, instruction):
+        self.publish_prefix(
+            {'category': 'set_documentation_current_instruction', 'message': instruction, 'use_locale': True},
+            'orders'
+        )
+
+    @on_event(filter={'from': 'orders', 'category': 'restart_round'})
+    def ventilation_panel_restart_round(self):
+        self.publish_prefix({'category': 'restart_round'}, 'ventilation_panel')
 
     @on_event(filter={'from': 'sokoban_controls', 'category': 'control'})
     def sokoban_controls_event(self, name: str, pressed: bool):

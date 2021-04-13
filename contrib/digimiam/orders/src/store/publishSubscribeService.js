@@ -90,12 +90,15 @@ const publishSubscribeService = new Vuex.Store({
         orderStore.commit('setCredits', event.value)
       } else if (event.category === 'set_documentation_current_instruction') {
         let instructionMessage
+        let loop
         if (!Array.isArray(event.message)) {
           instructionMessage = [event.message]
+          loop = false
         } else {
           instructionMessage = event.message
+          loop = true
         }
-        progressionStore.commit('setDocumentationCurrentInstruction', {message: instructionMessage, useLocale: event.use_locale})
+        progressionStore.commit('setDocumentationCurrentInstruction', {message: instructionMessage, useLocale: event.use_locale || false, loop: event.loop || loop})
       }
     },
     SOCKET_RECONNECT (state, count) {

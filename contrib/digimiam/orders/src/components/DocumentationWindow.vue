@@ -7,42 +7,48 @@
       <div class="d-flex flex-column h-100 justify-content-center align-items-left bg-black">
         <div class="flex-grow-1 d-flex flex-row">
           <div class="position-relative w-100 mx-5 my-4">
-            <div class="d-flex flex-column align-items-center mb-4">
-              <div v-for="(line, lineIndex) in tyrellVentimax" :key="lineIndex" v-html="getEscaped(line)"/>
-            </div>
-            <div>+-------------+------------------------------------------------------------------+</div>
-            <div>+ <span style="font-weight: bold">INSTRUCTION</span> +&nbsp;
-              <span class="position-relative">
-                <span v-html="'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'"></span>
-                <span class="position-absolute" style="left: 0; overflow: hidden; width: calc(100% + 2px)">
-                  <span id="typed-instruction"></span>
-                  <vue-typed-js
-                    :key="currentInstructionStringsKey"
-                    :strings="currentInstructionStrings"
-                    :class="currentInstructionClasses"
-                    :cursorChar="'&#9608;'"
+            <div class="d-flex h-100 flex-column justify-content-between">
+              <div>
+                <div class="d-flex flex-column align-items-center mb-4">
+                  <div v-for="(line, lineIndex) in tyrellVentimax" :key="lineIndex" v-html="getEscaped(line)"/>
+                </div>
+                <div class="terminal-frame w-100 mb-4">
                   >
-                    <div class="typing"></div>
-                  </vue-typed-js>
-                </span>
-              </span>
-              <span v-html="'&nbsp;+'"></span>
+                    <span class="position-absolute" style="left: 25px; overflow: hidden; width: calc(100% + 2px)">
+                      <span id="typed-instruction"></span>
+                      <vue-typed-js
+                        :key="currentInstructionStringsKey"
+                        :strings="currentInstructionStrings"
+                        :class="currentInstructionClasses"
+                        :cursorChar="'&#9608;'"
+                        :loop="currentInstructionLoop"
+                        :showCursor="currentInstructionStrings.length == 1 && currentInstructionStrings[0] != ''"
+                      >
+                        <div class="typing"></div>
+                      </vue-typed-js>
+                    </span>
+                </div>
+                <ul class="list-unstyled">
+                  <li v-for="instruction in instructions" :key="instruction.locale">
+                    <vue-typed-js
+                      v-if="instruction.display"
+                      :strings="[$t(instruction.locale)]"
+                      @onComplete="onInstructionTypedComplete(instruction.locale)"
+                      :class="instruction.classes"
+                      :cursorChar="'&#9608;'"
+                    >
+                      <div :ref="'instruction-' + instruction.locale" class="typing"></div>
+                    </vue-typed-js>
+                  </li>
+                </ul>
+              </div>
+              <VentilationSequenceButton
+                class="mb-4"
+                style="margin-left: 3.5rem"
+                :display="displayVentilationSequenceButton"
+                @mousedown="restartRound"
+              />
             </div>
-            <div class="mb-4">+-------------+------------------------------------------------------------------+</div>
-            <span class="typedd"></span>
-            <ul class="list-unstyled">
-              <li v-for="instruction in instructions" :key="instruction.locale">
-                <vue-typed-js
-                  v-if="instruction.display"
-                  :strings="[$t(instruction.locale)]"
-                  @onComplete="onInstructionTypedComplete(instruction.locale)"
-                  :class="instruction.classes"
-                  :cursorChar="'&#9608;'"
-                >
-                  <div :ref="'instruction-' + instruction.locale" class="typing"></div>
-                </vue-typed-js>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
@@ -52,7 +58,9 @@
 
 <script>
 import Window from '@/components/Window.vue'
+import VentilationSequenceButton from '@/components/VentilationSequenceButton.vue'
 import progressionStore from '@/store/progressionStore.js'
+import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 const PROGRESSION_START = 0
 const PROGRESSION_ROUND_1 = 1
@@ -63,6 +71,7 @@ export default {
   name: "DocumentationWindow",
   components: {
     Window,
+    VentilationSequenceButton,
   },
   data() {
     return {
@@ -79,6 +88,7 @@ export default {
         '   |_| \\__, |_|  \\___|_|_|    \\_/ \\___|_| |_|\\__|_|_| |_| |_|\\__,_/_/\\_\\',
         '       |___/                                                            ',
       ],
+      displayVentilationSequenceButton: false,
       progression: PROGRESSION_START,
       typing: false,
       instructionsDisplayQueue: [],
@@ -199,13 +209,16 @@ export default {
     currentInstructionStringsKey() {
       // If this value changes, the instruction is deleted and typed again (because the content or locale changed)
       if (progressionStore.state.currentInstructionStringsUseLocale) {
-        return this.locale + JSON.stringify(this.currentInstructionStrings)
+        return this.locale + JSON.stringify(this.currentInstructionStrings) + Math.random()
       } else {
-        return JSON.stringify(this.currentInstructionStrings)
+        return JSON.stringify(this.currentInstructionStrings) + Math.random()
       }
     },
     currentInstructionClasses() {
       return []
+    },
+    currentInstructionLoop() {
+      return progressionStore.state.currentInstructionLoop
     },
     getEscaped() {
       return function(string) {
@@ -220,6 +233,9 @@ export default {
     },
   },
   methods: {
+    restartRound() {
+      publishSubscribeService.commit('publish', {'category': 'restart_round'})
+    },
     nextInstruction() {
       this.typing = true
       if (this.instructionsDisplayQueue.length > 0) {
@@ -227,6 +243,10 @@ export default {
         this.instructions[nextInstructionIndex].display = true
       } else {
         this.typing = false
+        // Special case, when all PROGRESSION_ROUND_1 instructions have been typed
+        if (this.progression == PROGRESSION_ROUND_1) {
+          this.displayVentilationSequenceButton = true
+        }
       }
     },
     onInstructionTypedComplete(locale) {
@@ -346,5 +366,38 @@ export default {
   border-radius: 2px;
   line-height: 1;
   padding: 2px 2px 0px 2px;
+}
+
+.terminal-frame {
+  background: none;
+  color: var(--light);
+  display: inline-block;
+  padding: 10px 12px;
+  position: relative;
+  border: 3px var(--light) solid;
+  box-shadow: -0.5em .5em transparentize(var(--light), 1);
+  transform-origin: left bottom;
+}
+
+.terminal-frame:before, .terminal-frame:after {
+  background: var(--light);
+  border: 3px var(--light) solid;
+  content: '';
+  display: block;
+  position: absolute;
+}
+
+.terminal-frame:before {
+  left: -10px;
+  top: 0px;
+  height: 120%;
+  transform: skewY(-45deg);
+}
+
+.terminal-frame:after {
+  bottom: -10px;
+  right: 0px;
+  width: calc(100% + 7px);
+  transform: skewX(-45deg);
 }
 </style>

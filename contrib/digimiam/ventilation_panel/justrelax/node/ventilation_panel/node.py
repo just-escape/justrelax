@@ -95,6 +95,8 @@ class VentilationController:
 
         self.colors = colors
 
+        self.wrong_order_counter = -1
+
         self.check_jacks_task = callLater(1, self.check_jacks)
         self.animation_tasks = {}
         self.unskippable_animation_task = None
@@ -178,8 +180,10 @@ class VentilationController:
         self.sequence_cursor = -1
         self.round = 0
         self.try_counters = {}
+        self.wrong_order_counter = -1
         # Force players to take an action before the game restarts
         self.display_connected_air_ducts_before_restart()
+        self.service.notify_start_new_round(self.round)
 
     def on_success(self):
         self.service.notify_success()
@@ -193,6 +197,17 @@ class VentilationController:
 
         if self.sequence_cursor != -1:  # Game is running
             if self.success_sequence[self.sequence_cursor]["air_duct"] != air_duct.name:
+                try:
+                    for instruction_index, instruction in enumerate(self.success_sequence[self.sequence_cursor:]):
+                        expected_air_sources = self.get_expected_sources(self.sequence_cursor + instruction_index)
+                        if instruction["air_duct"] == air_duct.name and air_source in expected_air_sources:
+                            self.wrong_order_counter += 1
+                            if self.wrong_order_counter % 3 == 0:
+                                self.service.notify_instruction("order_matters")
+                            break
+                except Exception:
+                    pass
+
                 logger.info("Expecting {} to be connected".format(
                     self.success_sequence[self.sequence_cursor]["air_duct"]))
                 self.sequence_cursor = -1
@@ -244,13 +259,7 @@ class VentilationController:
                 self.sequence_cursor = -1
                 self.bad_move_failure_animation()
         else:  # Game is not running
-            if all([ad.connected_source is None for ad in self.air_ducts.values()]):
-                logger.info("All air ducts are disconnected")
-                self.service.notify_game_start()
-                self.restart_round()
-            else:
-                logger.info("Some air ducts remain connected")
-                self.display_connected_air_ducts_before_restart()
+            self.display_connected_air_ducts_before_restart()
 
     def on_round_complete(self):
         logger.info("Round {} complete".format(self.round))
@@ -274,12 +283,11 @@ class VentilationController:
                 logger.info("Going to next round".format(self.round))
                 self.round += 1
                 self.service.notify_start_new_round(self.round)
-                if all([ad.connected_source is None for ad in self.air_ducts.values()]):
-                    self.restart_round()
-                else:
-                    self.display_connected_air_ducts_before_restart()
+                self.display_connected_air_ducts_before_restart()
+
             else:
                 logger.info("All rounds have been completed: victory!")
+                self.service.notify_instruction(["all_sequences_are_correct", "digimiam_ducts_can_now_be_used"])
                 self.success_animation(step5)
 
         def step5():
@@ -301,42 +309,6 @@ class VentilationController:
         logger.info("Displaying sequence")
 
         self.skip_skippable_animations()
-
-        def pre_display_animation():
-            self.unskippable_animation_task = callLater(1.6, display_element)
-            for ad in self.air_ducts.values():
-                ad.set_color("black")
-                self.fluid_to_color(
-                    ad.led_index,
-                    "red",
-                    0.1,
-                    "display_element",
-                    self.fluid_to_color,
-                    ad.led_index,
-                    "black",
-                    0.1,
-                    "display_element",
-                    self.fluid_to_color,
-                    ad.led_index,
-                    "red",
-                    0.1,
-                    "display_element",
-                    self.fluid_to_color,
-                    ad.led_index,
-                    "black",
-                    0.1,
-                    "display_element",
-                    self.fluid_to_color,
-                    ad.led_index,
-                    "red",
-                    0.1,
-                    "display_element",
-                    self.fluid_to_color,
-                    ad.led_index,
-                    "black",
-                    0.1,
-                    "display_element",
-                )
 
         def display_element(index=0):
             if index < len(self.success_sequence):
@@ -360,7 +332,7 @@ class VentilationController:
                     "display_element",
                 )
 
-        pre_display_animation()
+        self.unskippable_animation_task = callLater(0.5, display_element)
 
     def get_expected_sources(self, cursor):
         displayed_color = self.success_sequence[cursor]["color"]
@@ -585,7 +557,21 @@ class VentilationController:
                 ad.set_color("red")
 
     def restart_round(self):
+        if self.status != "playing":
+            logger.info("Game is not started yet: nothing to restart")
+            return
+
+        if not all([ad.connected_source is None for ad in self.air_ducts.values()]):
+            logger.info("Cannot restart round for some ducts remain plugged")
+            self.service.notify_instruction('unplug_before_intervention')
+            return
+
+        if self.unskippable_animation_task and self.unskippable_animation_task.active():
+            logger.info("Some unskippable animation task is running: aborting")
+            return
+
         logger.info("Restarting round")
+        self.service.notify_instruction('')
         for ad in self.air_ducts.values():
             ad.set_color("black")
             ad.last_connected_sources = []
@@ -663,14 +649,19 @@ class VentilationPanel(MagicNode):
     def event_set_difficulty(self, difficulty: str):
         self.vc.difficulty = difficulty
 
-    def notify_game_start(self):
-        self.publish({"category": "game_start"})
+    @on_event(filter={'category': 'restart_round'})
+    def event_restart_round(self):
+        self.vc.restart_round()
 
     def notify_status(self, status):
         self.publish({"category": "set_status", "status": status})
 
     def notify_start_new_round(self, round_):
-        self.publish({"category": "start_new_round", "round": round_})
+        # Local rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
+        self.publish({"category": "start_new_round", "round": round_ + 1})
+
+    def notify_instruction(self, instruction):
+        self.publish({"category": "notify_instruction", "instruction": instruction})
 
     def notify_success(self):
         self.publish({"category": "success"})
