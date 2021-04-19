@@ -82,6 +82,9 @@ const publishSubscribeService = new Vuex.Store({
         sokobanStore.commit('control', {name: event.name, pressed: event.pressed})
       } else if (event.category === 'display_danger_window') {
         progressionStore.commit('displayDangerWindow')
+      } else if (event.category === 'display_black_screen') {
+        let display = event.display ? true : false
+        progressionStore.commit('displayBlackScreen', display)
       }
     },
     SOCKET_RECONNECT (state, count) {

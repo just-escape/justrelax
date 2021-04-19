@@ -8,6 +8,7 @@
       </div>
       <Sokoban class="h-1250px"/>
       <DangerWindow/>
+      <BlackScreen/>
     </div>
   </div>
 </template>
@@ -18,6 +19,7 @@ import DecorationPanel from '@/components/DecorationPanel.vue'
 import Logs from '@/components/Logs.vue'
 import Sokoban from '@/components/Sokoban.vue'
 import DangerWindow from '@/components/DangerWindow.vue'
+import BlackScreen from '@/components/BlackScreen.vue'
 
 export default {
   name: 'PageRoot',
@@ -27,6 +29,7 @@ export default {
     Logs,
     Sokoban,
     DangerWindow,
+    BlackScreen,
   },
   created() {
     var locale = this.$route.query.locale
