@@ -4,11 +4,11 @@
     @touchmove="touchmove"
     @mouseup="release"
     @touchend="release"
-    class="app-container d-flex flex-column justify-content-center align-items-center"
+    class="app-container d-flex flex-column justify-content-around align-items-center"
   >
-    <Title class="mb-5"/>
-    <DrawBox class="mb-4 mt-3"/>
-    <TextBottom class="align-self-end mr-4"/>
+    <Title class="mt-4"/>
+    <DrawBox class="mt-3"/>
+    <TextBottom class="align-self-end mr-4 mb-3"/>
   </div>
 </template>
 
