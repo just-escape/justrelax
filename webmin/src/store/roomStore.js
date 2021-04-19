@@ -20,8 +20,14 @@ export default new Vuex.Store({
         default_publication_channel: 'd2.scenario',
         subscription_channels: ['d2.webmin'],
       },
+      {
+        id: 3,
+        name: 'Just Escape',
+        default_publication_channel: 'justescape',
+        subscription_channels: ['justescape.webmin'],
+      },
     ],
-    sessionData: {1: {}, 2: {}},
+    sessionData: {1: {}, 2: {}, 3: {}},
   },
   mutations: {
     /*setRooms (state, rooms) {
@@ -95,6 +101,7 @@ export default new Vuex.Store({
     fetchRooms() {
       publishSubscribeService.commit('subscribe', 'd1.webmin')
       publishSubscribeService.commit('subscribe', 'd2.webmin')
+      publishSubscribeService.commit('subscribe', 'justescape.webmin')
       publishSubscribeService.commit('addOnConnectionPublication', {channel: 'd1.scenario', event: {'category': 'request_session_data'}})
       publishSubscribeService.commit('addOnConnectionPublication', {channel: 'd2.scenario', event: {'category': 'request_session_data'}})
 
