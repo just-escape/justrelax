@@ -30,10 +30,10 @@ class Cell:
 
         if is_activated:
             logger.info("Cell (pin={}, led_strip={}) has been activated".format(self.pin, self.led_strip))
-            self.on_toggle(True, self.led_strip)
+            self.on_toggle(True, self.led_strip, self.pin)
         else:
             logger.info("Cell (pin={}, led_strip={}) has been deactivated".format(self.pin, self.led_strip))
-            self.on_toggle(False, self.led_strip)
+            self.on_toggle(False, self.led_strip, self.pin)
 
     def __bool__(self):
         return self.last_state
@@ -69,11 +69,16 @@ class SecureFloor(MagicNode):
 
         self.leds = {}
         self.cells = []
+        self.toggle_tasks = {}
         for cell in self.config['load_cells']['cells']:
             self.cells.append((Cell(cell['pin'], self.on_load_cell_toggle, cell['led_strip'])))
 
+            self.toggle_tasks[cell['pin']] = None
+
             if cell['led_strip']:
                 self.leds[cell['led_strip']] = 'black'
+
+        self.sleep_mode_task = None
 
         # Init once we are sure the serial port will be able to receive data
         reactor.callLater(3, self.set_led_color, "black", sum(self.leds.keys()))
@@ -98,9 +103,19 @@ class SecureFloor(MagicNode):
             ArduinoProtocol.STRIP_BIT_MASK: bit_mask,
         })
 
+    def sleep_mode(self):
+        logger.info("900 seconds with no activity detected: turning off led")
+        self.event_set_all_leds_color('black')
+
     @on_event(filter={'category': 'set_led_color'})
     def event_set_led_color(self, color: str, bit_mask: int):
         self.set_led_color(color, bit_mask)
+
+        if self.sleep_mode_task and self.sleep_mode_task.active():
+            self.sleep_mode_task.cancel()
+
+        if color != 'black':
+            self.sleep_mode_task = reactor.callLater(900, self.sleep_mode)
 
     @on_event(filter={'category': 'set_all_leds_color'})
     def event_set_all_leds_color(self, color: str):
@@ -125,6 +140,13 @@ class SecureFloor(MagicNode):
 
         if self.clear_alarm_task and self.clear_alarm_task.active():
             self.clear_alarm_task.cancel()
+
+        if self.sleep_mode_task and self.sleep_mode_task.active():
+            self.sleep_mode_task.cancel()
+
+        for pin, task in self.toggle_tasks.items():
+            if task and task.active():
+                task.cancel()
 
         self.success = False
         self.set_led_color("black", sum(self.leds.keys()))
@@ -171,9 +193,15 @@ class SecureFloor(MagicNode):
     def notify_clear(self):
         self.publish({'category': 'clear'})
 
-    def on_load_cell_toggle(self, activated, led_strip):
+    def on_load_cell_toggle(self, activated, led_strip, pin):
         if self.success:
             return
+
+        self.toggle_tasks[pin] = reactor.callLater(0.5, self._on_load_cell_toggle, activated, led_strip)
+
+    def _on_load_cell_toggle(self, activated, led_strip):
+        if self.sleep_mode_task and self.sleep_mode_task.active():
+            self.sleep_mode_task.cancel()
 
         if self.status == 'playing':
             if activated and led_strip and self.leds[led_strip] == 'black':
@@ -184,5 +212,7 @@ class SecureFloor(MagicNode):
                 if self.clear_alarm_task and self.clear_alarm_task.active():
                     self.clear_alarm_task.cancel()
             else:
-                if all(not c for c in self.cells):  # If all cells are deactivated
-                    self.clear_alarm_task = reactor.callLater(self.clear_alarm_delay, self.event_set_status, "playing")
+                if not self.clear_alarm_task or not self.clear_alarm_task.active():
+                    if all(not c for c in self.cells):  # If all cells are deactivated
+                        self.clear_alarm_task = reactor.callLater(
+                            self.clear_alarm_delay, self.event_set_status, "playing")
