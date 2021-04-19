@@ -88,6 +88,9 @@ class Niryo(object):
         elif event['category'] == 'move_position':
             position = event.get('position', None)
             self.move_position(position)
+        elif event['category'] == 'move_joints':
+            joints = event.get('joints', None)
+            self.move_joints(joints)
         elif event['category'] == 'log_joints':
             self.log_joints()
         else:
@@ -118,6 +121,12 @@ class Niryo(object):
         joints = self.positions.get(position, None)
         if joints is None:
             logger.error("Unknown position {}: skipping".format(position))
+            return
+        self.niryo.move_joints(joints)
+
+    def move_joints(self, joints):
+        if joints is None:
+            logger.error("Missing joints parameter: ignoring")
             return
         self.niryo.move_joints(joints)
 
