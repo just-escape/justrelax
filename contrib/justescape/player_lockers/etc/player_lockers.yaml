@@ -1,0 +1,30 @@
+name: player_lockers
+
+default_publication_channel: justescape
+subscriptions:
+  - justescape.player_lockers
+  - justescape.broadcast
+
+serials:
+  - port: /dev/ttyUSB0
+    baud_rate: 19200
+
+lockers:
+  - tags:
+    - 7-232-197-122
+    - 41-163-117-201
+  - tags:
+    - 9-141-121-193
+    - 41-163-117-201
+  - tags:
+    - 103-159-206-122
+    - 41-163-117-201
+  - tags:
+    - 183-129-183-123
+    - 41-163-117-201
+  - tags:
+    - 249-93-135-201
+    - 41-163-117-201
+  - tags:
+    - 167-84-195-122
+    - 41-163-117-201
