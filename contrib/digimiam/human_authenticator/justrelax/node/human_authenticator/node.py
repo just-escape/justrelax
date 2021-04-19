@@ -78,7 +78,7 @@ class HumanAuthenticator(MagicNode):
     @on_event(filter={"category": "reset"})
     def event_reset(self):
         logger.info("Resetting")
-        self.status = "disabled"
+        self.status = "playing"
 
     @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.CANCEL_AUTHENTICATION})
     def cancel_authentication(self, port, /):

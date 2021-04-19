@@ -62,7 +62,7 @@ class PaymentModule(MagicNode):
     @on_event(filter={"category": "reset"})
     def event_reset(self):
         logger.info("Resetting")
-        self.status = "playing"
+        self.status = "disabled"
 
         shuffle(self.credits)
         self.credits_filo = copy(self.config['credits'])
