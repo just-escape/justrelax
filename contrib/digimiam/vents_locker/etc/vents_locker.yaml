@@ -1,0 +1,9 @@
+name: player_lockers
+
+default_publication_channel: d1.scenario
+subscriptions:
+  - d1.player_lockers
+  - d1.broadcast
+
+pin: 4
+pulse_frequency: 10
