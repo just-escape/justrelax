@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import orderStore from '@/store/orderStore.js'
+import publishSubcribeService from '@/store/publishSubscribeService.js'
 
 Vue.use(Vuex)
 
@@ -84,7 +85,7 @@ let store = new Vuex.Store({
       // Not clean :|
       if (state.currentOverlayVideo === "ms_pepper_stock") {
         state.runMsPepperStockAfterNotificationAcknowledgement = false
-        setTimeout(store.commit, 800, 'setDocumentationVisibility', true)
+        publishSubcribeService.commit('publish', {category: 'ms_pepper_tells_to_go_in_stock'})
       }
 
       state.currentOverlayVideo = null
