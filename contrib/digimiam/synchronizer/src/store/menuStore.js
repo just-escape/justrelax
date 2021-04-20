@@ -338,6 +338,8 @@ export default new Vuex.Store({
       // TODO: notify hologram player
 
       state.success = true
+      progressionStore.commit("setMenuServiceSuccess")
+
       /*publishSubscribeService.commit('publish', {
         category: "menu_success"
       })*/

@@ -11,7 +11,14 @@ let store = new Vuex.Store({
     menuServiceSuccess: false,
     displayDangerWindow: false,
     overlayVideos: {
-      glitching: require('@/assets/videos/ads_glitch.webm'),
+      glitching: {
+        fr: require('@/assets/videos/ads_glitch.webm'),
+        en: require('@/assets/videos/ads_glitch.webm'),
+      },
+      ads_loop: {
+        fr: require('@/assets/videos/ads_loop.webm'),
+        en: require('@/assets/videos/ads_loop.webm'),
+      },
     },
     currentOverlayVideo: null,
   },

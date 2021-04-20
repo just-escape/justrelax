@@ -20,9 +20,16 @@ export default {
     },
     src() {
       if (this.displayVideo) {
-        return progressionStore.state.overlayVideos[progressionStore.state.currentOverlayVideo]
+        return progressionStore.state.overlayVideos[progressionStore.state.currentOverlayVideo][this.videoLang]
       } else {
         return ""
+      }
+    },
+    videoLang() {
+      if (this.$i18n.locale === 'fr') {
+        return 'fr'
+      } else {
+        return 'en'
       }
     },
   },

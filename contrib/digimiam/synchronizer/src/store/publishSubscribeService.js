@@ -84,6 +84,8 @@ const publishSubscribeService = new Vuex.Store({
         menuStore.commit('setMenuCursorPosition', event.position)
       } else if (event.category === 'force_menu_success') {
         menuStore.commit('forceSuccess')
+      } else if (event.category === 'force_light_success') {
+        progressionStore.commit('setLightServiceSuccess')
       } else if (event.category === 'load_cell') {
         let color = event['color']
         let activated = event.activated
