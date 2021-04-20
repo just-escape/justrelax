@@ -43,12 +43,12 @@ class StockLights(MagicNode):
     @on_event(filter={'category': 'high'})
     def event_high(self):
         logger.info("Set lights intensity to high")
-        self.event_set_target_freq(50., 0.2)
+        self.event_set_target_freq(50., 0.1)
 
     @on_event(filter={'category': 'low'})
     def event_low(self):
         logger.info("Set lights intensity to low")
-        self.event_set_target_freq(1., 0.2)
+        self.event_set_target_freq(1., 0.1)
 
     @on_event(filter={'category': 'off'})
     def event_off(self):

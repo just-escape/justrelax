@@ -9,4 +9,4 @@ serials:
   - port: /dev/ttyUSB0
     baud_rate: 9600
 
-on_by_default: yes
+on_by_default: no
