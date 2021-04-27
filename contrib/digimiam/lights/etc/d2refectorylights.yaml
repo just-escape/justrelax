@@ -1,3 +1,14 @@
+name: refectory_lights
+
+default_publication_channel: d2.scenario
+subscriptions:
+  - d2.refectory_lights
+  - d2.broadcast
+
+serials:
+  - port: /dev/arduino
+    baud_rate: 9600
+    buffering_interval: 0.1
 
 channels:
   1: 50  # white
