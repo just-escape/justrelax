@@ -254,10 +254,7 @@ class Scenario(MagicNode):
 
         def ajust_fx():
             self.schedule_track1_light_animations()
-            self.publish_prefix({'category': 'on', 'color': 'green'}, 'refectory_lights')
-            self.publish_prefix({'category': 'on', 'color': 'red'}, 'refectory_lights')
-            self.publish_prefix({'category': 'on', 'color': 'pink'}, 'refectory_lights')
-            self.publish_prefix({'category': 'on', 'color': 'white'}, 'refectory_lights')
+            self.publish_prefix({'category': 'on', 'color': 'blue'}, 'refectory_lights')
             self.publish_prefix(
                 {'category': 'set_volume', 'track_id': 'track1', 'volume': 50, 'duration': 30}, 'music_player')
             self.register_delayed_task(
@@ -268,7 +265,14 @@ class Scenario(MagicNode):
             )
 
         self.publish_prefix({'category': 'on', 'color': 'orange'}, 'refectory_lights')
-        self.publish_prefix({'category': 'on', 'color': 'blue'}, 'refectory_lights')
+        self.publish_prefix({'category': 'on', 'color': 'green'}, 'refectory_lights')
+        self.publish_prefix({'category': 'on', 'color': 'red'}, 'refectory_lights')
+        self.publish_prefix({'category': 'on', 'color': 'pink'}, 'refectory_lights')
+        self.publish_prefix({'category': 'glitch', 'color': 'blue'}, 'refectory_lights')
+        self.publish_prefix({'category': 'glitch', 'color': 'pink'}, 'refectory_lights')
+        self.publish_prefix({'category': 'glitch', 'color': 'red'}, 'refectory_lights')
+        self.publish_prefix({'category': 'glitch', 'color': 'green'}, 'refectory_lights')
+        self.publish_prefix({'category': 'glitch', 'color': 'orange'}, 'refectory_lights')
 
         self.publish_prefix({'category': 'pause', 'video_id': 'ads_glitch'}, 'advertiser')
         # self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
@@ -277,7 +281,7 @@ class Scenario(MagicNode):
 
         self.register_delayed_task(0 + 5, open_the_door)
 
-        self.register_delayed_task(0 + 18.285, ajust_fx)
+        self.register_delayed_task(0 + 18.2, ajust_fx)  # should be 18.285 precisely
 
     def schedule_track1_light_animations(self):
         for timer in self.track1_light_timers:
@@ -296,7 +300,7 @@ class Scenario(MagicNode):
     def track1_light_animation_1(self):
         # 2 secondes
         self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all', 'speed': 0.5}, 'refectory_lights')
+            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'speed': 0.5}, 'refectory_lights')
 
     def trigger_track1_light_animation_2(self):
         self.track1_light_animation_2()
@@ -305,7 +309,7 @@ class Scenario(MagicNode):
     def track1_light_animation_2(self):
         # 2.25 secondes
         self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all', 'speed': 0.44}, 'refectory_lights')
+            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'speed': 0.44}, 'refectory_lights')
 
     def trigger_track1_light_animation_3(self):
         self.track1_light_animation_3()
@@ -314,7 +318,7 @@ class Scenario(MagicNode):
     def track1_light_animation_3(self):
         # 1 secondes
         self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all', 'speed': 1.01}, 'refectory_lights')
+            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'speed': 1.01}, 'refectory_lights')
 
     def trigger_track1_light_animation_4(self):
         self.track1_light_animation_4()
@@ -323,7 +327,7 @@ class Scenario(MagicNode):
     def track1_light_animation_4(self):
         # 4.5 secondes
         self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all', 'speed': 0.22}, 'refectory_lights')
+            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'speed': 0.22}, 'refectory_lights')
 
     def trigger_track1_light_animation_5(self):
         self.track1_light_animation_5()
@@ -332,7 +336,7 @@ class Scenario(MagicNode):
     def track1_light_animation_5(self):
         # 2.5 secondes
         self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all', 'speed': 0.4}, 'refectory_lights')
+            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'speed': 0.4}, 'refectory_lights')
 
     def trigger_track1_light_animation_6(self):
         self.track1_light_animation_6()
@@ -342,7 +346,7 @@ class Scenario(MagicNode):
         # 0.5 secondes
         # TODO: work around
         self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all', 'speed': 2.01}, 'refectory_lights')
+            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'speed': 2.01}, 'refectory_lights')
 
     def trigger_track1_light_animation_7(self):
         self.track1_light_animation_7()
@@ -351,7 +355,7 @@ class Scenario(MagicNode):
     def track1_light_animation_7(self):
         # 15 secondes
         self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all', 'speed': 0.066}, 'refectory_lights')
+            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'speed': 0.066}, 'refectory_lights')
 
     def resume_room(self):
         self.session_timer.resume()
@@ -414,6 +418,11 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'restaurant_in_manual_mode'}, 'synchronizer')
         self.register_delayed_task(2, self.publish_prefix, {'category': 'play', 'track_id': 'track2'}, 'music_player')
         self.register_delayed_task(0.2, self.publish_prefix, {'category': 'off', 'color': 'all'}, 'refectory_lights')
+        self.register_delayed_task(0.2, self.publish_prefix, {'category': 'glitch', 'color': 'blue'}, 'refectory_lights')
+        self.register_delayed_task(0.2, self.publish_prefix, {'category': 'glitch', 'color': 'pink'}, 'refectory_lights')
+        self.register_delayed_task(0.2, self.publish_prefix, {'category': 'glitch', 'color': 'red'}, 'refectory_lights')
+        self.register_delayed_task(0.2, self.publish_prefix, {'category': 'glitch', 'color': 'green'}, 'refectory_lights')
+        self.register_delayed_task(0.2, self.publish_prefix, {'category': 'glitch', 'color': 'orange'}, 'refectory_lights')
 
     @on_event(filter={'from': 'synchronizer', 'category': 'set_menu_entry'})
     def synchronizer_event_set_menu_entry(self, dish: str, index: int):
@@ -953,6 +962,14 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'refectory_lights'})
     def buttons_refectory_lights(self, color: str, on: bool):
         self.publish_prefix({'category': 'on' if on else 'off', 'color': color}, 'refectory_lights')
+
+    @on_event(filter={'widget_id': 'refectory_lights_glitch'})
+    def buttons_refectory_lights_glitch(self, color: str):
+        self.publish_prefix({'category': 'glitch', 'color': color}, 'refectory_lights')
+
+    @on_event(filter={'widget_id': 'refectory_lights_stop_glitch'})
+    def buttons_refectory_lights_stop_glitch(self, color: str):
+        self.publish_prefix({'category': 'stop_glitch', 'color': color}, 'refectory_lights')
 
     @on_event(filter={'widget_id': 'waffle_factory_conveyor'})
     def buttons_waffle_factory_conveyor(self, conveyor_id: str, action: str):

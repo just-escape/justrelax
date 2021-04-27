@@ -1,34 +1,30 @@
-name: refectory_lights
-
-default_publication_channel: d2.scenario
-subscriptions:
-  - d2.refectory_lights
-  - d2.broadcast
-
-serials:
-  - port: /dev/arduino
-    baud_rate: 9600
-    buffering_interval: 0.1
 
 channels:
-  1: 1000  # white
-  2: 300  # pink
-  4: 300  # red
-  8: 300  # green
+  1: 50  # white
+  2: 16  # pink
+  4: 16  # red
+  8: 16  # green
   16: 0  # blue_r
-  32: 300  # blue_g
-  64: 1000  # blue_b
-  128: 1000  # orange_r
-  256: 110  # orange_g
+  32: 16  # blue_g
+  64: 50  # blue_b
+  128: 50  # orange_r
+  256: 10  # orange_g
   512: 0  # orange_b
 
 colors:
   all:
-    on_by_default: yes
+    on_by_default: no
     on_off_pins:
       - 26
       - 19
       - 13
+      - 6
+      - 5
+      - 0
+  all_but_white:
+    on_off_pins:
+      - 26
+      - 19
       - 6
       - 5
       - 0
@@ -38,15 +34,90 @@ colors:
   pink:
     on_off_pins:
       - 26
+    glitch:
+      by_default: no
+      channel: 2
+      short_glitch_per_mille: 50
+      short_dimmed_glitch_per_mille: 50
+      long_glitch_per_mille: 0
+      long_dimmed_glitch_per_mille: 0
+      stability_per_mille: 5
+      stability_duration: 3500
   red:
     on_off_pins:
       - 6
+    glitch:
+      by_default: no
+      channel: 4
+      short_glitch_per_mille: 5
+      short_dimmed_glitch_per_mille: 0
+      long_glitch_per_mille: 20
+      long_dimmed_glitch_per_mille: 0
+      stability_per_mille: 0
+      stability_duration: 8000
   green:
     on_off_pins:
       - 19
+    glitch:
+      by_default: no
+      channel: 8
+      short_glitch_per_mille: 5
+      short_dimmed_glitch_per_mille: 5
+      long_glitch_per_mille: 10
+      long_dimmed_glitch_per_mille: 20
+      stability_per_mille: 50
+      stability_duration: 3000
   blue:
     on_off_pins:
       - 0
+    glitch:
+      by_default: no
+      channel: 32
+      short_glitch_per_mille: 1
+      short_dimmed_glitch_per_mille: 0
+      long_glitch_per_mille: 5
+      long_dimmed_glitch_per_mille: 0
+      stability_per_mille: 1
+      stability_duration: 4000
   orange:
     on_off_pins:
       - 5
+    glitch:
+      by_default: no
+      channel: 384
+      short_glitch_per_mille: 20
+      short_dimmed_glitch_per_mille: 0
+      long_glitch_per_mille: 3
+      long_dimmed_glitch_per_mille: 1
+      stability_per_mille: 5
+      stability_duration: 8000
+
+animations:
+  glitch1:
+    0: no
+    0.5: yes
+    0.85: no
+    1: yes
+  glitch2:
+    0: no
+    0.5: yes
+    0.85: no
+    1: yes
+  glitch3:
+    0: no
+    0.1: yes
+    0.2: no
+    0.3: yes
+    0.4: no
+    0.8: yes
+    0.9: no
+    1: yes
+  glitch_flicker1:
+    0: no
+    0.1: yes
+    0.2: no
+    0.3: yes
+    0.4: no
+    0.5: yes
+    0.6: no
+    1: yes
