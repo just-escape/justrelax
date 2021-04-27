@@ -1074,6 +1074,16 @@ class Scenario(MagicNode):
     def button_street_lights_off(self):
         self.publish_prefix({'category': 'off', 'color': 'all'}, 'street_lights')
 
+    @on_event(filter={'widget_id': 'street_lights_glitch'})
+    def button_street_lights_glitch(self):
+        self.publish_prefix({'category': 'glitch', 'color': 'blue'}, 'street_lights')
+        self.publish_prefix({'category': 'glitch', 'color': 'orange'}, 'street_lights')
+
+    @on_event(filter={'widget_id': 'street_lights_stop_glitch'})
+    def button_street_lights_stop_glitch(self):
+        self.publish_prefix({'category': 'stop_glitch', 'color': 'blue'}, 'street_lights')
+        self.publish_prefix({'category': 'stop_glitch', 'color': 'orange'}, 'street_lights')
+
     @on_event(filter={'widget_id': 'holomenu_set_part'})
     def buttons_holomenu_set_part(self, part: str, **kwargs):
         if part == 'slide':

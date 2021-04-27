@@ -12,10 +12,10 @@ serials:
 
 channels:
   16: 0  # blue_r
-  32: 300  # blue_g
-  64: 1000  # blue_b
-  128: 1000  # orange_r
-  256: 110  # orange_g
+  32: 16  # blue_g
+  64: 50  # blue_b
+  128: 50  # orange_r
+  256: 10  # orange_g
   512: 0  # orange_b
 
 colors:
@@ -27,6 +27,24 @@ colors:
   blue:
     on_off_pins:
       - 0
+    glitch:
+      by_default: yes
+      channel: 32
+      short_glitch_per_mille: 3
+      short_dimmed_glitch_per_mille: 0
+      long_glitch_per_mille: 3
+      long_dimmed_glitch_per_mille: 0
+      stability_per_mille: 1
+      stability_duration: 4000
   orange:
     on_off_pins:
       - 5
+    glitch:
+      by_default: yes
+      channel: 384
+      short_glitch_per_mille: 15
+      short_dimmed_glitch_per_mille: 0
+      long_glitch_per_mille: 3
+      long_dimmed_glitch_per_mille: 1
+      stability_per_mille: 5
+      stability_duration: 8000
