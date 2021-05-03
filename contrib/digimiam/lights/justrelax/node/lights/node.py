@@ -167,9 +167,9 @@ class Lights(MagicNode):
 
     @on_event(filter={'category': 'play_animation'})
     def event_play_animation(
-            self, name: str, color: str, speed: float = 1, reversed_t: bool = False, inverted_on_off: bool = False):
-        logger.info("Playing animation {} on color {} (speed={}, reversed_t={}, inverted_on_off={})".format(
-            name, color, speed, reversed_t, inverted_on_off))
+            self, name: str, color: str, duration: float = 1, reversed_t: bool = False, inverted_on_off: bool = False):
+        logger.info("Playing animation {} on color {} (duration={}, reversed_t={}, inverted_on_off={})".format(
+            name, color, duration, reversed_t, inverted_on_off))
         animation = self.animations.get(name, None)
         if animation is None:
             logger.info("Animation {} not found: aborting".format(animation))
@@ -179,4 +179,4 @@ class Lights(MagicNode):
         for key_frame_t, key_frame_on in key_frames.items():
             key_frame_on = not key_frame_on if inverted_on_off else key_frame_on
             event = self.event_on if key_frame_on else self.event_off
-            reactor.callLater(key_frame_t / speed, event, color)
+            reactor.callLater(key_frame_t * duration, event, color)
