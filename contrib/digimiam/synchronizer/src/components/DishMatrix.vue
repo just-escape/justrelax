@@ -8,27 +8,90 @@
         :itemIndex="itemIndex"
       />
 
-      <DishMatrixGraduation
-        v-for="(graduation, graduationIndex) in graduations" :key="graduationIndex"
-        :dashLeft="graduation.dashLeft"
-        :dashBottom="graduation.dashBottom"
-        :dashWidth="graduation.dashWidth"
-        :dashHeight="graduation.dashHeight"
-        :icon="graduation.icon"
-        :iconFa="graduation.iconFa"
-        :iconLeft="graduation.iconLeft"
-        :iconBottom="graduation.iconBottom"
-      />
+      <div class="position-absolute d-flex flex-row w-100" style="top: calc(100% + 1px); transition: opacity 4s ease-in-out" :style="{opacity: displayGraduations ? 1 : 0}">
+        <div class="position-relative w-25 text-center">
+          <div class="position-absolute dash dash-vertical"></div>
+          <div class="mt-2">
+            <i class="fa-fw fas fa-drumstick-bite" :class="{'mr-1': displayGraduationTexts}" style="opacity: 0.7"/>
+            <span v-if="displayGraduationTexts">Viande</span>
+          </div>
+        </div>
+        <div class="position-relative w-25 text-center">
+          <div class="position-absolute dash dash-vertical"></div>
+          <div class="mt-2">
+            <i class="fa-fw fas fa-pizza-slice" :class="{'mr-1': displayGraduationTexts}" style="opacity: 0.7"/>
+            <span v-if="displayGraduationTexts">Pizza</span>
+          </div>
+        </div>
+        <div class="position-relative w-25 text-center">
+          <div class="position-absolute dash dash-vertical"></div>
+          <div class="mt-2">
+            <img src="@/assets/img/waffle.png" :class="{'mr-1': displayGraduationTexts}" style="opacity: 0.7" height="16px"/>
+            <span v-if="displayGraduationTexts">Gaufre</span>
+          </div>
+        </div>
+        <div class="position-relative w-25 text-center">
+          <div class="position-absolute dash dash-vertical"></div>
+          <div class="mt-2">
+            <img src="@/assets/img/jelly.svg" :class="{'mr-1': displayGraduationTexts}" style="opacity: 0.7" height="16px"/>
+            <span v-if="displayGraduationTexts">Gelée</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="position-absolute d-flex flex-column h-100" style="left: -11px; width: 10px; transition: opacity 4s ease-in-out" :style="{opacity: displayGraduations ? 1 : 0}">
+        <div class="position-relative h-25 d-flex">
+          <div class="position-absolute dash dash-horizontal"></div>
+          <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
+            <i
+              class="fa-fw fas fa-smile" :class="{'ml-1': displayGraduationTexts}"
+              style="opacity: 0.7" :style="{transform: displayGraduationTexts ? 'rotate(90deg)' : 'rotate(-180deg)'}"
+            />
+            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Sourire</div>
+          </div>
+        </div>
+        <div class="position-relative h-25 text-center">
+          <div class="position-absolute dash dash-horizontal"></div>
+          <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
+            <i
+              class="fa-fw fas fa-bug" :class="{'ml-1': displayGraduationTexts}"
+              style="opacity: 0.7" :style="{transform: displayGraduationTexts ? 'rotate(90deg)' : 'rotate(-180deg)'}"
+            />
+            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Insecte</div>
+          </div>
+        </div>
+        <div class="position-relative h-25 text-center">
+          <div class="position-absolute dash dash-horizontal"></div>
+          <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
+            <i
+              class="fa-fw fas fa-search" :class="{'ml-1': displayGraduationTexts}"
+              style="opacity: 0.7" :style="{transform: displayGraduationTexts ? 'rotate(90deg)' : 'rotate(-180deg)'}"
+            />
+            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Micro-</div>
+          </div>
+        </div>
+        <div class="position-relative h-25 text-center">
+          <div class="position-absolute dash dash-horizontal"></div>
+          <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
+            <img
+              src="@/assets/img/seaweed.png" height="16px"
+              :class="{'mb-1': displayGraduationTexts}" style="opacity: 0.7" :style="{transform: displayGraduationTexts ? 'rotate(90deg)' : 'rotate(-180deg)'}"
+            />
+            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Algue</div>
+          </div>
+        </div>
+      </div>
 
       <div
         v-for="area in selectableAreas" :key="area.id"
         class="selectable-area"
+        style="transition: opacity 4s ease-in-out"
         :style="{
           top: area.top + '%',
           left: area.left + '%',
           height: selectableAreaHeight,
           width: selectableAreaWidth,
-          opacity: selectableAreasOpacity,
+          opacity: displaySelectableAreas ? 1 : 0,
         }">
       </div>
     </div>
@@ -42,7 +105,6 @@
 </template>
 
 <script>
-import DishMatrixGraduation from '@/components/DishMatrixGraduation.vue'
 import DishSelector from '@/components/DishSelector.vue'
 import menuStore from '@/store/menuStore.js'
 import difficultyStore from '@/store/difficultyStore.js'
@@ -50,81 +112,33 @@ import difficultyStore from '@/store/difficultyStore.js'
 export default {
   name: 'DishMatrix',
   components: {
-    DishMatrixGraduation,
     DishSelector,
   },
-  data() {
-    return {
-      selectableAreasOpacity: 0,
-      graduationsOpacity: 1,
-    }
-  },
   computed: {
-    selectableAreas: function() {
+    displaySelectableAreas() {
+      return menuStore.state.displaySelectableAreas
+    },
+    displayGraduations() {
+      return menuStore.state.displayGraduations
+    },
+    displayGraduationTexts() {
+      return menuStore.state.displayGraduationTexts
+    },
+    selectableAreas() {
       return menuStore.state.selectableAreas
     },
-    selectableAreaWidth: function() {
+    selectableAreaWidth() {
       return menuStore.state.selectableAreaWidth + '%'
     },
-    selectableAreaHeight: function() {
+    selectableAreaHeight() {
       return menuStore.state.selectableAreaHeight + '%'
     },
-    menuItems: function() {
+    menuItems() {
       return menuStore.state.menuItems
     },
-    graduations: function() {
-      return menuStore.state.graduations
-    },
-    difficulty: function() {
+    difficulty() {
       return difficultyStore.state.difficulty
     },
-  },
-  watch: {
-    difficulty: function(newValue) {
-      if (newValue == difficultyStore.state.EASY) {
-        this.$anime({
-          targets: this,
-          selectableAreasOpacity: 1,
-          duration: 4000,
-          easing: 'easeInOutExpo',
-        })
-      } else {
-        this.$anime({
-          targets: this,
-          selectableAreasOpacity: 0,
-          duration: 4000,
-          easing: 'easeInOutExpo',
-        })
-      }
-
-      if (newValue == difficultyStore.state.HARD) {
-        this.$anime({
-          targets: this,
-          graduationsOpacity: 0,
-          duration: 4000,
-          easing: 'easeInOutExpo',
-        })
-      } else {
-        this.$anime({
-          targets: this,
-          graduationsOpacity: 1,
-          duration: 4000,
-          easing: 'easeInOutExpo',
-        })
-      }
-    },
-  },
-  created() {
-    if (this.difficulty == difficultyStore.state.EASY) {
-      this.selectableAreasOpacity = 1
-      this.graduationsOpacity = 1
-    } else if (this.difficulty == difficultyStore.state.NORMAL) {
-      this.selectableAreasOpacity = 0
-      this.graduationsOpacity = 1
-    } else if (this.difficulty == difficultyStore.state.HARD) {
-      this.selectableAreasOpacity = 0
-      this.graduationsOpacity = 0
-    }
   },
 }
 </script>
@@ -193,5 +207,23 @@ export default {
     calc(10px + 1px) 1.5px
   );
   z-index: 10;
+}
+
+.dash {
+  background-color: #00d1b6;
+  box-shadow: 0px 1px 3px 0.01px rgba(0, 209, 182, 0.7);
+}
+
+.dash-vertical {
+  left: 50%;
+  height: 5px;
+  width: 1px;
+}
+
+.dash-horizontal {
+  right: 0;
+  top: 50%;
+  height: 1px;
+  width: 5px;
 }
 </style>

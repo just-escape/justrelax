@@ -21,7 +21,7 @@ var store = new Vuex.Store({
       for (var i = 0 ; i < Object.keys(state).length ; i++) {
         var lang = Object.keys(state)[i]
 
-        var message 
+        var message
         if (useLocale === true) {
           message = i18n.t('log.' + logMessage, lang)
         } else {

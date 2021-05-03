@@ -24,7 +24,7 @@
         <MenuLoadingWidget :startAnimationSignal="startAnimationSignal"/>
       </div>
 
-      <div class="position-relative">
+      <div class="position-relative" :style="{opacity: autoValidateDishes ? 0 : 1}" style="transition: opacity 4s ease-in-out">
         <div class="glowing-wire left-wire"></div>
         <div class="glowing-wire right-wire"></div>
         <ButtonValidate @click="validate" class="btn-block" :disabled="success"/>
@@ -55,6 +55,9 @@ export default {
     }
   },
   computed: {
+    autoValidateDishes: function() {
+      return menuStore.state.autoValidateDishes
+    },
     dragging: function() {
       return menuStore.state.dragging
     },
@@ -83,7 +86,7 @@ export default {
       this.startAnimationSignal = !this.startAnimationSignal
 
       menuStore.commit("lockValidate")
-      setTimeout(this.validatePostAnimation, 4000)
+      setTimeout(this.validatePostAnimation, 1550)
     },
     validatePostAnimation: function() {
       menuStore.commit("unlockValidate")

@@ -5,7 +5,8 @@ import i18n from '@/locales.js'
 import router from '@/router.js'
 
 import lightStore from '@/store/lightStore.js'
-import logStore from '@/store/logStore.js'
+import menuLogStore from '@/store/menuLogStore.js'
+import lightLogStore from '@/store/lightLogStore.js'
 import difficultyStore from '@/store/difficultyStore.js'
 import menuStore from '@/store/menuStore.js'
 import progressionStore from '@/store/progressionStore.js'
@@ -75,11 +76,16 @@ const publishSubscribeService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
-      } else if (event.category === 'log') {
+      } else if (event.category === 'menu_log') {
         let logMessage = event.message
         let level = event.level
         let useLocale = event.use_locale
-        logStore.commit('processLog', {logMessage, level, useLocale})
+        menuLogStore.commit('processLog', {logMessage, level, useLocale})
+      } else if (event.category === 'light_log') {
+        let logMessage = event.message
+        let level = event.level
+        let useLocale = event.use_locale
+        lightLogStore.commit('processLog', {logMessage, level, useLocale})
       } else if (event.category === 'set_menu_cursor_position') {
         menuStore.commit('setMenuCursorPosition', event.position)
       } else if (event.category === 'force_menu_success') {
@@ -99,6 +105,14 @@ const publishSubscribeService = new Vuex.Store({
         progressionStore.commit('playOverlayVideo', event.video_id)
       } else if (event.category === 'stop_overlay_video') {
         progressionStore.commit('stopOverlayVideo')
+      } else if (event.category === 'display_selectable_areas') {
+        menuStore.commit('setDisplaySelectableAreas', event.display)
+      } else if (event.category === 'display_graduations') {
+        menuStore.commit('setDisplayGraduations', event.display)
+      } else if (event.category === 'display_graduation_texts') {
+        menuStore.commit('setDisplayGraduationTexts', event.display)
+      } else if (event.category === 'set_auto_validate_dishes') {
+        menuStore.commit('setAutoValidateDishes', event.value)
       }
     },
     SOCKET_RECONNECT (state, count) {

@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 
 import difficultyStore from '@/store/difficultyStore.js'
 import progressionStore from '@/store/progressionStore.js'
+import publishSubscribeService from './publishSubscribeService'
+import lightLogStore from '@/store/lightLogStore.js'
 
 Vue.use(Vuex)
 
@@ -210,13 +212,15 @@ function nextActivation() {
     store.commit('setUnplayable')
     confirmationAnimation()
   } else {
-    if (store.state.activatedSensors.slice(0, 4).includes(store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId)) {
-      if (store.state.vertices[store.state.edges[edgeId].getVertice1()].activationSensorId) {
+    let currentSensorId = store.state.vertices[store.state.edges[edgeId].getVertice1()].activationSensorId
+    let nextSensorId = store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId
+    if (store.state.activatedSensors.slice(0, 4).includes(nextSensorId)) {
+      if (currentSensorId) {
         // Not the first vertice of the sequence
-        store.commit('hideColorTriangles', store.state.vertices[store.state.edges[edgeId].getVertice1()].activationSensorId)
+        store.commit('hideColorTriangles', currentSensorId)
       } else {
         // The first vertice of the sequence
-        store.commit('showColorTriangles', store.state.vertices[store.state.edges[edgeId].getVertice2()].activationSensorId)
+        store.commit('showColorTriangles', nextSensorId)
       }
 
       let nextEdgeId = store.getters.nextActivationEdgeId
@@ -231,6 +235,11 @@ function nextActivation() {
         gameOver(setPlayable, true)
       } else {
         gameOver(newActivationSequence, true)
+        if (nextSensorId === "pink") {
+          store.dispatch("recordGameOver", "pink_not_on")
+        } else {
+          store.dispatch("recordGameOver", "next_light_not_on")
+        }
       }
     }
   }
@@ -1412,6 +1421,9 @@ var store = new Vuex.Store({
     },
     nextActivationHelpTask: null,
     isRestaurantInManualMode: false,
+    gameOverCounter: -1,
+    pinkGameOverCounter: -2,
+    lightOverloadCounter: -1,
   },
   getters: {
     currentActivationEdgeId (state) {
@@ -1478,6 +1490,12 @@ var store = new Vuex.Store({
     },
   },
   mutations: {
+    gameOverCounterPlusPlus (state) {
+      state.gameOverCounter++
+    },
+    pinkGameOverCounterPlusPlus (state) {
+      state.pinkGameOverCounter++
+    },
     showColorTriangles (state, color) {
       state.colorTriangles[color] = true
     },
@@ -1598,13 +1616,21 @@ var store = new Vuex.Store({
               nextActivation()
             }
           }
+
+          if (state.activatedSensors.length > 4) {
+            state.lightOverloadCounter++
+            if (state.lightOverloadCounter % 3 === 0) {
+              lightLogStore.commit("processLog", {logMessage: "too_many_lights_on", level: "warning", useLocale: true})
+            }
+          }
         } else {
           if (state.activationAnimation) {
             if (currentVertice.activationSensorId == color) {
               if (state.edges[state.currentActivationSequence[0]].validated) {
                 gameOver(newActivationSequence, true)
+                store.dispatch("recordGameOver", "current_light_off")
               } else {
-                gameOver(setPlayable, false)
+                gameOver(setPlayable, false, null)
               }
             }
           }
@@ -1658,6 +1684,32 @@ var store = new Vuex.Store({
               activated: pinkActivation,
             }
           )
+        }
+      }
+    },
+    recordGameOver (context, reason) {
+      publishSubscribeService.commit(
+        'publish',
+        {
+          "category": "light_game_over",
+          "reason": reason,
+          "edgeId": context.getters.currentActivationEdgeId,
+          "sequence": context.state.currentActivationSequence,
+        }
+      )
+      if (reason === "pink_not_on") {
+        context.commit('pinkGameOverCounterPlusPlus')
+        if (store.state.pinkGameOverCounter % 2 === 0) {
+          lightLogStore.commit("processLog", {logMessage: "pink_was_not_pressed", level: "warning", useLocale: true})
+        }
+      } else {
+        context.commit('gameOverCounterPlusPlus')
+        if (store.state.gameOverCounter % 3 === 0) {
+          if (reason === "next_light_not_on") {
+            lightLogStore.commit("processLog", {logMessage: "the_next_light_was_not_pressed", level: "warning", useLocale: true})
+          } else if (reason === "current_light_off") {
+            lightLogStore.commit("processLog", {logMessage: "the_light_has_been_turned_off", level: "warning", useLocale: true})
+          }
         }
       }
     },

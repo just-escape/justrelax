@@ -6,7 +6,7 @@
       <div class="corner bottom-right"></div>
 
       <div class="logs w-100">
-        <ul class="list-unstyled mb-0" id="scroll-bar">
+        <ul class="list-unstyled mb-0" id="light-scroll-bar">
           <li v-for="(log, index) in logs" :key="log.id" class="mb-2">
             <span v-if="log.level == 'warning'" class="warning">{{ $t('warning') }}&nbsp;</span>
             <span v-else-if="log.level == 'info'" class="info">{{ $t('info') }}&nbsp;</span>
@@ -25,10 +25,10 @@
 </template>
 
 <script>
-import logStore from '@/store/logStore.js'
+import lightLogStore from '@/store/lightLogStore.js'
 
 export default {
-  name: 'Logs',
+  name: 'MenuLogs',
   data: function() {
     return {
       fullBlockOpacity: 1,
@@ -39,7 +39,7 @@ export default {
       return this.$i18n.locale
     },
     logs: function() {
-      return logStore.state[this.lang].logs.filter(function(log) { return log.displayedChars >= 0 })
+      return lightLogStore.state[this.lang].logs.filter(function(log) { return log.displayedChars >= 0 })
     },
     lastIndex: function() {
       return this.logs.length - 1
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     scrollBottom: function() {
-      var scrollBar = document.getElementById('scroll-bar')
+      var scrollBar = document.getElementById('light-scroll-bar')
       scrollBar.scrollTop = scrollBar.scrollHeight
     }
   },
@@ -80,7 +80,7 @@ export default {
 .logs-box {
   margin-bottom: 30px;
   padding: 5px;
-  max-height: 934px;
+  max-height: 434px;
 }
 
 .logs {

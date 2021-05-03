@@ -30,92 +30,10 @@ export default new Vuex.Store({
     ],
     selectableAreaHeight: 15, // percentage
     selectableAreaWidth: 15, // percentage
-    graduations: [
-      {
-        dashLeft: "-5px",
-        dashBottom: "15.5%",
-        dashHeight: "1px",
-        dashWidth: "5px",
-        iconFa: false,
-        icon: require("@/assets/img/seaweed.png"),
-        iconLeft: "calc(-20px - 5px)",
-        iconBottom: "calc(-16px / 2 + 0.5px)",
-      },
-      {
-        dashLeft: "-5px",
-        dashBottom: "38.5%",
-        dashHeight: "1px",
-        dashWidth: "5px",
-        iconFa: true,
-        icon: "fas fa-search",
-        iconLeft: "calc(-20px - 5px)",
-        iconBottom: "calc(-16px / 2 + 0.5px)",
-      },
-      {
-        dashLeft: "-5px",
-        dashBottom: "61.5%",
-        dashHeight: "1px",
-        dashWidth: "5px",
-        iconFa: true,
-        icon: "fas fa-bug",
-        iconLeft: "calc(-20px - 5px)",
-        iconBottom: "calc(-16px / 2 + 0.5px)",
-      },
-      {
-        dashLeft: "-5px",
-        dashBottom: "84.5%",
-        dashHeight: "1px",
-        dashWidth: "5px",
-        iconFa: true,
-        icon: "fas fa-smile",
-        iconLeft: "calc(-20px - 5px)",
-        iconBottom: "calc(-16px / 2 + 0.5px)",
-      },
-      {
-        dashLeft: "15.5%",
-        dashBottom: "-5px",
-        dashHeight: "5px",
-        dashWidth: "1px",
-        iconFa: true,
-        icon: "fa fa-drumstick-bite",
-        iconLeft: "calc(-20px / 2 + 0.5px)",
-        iconBottom: "calc(-16px - 5px)",
-      },
-      {
-        dashLeft: "38.5%",
-        dashBottom: "-5px",
-        dashHeight: "5px",
-        dashWidth: "1px",
-        iconFa: true,
-        icon: "fas fa-pizza-slice",
-        iconLeft: "calc(-20px / 2 + 0.5px)",
-        iconBottom: "calc(-16px - 5px)",
-      },
-      {
-        dashLeft: "61.5%",
-        dashBottom: "-5px",
-        dashHeight: "5px",
-        dashWidth: "1px",
-        iconFa: false,
-        icon: require("@/assets/img/waffle.png"),
-        iconLeft: "calc(-20px / 2 + 0.5px)",
-        iconBottom: "calc(-16px - 5px)",
-      },
-      {
-        dashLeft: "84.5%",
-        dashBottom: "-5px",
-        dashHeight: "5px",
-        dashWidth: "1px",
-        iconFa: false,
-        icon: require("@/assets/img/jelly.svg"),
-        iconLeft: "calc(-20px / 2 + 0.5px)",
-        iconBottom: "calc(-16px - 5px)",
-      },
-    ],
     menuItems: [
       {
-        cursorLeft: 200,
-        cursorTop: 170,
+        cursorLeft: 190,
+        cursorTop: 190,
         cursorWidth: 30,
         cursorHeight: 30,
         selectorZIndex: 10,
@@ -125,7 +43,7 @@ export default new Vuex.Store({
         price: 10,
       },
       {
-        cursorLeft: 520,
+        cursorLeft: 535,
         cursorTop: 300,
         cursorWidth: 30,
         cursorHeight: 30,
@@ -136,7 +54,7 @@ export default new Vuex.Store({
         price: 11,
       },
       {
-        cursorLeft: 350,
+        cursorLeft: 362,
         cursorTop: 40,
         cursorWidth: 30,
         cursorHeight: 30,
@@ -147,8 +65,8 @@ export default new Vuex.Store({
         price: 12,
       },
       {
-        cursorLeft: 511,
-        cursorTop: 266,
+        cursorLeft: 545,
+        cursorTop: 210,
         cursorWidth: 30,
         cursorHeight: 30,
         selectorZIndex: 10,
@@ -175,6 +93,10 @@ export default new Vuex.Store({
     zIndexCounter: 10,
     validating: false,
     success: false,
+    autoValidateDishes: true,
+    displaySelectableAreas: true,
+    displayGraduations: true,
+    displayGraduationTexts: false,
   },
   getters: {
     isSuccess (state) {
@@ -187,6 +109,18 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setAutoValidateDishes (state, value) {
+      state.autoValidateDishes = value
+    },
+    setDisplaySelectableAreas (state, value) {
+      state.displaySelectableAreas = value
+    },
+    setDisplayGraduations (state, value) {
+      state.displayGraduations = value
+    },
+    setDisplayGraduationTexts (state, value) {
+      state.displayGraduationTexts = value
+    },
     // eslint-disable-next-line
     appCursorMove (state, event) {
       if (state.success || state.validating) {

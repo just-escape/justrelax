@@ -10,7 +10,7 @@
           <div class="menu-background"></div>
 
           <div class="title-ribbon p-2">
-            <div class="title">{{ $t('devices_synchronization') }}</div>
+            <div class="title">{{ $t('digimiam_lights') }}</div>
           </div>
           <LightPuzzleMenuContent class="h-100"/>
         </div>

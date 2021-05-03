@@ -101,7 +101,7 @@ export default {
         return
       }
       this.lockAnimation()
-      setTimeout(this.unlockAnimation, 4000)
+      setTimeout(this.unlockAnimation, 1500)
 
       var color
       if (menuStore.getters.isSuccess) {
@@ -114,17 +114,17 @@ export default {
         setTimeout(this.startHexagonAnimation, 150 * i, i)
         setTimeout(this.showHexagon, 150 * i, i)
 
-        setTimeout(this.stopHexagonAnimation, 3400, i)
-        setTimeout(this.hideHexagon, 3400, i)
+        setTimeout(this.stopHexagonAnimation, 900, i)
+        setTimeout(this.hideHexagon, 900, i)
 
-        setTimeout(this.setHexagonColor, 3450, i, color)
+        setTimeout(this.setHexagonColor, 950, i, color)
 
-        setTimeout(this.showHexagon, 3500, i)
-        setTimeout(this.hideHexagon, 3600, i)
-        setTimeout(this.showHexagon, 3700, i)
-        setTimeout(this.hideHexagon, 3800, i)
+        setTimeout(this.showHexagon, 1000, i)
+        setTimeout(this.hideHexagon, 1100, i)
+        setTimeout(this.showHexagon, 1200, i)
+        setTimeout(this.hideHexagon, 1300, i)
 
-        setTimeout(this.setHexagonColor, 3850, i, 'white')
+        setTimeout(this.setHexagonColor, 1350, i, 'white')
       }
     }
   },

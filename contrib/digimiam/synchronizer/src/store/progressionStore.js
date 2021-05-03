@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import lightLogStore from '@/store/lightLogStore.js'
 import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 let store = new Vuex.Store({
@@ -38,6 +39,7 @@ let store = new Vuex.Store({
       if (!state.lightServiceSuccess) {
         state.lightServiceSuccess = true
         publishSubscribeService.commit("publish", {"category": "light_service_success"})
+        lightLogStore.commit("processLog", {logMessage: "log_light_sync_complete", level: "info", useLocale: true})
 
         if (state.menuServiceSuccess) {
           publishSubscribeService.commit("publish", {"category": "services_synchronization_success"})

@@ -17,7 +17,10 @@
         </div>
       </div>
       <div class="col-3 px-0">
-        <Logs/>
+        <div class="d-flex flex-column h-100">
+          <LightLogs class="mb-3"/>
+          <MenuLogs class="mt-3"/>
+        </div>
       </div>
     </div>
     <OverlayVideo class="position-absolute z-index-20"/>
@@ -31,7 +34,8 @@ import LightPuzzle from '@/components/LightPuzzle.vue'
 import MenuPuzzle from '@/components/MenuPuzzle.vue'
 import OverlayVideo from '@/components/OverlayVideo.vue'
 import DangerWindow from '@/components/DangerWindow.vue'
-import Logs from '@/components/Logs.vue'
+import LightLogs from '@/components/LightLogs.vue'
+import MenuLogs from '@/components/MenuLogs.vue'
 import menuStore from '@/store/menuStore.js'
 import progressionStore from '@/store/progressionStore.js'
 
@@ -39,7 +43,8 @@ export default {
   name: 'PageRoot',
   components: {
     BackgroundLines,
-    Logs,
+    LightLogs,
+    MenuLogs,
     LightPuzzle,
     MenuPuzzle,
     OverlayVideo,
