@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    sessionTime: 0,
+    sessionTime: null,
   },
   mutations: {
     setSessionTime (state, seconds) {

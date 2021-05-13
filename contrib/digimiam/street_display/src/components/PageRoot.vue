@@ -3,12 +3,10 @@
     <Title/>
     <MenuFrame class="mb-4"/>
     <ButtonsBottom/>
-    <!--<OverlayVideo/>-->
   </div>
 </template>
 
 <script>
-//import OverlayVideo from '@/components/OverlayVideo.vue'
 import Title from '@/components/Title.vue'
 import MenuFrame from '@/components/MenuFrame.vue'
 import ButtonsBottom from '@/components/ButtonsBottom.vue'
@@ -16,7 +14,6 @@ import ButtonsBottom from '@/components/ButtonsBottom.vue'
 export default {
   name: 'PageRoot',
   components: {
-    //OverlayVideo,
     Title,
     MenuFrame,
     ButtonsBottom,

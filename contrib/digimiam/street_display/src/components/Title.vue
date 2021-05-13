@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import publishSubscribeService from '@/store/publishSubscribeService.js'
+
 export default {
   name: "Title",
   data() {
@@ -29,12 +31,7 @@ export default {
       this.langsOpacity = this.langsOpacity === 1 ? 0 : 1
     },
     setLang(lang) {
-      let query = JSON.parse(JSON.stringify(this.$router.app._route.query))
-      if (query.lang !== lang) {
-        query.lang = lang
-        this.$router.push({path: '/', query: query})
-      }
-      this.$i18n.locale = lang
+      publishSubscribeService.commit('publish', {category: "localize", value: lang})
     },
   },
 }

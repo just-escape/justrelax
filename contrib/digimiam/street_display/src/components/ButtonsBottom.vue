@@ -112,6 +112,10 @@ export default {
       return businessStore.state.sessionTime
     },
     formattedSessionTime() {
+      if (this.sessionTime === null) {
+        return "00:00"
+      }
+
       function pad(num) {
         return ("0" + num).slice(-2);
       }
@@ -190,6 +194,25 @@ export default {
       publishSubscribeService.commit('publish', {category: 'unlock_front_door'})
     },
   },
+  watch: {
+    sessionTime() {
+      // No matter the current configuration step, everything is hidden except the session time that is displayed
+      this.areActionsLocked = true
+      this.easyTranslateX = -1080
+      this.playWordTranslateX = -1080
+      this.normalTranslateX = -1080
+      this.hardTranslateX = -1080
+      this.playButtonTranslateX = -1080
+      this.playWordTranslateX = -1080
+      this.inTranslateX = -1080
+      this.difficultyTranslateX = -1080
+      this.questionMarkTranslateX = -1080
+      this.yesTranslateX = -1080
+      this.noTranslateX = -1080
+      this.openTranslateX = 0
+      this.sessionTimeTranslateX = 0
+    }
+  }
 }
 </script>
 

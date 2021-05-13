@@ -37,6 +37,8 @@ const publishSubscribeService = new Vuex.Store({
         }
         Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
       }
+
+      Vue.prototype.$socket.send(JSON.stringify({action: "publish", channel: state.publicationChannel, event: {category: "get_session_time"}}))
     },
     SOCKET_ONCLOSE (state, event) {
       // eslint-disable-next-line
