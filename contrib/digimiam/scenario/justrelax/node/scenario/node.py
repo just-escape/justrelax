@@ -81,10 +81,13 @@ class Timer:
     def cancel(self):
         if self.task and self.task.active():
             self.task.cancel()
+            self.task = None
 
     def perform_task(self):
         if self.repeat:
             self.start()
+        else:
+            self.task = None
 
         self.callback(*self.callback_args, **self.callback_kwargs)
 
@@ -158,39 +161,53 @@ class Scenario(MagicNode):
         self.registered_delayed_tasks = {}
 
         self.timers = {
-            'track1_light_animation_1_first_trigger': Timer(21.25, False, self.trigger_track1_light_animation_1),
-            'track1_light_animation_1_loop': Timer(198.857125, True, self.track1_light_animation_1),
-            'track1_light_animation_2_first_trigger': Timer(29.75, False, self.trigger_track1_light_animation_2),
-            'track1_light_animation_2_loop': Timer(198.857125, True, self.track1_light_animation_2),
-            'track1_light_animation_3_first_trigger': Timer(51.75, False, self.trigger_track1_light_animation_3),
-            'track1_light_animation_3_loop': Timer(198.857125, True, self.track1_light_animation_3),
-            'track1_light_animation_4_first_trigger': Timer(82.25, False, self.trigger_track1_light_animation_4),
-            'track1_light_animation_4_loop': Timer(198.857125, True, self.track1_light_animation_4),
-            'track1_light_animation_5_first_trigger': Timer(90, False, self.trigger_track1_light_animation_5),
-            'track1_light_animation_5_loop': Timer(198.857125, True, self.track1_light_animation_5),
-            'track1_light_animation_6_first_trigger': Timer(161.5, False, self.trigger_track1_light_animation_6),
-            'track1_light_animation_6_loop': Timer(198.857125, True, self.track1_light_animation_6),
-            'track1_light_animation_7_first_trigger': Timer(182.5, False, self.trigger_track1_light_animation_7),
-            'track1_light_animation_7_loop': Timer(198.857125, True, self.track1_light_animation_7),
-            # 'ventilation_instruction': Timer(30, False, self.give_ventilation_instruction),
+            'track1_light_animation_1_first_trigger': Timer(21.25, False, self.track1_light_animation_1),
+            'track1_light_animation_1_second_trigger': Timer(220.107125, False, self.track1_light_animation_1),
+            'track1_light_animation_1_loop_trigger': Timer(120.678563, False, self.track1_light_animation_1),
+            'track1_light_animation_2_first_trigger': Timer(29.75, False, self.track1_light_animation_2),
+            'track1_light_animation_2_second_trigger': Timer(228.607125, False, self.track1_light_animation_2),
+            'track1_light_animation_2_loop_trigger': Timer(129.178563, False, self.track1_light_animation_2),
+            'track1_light_animation_3_first_trigger': Timer(51.75, False, self.track1_light_animation_3),
+            'track1_light_animation_3_second_trigger': Timer(250.607125, False, self.track1_light_animation_3),
+            'track1_light_animation_3_loop_trigger': Timer(151.178563, False, self.track1_light_animation_3),
+            'track1_light_animation_4_first_trigger': Timer(82.25, False, self.track1_light_animation_4),
+            'track1_light_animation_4_second_trigger': Timer(281.107125, False, self.track1_light_animation_4),
+            'track1_light_animation_4_loop_trigger': Timer(181.678563, False, self.track1_light_animation_4),
+            'track1_light_animation_5_first_trigger': Timer(90, False, self.track1_light_animation_5),
+            'track1_light_animation_5_second_trigger': Timer(288.857125, False, self.track1_light_animation_5),
+            'track1_light_animation_5_loop_trigger': Timer(189.428563, False, self.track1_light_animation_5),
+            'track1_light_animation_6_first_trigger': Timer(161.5, False, self.track1_light_animation_6),
+            'track1_light_animation_6_loop_trigger': Timer(62.071438, False, self.track1_light_animation_6),
+            'track1_light_animation_7_first_trigger': Timer(182.5, False, self.track1_light_animation_7),
+            'track1_light_animation_7_loop_trigger': Timer(83.071438, False, self.track1_light_animation_7),
         }
 
-        self.track1_light_timers = [
+        self.track1_light_first_timers = [
             'track1_light_animation_1_first_trigger',
-            'track1_light_animation_1_loop',
+            'track1_light_animation_1_second_trigger',
             'track1_light_animation_2_first_trigger',
-            'track1_light_animation_2_loop',
+            'track1_light_animation_2_second_trigger',
             'track1_light_animation_3_first_trigger',
-            'track1_light_animation_3_loop',
+            'track1_light_animation_3_second_trigger',
             'track1_light_animation_4_first_trigger',
-            'track1_light_animation_4_loop',
+            'track1_light_animation_4_second_trigger',
             'track1_light_animation_5_first_trigger',
-            'track1_light_animation_5_loop',
+            'track1_light_animation_5_second_trigger',
             'track1_light_animation_6_first_trigger',
-            'track1_light_animation_6_loop',
             'track1_light_animation_7_first_trigger',
-            'track1_light_animation_7_loop',
         ]
+
+        self.track1_light_loop_timers = [
+            'track1_light_animation_1_loop_trigger',
+            'track1_light_animation_2_loop_trigger',
+            'track1_light_animation_3_loop_trigger',
+            'track1_light_animation_4_loop_trigger',
+            'track1_light_animation_5_loop_trigger',
+            'track1_light_animation_6_loop_trigger',
+            'track1_light_animation_7_loop_trigger',
+        ]
+
+        self.epileptic_mode = False
 
         self.holomenu_slide = None
         self.holomenu_x = None
@@ -284,70 +301,87 @@ class Scenario(MagicNode):
         self.register_delayed_task(0 + 18.285, ajust_fx)
 
     def schedule_track1_light_animations(self):
-        for timer in self.track1_light_timers:
-            if not self.timers[timer].repeat:
-                logger.info("triggering in {} seconds".format(self.timers[timer].delay))
-                self.timers[timer].start()
+        for timer in self.track1_light_first_timers:
+            logger.info("triggering in {} seconds".format(self.timers[timer].delay))
+            self.timers[timer].start()
 
     def cancel_track1_light_animations(self):
-        for timer in self.track1_light_timers:
+        for timer in self.track1_light_first_timers:
             self.timers[timer].cancel()
 
-    def trigger_track1_light_animation_1(self):
-        self.track1_light_animation_1()
-        self.timers['track1_light_animation_1_loop'].start()
+        for timer in self.track1_light_loop_timers:
+            self.timers[timer].cancel()
+
+    @on_event(filter={'category': 'track_loop', 'track_id': 'track1'})
+    def track_1_has_looped(self):
+        for timer in self.track1_light_loop_timers:
+            self.timers[timer].start()
+
+    @on_event(filter={'category': 'track_pause', 'track_id': 'track1'})
+    def track_1_has_paused(self):
+        for timer in self.track1_light_first_timers:
+            self.timers[timer].pause()
+
+        for timer in self.track1_light_loop_timers:
+            self.timers[timer].pause()
+
+    @on_event(filter={'category': 'track_stop', 'track_id': 'track1'})
+    def track_1_has_stopped(self):
+        for timer in self.track1_light_first_timers:
+            self.timers[timer].cancel()
+
+        for timer in self.track1_light_loop_timers:
+            self.timers[timer].cancel()
+
+    @on_event(filter={'category': 'track_resume', 'track_id': 'track1'})
+    def track_1_has_resumed(self):
+        for timer in self.track1_light_first_timers:
+            self.timers[timer].resume()
+
+        for timer in self.track1_light_loop_timers:
+            self.timers[timer].resume()
 
     def track1_light_animation_1(self):
-        self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'duration': 2.01}, 'refectory_lights')
-
-    def trigger_track1_light_animation_2(self):
-        self.track1_light_animation_2()
-        self.timers['track1_light_animation_2_loop'].start()
+        if not self.epileptic_mode:
+            self.publish_prefix(
+                {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'duration': 2.01},
+                'refectory_lights')
 
     def track1_light_animation_2(self):
-        self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch_off_on', 'color': 'all_but_white', 'duration': 1.75}, 'refectory_lights')
-
-    def trigger_track1_light_animation_3(self):
-        self.track1_light_animation_3()
-        self.timers['track1_light_animation_3_loop'].start()
+        if not self.epileptic_mode:
+            self.publish_prefix(
+                {'category': 'play_animation', 'name': 'glitch_off_on', 'color': 'all_but_white', 'duration': 1.75},
+                'refectory_lights')
 
     def track1_light_animation_3(self):
-        self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch_off_on', 'color': 'all_but_white', 'duration': 2.5}, 'refectory_lights')
-
-    def trigger_track1_light_animation_4(self):
-        self.track1_light_animation_4()
-        self.timers['track1_light_animation_4_loop'].start()
+        if not self.epileptic_mode:
+            self.publish_prefix(
+                {'category': 'play_animation', 'name': 'glitch_off_on', 'color': 'all_but_white', 'duration': 2.5},
+                'refectory_lights')
 
     def track1_light_animation_4(self):
-        self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch2', 'color': 'all_but_white', 'duration': 1.01}, 'refectory_lights')
-
-    def trigger_track1_light_animation_5(self):
-        self.track1_light_animation_5()
-        self.timers['track1_light_animation_5_loop'].start()
+        if not self.epileptic_mode:
+            self.publish_prefix(
+                {'category': 'play_animation', 'name': 'glitch2', 'color': 'all_but_white', 'duration': 1.01},
+                'refectory_lights')
 
     def track1_light_animation_5(self):
-        self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch3', 'color': 'all_but_white', 'duration': 1.01}, 'refectory_lights')
-
-    def trigger_track1_light_animation_6(self):
-        self.track1_light_animation_6()
-        self.timers['track1_light_animation_6_loop'].start()
+        if not self.epileptic_mode:
+            self.publish_prefix(
+                {'category': 'play_animation', 'name': 'glitch3', 'color': 'all_but_white', 'duration': 1.01},
+                'refectory_lights')
 
     def track1_light_animation_6(self):
-        self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch_off_on', 'color': 'all_but_white', 'duration': 0.5}, 'refectory_lights')
-
-    def trigger_track1_light_animation_7(self):
-        self.track1_light_animation_7()
-        self.timers['track1_light_animation_7_loop'].start()
+        if not self.epileptic_mode:
+            self.publish_prefix(
+                {'category': 'play_animation', 'name': 'glitch_off_on', 'color': 'all_but_white', 'duration': 0.5},
+                'refectory_lights')
 
     def track1_light_animation_7(self):
-        self.publish_prefix(
-            {'category': 'play_animation', 'name': 'glitch4', 'color': 'all_but_white', 'duration': 1.01}, 'refectory_lights')
+        if not self.epileptic_mode:
+            self.publish_prefix(
+                {'category': 'play_animation', 'name': 'glitch4', 'color': 'all_but_white', 'duration': 1.01},
+                'refectory_lights')
 
     def resume_room(self):
         self.session_timer.resume()
@@ -380,6 +414,13 @@ class Scenario(MagicNode):
 
         # Note: the table is not automatically reset
         self.publish_prefix({'category': 'reset'}, 'broadcast')
+
+        self.epileptic_mode = False
+
+        self.holomenu_slide = None
+        self.holomenu_x = None
+        self.holomenu_y = None
+        self.holomenu_error = None
 
     @on_event(filter={'from': 'webmin', 'category': 'request_session_data'})
     def on_request_session_data(self):
@@ -427,6 +468,24 @@ class Scenario(MagicNode):
             },
             'synchronizer'
         )
+        self.publish_prefix(
+            {
+                'category': 'menu_log',
+                'message': 'menu_is_messed_up',
+                'level': 'warning',
+                'use_locale': True,
+            },
+            'synchronizer'
+        )
+        self.publish_prefix(
+            {
+                'category': 'menu_log',
+                'message': 'waiting_dishes_to_be_configured',
+                'level': 'info',
+                'use_locale': True,
+            },
+            'synchronizer'
+        )
 
         self.register_delayed_task(2, self.publish_prefix, {'category': 'play', 'track_id': 'track2'}, 'music_player')
         self.register_delayed_task(0.2, self.publish_prefix, {'category': 'off', 'color': 'all'}, 'refectory_lights')
@@ -452,19 +511,6 @@ class Scenario(MagicNode):
     @on_event(filter={'from': 'synchronizer', 'category': 'menu_service_success'})
     def synchronizer_event_menu_service_success(self):
         self.publish_prefix({'category': 'set_menu_service_status', 'repaired': True}, 'control_panel')
-
-        # def light_animation_step_1():
-        #     self.publish_prefix({'category': 'on', 'color': 'all'}, 'refectory_lights')
-        #     self.register_delayed_task(0.1, light_animation_step_2)
-        #
-        # def light_animation_step_2():
-        #     self.publish_prefix({'category': 'off', 'color': 'all'}, 'refectory_lights')
-        #     self.register_delayed_task(0.1, light_animation_step_3)
-        #
-        # def light_animation_step_3():
-        #     self.publish_prefix({'category': 'on', 'color': 'all'}, 'refectory_lights')
-        #
-        # self.register_delayed_task(1.5, light_animation_step_1)
 
     @on_event(filter={'from': 'synchronizer', 'category': 'services_synchronization_success'})
     def synchronizer_event_services_synchronization_success(self):
@@ -519,11 +565,6 @@ class Scenario(MagicNode):
     @on_event(filter={'from': 'payment_module', 'category': 'set_credits'})
     def payment_module_event_set_credits(self, value):
         self.publish_prefix({'category': 'set_credits', 'value': value}, 'orders')
-
-    # @on_event(filter={'from': 'ventilation_panel', 'category': 'game_start'})
-    # def ventilation_panel_event_game_start(self):
-    #    self.timers['ventilation_instruction'].cancel()
-    #     self.publish_prefix({'category': 'documentation_unplug_instruction', 'highlight': False}, 'orders')
 
     @on_event(filter={'from': 'ventilation_panel', 'category': 'start_new_round'})
     def ventilation_panel_event_start_new_round(self, round: int):
@@ -1171,6 +1212,62 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'payment_status'})
     def buttons_payment_status(self, status: str):
         self.publish_prefix({'category': 'set_status', 'status': status}, 'payment_module')
+
+    @on_event(filter={'widget_id': 'epiletic_mode'})
+    def buttons_epileptic_mode(self, value: bool):
+        self.epileptic_mode = value
+
+    @on_event(filter={'widget_id': 'menu_graduation_texts'})
+    def buttons_menu_graduation_texts(self, display: bool):
+        self.publish_prefix({'category': 'display_graduations', 'display': display}, 'synchronizer')
+
+    @on_event(filter={'widget_id': 'menu_selectable_areas'})
+    def buttons_menu_selectable_areas(self, display: bool):
+        self.publish_prefix({'category': 'display_selectable_areas', 'display': display}, 'synchronizer')
+
+    @on_event(filter={'widget_id': 'auto_validate_dishes'})
+    def buttons_auto_validate_dishes(self, value: bool):
+        self.publish_prefix({'category': 'set_auto_validate_dishes', 'value': value}, 'synchronizer')
+
+    @on_event(filter={'category': 'localize'})
+    def localize(self, value: str):
+        self.publish_prefix({'category': 'set_locale', 'locale': value}, 'broadcast')
+
+    @on_event(filter={'widget_type': 'log_prompt'})
+    def log_prompt(self, message: str, level: str, use_locale: bool, widget_id: str):
+        if widget_id == 'light_log':
+            category = 'light_log'
+            channel = 'synchronizer'
+        elif widget_id == 'menu_log':
+            category = 'menu_log'
+            channel = 'synchronizer'
+        elif widget_id == 'inventory_log':
+            category = 'log'
+            channel = 'inventory'
+        elif widget_id == 'root_server_log':
+            category = 'log'
+            channel = 'root_server'
+        else:
+            return
+
+        self.publish_prefix(
+            {'category': category, 'message': message, 'level': level, 'use_locale': use_locale}, channel)
+
+    @on_event(filter={'widget_type': 'instruction_prompt'})
+    def instruction_prompt(self, message: str, use_locale: bool):
+        self.publish_prefix(
+            {
+                'category': 'set_documentation_current_instruction',
+                'message': message,
+                'use_locale': use_locale,
+            },
+            'orders'
+        )
+
+    @on_event(filter={'category': 'get_session_time'})
+    def get_session_time(self):
+        # Could be more personalized but it's ok for now
+        self.tic_tac_callback(self.session_time)
 
 
 class ScenarioD1(Scenario):
