@@ -25,10 +25,10 @@ export default {
   },
   computed: {
     opacity: function() {
-      if (menuStore.state.success === false) {
-        return 1
-      } else {
+      if (menuStore.state.menuItems[this.itemIndex].isDishValidated) {
         return 0
+      } else {
+        return 1
       }
     },
     x1: function() {

@@ -3,7 +3,10 @@
     <div
       :id="animationId"
       class="text font-italic"
-      :style="{color: 'rgb(' + dish.color.r + ', ' + dish.color.g + ', ' + dish.color.b + ')'}"
+      :style="{
+        color: isDishValidated ? 'green' : 'rgb(' + dish.color.r + ', ' + dish.color.g + ', ' + dish.color.b + ')',
+        transition: isDishValidated ? 'color 4s ease-in-out' : '',
+      }"
     >
       <div class="d-flex flex-row collision-tutor">
         <span
@@ -38,7 +41,15 @@
 
     <span class="underline-dots flex-grow-1 mx-1"></span>
 
-    <div class="price">{{ price }}Ḟ</div>
+    <div
+      class="price"
+      :style="{
+        color: isDishValidated ? 'green' : 'rgb(' + dish.color.r + ', ' + dish.color.g + ', ' + dish.color.b + ')',
+        transition: isDishValidated ? 'color 4s ease-in-out' : '',
+      }"
+    >
+      {{ price }} nF
+    </div>
   </div>
 </template>
 
@@ -83,13 +94,13 @@ export default {
     lang: function() {
       return this.$i18n.locale
     },
-    success: function() {
-      return menuStore.state.success
+    isDishValidated: function() {
+      return menuStore.state.menuItems[this.itemIndex].isDishValidated
     },
   },
   methods: {
     glitchAnimation: function() {
-      if (this.success) {
+      if (this.isDishValidated) {
         return
       }
 
@@ -325,7 +336,7 @@ export default {
         }
         this[data].remainingScrambleAnimations -= 1
 
-        menuStore.commit("pushMenuEntry", this.itemIndex)
+        menuStore.commit("pushMenuEntry", {itemIndex: this.itemIndex, getters: menuStore.getters})
       }
     },
   },
@@ -350,37 +361,6 @@ export default {
       } else {
         this.scrambleTo('dish', this.$t(this.dishLabel))
       }
-    },
-    success: function() {
-      var this_ = this
-      let initR = this.dish.color.r
-      let initG = this.dish.color.g
-      let initB = this.dish.color.b
-
-      var targetDiffG
-      if (170 > initG) {
-        targetDiffG = 170 - initG
-      } else {
-        targetDiffG = initG - 170
-      }
-
-      this.dish.colorAnimation.pause()
-
-      this.dish.colorAnimation = this.$anime({
-        autoplay: false,
-        duration: 4000,
-        update(anim) {
-          this_.dish.color.r = initR - initR * anim.progress / 100
-          if (128 > initG) {
-            this_.dish.color.g = initG + targetDiffG * anim.progress / 100
-          } else {
-            this_.dish.color.g = initG - targetDiffG * anim.progress / 100
-          }
-          this_.dish.color.b = initB - initB * anim.progress / 100
-        },
-        easing: 'easeInOut',
-      })
-      this.dish.colorAnimation.play()
     },
   },
   mounted() {
@@ -434,7 +414,6 @@ export default {
 
 .price {
   font-size: 18px;
-  color: rgb(0, 170, 0);
 }
 
 .underline-dots {

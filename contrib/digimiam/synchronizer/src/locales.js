@@ -64,11 +64,17 @@ const locales = {
     log: {
       lights_have_been_reset: 'Réinitialisation complète des lumières',
       waiting_lights_to_be_resync: 'En attente de la resynchronisation',
-      pink_was_not_pressed: 'Rose... rose... comment allumer le rose ?',
-      the_next_light_was_not_pressed: 'La lumière suivante n\'était pas allumée au moment de faire la transition',
-      the_light_has_been_turned_off: 'La lumière en cours de synchronisation a été éteinte avant que le chargement ne soit complet',
-      too_many_lights_on: 'Trop de lumières sont allumées en même temps : la synchronisation ne peut pas avoir lieu',
+      pink_was_not_pressed: 'Rose... rose... comment charger le rose ?',
+      the_next_light_was_not_pressed: 'La lumière suivante doit être allumée avant que la précédente n\'ait fini d\'être chargée',
+      the_light_has_been_turned_off: 'La lumière en cours de chargement a été éteinte avant que la synchronisation ne soit complète',
+      too_many_lights_on: 'Il est impossible de charger trop de lumières simultanément',
       light_sync_complete: 'Synchronisation des lumières terminée',
+      menu_is_messed_up: 'Réinitialisation complète du menu',
+      waiting_dishes_to_be_configured: 'En attente de la reconfiguration des plats du Digimiam',
+      dishes_need_to_have_good_prices: 'Le Digimiam ne peut pas se permettre de vendre ces plats à ces prix-là',
+      some_dishes_cannot_be_produced: 'Certains plats ne correspondent pas à la carte du Digimiam',
+      no_dishes_can_be_produced: 'Aucun de ces plats ne correspond à la carte du Digimiam',
+      menu_reconfig_complete: 'Reconfiguration des plats terminée',
     }
   }
 }

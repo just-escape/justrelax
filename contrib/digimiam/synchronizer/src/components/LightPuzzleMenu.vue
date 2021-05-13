@@ -10,7 +10,9 @@
           <div class="menu-background"></div>
 
           <div class="title-ribbon p-2">
-            <div class="title">{{ $t('digimiam_lights') }}</div>
+            <div class="title">
+              <img src="@/assets/img/sun.svg" class="mb-1" height="18px"/> {{ $t('digimiam_lights') }}
+            </div>
           </div>
           <LightPuzzleMenuContent class="h-100"/>
         </div>
@@ -80,7 +82,7 @@ export default {
 .menu-container {
   border: 1px solid transparent;
   border-top: 9px solid transparent;
-  padding-top: 60px;
+  padding-top: 40px;
 }
 
 .menu-frame {

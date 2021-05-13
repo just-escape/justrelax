@@ -5,7 +5,7 @@
         <div class="menu-frame"></div>
         <div class="menu-background"></div>
         <div class="menu-title-ribbon mb-2 text-right p-2">
-          {{ $t('digimiam_menu') }}
+          <img src="@/assets/img/pyramid.svg" class="mb-1" height="18px"/> {{ $t('digimiam_menu') }}
         </div>
         <div class="date text-right mb-5 mt-2">
           {{ date }}
@@ -27,7 +27,7 @@
       <div class="position-relative" :style="{opacity: autoValidateDishes ? 0 : 1}" style="transition: opacity 4s ease-in-out">
         <div class="glowing-wire left-wire"></div>
         <div class="glowing-wire right-wire"></div>
-        <ButtonValidate @click="validate" class="btn-block" :disabled="success"/>
+        <ButtonValidate @click="validate" class="btn-block" :disabled="success || autoValidateDishes"/>
       </div>
     </div>
   </div>
@@ -90,9 +90,7 @@ export default {
     },
     validatePostAnimation: function() {
       menuStore.commit("unlockValidate")
-      if (menuStore.getters.isSuccess) {
-        menuStore.commit("validateMenu")
-      }
+      menuStore.commit("validateMenu", menuStore.getters)
     },
   },
   watch: {

@@ -26,10 +26,10 @@ export default {
   name: 'DishSelectorCursor',
   computed: {
     filter: function() {
-      if (menuStore.state.success === false) {
-        return ''
-      } else {
+      if (menuStore.state.menuItems[this.itemIndex].isDishValidated) {
         return 'hue-rotate(-40deg) brightness(0.65) contrast(0.95)'
+      } else {
+        return ''
       }
     },
     top: function() {
@@ -39,7 +39,7 @@ export default {
       return this.item.cursorLeft + 'px'
     },
     zIndex: function() {
-      return this.item.selectorZIndex
+      return menuStore.state.menuItems[this.itemIndex].isDishValidated ? this.item.selectorZIndex - 1 : this.item.selectorZIndex
     },
     width: function() {
       return this.item.cursorWidth + 'px'

@@ -1,91 +1,66 @@
 <template>
   <div>
-    <LightMonitorConnector
-      :x1="210"
-      :y1="40 + 135"
-      :x2="210"
-      :y2="120 + 135"
-      :thickness="10"
-    />
-    <LightMonitorConnector
-      :x1="140"
-      :y1="160 + 135"
-      :x2="210"
-      :y2="120 + 135"
-      :thickness="10"
-    />
+    <!-- The pink light monitor unit is virtual (not displayed). Its use is only to trigger on/off publications. -->
+    <LightMonitorUnitRectangle class="position-absolute d-none" :longEdge="monitorUnitSizeM" :vertical="true" color="pink" :triggerOnOffPublications="true"/>
 
-    <LightMonitorUnit
-      :width="monitorUnitSize"
-      color="blue"
-      :positionX="185 - monitorUnitSize / 2"
-      :positionY="40 + 135 - monitorUnitSize / 2"
-      :trianglesPositionX="185 - monitorUnitSize / 2"
-      :trianglesPositionY="40 + 135 - monitorUnitSize / 2"
-      :trianglesRotation="'0deg'"
-    />
-    <LightMonitorUnit
-      :width="monitorUnitSize"
-      color="white"
-      :positionX="255 - monitorUnitSize / 2"
-      :positionY="80 + 135 - monitorUnitSize / 2"
-      :trianglesPositionX="270 - monitorUnitSize / 2"
-      :trianglesPositionY="80 + 143 - monitorUnitSize / 2"
-      :trianglesRotation="'60deg'"
-    />
-    <LightMonitorUnit
-      :width="monitorUnitSize"
-      color="pink"
-      :positionX="255 - monitorUnitSize / 2"
-      :positionY="160 + 135 - monitorUnitSize / 2"
-      :trianglesPositionX="270 - monitorUnitSize / 2"
-      :trianglesPositionY="160 + 159 - monitorUnitSize / 2"
-      :trianglesRotation="'120deg'"
-    />
-    <LightMonitorUnit
-      :width="monitorUnitSize"
-      color="red"
-      :positionX="185 - monitorUnitSize / 2"
-      :positionY="200 + 135 - monitorUnitSize / 2"
-      :trianglesPositionX="185 - monitorUnitSize / 2"
-      :trianglesPositionY="200 + 170 - monitorUnitSize / 2"
-      :trianglesRotation="'180deg'"
-    />
-    <LightMonitorUnit
-      :width="monitorUnitSize"
-      color="green"
-      :positionX="115 - monitorUnitSize / 2"
-      :positionY="160 + 135 - monitorUnitSize / 2"
-      :trianglesPositionX="102 - monitorUnitSize / 2"
-      :trianglesPositionY="160 + 159 - monitorUnitSize / 2"
-      :trianglesRotation="'240deg'"
-    />
-    <LightMonitorUnit
-      :width="monitorUnitSize"
-      color="orange"
-      :positionX="115 - monitorUnitSize / 2"
-      :positionY="80 + 135 - monitorUnitSize / 2"
-      :trianglesPositionX="102 - monitorUnitSize / 2"
-      :trianglesPositionY="80 + 145 - monitorUnitSize / 2"
-      :trianglesRotation="'300deg'"
-    />
+    <div v-if="mapVersion === 1" class="d-flex flex-column justify-content-center h-100" style="margin-right: 30px">
+      <div class="d-flex flex-row justify-content-end">
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="green" :triggerOnOffPublications="true"/>
+      </div>
+      <div class="d-flex flex-row justify-content-end">
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="red" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :triggerOnOffPublications="true"/>
+      </div>
+      <div class="d-flex flex-row justify-content-end">
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :triggerOnOffPublications="true"/>
+      </div>
+    </div>
+    <div v-else-if="mapVersion === 2" class="d-flex flex-column justify-content-around h-100 py-5">
+      <div class="d-flex flex-row justify-content-center">
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="green"/>
+      </div>
+      <div class="d-flex flex-row justify-content-center">
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="blue"/>
+      </div>
+      <div class="d-flex flex-row justify-content-center">
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="red"/>
+      </div>
+      <div class="d-flex flex-row justify-content-around" style="transform: translateY(10px) rotate(10deg)">
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="orange"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import LightMonitorUnit from '@/components/LightMonitorUnit.vue'
-import LightMonitorConnector from '@/components/LightMonitorConnector.vue'
+import LightMonitorUnitRectangle from '@/components/LightMonitorUnitRectangle.vue'
 
 export default {
   name: 'LightPuzzleMenuContent',
   components: {
-    LightMonitorUnit,
-    LightMonitorConnector,
+    LightMonitorUnitRectangle,
   },
   data() {
     return {
-      monitorUnitSize: 150
+      monitorUnitSizeM: 120,
+      monitorUnitSizeS: 100,
     }
-  }
+  },
+  computed: {
+    mapVersion() {
+      let mapVersion = this.$route.query.light_map_version
+      if (mapVersion && mapVersion == 2) {
+        return 2
+      } else {
+        return 1
+      }
+    }
+  },
 }
 </script>

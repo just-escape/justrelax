@@ -47,7 +47,7 @@
               class="fa-fw fas fa-smile" :class="{'ml-1': displayGraduationTexts}"
               style="opacity: 0.7" :style="{transform: displayGraduationTexts ? 'rotate(90deg)' : 'rotate(-180deg)'}"
             />
-            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Sourire</div>
+            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Portrait</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">

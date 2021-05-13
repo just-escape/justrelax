@@ -1620,7 +1620,7 @@ var store = new Vuex.Store({
           if (state.activatedSensors.length > 4) {
             state.lightOverloadCounter++
             if (state.lightOverloadCounter % 3 === 0) {
-              lightLogStore.commit("processLog", {logMessage: "too_many_lights_on", level: "warning", useLocale: true})
+              lightLogStore.commit("processLog", {logMessage: "too_many_lights_on", level: "info", useLocale: true})
             }
           }
         } else {
@@ -1700,7 +1700,7 @@ var store = new Vuex.Store({
       if (reason === "pink_not_on") {
         context.commit('pinkGameOverCounterPlusPlus')
         if (store.state.pinkGameOverCounter % 2 === 0) {
-          lightLogStore.commit("processLog", {logMessage: "pink_was_not_pressed", level: "warning", useLocale: true})
+          lightLogStore.commit("processLog", {logMessage: "pink_was_not_pressed", level: "info", useLocale: true})
         }
       } else {
         context.commit('gameOverCounterPlusPlus')

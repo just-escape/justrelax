@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import publishSubscribeService from '@/store/publishSubscribeService.js'
 import progressionStore from '@/store/progressionStore.js'
+import menuLogStore from '@/store/menuLogStore.js'
 
 Vue.use(Vuex)
 
@@ -40,6 +41,7 @@ export default new Vuex.Store({
         wireX2: 803,
         wireY2: 135,
         dish: null,
+        isDishValidated: false,
         price: 10,
       },
       {
@@ -51,6 +53,7 @@ export default new Vuex.Store({
         wireX2: 803,
         wireY2: 186,
         dish: null,
+        isDishValidated: false,
         price: 11,
       },
       {
@@ -62,6 +65,7 @@ export default new Vuex.Store({
         wireX2: 803,
         wireY2: 237,
         dish: null,
+        isDishValidated: false,
         price: 12,
       },
       {
@@ -73,6 +77,7 @@ export default new Vuex.Store({
         wireX2: 803,
         wireY2: 288,
         dish: null,
+        isDishValidated: false,
         price: 4,
       },
     ],
@@ -93,10 +98,12 @@ export default new Vuex.Store({
     zIndexCounter: 10,
     validating: false,
     success: false,
-    autoValidateDishes: true,
+    autoValidateDishes: false,
     displaySelectableAreas: true,
     displayGraduations: true,
-    displayGraduationTexts: false,
+    displayGraduationTexts: true,
+    allDishesAreGoodButWrongPriceCounter: -1,
+    wrongDishesCounter: -3,
   },
   getters: {
     isSuccess (state) {
@@ -106,11 +113,68 @@ export default new Vuex.Store({
         }
       }
       return true
-    }
+    },
+    hintLog (state) {
+      let goodDishesWrongPriceCounter = 0
+      for (var menuItemIndex in state.menuItems) {
+        if (state.expectedMenu.includes(state.menuItems[menuItemIndex].dish)) {
+          goodDishesWrongPriceCounter++
+        }
+      }
+
+      // eslint-disable-next-line
+      console.log(goodDishesWrongPriceCounter, state.wrongDishesCounter, state.allDishesAreGoodButWrongPriceCounter)
+      if (goodDishesWrongPriceCounter < 4) {
+        state.wrongDishesCounter++
+
+        var modulus = state.autoValidateDishes ? 8 : 3
+        var counterThreshold = state.autoValidateDishes ? 1 : 0
+
+        if (state.wrongDishesCounter % modulus === 0 && state.wrongDishesCounter >= counterThreshold) {
+          if (goodDishesWrongPriceCounter === 0) {
+            return 'no_dishes_can_be_produced'
+          } else {
+            return 'some_dishes_cannot_be_produced'
+          }
+        }
+      } else {
+        state.allDishesAreGoodButWrongPriceCounter++
+        if (state.allDishesAreGoodButWrongPriceCounter % 3 === 0) {
+          return 'dishes_need_to_have_good_prices'
+        }
+      }
+
+      return null
+    },
   },
   mutations: {
     setAutoValidateDishes (state, value) {
       state.autoValidateDishes = value
+
+      if (!state.success) {
+        // Update isDishValidated properties to remain consistant with the autoValidateDishes value
+        var menuItemIndex
+        if (value) {
+          for (menuItemIndex in state.menuItems) {
+            if (state.menuItems[menuItemIndex].dish === state.expectedMenu[menuItemIndex]) {
+              state.menuItems[menuItemIndex].isDishValidated = true
+            }
+          }
+
+          for (menuItemIndex in state.menuItems) {
+            if (!state.menuItems[menuItemIndex].isDishValidated) {
+              return
+            }
+          }
+          // We reach those lines only if all dishes are validated
+          state.success = true
+          progressionStore.commit("setMenuServiceSuccess")
+        } else {
+          for (menuItemIndex in state.menuItems) {
+            state.menuItems[menuItemIndex].isDishValidated = false
+          }
+        }
+      }
     },
     setDisplaySelectableAreas (state, value) {
       state.displaySelectableAreas = value
@@ -123,7 +187,7 @@ export default new Vuex.Store({
     },
     // eslint-disable-next-line
     appCursorMove (state, event) {
-      if (state.success || state.validating) {
+      if (state.validating) {
         return
       }
 
@@ -156,6 +220,10 @@ export default new Vuex.Store({
       var deltaY = state.mouseY - state.lastMouseY
 
       if (state.dragging !== null) {
+        if (state.menuItems[state.dragging].isDishValidated) {
+          return
+        }
+
         if (deltaX > 0) {
           // going right
           state.menuItems[state.dragging].cursorLeft = Math.min(
@@ -179,9 +247,7 @@ export default new Vuex.Store({
           state.menuItems[state.dragging].cursorTop = Math.max(
             state.menuItems[state.dragging].cursorTop + deltaY, 0)
         }
-      }
 
-      if (state.dragging !== null) {
         var cursorCenterX = state.menuItems[state.dragging].cursorLeft + state.menuItems[state.dragging].cursorWidth / 2
         var cursorCenterY = state.menuItems[state.dragging].cursorTop + state.menuItems[state.dragging].cursorHeight / 2
         var cursorPercentX = cursorCenterX / state.selectorWidth * 100
@@ -234,19 +300,38 @@ export default new Vuex.Store({
       state.glitches[animationId].redShadow = false
       state.glitches[animationId].animation.seek(0)
     },
-    pushMenuEntry (state, index) {
+    pushMenuEntry (state, {itemIndex, getters}) {
       var dish
-      if (state.menuItems[index].dish) {
-        dish = state.menuItems[index].dish
+      if (state.menuItems[itemIndex].dish) {
+        dish = state.menuItems[itemIndex].dish
       } else {
         dish = "error"
       }
 
       publishSubscribeService.commit('publish', {
         category: "set_menu_entry",
-        index: index,
+        index: itemIndex,
         dish: dish,
       })
+
+      if (state.autoValidateDishes) {
+        if (state.menuItems[itemIndex].dish == state.expectedMenu[itemIndex]) {
+          state.menuItems[itemIndex].isDishValidated = true
+        }
+
+        if (getters.isSuccess) {
+          state.success = true
+          progressionStore.commit("setMenuServiceSuccess")
+        } else {
+          // Only take in consideration dishes that are not errors. Otherwise it would spam all the time.
+          if (dish != "error") {
+            let hintLog = getters.hintLog
+            if (hintLog) {
+              menuLogStore.commit("processLog", {logMessage: hintLog, level: "warning", useLocale: true})
+            }
+          }
+        }
+      }
     },
     lockValidate (state) {
       state.validating = true
@@ -254,29 +339,50 @@ export default new Vuex.Store({
     unlockValidate (state) {
       state.validating = false
     },
-    validateMenu (state) {
+    validateMenu (state, getters) {
       if (state.success || state.validating) {
         return
       }
 
-      state.success = true
-      progressionStore.commit("setMenuServiceSuccess")
+      if (getters.isSuccess) {
+        state.success = true
+        for (var menuItemIndex in state.menuItems) {
+          state.menuItems[menuItemIndex].isDishValidated = true
+        }
+        progressionStore.commit("setMenuServiceSuccess")
+      } else {
+        let hintLog = getters.hintLog
+        if (hintLog) {
+          menuLogStore.commit("processLog", {logMessage: hintLog, level: "warning", useLocale: true})
+        }
+      }
     },
     forceSuccess (state) {
       if (state.success) {
         return
       }
 
-      // TODO: set cursor positions ?
-      // TODO: set menu entries
-      // TODO: notify hologram player
-
       state.success = true
-      progressionStore.commit("setMenuServiceSuccess")
 
-      /*publishSubscribeService.commit('publish', {
-        category: "menu_success"
-      })*/
+      state.menuItems[0].cursorTop = 140
+      state.menuItems[0].cursorLeft = 629
+      state.menuItems[1].cursorTop = 327
+      state.menuItems[1].cursorLeft = 118
+      state.menuItems[2].cursorTop = 235
+      state.menuItems[2].cursorLeft = 282
+      state.menuItems[3].cursorTop = 40
+      state.menuItems[3].cursorLeft = 437
+
+      for (var menuItemIndex in state.menuItems) {
+        state.menuItems[menuItemIndex].dish = state.expectedMenu[menuItemIndex]
+        state.menuItems[menuItemIndex].isDishValidated = true
+        publishSubscribeService.commit('publish', {
+          category: "set_menu_entry",
+          index: menuItemIndex,
+          dish: state.expectedMenu[menuItemIndex],
+        })
+      }
+      progressionStore.commit("setMenuServiceSuccess")
     },
     setMenuCursorPosition (state, position) {
       state.cursorPosition = position
