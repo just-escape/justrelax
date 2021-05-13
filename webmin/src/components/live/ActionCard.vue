@@ -11,6 +11,8 @@
     <ul v-else class="list-unstyled mb-0">
       <li v-for="(row, index) in cardRows" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
         <WidgetButtonsGroup v-if="row.widget === 'buttons_group'" :row="row" :defaultChannel="roomDefaultChannel"/>
+        <WidgetLogPrompt v-else-if="row.widget === 'log_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
+        <WidgetInstructionPrompt v-else-if="row.widget === 'instruction_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
       </li>
     </ul>
   </b-card>
@@ -18,6 +20,8 @@
 
 <script>
 import WidgetButtonsGroup from "@/components/live/WidgetButtonsGroup.vue"
+import WidgetLogPrompt from "@/components/live/WidgetLogPrompt.vue"
+import WidgetInstructionPrompt from "@/components/live/WidgetInstructionPrompt.vue"
 import roomStore from "@/store/roomStore.js"
 import notificationStore from '@/store/notificationStore.js'
 
@@ -25,6 +29,8 @@ export default {
   name: "ActionCard",
   components: {
     WidgetButtonsGroup,
+    WidgetLogPrompt,
+    WidgetInstructionPrompt,
   },
   data() {
     return {
