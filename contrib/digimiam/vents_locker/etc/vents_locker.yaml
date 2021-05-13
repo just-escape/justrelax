@@ -5,5 +5,8 @@ subscriptions:
   - d1.player_lockers
   - d1.broadcast
 
-pin: 4
-pulse_frequency: 10
+power_pin: 0
+limit_switch_pin: 5
+unlock_frequency: 5
+unlock_falling_edge_delay: 0.3
+locked_by_default: yes

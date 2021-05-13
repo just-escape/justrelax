@@ -10,47 +10,43 @@ class VentsLocker(MagicNode):
     def __init__(self, *args, **kwargs):
         super(VentsLocker, self).__init__(*args, **kwargs)
 
-        pin = self.config["pin"]
-        self.pulse_frequency = self.config["pulse_frequency"]
-        self.device = gpiozero.OutputDevice(pin)
+        power_pin = self.config["power_pin"]
+        limit_switch_pin = self.config["limit_switch_pin"]
+        self.unlock_frequency = self.config["unlock_frequency"]
+        self.unlock_falling_edge_delay = self.config["unlock_falling_edge_delay"]
+        self.device = gpiozero.OutputDevice(power_pin)
+        self.limit_switch = gpiozero.InputDevice(limit_switch_pin)
 
-        self.unlock_pulsating_task = None
-        self.unlock_falling_edge_task = None
+        self.locked = self.config["locked_by_default"]
 
-        self._reset()
-
-    def _reset(self):
-        self.event_lock()
+        self.check_lock_mistake()
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Reset")
-        self._reset()
+        self.locked = self.config["locked_by_default"]
 
-    def pulse(self):
-        logger.info("Triggering unlock pulse (to prevent players from locking by mistake)")
-        self.event_unlock()
+    def check_lock_mistake(self):
+        reactor.callLater(self.unlock_frequency, self.check_lock_mistake)
+        logger.debug("Checking that locker is not locked (to prevent players from locking by mistake)")
 
-    def unlock_falling_edge(self):
-        logger.info("Unlock falling edge: setting device pin to low")
-        self.device.off()
+        if not self.locked and self.limit_switch.value:
+            logger.info("Locker was locked while it should not have been: unlocking")
+            self.event_unlock()
 
     @on_event(filter={'category': 'unlock'})
     def event_unlock(self):
+        self.locked = False
         logger.info("Unlock rising edge: setting device pin to high")
         self.device.on()
 
-        if not self.unlock_falling_edge_task or not self.unlock_falling_edge_task.active():
-            self.unlock_falling_edge_task = reactor.callLater(0.5, self.unlock_falling_edge)
+        def unlock_falling_edge():
+            logger.info("Unlock falling edge: setting device pin to low")
+            self.device.off()
 
-        if not self.unlock_pulsating_task or not self.unlock_pulsating_task.active():
-            self.unlock_pulsating_task = reactor.callLater(self.pulse_frequency, self.pulse)
+        reactor.callLater(self.unlock_falling_edge_delay, unlock_falling_edge)
 
     @on_event(filter={'category': 'lock'})
     def event_lock(self):
-        logger.info("Setting device pin to low")
-        self.device.off()
-
-        if self.unlock_pulsating_task and self.unlock_pulsating_task.active():
-            logger.info("Cancelling unlock pulsating task")
-            self.unlock_pulsating_task.cancel()
+        logger.info("Locking")
+        self.locked = True

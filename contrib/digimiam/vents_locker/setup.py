@@ -10,8 +10,8 @@ if __name__ == '__main__':
     setup(
         name="justrelax_node_vents_locker",
         version="0.1",
-        packages=["justrelax.node.player_lockers"],
-        scripts=["scripts/start-node-player-lockers"],
+        packages=["justrelax.node.vents_locker"],
+        scripts=["scripts/start-node-vents-locker"],
         install_requires=get_requirements(),
         zip_safe=False,
     )
