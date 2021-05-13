@@ -1229,6 +1229,10 @@ class Scenario(MagicNode):
     def buttons_auto_validate_dishes(self, value: bool):
         self.publish_prefix({'category': 'set_auto_validate_dishes', 'value': value}, 'synchronizer')
 
+    @on_event(filter={'widget_id': 'vents_locker'})
+    def buttons_vents_locker(self, lock: bool):
+        self.publish_prefix({'category': 'lock' if lock else 'unlock'}, 'vents_locker')
+
     @on_event(filter={'category': 'localize'})
     def localize(self, value: str):
         self.publish_prefix({'category': 'set_locale', 'locale': value}, 'broadcast')
