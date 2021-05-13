@@ -14,8 +14,8 @@ tracks:
     path: /home/justescape/music/track1-ill.wav
     mode: loop
     volume: 50
-    loop_a: 117.714
-    loop_b: 316.571
+    loop_a: 117.7142705
+    loop_b: 316.5713955
   - id: track2
     path: /home/justescape/music/track2-ll.wav
     mode: loop
