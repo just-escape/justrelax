@@ -9,30 +9,30 @@
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="green" :triggerOnOffPublications="true"/>
       </div>
       <div class="d-flex flex-row justify-content-end">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :triggerOnOffPublications="false"/>
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :triggerOnOffPublications="true"/>
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="red" :triggerOnOffPublications="true"/>
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :triggerOnOffPublications="true"/>
       </div>
       <div class="d-flex flex-row justify-content-end">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :triggerOnOffPublications="true"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :triggerOnOffPublications="false"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :triggerOnOffPublications="false"/>
       </div>
     </div>
     <div v-else-if="mapVersion === 2" class="d-flex flex-column justify-content-around h-100 py-5">
       <div class="d-flex flex-row justify-content-center">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="green"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="green" :triggerOnOffPublications="true"/>
       </div>
       <div class="d-flex flex-row justify-content-center">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="blue"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="blue" :triggerOnOffPublications="true"/>
       </div>
       <div class="d-flex flex-row justify-content-center">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="red"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="red" :triggerOnOffPublications="true"/>
       </div>
       <div class="d-flex flex-row justify-content-around" style="transform: translateY(10px) rotate(10deg)">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="orange"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="orange" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white" :triggerOnOffPublications="false"/>
       </div>
     </div>
   </div>

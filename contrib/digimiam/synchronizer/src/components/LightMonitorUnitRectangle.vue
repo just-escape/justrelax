@@ -1,13 +1,10 @@
 <template>
-  <div>
+  <div class="position-relative">
     <svg :viewBox="'0 0 ' + boxWidth + ' ' + boxHeight" :style="{width: (this.vertical ? this.longEdge / 1.618 : this.longEdge) + 'px'}">
       <defs>
         <filter :id="'mu-glowing-' + color" x="-50" y="-50" width="150" height="150">
           <feGaussianBlur result="blurOut" in="offOut" :stdDeviation="glowIntensity"/>
           <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
-        </filter>
-        <filter id="locker">
-          <feImage :xlink:href="require('@/assets/img/locker.png')"/>
         </filter>
       </defs>
 
@@ -24,12 +21,14 @@
         :points="getPoints(size)"
         filter="url(#glowing-rectangle)"
       />
-      <rect
-        :x="this.boxWidth / 2 - 25" :y="this.boxHeight / 2 - 25" width="50" height="50"
-        filter="url(#locker)"
-        :style="{opacity: lockerOpacity}"
-      />
     </svg>
+    <img
+      class="position-absolute"
+      src="@/assets/img/locker.png"
+      width="22px" height="22px"
+      style="left: calc(50% - 11px); top: calc(50% - 11px); transition: all 1s linear;"
+      :style="{opacity: lockerOpacity}"
+    />
   </div>
 </template>
 
@@ -173,7 +172,7 @@ export default {
 </script>
 
 <style scoped>
-path , rect {
+path {
   transition: all 1s linear;
 }
 </style>
