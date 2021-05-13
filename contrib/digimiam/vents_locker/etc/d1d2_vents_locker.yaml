@@ -1,8 +1,8 @@
-name: player_lockers
+name: vents_locker
 
 default_publication_channel: d1.scenario
 subscriptions:
-  - d1.player_lockers
+  - d1.vents_locker
   - d1.broadcast
 
 power_pin: 0
