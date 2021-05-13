@@ -55,9 +55,14 @@ class MusicPlayer(MagicNode):
                 loop_a = track['loop_a']
                 loop_b = track['loop_b']
                 handler = looping_track_handler(
+                    track_id=id_,
                     media_path=path,
                     loop_a=loop_a,
                     loop_b=loop_b,
+                    pause_callback=self.pause_callback,
+                    stop_callback=self.stop_callback,
+                    resume_callback=self.resume_callback,
+                    loop_callback=self.loop_callback,
                     initial_volume=volume,
                 )
             else:
@@ -137,3 +142,15 @@ class MusicPlayer(MagicNode):
         if initial_master_volume is not None and self.master_volume is not None:
             self.master_volume.cancel_fades()
             self.master_volume.fade_volume(initial_master_volume, 0)
+
+    def pause_callback(self, track_id):
+        self.publish({'category': 'track_pause', 'track_id': track_id})
+
+    def stop_callback(self, track_id):
+        self.publish({'category': 'track_stop', 'track_id': track_id})
+
+    def resume_callback(self, track_id):
+        self.publish({'category': 'track_resume', 'track_id': track_id})
+
+    def loop_callback(self, track_id):
+        self.publish({'category': 'track_loop', 'track_id': track_id})

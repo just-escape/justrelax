@@ -88,12 +88,21 @@ class VLCSelfReleasingTrackPlayer(VLCTrackPlayer):
 
 
 class VLCLoopingTrackPlayer(VLCTrackPlayer):
-    def __init__(self, media_path, loop_a, loop_b, *args, **kwargs):
+    def __init__(
+            self, track_id, media_path, loop_a, loop_b,
+            pause_callback, stop_callback, resume_callback, loop_callback,
+            *args, **kwargs
+    ):
         super(VLCLoopingTrackPlayer, self).__init__(
             media_path, *args, **kwargs)
+        self.track_id = track_id
         self.loop_a = loop_a
         self.loop_b = loop_b
         self.looping_task = None
+        self.pause_callback = pause_callback
+        self.stop_callback = stop_callback
+        self.resume_callback = resume_callback
+        self.loop_callback = loop_callback
 
     def loop_track(self):
         time_before_loop = self.loop_b - self.loop_a
@@ -101,6 +110,7 @@ class VLCLoopingTrackPlayer(VLCTrackPlayer):
 
         logger.debug('Setting player time to {}'.format(self.loop_a))
         self.player.set_time(int(self.loop_a * 1000))
+        self.loop_callback(self.track_id)
 
     def schedule_looping_task(self, time):
         logger.debug('Scheduling track loop in {} seconds'.format(time))
@@ -122,11 +132,14 @@ class VLCLoopingTrackPlayer(VLCTrackPlayer):
         current_time = self.player.get_time() / 1000
         time_before_loop = self.loop_b - current_time
         self.schedule_looping_task(time_before_loop)
+        self.resume_callback(self.track_id)
 
     def _pause(self):
         super(VLCLoopingTrackPlayer, self)._pause()
         self.cancel_looping_task()
+        self.pause_callback(self.track_id)
 
     def _stop(self):
         super(VLCLoopingTrackPlayer, self)._stop()
         self.cancel_looping_task()
+        self.stop_callback(self.track_id)
