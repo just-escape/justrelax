@@ -15,6 +15,8 @@ class VentsLocker(MagicNode):
         self.unlock_frequency = self.config["unlock_frequency"]
         self.unlock_falling_edge_delay = self.config["unlock_falling_edge_delay"]
         self.device = gpiozero.OutputDevice(power_pin)
+        self.limit_switch_power = gpiozero.OutputDevice(self.config["limit_switch_power_pin"])
+        self.limit_switch_power.on()
         self.limit_switch = gpiozero.InputDevice(limit_switch_pin)
 
         self.locked = self.config["locked_by_default"]
