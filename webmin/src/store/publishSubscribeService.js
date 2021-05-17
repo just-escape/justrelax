@@ -83,7 +83,9 @@ const publishSubscribeService = new Vuex.Store({
     // eslint-disable-next-line
     publish (state, {channel, event}) {
       if (state.isWebSocketOpened) {
-        event.from = state.name
+        if (event.from === undefined) {
+          event.from = state.name
+        }
         let json = JSON.stringify({action: "publish", channel: channel, event: event})
         Vue.prototype.$socket.send(json)
       } else {
