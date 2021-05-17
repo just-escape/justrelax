@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import progressionStore from '@/store/progressionStore.js'
 import Widget from '@/components/Widget.vue'
 
 export default {
@@ -22,9 +23,9 @@ export default {
   components: {
     Widget,
   },
-  data: function() {
-    return {
-      measures: [
+  computed: {
+    measures() {
+      return [
         {
           top: 0,
           left: 100,
@@ -44,9 +45,9 @@ export default {
           left: 100,
           icon: "fa fa-tags",
           label: "stocks",
-          error: true,
+          error: !progressionStore.state.isStocksOk,
         },
-      ],
+      ]
     }
   },
 }

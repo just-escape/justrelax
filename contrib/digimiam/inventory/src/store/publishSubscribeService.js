@@ -85,6 +85,8 @@ const publishSubscribeService = new Vuex.Store({
       } else if (event.category === 'display_black_screen') {
         let display = event.display ? true : false
         progressionStore.commit('displayBlackScreen', display)
+      } else if (event.category === 'set_stocks_status') {
+        progressionStore.commit('setIsStocksOk', event.status)
       }
     },
     SOCKET_RECONNECT (state, count) {

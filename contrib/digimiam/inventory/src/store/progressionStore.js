@@ -7,6 +7,7 @@ let store = new Vuex.Store({
   state: {
     displayDangerWindow: false,
     displayBlackScreen: true,
+    isStocksOk: false,
   },
   mutations: {
     displayDangerWindow(state) {
@@ -15,7 +16,10 @@ let store = new Vuex.Store({
     displayBlackScreen(state, value) {
       state.displayBlackScreen = value
     },
-  }
+    setIsStocksOk(state, value) {
+      state.isStocksOk = value
+    },
+  },
 })
 
 export default store

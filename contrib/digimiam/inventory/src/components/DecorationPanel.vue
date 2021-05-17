@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Window :title="$t('alimentary_statistics')">
+    <Window :title="$t('alimentary_data')">
       <div class="d-flex flex-column align-items-center mt-2">
         <Widgets class="mt-1 mb-4"/>
         <Charts class="mb-4"/>

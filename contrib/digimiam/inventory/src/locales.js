@@ -5,8 +5,8 @@ Vue.use(VueI18n)
 
 const locales = {
   en: {
-    alimentary_statistics: 'ALIMENTARY STATISTICS',
-    stock_management: 'STOCK MANAGEMENT',
+    alimentary_data: 'DATA',
+    virtual_inventory: 'VIRTUAL INVENTORY',
     ok: 'ok',
     error: 'error',
     temperature: 'Temperature',
@@ -37,8 +37,8 @@ const locales = {
     immediate_evac: 'Humans are required to evacuate immediately',
   },
   fr: {
-    alimentary_statistics: 'STATISTIQUES ALIMENTAIRES',
-    stock_management: 'GESTION DES STOCKS',
+    alimentary_data: 'DONNÉES',
+    virtual_inventory: 'INVENTAIRE VIRTUEL',
     ok: 'ok',
     error: 'err.',
     stocks: 'Stocks',
@@ -59,10 +59,15 @@ const locales = {
     warning: 'Attention:',
     info: 'Info:',
     log: {
-      short_info: 'Cillum dolore eu fugiat nulla pariatur.',
-      long_info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      short_warning: 'Duis aute irure dolor in reprehenderit.',
-      long_warning: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      waffresco_order: 'Erreur lors de la production de : Gaufresque * 1 (commande G-153-25-59)',
+      analysis: 'Analyse de la situation...',
+      temperature_control_ok: 'Contrôle de la température : ok',
+      humidity_control_ok: 'Contrôle de l\'humidité : ok',
+      stocks_control_error: 'Contrôle des stocks alimentaires : erreur',
+      nutrients_missing: 'Plusieurs aliments ne sont pas chargés dans leur chambre dédiée',
+      human_intervention_required: 'Intervention humaine requise',
+      stocks_control_ok: 'Contrôle des stocks alimentaires : ok',
+      orders_can_resume: 'Les commandes peuvent à nouveau être produites',
     },
     danger: 'DANGER',
     toxic_air_detected: 'Air toxique détecté',

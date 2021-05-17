@@ -1,5 +1,5 @@
 <template>
-  <Window :title="$t('stock_management')">
+  <Window :title="$t('virtual_inventory')">
     <div class="d-flex flex-column align-items-center justify-content-around h-100">
       <div v-if="buttons" class="position-absolute w-100 d-flex flex-row justify-content-center" style="bottom: -44px; left: 0px">
         <b-btn @click="move('left')" class="mr-2">gauche</b-btn>
