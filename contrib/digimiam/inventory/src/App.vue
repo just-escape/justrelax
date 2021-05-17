@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import progressionStore from '@/store/progressionStore.js'
 import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 export default {
@@ -13,6 +14,11 @@ export default {
     // Disable longtap (right click) menu to appear
     window.oncontextmenu = function() {
       return false
+    }
+
+    let blackScreen = this.$route.query.black_screen
+    if (blackScreen && blackScreen === '0') {
+      progressionStore.commit('displayBlackScreen', false)
     }
 
     if (this.$route.query.channel_prefix !== undefined) {
