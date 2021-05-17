@@ -5,7 +5,7 @@ subscriptions:
   - d1.vents_locker
   - d1.broadcast
 
-power_pin: 0
+power_pin: 6
 limit_switch_power_pin: 13
 limit_switch_pin: 5
 unlock_frequency: 5
