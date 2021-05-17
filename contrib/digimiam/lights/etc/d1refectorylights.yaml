@@ -190,3 +190,10 @@ animations:
     11.4: on
     11.45: off
     11.5: on
+  refectory_repaired:
+    0: off
+    0.1: on
+    0.2: off
+    0.3: on
+    0.4: off
+    1: on
