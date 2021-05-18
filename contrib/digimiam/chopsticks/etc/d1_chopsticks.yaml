@@ -3,7 +3,7 @@ name: chopsticks
 default_publication_channel: d1.scenario
 subscriptions:
   - d1.chopsticks
-  - d1.session
+  - d1.broadcast
 
 serials:
   - port: /dev/ttyUSB0
