@@ -225,6 +225,10 @@ class Controller:
         self.set_led_color(self.menu_status_led_index, "green" if repaired else "red")
 
     def reset(self):
+        # Force this value here, even if it is redundant with the on_inactive method. Because when we debug the room
+        # it is possible to force the manual mode several times without changing the control panel status. If the
+        # control panel status doesn't change, the on_inactive method will not be called.
+        self.has_manual_mode_been_set_once = False
         self.status = "inactive"
 
     def check_jack_ports(self):
