@@ -35,6 +35,8 @@ tracks:
     volume: 35
     loop_a: 177.775
     loop_b: 415.775
+  - id: track5glitch
+    path: /home/justescape/music/track5-glitch.wav
   - id: track5
     path: /home/justescape/music/track5-ll.wav
     mode: loop
