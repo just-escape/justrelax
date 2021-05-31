@@ -68,6 +68,7 @@ const locales = {
       human_intervention_required: 'Intervention humaine requise',
       stocks_control_ok: 'Contrôle des stocks alimentaires : ok',
       orders_can_resume: 'Les commandes peuvent à nouveau être produites',
+      waiting_customer_validation: 'La commande de Gaufresque * 1 (commande G-153-25-29) est en attente de validation client sur l\'écran de commande',
     },
     danger: 'DANGER',
     toxic_air_detected: 'Air toxique détecté',
