@@ -1,15 +1,16 @@
 <template>
   <div class="position-relative d-flex flex-column flex-grow-1">
-    <OrderNotification class="position-absolute" :displayed="displayOrderNotification" @ok="acknowledgeNotification"/>
     <CreditsNotification class="position-absolute" :displayed="displayCreditsNotification" @ok="acknowledgeCreditsNotification" :class="{'shaking-more': creditsNotificationShaking}"/>
+    <ResumeOrderNotification class="position-absolute" :displayed="displayResumeOrderNotification" @ok="acknowledgeResumeNotification"/>
+    <OrderRecapNotification class="position-absolute" :displayed="displayOrderRecapNotification" @ok="acknowledgeRecapNotification"/>
 
     <div class="overflow-hidden p-4">
       <div class="d-flex flex-row justify-content-start align-items-end ml-3 mb-3 px-2 position-relative">
         <div class="w-50 mr-3">
           <OrderConfirmButton
-            :pulse="cartItems.length"
+            :pulse="cartItems.length && !isOrderOnHold"
             :gray="isRestaurantClosed"
-            :disabled="!cartItems.length || isRestaurantClosed"
+            :disabled="!cartItems.length || isOrderOnHold"
             @click="confirm"
           >
             {{ $t('confirm_order') }}
@@ -35,8 +36,8 @@
             block
             :variant="isRestaurantClosed ? 'outline-secondary' : 'outline-info'"
             class="py-2"
-            :disabled="!cartItems.length || isRestaurantClosed"
-            :style="{opacity: !cartItems.length || isRestaurantClosed ? 0.4 : 1}"
+            :disabled="!cartItems.length || isOrderOnHold"
+            :style="{opacity: !cartItems.length || isOrderOnHold ? 0.4 : 1}"
             @click="reset"
           >
             {{ $t('reset_order') }}
@@ -95,10 +96,12 @@
 import OrderSummaryItem from '@/components/OrderSummaryItem.vue'
 import OrderConfirmButton from '@/components/OrderConfirmButton.vue'
 import WarningClosed from '@/components/WarningClosed.vue'
-import OrderNotification from '@/components/OrderNotification.vue'
+import ResumeOrderNotification from '@/components/ResumeOrderNotification.vue'
+import OrderRecapNotification from '@/components/OrderRecapNotification.vue'
 import CreditsNotification from '@/components/CreditsNotification.vue'
 import orderStore from '@/store/orderStore.js'
 import progressionStore from '@/store/progressionStore.js'
+import publishSubscribreService from '@/store/publishSubscribeService.js'
 
 export default {
   name: "OrderSummary",
@@ -106,7 +109,8 @@ export default {
     OrderSummaryItem,
     OrderConfirmButton,
     WarningClosed,
-    OrderNotification,
+    ResumeOrderNotification,
+    OrderRecapNotification,
     CreditsNotification,
   },
   data() {
@@ -144,11 +148,17 @@ export default {
     totalPrice: function() {
       return orderStore.getters.totalPrice
     },
+    isOrderOnHold: function() {
+      return progressionStore.state.isOrderOnHold
+    },
     isRestaurantClosed: function() {
       return progressionStore.state.isRestaurantClosed
     },
-    displayOrderNotification: function() {
-      return orderStore.state.displayOrderNotification
+    displayResumeOrderNotification: function() {
+      return orderStore.state.displayResumeOrderNotification
+    },
+    displayOrderRecapNotification: function() {
+      return orderStore.state.displayOrderRecapNotification
     },
     displayEmptyCartHelp: function() {
       return orderStore.state.displayEmptyCartHelp && this.cartItems.length === 0
@@ -169,9 +179,8 @@ export default {
     },
     confirm: function() {
       if (this.credits >= this.totalPrice) {
-        clearTimeout(this.autocloseNotification)
-        this.autocloseNotification = setTimeout(this.acknowledgeNotification, 15000)
         orderStore.commit('confirmOrder')
+        progressionStore.commit('setIsOrderOnHold', true)
       } else {
         if (this.displayCreditsNotification === false) {
           this.creditsNotificationCounter++
@@ -189,9 +198,12 @@ export default {
         this.creditsShakingTask = setTimeout(this.stopCreditsShaking, 400)
       }
     },
-    acknowledgeNotification() {
-      clearTimeout(this.autocloseNotification)
-      orderStore.commit('acknowledgeOrderNotification')
+    acknowledgeResumeNotification() {
+      orderStore.commit('setDisplayResumeOrderNotification', false)
+      publishSubscribreService.commit('publish', {'category': 'resume_order'})
+    },
+    acknowledgeRecapNotification() {
+      console.log('ack recap')
     },
   },
   watch: {

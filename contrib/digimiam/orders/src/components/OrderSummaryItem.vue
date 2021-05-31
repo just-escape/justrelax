@@ -1,8 +1,8 @@
 <template>
   <div class="position-relative">
     <div class="position-absolute price bg-info rounded">{{ price }} {{ $t('nF') }}</div>
-    <div class="position-absolute bg-info rounded" style="height: 21px; bottom: 10px; left: 20px; padding: 0px 2px; opacity: 0.85; filter: drop-shadow(0px 0px 3px rgba(23, 162, 184, 0.75))">
-      <img v-if="variationSrc" :src="variationSrc" height="17px" width="17px" style="margin-bottom: 4px">
+    <div v-if="variationSrc" class="position-absolute bg-info rounded" style="height: 21px; bottom: 10px; left: 20px; padding: 0px 2px; opacity: 0.85; filter: drop-shadow(0px 0px 3px rgba(23, 162, 184, 0.75))">
+      <img :src="variationSrc" height="17px" width="17px" style="margin-bottom: 4px">
     </div>
     <img :src="src" class="img-fluid">
   </div>

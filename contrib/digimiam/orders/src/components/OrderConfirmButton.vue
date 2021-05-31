@@ -6,7 +6,7 @@
     :size="size"
     :variant="gray ? 'secondary' : 'info'"
     :disabled="disabled"
-    :style="{'boxShadow': boxShadow}"
+    :style="{'boxShadow': boxShadow, 'opacity': disabled ? 0.4 : 1}"
   >
     <slot></slot>
   </b-btn>

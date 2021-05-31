@@ -12,7 +12,7 @@
       </div>
       <div class="d-flex flex-row justify-content-end align-items-center">
         <div class="glowing-text pr-3">{{ price }} {{ $t('nF') }}</div>
-        <OrderItemButton @mousedown="orderMe" :clickable="orderable && !isRestaurantClosed && !showDocumentation" :gray="isRestaurantClosed"/>
+        <OrderItemButton @mousedown="orderMe" :clickable="orderable && !isOrderOnHold && !showDocumentation" :gray="isRestaurantClosed"/>
       </div>
     </div>
     <img
@@ -25,7 +25,7 @@
          Otherwise there would be synchronization issues between the 2 waffresco customizers. -->
     <WaffrescoCustomizer
       v-if="itemId === 'gaufresque' && isVisible"
-      :clickable="orderable && !isRestaurantClosed && !showDocumentation"
+      :clickable="orderable && !isOrderOnHold && !showDocumentation"
       :gray="isRestaurantClosed"
       :collapseSignal="JSON.stringify([scrollSignal, orderSignal])"
     />
@@ -70,6 +70,9 @@ export default {
     },
     showDocumentation: function() {
       return progressionStore.state.showDocumentation
+    },
+    isOrderOnHold: function() {
+      return progressionStore.state.isOrderOnHold
     },
     isRestaurantClosed: function() {
       return progressionStore.state.isRestaurantClosed

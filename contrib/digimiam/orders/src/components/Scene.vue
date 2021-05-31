@@ -19,6 +19,7 @@
 <script>
 import orderStore from '@/store/orderStore.js'
 import progressionStore from '@/store/progressionStore.js'
+import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 export default {
   name: "Scene",
@@ -153,6 +154,7 @@ export default {
       let helpAnimation = this.$i18n.locale == 'fr' ? 'helpFr' : 'helpEn'
       this.startAnimation(helpAnimation)
       setTimeout(this.resumeIdle, this.animations[helpAnimation].duration, helpAnimation)
+      setTimeout(publishSubscribeService.commit, this.animations[helpAnimation].duration, "publish", {'category': 'marmitron_has_asked_for_help'})
     },
     showMarmitron() {
       let this_ = this

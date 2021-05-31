@@ -11,9 +11,9 @@ let store = new Vuex.Store({
     round: 0,
     showMarmitron: true,
     showDocumentation: false,
+    isOrderOnHold: false,
     isRestaurantClosed: false,
     displayDangerWindow: false,
-    runMsPepperStockAfterNotificationAcknowledgement: false,
     overlayVideos: {
       glitching: {
         fr: require('@/assets/videos/orders_glitch.webm'),
@@ -52,12 +52,12 @@ let store = new Vuex.Store({
     setMarmitronVisibility (state, show) {
       state.showMarmitron = show
     },
+    setIsOrderOnHold (state, value) {
+      state.isOrderOnHold = value
+    },
     setRestaurantStatus (state, closed) {
       state.isRestaurantClosed = closed
       orderStore.commit('resetOrder')
-    },
-    runMsPepperStockAfterNotificationAcknowledgement (state) {
-      state.runMsPepperStockAfterNotificationAcknowledgement = true
     },
     fireHelpAnimation (state) {
       state.fireHelpAnimation = true
@@ -84,8 +84,9 @@ let store = new Vuex.Store({
     onOverlayVideoEnd(state) {
       // Not clean :|
       if (state.currentOverlayVideo === "ms_pepper_stock") {
-        state.runMsPepperStockAfterNotificationAcknowledgement = false
-        publishSubcribeService.commit('publish', {category: 'ms_pepper_tells_to_go_in_stock'})
+        publishSubcribeService.commit('publish', {category: 'ms_pepper_has_told_to_go_in_stock'})
+      } else if (state.currentOverlayVideo === "ms_pepper_says_thanks") {
+        publishSubcribeService.commit('publish', {category: 'ms_pepper_has_said_thanks'})
       }
 
       state.currentOverlayVideo = null

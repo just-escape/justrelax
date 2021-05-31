@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import progressionStore from '@/store/progressionStore.js'
+import publishSubscribeService from './publishSubscribeService'
 
 Vue.use(Vuex)
 
@@ -55,7 +55,8 @@ let store = new Vuex.Store({
       triforce: require('@/assets/img/triforce.svg'),
     },
     selectedWaffrescoPatternId: 'happy',
-    displayOrderNotification: false,
+    displayResumeOrderNotification: false,
+    displayOrderRecapNotification: false,
     displayEmptyCartHelp: false,
     hasFirstOrderBeenIssued: false,
     orderSomething: false,
@@ -98,14 +99,14 @@ let store = new Vuex.Store({
       state.displayOrderNotification = true
       if (!state.hasFirstOrderBeenIssued) {
         state.hasFirstOrderBeenIssued = true
-        progressionStore.commit('runMsPepperStockAfterNotificationAcknowledgement')
+        publishSubscribeService.commit('publish', {'category': 'first_order'})
       }
     },
-    acknowledgeOrderNotification (state) {
-      state.displayOrderNotification = false
-      if (progressionStore.state.runMsPepperStockAfterNotificationAcknowledgement) {
-        setTimeout(progressionStore.commit, 2000, 'playOverlayVideo', 'ms_pepper_stock')
-      }
+    setDisplayResumeOrderNotification (state, value) {
+      state.displayResumeOrderNotification = value
+    },
+    setDisplayOrderRecapNotification (state, value) {
+      state.displayOrderRecapNotification = value
     },
     addItemToCart (state, itemId) {
       state.itemIdToAdd = itemId

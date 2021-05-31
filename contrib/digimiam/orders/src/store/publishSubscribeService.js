@@ -99,6 +99,12 @@ const publishSubscribeService = new Vuex.Store({
           loop = true
         }
         progressionStore.commit('setDocumentationCurrentInstruction', {message: instructionMessage, useLocale: event.use_locale || false, loop: event.loop || loop})
+      } else if (event.category === 'set_display_resume_order_notification') {
+        orderStore.commit('setDisplayResumeOrderNotification', event.value)
+      } else if (event.category === 'set_display_order_recap_notification') {
+        orderStore.commit('setDisplayOrderRecapNotification', event.value)
+      } else if (event.category === 'reset_order') {
+        orderStore.commit('resetOrder')
       }
     },
     SOCKET_RECONNECT (state, count) {
