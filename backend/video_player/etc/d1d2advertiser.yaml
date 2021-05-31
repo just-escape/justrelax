@@ -31,3 +31,13 @@ videos:
     path: /home/pi/videos/ms_pepper_here_you_are_fr.mp4
     loop: no
     display: 2
+  ms_pepper_stock:
+    layer: 2
+    path: /home/pi/videos/ms_pepper_stock_muted.mp4
+    loop: no
+    display: 7
+  ms_pepper_says_thanks:
+    layer: 2
+    path: /home/pi/videos/ms_pepper_says_thanks_muted.mp4
+    loop: no
+    display: 7
