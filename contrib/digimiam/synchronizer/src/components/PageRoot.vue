@@ -24,6 +24,7 @@
       </div>
     </div>
     <OverlayVideo class="position-absolute z-index-20"/>
+    <MsPepperOverlayVideo class="position-absolute z-index-30"/>
     <DangerWindow/>
   </div>
 </template>
@@ -33,6 +34,7 @@ import BackgroundLines from '@/components/BackgroundLines.vue'
 import LightPuzzle from '@/components/LightPuzzle.vue'
 import MenuPuzzle from '@/components/MenuPuzzle.vue'
 import OverlayVideo from '@/components/OverlayVideo.vue'
+import MsPepperOverlayVideo from '@/components/MsPepperOverlayVideo.vue'
 import DangerWindow from '@/components/DangerWindow.vue'
 import LightLogs from '@/components/LightLogs.vue'
 import MenuLogs from '@/components/MenuLogs.vue'
@@ -48,6 +50,7 @@ export default {
     LightPuzzle,
     MenuPuzzle,
     OverlayVideo,
+    MsPepperOverlayVideo,
     DangerWindow,
   },
   data() {

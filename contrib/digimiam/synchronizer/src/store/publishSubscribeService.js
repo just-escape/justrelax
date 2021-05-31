@@ -105,6 +105,10 @@ const publishSubscribeService = new Vuex.Store({
         progressionStore.commit('playOverlayVideo', event.video_id)
       } else if (event.category === 'stop_overlay_video') {
         progressionStore.commit('stopOverlayVideo')
+      } else if (event.category === 'play_ms_pepper_overlay_video') {
+        progressionStore.commit('playMsPepperOverlayVideo', event.video_id)
+      } else if (event.category === 'stop_ms_pepper_overlay_video') {
+        progressionStore.commit('stopMsPepperOverlayVideo')
       } else if (event.category === 'display_selectable_areas') {
         menuStore.commit('setDisplaySelectableAreas', event.display)
       } else if (event.category === 'display_graduations') {

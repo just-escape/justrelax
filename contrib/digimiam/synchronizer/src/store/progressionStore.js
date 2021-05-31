@@ -16,13 +16,26 @@ let store = new Vuex.Store({
       glitching: {
         fr: require('@/assets/videos/ads_glitch.webm'),
         en: require('@/assets/videos/ads_glitch.webm'),
+        loop: true,
       },
       ads_loop: {
         fr: require('@/assets/videos/ads_loop.webm'),
         en: require('@/assets/videos/ads_loop.webm'),
+        loop: true,
       },
     },
     currentOverlayVideo: null,
+    msPepperOverlayVideos: {
+      ms_pepper_stock: {
+        media: require('@/assets/videos/ms_pepper_stock_muted.mp4'),
+        loop: false,
+      },
+      ms_pepper_says_thanks: {
+        media: require('@/assets/videos/ms_pepper_says_thanks_muted.mp4'),
+        loop: false,
+      },
+    },
+    currentMsPepperOverlayVideo: null,
   },
   mutations: {
     displayDangerWindow(state) {
@@ -35,6 +48,14 @@ let store = new Vuex.Store({
     },
     stopOverlayVideo(state) {
       state.currentOverlayVideo = null
+    },
+    playMsPepperOverlayVideo(state, videoId) {
+      if (state.msPepperOverlayVideos[videoId]) {
+        state.currentMsPepperOverlayVideo = videoId
+      }
+    },
+    stopMsPepperOverlayVideo(state) {
+      state.currentMsPepperOverlayVideo = null
     },
     setLightServiceSuccess(state) {
       if (!state.lightServiceSuccess) {

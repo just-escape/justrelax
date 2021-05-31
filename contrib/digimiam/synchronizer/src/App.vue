@@ -97,6 +97,10 @@ video {
   z-index: 20;
 }
 
+.z-index-30 {
+  z-index: 30;
+}
+
 .bg-black-transparent {
   background-color: rgba(0, 0, 0, 0.8);
 }
