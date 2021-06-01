@@ -87,15 +87,12 @@
         </div>
       </div>
     </div>
-
-    <WarningClosed v-if="isRestaurantClosed"/>
   </div>
 </template>
 
 <script>
 import OrderSummaryItem from '@/components/OrderSummaryItem.vue'
 import OrderConfirmButton from '@/components/OrderConfirmButton.vue'
-import WarningClosed from '@/components/WarningClosed.vue'
 import ResumeOrderNotification from '@/components/ResumeOrderNotification.vue'
 import OrderRecapNotification from '@/components/OrderRecapNotification.vue'
 import CreditsNotification from '@/components/CreditsNotification.vue'
@@ -108,7 +105,6 @@ export default {
   components: {
     OrderSummaryItem,
     OrderConfirmButton,
-    WarningClosed,
     ResumeOrderNotification,
     OrderRecapNotification,
     CreditsNotification,

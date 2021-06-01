@@ -1,7 +1,7 @@
 <template>
   <div
     class="position-relative item media justify-content-end align-items-center w-100"
-    :style="'transform: translateX(' + translate + '%)'"
+    :style="{transform: 'translateX(' + translate + '%)', filter: isRestaurantClosed ? 'grayscale(0.6)': ''}"
   >
     <div class="media-body text-right">
       <div class="item-title">
@@ -12,7 +12,7 @@
       </div>
       <div class="d-flex flex-row justify-content-end align-items-center">
         <div class="glowing-text pr-3">{{ price }} {{ $t('nF') }}</div>
-        <OrderItemButton @mousedown="orderMe" :clickable="orderable && !isOrderOnHold && !showDocumentation" :gray="isRestaurantClosed"/>
+        <OrderItemButton @mousedown="orderMe" :clickable="orderable && !isOrderOnHold && !showDocumentation && !isRestaurantClosed" :gray="isRestaurantClosed"/>
       </div>
     </div>
     <img
@@ -25,19 +25,16 @@
          Otherwise there would be synchronization issues between the 2 waffresco customizers. -->
     <WaffrescoCustomizer
       v-if="itemId === 'gaufresque' && isVisible"
-      :clickable="orderable && !isOrderOnHold && !showDocumentation"
+      :clickable="orderable && !isOrderOnHold && !showDocumentation && !isRestaurantClosed"
       :gray="isRestaurantClosed"
       :collapseSignal="JSON.stringify([scrollSignal, orderSignal])"
     />
-
-    <WarningClosed size="small" v-if="isRestaurantClosed"/>
   </div>
 </template>
 
 <script>
 import WaffrescoCustomizer from '@/components/WaffrescoCustomizer.vue'
 import OrderItemButton from '@/components/OrderItemButton.vue'
-import WarningClosed from '@/components/WarningClosed.vue'
 import orderStore from '@/store/orderStore.js'
 import progressionStore from '@/store/progressionStore.js'
 
@@ -45,7 +42,6 @@ export default {
   name: "OrderableItem",
   components: {
     OrderItemButton,
-    WarningClosed,
     WaffrescoCustomizer,
   },
   data() {

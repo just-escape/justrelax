@@ -2,7 +2,7 @@
   <div class="position-relative">
     <div
       class="position-absolute info-shadow rounded-bottom d-flex flex-column align-items-center patterns"
-      style="right: 175px; bottom: -245px; width: 40px; z-index: 16"
+      style="right: 169px; bottom: -269px; width: 46px; z-index: 16"
       :style="{
         height: 'calc(9 * ' + itemHeight + 'px)',
         clipPath: 'polygon(0% calc(200%/9 + ' + 200/9 * patternsVisibility + '%), 100% calc(200%/9 + ' + 200/9 * patternsVisibility + '%), 100% calc(700%/9 - ' + 200/9 * patternsVisibility + '%), 0% calc(700%/9 - ' + 200/9 * patternsVisibility + '%)',
@@ -19,7 +19,7 @@
         :style="{'opacity': clickable ? 0.75 : 0.4}"
         style="padding: 6px 8px"
       >
-        <img :style="{transform: pattern == selectedPatternId ? 'scale(' + selectedScale + ')' : ''}" :src="patterns[pattern]" height="26px" width="26px">
+        <img :style="{transform: pattern == selectedPatternId ? 'scale(' + selectedScale + ')' : ''}" :src="patterns[pattern]" height="32px" width="32px">
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@ export default {
       selectedScale: 1,
       patternsVisibility: 1,
       selecting: false,
-      itemHeight: 38,
+      itemHeight: 44,
       animation: false,
       dynamicPatterns: [],
     }
