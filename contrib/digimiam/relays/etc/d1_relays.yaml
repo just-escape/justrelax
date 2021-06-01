@@ -1,0 +1,62 @@
+name: relays
+
+default_publication_channel: d1.scenario
+subscriptions:
+  - d1.relays
+  - d1.broadcast
+
+colors:
+  red:
+    - 20
+    - 0
+    - 0
+  orange:
+    - 20
+    - 5
+    - 0
+  white:
+    - 20
+    - 20
+    - 20
+
+relay_indexes:
+  -
+    - 0
+    - 1
+    - 2
+  -
+    - 3
+    - 4
+    - 5
+  -
+    - 6
+    - 7
+    - 8
+
+# [*] [*]    [*]
+cpu_indexes:
+  - 29
+  - 28
+  - 27
+
+cable_indexes:
+  - 24
+  - 25
+  - 26
+
+data_indexes:
+  - 23
+  - 22
+  - 21
+  - 20
+  - 19
+  - 18
+  - 17
+  - 16
+  - 15
+  - 14
+  - 13
+  - 12
+  - 11
+  - 10
+  - 9
