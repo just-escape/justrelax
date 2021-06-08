@@ -102,8 +102,8 @@ export default new Vuex.Store({
       publishSubscribeService.commit('subscribe', 'd1.webmin')
       publishSubscribeService.commit('subscribe', 'd2.webmin')
       publishSubscribeService.commit('subscribe', 'justescape.webmin')
-      publishSubscribeService.commit('addOnConnectionPublication', {channel: 'd1.scenario', event: {'category': 'request_session_data'}})
-      publishSubscribeService.commit('addOnConnectionPublication', {channel: 'd2.scenario', event: {'category': 'request_session_data'}})
+      publishSubscribeService.commit('addOnConnectionPublication', {channel: 'd1.scenario', event: {'category': 'request_session_data_for_webmin'}})
+      publishSubscribeService.commit('addOnConnectionPublication', {channel: 'd2.scenario', event: {'category': 'request_session_data_for_webmin'}})
 
       /*for (var room of rooms) {
         for (var channel of room.subscription_channels) {
