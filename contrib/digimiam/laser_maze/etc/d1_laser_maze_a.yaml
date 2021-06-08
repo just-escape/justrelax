@@ -12,24 +12,73 @@ serials:
 
 laser_prefix: A
 
-default_difficulty: normal
+deactivation_file: /etc/justrelax/deactivated_lasers.json
+
+default_difficulty: hard
 
 difficulty_settings:
   easy:
-    laser_bitmask: 16020
-    dynamic_laser_bitmask: 15872
+    lasers:
+      - 2
+      - 4
+      - 7
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+    dynamic_lasers:
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
     dynamic_laser_downtime: 8000
     dynamic_laser_uptime: 5000
     dynamic_laser_incremental_offset: 1000
   normal:
-    laser_bitmask: 16383
-    dynamic_laser_bitmask: 15872
+    lasers:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 7
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+    dynamic_lasers:
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
     dynamic_laser_downtime: 4500
     dynamic_laser_uptime: 5000
     dynamic_laser_incremental_offset: 800
   hard:
-    laser_bitmask: 16030
-    dynamic_laser_bitmask: 15872
+    lasers:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+    dynamic_lasers:
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
     dynamic_laser_downtime: 3000
     dynamic_laser_uptime: 5000
     dynamic_laser_incremental_offset: 500

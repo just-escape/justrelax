@@ -3,6 +3,7 @@ name: laser_maze
 default_publication_channel: d2.scenario
 subscriptions:
   - d2.laser_maze
+  - d2.laser_maze.b
   - d2.broadcast
 
 serials:
@@ -12,24 +13,45 @@ serials:
 
 laser_prefix: B
 
-default_difficulty: normal
+default_difficulty: hard
 
 difficulty_settings:
   easy:
-    laser_bitmask: 127
-    dynamic_laser_bitmask: 0
+    laser_bitmask:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+    dynamic_laser_bitmask: []
     dynamic_laser_downtime: 3500
     dynamic_laser_uptime: 5500
     dynamic_laser_incremental_offset: 500
   normal:
-    laser_bitmask: 0  # 127
-    dynamic_laser_bitmask: 0
+    laser_bitmask:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+    dynamic_laser_bitmask: []
     dynamic_laser_downtime: 3500
     dynamic_laser_uptime: 5500
     dynamic_laser_incremental_offset: 500
   hard:
-    laser_bitmask: 127
-    dynamic_laser_bitmask: 0
+    laser_bitmask:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+    dynamic_laser_bitmask: []
     dynamic_laser_downtime: 3500
     dynamic_laser_uptime: 5500
     dynamic_laser_incremental_offset: 500
