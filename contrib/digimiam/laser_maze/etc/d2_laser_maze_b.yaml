@@ -6,6 +6,8 @@ subscriptions:
   - d2.laser_maze.b
   - d2.broadcast
 
+deactivation_file: /etc/justrelax/deactivated_lasers.json
+
 serials:
   - port: /dev/ttyUSB0
     baud_rate: 9600
@@ -17,7 +19,7 @@ default_difficulty: hard
 
 difficulty_settings:
   easy:
-    laser_bitmask:
+    lasers:
       - 0
       - 1
       - 2
@@ -25,12 +27,12 @@ difficulty_settings:
       - 4
       - 5
       - 6
-    dynamic_laser_bitmask: []
+    dynamic_lasers: []
     dynamic_laser_downtime: 3500
     dynamic_laser_uptime: 5500
     dynamic_laser_incremental_offset: 500
   normal:
-    laser_bitmask:
+    lasers:
       - 0
       - 1
       - 2
@@ -38,12 +40,12 @@ difficulty_settings:
       - 4
       - 5
       - 6
-    dynamic_laser_bitmask: []
+    dynamic_lasers: []
     dynamic_laser_downtime: 3500
     dynamic_laser_uptime: 5500
     dynamic_laser_incremental_offset: 500
   hard:
-    laser_bitmask:
+    lasers:
       - 0
       - 1
       - 2
@@ -51,7 +53,7 @@ difficulty_settings:
       - 4
       - 5
       - 6
-    dynamic_laser_bitmask: []
+    dynamic_lasers: []
     dynamic_laser_downtime: 3500
     dynamic_laser_uptime: 5500
     dynamic_laser_incremental_offset: 500

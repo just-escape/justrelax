@@ -6,6 +6,8 @@ subscriptions:
   - d2.laser_maze.a
   - d2.broadcast
 
+deactivation_file: /etc/justrelax/deactivated_lasers.json
+
 serials:
   - port: /dev/ttyUSB0
     baud_rate: 9600

@@ -29,9 +29,9 @@ String receivedEvent = "";
 bool success = false;
 bool playing = false;
 
-byte laserPins[N_LASERS] = {52, 50, 48, 46, 44, 42, 40};
+byte laserPins[N_LASERS] = {38, 50, 48, 46, 44, 42, 40};
 bool isLaserOn[N_LASERS] = {false};
-byte sensorPins[N_LASERS] = {53, 51, 49, 47, 45, 43, 41};
+byte sensorPins[N_LASERS] = {39, 51, 49, 47, 45, 43, 41};
 bool sensorSamples[N_LASERS][N_SAMPLES];
 unsigned long sensorSamplesMillis;
 unsigned long sampleDelay = 10;
