@@ -27,7 +27,7 @@ class Relays(MagicNode):
             len(self.cable_indexes) +
             len(self.data_indexes) +
             sum([len(ri) for ri in self.relay_indexes]))
-        self.led_strip = neopixel.NeoPixel(board.D18, strip_length, auto_write=False)
+        self.led_strip = neopixel.NeoPixel(board.D18, strip_length, auto_write=False, brightness=0.1)
 
         self.cpu_led_color = {}
         for index in self.cpu_indexes:
@@ -45,7 +45,7 @@ class Relays(MagicNode):
         self.create_new_data_frames()
 
         for relay in self.relay_indexes:
-            self.animate_relay(relay)
+            self.animate_relay(relay, current_index=len(relay) - 1)
 
     @on_event(filter={'category': 'reset'})
     def reset(self):
@@ -149,21 +149,81 @@ class Relays(MagicNode):
             led_mask = led_mask >> 1
         self.led_strip.show()
 
-    def animate_relay(self, led_indexes, frame_bits=0b000_000, color='white'):
-        if frame_bits == 0:
-            reactor.callLater(
-                random.uniform(0, 1),
-                self.animate_relay,
-                led_indexes,
-                0b000_111,
-                random.choice(self.color_palette)
-            )
-        else:
-            frame_bits = (frame_bits << 1) % 64
-
-            self.set_led_color(led_indexes[0], self.colors[color] if frame_bits & 0b100_000 else (0, 0, 0))
-            self.set_led_color(led_indexes[1], self.colors[color] if frame_bits & 0b010_000 else (0, 0, 0))
-            self.set_led_color(led_indexes[2], self.colors[color] if frame_bits & 0b001_000 else (0, 0, 0))
+    def animate_relay(
+            self, led_indexes, color='white', filling=True, stop_at=0, start_at=0, current_index=0):
+        if filling:
+            if current_index < len(led_indexes) - 1:
+                self.set_led_color(led_indexes[current_index + 1], (0, 0, 0))
+            self.set_led_color(led_indexes[current_index], self.colors[color])
             self.led_strip.show()
 
-            reactor.callLater(0.08, self.animate_relay, led_indexes, frame_bits, color)
+            if current_index == stop_at:
+                if stop_at == len(led_indexes) - 1:
+                    reactor.callLater(
+                        random.uniform(0.8, 1.3),
+                        self.animate_relay,
+                        led_indexes,
+                        color,
+                        filling=False,
+                        start_at=0,
+                        current_index=0,
+                    )
+                else:
+                    reactor.callLater(
+                        random.uniform(0.2, 1.3),
+                        self.animate_relay,
+                        led_indexes,
+                        color,
+                        filling=True,
+                        stop_at=stop_at + 1,
+                        current_index=len(led_indexes) - 1,
+                    )
+            else:
+                reactor.callLater(
+                    0.08,
+                    self.animate_relay,
+                    led_indexes,
+                    color,
+                    filling=True,
+                    stop_at=stop_at,
+                    current_index=current_index - 1,
+                )
+
+        else:
+            if 0 < current_index:
+                self.set_led_color(led_indexes[current_index - 1], self.colors[color])
+            self.set_led_color(led_indexes[current_index], (0, 0, 0))
+            self.led_strip.show()
+
+            if current_index == 0:
+                if start_at == len(led_indexes) - 1:
+                    reactor.callLater(
+                        random.uniform(1, 2.5),
+                        self.animate_relay,
+                        led_indexes,
+                        random.choice(self.color_palette),
+                        filling=True,
+                        stop_at=0,
+                        current_index=len(led_indexes) - 1,
+                    )
+                else:
+                    reactor.callLater(
+                        0.08,
+                        self.animate_relay,
+                        led_indexes,
+                        color,
+                        filling=False,
+                        start_at=start_at + 1,
+                        current_index=start_at + 1,
+                    )
+
+            else:
+                reactor.callLater(
+                    0.08,
+                    self.animate_relay,
+                    led_indexes,
+                    color,
+                    filling=False,
+                    start_at=start_at,
+                    current_index=current_index - 1,
+                )
