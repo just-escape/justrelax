@@ -262,13 +262,13 @@ class MagicNode(EventFilterMixin, Node):
         Node.__init__(self, *args, **kwargs)
 
     def connection_opened(self):
-        if not self._first_connection:
-            self._first_connection = True
-            self.on_first_connection()
-
         for channel in self._subscriptions:
             logger.info("Subscribing to {}".format(channel))
             self.subscribe(channel)
+
+        if not self._first_connection:
+            self._first_connection = True
+            self.on_first_connection()
 
     def on_first_connection(self):
         pass

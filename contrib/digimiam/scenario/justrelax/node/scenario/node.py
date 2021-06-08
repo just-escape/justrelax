@@ -158,6 +158,7 @@ class Scenario(MagicNode):
 
         self.session_timer = SessionTimer(self.tic_tac_callback)
         self.session_time = None
+        self.session_data = {}
 
         # Those delayed calls are canceled on a room reset
         self.registered_delayed_tasks = {}
@@ -248,6 +249,9 @@ class Scenario(MagicNode):
         self.session_time = int(seconds) if seconds else seconds
         self.publish_prefix({'category': 'set_session_time', 'seconds': self.session_time}, 'street_display')
         self.publish_game_time_to_webmin()
+
+    def on_first_connection(self):
+        self.publish_prefix({'category': 'request_node_session_data'}, 'broadcast')
 
     @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'run'})
     def run_room_from_webmin(self):
@@ -440,12 +444,20 @@ class Scenario(MagicNode):
         self.holomenu_y = None
         self.holomenu_error = None
 
-    @on_event(filter={'from': 'webmin', 'category': 'request_session_data'})
+    @on_event(filter={'from': 'webmin', 'category': 'request_session_data_for_webmin'})
     def on_request_session_data(self):
         self.publish_game_time_to_webmin()
+        for key, value in self.session_data.items():
+            self.publish_prefix({"category": "set_session_data", "key": key, "data": value}, "webmin")
 
     def publish_game_time_to_webmin(self):
         self.publish_prefix({'category': 'set_session_data', 'key': 'game_time', 'data': self.session_time}, 'webmin')
+
+    @on_event(filter={'category': 'set_session_data'})
+    def set_session_data(self, key: str, data):
+        self.session_data[key] = data
+        self.publish_prefix(
+            {"category": "set_session_data", "key": key, "data": data}, "webmin")
 
     @on_event(filter={'from': 'street_display', 'category': 'unlock_front_door'})
     def street_display_event_unlock_front_door(self):
@@ -1440,6 +1452,10 @@ class Scenario(MagicNode):
     def get_session_time(self):
         # Could be more personalized but it's ok for now
         self.tic_tac_callback(self.session_time)
+
+    @on_event(filter={'widget_type': 'lasers'})
+    def toggle_permanent_laser_activation(self, action: str, laser_maze_channel: str, laser_index: int):
+        self.publish_prefix({'category': action, 'index': laser_index}, laser_maze_channel)
 
 
 class ScenarioD1(Scenario):
