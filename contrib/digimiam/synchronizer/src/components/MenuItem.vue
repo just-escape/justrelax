@@ -2,7 +2,7 @@
   <div class="d-flex flex-row justify-content-between mb-4">
     <div
       :id="animationId"
-      class="text font-italic"
+      class="text font-italic position-relative"
       :style="{
         color: isDishValidated ? 'green' : 'rgb(' + dish.color.r + ', ' + dish.color.g + ', ' + dish.color.b + ')',
         transition: isDishValidated ? 'color 4s ease-in-out' : '',
@@ -37,6 +37,13 @@
           v-html="i.char"
         ></span>
       </div>
+      <div
+        class="position-absolute badge text-teal"
+        style="right: -60px; font-size: 12px; background: rgba(0, 45, 80, 1); border: 1px solid rgba(0, 209, 182, 0.7); font-weight: normal"
+        :style="{opacity: notifOpacity, bottom: notifBottom + 'px'}"
+      >
+        hologramme<br/>uploadé
+      </div>
     </div>
 
     <span class="underline-dots flex-grow-1 mx-1"></span>
@@ -48,7 +55,7 @@
         transition: isDishValidated ? 'color 4s ease-in-out' : '',
       }"
     >
-      {{ price }} nF
+      {{ price }} NéoFrancs
     </div>
   </div>
 </template>
@@ -76,6 +83,8 @@ export default {
           b: 0,
         },
       },
+      notifOpacity: 0,
+      notifBottom: 0,
     }
   },
   computed: {
@@ -99,6 +108,26 @@ export default {
     },
   },
   methods: {
+    createNotif() {
+      this.$anime.timeline({
+        targets: this,
+      })
+      .add({
+        notifOpacity: 1,
+        duration: 80,
+        easing: 'linear',
+      })
+      .add({
+        notifBottom: 20,
+        notifOpacity: 0,
+        duration: 1000,
+        easing: 'easeInOutQuad',
+      }, '+=500')
+      .add({
+        notifBottom: 0,
+        duration: 1,
+      }, '+=100')
+    },
     glitchAnimation: function() {
       if (this.isDishValidated) {
         return
@@ -336,6 +365,9 @@ export default {
         }
         this[data].remainingScrambleAnimations -= 1
 
+        if (this.dishLabel !== null) {
+          this.createNotif()
+        }
         menuStore.commit("pushMenuEntry", {itemIndex: this.itemIndex, getters: menuStore.getters})
       }
     },
@@ -414,11 +446,5 @@ export default {
 
 .price {
   font-size: 18px;
-}
-
-.underline-dots {
-  font-size: 18px;
-  border-bottom: 1px dotted #ffffff;
-  margin-bottom: 3px;
 }
 </style>

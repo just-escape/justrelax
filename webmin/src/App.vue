@@ -24,7 +24,7 @@ export default {
       })
     } else {
       Vue.prototype.$justRestAPI = axios.create({
-        baseURL: 'http://localhost:8000'
+        baseURL: 'http://justrelax.justescape:8000'
       })
     }
 
@@ -35,7 +35,7 @@ export default {
     if (ws_url) {
       this.$connect('ws://' + ws_url)
     } else {
-      this.$connect('ws://localhost:3031')
+      this.$connect('ws://justrelax.justescape:3032')
     }
   }
 }

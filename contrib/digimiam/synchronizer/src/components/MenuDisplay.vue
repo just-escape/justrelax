@@ -7,8 +7,13 @@
         <div class="menu-title-ribbon mb-2 text-right p-2">
           <img src="@/assets/img/pyramid.svg" class="mb-1" height="18px"/> {{ $t('digimiam_menu') }}
         </div>
-        <div class="date text-right mb-5 mt-2">
+        <div class="date text-right mb-4 mt-2">
           {{ date }}
+        </div>
+
+        <div class="d-flex flex-row justify-content-between mb-3" style="font-style: italic; font-size: 18px">
+          <div class="pl-4">Plat</div>
+          <div class="pr-1">Prix</div>
         </div>
 
         <div class="position-relative">

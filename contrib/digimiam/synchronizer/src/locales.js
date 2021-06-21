@@ -75,6 +75,7 @@ const locales = {
       some_dishes_cannot_be_produced: 'Certains plats ne correspondent pas à la carte du Digimiam',
       no_dishes_can_be_produced: 'Aucun de ces plats ne correspond à la carte du Digimiam',
       menu_reconfig_complete: 'Reconfiguration des plats terminée',
+      interface_is_not_tactile: 'Les lumières ne peuvent pas être allumées avec l\'écran tactile',
     }
   }
 }

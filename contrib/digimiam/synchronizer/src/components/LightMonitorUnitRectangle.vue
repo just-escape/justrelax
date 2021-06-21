@@ -22,19 +22,11 @@
         filter="url(#glowing-rectangle)"
       />
     </svg>
-    <img
-      class="position-absolute"
-      src="@/assets/img/locker.png"
-      width="22px" height="22px"
-      style="left: calc(50% - 11px); top: calc(50% - 11px); transition: all 1s linear;"
-      :style="{opacity: lockerOpacity}"
-    />
   </div>
 </template>
 
 <script>
 import lightStore from '@/store/lightStore.js'
-import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 export default {
   name: 'LightMonitorUnitRectangle',
@@ -82,10 +74,7 @@ export default {
   },
   computed: {
     isActivated() {
-      return lightStore.state.activatedSensors.slice(0, 4).includes(this.color)
-    },
-    areSensorsLocked() {
-      return lightStore.state.activatedSensors.length >= 4
+      return lightStore.state.activatedSensors[this.color]
     },
     boxHeight() {
       return this.vertical ? 1.618 * 150 : 1.1 * 150
@@ -146,20 +135,6 @@ export default {
     },
     glowIntensity() {
       return this.colors[this.color].glowIntensity
-    },
-    lockerOpacity() {
-      return this.areSensorsLocked && !this.isActivated ? 1 : 0
-    },
-  },
-  watch: {
-    isActivated(newValue) {
-      if (this.triggerOnOffPublications) {
-        if (newValue) {
-          publishSubscribeService.commit('publish', {"category": "on", "color": this.color})
-        } else {
-          publishSubscribeService.commit('publish', {"category": "off", "color": this.color})
-        }
-      }
     },
   },
   props: {

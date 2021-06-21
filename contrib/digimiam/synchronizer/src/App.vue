@@ -112,4 +112,10 @@ video {
 .text-red {
   color: rgb(230, 0, 40);
 }
+
+.underline-dots {
+  font-size: 18px;
+  border-bottom: 1px dotted #ffffff;
+  margin-bottom: 3px;
+}
 </style>
