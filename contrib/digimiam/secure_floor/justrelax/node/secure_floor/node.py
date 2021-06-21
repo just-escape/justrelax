@@ -157,6 +157,10 @@ class SecureFloor(MagicNode):
     def event_set_status(self, status: str):
         if self.success is False:
             if status in self.STATUSES:
+                if self.status == status:
+                    logger.info(f"Status is already {self.status} : skipping")
+                    return
+
                 logger.info("Setting status to '{}'".format(status))
                 self.status = status
                 if status == 'alarm':
