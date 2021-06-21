@@ -15,6 +15,7 @@ class Relays(MagicNode):
         super(Relays, self).__init__(*args, **kwargs)
 
         self.color_palette = 4 * ['white'] + 2 * ['orange'] + 1 * ['red']
+        self.faded_color_palette = 4 * ['faded_white'] + 2 * ['faded_orange'] + 1 * ['faded_red']
 
         self.colors = self.config['colors']
         self.cpu_indexes = self.config['cpu_indexes']
@@ -27,7 +28,7 @@ class Relays(MagicNode):
             len(self.cable_indexes) +
             len(self.data_indexes) +
             sum([len(ri) for ri in self.relay_indexes]))
-        self.led_strip = neopixel.NeoPixel(board.D18, strip_length, auto_write=False, brightness=0.1)
+        self.led_strip = neopixel.NeoPixel(board.D18, strip_length, auto_write=False)
 
         self.cpu_led_color = {}
         for index in self.cpu_indexes:
@@ -50,10 +51,16 @@ class Relays(MagicNode):
     @on_event(filter={'category': 'reset'})
     def reset(self):
         self.color_palette = 4 * ['white'] + 2 * ['orange'] + 1 * ['red']
+        self.faded_color_palette = 4 * ['faded_white'] + 2 * ['faded_orange'] + 1 * ['faded_red']
 
     @on_event(filter={'category': 'alarm'})
     def alarm(self, activated: bool = True):
-        self.color_palette = ['red'] if activated else 4 * ['white'] + 2 * ['orange'] + 1 * ['red']
+        if activated:
+            self.color_palette = ['red']
+            self.faded_color_palette = ['red']
+        else:
+            self.color_palette = 4 * ['white'] + 2 * ['orange'] + 1 * ['red']
+            self.faded_color_palette = 4 * ['faded_white'] + 2 * ['faded_orange'] + 1 * ['faded_red']
 
     def set_led_color(self, index, color):
         self.led_strip[index] = color
@@ -150,7 +157,7 @@ class Relays(MagicNode):
         self.led_strip.show()
 
     def animate_relay(
-            self, led_indexes, color='white', filling=True, stop_at=0, start_at=0, current_index=0):
+            self, led_indexes, color='faded_white', filling=True, stop_at=0, start_at=0, current_index=0):
         if filling:
             if current_index < len(led_indexes) - 1:
                 self.set_led_color(led_indexes[current_index + 1], (0, 0, 0))
@@ -201,7 +208,7 @@ class Relays(MagicNode):
                         random.uniform(1, 2.5),
                         self.animate_relay,
                         led_indexes,
-                        random.choice(self.color_palette),
+                        random.choice(self.faded_color_palette),
                         filling=True,
                         stop_at=0,
                         current_index=len(led_indexes) - 1,

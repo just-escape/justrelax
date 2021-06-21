@@ -18,6 +18,18 @@ colors:
     - 20
     - 20
     - 20
+  faded_red:
+    - 10
+    - 0
+    - 0
+  faded_orange:
+    - 10
+    - 3
+    - 0
+  faded_white:
+    - 10
+    - 10
+    - 10
 
 relay_indexes:
   -
