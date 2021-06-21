@@ -19,17 +19,17 @@ colors:
     - 20
     - 20
   faded_red:
-    - 10
+    - 4
     - 0
     - 0
   faded_orange:
-    - 10
-    - 3
+    - 4
+    - 1
     - 0
   faded_white:
-    - 10
-    - 10
-    - 10
+    - 4
+    - 4
+    - 4
 
 relay_indexes:
   -
