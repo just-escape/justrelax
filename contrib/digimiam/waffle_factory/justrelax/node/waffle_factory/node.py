@@ -1,4 +1,5 @@
 import os
+from copy import copy
 
 from twisted.internet import reactor
 
@@ -50,6 +51,8 @@ class WaffleFactory(MagicNode):
         self.printer_is_halted = False
         self.printer_gcode_instructions = []
 
+        self.load_printer_patterns()
+
         reactor.callLater(3, self.event_reset)
 
     def load_printer_patterns(self):
@@ -63,7 +66,7 @@ class WaffleFactory(MagicNode):
 
             with open(path, 'r') as fh:
                 logger.info("Adding printer pattern {}".format(filename))
-                self.printer_patterns[filename] = fh.readlines()
+                self.printer_patterns[filename] = [line.strip() for line in fh.readlines()]
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
@@ -265,12 +268,19 @@ class WaffleFactory(MagicNode):
 
     @on_event(channel='/dev/printer')
     def printer_serial_event(self, event: str):
-        if event != 'Ok':
+        event = event.strip()  # Remove '\r'
+
+        if event == "Grbl 1.1f ['$' for help]":
+            # This message is sent after the serial port is connected
+            pass
+        elif event == "[MSG:Pgm End]":
+            logger.info(f"Received {event}: command M30 must have been executed properly")
+        elif event != "ok":
             logger.error("Unknown serial event '{}': skipping".format(event))
             return
 
-        logger.info("Received Ok from printer: processing next instruction")
-        self.printer_gcode_instructions.pop(0)  # This instruction is the one being acknowledged by the 'Ok'
+        logger.info("Received ok from printer: processing next instruction")
+        self.printer_gcode_instructions.pop(0)  # This instruction is the one being acknowledged by the 'ok'
 
         if not self.printer_gcode_instructions:
             logger.info("No more gcode instructions: going to idle state")
@@ -283,26 +293,17 @@ class WaffleFactory(MagicNode):
         next_instruction = self.printer_gcode_instructions[0]
         self.process_gcode_instruction(next_instruction)
 
-    @on_event(filter={'category': 'printer_move'})
-    def event_printer_move(self, direction: str):
-        instructions = {
-            'left': 'l',
-            'right': 'ri',
-            'front': 'f',
-            'rear': 're',
-        }
-
-        instruction = instructions.get(direction)
-        if instruction is None:
-            logger.info("Unknown direction '{}'. It must be one of {}: ignoring".format(
-                ",".join(instructions), direction))
-            return
-
+    @on_event(filter={'category': 'printer_instruction'})
+    def event_printer_instruction(self, instruction: str):
         self.process_gcode_instructions([instruction])
+
+    @on_event(filter={'category': 'printer_instructions'})
+    def event_printer_instructions(self, instructions: list):
+        self.process_gcode_instructions(instructions)
 
     @on_event(filter={'category': 'print_pattern'})
     def event_print_pattern(self, pattern: str):
-        instructions = self.printer_patterns.get(pattern)
+        instructions = copy(self.printer_patterns.get(pattern))
         if instructions is None:
             logger.info("Unknown pattern '{}'. It must be one of {}: ignoring".format(
                 ",".join(self.printer_patterns), pattern))
