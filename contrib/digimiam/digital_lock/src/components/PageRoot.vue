@@ -8,7 +8,7 @@
   >
     <Title class="mt-4"/>
     <DrawBox class="mt-3"/>
-    <TextBottom class="align-self-end mr-4 mb-3"/>
+    <TextBottom class="align-self-end mr-4"/>
   </div>
 </template>
 

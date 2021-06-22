@@ -9,38 +9,38 @@ var store = new Vuex.Store({
   state: {
     dots: [
       {
+        x: 550 / 2 + 230 * Math.cos(Math.PI / 180 * (60 * 1 - 30)),
+        y: 550 / 2 + 230 * Math.sin(Math.PI / 180 * (60 * 1 - 30)),
+        connected: false,
+      },
+      {
+        x: 550 / 2 + 230 * Math.cos(Math.PI / 180 * (60 * 2 - 30)),
+        y: 550 / 2 + 230 * Math.sin(Math.PI / 180 * (60 * 2 - 30)),
+        connected: false,
+      },
+      {
+        x: 550 / 2 + 230 * Math.cos(Math.PI / 180 * (60 * 3 - 30)),
+        y: 550 / 2 + 230 * Math.sin(Math.PI / 180 * (60 * 3 - 30)),
+        connected: false,
+      },
+      {
+        x: 550 / 2 + 230 * Math.cos(Math.PI / 180 * (60 * 4 - 30)),
+        y: 550 / 2 + 230 * Math.sin(Math.PI / 180 * (60 * 4 - 30)),
+        connected: false,
+      },
+      {
+        x: 550 / 2 + 230 * Math.cos(Math.PI / 180 * (60 * 5 - 30)),
+        y: 550 / 2 + 230 * Math.sin(Math.PI / 180 * (60 * 5 - 30)),
+        connected: false,
+      },
+      {
+        x: 550 / 2 + 230 * Math.cos(Math.PI / 180 * (60 * 6 - 30)),
+        y: 550 / 2 + 230 * Math.sin(Math.PI / 180 * (60 * 6 - 30)),
+        connected: false,
+      },
+      {
         x: 550 / 2,
-        y: 69,
-        connected: false,
-      },
-      {
-        x: 430 + 60,
-        y: 496 * 1 / 4 + 69,
-        connected: false,
-      },
-      {
-        x: 430 + 60,
-        y: 496 * 3 / 4 + 69,
-        connected: false,
-      },
-      {
-        x: 550 / 2,
-        y: 496 + 69,
-        connected: false,
-      },
-      {
-        x: 60,
-        y: 496 * 3 / 4 + 69,
-        connected: false,
-      },
-      {
-        x: 60,
-        y: 496 * 1 / 4 + 69,
-        connected: false,
-      },
-      {
-        x: 550 / 2,
-        y: 635 / 2,
+        y: 550 / 2,
         connected: false,
       },
     ],
