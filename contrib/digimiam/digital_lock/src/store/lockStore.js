@@ -5,6 +5,24 @@ import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 Vue.use(Vuex)
 
+function checkPattern(pattern, connections) {
+  if (pattern.length !== connections.length) {
+    return false
+  }
+
+  for (var i = 0 ; i < pattern.length ; i++) {
+    if (pattern[i][0] !== connections[i][0]) {
+      return false
+    }
+
+    if (pattern[i][1] !== connections[i][1]) {
+      return false
+    }
+  }
+
+  return true
+}
+
 var store = new Vuex.Store({
   state: {
     dots: [
@@ -59,11 +77,31 @@ var store = new Vuex.Store({
     lockActions: false,
     showErrorOnRealse: false,
     drawing: false,
-    successPattern: [
-      [4, 5],
-      [5, 6],
-      [6, 1],
-      [1, 2],
+    successPatterns: [
+      [
+        [2, 3],
+        [3, 6],
+        [6, 5],
+        [5, 0],
+      ],
+      [
+        [0, 5],
+        [5, 6],
+        [6, 3],
+        [3, 2],
+      ],
+      [
+        [3, 2],
+        [2, 6],
+        [6, 0],
+        [0, 5],
+      ],
+      [
+        [5, 0],
+        [0, 6],
+        [6, 2],
+        [2, 3],
+      ],
     ],
     success: false,
     successNotified: false,
@@ -141,22 +179,12 @@ var store = new Vuex.Store({
       }
     },
     checkPattern(state) {
-      if (state.successPattern.length !== state.connections.length) {
-        return
-      }
-
-      for (var i = 0 ; i < state.successPattern.length ; i++) {
-        if (state.successPattern[i][0] !== state.connections[i][0]) {
-          return
-        }
-
-        if (state.successPattern[i][1] !== state.connections[i][1]) {
+      for (let i in state.successPatterns) {
+        if (checkPattern(state.successPatterns[i], state.connections)) {
+          state.success = true
           return
         }
       }
-
-      // Otherwise
-      state.success = true
     },
     notifySuccess(state) {
       if (!state.successNotified) {
