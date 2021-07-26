@@ -46,6 +46,8 @@ class Controller:
         self.table_stop_motor_task = None
         self.table_led_task = None
         self.table_watch_button_task = LoopingCall(self.check_table_button)
+        self.has_table_been_down_once = False
+        self.schedule_table_down_task = None
 
         self.has_manual_mode_been_set_once = False
         self.jack = gpiozero.OutputDevice(jack_pin)
@@ -154,6 +156,10 @@ class Controller:
         self.table_stop_motor_task = callLater(self.table_max_amplitude_duration, self.table_stop)
 
     def table_down(self):
+        self.has_table_been_down_once = True
+        if self.schedule_table_down_task and self.schedule_table_down_task.active():
+            self.schedule_table_down_task.cancel()
+
         logger.info("Pulling table down")
         if self.table_motor_up.is_active:
             logger.info("Motor was in up position. Turning off the up position and sleeping for {} seconds".format(
@@ -220,6 +226,8 @@ class Controller:
 
     def set_lights_service_status(self, repaired):
         self.set_led_color(self.lights_status_led_index, "green" if repaired else "red")
+        if not self.has_table_been_down_once:
+            self.schedule_table_down_task = callLater(15, self.table_down)
 
     def set_menu_service_status(self, repaired):
         self.set_led_color(self.menu_status_led_index, "green" if repaired else "red")
@@ -229,6 +237,9 @@ class Controller:
         # it is possible to force the manual mode several times without changing the control panel status. If the
         # control panel status doesn't change, the on_inactive method will not be called.
         self.has_manual_mode_been_set_once = False
+        self.has_table_been_down_once = False
+        if self.schedule_table_down_task and self.schedule_table_down_task.active():
+            self.schedule_table_down_task.cancel()
         self.status = "inactive"
 
     def check_jack_ports(self):
