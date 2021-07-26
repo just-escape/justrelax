@@ -82,6 +82,7 @@ class VentilationController:
         self.try_counters = {}  # keys are round indexes, values are counters
         self.sequence_cursor = -1  # -1 <=> game is not running
         self.success_sequence = []
+        self.is_sequence_being_displayed = False
         self.round = 0
 
         self.air_sources = {}
@@ -196,6 +197,12 @@ class VentilationController:
             return
 
         if self.sequence_cursor != -1:  # Game is running
+            if self.is_sequence_being_displayed:
+                logger.info("Sequence has not been entirely displayed: considering as an error")
+                self.sequence_cursor = -1
+                self.bad_move_failure_animation()
+                self.service.notify_instruction("wait_until_sequence_complete")
+
             if self.success_sequence[self.sequence_cursor]["air_duct"] != air_duct.name:
                 try:
                     for instruction_index, instruction in enumerate(self.success_sequence[self.sequence_cursor:]):
@@ -310,11 +317,13 @@ class VentilationController:
 
         self.skip_skippable_animations()
 
+        self.is_sequence_being_displayed = True
+
         def display_element(index=0):
             if index < len(self.success_sequence):
                 # For the last element of the sequence, this code saves a task in the unskippable_animation_task,
                 # ensuring that the animation time lasts until the last led has turned black again.
-                self.unskippable_animation_task = callLater(2, display_element, index + 1)
+                self.animation_tasks['display_sequence'] = callLater(2, display_element, index + 1)
                 element = self.success_sequence[index]
 
                 self.air_ducts[element["air_duct"]].fan.on()
@@ -331,8 +340,10 @@ class VentilationController:
                     1,
                     "display_element",
                 )
+            else:
+                self.is_sequence_being_displayed = False
 
-        self.unskippable_animation_task = callLater(0.5, display_element)
+        self.animation_tasks['display_sequence'] = callLater(0.5, display_element)
 
     def get_expected_sources(self, cursor):
         displayed_color = self.success_sequence[cursor]["color"]
@@ -584,7 +595,7 @@ class VentilationController:
         self.new_success_sequence()
         self.sequence_cursor = 0
 
-        self.unskippable_animation_task = callLater(0.5, self.display_sequence)
+        self.animation_tasks['display_sequence'] = callLater(0.5, self.display_sequence)
 
     def reset(self):
         self.status = "inactive"
