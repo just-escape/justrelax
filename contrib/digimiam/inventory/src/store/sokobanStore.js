@@ -330,7 +330,7 @@ const INITIAL_BLOCKS_SOKOGEN_11_UPSIDE_DOWN = [
   },
 ]
 
-const INITIAL_GRID_SOKOGEN_28 = [
+/*const INITIAL_GRID_SOKOGEN_28 = [
   [cornerTopLeft,     wallTop,    wallTop,      wallTop,      cornerTopRight,   wall,       wall],
   [wallLeft,          floor,      floor,        floor,        wallRight,        wall,       wall],
   [wallLeft,          floor,      column,       floor,        angleTopRight,    wallTop,    cornerTopRight],
@@ -353,6 +353,16 @@ const INITIAL_BLOCKS_SOKOGEN_28 = [
     x: 3,
     y: 5,
   },
+]*/
+
+const INITIAL_GRID_SOKOGEN_11_GATE_RIGHT = [
+  [cornerTopLeft,     wallTop,    wallTop,      wallTop,      cornerTopRight,   wall,       wall],
+  [wallLeft,          floor,      floor,        floor,        wallRight,        wall,       wall],
+  [wallLeft,          floor,      column,       floor,        angleTopRight,    wallTop,    cornerTopRight],
+  [wallLeft,          chamber7,   chamber2,     floor,        floor,            floor,      wallRight],
+  [wallLeft,          floor,      floor,        column,       floor,            floor,      wallRight],
+  [wallLeft,          floor,      floor,        floor,        floor,            chamber8,   wallRight],
+  [cornerBottomLeft,  wallBottom, wallBottom,   wallBottom,   gateBottom,       wallBottom, cornerBottomRight],
 ]
 
 var store = new Vuex.Store({
@@ -373,7 +383,7 @@ var store = new Vuex.Store({
       hard: {
         left: INITIAL_GRID_TUTORIAL_1,
         front: INITIAL_GRID_SOKOGEN_11_UPSIDE_DOWN,
-        top: INITIAL_GRID_SOKOGEN_28,
+        top: INITIAL_GRID_SOKOGEN_11_GATE_RIGHT,
       },
     },
     initialBlocks: {
@@ -390,7 +400,7 @@ var store = new Vuex.Store({
       hard: {
         left: INITIAL_BLOCKS_TUTORIAL_1,
         front: INITIAL_BLOCKS_SOKOGEN_11_UPSIDE_DOWN,
-        top: INITIAL_BLOCKS_SOKOGEN_28,
+        top: INITIAL_BLOCKS_SOKOGEN_11,
       },
     },
     currentBlocks: {
@@ -456,7 +466,7 @@ var store = new Vuex.Store({
             state.currentBlocks = {
               left: JSON.parse(JSON.stringify(INITIAL_BLOCKS_TUTORIAL_1)),
               front: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_11_UPSIDE_DOWN)),
-              top: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_28)),
+              top: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_11)),
             }
           }
         }
