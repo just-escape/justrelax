@@ -545,7 +545,7 @@ class Scenario(MagicNode):
     @on_event(filter={'from': 'synchronizer', 'category': 'light_service_success'})
     def synchronizer_event_light_service_success(self):
         self.timers['light_service_success_animation'].start()
-        self.publish_prefix({'category': 'set_light_service_status', 'repaired': True}, 'control_panel')
+        self.publish_prefix({'category': 'set_lights_service_status', 'repaired': True}, 'control_panel')
 
     @on_event(filter={'from': 'synchronizer', 'category': 'menu_service_success'})
     def synchronizer_event_menu_service_success(self):
