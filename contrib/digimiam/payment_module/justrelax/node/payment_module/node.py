@@ -70,10 +70,12 @@ class PaymentModule(MagicNode):
 
     @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.CANCEL_AUTHENTICATION})
     def cancel_authentication(self):
+        logger.info("An user has canceled authentication")
         self.publish({"category": "set_credits", "value": 0})
 
     @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.AUTHENTICATE})
     def authenticate(self, t):
+        logger.info(f"An user has authenticated with tag {t}")
         if t not in self.tag_credits:
             if not self.credits_filo:
                 # Should not happen because sessions are supposed to be limited to 4 players but just in case a fifth
