@@ -81,11 +81,18 @@ class HumanAuthenticator(MagicNode):
         self.status = "playing"
 
     @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.CANCEL_AUTHENTICATION})
-    def cancel_authentication(self, port, /):
+    def cancel_authentication(self, port, /, t):
+        logger.info(f"{port} has canceled authentication with tag {t}")
         self.authenticators[port] = False
 
     @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.AUTHENTICATE})
-    def authenticate(self, port, /):
+    def authenticate(self, port, /, t):
+        logger.info(f"{port} has authenticated with tag {t}")
+
+        if t == 0:  # False positive
+            logger.info("False positive detected: skipping")
+            return
+
         self.authenticators[port] = True
 
         if all(is_authenticated for is_authenticated in self.authenticators.values()):
