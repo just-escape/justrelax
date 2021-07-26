@@ -36,6 +36,8 @@ class Cylinders(MagicNode):
                 'delayed_task': None,
             }
 
+        self.post_success_task = None
+
     @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.READ})
     def serial_event_read(self, port, /, i: int, t):
         reader_index = i
@@ -52,18 +54,25 @@ class Cylinders(MagicNode):
             return
 
         serialized_tag = "-".join([str(byte) for byte in tag]) if tag else None
+        if self.slots[global_reader_index]['current_tag'] and serialized_tag is None:
+            # Delay only if a tag is removed, because this kind of reaction is acceptable if delayed for several seconds
+            delay = self.delay
+        else:
+            delay = 0
         self.slots[global_reader_index]['current_tag'] = serialized_tag
 
         if self.slots[global_reader_index]['delayed_task'] and self.slots[global_reader_index]['delayed_task'].active():
             self.slots[global_reader_index]['delayed_task'].cancel()
 
-        self.slots[global_reader_index]['delayed_task'] = reactor.callLater(self.delay, self.update_leds)
+        self.slots[global_reader_index]['delayed_task'] = reactor.callLater(delay, self.update_leds)
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Reset")
         self.success = False
         self.difficulty = "normal"
+        if self.post_success_task and self.post_success_task.active():
+            self.post_success_task.cancel()
         self.update_leds()
 
     @on_event(filter={'category': 'set_difficulty'})
@@ -72,6 +81,11 @@ class Cylinders(MagicNode):
         self.update_leds()
 
     def update_leds(self):
+        if self.success:
+            return
+
+        logger.info("updating leds")
+
         if self.difficulty == 'easy':
             for slot in self.slots.values():
                 if slot['current_tag'] == slot['expected_tag']:
@@ -84,6 +98,11 @@ class Cylinders(MagicNode):
                     slot['green_led'].off()
                     slot['red_led'].off()
 
+            if all([slot['current_tag'] == slot['expected_tag'] for slot in self.slots.values()]):
+                self.success = True
+                self.post_success_task = reactor.callLater(10, self.turn_off_all_led)
+                self.notify_success()
+
         else:
             if all([slot['current_tag'] == slot['expected_tag'] for slot in self.slots.values()]):
                 for slot in self.slots.values():
@@ -92,6 +111,7 @@ class Cylinders(MagicNode):
 
                     if not self.success:
                         self.success = True
+                        self.post_success_task = reactor.callLater(10, self.turn_off_all_led)
                         self.notify_success()
 
             elif all([slot['current_tag'] is not None for slot in self.slots.values()]):
@@ -103,6 +123,12 @@ class Cylinders(MagicNode):
                 for slot in self.slots.values():
                     slot['green_led'].off()
                     slot['red_led'].off()
+
+    def turn_off_all_led(self):
+        logger.info("Turning off all led")
+        for slot in self.slots.values():
+            slot['green_led'].off()
+            slot['red_led'].off()
 
     def notify_success(self):
         self.publish({"category": "success"})

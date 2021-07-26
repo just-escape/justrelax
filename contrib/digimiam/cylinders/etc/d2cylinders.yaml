@@ -11,7 +11,7 @@ serials:
   - port: /dev/arduino2
     baud_rate: 19200
 
-delay: 0.1
+delay: 7
 
 index_mapping:
   /dev/arduino1:
