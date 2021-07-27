@@ -18,10 +18,10 @@
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :colorId="12"/>
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :colorId="16"/>
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="red" :colorId="21"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="20"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="19"/>
       </div>
       <div class="d-flex flex-row justify-content-end">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="19"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="20"/>
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :colorId="13"/>
       </div>
     </div>
