@@ -28,10 +28,10 @@ class Cell:
 
         if is_activated:
             logger.info("Cell (pin={}) has been activated".format(self.pin))
-            self.on_activation()
+            self.on_activation(self.pin)
         else:
             logger.info("Cell (pin={}) has been deactivated".format(self.pin))
-            self.on_deactivation()
+            self.on_deactivation(self.pin)
 
     def __bool__(self):
         return self.last_state
@@ -41,9 +41,8 @@ class Cell:
 
 
 class Color:
-    def __init__(self, name, pin, deactivation_delay, on_toggle):
+    def __init__(self, name, deactivation_delay, on_toggle):
         self.name = name
-        self.id = pin
         self.deactivation_delay = deactivation_delay
         self.is_activated = False
         self.deactivation_task = None
@@ -53,7 +52,7 @@ class Color:
     def add_cell(self, pin):
         self.cells.append(Cell(pin, self.on_cell_activation, self.on_cell_deactivation))
 
-    def on_cell_activation(self):
+    def on_cell_activation(self, pin):
         if self.is_activated:
             logger.debug("Color {} is already activated: skipping".format(self))
             return
@@ -64,9 +63,9 @@ class Color:
             self.deactivation_task.cancel()
 
         self.is_activated = True
-        self.toggle()
+        self.toggle(pin)
 
-    def on_cell_deactivation(self):
+    def on_cell_deactivation(self, pin):
         if not self.is_activated:
             logger.debug("Color {} is already deactivated: skipping".format(self))  # Should not happen often
 
@@ -78,25 +77,25 @@ class Color:
                     return
 
                 self.is_activated = False
-                self.toggle()
+                self.toggle(pin)
 
             else:
                 logger.debug("Color {} was activated, but some cells remain active: skipping".format(self))
 
-    def toggle(self):
+    def toggle(self, pin):
         if self.is_activated:
-            self._toggle(self.name, self.id, self.is_activated)
+            self._toggle(self.name, pin, self.is_activated)
         else:
             self.deactivation_task = callLater(
-                self.deactivation_delay, self._toggle, self.name, self.id, self.is_activated)
+                self.deactivation_delay, self._toggle, self.name, pin, self.is_activated)
 
-    def _toggle(self, color, id_, activate):
+    def _toggle(self, color, pin, activate):
         if activate:
             logger.debug("Activating {}".format(self))
         else:
             logger.debug("Deactivating {}".format(self))
 
-        self.on_toggle(color, id_, activate)
+        self.on_toggle(color, pin, activate)
 
     def __str__(self):
         return str(self.name)
@@ -112,7 +111,7 @@ class LoadCells(MagicNode):
 
         for pin, color in self.config['cells'].items():
             if color not in self.colors:
-                self.colors[color] = Color(color, pin, deactivation_delay, self.notify)
+                self.colors[color] = Color(color, deactivation_delay, self.notify)
             self.colors[color].add_cell(pin)
 
     def notify(self, color, id_, activated):
