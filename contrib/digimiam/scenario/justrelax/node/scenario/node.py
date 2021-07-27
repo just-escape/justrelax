@@ -149,6 +149,8 @@ class SessionTimer:
 
 
 class Scenario(MagicNode):
+    DIFFICULTIES = {'easy', 'normal', 'hard'}
+
     MS_PEPPER_HERE_YOU_ARE_DURATION = 0  # 35
 
     def __init__(self, *args, **kwargs):
@@ -159,6 +161,8 @@ class Scenario(MagicNode):
         self.session_timer = SessionTimer(self.tic_tac_callback)
         self.session_time = None
         self.session_data = {}
+
+        self.initial_difficulty = 'normal'
 
         # Those delayed calls are canceled on a room reset
         self.registered_delayed_tasks = {}
@@ -269,7 +273,13 @@ class Scenario(MagicNode):
 
     def start_room(self):
         def after_ms_pepper_here_you_are():
-            self.publish_prefix({'category': 'play', 'video_id': 'ads_glitch'}, 'advertiser')
+            self.publish_prefix(
+                {
+                    'category': 'play',
+                    'video_id': 'ads_glitch' if self.initial_difficulty == 'hard' else 'waffresco_ad_loop',
+                },
+                'advertiser'
+            )
             self.publish_prefix({'category': 'set_volume', 'track_id': 'track1', 'volume': 75}, 'music_player')
             self.publish_prefix({'category': 'play', 'track_id': 'track1'}, 'music_player')
 
@@ -299,7 +309,13 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'glitch', 'color': 'green'}, 'refectory_lights')
         self.publish_prefix({'category': 'glitch', 'color': 'orange'}, 'refectory_lights')
 
-        self.publish_prefix({'category': 'pause', 'video_id': 'ads_glitch'}, 'advertiser')
+        self.publish_prefix(
+            {
+                'category': 'pause',
+                'video_id': 'ads_glitch' if self.initial_difficulty == 'hard' else 'waffresco_ad_loop',
+            },
+            'advertiser'
+        )
         # self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
 
         self.register_delayed_task(self.MS_PEPPER_HERE_YOU_ARE_DURATION, after_ms_pepper_here_you_are)
@@ -476,6 +492,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'stop_overlay_video'}, 'synchronizer')
         self.publish_prefix({'category': 'play', 'video_id': 'ads_loop'}, 'advertiser')
         self.publish_prefix({'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
+        self.publish_prefix({'category': 'stop', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
 
         self.publish_prefix({'category': 'restaurant_in_manual_mode'}, 'synchronizer')
         self.publish_prefix(
@@ -876,6 +893,14 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'advertiser_stop_ads_glitch'})
     def button_advertiser_stop_ads_glitch(self):
         self.publish_prefix({'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
+
+    @on_event(filter={'widget_id': 'advertiser_play_waffresco_ad_loop'})
+    def button_advertiser_play_waffresco_ad_loop(self):
+        self.publish_prefix({'category': 'play', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
+
+    @on_event(filter={'widget_id': 'advertiser_stop_waffresco_ad_loop'})
+    def button_advertiser_stop_waffresco_ad_loop(self):
+        self.publish_prefix({'category': 'stop', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
 
     @on_event(filter={'widget_id': 'advertiser_play_street_idle'})
     def button_advertiser_play_street_idle(self):
