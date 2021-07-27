@@ -9,74 +9,127 @@
       </defs>
     </svg>
 
-    <!-- The pink light monitor unit is virtual (not displayed). Its use is only to trigger on/off publications. -->
-    <LightMonitorUnitRectangle class="position-absolute d-none" :longEdge="monitorUnitSizeM" :vertical="true" color="pink" :triggerOnOffPublications="true"/>
-
     <div v-if="mapVersion === 1" class="d-flex flex-column justify-content-center h-100" style="margin-right: 30px">
       <div class="d-flex flex-row justify-content-end">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :triggerOnOffPublications="true"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="green" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :colorId="6"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="green" :colorId="26"/>
       </div>
       <div class="d-flex flex-row justify-content-end">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :triggerOnOffPublications="false"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :triggerOnOffPublications="true"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="red" :triggerOnOffPublications="true"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :colorId="12"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :colorId="16"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="red" :colorId="21"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="20"/>
       </div>
       <div class="d-flex flex-row justify-content-end">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :triggerOnOffPublications="false"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :triggerOnOffPublications="false"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="19"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :colorId="13"/>
       </div>
     </div>
     <div v-else-if="mapVersion === 2" class="d-flex flex-column justify-content-around h-100 py-5">
       <div class="d-flex flex-row justify-content-center">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="green" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="green" :colorId="5"/>
       </div>
       <div class="d-flex flex-row justify-content-center">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="blue" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="blue" :colorId="0"/>
       </div>
       <div class="d-flex flex-row justify-content-center">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="red" :triggerOnOffPublications="true"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="red" :colorId="19"/>
       </div>
       <div class="d-flex flex-row justify-content-around" style="transform: translateY(10px) rotate(10deg)">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="orange" :triggerOnOffPublications="true"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white" :triggerOnOffPublications="true"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white" :triggerOnOffPublications="false"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="orange" :colorId="26"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white" :colorId="20"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white" :colorId="21"/>
       </div>
     </div>
 
-    <div v-if="controls" class="position-absolute" style="top: 0">
-      <div class="d-flex flex-row">
-      <div
-        class="ml-3 mr-2"
-        style="border-radius: 50%; height: 50px; width: 50px; background: rgb(0, 170, 255)"
-        :style="{opacity: getControlOpacity('blue')}"
-        @click="toggleControls('blue')"
-      ></div>
-      <div
-        class="mx-2"
-        style="border-radius: 50%; height: 50px; width: 50px; background: rgb(220, 53, 69)"
-        :style="{opacity: getControlOpacity('red')}"
-        @click="toggleControls('red')"
-      ></div>
-      <div
-        class="mx-2"
-        style="border-radius: 50%; height: 50px; width: 50px; background: rgb(40, 167, 69)"
-        :style="{opacity: getControlOpacity('green')}"
-        @click="toggleControls('green')"
-      ></div>
-      <div
-        class="mx-2"
-        style="border-radius: 50%; height: 50px; width: 50px; background: rgb(253, 126, 20)"
-        :style="{opacity: getControlOpacity('orange')}"
-        @click="toggleControls('orange')"
-      ></div>
-      <div
-        class="mx-2"
-        style="border-radius: 50%; height: 50px; width: 50px; background: white"
-        :style="{opacity: getControlOpacity('white')}"
-        @click="toggleControls('white')"
-      ></div>
+    <div v-if="controls" class="position-absolute" style="top: 0; z-index: 10">
+      <div v-if="mapVersion === 1" class="d-flex flex-row">
+        <div
+          class="ml-3 mr-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(0, 170, 255)"
+          :style="{opacity: getControlOpacity('blue', 6)}"
+          @click="toggleControls('blue', 6)"
+        ></div>
+        <div
+          class="ml-3 mr-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(0, 170, 255)"
+          :style="{opacity: getControlOpacity('blue', 12)}"
+          @click="toggleControls('blue', 12)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(220, 53, 69)"
+          :style="{opacity: getControlOpacity('red', 21)}"
+          @click="toggleControls('red', 21)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(40, 167, 69)"
+          :style="{opacity: getControlOpacity('green', 26)}"
+          @click="toggleControls('green', 26)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(253, 126, 20)"
+          :style="{opacity: getControlOpacity('orange', 19)}"
+          @click="toggleControls('orange', 19)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(253, 126, 20)"
+          :style="{opacity: getControlOpacity('orange', 20)}"
+          @click="toggleControls('orange', 20)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: white"
+          :style="{opacity: getControlOpacity('white', 13)}"
+          @click="toggleControls('white', 13)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: white"
+          :style="{opacity: getControlOpacity('white', 16)}"
+          @click="toggleControls('white', 16)"
+        ></div>
+      </div>
+      <div v-else-if="mapVersion === 2" class="d-flex flex-row">
+        <div
+          class="ml-3 mr-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(0, 170, 255)"
+          :style="{opacity: getControlOpacity('blue', 0)}"
+          @click="toggleControls('blue', 0)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(220, 53, 69)"
+          :style="{opacity: getControlOpacity('red', 19)}"
+          @click="toggleControls('red', 19)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(40, 167, 69)"
+          :style="{opacity: getControlOpacity('green', 5)}"
+          @click="toggleControls('green', 5)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(253, 126, 20)"
+          :style="{opacity: getControlOpacity('orange', 26)}"
+          @click="toggleControls('orange', 26)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: white"
+          :style="{opacity: getControlOpacity('white', 20)}"
+          @click="toggleControls('white', 20)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: white"
+          :style="{opacity: getControlOpacity('white', 21)}"
+          @click="toggleControls('white', 21)"
+        ></div>
       </div>
 
       <div @click="setManualMode" v-if="!isRestaurantInManualMode">not in manual mode</div>
@@ -101,8 +154,8 @@ export default {
   },
   computed: {
     getControlOpacity() {
-      return (color) => {
-        return lightStore.state.activatedSensors[color] ? 1 : 0.5
+      return (color, id) => {
+        return lightStore.state.activatedSensors[color] && lightStore.state.activatedSensorIds[id] ? 1 : 0.5
       }
     },
     mapVersion() {
@@ -126,8 +179,8 @@ export default {
     },
   },
   methods: {
-    toggleControls(color) {
-      lightStore.dispatch('toggleColor', {color: color, activated: !lightStore.state.activatedSensors[color]})
+    toggleControls(color, id) {
+      lightStore.dispatch('toggleColor', {color: color, id: id, activated: !lightStore.state.activatedSensorIds[id]})
     },
     setManualMode() {
       lightStore.commit('setRestaurantInManualMode')

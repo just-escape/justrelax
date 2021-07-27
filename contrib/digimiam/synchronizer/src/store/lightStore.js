@@ -19,6 +19,7 @@ var store = new Vuex.Store({
       blue: false,
       orange: false,
     },
+    activatedSensorIds: {},
     sequence: [
       {id: 0, color: "blue", completeness: 0, activable: true},
     ],
@@ -63,21 +64,27 @@ var store = new Vuex.Store({
       let nextColor = state.success ? "black" : state.colorSequence[state.sequenceIndex % state.colorSequence.length]
       state.sequence = [{id: state.sequenceIndex, color: nextColor, completeness: 0, activable: true}]
     },
-    toggleColor (state, {color, activated}) {
+    // eslint-disable-next-line
+    toggleColor (state, {color, id, activated}) {
       if (activated != state.activatedSensors[color]) {
         publishSubscribeService.commit('publish', {"category": activated ? "on" : "off", "color": color})
       }
 
       state.activatedSensors[color] = activated
+      if (activated) {
+        Vue.set(state.activatedSensorIds, id, color)
+      } else {
+        state.activatedSensorIds = Object.fromEntries(Object.entries(state.activatedSensorIds).map(([key, value]) => [key, value == color ? undefined : value]))
+      }
     },
   },
   actions: {
-    toggleColor (context, {color, activated}) {
+    toggleColor (context, {color, id, activated}) {
       if (!context.state.isRestaurantInManualMode || progressionStore.state.lightServiceSuccess) {
         return
       }
 
-      context.commit('toggleColor', {color, activated})
+      context.commit('toggleColor', {color, id, activated})
 
       if (color === 'red' || color === 'white') {
         var complementaryColor = 'red'
@@ -90,7 +97,7 @@ var store = new Vuex.Store({
 
         // Only notify in case of diff
         if (context.state.activatedSensors.pink !== pinkActivation) {
-          context.commit('toggleColor', {color: 'pink', activated: pinkActivation})
+          context.commit('toggleColor', {color: 'pink', id: -1, activated: pinkActivation})
         }
       }
     },

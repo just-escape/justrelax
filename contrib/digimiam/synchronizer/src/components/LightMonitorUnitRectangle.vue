@@ -74,7 +74,7 @@ export default {
   },
   computed: {
     isActivated() {
-      return lightStore.state.activatedSensors[this.color]
+      return lightStore.state.activatedSensors[this.color] && lightStore.state.activatedSensorIds[this.colorId]
     },
     boxHeight() {
       return this.vertical ? 1.618 * 150 : 1.1 * 150
@@ -139,9 +139,9 @@ export default {
   },
   props: {
     color: String,
+    colorId: Number,
     longEdge: Number,
     vertical: Boolean,
-    triggerOnOffPublications: Boolean,
   }
 }
 </script>

@@ -93,9 +93,10 @@ const publishSubscribeService = new Vuex.Store({
       } else if (event.category === 'force_light_success') {
         progressionStore.commit('setLightServiceSuccess')
       } else if (event.category === 'load_cell') {
-        let color = event['color']
+        let color = event.color
+        let id = event.id
         let activated = event.activated
-        lightStore.dispatch('toggleColor', {color, activated})
+        lightStore.dispatch('toggleColor', {color, id, activated})
       } else if (event.category === 'restaurant_in_manual_mode') {
         lightStore.commit('setRestaurantInManualMode')
       } else if (event.category === 'display_danger_window') {

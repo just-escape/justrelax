@@ -595,8 +595,8 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'set_menu_cursor_position', 'position': slide}, 'synchronizer')
 
     @on_event(filter={'from': 'load_cells', 'category': 'load_cell'})
-    def load_cells_event_load_cell(self, color: str, activated: bool):
-        self.publish_prefix({'category': 'load_cell', 'color': color, 'activated': activated}, 'synchronizer')
+    def load_cells_event_load_cell(self, color: str, id: int, activated: bool):
+        self.publish_prefix({'category': 'load_cell', 'color': color, 'id': id, 'activated': activated}, 'synchronizer')
 
     @on_event(filter={'from': 'synchronizer', 'category': 'on'})
     def synchronizer_event_on(self, color: str):

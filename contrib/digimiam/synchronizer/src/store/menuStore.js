@@ -122,8 +122,6 @@ export default new Vuex.Store({
         }
       }
 
-      // eslint-disable-next-line
-      console.log(goodDishesWrongPriceCounter, state.wrongDishesCounter, state.allDishesAreGoodButWrongPriceCounter)
       if (goodDishesWrongPriceCounter < 4) {
         state.wrongDishesCounter++
 

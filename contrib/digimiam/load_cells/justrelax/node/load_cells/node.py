@@ -41,8 +41,9 @@ class Cell:
 
 
 class Color:
-    def __init__(self, name, deactivation_delay, on_toggle):
+    def __init__(self, name, pin, deactivation_delay, on_toggle):
         self.name = name
+        self.id = pin
         self.deactivation_delay = deactivation_delay
         self.is_activated = False
         self.deactivation_task = None
@@ -84,17 +85,18 @@ class Color:
 
     def toggle(self):
         if self.is_activated:
-            self._toggle(self.name, self.is_activated)
+            self._toggle(self.name, self.id, self.is_activated)
         else:
-            self.deactivation_task = callLater(self.deactivation_delay, self._toggle, self.name, self.is_activated)
+            self.deactivation_task = callLater(
+                self.deactivation_delay, self._toggle, self.name, self.id, self.is_activated)
 
-    def _toggle(self, color, activate):
+    def _toggle(self, color, id_, activate):
         if activate:
             logger.debug("Activating {}".format(self))
         else:
             logger.debug("Deactivating {}".format(self))
 
-        self.on_toggle(color, activate)
+        self.on_toggle(color, id_, activate)
 
     def __str__(self):
         return str(self.name)
@@ -110,8 +112,8 @@ class LoadCells(MagicNode):
 
         for pin, color in self.config['cells'].items():
             if color not in self.colors:
-                self.colors[color] = Color(color, deactivation_delay, self.notify)
+                self.colors[color] = Color(color, pin, deactivation_delay, self.notify)
             self.colors[color].add_cell(pin)
 
-    def notify(self, color, activated):
-        self.publish({'category': 'load_cell', 'color': color, 'activated': activated})
+    def notify(self, color, id_, activated):
+        self.publish({'category': 'load_cell', 'color': color, 'id': id_, 'activated': activated})
