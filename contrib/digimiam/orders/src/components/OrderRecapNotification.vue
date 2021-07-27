@@ -12,16 +12,14 @@
         </div>
         <div class="media-body d-flex flex-column">
           <div class="mb-1">
-            Message de recap de la commande
-            <br/>
-            Ici une image
+            Votre commande est prête !
           </div>
-          <div class="mb-3">
-            Blablabla
+          <div class="ml-4">
+            <Waffresco3D/>
           </div>
           <b-btn
             variant="info"
-            class="align-self-center py-2 px-5 mr-5"
+            class="align-self-center py-2 px-5 mr-5 d-none"
             @click="$emit('ok')"
           >{{ $t('ok') }}</b-btn>
         </div>
@@ -32,11 +30,13 @@
 
 <script>
 import Neons from "@/components/Neons.vue"
+import Waffresco3D from "@/components/Waffresco3D.vue"
 
 export default {
   name: "OrderNotification",
   components: {
     Neons,
+    Waffresco3D,
   },
   data() {
     return {
@@ -93,6 +93,25 @@ export default {
         }, '-=300')
       }
     },
+  },
+  mounted() {
+    if (this.displayed) {
+        this.$anime.timeline({
+          targets: this,
+        })
+        .add({
+          scaleX: 1,
+          scaleY: 1,
+          duration: 400,
+          easing: 'easeInQuad'
+        })
+        .add({
+          leftOffset: 0,
+          bottomOffset: 0,
+          duration: 700,
+          easing: 'easeOutQuad'
+        }, '-=700')
+    }
   },
   props: {
     displayed: Boolean,

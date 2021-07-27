@@ -716,6 +716,7 @@ class Scenario(MagicNode):
     def orders_marmitron_has_asked_for_help(self):
         # self.publish_prefix(
         #     {'category': 'set_volume', 'track_id': 'track63', 'volume': 0, 'duration': 2}, 'music_player')
+        self.publish_prefix({'category': 'enable'}, 'digital_lock')
         self.register_delayed_task(1, self.publish_prefix, {'category': 'play', 'track_id': 'track7'}, 'music_player')
         self.register_delayed_task(
             10, self.publish_prefix, {'category': 'set_display_order_recap_notification', 'value': True}, 'orders')
@@ -801,6 +802,8 @@ class Scenario(MagicNode):
             0.6, self.publish_prefix, {'category': 'low'}, 'stock_lights')
         self.register_delayed_task(
             1, self.publish_prefix, {'category': 'unlock', 'magnet_id': 'stock_to_machine'}, 'emergency_exit')
+        self.register_delayed_task(
+            5, self.publish_prefix, {'category': 'set_display_order_recap_notification', 'value': False}, 'orders')
 
     @on_event(filter={'from': 'secure_floor', 'category': 'clear'})
     def secure_floor_event_clear(self):

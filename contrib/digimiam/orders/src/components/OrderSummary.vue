@@ -2,7 +2,7 @@
   <div class="position-relative d-flex flex-column flex-grow-1">
     <CreditsNotification class="position-absolute" :displayed="displayCreditsNotification" @ok="acknowledgeCreditsNotification" :class="{'shaking-more': creditsNotificationShaking}"/>
     <ResumeOrderNotification class="position-absolute" :displayed="displayResumeOrderNotification" @ok="acknowledgeResumeNotification"/>
-    <OrderRecapNotification class="position-absolute" :displayed="displayOrderRecapNotification" @ok="acknowledgeRecapNotification"/>
+    <OrderRecapNotification class="position-absolute" :displayed="displayOrderRecapNotification"/>
 
     <div class="overflow-hidden p-4">
       <div class="d-flex flex-row justify-content-start align-items-end ml-3 mb-3 px-2 position-relative">
