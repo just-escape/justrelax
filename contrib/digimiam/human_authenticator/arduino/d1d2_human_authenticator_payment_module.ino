@@ -36,7 +36,7 @@ unsigned long currentMillis = 0;
 SoftwareSerial rfidReader = SoftwareSerial(10, 11);
 unsigned long rfidPreviousMillis = 0;
 bool isSomethingBeingSent = false;
-#define RFID_TIME_THRESHOLD 2000
+#define RFID_TIME_THRESHOLD 3000
 
 #define LED_PIN 7
 #define N_LEDS 3
@@ -181,12 +181,9 @@ void checkRFID() {
       return;
     }
 
-    if (!isSomethingBeingSent) {
-      isSomethingBeingSent = true;
-    }
-    rfidPreviousMillis = currentMillis;
-
     if (ssvalue == 2) { // RDM630/RDM6300 found a tag => tag incoming
+      isSomethingBeingSent = true;
+      rfidPreviousMillis = currentMillis;
       buffer_index = 0;
     } else if (ssvalue == 3) { // tag has been fully transmitted
       call_extract_tag = true; // extract tag at the end of the function call

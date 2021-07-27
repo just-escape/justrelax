@@ -89,10 +89,6 @@ class HumanAuthenticator(MagicNode):
     def authenticate(self, port, /, t):
         logger.info(f"{port} has authenticated with tag {t}")
 
-        if t == 0:  # False positive
-            logger.info("False positive detected: skipping")
-            return
-
         self.authenticators[port] = True
 
         if all(is_authenticated for is_authenticated in self.authenticators.values()):
