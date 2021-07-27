@@ -15,13 +15,8 @@
             Votre commande est prête !
           </div>
           <div class="ml-4">
-            <Waffresco3D/>
+            <Waffresco3D :display="displayed"/>
           </div>
-          <b-btn
-            variant="info"
-            class="align-self-center py-2 px-5 mr-5 d-none"
-            @click="$emit('ok')"
-          >{{ $t('ok') }}</b-btn>
         </div>
       </div>
     </div>

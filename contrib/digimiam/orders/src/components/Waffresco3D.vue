@@ -31,9 +31,7 @@
         class="position-absolute d-flex flex-row justify-content-center align-items-center w-100 h-100"
         :style="{transform: 'translate3d(' + patternX + 'px, ' + patternY + 'px, 20px)'}"
       >
-        <svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 56.7 56.7" style="enable-background:new 0 0 56.7 56.7;" xml:space="preserve">
-          <polyline style="fill:none;stroke:rgb(100, 49, 15);stroke-width:4;stroke-miterlimit:10;" points="8.1,42.9 8.1,13.8 28.3,29.1 48.6,13.8 48.6,42.9 "/>
-        </svg>
+        <img style="transform: scale(1.3)" src="@/assets/img/M.svg">
       </div>
     </div>
   </div>
@@ -49,6 +47,7 @@ export default {
   },
   data() {
     return {
+      hasAnimationEnterBeenPlayed: false,
       transparencyFactor: 0,
       waffrescoX: 240,
       waffrescoY: 240,
@@ -110,59 +109,70 @@ export default {
         patternY: 2,
       })
     },
+    waffrescoAnimationEnter() {
+      this.hasAnimationEnterBeenPlayed = true
+      let this_ = this
+      this.$anime.timeline({
+        targets: this,
+        delay: 2000,
+        complete: this_.waffrescoFloatAnimation,
+      })
+      .add({
+        waffrescoX: 0,
+        waffrescoY: 0,
+        easing: 'easeOutSine',
+        duration: 2000,
+      })
+
+      this.$anime.timeline({
+        targets: this,
+        delay: 3000,
+        complete: this_.dotsFloatAnimation,
+      })
+      .add({
+        dotsX: 5,
+        dotsY: 5,
+        easing: 'easeOutSine',
+        duration: 2000,
+      })
+
+      this.$anime.timeline({
+        targets: this,
+        delay: 4000,
+        complete: this_.patternFloatAnimation,
+      })
+      .add({
+        patternX: 10,
+        patternY: 10,
+        easing: 'easeOutSine',
+        duration: 2000,
+      })
+
+      this.$anime.timeline({
+        targets: this,
+      })
+      .add({
+        delay: 3000,
+        transparencyFactor: 40,
+        easing: 'easeOutSine',
+        duration: 2000,
+      })
+      .add({
+        transparencyFactor: 100,
+        easing: 'easeOutSine',
+        duration: 2000,
+      })
+    }
   },
-  mounted() {
-    let this_ = this
-    this.$anime.timeline({
-      targets: this,
-      delay: 2000,
-      complete: this_.waffrescoFloatAnimation,
-    })
-    .add({
-      waffrescoX: 0,
-      waffrescoY: 0,
-      easing: 'easeOutSine',
-      duration: 2000,
-    })
-
-    this.$anime.timeline({
-      targets: this,
-      delay: 3000,
-      complete: this_.dotsFloatAnimation,
-    })
-    .add({
-      dotsX: 5,
-      dotsY: 5,
-      easing: 'easeOutSine',
-      duration: 2000,
-    })
-
-    this.$anime.timeline({
-      targets: this,
-      delay: 4000,
-      complete: this_.patternFloatAnimation,
-    })
-    .add({
-      patternX: 10,
-      patternY: 10,
-      easing: 'easeOutSine',
-      duration: 2000,
-    })
-
-    this.$anime.timeline({
-      targets: this,
-    })
-    .add({
-      delay: 3000,
-      transparencyFactor: 40,
-      easing: 'easeOutSine',
-      duration: 2000,
-    })
-    .add({
-      transparencyFactor: 100,
-      easing: 'easeOutSine',
-      duration: 2000,
-    })
-  }
+  watch: {
+    display(newValue) {
+      if (newValue && !this.hasAnimationEnterBeenPlayed) {
+        this.waffrescoAnimationEnter()
+      }
+    }
+  },
+  props: {
+    display: Boolean
+  },
 }
 </script>
