@@ -5,7 +5,6 @@ subscriptions:
   - d1.fog_machine
   - d1.broadcast
 
-fan_pin: 10
 machine_pin: 9
 fog_pin: 11
 

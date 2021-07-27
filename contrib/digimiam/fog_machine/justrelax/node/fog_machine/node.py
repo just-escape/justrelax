@@ -10,7 +10,6 @@ class FogMachine(MagicNode):
     def __init__(self, *args, **kwargs):
         super(FogMachine, self).__init__(*args, **kwargs)
 
-        self.fan = OutputDevice(self.config['fan_pin'])
         self.machine = OutputDevice(self.config['machine_pin'])
 
         if self.config['on_by_default']:
@@ -28,14 +27,12 @@ class FogMachine(MagicNode):
 
     @on_event(filter={'category': 'on'})
     def event_on(self):
-        logger.info("Heating machine and turning on fan")
-        self.fan.on()
+        logger.info("Heating machine")
         self.machine.on()
 
     @on_event(filter={'category': 'off'})
     def event_off(self):
-        logger.info("Stop heating machine and turning off fan")
-        self.fan.off()
+        logger.info("Stop heating machine")
         self.machine.off()
 
     def _release_fog_pin(self):
