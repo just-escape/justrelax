@@ -268,11 +268,11 @@ class Controller:
             else:
                 self.set_led_color(self.marmitron_mode_led_index, "green")
         else:
+            self.on_manual_mode()
+
             self.set_led_color(self.marmitron_mode_led_index, "red")
 
         if self.manual_mode_jack_port.is_active:
-            self.on_manual_mode()
-
             self.set_led_color(self.manual_mode_led_index, "green")
         else:
             if self.has_manual_mode_been_set_once:
