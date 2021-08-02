@@ -18,6 +18,7 @@ class Controller:
             self, control_panel_service, led_indexes, electromagnet_pin, jack_pin, manual_mode_jack_port_pin,
             marmitron_mode_jack_port_pin, table_button_pin, table_up_pin, table_down_pin,
             table_up_down_pins_active_high, table_max_amplitude_duration, table_up_down_minimum_delay, colors,
+            blinking_clue_delay,
     ):
         self.service = control_panel_service
 
@@ -48,6 +49,8 @@ class Controller:
         self.table_watch_button_task = LoopingCall(self.check_table_button)
         self.has_table_been_down_once = False
         self.schedule_table_down_task = None
+        self.table_blinking_clue_task = None
+        self.blinking_clue_delay = blinking_clue_delay
 
         self.has_manual_mode_been_set_once = False
         self.jack = gpiozero.OutputDevice(jack_pin)
@@ -160,6 +163,9 @@ class Controller:
         if self.schedule_table_down_task and self.schedule_table_down_task.active():
             self.schedule_table_down_task.cancel()
 
+        if self.table_blinking_clue_task and self.table_blinking_clue_task.active():
+            self.table_blinking_clue_task.cancel()
+
         logger.info("Pulling table down")
         if self.table_motor_up.is_active:
             logger.info("Motor was in up position. Turning off the up position and sleeping for {} seconds".format(
@@ -202,6 +208,11 @@ class Controller:
             self.table_watch_button_task.stop()
 
         self.has_manual_mode_been_set_once = False
+        self.has_table_been_down_once = False
+        if self.schedule_table_down_task and self.schedule_table_down_task.active():
+            self.schedule_table_down_task.cancel()
+        if self.table_blinking_clue_task and self.table_blinking_clue_task.active():
+            self.table_blinking_clue_task.cancel()
 
         self.electromagnet.on()
         self.set_led_color(self.electromagnet_led_index, "red")
@@ -223,6 +234,9 @@ class Controller:
         self.set_led_color(self.lights_status_led_index, "red")
         self.set_led_color(self.menu_status_led_index, "red")
         self.set_led_color(self.table_led_index, "table")
+
+        self.table_blinking_clue_task = callLater(
+            self.blinking_clue_delay, self.set_led_color, self.table_led_index, "table_clue_blink")
 
     def set_lights_service_status(self, repaired):
         self.set_led_color(self.lights_status_led_index, "green" if repaired else "red")
@@ -287,11 +301,12 @@ class ControlPanel(MagicNode):
         table_max_amplitude_duration = self.config["table"]["max_amplitude_duration"]
         table_up_down_minimum_delay = self.config["table"]["up_down_minimum_delay"]
         colors = self.config["colors"]
+        blinking_clue_delay = self.config["table"]["blinking_clue_delay"]
 
         self.controller = Controller(
             self, led_indexes, electromagnet_pin, jack_pin, manual_mode_jack_port_pin, marmitron_mode_jack_port_pin,
             table_button_pin, table_up_pin, table_down_pin, table_up_down_pins_active_high,
-            table_max_amplitude_duration, table_up_down_minimum_delay, colors)
+            table_max_amplitude_duration, table_up_down_minimum_delay, colors, blinking_clue_delay)
 
     def on_first_connection(self):
         self.controller.status = "inactive"
