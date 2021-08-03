@@ -12,16 +12,16 @@
     <div v-if="mapVersion === 1" class="d-flex flex-column justify-content-center h-100" style="margin-right: 30px">
       <div class="d-flex flex-row justify-content-end">
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :colorId="6"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="green" :colorId="26"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="26"/>
       </div>
       <div class="d-flex flex-row justify-content-end">
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="blue" :colorId="12"/>
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :colorId="16"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="red" :colorId="21"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="19"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="21"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="green" :colorId="19"/>
       </div>
       <div class="d-flex flex-row justify-content-end">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="orange" :colorId="20"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="red" :colorId="20"/>
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeM" :vertical="true" color="white" :colorId="13"/>
       </div>
     </div>
@@ -60,25 +60,25 @@
           class="mx-2"
           style="border-radius: 50%; height: 50px; width: 50px; background: rgb(220, 53, 69)"
           :style="{opacity: getControlOpacity('red', 21)}"
-          @click="toggleControls('red', 21)"
+          @click="toggleControls('orange', 21)"
         ></div>
         <div
           class="mx-2"
           style="border-radius: 50%; height: 50px; width: 50px; background: rgb(40, 167, 69)"
           :style="{opacity: getControlOpacity('green', 26)}"
-          @click="toggleControls('green', 26)"
+          @click="toggleControls('orange', 26)"
         ></div>
         <div
           class="mx-2"
           style="border-radius: 50%; height: 50px; width: 50px; background: rgb(253, 126, 20)"
           :style="{opacity: getControlOpacity('orange', 19)}"
-          @click="toggleControls('orange', 19)"
+          @click="toggleControls('green', 19)"
         ></div>
         <div
           class="mx-2"
           style="border-radius: 50%; height: 50px; width: 50px; background: rgb(253, 126, 20)"
           :style="{opacity: getControlOpacity('orange', 20)}"
-          @click="toggleControls('orange', 20)"
+          @click="toggleControls('red', 20)"
         ></div>
         <div
           class="mx-2"
