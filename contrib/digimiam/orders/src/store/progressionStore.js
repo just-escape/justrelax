@@ -71,7 +71,7 @@ let store = new Vuex.Store({
       if (videoId === 'ms_pepper_says_thanks') {
         let ms_pepper_says_thanks_duration = 16960
         let idle_duration = 8000
-        let delay_between_animations = 5000
+        let delay_between_animations = 3000
         setTimeout(
           store.commit,
           ms_pepper_says_thanks_duration - (idle_duration - delay_between_animations),
