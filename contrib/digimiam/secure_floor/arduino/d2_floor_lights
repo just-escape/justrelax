@@ -108,8 +108,8 @@ void onEvent() {
     } else if (category == PROTOCOL_LED_SET_COLOR_ORANGE) {
       for (int i = 0 ; i < N_STRIPS ; i++) {
         if ((led_strip_bit_mask & current_strip_bit) == current_strip_bit) {
-          light_rgb_target_freq[i][0] = 50;
-          light_rgb_target_freq[i][1] = 10;
+          light_rgb_target_freq[i][0] = 20;
+          light_rgb_target_freq[i][1] = 4;
           light_rgb_target_freq[i][2] = 0;
           light_rgb_target_freq_step[i][0] = 1;
           light_rgb_target_freq_step[i][1] = 0.2;
