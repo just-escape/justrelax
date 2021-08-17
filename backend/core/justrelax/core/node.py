@@ -1,3 +1,4 @@
+import os
 import json
 import inspect
 import socket
@@ -289,6 +290,10 @@ class MagicNode(EventFilterMixin, Node):
     def log_published_error(self, message):
         logger.error(message)
         self.publish({'hostname': socket.gethostname(), 'log': message}, 'error')
+
+    @on_event(filter={'category': 'shutdown'})
+    def on_shutdown(self):
+        os.system('systemctl poweroff')
 
     def send_serial(self, event, port=None):
         if port is None:
