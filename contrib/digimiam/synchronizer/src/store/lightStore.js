@@ -36,7 +36,7 @@ var store = new Vuex.Store({
     sequenceIndex: 0,
     progressionStep: 22,
     isPinkEnabled: false,
-    progressionAtLastPink: undefined,
+    givePinkClueTask: undefined,
     hasPinkClueBeenGiven: false,
     difficulty: NORMAL,
     giveSwitchClueTask: null,
@@ -49,6 +49,8 @@ var store = new Vuex.Store({
 
       let currentColor = state.sequence[0].color
       if (difficulty === 'easy') {
+        clearTimeout(state.givePinkClueTask)
+        state.isPinkEnabled = false
         while (currentColor === 'pink') {
           state.sequenceIndex++
           currentColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
@@ -59,22 +61,8 @@ var store = new Vuex.Store({
     progress (state, amount) {
       state.progression = Math.max(0, Math.min(100, state.progression + amount))
 
-      if (state.progressionAtLastPink !== undefined && state.progressionAtLastPink > state.progression + state.progressionStep * 1.5 && !state.hasPinkClueBeenGiven) {
-        state.hasPinkClueBeenGiven = true
-        lightLogStore.commit('processLog', {logMessage: 'pink_clue', level: 'info', useLocale: true})
-      }
-
       if (state.progression === 0) {
-        // In case falling to zero is because pink has not been understood, we ensure players are proposed another color
-        let currentColor = state.sequence[0].color
-        if (currentColor === 'pink') {
-          while (currentColor === 'pink') {
-            state.sequenceIndex++
-            currentColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
-          }
-          state.sequence = [{id: state.sequenceIndex, color: currentColor, completeness: 0, activable: true}]
-          this.isPinkEnabled = false
-        }
+        state.isPinkEnabled = false
       }
     },
     setRestaurantInManualMode (state) {
@@ -114,6 +102,10 @@ var store = new Vuex.Store({
         clearTimeout(state.giveSwitchClueTask)
       }
 
+      if (state.sequence[0].color === 'pink') {
+        clearTimeout(state.givePinkClueTask)
+      }
+
       if (state.success) {
         nextColor = 'black'
       } else if (state.difficulty != EASY && !state.isPinkEnabled && state.progression > 100 - 2 * state.progressionStep) {
@@ -129,14 +121,28 @@ var store = new Vuex.Store({
             state.sequenceIndex++
             nextColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
           }
+        } else {
+          if (state.sequence[0].color === 'pink') {
+            // We don't want pink twice in a row
+            while (nextColor === 'pink') {
+              state.sequenceIndex++
+              nextColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
+            }
+          }
         }
       }
 
       if (nextColor === 'pink') {
-        state.progressionAtLastPink = state.progression
+        state.givePinkClueTask = setTimeout(store.commit, 45000, 'givePinkClue')
       }
 
       state.sequence = [{id: state.sequenceIndex, color: nextColor, completeness: 0, activable: true}]
+    },
+    givePinkClue(state) {
+      if (!state.hasPinkClueBeenGiven) {
+        state.hasPinkClueBeenGiven = true
+        lightLogStore.commit('processLog', {logMessage: 'pink_clue', level: 'info', useLocale: true})
+      }
     },
     // eslint-disable-next-line
     toggleColor (state, {color, id, activated}) {
