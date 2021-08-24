@@ -110,7 +110,7 @@ export default {
         if (wasColorActivated && this.isColorActivated) {
           delta = 100 / 30 / this.activationSpeed
         } else {
-          delta = -1 * 100 / 20 / 32
+          delta = -1 * 100 / 30 / 32
         }
         lightStore.commit('updateCompleteness', {sequenceId: this.id, deltaCompleteness: delta})
 

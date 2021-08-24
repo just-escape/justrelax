@@ -13,7 +13,7 @@ export const HARD = 'hard'
 
 var store = new Vuex.Store({
   state: {
-    progression: 10,
+    progression: 0,
     success: false,
     isRestaurantInManualMode: false,
     activatedSensors: {
