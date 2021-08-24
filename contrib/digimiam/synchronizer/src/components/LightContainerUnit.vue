@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-if="color === 'black'" class="d-flex flex-row justify-content-center align-items-center">
+    <img style="font-size: 200px; margin-top: 40px" src="@/assets/img/green-sun.svg" height="200px"/>
+  </div>
+  <div v-else>
     <div class="position-relative">
       <div class="page position-absolute" style="left: 30px">
         <div class="hal d-flex">
@@ -14,7 +17,7 @@
                     class="progress-bar"
                     :style="{
                       transform: 'rotate(' + 360 * Math.min(50, completeness) / 100 + 'deg)',
-                      filter: completeness >= 100 ? 'hue-rotate(-40deg) brightness(0.65) contrast(0.95)' : '',
+                      filter: hueRotate ? 'hue-rotate(-40deg) brightness(0.65) contrast(0.95)' : '',
                     }"
                   ></div>
                   <div
@@ -22,7 +25,7 @@
                     :style="{
                       display: completeness > 50 ? 'block' : 'none',
                       transform: 'rotate(' + 360 * Math.min(50, completeness - 50) / 100 + 'deg)',
-                      filter: completeness >= 100 ? 'hue-rotate(-40deg) brightness(0.65) contrast(0.95)' : '',
+                      filter: hueRotate ? 'hue-rotate(-40deg) brightness(0.65) contrast(0.95)' : '',
                     }"
                   ></div>
                 </div>
@@ -59,7 +62,7 @@ export default {
         orange: "rgb(253, 126, 20)",
         black: "rgb(0, 0, 0)",
       },
-      wasColorActivated: false,
+      hueRotate: false,
     }
   },
   computed: {
@@ -105,15 +108,18 @@ export default {
       if (this.activable) {
         let delta
         if (wasColorActivated && this.isColorActivated) {
-          delta = 100 / 60 / this.activationSpeed
+          delta = 100 / 30 / this.activationSpeed
         } else {
-          delta = -1 * 100 / 60 / 32
+          delta = -1 * 100 / 20 / 32
         }
         lightStore.commit('updateCompleteness', {sequenceId: this.id, deltaCompleteness: delta})
 
         setTimeout(this.updateCompleteness, 1 / 60 * 1000, this.isColorActivated)
       }
     },
+    setHueRotateTrue() {
+      this.hueRotate = true
+    }
   },
   watch: {
     activable(newValue) {
@@ -123,7 +129,8 @@ export default {
     },
     completeness(newValue) {
       if (newValue === 100) {
-        setTimeout(lightStore.commit, 800, 'next')
+        setTimeout(lightStore.commit, 1200, 'next')
+        setTimeout(this.setHueRotateTrue, 3000)
       }
     },
   },

@@ -3,12 +3,17 @@ import Vuex from 'vuex'
 
 import progressionStore from '@/store/progressionStore.js'
 import publishSubscribeService from './publishSubscribeService'
+import lightLogStore from '@/store/lightLogStore.js'
 
 Vue.use(Vuex)
 
+export const EASY = 'easy'
+export const NORMAL = 'normal'
+export const HARD = 'hard'
+
 var store = new Vuex.Store({
   state: {
-    progression: 30,
+    progression: 10,
     success: false,
     isRestaurantInManualMode: false,
     activatedSensors: {
@@ -29,13 +34,55 @@ var store = new Vuex.Store({
       "orange", "blue", "red", "green", "pink", "blue", "white",
     ],
     sequenceIndex: 0,
+    progressionStep: 22,
+    isPinkEnabled: false,
+    progressionAtLastPink: undefined,
+    hasPinkClueBeenGiven: false,
+    difficulty: NORMAL,
+    giveSwitchClueTask: null,
   },
   mutations: {
+    setDifficulty(state, difficulty) {
+      if ([EASY, NORMAL, HARD].includes(difficulty)) {
+        state.difficulty = difficulty
+      }
+
+      let currentColor = state.sequence[0].color
+      if (difficulty === 'easy') {
+        while (currentColor === 'pink') {
+          state.sequenceIndex++
+          currentColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
+        }
+        state.sequence = [{id: state.sequenceIndex, color: currentColor, completeness: 0, activable: true}]
+      }
+    },
     progress (state, amount) {
       state.progression = Math.max(0, Math.min(100, state.progression + amount))
+
+      if (state.progressionAtLastPink !== undefined && state.progressionAtLastPink > state.progression + state.progressionStep * 1.5 && !state.hasPinkClueBeenGiven) {
+        state.hasPinkClueBeenGiven = true
+        lightLogStore.commit('processLog', {logMessage: 'pink_clue', level: 'info', useLocale: true})
+      }
+
+      if (state.progression === 0) {
+        // In case falling to zero is because pink has not been understood, we ensure players are proposed another color
+        let currentColor = state.sequence[0].color
+        if (currentColor === 'pink') {
+          while (currentColor === 'pink') {
+            state.sequenceIndex++
+            currentColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
+          }
+          state.sequence = [{id: state.sequenceIndex, color: currentColor, completeness: 0, activable: true}]
+          this.isPinkEnabled = false
+        }
+      }
     },
     setRestaurantInManualMode (state) {
       state.isRestaurantInManualMode = true
+      state.giveSwitchClueTask = setTimeout(() => store.commit('giveSwitchClue'), 300000)
+    },
+    giveSwitchClue () {
+      lightLogStore.commit('processLog', {logMessage: 'floor_switches_are_idle', level: 'info', useLocale: true})
     },
     updateCompleteness(state, {sequenceId, deltaCompleteness}) {
       for (let i in state.sequence) {
@@ -43,7 +90,7 @@ var store = new Vuex.Store({
           state.sequence[i].completeness = Math.max(0, Math.min(100, state.sequence[i].completeness + deltaCompleteness))
           if (state.sequence[i].activable && state.sequence[i].completeness === 100) {
             state.sequence[i].activable = false
-            state.progression = Math.min(100, state.progression + 15)
+            state.progression = Math.min(100, state.progression + state.progressionStep)
 
             if (state.progression === 100) {
               state.success = true
@@ -61,7 +108,34 @@ var store = new Vuex.Store({
     },
     next(state) {
       state.sequenceIndex++
-      let nextColor = state.success ? "black" : state.colorSequence[state.sequenceIndex % state.colorSequence.length]
+      let nextColor
+
+      if (state.progression > 100 - 2 * state.progressionStep) {
+        clearTimeout(state.giveSwitchClueTask)
+      }
+
+      if (state.success) {
+        nextColor = 'black'
+      } else if (state.difficulty != EASY && !state.isPinkEnabled && state.progression > 100 - 2 * state.progressionStep) {
+        // If difficulty allows pink (no pink in EASY mode), force pink the first time the progression is above a certain level
+        // Pink is also allowed in further iterations
+        state.isPinkEnabled = true
+        nextColor = 'pink'
+      } else {
+        nextColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
+        if (state.difficulty == EASY || !state.isPinkEnabled) {
+          // Pick a non-pink color if difficulty does not allow pink or if pink is not yet allowed
+          while (nextColor === 'pink') {
+            state.sequenceIndex++
+            nextColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
+          }
+        }
+      }
+
+      if (nextColor === 'pink') {
+        state.progressionAtLastPink = state.progression
+      }
+
       state.sequence = [{id: state.sequenceIndex, color: nextColor, completeness: 0, activable: true}]
     },
     // eslint-disable-next-line

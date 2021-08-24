@@ -507,6 +507,24 @@ class Scenario(MagicNode):
         self.publish_prefix(
             {
                 'category': 'light_log',
+                'message': 'lights_have_been_turned_off',
+                'level': 'info',
+                'use_locale': True,
+            },
+            'synchronizer'
+        )
+        self.publish_prefix(
+            {
+                'category': 'light_log',
+                'message': 'lights_can_be_turned_on_manually',
+                'level': 'info',
+                'use_locale': True,
+            },
+            'synchronizer'
+        )
+        self.publish_prefix(
+            {
+                'category': 'light_log',
                 'message': 'waiting_lights_to_be_resync',
                 'level': 'info',
                 'use_locale': True,

@@ -59,26 +59,26 @@
         <div
           class="mx-2"
           style="border-radius: 50%; height: 50px; width: 50px; background: rgb(220, 53, 69)"
-          :style="{opacity: getControlOpacity('red', 21)}"
-          @click="toggleControls('orange', 21)"
+          :style="{opacity: getControlOpacity('red', 20)}"
+          @click="toggleControls('red', 20)"
         ></div>
         <div
           class="mx-2"
           style="border-radius: 50%; height: 50px; width: 50px; background: rgb(40, 167, 69)"
-          :style="{opacity: getControlOpacity('green', 26)}"
-          @click="toggleControls('orange', 26)"
-        ></div>
-        <div
-          class="mx-2"
-          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(253, 126, 20)"
-          :style="{opacity: getControlOpacity('orange', 19)}"
+          :style="{opacity: getControlOpacity('green', 19)}"
           @click="toggleControls('green', 19)"
         ></div>
         <div
           class="mx-2"
           style="border-radius: 50%; height: 50px; width: 50px; background: rgb(253, 126, 20)"
-          :style="{opacity: getControlOpacity('orange', 20)}"
-          @click="toggleControls('red', 20)"
+          :style="{opacity: getControlOpacity('orange', 21)}"
+          @click="toggleControls('orange', 21)"
+        ></div>
+        <div
+          class="mx-2"
+          style="border-radius: 50%; height: 50px; width: 50px; background: rgb(253, 126, 20)"
+          :style="{opacity: getControlOpacity('orange', 26)}"
+          @click="toggleControls('orange', 26)"
         ></div>
         <div
           class="mx-2"

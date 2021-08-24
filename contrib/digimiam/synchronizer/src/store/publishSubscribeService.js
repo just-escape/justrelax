@@ -61,6 +61,8 @@ const publishSubscribeService = new Vuex.Store({
         router.go()
       } else if (event.category === 'set_difficulty') {
         difficultyStore.commit('setDifficulty', event.difficulty)
+      } else if (event.category === 'set_light_difficulty') {
+        lightStore.commit('setDifficulty', event.difficulty)
       } else if (event.category === 'set_locale') {
         let query = JSON.parse(JSON.stringify(router.app.$route.query))
         if (event.locale == 'fr') {
