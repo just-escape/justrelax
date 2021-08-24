@@ -163,7 +163,7 @@ const chamber7 = {
   id: 7,
   texture: require('@/assets/img/chamber.png'),
   successTexture: require('@/assets/img/chamber-7.gif'),
-  foodTexture: require('@/assets/img/coffee.png'),
+  foodTexture: require('@/assets/img/chocoffee.png'),
 }
 
 const chamber8 = {
