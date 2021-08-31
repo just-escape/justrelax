@@ -2,40 +2,33 @@
   <Window :title="$t('configuration')" class="h-100">
     <div class="d-flex h-100">
       <div class="d-flex flex-column lh-1 mx-4 justify-content-center h-100 w-100">
-        <div class="d-flex flex-row mb-5">
+        <div class="d-flex flex-row mb-4 justify-content-between align-items-center">
             <div>{{ $t('mode') }}</div>
-            <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div><span class="opacity-25">{{ $t('marmitron') }}</span> / {{ $t('manual') }}</div>
+            <OnOffSwitch :editable="false" :initiallyOn="false" :width="124" :onText="$t('marmitron')" :offText="$t('manual')"/>
         </div>
-        <div class="d-flex flex-row mb-3">
+        <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>{{ $t('security') }}</div>
-            <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div>{{ $t('on') }} / <span class="opacity-25">{{ $t('off') }}</span></div>
+            <OnOffSwitch :editable="false" :initiallyOn="true"/>
         </div>
-        <div class="d-flex flex-row mb-3">
+        <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>{{ $t('ongoing_maintenance') }}</div>
-            <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div>{{ $t('yes') }} / <span class="opacity-25">{{ $t('no') }}</span></div>
+            <OnOffSwitch :editable="false" :initiallyOn="true" :onText="$t('yes')" :offText="$t('no')"/>
         </div>
-        <div class="d-flex flex-row mb-5">
+        <div class="d-flex flex-row mb-4 justify-content-between align-items-center">
             <div>{{ $t('open') }}</div>
-            <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div><span class="opacity-25">{{ $t('yes') }}</span> / {{ $t('no') }}</div>
+            <OnOffSwitch :editable="false" :initiallyOn="false" :onText="$t('yes')" :offText="$t('no')"/>
         </div>
-        <div class="d-flex flex-row mb-3">
+        <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>{{ $t('supply') }}</div>
-            <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div>{{ $t('marmitron') }} / <span class="opacity-25">{{ $t('manual') }}</span></div>
+            <OnOffSwitch :initiallyOn="true" :width="124" :onText="$t('marmitron')" :offText="$t('manual')"/>
         </div>
-        <div class="d-flex flex-row mb-3">
+        <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>{{ $t('food_hydroinflation') }}</div>
-            <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div>{{ $t('yes') }} / <span class="opacity-25">{{ $t('no') }}</span></div>
+            <OnOffSwitch :initiallyOn="true" :onText="$t('yes')" :offText="$t('no')"/>
         </div>
-        <div class="d-flex flex-row">
+        <div class="d-flex flex-row justify-content-between align-items-center">
             <div>{{ $t('air_quality') }}</div>
-            <span class="underline-dots flex-grow-1 mx-1"></span>
-            <div><span class="opacity-25">{{ $t('optimal') }}</span> / {{ $t('economic') }}</div>
+            <OnOffSwitch :initiallyOn="false" :width="131" :onText="$t('optimal')" :offText="$t('economic')"/>
         </div>
       </div>
     </div>
@@ -44,11 +37,13 @@
 
 <script>
 import Window from '@/components/Window.vue'
+import OnOffSwitch from '@/components/OnOffSwitch.vue'
 
 export default {
   name: "ConfigurationWindow",
   components: {
     Window,
+    OnOffSwitch,
   }
 }
 </script>

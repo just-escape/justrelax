@@ -8,7 +8,9 @@ Vue.use(Vuex)
 let store = new Vuex.Store({
   state: {
     secretAnswers: [
-      'biere'
+      'biere',
+      'beer',
+      'bière',
     ],
     lastPressedCharacter: '',
     pressSignal: false,
@@ -17,6 +19,7 @@ let store = new Vuex.Store({
     displayPasswordWindow: false,
     displayPasswordRecoveryWindow: false,
     displayDangerWindow: false,
+    showUI: false,
     success: false,
     overlayVideos: {
       ms_pepper_mad: {
@@ -26,10 +29,79 @@ let store = new Vuex.Store({
     },
     currentOverlayVideo: null,
     playingMarmitronAnimation: null,
+    meals: [
+      {
+        n: 1,
+        id: "salade_flamande",
+        label: "Salade Flamande",
+        labelPlural: "Salades Flamandes",
+        price: 10,
+        baseMargin: 3,
+        marginQualitySensitivity: 0.1,
+        quality: 50,
+        cyclesQualitySensitivity: 1,
+        baseCycles: 1000,
+        verificationStatus: null,
+      },
+      {
+        id: "potjevleesch",
+        n: 2,
+        label: "Potjevleesch",
+        labelPlural: "Potjevleesch",
+        price: 11,
+        baseMargin: 3,
+        marginQualitySensitivity: 0.1,
+        quality: 50,
+        cyclesQualitySensitivity: 1,
+        baseCycles: 1000,
+        verificationStatus: 'checking',
+      },
+      {
+        id: "cambraisienne",
+        n: 3,
+        label: "Cambraisienne",
+        labelPlural: "Cambraisiennes",
+        price: 12,
+        baseMargin: 3,
+        marginQualitySensitivity: 0.1,
+        quality: 50,
+        cyclesQualitySensitivity: 1,
+        baseCycles: 1000000,
+        verificationStatus: 'ok',
+      },
+      {
+        id: "gaufresque",
+        n: 4,
+        label: "Gaufresque",
+        labelPlural: "Gaufresques",
+        price: 4,
+        baseMargin: 3,
+        marginQualitySensitivity: 0.1,
+        quality: 50,
+        cyclesQualitySensitivity: 1,
+        baseCycles: 1000000,
+        verificationStatus: 'ko',
+      },
+    ],
+    availabilityNotificationSignal: false,
+    availabilityNotificationId: undefined,
+    availabilityNotificationMissingIngredients: false,
   },
   mutations: {
-    playMarmitronAnimation (state, animationId) {
-      state.playingMarmitronAnimation = animationId
+    checkAvailability(state, mealIndex) {
+      let event = {
+        category: 'check_availability',
+        id: state.meals[mealIndex].id,
+      }
+      publishSubscribeService.commit('publish', event)
+    },
+    notifyAvailability(state, {mealId, missingIngredients}) {
+      state.availabilityNotificationSignal = !state.availabilityNotificationSignal
+      state.availabilityNotificationId = mealId
+      state.availabilityNotificationMissingIngredients = missingIngredients
+    },
+    setQuality (state, {mealIndex, value}) {
+      state.meals[mealIndex].quality = value
     },
     press (state, character) {
       if (!state.success) {
@@ -47,6 +119,9 @@ let store = new Vuex.Store({
         state.crSignal = !state.crSignal
       }
     },
+    showUI(state) {
+      state.showUI = true
+    },
     displayPasswordWindow (state) {
       state.displayPasswordWindow = true
     },
@@ -62,6 +137,14 @@ let store = new Vuex.Store({
     displayDangerWindow (state) {
       state.displayDangerWindow = true
     },
+    // eslint-disable-next-line
+    passwordTry(state, password) {
+      publishSubscribeService.commit('publish', {category: 'password_try', password: password})
+    },
+    // eslint-disable-next-line
+    passwordRecoveryTry(state, secretAnswer) {
+      publishSubscribeService.commit('publish', {category: 'password_recovery_try', secret_answer: secretAnswer})
+    },
     success (state) {
       if (!state.success) {
         state.success = true
@@ -71,8 +154,11 @@ let store = new Vuex.Store({
         publishSubscribeService.commit('publish', event)
       }
     },
-    finalAnimation () {
-      store.commit('playMarmitronAnimation', 'liberation')
+    playAnimation(state, animationId) {
+      state.playingMarmitronAnimation = animationId
+    },
+    finalAnimation (state) {
+      state.playingMarmitronAnimation = 'final'
       setTimeout(store.commit, 400, 'hidePasswordRecoveryWindow')
       setTimeout(store.commit, 500, 'hidePasswordWindow')
       setTimeout(store.commit, 12000, 'playOverlayVideo', 'ms_pepper_mad')

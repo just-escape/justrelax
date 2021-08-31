@@ -173,4 +173,27 @@ video::-webkit-media-controls-mute-button {
 video::-webkit-media-controls-volume-slider {
   display: none;
 }
+
+input[type=range] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: rgb(0, 209, 182);
+    box-shadow: 0px 0px 5px 0.5px rgb(0, 209, 182);
+    margin-top: -5px;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  height: 6px;
+  background: rgba(0, 209, 182, 0.6);
+  border-radius: 2px;
+}
 </style>

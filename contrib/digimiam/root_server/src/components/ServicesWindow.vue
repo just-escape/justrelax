@@ -1,9 +1,9 @@
 <template>
   <Window :title="$t('services')">
     <div class="d-flex flex-row justify-content-around mx-4 h-100">
-      <div class="d-flex flex-column align-items-center justify-content-center h-100">
-        <ServiceStatus class="mb-3" :label="$t('synchronisation')">
-          <i class="fas fa-project-diagram size-50 text-teal"></i>
+      <div class="d-flex flex-column align-items-center justify-content-center h-100 w-50">
+        <ServiceStatus class="mb-3" :label="$t('lights')">
+          <img src="@/assets/img/sun.svg" height="53px">
         </ServiceStatus>
         <ServiceStatus
           class="mb-3" :label="$t('ventilation')"
@@ -17,25 +17,25 @@
             }"
           ></i>
         </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="$t('arm')">
-          <img src="@/assets/img/robotics.png" height="53px">
-        </ServiceStatus>
-        <ServiceStatus :label="$t('freezer')">
+        <ServiceStatus class="mb-3" :label="$t('freezer')">
           <i class="far fa-snowflake size-50 text-teal"></i>
         </ServiceStatus>
+        <ServiceStatus :label="$t('arm')">
+          <img src="@/assets/img/robotics.png" height="53px">
+        </ServiceStatus>
       </div>
-      <div class="d-flex flex-column align-items-center justify-content-center h-100">
+      <div class="d-flex flex-column align-items-center justify-content-center h-100 w-50">
         <ServiceStatus class="mb-3" :label="$t('menu')">
           <img src="@/assets/img/hologram.svg" height="53px">
         </ServiceStatus>
         <ServiceStatus class="mb-3" :label="$t('stocks')">
           <i class="fas fa-cubes size-50 text-teal"></i>
         </ServiceStatus>
-        <ServiceStatus class="mb-3" :label="$t('printer')">
-          <img src="@/assets/img/printer.png" height="53px">
-        </ServiceStatus>
-        <ServiceStatus :label="$t('oven')">
+        <ServiceStatus class="mb-3" :label="$t('oven')">
           <img src="@/assets/img/oven.svg" height="53px">
+        </ServiceStatus>
+        <ServiceStatus :label="$t('printer')">
+          <img src="@/assets/img/printer.png" height="53px">
         </ServiceStatus>
       </div>
     </div>

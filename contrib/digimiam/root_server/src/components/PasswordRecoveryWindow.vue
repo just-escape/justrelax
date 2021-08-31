@@ -5,13 +5,13 @@
   >
     <Window :title="$t('fallback_authentication')" theme="warning">
       <div class="d-flex flex-column justify-content-between px-3 py-4 h-100 bg-black-transparent text-orange-light">
-        <div class="text-18">
+        <div>
           <div>
             {{ $t('fallback_authentication_is_enabled') }}
           </div>
         </div>
         <div class="d-flex flex-column">
-          <div class="font-italic mb-2">{{ $t('what_is_the_secret_ingredient') }}</div>
+          <div class="font-italic mb-2 text-18">{{ $t('what_is_the_secret_ingredient') }}</div>
           <div
             class="text-18 input-warning p-1 rounded"
           >
@@ -116,6 +116,7 @@ export default {
         })
         this.secretAnswer = ''
       }
+      businessStore.commit('passwordRecoveryTry', this.secretAnswer)
     },
     hidePasswordRecoveryWindow() {
       businessStore.commit('hidePasswordRecoveryWindow')

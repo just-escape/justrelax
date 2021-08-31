@@ -33,9 +33,14 @@
           <div class="text-red align-self-center" :style="{opacity: errorMessageOpacity}">
             {{ $t('incorrect_password') }}
           </div>
-          <ButtonOrange @click="validate">
-            {{ $t('confirm') }}
-          </ButtonOrange>
+          <div>
+            <ButtonOrange @click="validate" class="mr-4" >
+              {{ $t('confirm') }}
+            </ButtonOrange>
+            <ButtonOrange @click="hidePasswordWindow">
+              {{ $t('cancel') }}
+            </ButtonOrange>
+          </div>
         </div>
       </div>
     </Window>
@@ -102,9 +107,14 @@ export default {
         easing: 'easeInQuad',
       })
       this.password = ''
+      businessStore.commit('passwordTry', this.password)
     },
     displayPasswordRecoveryWindow() {
       businessStore.state.displayPasswordRecoveryWindow = true
+    },
+    hidePasswordWindow() {
+      businessStore.commit('hidePasswordWindow')
+      setTimeout(businessStore.commit, 500, 'displayPasswordWindow')
     },
   },
   watch: {

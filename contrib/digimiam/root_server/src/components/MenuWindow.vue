@@ -1,105 +1,63 @@
 <template>
-  <Window :title="'MENU'">
-    <div class="d-flex flex-column justify-content-around align-items-center mx-4 h-100" style="font-size: 40px">
-      TODO
-      <span @click="reponse">reponse</span>
-      <span @click="liberation">liberation</span>
-      <!--<div class="d-flex flex-row justify-content-center">
-        <ResearchComponent
-          :shuffleSignal="components[0].shuffleSignal"
-          :possibilities="components[0].possibilities"
-          @stop="stop(0)"
-        />
+  <Window :title="'RECETTES'">
+    <div class="d-flex flex-column align-items-center mx-4 h-100">
+      <div class="d-flex flex-row justify-content-center w-100 align-items-center mb-3 mt-4" style="font-style: italic; font-size: 20px">
+        <div>Plats du menu</div>
       </div>
-      <div class="d-flex flex-row justify-content-around mb-5">
-        <ResearchComponent
-          :shuffleSignal="components[1].shuffleSignal"
-          :possibilities="components[1].possibilities"
-          @stop="stop(1)"
-        />
-        <ResearchComponent
-          :shuffleSignal="components[2].shuffleSignal"
-          :possibilities="components[2].possibilities"
-          @stop="stop(2)"
-        />
+      <div class="position-relative d-flex flex-row justify-content-center mb-5">
+        <div
+          v-for="(meal, index) in meals" :key="index"
+          class="position-relative d-flex flex-row justify-content-center align-items-center"
+          style="background: rgba(0, 209, 182, 0.6); width: 45px; height: 45px; margin: 0px 20px; font-size: 26px"
+          @click="() => select(index)"
+        >
+          <div class="position-absolute" style="top: 5px">{{ meal.n }}</div>
+        </div>
+
+        <div
+          class="position-absolute"
+          style="border: 3px white solid; width: 61px; height: 80px; left: 12px; top: -16px; transition: left 1s ease-in-out"
+          :style="{left: cursorLeft + 'px'}"
+        >
+          <div class="position-relative h-100">
+            <div class="position-absolute" style="height: 29px; background: linear-gradient(white, rgba(0, 209, 182, 0.5)); width: 3px; bottom: -32px; left: 27px">
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="d-flex flex-row justify-content-center">
-        <i class="fa fa-times"/>
-      </div>-->
+      <MealWidget :mealIndex="selectedMealIndex"/>
     </div>
   </Window>
 </template>
 
 <script>
 import Window from '@/components/Window.vue'
-// import ResearchComponent from '@/components/ResearchComponent.vue'
-import businessStore from '@/store/businessStore.js'
+import MealWidget from '@/components/MealWidget.vue'
+import businessStore from '@/store/businessStore'
 
 export default {
-  name: "ServicesWindow",
+  name: "MenuWindow",
   components: {
     Window,
-    // ResearchComponent,
+    MealWidget,
   },
   data() {
     return {
-      components: [
-        {
-          shuffleSignal: false,
-          possibilities: [
-            '<i class="fa fa-plus"/>',
-            '<i class="fa fa-minus"/>',
-            '<i class="fa fa-times"/>',
-          ],
-          shuffling: true,
-        },
-        {
-          shuffleSignal: false,
-          possibilities: [
-            '<i class="fa fa-plus"/>',
-            '<i class="fa fa-minus"/>',
-            '<i class="fa fa-times"/>',
-          ],
-          shuffling: true,
-        },
-        {
-          shuffleSignal: false,
-          possibilities: [
-            '<i class="fa fa-plus"/>',
-            '<i class="fa fa-minus"/>',
-            '<i class="fa fa-times"/>',
-          ],
-          shuffling: true,
-        }
-      ]
+      selectedMealIndex: 1,
+    }
+  },
+  computed: {
+    meals() {
+      return businessStore.state.meals
+    },
+    cursorLeft() {
+      return this.selectedMealIndex * 85 + 12
     }
   },
   methods: {
-    shuffle() {
-      for (var c of this.components) {
-        c.shuffling = true
-        c.shuffleSignal = !c.shuffleSignal
-      }
-    },
-    stop(componentIndex) {
-      this.components[componentIndex].shuffling = false
-      if (
-        this.components[0].shuffling === false &&
-        this.components[1].shuffling === false &&
-        this.components[2].shuffling === false
-      ) {
-        setTimeout(this.shuffle, 1000)
-      }
-    },
-    reponse() {
-      businessStore.commit('playMarmitronAnimation', 'reponse')
-    },
-    liberation() {
-      businessStore.commit('playMarmitronAnimation', 'liberation')
-    },
-  },
-  mounted() {
-    this.shuffle()
+    select(index) {
+      this.selectedMealIndex = index
+    }
   },
 }
 </script>

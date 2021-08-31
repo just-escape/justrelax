@@ -69,12 +69,18 @@ const publishSubscribeService = new Vuex.Store({
           }
           i18n.locale = 'en'
         }
+      } else if (event.category === 'show_ui') {
+        businessStore.commit('showUI')
       } else if (event.category === 'display_password_window') {
         businessStore.commit('displayPasswordWindow')
+      } else if (event.category === 'play_animation') {
+        businessStore.commit('playAnimation', event.animation)
       } else if (event.category === 'final_animation') {
         businessStore.commit('finalAnimation')
       } else if (event.category === 'display_danger_window') {
         businessStore.commit('displayDangerWindow')
+      } else if (event.category === 'availability') {
+        businessStore.commit('notifyAvailability', {mealId: event.id, missingIngredients: event.missing_ingredients})
       }
     },
     SOCKET_RECONNECT (state, count) {

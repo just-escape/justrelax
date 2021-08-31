@@ -856,6 +856,15 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'set_success', 'value': True}, 'laser_maze')
         self.publish_prefix({'category': 'success'}, 'secure_floor')
 
+    @on_event(filter={'from': 'root_server', 'category': 'check_availability'})
+    def root_server_check_availability(self, id: str):
+        self.publish_prefix({'category': 'check_availability', 'id': id}, 'cylinders')
+
+    @on_event(filter={'from': 'cylinders', 'category': 'availability'})
+    def cylinders_availability(self, id: str, missing_ingredients: int):
+        self.publish_prefix(
+            {'category': 'availability', 'id': id, 'missing_ingredients': missing_ingredients}, 'root_server')
+
     @on_event(filter={'from': 'root_server', 'category': 'success'})
     def root_server_event_success(self):
         self.publish_prefix({'category': 'stop_sending_fog_forever'}, 'fog_machine')

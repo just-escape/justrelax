@@ -11,7 +11,7 @@
       class="position-absolute"
       :style="{'z-index': video.zIndex, top: video.top + 'px', left: video.left + 'px'}"
     >
-      <div class="position-relative mb-1">
+      <div class="position-relative mb-1" :style="{opacity: showUI ? 1 : 0}" style="transition: opacity 5s ease-in-out">
         <video
           :ref="'ad-' + videoIndex"
           :src="video.src" class="glowing-container"
@@ -43,8 +43,8 @@ export default {
       videos: [
         {
           zIndex: 9,
-          src: require("@/assets/videos/zephyr_3000.mp4"),
-          poster: require("@/assets/img/zephyr_3000.png"),
+          src: require("@/assets/videos/waffresco_ad_loop.mp4"),
+          poster: require("@/assets/img/waffresco.png"),
           initialTop: 624,
           initialLeft: 1576,
           top: 624,
@@ -67,19 +67,6 @@ export default {
           controls: false,
           isExpanded: false,
         },
-        {
-          zIndex: 9,
-          src: require("@/assets/videos/zephyr_3000.mp4"),
-          poster: require("@/assets/img/zephyr_3000.png"),
-          initialTop: 902,
-          initialLeft: 1576,
-          top: 902,
-          left: 1576,
-          width: 160,
-          height: 90,
-          controls: false,
-          isExpanded: false,
-        },
       ],
       videoInitialWidth: 160,
       videoInitialHeight: 90,
@@ -90,6 +77,11 @@ export default {
       opacifierZIndex: -1,
       opacifierOpacity: 0,
     }
+  },
+  computed: {
+    showUI() {
+      return businessStore.state.showUI
+    },
   },
   methods: {
     expandVideo(videoIndex) {

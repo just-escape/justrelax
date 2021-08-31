@@ -63,6 +63,20 @@ export default {
             duration: 8000,
           },
         },
+        beer: {
+          en: {
+            video: require('@/assets/videos/marmitron_beer_862x670.webm'),
+            ref: 'beerEn',
+            opacity: 0,
+            duration: 16000,
+          },
+          fr: {
+            video: require('@/assets/videos/marmitron_beer_862x670.webm'),
+            ref: 'beerFr',
+            opacity: 0,
+            duration: 16000,
+          },
+        },
       },
       animationEndTask: null,
     }

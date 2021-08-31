@@ -7,7 +7,7 @@
           <div class="glowing-container video-thumbnail"/>
         </div>
 
-        <div class="media-body">{{ $t('succulente_gaufresque.mp6') }}</div>
+        <div class="media-body">{{ $t('gaufresque.mp6') }}</div>
       </div>
 
       <div class="d-flex flex-column align-items-center">
@@ -16,18 +16,15 @@
           <div class="glowing-container video-thumbnail"/>
         </div>
 
-        <div class="media-body">{{ $t('zéphyr_3000_version_épurée.mp6') }}</div>
+        <div class="media-body">{{ $t('zéphyr_3000 (1).mp6') }}</div>
       </div>
 
-      <div class="d-flex flex-column align-items-center">
+      <div class="d-flex flex-column align-items-center" style="filter: grayscale(1)">
         <div class="position-relative mb-1">
-          <video src="@/assets/videos/zephyr_3000.mp4" class="glowing-container video-thumbnail"/>
-          <b-btn class="position-absolute lh-1 bottom-right" size="sm" variant="outline-info">
-            <i class="text-teal fas fa-expand"/>
-          </b-btn>
+          <div class="glowing-container video-thumbnail" style="border-style: dashed"/>
         </div>
 
-        <div class="media-body">{{ $t('soda wonka (muet).mp6') }}</div>
+        <div class="media-body" style="font-style: italic; color: gray">Slot vide</div>
       </div>
     </div>
   </Window>

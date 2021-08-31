@@ -62,6 +62,11 @@ export default {
           character: 'a',
         },
         {
+          top: -3,
+          left: 211,
+          character: 'ç',
+        },
+        {
           top: 27.5,
           left: 264,
           character: 'c',
@@ -190,6 +195,21 @@ export default {
           top: 180,
           left: 211,
           character: 'v',
+        },
+        {
+          top: 181,
+          left: 530,
+          character: 'à',
+        },
+        {
+          top: 149.5,
+          left: 582,
+          character: 'é',
+        },
+        {
+          top: 180,
+          left: 635,
+          character: 'è',
         },
       ],
     }
