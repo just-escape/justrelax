@@ -11,12 +11,14 @@ serials:
 
 clear_alarm_delay: 4
 
-load_cells:
-  tare_pin: 12
-  cells:
-    - pin: 16
-      led_strip: null
-    - pin: 20
-      led_strip: null
-    - pin: 21
-      led_strip: 1
+calibration_pin: 12
+sensors:
+  - type: load_cell
+    pin: 16
+    led_strip: null
+  - type: load_cell
+    pin: 20
+    led_strip: null
+  - type: load_cell
+    pin: 21
+    led_strip: 1
