@@ -42,6 +42,7 @@ export default {
       size: 20,
       scale: 1,
       fillOpacity: 0,
+      preventRepeat: false,
     }
   },
   computed: {
@@ -105,8 +106,18 @@ export default {
     },
   },
   methods: {
+    allowRepeat() {
+      this.preventRepeat = false
+    },
     press() {
       if (businessStore.state.displayPasswordWindow || businessStore.state.displayPasswordRecoveryWindow) {
+        if (this.preventRepeat) {
+          return
+        }
+
+        this.preventRepeat = true
+        setTimeout(this.allowRepeat, 200)
+
         this.$anime.timeline({
           targets: this,
         })

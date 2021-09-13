@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     animationEnd(resumeIdle) {
-      businessStore.commit('playMarmitronAnimation', null)
+      businessStore.commit('playAnimation', null)
 
       if (resumeIdle) {
         this.$refs.animationIdle.play()
