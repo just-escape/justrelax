@@ -855,6 +855,11 @@ class Scenario(MagicNode):
     def human_authenticator_event_success(self):
         self.publish_prefix({'category': 'set_success', 'value': True}, 'laser_maze')
         self.publish_prefix({'category': 'success'}, 'secure_floor')
+        self.publish_prefix({'category': 'show_ui'}, 'root_server')
+        self.register_delayed_task(
+            3, self.publish_prefix, {'category': 'display_password_window'}, 'root_server')
+        self.register_delayed_task(
+            4.5, self.publish_prefix, {'category': 'play_animation', 'animation': 'reponse'}, 'root_server')
 
     @on_event(filter={'from': 'root_server', 'category': 'check_availability'})
     def root_server_check_availability(self, id: str):
@@ -882,6 +887,7 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'display_danger_window'}, 'orders')
             self.publish_prefix({'category': 'display_danger_window'}, 'inventory')
             self.publish_prefix({'category': 'display_danger_window'}, 'root_server')
+            self.publish_prefix({'category': 'alarm', 'activated': True}, 'relays')
 
         self.register_delayed_task(2, post_delay)
 
@@ -1256,23 +1262,6 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'conveyor_backward', 'conveyor_id': conveyor_id}, 'waffle_factory')
         elif action == 'stop':
             self.publish_prefix({'category': 'conveyor_stop', 'conveyor_id': conveyor_id}, 'waffle_factory')
-
-    @on_event(filter={'widget_id': 'waffle_factory_servo'})
-    def buttons_waffle_factory_servo(self, servo_id: str, action: str):
-        if action == 'raise':
-            category = 'raise_servo'
-        elif action == 'lower':
-            category = 'lower_servo'
-        elif action == 'flip':
-            category = 'flip_servo'
-        else:
-            category = None
-
-        if servo_id == 'printer':
-            self.publish_prefix({'category': category, 'servo_id': 'printer_left'}, 'waffle_factory')
-            self.publish_prefix({'category': category, 'servo_id': 'printer_right'}, 'waffle_factory')
-        elif servo_id == 'basket':
-            self.publish_prefix({'category': category, 'servo_id': 'basket'}, 'waffle_factory')
 
     @on_event(filter={'widget_id': 'waffle_factory_light'})
     def buttons_waffle_factory_light(self, led_id: str, on: bool):
