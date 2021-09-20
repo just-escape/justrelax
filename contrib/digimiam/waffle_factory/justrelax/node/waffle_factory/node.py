@@ -10,17 +10,15 @@ from justrelax.core.node import MagicNode, on_event
 class ArduinoProtocol:
     CATEGORY = "c"
 
+    HOMING = "h"
     FORWARD = "f"
     BACKWARD = "b"
-    SET_SPEED = "d"
-    LOW_PERIOD = "l"
-    HIGH_PERIOD = "h"
-    CONVEYOR_INDEX = "i"
-
-    MOVE_SERVO = "s"
-    DETACH_SERVO = "h"
-    SERVO_POSITION = "p"
-    SERVO_INDEX = "i"
+    STEP_DELAY = "sd"
+    MOTOR_INDEX = "i"
+    N_PULSES = "n"
+    LIMINARY_STEP_DELAY = "lsd"
+    LIMINARY_N_PULSES = "ln"
+    SET_N_PULSES = "snp"
 
     SET_LED_TARGET_FREQ = "t"
     SET_LED_FREQ = "q"
@@ -40,10 +38,8 @@ class WaffleFactory(MagicNode):
     def __init__(self, *args, **kwargs):
         super(WaffleFactory, self).__init__(*args, **kwargs)
 
-        self.conveyors = self.config['conveyors']
-        self.servo_flip_delay = self.config['servo_flip_delay']
-        self.servos = self.config['servos']
-        self.conveyor_default_clock_period = self.config['conveyor_default_clock_period']
+        self.motors = self.config['motors']
+        self.motor_default_step_delay = self.config['motor_default_step_delay']
 
         self.light_led = self.config['light_led']
 
@@ -78,119 +74,100 @@ class WaffleFactory(MagicNode):
             else:
                 self.event_light_off(light_led_id)
 
-    @on_event(filter={'category': 'conveyor_forward'})
-    def event_conveyor_forward(self, conveyor_id: str, low_period: int = None, high_period: int = None):
-        logger.info("Turning conveyor {} forward".format(conveyor_id))
+    @on_event(filter={'category': 'motor_homing'})
+    def event_motor_homing(
+            self, motor_id: str, n_pulses: int, step_delay: int = None,
+            liminary_n_pulses: int = 0, liminary_step_delay: int = None,
+    ):
+        logger.info(f"Starting homing procedure for motor {motor_id}")
 
-        conveyor_index = self.conveyors[conveyor_id]['index']
-        low_period = low_period if low_period is not None else self.conveyor_default_clock_period
-        high_period = high_period if high_period is not None else self.conveyor_default_clock_period
+        motor_index = self.motors[motor_id]["index"]
+        step_delay = step_delay if step_delay is not None else self.motor_default_step_delay
+        liminary_step_delay = liminary_step_delay if liminary_step_delay is not None else self.motor_default_step_delay
 
-        logger.info("Clock period: low={}, high={}".format(low_period, high_period))
+        logger.info(f"Step delay={step_delay}")
+
+        self.send_serial(
+            {
+                ArduinoProtocol.CATEGORY: ArduinoProtocol.HOMING,
+                ArduinoProtocol.MOTOR_INDEX: motor_index,
+                ArduinoProtocol.N_PULSES: n_pulses,
+                ArduinoProtocol.STEP_DELAY: step_delay,
+                ArduinoProtocol.LIMINARY_STEP_DELAY: liminary_step_delay,
+                ArduinoProtocol.LIMINARY_N_PULSES: liminary_n_pulses,
+            },
+            port='/dev/factory',
+        )
+
+    @on_event(filter={'category': 'motor_forward'})
+    def event_motor_forward(
+            self, motor_id: str, n_pulses: int, step_delay: int = None,
+            liminary_n_pulses: int = 0, liminary_step_delay: int = None,
+    ):
+        logger.info("Turning motor {} forward".format(motor_id))
+
+        motor_index = self.motors[motor_id]['index']
+        step_delay = step_delay if step_delay is not None else self.motor_default_step_delay
+        liminary_step_delay = liminary_step_delay if liminary_step_delay is not None else self.motor_default_step_delay
+
+        logger.info("Step delay={}".format(step_delay))
 
         self.send_serial(
             {
                 ArduinoProtocol.CATEGORY: ArduinoProtocol.FORWARD,
-                ArduinoProtocol.CONVEYOR_INDEX: conveyor_index,
-                ArduinoProtocol.LOW_PERIOD: low_period,
-                ArduinoProtocol.HIGH_PERIOD: high_period,
+                ArduinoProtocol.MOTOR_INDEX: motor_index,
+                ArduinoProtocol.N_PULSES: n_pulses,
+                ArduinoProtocol.STEP_DELAY: step_delay,
+                ArduinoProtocol.LIMINARY_STEP_DELAY: liminary_step_delay,
+                ArduinoProtocol.LIMINARY_N_PULSES: liminary_n_pulses,
             },
             port='/dev/factory',
         )
 
-    @on_event(filter={'category': 'conveyor_backward'})
-    def event_conveyor_backward(self, conveyor_id: str, low_period: int = None, high_period: int = None):
-        logger.info("Turning conveyor {} backward".format(conveyor_id))
+    @on_event(filter={'category': 'motor_backward'})
+    def event_motor_backward(
+            self, motor_id: str, n_pulses: int, step_delay: int = None,
+            liminary_n_pulses: int = 0, liminary_step_delay: int = None,
+    ):
+        logger.info("Turning motor {} backward".format(motor_id))
 
-        conveyor_index = self.conveyors[conveyor_id]['index']
-        low_period = low_period if low_period is not None else self.conveyor_default_clock_period
-        high_period = high_period if high_period is not None else self.conveyor_default_clock_period
+        motor_index = self.motors[motor_id]['index']
+        step_delay = step_delay if step_delay is not None else self.motor_default_step_delay
+        liminary_step_delay = liminary_step_delay if liminary_step_delay is not None else self.motor_default_step_delay
 
-        logger.info("Clock period: low={}, high={}".format(low_period, high_period))
+        logger.info("Step delay={}".format(step_delay))
 
         self.send_serial(
             {
                 ArduinoProtocol.CATEGORY: ArduinoProtocol.BACKWARD,
-                ArduinoProtocol.CONVEYOR_INDEX: conveyor_index,
-                ArduinoProtocol.LOW_PERIOD: low_period,
-                ArduinoProtocol.HIGH_PERIOD: high_period,
+                ArduinoProtocol.MOTOR_INDEX: motor_index,
+                ArduinoProtocol.N_PULSES: n_pulses,
+                ArduinoProtocol.STEP_DELAY: step_delay,
+                ArduinoProtocol.LIMINARY_STEP_DELAY: liminary_step_delay,
+                ArduinoProtocol.LIMINARY_N_PULSES: liminary_n_pulses,
             },
             port='/dev/factory',
         )
 
-    @on_event(filter={'category': 'conveyor_set_clock'})
-    def event_conveyor_set_clock(self, conveyor_id: str, low_period: int = None, high_period: int = None):
-        logger.info("Setting conveyor {} clock periods".format(conveyor_id))
+    @on_event(filter={'category': 'motor_set_n_pulses'})
+    def event_motor_set_clock(self, motor_id: str, n_pulses: int):
+        logger.info("Setting motor {} n_pulses".format(motor_id))
 
-        conveyor_index = self.conveyors[conveyor_id]['index']
-        low_period = low_period if low_period is not None else self.conveyor_default_clock_period
-        high_period = high_period if high_period is not None else self.conveyor_default_clock_period
-
-        logger.info("Clock period: low={}, high={}".format(low_period, high_period))
+        motor_index = self.motors[motor_id]['index']
 
         self.send_serial(
             {
-                ArduinoProtocol.CATEGORY: ArduinoProtocol.SET_SPEED,
-                ArduinoProtocol.CONVEYOR_INDEX: conveyor_index,
-                ArduinoProtocol.LOW_PERIOD: low_period,
-                ArduinoProtocol.HIGH_PERIOD: high_period,
+                ArduinoProtocol.CATEGORY: ArduinoProtocol.SET_N_PULSES,
+                ArduinoProtocol.MOTOR_INDEX: motor_index,
+                ArduinoProtocol.N_PULSES: n_pulses,
             },
             port='/dev/factory',
         )
 
-    @on_event(filter={'category': 'conveyor_stop'})
-    def event_stop_conveyor(self, conveyor_id: str):
-        logger.info("Stopping conveyor {})".format(conveyor_id))
-        self.event_conveyor_set_clock(conveyor_id, 0, 0)
-
-    @on_event(filter={'category': 'raise_servo'})
-    def event_raise_servo(self, servo_id: str, detach: bool = True):
-        logger.info("Raising servo {}".format(servo_id))
-        raise_position = self.servos[servo_id]['raise']
-        self.event_move_servo(servo_id, raise_position, detach)
-
-    @on_event(filter={'category': 'lower_servo'})
-    def event_lower_servo(self, servo_id: str, detach: bool = True):
-        logger.info("Lowering servo {}".format(servo_id))
-        lower_position = self.servos[servo_id]['lower']
-        self.event_move_servo(servo_id, lower_position, detach)
-
-    @on_event(filter={'category': 'flip_servo'})
-    def event_flip_servo(self, servo_id: str, detach: bool = True):
-        logger.info("Flipping servo {}".format(servo_id))
-        self.event_lower_servo(servo_id, False)
-        reactor.callLater(self.servo_flip_delay, self.event_raise_servo, servo_id, detach)
-
-    @on_event(filter={'category': 'move_servo'})
-    def event_move_servo(self, servo_id: str, position: int, detach: bool = True):
-        logger.info("Setting servo {} position to {}".format(servo_id, position))
-
-        servo_index = self.servos[servo_id]['index']
-
-        self.send_serial(
-            {
-                ArduinoProtocol.CATEGORY: ArduinoProtocol.MOVE_SERVO,
-                ArduinoProtocol.SERVO_INDEX: servo_index,
-                ArduinoProtocol.SERVO_POSITION: position,
-            },
-            port='/dev/factory',
-        )
-
-        if detach:
-            reactor.callLater(self.servo_flip_delay, self.detach_servo, servo_id)
-
-    def detach_servo(self, servo_id: str):
-        logger.info("Detaching servo {}".format(servo_id))
-
-        servo_index = self.servos[servo_id]['index']
-
-        self.send_serial(
-            {
-                ArduinoProtocol.CATEGORY: ArduinoProtocol.DETACH_SERVO,
-                ArduinoProtocol.SERVO_INDEX: servo_index,
-            },
-            port='/dev/factory',
-        )
+    @on_event(filter={'category': 'motor_stop'})
+    def event_stop_motor(self, motor_id: str):
+        logger.info("Stopping motor {}".format(motor_id))
+        self.event_motor_set_clock(motor_id, 0)
 
     @on_event(filter={'category': 'light_on'})
     def event_light_on(self, led_id: str):

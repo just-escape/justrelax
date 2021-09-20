@@ -13,29 +13,20 @@ serials:
     baud_rate: 115200
     buffering_interval: 0.1
 
-conveyor_default_clock_period: 400
-conveyors:
-  niryo:
+motor_default_step_delay: 3000
+motors:
+  a:
     index: 0
-  printer:
+  b:
     index: 1
-  basket:
+  c:
     index: 2
-
-servo_flip_delay: 0.5
-servos:
-  basket:
-    index: 0
-    raise: 45
-    lower: 160
-  printer_left:
-    index: 1
-    raise: 180
-    lower: 75
-  printer_right:
-    index: 2
-    raise: 60
-    lower: 178
+  d:
+    index: 3
+  e:
+    index: 4
+  f:
+    index: 5
 
 light_led:
   niryo:
