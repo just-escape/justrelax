@@ -36,6 +36,8 @@ class Cylinders(MagicNode):
                 'delayed_task': None,
             }
 
+        self.ingredients = self.config['ingredients']
+
         self.post_success_task = None
 
     @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.READ})
@@ -132,3 +134,44 @@ class Cylinders(MagicNode):
 
     def notify_success(self):
         self.publish({"category": "success"})
+
+    @on_event(filter={'category': 'check_availability'})
+    def event_check_availability(self, id: str):
+        if id not in self.ingredients:
+            logger.error(f"Unknown recipe {id}: ignoring")
+            return
+
+        available_ingredients = []
+
+        def animate_and_check(step, ingredients):
+            # There are len(ingredients) + 1 steps, the last one being used to turn off the last led
+
+            if step > 0:
+                last_cylinder_id = ingredients[step - 1]
+                self.slots[last_cylinder_id]['green_led'].off()
+                self.slots[last_cylinder_id]['red_led'].off()
+
+            if step < len(ingredients):
+                cylinder_id = ingredients[step]
+
+                is_available = self.slots[cylinder_id]['current_tag'] == self.slots[cylinder_id]['expected_tag']
+                available_ingredients.append(is_available)
+
+                logger.info(
+                    f"{cylinder_id} available={is_available}")
+
+                if is_available:
+                    self.slots[cylinder_id]['green_led'].on()
+                else:
+                    self.slots[cylinder_id]['red_led'].on()
+
+                reactor.callLater(0.2, animate_and_check, step + 1, ingredients)
+
+            else:
+                self.publish({
+                    'category': 'availability',
+                    'missing_ingredients': available_ingredients.count(False),
+                    'id': id,
+                })
+
+        animate_and_check(0, self.ingredients[id])

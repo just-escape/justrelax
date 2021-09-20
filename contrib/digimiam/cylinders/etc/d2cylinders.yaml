@@ -11,7 +11,7 @@ serials:
   - port: /dev/arduino2
     baud_rate: 19200
 
-delay: 7
+delay: 0.1
 
 index_mapping:
   /dev/arduino1:
@@ -58,3 +58,21 @@ slots:
     expected_tag: 147-137-91-64
     red_pin: 8
     green_pin: 25
+
+ingredients:
+  potjevleesch:
+    - 3
+    - 5
+    - 8
+  salade_flamande:
+    - 1
+    - 6
+    - 8
+  cambraisienne:
+    - 1
+    - 4
+    - 8
+  gaufresque:
+    - 2
+    - 7
+    - 8
