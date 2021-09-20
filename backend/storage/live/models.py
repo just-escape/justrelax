@@ -9,6 +9,7 @@ WIDGET_TYPES = (
     ('log_prompt', 'log_prompt'),
     ('instruction_prompt', 'instruction_prompt'),
     ('lasers', 'lasers'),
+    ('waffle_factory', 'waffle_factory'),
 )
 
 
