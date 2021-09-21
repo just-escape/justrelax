@@ -15,7 +15,7 @@
 #define PROTOCOL_N_PULSES "n"
 #define PROTOCOL_LIMINARY_STEP_DELAY "lsd"
 #define PROTOCOL_LIMINARY_N_PULSES "ln"
-#define PROTOCOL_SET_N_PULSES "snp"
+#define PROTOCOL_STOP "stop"
 
 #define PROTOCOL_NO_HOMING "nh"
 #define PROTOCOL_HOMING_COMPLETE "hc"
@@ -472,10 +472,11 @@ void onEvent() {
       }
       setMotorBackward(motorIndex);
       isMotorInHomingMode[motorIndex] = false;
-    } else if (category == PROTOCOL_SET_N_PULSES) {
+    } else if (category == PROTOCOL_STOP) {
       int motorIndex = receivedDocument[PROTOCOL_MOTOR_INDEX];
-      int nPulses = receivedDocument[PROTOCOL_N_PULSES];
-      motorNPulses[motorIndex] = nPulses;
+      motorNPulses[motorIndex] = 0;
+      motorAccelerationNPulses[motorIndex] = 0;
+      motorDecelerationNPulses[motorIndex] = 0;
     } else if (category == PROTOCOL_SET_LED_TARGET_FREQ) {
       int ledIndex = receivedDocument[PROTOCOL_LED_INDEX];
       float value = receivedDocument[PROTOCOL_LED_FREQ_VALUE];

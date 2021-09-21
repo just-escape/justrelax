@@ -1254,15 +1254,6 @@ class Scenario(MagicNode):
     def buttons_refectory_lights_stop_glitch(self, color: str):
         self.publish_prefix({'category': 'stop_glitch', 'color': color}, 'refectory_lights')
 
-    @on_event(filter={'widget_id': 'waffle_factory_conveyor'})
-    def buttons_waffle_factory_conveyor(self, conveyor_id: str, action: str):
-        if action == 'forward':
-            self.publish_prefix({'category': 'conveyor_forward', 'conveyor_id': conveyor_id}, 'waffle_factory')
-        elif action == 'backward':
-            self.publish_prefix({'category': 'conveyor_backward', 'conveyor_id': conveyor_id}, 'waffle_factory')
-        elif action == 'stop':
-            self.publish_prefix({'category': 'conveyor_stop', 'conveyor_id': conveyor_id}, 'waffle_factory')
-
     @on_event(filter={'widget_id': 'waffle_factory_light'})
     def buttons_waffle_factory_light(self, led_id: str, on: bool):
         if on:
@@ -1391,21 +1382,9 @@ class Scenario(MagicNode):
                 self.holomenu_y = None
                 self.holomenu_error = None
 
-    @on_event(filter={'widget_id': 'niryo_calibrate'})
-    def button_niryo_calibrate(self):
-        self.publish_prefix({'category': 'calibrate'}, 'niryo')
-
-    @on_event(filter={'widget_id': 'niryo_toggle_magnetize'})
-    def button_niryo_toggle_magnetize(self):
-        self.publish_prefix({'category': 'toggle_magnetize'}, 'niryo')
-
-    @on_event(filter={'widget_id': 'niryo_learning_mode'})
-    def button_niryo_learning_mode(self):
-        self.publish_prefix({'category': 'learning_mode'}, 'niryo')
-
-    @on_event(filter={'widget_id': 'niryo_move'})
-    def buttons_niryo_move(self, position: str):
-        self.publish_prefix({'category': 'move_position', 'position': position}, 'niryo')
+    @on_event(filter={'widget_id': 'niryo_magnetize'})
+    def button_niryo_magnetize(self, value: bool):
+        self.publish_prefix({'category': 'niryo_magnetize', 'value': value}, 'niryo')
 
     @on_event(filter={'widget_id': 'payment_authenticate'})
     def button_payment_authenticate(self):
@@ -1440,18 +1419,6 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'vents_locker'})
     def buttons_vents_locker(self, lock: bool):
         self.publish_prefix({'category': 'lock' if lock else 'unlock'}, 'vents_locker')
-
-    @on_event(filter={'widget_id': 'waffle_factory_sketch_play'})
-    def buttons_waffle_factory_sketch_play(self):
-        self.publish_prefix({'category': 'conveyor_forward', 'conveyor_id': 'niryo'}, 'waffle_factory')
-        self.register_delayed_task(
-            5.15, self.publish_prefix, {'category': 'conveyor_stop', 'conveyor_id': 'niryo'}, 'waffle_factory')
-
-    @on_event(filter={'widget_id': 'waffle_factory_sketch_reset'})
-    def buttons_waffle_factory_sketch_reset(self):
-        self.publish_prefix({'category': 'conveyor_forward', 'conveyor_id': 'niryo'}, 'waffle_factory')
-        self.register_delayed_task(
-            8.6, self.publish_prefix, {'category': 'conveyor_backward', 'conveyor_id': 'niryo'}, 'waffle_factory')
 
     @on_event(filter={'widget_id': 'alarm_relays'})
     def buttons_alarm_relays(self, activated: bool):
@@ -1501,15 +1468,94 @@ class Scenario(MagicNode):
     def toggle_permanent_laser_activation(self, action: str, laser_maze_channel: str, laser_index: int):
         self.publish_prefix({'category': action, 'index': laser_index}, laser_maze_channel)
 
+    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'motor_forward'})
+    def waffle_factory_motor_forward(
+            self, motor_channel: str, motor_id: str,
+            n_pulses: int, step_delay: int, liminary_n_pulses: int, liminary_step_delay: int,
+    ):
+        self.publish_prefix({
+            'category': 'motor_forward',
+            'motor_id': motor_id,
+            'n_pulses': n_pulses,
+            'step_delay': step_delay,
+            'liminary_n_pulses': liminary_n_pulses,
+            'liminary_step_delay': liminary_step_delay,
+        }, motor_channel)
+
+    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'motor_homing'})
+    def waffle_factory_motor_homing(
+            self, motor_channel: str, motor_id: str,
+            n_pulses: int, step_delay: int, liminary_n_pulses: int, liminary_step_delay: int,
+    ):
+        self.publish_prefix({
+            'category': 'motor_homing',
+            'motor_id': motor_id,
+            'n_pulses': n_pulses,
+            'step_delay': step_delay,
+            'liminary_n_pulses': liminary_n_pulses,
+            'liminary_step_delay': liminary_step_delay,
+        }, motor_channel)
+
+    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'motor_backward'})
+    def waffle_factory_motor_backward(
+            self, motor_channel: str, motor_id: str,
+            n_pulses: int, step_delay: int, liminary_n_pulses: int, liminary_step_delay: int,
+    ):
+        self.publish_prefix({
+            'category': 'motor_backward',
+            'motor_id': motor_id,
+            'n_pulses': n_pulses,
+            'step_delay': step_delay,
+            'liminary_n_pulses': liminary_n_pulses,
+            'liminary_step_delay': liminary_step_delay,
+        }, motor_channel)
+
+    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'motor_stop'})
+    def waffle_factory_motor_stop(self, motor_channel: str, motor_id: str):
+        self.publish_prefix({
+            'category': 'motor_stop',
+            'motor_id': motor_id,
+        }, motor_channel)
+
+    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'dxl_torque_on'})
+    def waffle_factory_dxl_torque_on(self, dxl_id: str):
+        self.publish_prefix({
+            'category': 'dxl_torque_on',
+            'dxl_id': dxl_id,
+        }, 'niryo')
+
+    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'dxl_torque_off'})
+    def waffle_factory_dxl_torque_off(self, dxl_id: str):
+        self.publish_prefix({
+            'category': 'dxl_torque_off',
+            'dxl_id': dxl_id,
+        }, 'niryo')
+
+    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'dxl_reboot'})
+    def waffle_factory_dxl_reboot(self, dxl_id: str):
+        self.publish_prefix({
+            'category': 'dxl_reboot',
+            'dxl_id': dxl_id,
+        }, 'niryo')
+
+    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'dxl_get_position'})
+    def waffle_factory_dxl_get_position(self, dxl_id: str):
+        self.publish_prefix({
+            'category': 'dxl_get_position',
+            'dxl_id': dxl_id,
+        }, 'niryo')
+
+    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'dxl_move'})
+    def waffle_factory_dxl_move(self, dxl_id: str, position: int):
+        self.publish_prefix({
+            'category': 'dxl_move',
+            'dxl_id': dxl_id,
+            'position': position,
+        }, 'niryo')
+
 
 class ScenarioD1(Scenario):
-    @on_event(filter={'widget_id': 'stairs_trapdoor_open'})
-    def button_stairs_trapdoor_open(self):
-        self.publish_prefix({'category': 'low'}, 'stairs_trapdoor')
-
-    @on_event(filter={'widget_id': 'stairs_trapdoor_close'})
-    def button_stairs_trapdoor_close(self):
-        self.publish_prefix({'category': 'high'}, 'stairs_trapdoor')
+    pass
 
 
 class ScenarioD2(Scenario):

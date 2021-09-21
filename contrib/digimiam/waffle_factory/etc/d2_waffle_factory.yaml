@@ -15,17 +15,17 @@ serials:
 
 motor_default_step_delay: 3000
 motors:
-  a:
+  niryo:
     index: 0
-  b:
+  short_one:
     index: 1
-  c:
+  printer:
     index: 2
-  d:
+  extractor:
     index: 3
-  e:
+  reloader:
     index: 4
-  f:
+  finisher:
     index: 5
 
 light_led:

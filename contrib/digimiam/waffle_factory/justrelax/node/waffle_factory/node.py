@@ -18,7 +18,7 @@ class ArduinoProtocol:
     N_PULSES = "n"
     LIMINARY_STEP_DELAY = "lsd"
     LIMINARY_N_PULSES = "ln"
-    SET_N_PULSES = "snp"
+    STOP = "stop"
 
     SET_LED_TARGET_FREQ = "t"
     SET_LED_FREQ = "q"
@@ -149,25 +149,17 @@ class WaffleFactory(MagicNode):
             port='/dev/factory',
         )
 
-    @on_event(filter={'category': 'motor_set_n_pulses'})
-    def event_motor_set_clock(self, motor_id: str, n_pulses: int):
-        logger.info("Setting motor {} n_pulses".format(motor_id))
-
-        motor_index = self.motors[motor_id]['index']
-
-        self.send_serial(
-            {
-                ArduinoProtocol.CATEGORY: ArduinoProtocol.SET_N_PULSES,
-                ArduinoProtocol.MOTOR_INDEX: motor_index,
-                ArduinoProtocol.N_PULSES: n_pulses,
-            },
-            port='/dev/factory',
-        )
-
     @on_event(filter={'category': 'motor_stop'})
     def event_stop_motor(self, motor_id: str):
         logger.info("Stopping motor {}".format(motor_id))
-        self.event_motor_set_clock(motor_id, 0)
+        motor_index = self.motors[motor_id]['index']
+        self.send_serial(
+            {
+                ArduinoProtocol.CATEGORY: ArduinoProtocol.STOP,
+                ArduinoProtocol.MOTOR_INDEX: motor_index,
+            },
+            port='/dev/factory',
+        )
 
     @on_event(filter={'category': 'light_on'})
     def event_light_on(self, led_id: str):

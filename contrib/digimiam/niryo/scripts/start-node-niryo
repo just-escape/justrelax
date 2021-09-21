@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-from justrelax.node.niryo import run_node
+from justrelax.core.node import run_node
+from justrelax.node.niryo import Niryo
 
 
 if __name__ == "__main__":
-    run_node()
+    run_node(Niryo)
