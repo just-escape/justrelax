@@ -1,10 +1,170 @@
 [
 {
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "scenario",
+    "model": "scenario"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "scenario",
+    "model": "room"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "scenario",
+    "model": "camera"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "session",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 11,
+  "fields": {
+    "app_label": "session",
+    "model": "record"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 12,
+  "fields": {
+    "app_label": "live",
+    "model": "card"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 13,
+  "fields": {
+    "app_label": "live",
+    "model": "cardrow"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 14,
+  "fields": {
+    "app_label": "editor",
+    "model": "template"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 15,
+  "fields": {
+    "app_label": "editor",
+    "model": "variable"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 16,
+  "fields": {
+    "app_label": "editor",
+    "model": "templatelink"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 17,
+  "fields": {
+    "app_label": "editor",
+    "model": "templatecontextparagraph"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 18,
+  "fields": {
+    "app_label": "editor",
+    "model": "rule"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 19,
+  "fields": {
+    "app_label": "editor",
+    "model": "ruleset"
+  }
+},
+{
   "model": "scenario.scenario",
   "pk": 1,
   "fields": {
     "name": "Le Digimiam",
     "index": 0
+  }
+},
+{
+  "model": "scenario.scenario",
+  "pk": 2,
+  "fields": {
+    "name": "Just Escape",
+    "index": 1
   }
 },
 {
@@ -25,6 +185,16 @@
     "cardinal": "Room 2",
     "channel": "digimiam2",
     "index": 1
+  }
+},
+{
+  "model": "scenario.room",
+  "pk": 3,
+  "fields": {
+    "scenario": 2,
+    "cardinal": null,
+    "channel": "justescape",
+    "index": 2
   }
 },
 {
@@ -184,6 +354,69 @@
   }
 },
 {
+  "model": "live.card",
+  "pk": 54,
+  "fields": {
+    "rule_set": 1,
+    "name": "Usine à gaufres",
+    "index": 10
+  }
+},
+{
+  "model": "live.card",
+  "pk": 55,
+  "fields": {
+    "rule_set": 1,
+    "name": "Baguettes",
+    "index": 11
+  }
+},
+{
+  "model": "live.card",
+  "pk": 56,
+  "fields": {
+    "rule_set": 3,
+    "name": "Spécifique D1",
+    "index": 0
+  }
+},
+{
+  "model": "live.card",
+  "pk": 57,
+  "fields": {
+    "rule_set": 4,
+    "name": "Casiers",
+    "index": 0
+  }
+},
+{
+  "model": "live.card",
+  "pk": 58,
+  "fields": {
+    "rule_set": 1,
+    "name": "Global",
+    "index": 13
+  }
+},
+{
+  "model": "live.card",
+  "pk": 59,
+  "fields": {
+    "rule_set": 5,
+    "name": "Spécifique D2",
+    "index": 0
+  }
+},
+{
+  "model": "live.card",
+  "pk": 60,
+  "fields": {
+    "rule_set": 4,
+    "name": "Shutdown",
+    "index": 1
+  }
+},
+{
   "model": "live.cardrow",
   "pk": 2,
   "fields": {
@@ -191,7 +424,7 @@
     "name": "Blanc",
     "index": 2,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"lights_on_white\",\"icon\": \"fa-fw far fa-sun\", \"event\": {\"category\": \"on\", \"color\": \"white\"}, \"node\": \"refectory_lights\"},{\"id\":\"lights_off_white\",\"icon\":\"fa-fw fas fa-power-off\", \"event\": {\"category\": \"off\", \"color\": \"white\"}, \"node\": \"refectory_lights\"}]"
+    "widget_params": "[{\"id\":\"refectory_lights\",\"icon\": \"fa-fw far fa-sun\", \"extra\": {\"on\": true, \"color\": \"white\"}},{\"id\":\"refectory_lights\",\"icon\":\"fa-fw fas fa-power-off\", \"extra\": {\"on\": false, \"color\": \"white\"}}]"
   }
 },
 {
@@ -202,7 +435,7 @@
     "name": "Bleu",
     "index": 3,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"lights_on_blue\",\"icon\": \"fa-fw far fa-sun\", \"event\": {\"category\": \"on\", \"color\": \"blue\"}, \"node\": \"refectory_lights\"},{\"id\":\"lights_off_blue\",\"icon\":\"fa-fw fas fa-power-off\", \"event\": {\"category\": \"off\", \"color\": \"blue\"}, \"node\": \"refectory_lights\"}]"
+    "widget_params": "[{\"id\":\"refectory_lights_glitch\",\"icon\": \"fa-fw fas fa-cloud-sun-rain\", \"extra\": {\"color\": \"blue\"}},{\"id\":\"refectory_lights_stop_glitch\",\"icon\": \"fa-fw fas fa-check\", \"extra\": {\"color\": \"blue\"}},{\"id\":\"refectory_lights\",\"icon\": \"fa-fw far fa-sun\", \"extra\": {\"on\": true, \"color\": \"blue\"}},{\"id\":\"refectory_lights\",\"icon\":\"fa-fw fas fa-power-off\", \"extra\": {\"on\": false, \"color\": \"blue\"}}]"
   }
 },
 {
@@ -213,7 +446,7 @@
     "name": "Orange",
     "index": 4,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"lights_on_orange\",\"icon\": \"fa-fw far fa-sun\", \"event\": {\"category\": \"on\", \"color\": \"orange\"}, \"node\": \"refectory_lights\"},{\"id\":\"lights_off_orange\",\"icon\":\"fa-fw fas fa-power-off\", \"event\": {\"category\": \"off\", \"color\": \"orange\"}, \"node\": \"refectory_lights\"}]"
+    "widget_params": "[{\"id\":\"refectory_lights_glitch\",\"icon\": \"fa-fw fas fa-cloud-sun-rain\", \"extra\": {\"color\": \"orange\"}},{\"id\":\"refectory_lights_stop_glitch\",\"icon\": \"fa-fw fas fa-check\", \"extra\": {\"color\": \"orange\"}},{\"id\":\"refectory_lights\",\"icon\": \"fa-fw far fa-sun\", \"extra\": {\"on\": true, \"color\": \"orange\"}},{\"id\":\"refectory_lights\",\"icon\":\"fa-fw fas fa-power-off\", \"extra\": {\"on\": false, \"color\": \"orange\"}}]"
   }
 },
 {
@@ -224,7 +457,7 @@
     "name": "Vert",
     "index": 5,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"lights_on_green\",\"icon\": \"fa-fw far fa-sun\", \"event\": {\"category\": \"on\", \"color\": \"green\"}, \"node\": \"refectory_lights\"},{\"id\":\"lights_off_green\",\"icon\":\"fa-fw fas fa-power-off\", \"event\": {\"category\": \"off\", \"color\": \"green\"}, \"node\": \"refectory_lights\"}]"
+    "widget_params": "[{\"id\":\"refectory_lights_glitch\",\"icon\": \"fa-fw fas fa-cloud-sun-rain\", \"extra\": {\"color\": \"green\"}},{\"id\":\"refectory_lights_stop_glitch\",\"icon\": \"fa-fw fas fa-check\", \"extra\": {\"color\": \"green\"}},{\"id\":\"refectory_lights\",\"icon\": \"fa-fw far fa-sun\", \"extra\": {\"on\": true, \"color\": \"green\"}},{\"id\":\"refectory_lights\",\"icon\":\"fa-fw fas fa-power-off\", \"extra\": {\"on\": false, \"color\": \"green\"}}]"
   }
 },
 {
@@ -235,7 +468,7 @@
     "name": "Rouge",
     "index": 6,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"lights_on_red\",\"icon\": \"fa-fw far fa-sun\", \"event\": {\"category\": \"on\", \"color\": \"red\"}, \"node\": \"refectory_lights\"},{\"id\":\"lights_off_red\",\"icon\":\"fa-fw fas fa-power-off\", \"event\": {\"category\": \"off\", \"color\": \"red\"}, \"node\": \"refectory_lights\"}]"
+    "widget_params": "[{\"id\":\"refectory_lights_glitch\",\"icon\": \"fa-fw fas fa-cloud-sun-rain\", \"extra\": {\"color\": \"red\"}},{\"id\":\"refectory_lights_stop_glitch\",\"icon\": \"fa-fw fas fa-check\", \"extra\": {\"color\": \"red\"}},{\"id\":\"refectory_lights\",\"icon\": \"fa-fw far fa-sun\", \"extra\": {\"on\": true, \"color\": \"red\"}},{\"id\":\"refectory_lights\",\"icon\":\"fa-fw fas fa-power-off\", \"extra\": {\"on\": false, \"color\": \"red\"}}]"
   }
 },
 {
@@ -246,7 +479,7 @@
     "name": "Rose",
     "index": 7,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"lights_on_pink\",\"icon\": \"fa-fw far fa-sun\", \"event\": {\"category\": \"on\", \"color\": \"pink\"}, \"node\": \"refectory_lights\"},{\"id\":\"lights_off_pink\",\"icon\":\"fa-fw fas fa-power-off\", \"event\": {\"category\": \"off\", \"color\": \"pink\"}, \"node\": \"refectory_lights\"}]"
+    "widget_params": "[{\"id\":\"refectory_lights_glitch\",\"icon\": \"fa-fw fas fa-cloud-sun-rain\", \"extra\": {\"color\": \"pink\"}},{\"id\":\"refectory_lights_stop_glitch\",\"icon\": \"fa-fw fas fa-check\", \"extra\": {\"color\": \"pink\"}},{\"id\":\"refectory_lights\",\"icon\": \"fa-fw far fa-sun\", \"extra\": {\"on\": true, \"color\": \"pink\"}},{\"id\":\"refectory_lights\",\"icon\":\"fa-fw fas fa-power-off\", \"extra\": {\"on\": false, \"color\": \"pink\"}}]"
   }
 },
 {
@@ -257,7 +490,7 @@
     "name": "Table",
     "index": 4,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"control_table_up\",\"icon\":\"fa-fw fas fa-arrow-up\", \"event\": {\"category\": \"table_up\"}, \"node\": \"control_panel\"},{\"id\":\"control_table_down\",\"icon\":\"fa-fw fas fa-arrow-down\", \"event\": {\"category\": \"table_down\"}, \"node\": \"control_panel\"},{\"id\":\"control_table_stop\",\"icon\":\"fa-fw far fa-hand-paper\", \"event\": {\"category\": \"table_stop\"}, \"node\": \"control_panel\"}]"
+    "widget_params": "[{\"id\":\"control_table_up\",\"icon\":\"fa-fw fas fa-arrow-up\"},{\"id\":\"control_table_down\",\"icon\":\"fa-fw fas fa-arrow-down\"},{\"id\":\"control_table_stop\",\"icon\":\"fa-fw far fa-hand-paper\"}]"
   }
 },
 {
@@ -268,7 +501,7 @@
     "name": "Status panel",
     "index": 1,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"set_ventilation_panel_status_inactive\",\"icon\":\"fa-fw fas fa-lock\", \"event\": {\"category\": \"set_status\", \"status\": \"inactive\"}, \"node\": \"ventilation_panel\"},{\"id\":\"set_ventilation_panel_status_playing\",\"icon\":\"fa-fw fas fa-gamepad\", \"event\": {\"category\": \"set_status\", \"status\": \"playing\"}, \"node\": \"ventilation_panel\"},{\"id\":\"set_ventilation_panel_status_success\",\"icon\": \"fa-fw fas fa-check\", \"event\": {\"category\": \"set_status\", \"status\": \"success\"}, \"node\": \"ventilation_panel\"}]"
+    "widget_params": "[{\"id\":\"set_ventilation_panel_status_inactive\",\"icon\":\"fa-fw fas fa-lock\"},{\"id\":\"set_ventilation_panel_status_playing\",\"icon\":\"fa-fw fas fa-gamepad\"},{\"id\":\"set_ventilation_panel_status_success\",\"icon\": \"fa-fw fas fa-check\"}]"
   }
 },
 {
@@ -279,7 +512,7 @@
     "name": "Difficulté",
     "index": 2,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"set_ventilation_panel_difficulty_easy\",\"icon\":\"fa-fw fas fa-dice-one\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"easy\"}, \"node\": \"ventilation_panel\"}, {\"id\":\"set_ventilation_panel_difficulty_normal\",\"icon\":\"fa-fw fas fa-dice-two\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"normal\"}, \"node\": \"ventilation_panel\"},{\"id\":\"set_ventilation_panel_difficulty_hard\",\"icon\":\"fa-fw fas fa-dice-three\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"hard\"}, \"node\": \"ventilation_panel\"}]"
+    "widget_params": "[{\"id\":\"set_ventilation_panel_difficulty_easy\",\"icon\":\"fa-fw fas fa-dice-one\"}, {\"id\":\"set_ventilation_panel_difficulty_normal\",\"icon\":\"fa-fw fas fa-dice-two\"},{\"id\":\"set_ventilation_panel_difficulty_hard\",\"icon\":\"fa-fw fas fa-dice-three\"}]"
   }
 },
 {
@@ -290,7 +523,7 @@
     "name": "Status",
     "index": 0,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"reset_orders\",\"icon\":\"fa-fw fas fa-undo-alt\", \"event\": {\"category\": \"reset\"}, \"node\": \"orders\"},{\"id\": \"stop_orders_overlay_video\",\"icon\":\"fa-fw fas fa-video-slash\", \"event\": {\"category\": \"stop_overlay_video\"}, \"node\": \"orders\"},{\"id\": \"display_orders_danger_window\",\"icon\":\"fa-fw fas fa-exclamation-triangle\", \"event\": {\"category\": \"display_danger_window\"}, \"node\": \"orders\"}]"
+    "widget_params": "[{\"id\":\"reset_orders\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\": \"stop_orders_overlay_video\",\"icon\":\"fa-fw fas fa-video-slash\"},{\"id\": \"display_orders_danger_window\",\"icon\":\"fa-fw fas fa-exclamation-triangle\"}]"
   }
 },
 {
@@ -301,7 +534,7 @@
     "name": "Reset (énigme entière)",
     "index": 1,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"reset_inventory\",\"icon\":\"fa-fw fas fa-undo-alt\", \"event\": {\"category\": \"reset\"}, \"node\": \"inventory\"}]"
+    "widget_params": "[{\"id\":\"reset_inventory\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"inventory_black_screen\",\"icon\":\"fa-fw fas fa-video\", \"extra\": {\"display\": false}},{\"id\": \"inventory_black_screen\",\"icon\":\"fa-fw fas fa-video-slash\", \"extra\": {\"display\": true}},{\"id\": \"display_inventory_danger_window\",\"icon\":\"fa-fw fas fa-exclamation-triangle\"}]"
   }
 },
 {
@@ -312,7 +545,7 @@
     "name": "Difficulté",
     "index": 2,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"set_inventory_difficulty_easy\",\"icon\":\"fa-fw fas fa-dice-one\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"easy\"}, \"node\": \"inventory\"},{\"id\": \"set_inventory_difficulty_normal\",\"icon\": \"fa-fw fas fa-dice-two\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"normal\"}, \"node\": \"inventory\"},{\"id\": \"set_inventory_difficulty_hard\",\"icon\":\"fa-fw fas fa-dice-three\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"hard\"}, \"node\": \"inventory\"}]"
+    "widget_params": "[{\"id\":\"set_inventory_difficulty_easy\",\"icon\":\"fa-fw fas fa-dice-one\"},{\"id\": \"set_inventory_difficulty_normal\",\"icon\": \"fa-fw fas fa-dice-two\"},{\"id\": \"set_inventory_difficulty_hard\",\"icon\":\"fa-fw fas fa-dice-three\"}]"
   }
 },
 {
@@ -323,7 +556,7 @@
     "name": "Volume master",
     "index": 1,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"volume_mut_master\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_master\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_master\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_master\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player_set_master_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0}},{\"id\":\"music_player_set_master_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40}},{\"id\":\"music_player_set_master_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70}},{\"id\":\"music_player_set_master_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100}}]"
   }
 },
 {
@@ -334,7 +567,7 @@
     "name": "Track 1",
     "index": 2,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track1\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track1\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track1\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track1\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track1\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track1\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track1\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track1\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track1\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track1\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track1\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track1\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track1\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track1\"}}]"
   }
 },
 {
@@ -345,7 +578,7 @@
     "name": "Track 2",
     "index": 3,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track2\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track2\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track2\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track2\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track2\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track2\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track2\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track2\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track2\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track2\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track2\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track2\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track2\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track2\"}}]"
   }
 },
 {
@@ -356,7 +589,7 @@
     "name": "Track 3",
     "index": 4,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track3\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track3\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track3\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track3\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track3\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track3\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track3\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track3\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track3\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track3\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track3\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track3\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track3\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track3\"}}]"
   }
 },
 {
@@ -367,7 +600,7 @@
     "name": "Track 3.5",
     "index": 5,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track35\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track35\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track35\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track35\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track35\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track35\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track35\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track35\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track35\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track35\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track35\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track35\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track35\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track35\"}}]"
   }
 },
 {
@@ -378,7 +611,7 @@
     "name": "Track 4",
     "index": 6,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track4\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track4\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track4\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track4\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track4\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track4\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track4\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track4\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track4\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track4\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track4\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track4\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track4\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track4\"}}]"
   }
 },
 {
@@ -389,7 +622,7 @@
     "name": "Track 5",
     "index": 7,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track5\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track5\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track5\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track5\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track5\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track5\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track5\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track5\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track5\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track5\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track5\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track5\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track5\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track5\"}}]"
   }
 },
 {
@@ -400,7 +633,7 @@
     "name": "Track 6.1",
     "index": 8,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track61\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track61\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track61\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track61\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track61\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track61\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track61\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track61\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track61\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track61\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track61\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track61\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track61\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track61\"}}]"
   }
 },
 {
@@ -411,7 +644,7 @@
     "name": "Track 6.2",
     "index": 9,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track62\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track62\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track62\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track62\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track62\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track62\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track62\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track62\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track62\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track62\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track62\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track62\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track62\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track62\"}}]"
   }
 },
 {
@@ -422,7 +655,7 @@
     "name": "Track 6.3",
     "index": 10,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track63\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track63\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track63\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track63\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track63\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track63\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track63\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track63\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track63\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track63\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track63\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track63\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track63\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track63\"}}]"
   }
 },
 {
@@ -433,7 +666,7 @@
     "name": "Track 7",
     "index": 11,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track7\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track7\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track7\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track7\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track7\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track7\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track7\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track7\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track7\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track7\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track7\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track7\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track7\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track7\"}}]"
   }
 },
 {
@@ -444,7 +677,7 @@
     "name": "Track 8",
     "index": 12,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track8\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track8\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track8\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track8\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track8\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track8\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track8\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track8\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track8\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track8\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track8\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track8\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track8\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track8\"}}]"
   }
 },
 {
@@ -455,7 +688,7 @@
     "name": "Track 9.1",
     "index": 13,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track91\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track91\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track91\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track91\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track91\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track91\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track91\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track91\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track91\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track91\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track91\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track91\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track91\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track91\"}}]"
   }
 },
 {
@@ -466,7 +699,7 @@
     "name": "Track 9.2",
     "index": 14,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"play_track92\",\"icon\":\"fa-fw fas fa-play\"},{\"id\":\"pause_track92\",\"icon\":\"fa-fw fas fa-pause\"},{\"id\":\"stop_track92\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"volume_mut_track92\",\"icon\":\"fa-fw fas fa-volume-mute\"},{\"id\":\"volume_low_track92\",\"icon\":\"fa-fw fas fa-volume-off\"},{\"id\":\"volume_mid_track92\",\"icon\":\"fa-fw fas fa-volume-down\"},{\"id\":\"volume_max_track92\",\"icon\":\"fa-fw fas fa-volume-up\"}]"
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track92\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track92\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track92\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track92\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track92\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track92\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track92\"}}]"
   }
 },
 {
@@ -477,7 +710,7 @@
     "name": "Digicode",
     "index": 0,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"server_room_lock_reset\",\"icon\":\"fa-fw fas fa-undo-alt\", \"event\": {\"category\": \"reset\"}, \"node\": \"digital_lock\"},{\"id\":\"server_room_lock_enable\",\"icon\":\"fa-fw fas fa-gamepad\", \"event\": {\"category\": \"enable\"}, \"node\": \"digital_lock\"}]"
+    "widget_params": "[{\"id\":\"server_room_lock_reset\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"server_room_lock_enable\",\"icon\":\"fa-fw fas fa-gamepad\"}]"
   }
 },
 {
@@ -488,7 +721,7 @@
     "name": "Status",
     "index": 1,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"control_set_status_inactive\",\"icon\":\"fa-fw fas fa-lock\", \"event\": {\"category\": \"set_status\", \"status\": \"inactive\"}, \"node\": \"control_panel\"},{\"id\":\"control_set_status_playing\",\"icon\":\"fa-fw fas fa-gamepad\", \"event\": {\"category\": \"set_status\", \"status\": \"playing\"}, \"node\": \"control_panel\"}]"
+    "widget_params": "[{\"id\":\"control_set_status_inactive\",\"icon\":\"fa-fw fas fa-lock\"},{\"id\":\"control_set_status_playing\",\"icon\":\"fa-fw fas fa-gamepad\"}]"
   }
 },
 {
@@ -499,7 +732,7 @@
     "name": "Lights status",
     "index": 2,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"control_lights_set_status_repaired_0\",\"icon\":\"fa-fw fas fa-times\", \"event\": {\"category\": \"set_lights_service_status\", \"repaired\": 0}, \"node\": \"control_panel\"},{\"id\":\"control_lights_set_status_repaired_1\",\"icon\":\"fa-fw fas fa-check\", \"event\": {\"category\": \"set_lights_service_status\", \"repaired\": 1}, \"node\": \"control_panel\"}]"
+    "widget_params": "[{\"id\":\"control_lights_set_status_repaired_0\",\"icon\":\"fa-fw fas fa-times\"},{\"id\":\"control_lights_set_status_repaired_1\",\"icon\":\"fa-fw fas fa-check\"}]"
   }
 },
 {
@@ -510,7 +743,7 @@
     "name": "Menu status",
     "index": 3,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"control_menu_set_status_repaired_0\",\"icon\":\"fa-fw fas fa-times\", \"event\": {\"category\": \"set_menu_service_status\", \"repaired\": 0}, \"node\": \"control_panel\"},{\"id\":\"control_menu_set_status_repaired_1\",\"icon\":\"fa-fw fas fa-check\", \"event\": {\"category\": \"set_menu_service_status\", \"repaired\": 1}, \"node\": \"control_panel\"}]"
+    "widget_params": "[{\"id\":\"control_menu_set_status_repaired_0\",\"icon\":\"fa-fw fas fa-times\"},{\"id\":\"control_menu_set_status_repaired_1\",\"icon\":\"fa-fw fas fa-check\"}]"
   }
 },
 {
@@ -521,7 +754,7 @@
     "name": "Force manual mode",
     "index": 5,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"control_force_manual_mode\",\"icon\":\"fa-fw fas fa-plug\", \"event\": {\"category\": \"force_manual_mode\"}, \"node\": \"control_panel\"}]"
+    "widget_params": "[{\"id\":\"control_force_manual_mode\",\"icon\":\"fa-fw fas fa-plug\"}]"
   }
 },
 {
@@ -532,7 +765,7 @@
     "name": "Machine à fumée",
     "index": 1,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"fog_machine_turn_on\",\"icon\":\"fa-fw fas fa-temperature-high\",\"event\":{\"category\":\"on\"},\"node\":\"fog_machine\"},{\"id\": \"fog_machine_turn_off\",\"icon\": \"fa-fw fas fa-power-off\",\"event\":{\"category\":\"off\"},\"node\":\"fog_machine\"},{\"id\": \"fog_machine_send_fog\",\"icon\":\"fa-fw fas fa-smog\",\"event\":{\"category\":\"send_fog\"},\"node\":\"fog_machine\"},{\"id\":\"fog_machine_continuous_fog\",\"icon\":\"fa-fw fas fa-infinity\",\"event\":{\"category\":\"send_fog_forever\"},\"node\":\"fog_machine\"},{\"id\":\"fog_machine_stop_fog\",\"icon\":\"fa-fw fas fa-ban\",\"event\":{\"category\":\"stop_sending_fog_forever\"},\"node\":\"fog_machine\"}]"
+    "widget_params": "[{\"id\":\"fog_machine_turn_on\",\"icon\":\"fa-fw fas fa-temperature-high\"},{\"id\": \"fog_machine_turn_off\",\"icon\": \"fa-fw fas fa-power-off\"},{\"id\": \"fog_machine_send_fog\",\"icon\":\"fa-fw fas fa-smog\"},{\"id\":\"fog_machine_continuous_fog\",\"icon\":\"fa-fw fas fa-infinity\"},{\"id\":\"fog_machine_stop_fog\",\"icon\":\"fa-fw fas fa-ban\"}]"
   }
 },
 {
@@ -543,7 +776,7 @@
     "name": "Contrôles (1/2)",
     "index": 2,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"sokoban_control_up\",\"icon\":\"fa-fw fas fa-chevron-up\", \"event\": {\"category\": \"control\", \"name\": \"up\", \"pressed\": true}, \"node\": \"inventory\"},{\"id\":\"sokoban_control_reset\",\"icon\":\"fa-fw fas fa-undo-alt\", \"event\": {\"category\": \"control\", \"name\": \"reset\", \"pressed\": true}, \"node\": \"inventory\"}]"
+    "widget_params": "[{\"id\":\"sokoban_control_up\",\"icon\":\"fa-fw fas fa-chevron-up\"},{\"id\":\"sokoban_control_reset\",\"icon\":\"fa-fw fas fa-undo-alt\"}]"
   }
 },
 {
@@ -554,7 +787,7 @@
     "name": "Contrôles (2/2)",
     "index": 3,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"sokoban_control_left\",\"icon\":\"fa-fw fas fa-chevron-left\", \"event\": {\"category\": \"control\", \"name\": \"left\", \"pressed\": true}, \"node\": \"inventory\"},{\"id\":\"sokoban_control_down\",\"icon\":\"fa-fw fas fa-chevron-down\", \"event\": {\"category\": \"control\", \"name\": \"down\", \"pressed\": true}, \"node\": \"inventory\"},{\"id\":\"sokoban_control_right\",\"icon\":\"fa-fw fas fa-chevron-right\", \"event\": {\"category\": \"control\", \"name\": \"right\", \"pressed\": true}, \"node\": \"inventory\"}]"
+    "widget_params": "[{\"id\":\"sokoban_control_left\",\"icon\":\"fa-fw fas fa-chevron-left\"},{\"id\":\"sokoban_control_down\",\"icon\":\"fa-fw fas fa-chevron-down\"},{\"id\":\"sokoban_control_right\",\"icon\":\"fa-fw fas fa-chevron-right\"}]"
   }
 },
 {
@@ -565,7 +798,7 @@
     "name": "Lumières",
     "index": 0,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"stock_lights_high\",\"icon\": \"fa-fw far fa-sun\", \"event\": {\"category\": \"high\"}, \"node\": \"stock_lights\"},{\"id\":\"stock_lights_low\",\"icon\": \"fa-fw far fa-moon\", \"event\": {\"category\": \"low\"}, \"node\": \"stock_lights\"},{\"id\":\"stock_lights_off\",\"icon\":\"fa-fw fas fa-power-off\", \"event\": {\"category\": \"off\"}, \"node\": \"stock_lights\"}]"
+    "widget_params": "[{\"id\":\"stock_lights_high\",\"icon\": \"fa-fw far fa-sun\"},{\"id\":\"stock_lights_low\",\"icon\": \"fa-fw far fa-moon\"},{\"id\":\"stock_lights_off\",\"icon\":\"fa-fw fas fa-power-off\"}]"
   }
 },
 {
@@ -576,7 +809,7 @@
     "name": "Urgence",
     "index": 1,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"emergency_exit_unlock_to_outside\",\"icon\":\"fa-fw fas fa-door-open\", \"event\": {\"category\": \"unlock\", \"magnet_id\": \"to_outside\"}, \"node\": \"emergency_exit\"},{\"id\":\"emergency_exit_unlock_stock_to_machine\",\"icon\":\"fa-fw fas fa-dungeon\", \"event\": {\"category\": \"unlock\", \"magnet_id\": \"stock_to_machine\"}, \"node\": \"emergency_exit\"}, {\"id\":\"emergency_exit_unlock\",\"icon\":\"fa-fw fas fa-lock-open\", \"event\": {\"category\": \"unlock\"}, \"node\": \"emergency_exit\"},{\"id\":\"emergency_exit_lock\",\"icon\":\"fa-fw fas fa-lock\", \"event\": {\"category\": \"lock\"}, \"node\": \"emergency_exit\"}]"
+    "widget_params": "[{\"id\":\"emergency_exit_unlock_to_outside\",\"icon\":\"fa-fw fas fa-door-open\"},{\"id\":\"emergency_exit_unlock_stock_to_machine\",\"icon\":\"fa-fw fas fa-dungeon\"}, {\"id\":\"emergency_exit_unlock\",\"icon\":\"fa-fw fas fa-lock-open\"},{\"id\":\"emergency_exit_lock\",\"icon\":\"fa-fw fas fa-lock\"}]"
   }
 },
 {
@@ -587,7 +820,7 @@
     "name": "Difficulté lasers",
     "index": 4,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"set_lasers_difficulty_easy\",\"icon\":\"fa-fw fas fa-dice-one\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"easy\"}, \"node\": \"laser_maze\"},{\"id\": \"set_lasers_difficulty_normal\",\"icon\": \"fa-fw fas fa-dice-two\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"normal\"}, \"node\": \"laser_maze\"},{\"id\": \"set_lasers_difficulty_hard\",\"icon\":\"fa-fw fas fa-dice-three\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"hard\"}, \"node\": \"laser_maze\"}]"
+    "widget_params": "[{\"id\":\"set_lasers_difficulty_easy\",\"icon\":\"fa-fw fas fa-dice-one\"},{\"id\": \"set_lasers_difficulty_normal\",\"icon\": \"fa-fw fas fa-dice-two\"},{\"id\": \"set_lasers_difficulty_hard\",\"icon\":\"fa-fw fas fa-dice-three\"}]"
   }
 },
 {
@@ -609,7 +842,7 @@
     "name": "Status",
     "index": 0,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"reset_synchronizer\",\"icon\":\"fa-fw fas fa-undo-alt\",\"event\": {\"category\": \"reset\"}, \"node\": \"synchronizer\"},{\"id\": \"stop_synchronizer_overlay_video\",\"icon\":\"fa-fw fas fa-video-slash\", \"event\": {\"category\": \"stop_overlay_video\"}, \"node\": \"synchronizer\"},{\"id\": \"display_synchronizer_danger_window\",\"icon\":\"fa-fw fas fa-exclamation-triangle\", \"event\": {\"category\": \"display_danger_window\"}, \"node\": \"synchronizer\"}]"
+    "widget_params": "[{\"id\":\"reset_synchronizer\",\"icon\":\"fa-fw fas fa-undo-alt\"},{\"id\":\"synchronizer_restaurant_in_manual_mode\",\"icon\":\"fa-fw fas fa-gamepad\"},{\"id\": \"display_synchronizer_danger_window\",\"icon\":\"fa-fw fas fa-exclamation-triangle\"}]"
   }
 },
 {
@@ -618,9 +851,9 @@
   "fields": {
     "card": 52,
     "name": "Difficulté",
-    "index": 1,
+    "index": 2,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"set_synchronizer_difficulty_easy\",\"icon\":\"fa-fw fas fa-dice-one\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"easy\"}, \"node\": \"synchronizer\"}, {\"id\":\"set_synchronizer_difficulty_normal\",\"icon\":\"fa-fw fas fa-dice-two\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"normal\"}, \"node\": \"synchronizer\"},{\"id\":\"set_synchronizer_difficulty_hard\",\"icon\":\"fa-fw fas fa-dice-three\", \"event\": {\"category\": \"set_difficulty\", \"difficulty\": \"hard\"}, \"node\": \"synchronizer\"}]"
+    "widget_params": "[{\"id\":\"set_synchronizer_difficulty_easy\",\"icon\":\"fa-fw fas fa-dice-one\"}, {\"id\":\"set_synchronizer_difficulty_normal\",\"icon\":\"fa-fw fas fa-dice-two\"},{\"id\":\"set_synchronizer_difficulty_hard\",\"icon\":\"fa-fw fas fa-dice-three\"}]"
   }
 },
 {
@@ -631,7 +864,7 @@
     "name": "Visibilité Marmitron",
     "index": 1,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"orders_show_marmitron\",\"icon\":\"fa-fw fas fa-video\",\"event\": {\"category\": \"set_marmitron_visibility\", \"show\": true}, \"node\": \"orders\"},{\"id\": \"orders_hide_marmitron\",\"icon\":\"fa-fw fas fa-video-slash\", \"event\": {\"category\": \"set_marmitron_visibility\", \"show\": false}, \"node\": \"orders\"}]"
+    "widget_params": "[{\"id\": \"orders_hide_marmitron\",\"icon\":\"fa-fw fas fa-video-slash\"}]"
   }
 },
 {
@@ -642,7 +875,7 @@
     "name": "Restaurant ouvert ?",
     "index": 2,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"orders_set_restaurant_open\",\"icon\":\"fa-fw fas fa-door-open\",\"event\": {\"category\": \"set_restaurant_status\", \"closed\": false}, \"node\": \"orders\"},{\"id\": \"orders_set_restaurant_closed\",\"icon\":\"fa-fw fas fa-door-closed\", \"event\": {\"category\": \"set_restaurant_status\", \"closed\": false}, \"node\": \"orders\"}]"
+    "widget_params": "[{\"id\":\"orders_set_restaurant_open\",\"icon\":\"fa-fw fas fa-door-open\"},{\"id\": \"orders_set_restaurant_closed\",\"icon\":\"fa-fw fas fa-door-closed\"}]"
   }
 },
 {
@@ -653,7 +886,7 @@
     "name": "Vidéo glitchs",
     "index": 3,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"orders_play_glitching\",\"icon\":\"fa-fw fas fa-dice-one\",\"event\": {\"category\": \"play_overlay_video\", \"video_id\": \"glitching\"}, \"node\": \"orders\"},{\"id\": \"orders_play_glitching_less\",\"icon\":\"fa-fw fas fa-dice-two\", \"event\": {\"category\": \"play_overlay_video\", \"video_id\": \"glitching_less\"}, \"node\": \"orders\"}]"
+    "widget_params": "[{\"id\":\"orders_play_glitching\",\"icon\":\"fa-fw fas fa-dice-one\"},{\"id\": \"orders_play_glitching_less\",\"icon\":\"fa-fw fas fa-dice-two\"}]"
   }
 },
 {
@@ -664,7 +897,7 @@
     "name": "Mme Poivre stock",
     "index": 4,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"orders_play_ms_pepper_stock\",\"icon\":\"fa-fw fas fa-video\",\"event\": {\"category\": \"play_overlay_video\", \"video_id\": \"ms_pepper_stock\"}, \"node\": \"orders\"}]"
+    "widget_params": "[{\"id\":\"orders_play_ms_pepper_stock\",\"icon\":\"fa-fw fas fa-video\"}]"
   }
 },
 {
@@ -675,7 +908,7 @@
     "name": "Mme Poivre merci",
     "index": 6,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"orders_play_ms_pepper_says_thanks\",\"icon\":\"fa-fw fas fa-video\",\"event\": {\"category\": \"play_overlay_video\", \"video_id\": \"ms_pepper_says_thanks\"}, \"node\": \"orders\"}]"
+    "widget_params": "[{\"id\":\"orders_play_ms_pepper_says_thanks\",\"icon\":\"fa-fw fas fa-video\"}]"
   }
 },
 {
@@ -686,7 +919,7 @@
     "name": "Vidéo Marmitron",
     "index": 0,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"advertiser_play_street_idle\",\"icon\":\"fa-fw fas fa-video\",\"event\": {\"category\": \"play\", \"video_id\": \"street_idle\"}, \"node\": \"advertiser\"},{\"id\": \"advertiser_stop_street_idle\",\"icon\":\"fa-fw fas fa-video-slash\", \"event\": {\"category\": \"stop\", \"video_id\": \"street_idle\"}, \"node\": \"advertiser\"}]"
+    "widget_params": "[{\"id\":\"advertiser_play_street_idle\",\"icon\":\"fa-fw fas fa-video\"},{\"id\": \"advertiser_stop_street_idle\",\"icon\":\"fa-fw fas fa-video-slash\"}]"
   }
 },
 {
@@ -697,7 +930,7 @@
     "name": "Vidéo publicité glitchée",
     "index": 1,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"advertiser_play_ads_glitch\",\"icon\":\"fa-fw fas fa-video\",\"event\": {\"category\": \"play\", \"video_id\": \"ads_glitch\"}, \"node\": \"advertiser\"},{\"id\": \"advertiser_stop_ads_glitch\",\"icon\":\"fa-fw fas fa-video-slash\", \"event\": {\"category\": \"stop\", \"video_id\": \"ads_glitch\"}, \"node\": \"advertiser\"}]"
+    "widget_params": "[{\"id\":\"advertiser_play_ads_glitch\",\"icon\":\"fa-fw fas fa-video\"},{\"id\": \"advertiser_stop_ads_glitch\",\"icon\":\"fa-fw fas fa-video-slash\"}]"
   }
 },
 {
@@ -705,10 +938,10 @@
   "pk": 274,
   "fields": {
     "card": 29,
-    "name": "Vidéo publicité",
-    "index": 2,
+    "name": "Vidéo pubs",
+    "index": 3,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"advertiser_play_ads_loop\",\"icon\":\"fa-fw fas fa-video\",\"event\": {\"category\": \"play\", \"video_id\": \"ads_loop\"}, \"node\": \"advertiser\"},{\"id\": \"advertiser_stop_ads_loop\",\"icon\":\"fa-fw fas fa-video-slash\", \"event\": {\"category\": \"stop\", \"video_id\": \"ads_loop\"}, \"node\": \"advertiser\"}]"
+    "widget_params": "[{\"id\":\"advertiser_play_ads_loop\",\"icon\":\"fa-fw fas fa-video\"},{\"id\": \"advertiser_stop_ads_loop\",\"icon\":\"fa-fw fas fa-video-slash\"}]"
   }
 },
 {
@@ -717,9 +950,9 @@
   "fields": {
     "card": 29,
     "name": "Vidéo Mme Poivre",
-    "index": 3,
+    "index": 4,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"advertiser_play_ms_pepper_here_you_are\",\"icon\":\"fa-fw fas fa-video\",\"event\": {\"category\": \"play\", \"video_id\": \"ms_pepper_here_you_are\"}, \"node\": \"advertiser\"},{\"id\": \"advertiser_stop_ms_pepper_here_you_are\",\"icon\":\"fa-fw fas fa-video-slash\", \"event\": {\"category\": \"stop\", \"video_id\": \"ms_pepper_here_you_are\"}, \"node\": \"advertiser\"}]"
+    "widget_params": "[{\"id\":\"advertiser_play_ms_pepper_here_you_are\",\"icon\":\"fa-fw fas fa-video\"},{\"id\": \"advertiser_stop_ms_pepper_here_you_are\",\"icon\":\"fa-fw fas fa-video-slash\"}]"
   }
 },
 {
@@ -728,9 +961,9 @@
   "fields": {
     "card": 29,
     "name": "Interface menu",
-    "index": 4,
+    "index": 5,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"street_display_reset\",\"icon\":\"fa-fw fas fa-undo-alt\",\"event\": {\"category\": \"reset\"}, \"node\": \"street_display\"}]"
+    "widget_params": "[{\"id\":\"street_display_reset\",\"icon\":\"fa-fw fas fa-undo-alt\"}]"
   }
 },
 {
@@ -739,9 +972,526 @@
   "fields": {
     "card": 29,
     "name": "Porte",
+    "index": 6,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"front_door_open\",\"icon\":\"fa-fw fas fa-lock-open\"},{\"id\":\"front_door_close\",\"icon\":\"fa-fw fas fa-lock\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 280,
+  "fields": {
+    "card": 54,
+    "name": "Lumière Niryo",
+    "index": 6,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"waffle_factory_light\",\"icon\": \"fa-fw far fa-sun\", \"extra\": {\"led_id\": \"niryo\", \"on\": true}},{\"id\":\"waffle_factory_light\",\"icon\":\"fa-fw fas fa-power-off\", \"extra\": {\"led_id\": \"niryo\", \"on\": false}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 283,
+  "fields": {
+    "card": 54,
+    "name": "LED panier",
     "index": 5,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"front_door_open\",\"icon\":\"fa-fw fas fa-lock-open\", \"event\": {\"category\": \"unlock\"}, \"node\": \"front_door_magnet\"},{\"id\":\"front_door_close\",\"icon\":\"fa-fw fas fa-lock\", \"event\": {\"category\": \"lock\"}, \"node\": \"front_door_magnet\"}]"
+    "widget_params": "[{\"id\":\"waffle_factory_basket_led\",\"icon\":\"fa-fw fas fa-star-half-alt\", \"extra\": {\"action\": \"blink\"}},\r\n{\"id\":\"waffle_factory_basket_led\",\"icon\": \"fa-fw far fa-sun\", \"extra\": {\"action\": \"on\"}},{\"id\":\"waffle_factory_basket_led\",\"icon\":\"fa-fw fas fa-power-off\", \"extra\": {\"action\": \"off\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 284,
+  "fields": {
+    "card": 54,
+    "name": "Trappe",
+    "index": 8,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"waffle_trapdoor_open\",\"icon\":\"fa-fw fas fa-lock-open\"},{\"id\":\"waffle_trapdoor_close\",\"icon\":\"fa-fw fas fa-lock\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 285,
+  "fields": {
+    "card": 54,
+    "name": "Lumière imprimante",
+    "index": 7,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"waffle_factory_light\",\"icon\": \"fa-fw far fa-sun\", \"extra\": {\"led_id\": \"printer\", \"on\": true}},{\"id\":\"waffle_factory_light\",\"icon\":\"fa-fw fas fa-power-off\", \"extra\": {\"led_id\": \"printer\", \"on\": false}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 287,
+  "fields": {
+    "card": 54,
+    "name": "Imprimante (1/2)",
+    "index": 9,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"waffle_factory_printer\",\"icon\":\"fa-fw fas fa-play\", \"extra\": {\"action\": \"resume\"}}, {\"id\":\"waffle_factory_printer\",\"icon\":\"fa-fw fas fa-pause\", \"extra\": {\"action\": \"halt\"}}, {\"id\":\"waffle_factory_printer_move\",\"icon\":\"fa-fw fas fa-chevron-up\", \"extra\": {\"direction\": \"rear\"}},{\"id\":\"waffle_factory_printer\",\"icon\":\"fa-fw fas fa-undo-alt\", \"extra\": {\"action\": \"stop\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 288,
+  "fields": {
+    "card": 54,
+    "name": "Imprimante (2/2)",
+    "index": 10,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"waffle_factory_printer_move\",\"icon\":\"fa-fw fas fa-chevron-left\", \"extra\": {\"direction\": \"left\"}},{\"id\":\"waffle_factory_printer_move\",\"icon\":\"fa-fw fas fa-chevron-down\", \"extra\": {\"direction\": \"front\"}},{\"id\":\"waffle_factory_printer_move\",\"icon\":\"fa-fw fas fa-chevron-right\", \"extra\": {\"direction\": \"right\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 289,
+  "fields": {
+    "card": 55,
+    "name": "Difficulté",
+    "index": 1,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"set_chopsticks_difficulty\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"difficulty\": \"easy\"}}, {\"id\":\"set_chopsticks_difficulty\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"difficulty\": \"normal\"}},{\"id\":\"set_chopsticks_difficulty\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"difficulty\": \"hard\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 290,
+  "fields": {
+    "card": 55,
+    "name": "Status",
+    "index": 0,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"chopsticks_success\",\"icon\":\"fa-fw fas fa-check\"},{\"id\":\"chopsticks_reset\",\"icon\":\"fa-fw fas fa-undo-alt\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 291,
+  "fields": {
+    "card": 55,
+    "name": "C",
+    "index": 2,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 0}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 0}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 292,
+  "fields": {
+    "card": 55,
+    "name": "O",
+    "index": 3,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 1}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 1}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 293,
+  "fields": {
+    "card": 55,
+    "name": "N",
+    "index": 4,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 2}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 2}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 294,
+  "fields": {
+    "card": 55,
+    "name": "T",
+    "index": 5,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 3}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 3}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 295,
+  "fields": {
+    "card": 55,
+    "name": "R",
+    "index": 6,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 4}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 4}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 296,
+  "fields": {
+    "card": 55,
+    "name": "O",
+    "index": 7,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 5}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 5}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 297,
+  "fields": {
+    "card": 55,
+    "name": "L",
+    "index": 8,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 6}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 6}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 298,
+  "fields": {
+    "card": 54,
+    "name": "Four",
+    "index": 11,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"oven_turn_off\",\"icon\":\"fa-fw fas fa-ban\"},{\"id\":\"oven_turn_on\",\"icon\":\"fa-fw fas fa-fire-alt\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 300,
+  "fields": {
+    "card": 29,
+    "name": "Lumières rue",
+    "index": 7,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"street_lights_glitch\",\"icon\": \"fa-fw fas fa-cloud-sun-rain\"},{\"id\":\"street_lights_stop_glitch\",\"icon\": \"fa-fw fas fa-check\"},{\"id\":\"street_lights_on\",\"icon\": \"fa-fw far fa-sun\"},{\"id\":\"street_lights_off\",\"icon\":\"fa-fw fas fa-power-off\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 301,
+  "fields": {
+    "card": 52,
+    "name": "Menu : slide",
+    "index": 3,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"part\": \"slide\", \"slide\": 0}}, {\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"part\": \"slide\", \"slide\": 1}},{\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"part\": \"slide\", \"slide\": 2}},{\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-dice-four\", \"extra\": {\"part\": \"slide\", \"slide\": 3}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 302,
+  "fields": {
+    "card": 52,
+    "name": "Menu : X",
+    "index": 4,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-drumstick-bite\", \"extra\": {\"part\": \"x\", \"x\": 0}}, {\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-pizza-slice\", \"extra\": {\"part\": \"x\", \"x\": 1}}, {\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-stroopwafel\", \"extra\": {\"part\": \"x\", \"x\": 2}}, {\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-glass-whiskey\", \"extra\": {\"part\": \"x\", \"x\": 3}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 303,
+  "fields": {
+    "card": 52,
+    "name": "Menu : Y",
+    "index": 5,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-seedling\", \"extra\": {\"part\": \"y\", \"y\": 0}}, {\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-search\", \"extra\": {\"part\": \"y\", \"y\": 1}}, {\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-bug\", \"extra\": {\"part\": \"y\", \"y\": 2}}, {\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-smile\", \"extra\": {\"part\": \"y\", \"y\": 3}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 304,
+  "fields": {
+    "card": 52,
+    "name": "Menu : error",
+    "index": 7,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"holomenu_set_part\",\"icon\":\"fa-fw fas fa-exclamation-triangle\", \"extra\": {\"part\": \"error\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 305,
+  "fields": {
+    "card": 54,
+    "name": "Niryo aimant",
+    "index": 12,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"niryo_magnetize\",\"icon\":\"fa-fw fas fa-ban\", \"extra\": {\"value\": false}}, {\"id\":\"niryo_magnetize\",\"icon\":\"fa-fw fas fa-magnet\", \"extra\": {\"value\": true}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 307,
+  "fields": {
+    "card": 53,
+    "name": "Module de paiement",
+    "index": 6,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"payment_authenticate\",\"icon\":\"fa-fw fas fa-ring\"},  {\"id\":\"payment_cancel_authentication\",\"icon\":\"fa-fw fas fa-ban\"}, {\"id\":\"payment_status\",\"icon\":\"fa-fw fas fa-gamepad\", \"extra\": {\"status\": \"playing\"}}, {\"id\":\"payment_status\",\"icon\":\"fa-fw fas fa-times\", \"extra\": {\"status\": \"disabled\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 308,
+  "fields": {
+    "card": 57,
+    "name": "Ouverture (1/3)",
+    "index": 0,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"player_lockers_open\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"category\": \"unlock\", \"locker_index\": 0, \"channel\": \"justescape.player_lockers\"}}, {\"id\":\"player_lockers_open\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"category\": \"unlock\", \"locker_index\": 1, \"channel\": \"justescape.player_lockers\"}}, {\"id\":\"player_lockers_open\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"category\": \"unlock\", \"locker_index\": 2, \"channel\": \"justescape.player_lockers\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 309,
+  "fields": {
+    "card": 57,
+    "name": "Ouverture (2/3)",
+    "index": 1,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"player_lockers_open\",\"icon\":\"fa-fw fas fa-dice-four\", \"extra\": {\"category\": \"unlock\", \"locker_index\": 3, \"channel\": \"justescape.player_lockers\"}}, {\"id\":\"player_lockers_open\",\"icon\":\"fa-fw fas fa-dice-five\", \"extra\": {\"category\": \"unlock\", \"locker_index\": 4, \"channel\": \"justescape.player_lockers\"}}, {\"id\":\"player_lockers_open\",\"icon\":\"fa-fw fas fa-dice-six\", \"extra\": {\"category\": \"unlock\", \"locker_index\": 5, \"channel\": \"justescape.player_lockers\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 310,
+  "fields": {
+    "card": 57,
+    "name": "Ouverture (3/3)",
+    "index": 2,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"player_lockers_open\",\"icon\":\"fa-fw fas fa-unlock\", \"extra\": {\"category\": \"unlock_from_bitmask\", \"bitmask\": 63, \"channel\": \"justescape.player_lockers\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 311,
+  "fields": {
+    "card": 52,
+    "name": "Overlay vidéo",
+    "index": 1,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"synchronizer_overlay_video_glitch\",\"icon\":\"fa-fw fas fa-dice-one\"},{\"id\":\"synchronizer_overlay_video_ads\",\"icon\":\"fa-fw fas fa-dice-two\"},{\"id\": \"stop_synchronizer_overlay_video\",\"icon\":\"fa-fw fas fa-video-slash\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 312,
+  "fields": {
+    "card": 52,
+    "name": "Succès forcé",
+    "index": 8,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"synchronizer_success_lights\",\"icon\":\"fa-fw fas fa-sun\"},{\"id\":\"synchronizer_success_menu\",\"icon\":\"fa-fw fas fa-utensils\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 313,
+  "fields": {
+    "card": 58,
+    "name": "Mode épileptique",
+    "index": 0,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"epiletic_mode\",\"icon\":\"fa-fw fas fa-user-shield\", \"extra\": {\"value\": true}}, {\"id\":\"epiletic_mode\",\"icon\":\"fa-fw fas fa-user\", \"extra\": {\"value\": false}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 314,
+  "fields": {
+    "card": 52,
+    "name": "Texte des graduations",
+    "index": 9,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"menu_graduation_texts\",\"icon\":\"fa-fw fas fa-ban\", \"extra\": {\"display\": false}}, {\"id\":\"menu_graduation_texts\",\"icon\":\"fa-fw fas fa-check\", \"extra\": {\"display\": true}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 315,
+  "fields": {
+    "card": 52,
+    "name": "Zones des plats",
+    "index": 10,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"menu_selectable_areas\",\"icon\":\"fa-fw fas fa-ban\", \"extra\": {\"display\": false}}, {\"id\":\"menu_selectable_areas\",\"icon\":\"fa-fw fas fa-check\", \"extra\": {\"display\": true}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 316,
+  "fields": {
+    "card": 52,
+    "name": "Validation plats auto",
+    "index": 11,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"auto_validate_dishes\",\"icon\":\"fa-fw fas fa-ban\", \"extra\": {\"value\": false}}, {\"id\":\"auto_validate_dishes\",\"icon\":\"fa-fw fas fa-check\", \"extra\": {\"value\": true}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 317,
+  "fields": {
+    "card": 52,
+    "name": "Log lumières",
+    "index": 12,
+    "widget": "log_prompt",
+    "widget_params": "{\"id\":\"light_log\",\"preset_messages\":[{\"value\": {\"message\": \"lights_have_been_reset\", \"level\": \"warning\"}, \"text\": \"Réinitialisation des lumières\"}, {\"value\": {\"message\": \"lights_have_been_turned_off\", \"level\": \"info\"}, \"text\": \"Extinction de toutes les lumières\"}, {\"value\": {\"message\": \"lights_can_be_turned_on_manually\", \"level\": \"info\"}, \"text\": \"Les lumières peuvent être allumées manuellement\"}, {\"value\": {\"message\": \"waiting_lights_to_be_resync\", \"level\": \"info\"}, \"text\": \"En attente de la resynchronisation\"}, {\"value\": {\"message\": \"interface_is_not_tactile\", \"level\": \"warning\"}, \"text\": \"Les lumières ne peuvent pas être allumées avec l'écran tactile\"}, {\"value\": {\"message\": \"floor_switches_are_idle\", \"level\": \"info\"}, \"text\": \"Les interrupteurs au sol sont en attente d'activation\"}, {\"value\": {\"message\": \"pink_clue\", \"level\": \"info\"}, \"text\": \"Le rose doit être allumé de manière appropriée\"}, {\"value\": {\"message\": \"light_sync_complete\", \"level\": \"info\"}, \"text\": \"Synchronisation des lumières terminée\"}]}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 318,
+  "fields": {
+    "card": 52,
+    "name": "Log menu",
+    "index": 13,
+    "widget": "log_prompt",
+    "widget_params": "{\"id\":\"menu_log\",\"preset_messages\":[{\"value\": {\"message\": \"menu_is_messed_up\", \"level\": \"warning\"}, \"text\": \"Réinitialisation complète du menu\"}, {\"value\": {\"message\": \"waiting_dishes_to_be_configured\", \"level\": \"info\"}, \"text\": \"En attente de la reconfiguration des plats du Digimiam\"}, {\"value\": {\"message\": \"dishes_need_to_have_good_prices\", \"level\": \"warning\"}, \"text\": \"Le Digimiam ne peut pas se permettre de vendre ces plats à ces prix-là\"}, {\"value\": {\"message\": \"some_dishes_cannot_be_produced\", \"level\": \"warning\"}, \"text\": \"Certains plats ne correspondent pas à la carte du Digimiam\"}, {\"value\": {\"message\": \"no_dishes_can_be_produced\", \"level\": \"warning\"}, \"text\": \"Aucun de ces plats ne correspond à la carte du Digimiam\"}, {\"value\": {\"message\": \"menu_reconfig_complete\", \"level\": \"info\"}, \"text\": \"Reconfiguration des plats terminée\"}]}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 319,
+  "fields": {
+    "card": 53,
+    "name": "Instruction doc ventil",
+    "index": 8,
+    "widget": "instruction_prompt",
+    "widget_params": "{\"id\":\"ventilation_documentation_log\",\"preset_messages\":[{\"value\": {\"message\": \"display_instructions\", \"loop\": false}, \"text\": \"Lancez les instructions\"}, {\"value\": {\"message\": \"unplug_before_intervention\", \"loop\": false}, \"text\": \"Débranchez les conduits avant de procéder à l'intervention\"}, {\"value\": {\"message\": \"all_sequences_are_correct\", \"loop\": false}, \"text\": \"Toutes les séquences sont correctes\"}, {\"value\": {\"message\": \"order_matters\", \"loop\": false}, \"text\": \"L'ordre des instructions doit être respecté\"}, {\"value\": {\"message\": \"digimiam_ducts_can_now_be_used\", \"loop\": false}, \"text\": \"Les circuits d'aération du Digimiam sont maintenant pratiquables\"}]}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 320,
+  "fields": {
+    "card": 3,
+    "name": "Log inventaire",
+    "index": 5,
+    "widget": "log_prompt",
+    "widget_params": "{\"id\":\"inventory_log\",\"preset_messages\":[{\"value\": {\"message\": \"a\", \"level\": \"info\"}, \"text\": \"a\"}, {\"value\": {\"message\": \"b\", \"level\": \"warning\"}, \"text\": \"b\"}]}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 321,
+  "fields": {
+    "card": 16,
+    "name": "Log root server",
+    "index": 5,
+    "widget": "log_prompt",
+    "widget_params": "{\"id\":\"root_server_log\",\"preset_messages\":[{\"value\": {\"message\": \"a\", \"level\": \"info\"}, \"text\": \"a\"}, {\"value\": {\"message\": \"b\", \"level\": \"warning\"}, \"text\": \"b\"}]}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 322,
+  "fields": {
+    "card": 58,
+    "name": "Langue",
+    "index": 2,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"localize\",\"icon\":\"fa-fw fas fa-frog\", \"extra\": {\"category\": \"localize\", \"value\": \"fr\"}}, {\"id\":\"localize\",\"icon\":\"fa-fw fas fa-bacon\", \"extra\": {\"category\": \"localize\", \"value\": \"en\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 323,
+  "fields": {
+    "card": 2,
+    "name": "Conduit",
+    "index": 3,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"vents_locker\",\"icon\":\"fa-fw fas fa-lock-open\", \"extra\": {\"lock\": false}},{\"id\":\"vents_locker\",\"icon\":\"fa-fw fas fa-lock\", \"extra\": {\"lock\": true}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 324,
+  "fields": {
+    "card": 54,
+    "name": "Moteurs",
+    "index": 14,
+    "widget": "waffle_factory",
+    "widget_params": "\"\""
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 325,
+  "fields": {
+    "card": 5,
+    "name": "Track 5 glitch",
+    "index": 15,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"track5glitch\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"track5glitch\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"track5glitch\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"track5glitch\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"track5glitch\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"track5glitch\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"track5glitch\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 326,
+  "fields": {
+    "card": 16,
+    "name": "Relais",
+    "index": 5,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"alarm_relays\",\"icon\":\"fa-fw fas fa-bell\", \"extra\": {\"activated\": true}},{\"id\":\"alarm_relays\",\"icon\":\"fa-fw fas fa-check\", \"extra\": {\"activated\": false}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 327,
+  "fields": {
+    "card": 56,
+    "name": "Lasers",
+    "index": 0,
+    "widget": "lasers",
+    "widget_params": "[{\"label\": \"1\", \"node\": \"laser_maze\", \"index\": 0, \"easy\": false, \"normal\": false, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"2\", \"node\": \"laser_maze\", \"index\": 1, \"easy\": false, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"3\", \"node\": \"laser_maze\", \"index\": 2, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"4\", \"node\": \"laser_maze\", \"index\": 3, \"easy\": false, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"5\", \"node\": \"laser_maze\", \"index\": 4, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"6\", \"node\": \"laser_maze\", \"index\": 5, \"easy\": false, \"normal\": false, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"7\", \"node\": \"laser_maze\", \"index\": 6, \"easy\": false, \"normal\": false, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"8\", \"node\": \"laser_maze\", \"index\": 7, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"9\", \"node\": \"laser_maze\", \"index\": 8, \"easy\": false, \"normal\": false, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"10\", \"node\": \"laser_maze\", \"index\": 9, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"11\", \"node\": \"laser_maze\", \"index\": 10, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"12\", \"node\": \"laser_maze\", \"index\": 11, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"13\", \"node\": \"laser_maze\", \"index\": 12, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"14\", \"node\": \"laser_maze\", \"index\": 13, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 328,
+  "fields": {
+    "card": 59,
+    "name": "Lasers",
+    "index": 0,
+    "widget": "lasers",
+    "widget_params": "[{\"label\": \"1\", \"node\": \"laser_maze.a\", \"index\": 0, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"2\", \"node\": \"laser_maze.a\", \"index\": 1, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"3\", \"node\": \"laser_maze.a\", \"index\": 2, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"4\", \"node\": \"laser_maze.a\", \"index\": 3, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"5\", \"node\": \"laser_maze.a\", \"index\": 4, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"6\", \"node\": \"laser_maze.a\", \"index\": 5, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": true, \"prefix\": \"A\"}, {\"label\": \"7\", \"node\": \"laser_maze.a\", \"index\": 6, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"8\", \"node\": \"laser_maze.a\", \"index\": 7, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"9\", \"node\": \"laser_maze.a\", \"index\": 8, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"10\", \"node\": \"laser_maze.a\", \"index\": 9, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"11\", \"node\": \"laser_maze.a\", \"index\": 10, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"12\", \"node\": \"laser_maze.a\", \"index\": 11, \"easy\": false, \"normal\": false, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"13\", \"node\": \"laser_maze.a\", \"index\": 12, \"easy\": true, \"normal\": false, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"14\", \"node\": \"laser_maze.a\", \"index\": 13, \"easy\": false, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"15\", \"node\": \"laser_maze.a\", \"index\": 14, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"A\"}, {\"label\": \"16\", \"node\": \"laser_maze.b\", \"index\": 0, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"B\"}, {\"label\": \"17\", \"node\": \"laser_maze.b\", \"index\": 1, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"B\"}, {\"label\": \"18\", \"node\": \"laser_maze.b\", \"index\": 2, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"B\"}, {\"label\": \"19\", \"node\": \"laser_maze.b\", \"index\": 3, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"B\"}, {\"label\": \"20\", \"node\": \"laser_maze.b\", \"index\": 4, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"B\"}, {\"label\": \"21\", \"node\": \"laser_maze.b\", \"index\": 5, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": true, \"dynamic\": false, \"prefix\": \"B\"}, {\"label\": \"22\", \"node\": \"laser_maze.b\", \"index\": 6, \"easy\": true, \"normal\": true, \"hard\": true, \"wall\": false, \"dynamic\": false, \"prefix\": \"B\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 329,
+  "fields": {
+    "card": 29,
+    "name": "Vidéo pub gaufresque",
+    "index": 2,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"advertiser_play_waffresco_ad_loop\",\"icon\":\"fa-fw fas fa-video\"},{\"id\": \"advertiser_stop_waffresco_ad_loop\",\"icon\":\"fa-fw fas fa-video-slash\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 330,
+  "fields": {
+    "card": 60,
+    "name": "D1",
+    "index": 0,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"d1_poweroff\",\"icon\":\"fa-fw fas fa-power-off\",\"extra\":{\"category\":\"shutdown\",\"channel\":\"d1.broadcast\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 331,
+  "fields": {
+    "card": 60,
+    "name": "D2",
+    "index": 1,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"d2_poweroff\",\"icon\":\"fa-fw fas fa-power-off\",\"extra\":{\"category\":\"shutdown\",\"channel\":\"d2.broadcast\"}}]"
   }
 },
 {
@@ -849,7 +1599,7 @@
   "pk": 333,
   "fields": {
     "category": "node",
-    "index": 10,
+    "index": 11,
     "name": "node_connected",
     "context": "trigger"
   }
@@ -859,7 +1609,7 @@
   "pk": 334,
   "fields": {
     "category": "node",
-    "index": 11,
+    "index": 12,
     "name": "specific_node_connected",
     "context": "trigger"
   }
@@ -869,7 +1619,7 @@
   "pk": 335,
   "fields": {
     "category": "node",
-    "index": 12,
+    "index": 13,
     "name": "node_disconnected",
     "context": "trigger"
   }
@@ -879,7 +1629,7 @@
   "pk": 336,
   "fields": {
     "category": "node",
-    "index": 13,
+    "index": 14,
     "name": "specific_node_disconnected",
     "context": "trigger"
   }
@@ -889,7 +1639,7 @@
   "pk": 337,
   "fields": {
     "category": "",
-    "index": 14,
+    "index": 15,
     "name": "simple_condition",
     "context": "condition"
   }
@@ -899,7 +1649,7 @@
   "pk": 338,
   "fields": {
     "category": "event",
-    "index": 15,
+    "index": 16,
     "name": "send_event_string",
     "context": "action"
   }
@@ -909,7 +1659,7 @@
   "pk": 339,
   "fields": {
     "category": "event",
-    "index": 16,
+    "index": 17,
     "name": "send_event_object",
     "context": "action"
   }
@@ -919,7 +1669,7 @@
   "pk": 340,
   "fields": {
     "category": "admin",
-    "index": 17,
+    "index": 18,
     "name": "push_notification",
     "context": "action"
   }
@@ -929,7 +1679,7 @@
   "pk": 341,
   "fields": {
     "category": "admin",
-    "index": 18,
+    "index": 19,
     "name": "add_record_now",
     "context": "action"
   }
@@ -939,7 +1689,7 @@
   "pk": 342,
   "fields": {
     "category": "admin",
-    "index": 19,
+    "index": 20,
     "name": "add_record",
     "context": "action"
   }
@@ -949,7 +1699,7 @@
   "pk": 343,
   "fields": {
     "category": "object",
-    "index": 20,
+    "index": 21,
     "name": "create_a_new_object",
     "context": "action"
   }
@@ -959,7 +1709,7 @@
   "pk": 344,
   "fields": {
     "category": "object",
-    "index": 21,
+    "index": 22,
     "name": "save_object_in_object",
     "context": "action"
   }
@@ -969,7 +1719,7 @@
   "pk": 345,
   "fields": {
     "category": "object",
-    "index": 22,
+    "index": 23,
     "name": "save_string_in_object",
     "context": "action"
   }
@@ -979,7 +1729,7 @@
   "pk": 346,
   "fields": {
     "category": "object",
-    "index": 23,
+    "index": 24,
     "name": "save_integer_in_object",
     "context": "action"
   }
@@ -989,7 +1739,7 @@
   "pk": 347,
   "fields": {
     "category": "object",
-    "index": 24,
+    "index": 25,
     "name": "save_real_in_object",
     "context": "action"
   }
@@ -999,7 +1749,7 @@
   "pk": 348,
   "fields": {
     "category": "object",
-    "index": 25,
+    "index": 26,
     "name": "save_boolean_in_object",
     "context": "action"
   }
@@ -1009,7 +1759,7 @@
   "pk": 349,
   "fields": {
     "category": "timer",
-    "index": 26,
+    "index": 27,
     "name": "start_timer",
     "context": "action"
   }
@@ -1019,7 +1769,7 @@
   "pk": 350,
   "fields": {
     "category": "timer",
-    "index": 27,
+    "index": 28,
     "name": "pause_timer",
     "context": "action"
   }
@@ -1029,7 +1779,7 @@
   "pk": 351,
   "fields": {
     "category": "timer",
-    "index": 28,
+    "index": 29,
     "name": "resume_timer",
     "context": "action"
   }
@@ -1039,7 +1789,7 @@
   "pk": 352,
   "fields": {
     "category": "game_session",
-    "index": 29,
+    "index": 30,
     "name": "run_game_session",
     "context": "action"
   }
@@ -1049,7 +1799,7 @@
   "pk": 353,
   "fields": {
     "category": "game_session",
-    "index": 30,
+    "index": 31,
     "name": "halt_game_session",
     "context": "action"
   }
@@ -1059,7 +1809,7 @@
   "pk": 354,
   "fields": {
     "category": "game_session",
-    "index": 31,
+    "index": 32,
     "name": "reset_game_session",
     "context": "action"
   }
@@ -1069,7 +1819,7 @@
   "pk": 355,
   "fields": {
     "category": "",
-    "index": 32,
+    "index": 33,
     "name": "if_then_else_multiple_functions",
     "context": "action"
   }
@@ -1079,7 +1829,7 @@
   "pk": 356,
   "fields": {
     "category": "",
-    "index": 33,
+    "index": 34,
     "name": "wait",
     "context": "action"
   }
@@ -1089,7 +1839,7 @@
   "pk": 357,
   "fields": {
     "category": "",
-    "index": 34,
+    "index": 35,
     "name": "set_variable",
     "context": "action"
   }
@@ -1099,7 +1849,7 @@
   "pk": 358,
   "fields": {
     "category": "",
-    "index": 35,
+    "index": 36,
     "name": "trigger_rule",
     "context": "action"
   }
@@ -1109,7 +1859,7 @@
   "pk": 359,
   "fields": {
     "category": "",
-    "index": 36,
+    "index": 37,
     "name": "do_nothing",
     "context": "action"
   }
@@ -1119,7 +1869,7 @@
   "pk": 360,
   "fields": {
     "category": "object",
-    "index": 37,
+    "index": 38,
     "name": "last_created_object",
     "context": "object"
   }
@@ -1129,7 +1879,7 @@
   "pk": 361,
   "fields": {
     "category": "object",
-    "index": 38,
+    "index": 39,
     "name": "object_get_object",
     "context": "object"
   }
@@ -1139,7 +1889,7 @@
   "pk": 362,
   "fields": {
     "category": "trigger",
-    "index": 39,
+    "index": 40,
     "name": "triggering_event_object",
     "context": "object"
   }
@@ -1149,7 +1899,7 @@
   "pk": 363,
   "fields": {
     "category": "",
-    "index": 40,
+    "index": 41,
     "name": "substring",
     "context": "string"
   }
@@ -1159,7 +1909,7 @@
   "pk": 364,
   "fields": {
     "category": "object",
-    "index": 41,
+    "index": 42,
     "name": "object_get_string",
     "context": "string"
   }
@@ -1169,7 +1919,7 @@
   "pk": 365,
   "fields": {
     "category": "trigger",
-    "index": 42,
+    "index": 43,
     "name": "triggering_node_name",
     "context": "string"
   }
@@ -1179,7 +1929,7 @@
   "pk": 366,
   "fields": {
     "category": "trigger",
-    "index": 43,
+    "index": 44,
     "name": "triggering_event_string",
     "context": "string"
   }
@@ -1189,7 +1939,7 @@
   "pk": 367,
   "fields": {
     "category": "trigger",
-    "index": 44,
+    "index": 45,
     "name": "triggering_admin_button_id",
     "context": "string"
   }
@@ -1199,7 +1949,7 @@
   "pk": 368,
   "fields": {
     "category": "conversion",
-    "index": 45,
+    "index": 46,
     "name": "real_to_string",
     "context": "string"
   }
@@ -1209,7 +1959,7 @@
   "pk": 369,
   "fields": {
     "category": "conversion",
-    "index": 46,
+    "index": 47,
     "name": "boolean_to_string",
     "context": "string"
   }
@@ -1219,7 +1969,7 @@
   "pk": 370,
   "fields": {
     "category": "conversion",
-    "index": 47,
+    "index": 48,
     "name": "object_to_string",
     "context": "string"
   }
@@ -1229,7 +1979,7 @@
   "pk": 371,
   "fields": {
     "category": "conversion",
-    "index": 48,
+    "index": 49,
     "name": "integer_to_string",
     "context": "string"
   }
@@ -1239,7 +1989,7 @@
   "pk": 372,
   "fields": {
     "category": "object",
-    "index": 49,
+    "index": 50,
     "name": "object_get_integer",
     "context": "integer"
   }
@@ -1249,7 +1999,7 @@
   "pk": 373,
   "fields": {
     "category": "math",
-    "index": 50,
+    "index": 51,
     "name": "integer_arithmetic",
     "context": "integer"
   }
@@ -1259,7 +2009,7 @@
   "pk": 374,
   "fields": {
     "category": "conversion",
-    "index": 51,
+    "index": 52,
     "name": "real_to_integer",
     "context": "integer"
   }
@@ -1269,7 +2019,7 @@
   "pk": 375,
   "fields": {
     "category": "object",
-    "index": 52,
+    "index": 53,
     "name": "object_get_real",
     "context": "real"
   }
@@ -1279,7 +2029,7 @@
   "pk": 376,
   "fields": {
     "category": "math",
-    "index": 53,
+    "index": 54,
     "name": "real_arithmetic",
     "context": "real"
   }
@@ -1289,7 +2039,7 @@
   "pk": 377,
   "fields": {
     "category": "conversion",
-    "index": 54,
+    "index": 55,
     "name": "integer_to_real",
     "context": "real"
   }
@@ -1299,7 +2049,7 @@
   "pk": 378,
   "fields": {
     "category": "timer",
-    "index": 55,
+    "index": 56,
     "name": "timer_remaining_time",
     "context": "real"
   }
@@ -1309,7 +2059,7 @@
   "pk": 379,
   "fields": {
     "category": "game_session",
-    "index": 56,
+    "index": 57,
     "name": "session_time",
     "context": "integer"
   }
@@ -1319,7 +2069,7 @@
   "pk": 380,
   "fields": {
     "category": "object",
-    "index": 57,
+    "index": 58,
     "name": "object_get_boolean",
     "context": "boolean"
   }
@@ -1329,7 +2079,7 @@
   "pk": 381,
   "fields": {
     "category": "",
-    "index": 58,
+    "index": 59,
     "name": "boolean_not",
     "context": "boolean"
   }
@@ -1339,7 +2089,7 @@
   "pk": 382,
   "fields": {
     "category": "",
-    "index": 59,
+    "index": 60,
     "name": "boolean_or",
     "context": "boolean"
   }
@@ -1349,7 +2099,7 @@
   "pk": 383,
   "fields": {
     "category": "",
-    "index": 60,
+    "index": 61,
     "name": "boolean_and",
     "context": "boolean"
   }
@@ -1359,7 +2109,7 @@
   "pk": 384,
   "fields": {
     "category": "",
-    "index": 61,
+    "index": 62,
     "name": "integer_comparison",
     "context": "boolean"
   }
@@ -1369,7 +2119,7 @@
   "pk": 385,
   "fields": {
     "category": "",
-    "index": 62,
+    "index": 63,
     "name": "real_comparison",
     "context": "boolean"
   }
@@ -1379,7 +2129,7 @@
   "pk": 386,
   "fields": {
     "category": "",
-    "index": 63,
+    "index": 64,
     "name": "string_comparison",
     "context": "boolean"
   }
@@ -1389,7 +2139,7 @@
   "pk": 387,
   "fields": {
     "category": "",
-    "index": 64,
+    "index": 65,
     "name": "object_comparison",
     "context": "boolean"
   }
@@ -1399,7 +2149,7 @@
   "pk": 388,
   "fields": {
     "category": "",
-    "index": 65,
+    "index": 66,
     "name": "boolean_comparison",
     "context": "boolean"
   }
@@ -1409,7 +2159,7 @@
   "pk": 389,
   "fields": {
     "category": "timer",
-    "index": 66,
+    "index": 67,
     "name": "expiring_timer",
     "context": "timer"
   }
@@ -1419,9 +2169,19 @@
   "pk": 390,
   "fields": {
     "category": "timer",
-    "index": 67,
+    "index": 68,
     "name": "last_started_timer",
     "context": "timer"
+  }
+},
+{
+  "model": "editor.template",
+  "pk": 391,
+  "fields": {
+    "category": "session",
+    "index": 10,
+    "name": "session_reset",
+    "context": "trigger"
   }
 },
 {
@@ -4239,6 +4999,20 @@
   }
 },
 {
+  "model": "editor.templatelink",
+  "pk": 1169,
+  "fields": {
+    "template": 391,
+    "index": 0,
+    "type": "text",
+    "locale": "the_session_is_reset",
+    "key": "-",
+    "value_type": "string",
+    "default_value": "",
+    "predefined_choices": ""
+  }
+},
+{
   "model": "editor.templatecontextparagraph",
   "pk": 16,
   "fields": {
@@ -4276,6 +5050,48 @@
     "index": 0,
     "rooms": [
       1,
+      2
+    ]
+  }
+},
+{
+  "model": "editor.ruleset",
+  "pk": 2,
+  "fields": {
+    "name": "Disabled",
+    "index": 100,
+    "rooms": []
+  }
+},
+{
+  "model": "editor.ruleset",
+  "pk": 3,
+  "fields": {
+    "name": "Digimiam 1",
+    "index": 1,
+    "rooms": [
+      1
+    ]
+  }
+},
+{
+  "model": "editor.ruleset",
+  "pk": 4,
+  "fields": {
+    "name": "Just Escape",
+    "index": 2,
+    "rooms": [
+      3
+    ]
+  }
+},
+{
+  "model": "editor.ruleset",
+  "pk": 5,
+  "fields": {
+    "name": "Digimiam 2",
+    "index": 3,
+    "rooms": [
       2
     ]
   }
@@ -4368,7 +5184,7 @@
   "model": "editor.rule",
   "pk": 220,
   "fields": {
-    "rule_set": 1,
+    "rule_set": 2,
     "index": 0,
     "name": "Chopsticks success",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"chopsticks\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"success\"}}}}], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"playing\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"control_panel\"}}]}"
@@ -4378,8 +5194,8 @@
   "model": "editor.rule",
   "pk": 221,
   "fields": {
-    "rule_set": 1,
-    "index": 2,
+    "rule_set": 2,
+    "index": 1,
     "name": "Manual mode",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"control_panel\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"first_manual_mode\"}}}}], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"stop\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"track1\", \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_volume\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"track2\", \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 0, \"key\": \"volume\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_volume\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"track2\", \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 40, \"key\": \"volume\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 15, \"key\": \"duration\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"play\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"track2\", \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 2, \"key\": \"delay\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"play_overlay_video\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"glitching_less\", \"key\": \"video_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"orders\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"stop_overlay_video\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"synchronizer\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"play\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"ads_loop\", \"key\": \"video_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"advertiser\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"stop\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"ads_glitch\", \"key\": \"video_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"advertiser\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"restaurant_in_manual_mode\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"synchronizer\"}}, {\"template\": \"wait\", \"arguments\": {\"time\": 0.2}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"off\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"all\", \"key\": \"color\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"refectory_lights\"}}]}"
   }
@@ -4388,8 +5204,8 @@
   "model": "editor.rule",
   "pk": 222,
   "fields": {
-    "rule_set": 1,
-    "index": 3,
+    "rule_set": 2,
+    "index": 2,
     "name": "Holomenu configuration",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"synchronizer\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"set_menu_entry\"}}}}], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_slide\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": {\"template\": \"object_get_integer\", \"arguments\": {\"key\": \"index\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"key\": \"slide_index\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"dish\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"key\": \"chapter_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"holographic_menu\"}}]}"
   }
@@ -4398,8 +5214,8 @@
   "model": "editor.rule",
   "pk": 223,
   "fields": {
-    "rule_set": 1,
-    "index": 4,
+    "rule_set": 2,
+    "index": 3,
     "name": "Holomenu slides",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"holographic_menu\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"play_slide\"}}}}], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_menu_cursor_position\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": {\"template\": \"object_get_integer\", \"arguments\": {\"key\": \"slide\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"key\": \"position\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"synchronizer\"}}]}"
   }
@@ -4408,8 +5224,8 @@
   "model": "editor.rule",
   "pk": 224,
   "fields": {
-    "rule_set": 1,
-    "index": 5,
+    "rule_set": 2,
+    "index": 4,
     "name": "LC colors",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"load_cells\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"load_cell\"}}}}], \"actions\": [{\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"triggering_event_object\", \"arguments\": {}}, \"node_name\": \"synchronizer\"}}]}"
   }
@@ -4418,8 +5234,8 @@
   "model": "editor.rule",
   "pk": 225,
   "fields": {
-    "rule_set": 1,
-    "index": 6,
+    "rule_set": 2,
+    "index": 5,
     "name": "Password success",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"root_server\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"success\"}}}}], \"actions\": [{\"template\": \"wait\", \"arguments\": {\"time\": 0.5}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"final_animation\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"root_server\"}}, {\"template\": \"do_nothing\", \"arguments\": {}}]}"
   }
@@ -4428,8 +5244,8 @@
   "model": "editor.rule",
   "pk": 226,
   "fields": {
-    "rule_set": 1,
-    "index": 7,
+    "rule_set": 2,
+    "index": 6,
     "name": "Toxic gaz staging",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"root_server\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"ms_pepper_mad_end\"}}}}], \"actions\": [{\"template\": \"wait\", \"arguments\": {\"time\": 2}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"display_danger_window\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"root_server\"}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"inventory\"}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"orders\"}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"synchronizer\"}}]}"
   }
@@ -4438,8 +5254,8 @@
   "model": "editor.rule",
   "pk": 227,
   "fields": {
-    "rule_set": 1,
-    "index": 8,
+    "rule_set": 2,
+    "index": 7,
     "name": "Light sync",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"synchronizer\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"boolean_or\", \"arguments\": {\"left\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"on\"}}, \"right\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"off\"}}}}}}], \"actions\": [{\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"triggering_event_object\", \"arguments\": {}}, \"node_name\": \"refectory_lights\"}}]}"
   }
@@ -4448,8 +5264,8 @@
   "model": "editor.rule",
   "pk": 228,
   "fields": {
-    "rule_set": 1,
-    "index": 9,
+    "rule_set": 2,
+    "index": 0,
     "name": "Update street time",
     "content": "{\"triggers\": [{\"template\": \"periodic_trigger\", \"arguments\": {\"period\": 1}}], \"conditions\": [], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_session_time\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": {\"template\": \"session_time\", \"arguments\": {}}, \"key\": \"seconds\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"street_display\"}}]}"
   }
@@ -4458,8 +5274,8 @@
   "model": "editor.rule",
   "pk": 229,
   "fields": {
-    "rule_set": 1,
-    "index": 10,
+    "rule_set": 2,
+    "index": 9,
     "name": "Street play",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"street_display\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"play\"}}}}], \"actions\": [{\"template\": \"do_nothing\", \"arguments\": {}}, {\"template\": \"run_game_session\", \"arguments\": {}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"play\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"ms_pepper_here_you_are\", \"key\": \"video_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"advertiser\"}}, {\"template\": \"wait\", \"arguments\": {\"time\": 35}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"play\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"ads_glitch\", \"key\": \"video_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"advertiser\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_volume\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"track1\", \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 70, \"key\": \"volume\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_volume\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"track1\", \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 50, \"key\": \"volume\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 10, \"key\": \"duration\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 5, \"key\": \"delay\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"play\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"track1\", \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_volume\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"track1\", \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 30, \"key\": \"volume\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 60, \"key\": \"duration\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 90, \"key\": \"delay\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}, {\"template\": \"wait\", \"arguments\": {\"time\": 5}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"unlock\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"front_door_magnet\"}}]}"
   }
@@ -4468,8 +5284,8 @@
   "model": "editor.rule",
   "pk": 230,
   "fields": {
-    "rule_set": 1,
-    "index": 11,
+    "rule_set": 2,
+    "index": 1,
     "name": "Street unlock front door",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"street_display\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"unlock_front_door\"}}}}], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"unlock\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"front_door_magnet\"}}]}"
   }
@@ -4478,8 +5294,8 @@
   "model": "editor.rule",
   "pk": 231,
   "fields": {
-    "rule_set": 1,
-    "index": 12,
+    "rule_set": 2,
+    "index": 2,
     "name": "Doc ventil",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"ventilation_panel\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"start_new_round\"}}}}], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_ventilation_panel_round\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": {\"template\": \"object_get_integer\", \"arguments\": {\"key\": \"round\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"key\": \"round\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"orders\"}}]}"
   }
@@ -4488,8 +5304,8 @@
   "model": "editor.rule",
   "pk": 235,
   "fields": {
-    "rule_set": 1,
-    "index": 13,
+    "rule_set": 2,
+    "index": 1,
     "name": "Ventil status",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"ventilation_panel\"}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"set_status\"}}}}], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_documentation_visibility\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"status\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"playing\"}}}}], \"then_actions\": [{\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": true, \"key\": \"show\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"start_timer\", \"arguments\": {\"timer\": {\"variable\": \"instruction_d\\u00e9but_ventil\"}, \"type\": \"one_shot\", \"time\": 30}}], \"else_actions\": [{\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": false, \"key\": \"show\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}]}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"orders\"}}]}"
   }
@@ -4498,8 +5314,8 @@
   "model": "editor.rule",
   "pk": 236,
   "fields": {
-    "rule_set": 1,
-    "index": 14,
+    "rule_set": 2,
+    "index": 2,
     "name": "aide début ventil",
     "content": "{\"triggers\": [{\"template\": \"timer_trigger\", \"arguments\": {\"timer\": {\"variable\": \"instruction_d\\u00e9but_ventil\"}}}], \"conditions\": [], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"documentation_unplug_instruction\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": true, \"key\": \"highlight\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"orders\"}}]}"
   }
@@ -4508,8 +5324,8 @@
   "model": "editor.rule",
   "pk": 237,
   "fields": {
-    "rule_set": 1,
-    "index": 15,
+    "rule_set": 2,
+    "index": 3,
     "name": "fin aide début ventil",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"ventilation_panel\"}}], \"conditions\": [], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"game_start\"}}}}], \"then_actions\": [{\"template\": \"pause_timer\", \"arguments\": {\"timer\": {\"variable\": \"instruction_d\\u00e9but_ventil\"}}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"documentation_unplug_instruction\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": false, \"key\": \"highlight\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"orders\"}}], \"else_actions\": []}}]}"
   }
@@ -4519,27 +5335,17 @@
   "pk": 239,
   "fields": {
     "rule_set": 1,
-    "index": 16,
+    "index": 4,
     "name": "Music admin",
     "content": "{\"triggers\": [{\"template\": \"admin_button_press\", \"arguments\": {}}], \"conditions\": [], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 0, \"last_char\": 4}}, \"operator\": \"=\", \"right\": \"play_\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"play\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 5, \"last_char\": 12}}, \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 0, \"last_char\": 5}}, \"operator\": \"=\", \"right\": \"pause_\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"pause\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 6, \"last_char\": 13}}, \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 0, \"last_char\": 4}}, \"operator\": \"=\", \"right\": \"stop_\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"stop\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 5, \"last_char\": 12}}, \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 0, \"last_char\": 6}}, \"operator\": \"=\", \"right\": \"volume_\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_volume\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 7, \"last_char\": 10}}, \"operator\": \"=\", \"right\": \"mut_\"}}}}], \"then_actions\": [{\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 0, \"key\": \"volume\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 7, \"last_char\": 10}}, \"operator\": \"=\", \"right\": \"low_\"}}}}], \"then_actions\": [{\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 40, \"key\": \"volume\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 7, \"last_char\": 10}}, \"operator\": \"=\", \"right\": \"mid_\"}}}}], \"then_actions\": [{\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 70, \"key\": \"volume\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 7, \"last_char\": 10}}, \"operator\": \"=\", \"right\": \"max_\"}}}}], \"then_actions\": [{\"template\": \"save_integer_in_object\", \"arguments\": {\"value\": 100, \"key\": \"volume\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 11, \"last_char\": 16}}, \"operator\": \"!=\", \"right\": \"master\"}}}}], \"then_actions\": [{\"template\": \"save_string_in_object\", \"arguments\": {\"value\": {\"template\": \"substring\", \"arguments\": {\"string\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"first_char\": 11, \"last_char\": 17}}, \"key\": \"track_id\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}], \"else_actions\": [{\"template\": \"do_nothing\", \"arguments\": {}}]}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"music_player\"}}], \"else_actions\": []}}, {\"template\": \"do_nothing\", \"arguments\": {}}, {\"template\": \"do_nothing\", \"arguments\": {}}, {\"template\": \"do_nothing\", \"arguments\": {}}, {\"template\": \"do_nothing\", \"arguments\": {}}, {\"template\": \"do_nothing\", \"arguments\": {}}]}"
   }
 },
 {
   "model": "editor.rule",
-  "pk": 264,
-  "fields": {
-    "rule_set": 1,
-    "index": 17,
-    "name": "Open server room",
-    "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"digital_lock\"}}], \"conditions\": [], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"success\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"low\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"server_room_magnet\"}}], \"else_actions\": []}}]}"
-  }
-},
-{
-  "model": "editor.rule",
   "pk": 314,
   "fields": {
-    "rule_set": 1,
-    "index": 18,
+    "rule_set": 2,
+    "index": 5,
     "name": "Synchronizer services",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"synchronizer\"}}], \"conditions\": [], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"light_service_success\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_lights_service_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": true, \"key\": \"repaired\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"control_panel\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"menu_service_success\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_menu_service_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": true, \"key\": \"repaired\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"control_panel\"}}, {\"template\": \"wait\", \"arguments\": {\"time\": 1.5}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"on\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"all\", \"key\": \"color\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"refectory_lights\"}}, {\"template\": \"wait\", \"arguments\": {\"time\": 0.1}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"off\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"all\", \"key\": \"color\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"refectory_lights\"}}, {\"template\": \"wait\", \"arguments\": {\"time\": 0.1}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"on\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"all\", \"key\": \"color\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"refectory_lights\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"services_synchronization_success\"}}}}], \"then_actions\": [{\"template\": \"wait\", \"arguments\": {\"time\": 4}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"stop_overlay_video\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"orders\"}}], \"else_actions\": []}}]}"
   }
@@ -4548,8 +5354,8 @@
   "model": "editor.rule",
   "pk": 342,
   "fields": {
-    "rule_set": 1,
-    "index": 19,
+    "rule_set": 2,
+    "index": 8,
     "name": "Sokoban controls fwd",
     "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"sokoban_controls\"}}], \"conditions\": [], \"actions\": [{\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"triggering_event_object\", \"arguments\": {}}, \"node_name\": \"inventory\"}}]}"
   }
@@ -4558,10 +5364,10 @@
   "model": "editor.rule",
   "pk": 374,
   "fields": {
-    "rule_set": 1,
-    "index": 20,
+    "rule_set": 2,
+    "index": 9,
     "name": "Secure floor",
-    "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"secure_floor\"}}], \"conditions\": [], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"clear\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"playing\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}], \"else_actions\": []}}]}"
+    "content": "{\"triggers\": [{\"template\": \"incoming_event_from_node\", \"arguments\": {\"node_name\": \"secure_floor\"}}], \"conditions\": [], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"clear\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"playing\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"playing\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"human_authenticator\"}}], \"else_actions\": []}}]}"
   }
 },
 {
@@ -4569,19 +5375,79 @@
   "pk": 376,
   "fields": {
     "rule_set": 1,
-    "index": 21,
+    "index": 6,
     "name": "Laser maze admin",
-    "content": "{\"triggers\": [{\"template\": \"admin_button_press\", \"arguments\": {}}], \"conditions\": [], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"maze_playing\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"playing\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"maze_alarm\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"alarm\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"stop_playing\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"secure_floor_tare\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"tare\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"maze_success\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"success\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_success\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": true, \"key\": \"value\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"maze_reset\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"reset\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}], \"else_actions\": []}}]}"
+    "content": "{\"triggers\": [{\"template\": \"admin_button_press\", \"arguments\": {}}], \"conditions\": [], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"maze_playing\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"playing\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"playing\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"human_authenticator\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"maze_alarm\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"alarm\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"stop_playing\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"disabled\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"human_authenticator\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"secure_floor_tare\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"tare\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"maze_success\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"success\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_success\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": true, \"key\": \"value\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"success\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"human_authenticator\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_admin_button_id\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"maze_reset\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"reset\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"human_authenticator\"}}], \"else_actions\": []}}]}"
   }
 },
 {
   "model": "editor.rule",
   "pk": 377,
   "fields": {
-    "rule_set": 1,
-    "index": 22,
+    "rule_set": 2,
+    "index": 11,
     "name": "Laser maze echo",
-    "content": "{\"triggers\": [{\"template\": \"incoming_event\", \"arguments\": {}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_node_name\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"laser_maze\"}}}}], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"alarm\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"stop_playing\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"alarm\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}], \"else_actions\": []}}, {\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"success\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_success\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": true, \"key\": \"value\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"success\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}], \"else_actions\": []}}]}"
+    "content": "{\"triggers\": [{\"template\": \"incoming_event\", \"arguments\": {}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_node_name\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"laser_maze\"}}}}], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"alarm\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"stop_playing\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"alarm\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_status\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"disabled\", \"key\": \"status\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"human_authenticator\"}}], \"else_actions\": []}}]}"
+  }
+},
+{
+  "model": "editor.rule",
+  "pk": 381,
+  "fields": {
+    "rule_set": 2,
+    "index": 12,
+    "name": "Human authent",
+    "content": "{\"triggers\": [{\"template\": \"incoming_event\", \"arguments\": {}}], \"conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_node_name\", \"arguments\": {}}, \"operator\": \"=\", \"right\": \"human_authenticator\"}}}}], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"success\"}}}}], \"then_actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"set_success\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_boolean_in_object\", \"arguments\": {\"value\": true, \"key\": \"value\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"laser_maze\"}}, {\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"success\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"secure_floor\"}}], \"else_actions\": []}}]}"
+  }
+},
+{
+  "model": "editor.rule",
+  "pk": 382,
+  "fields": {
+    "rule_set": 1,
+    "index": 7,
+    "name": "Scenario in/out",
+    "content": "{\"triggers\": [{\"template\": \"incoming_event\", \"arguments\": {}}], \"conditions\": [], \"actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"triggering_node_name\", \"arguments\": {}}, \"operator\": \"!=\", \"right\": \"scenario\"}}}}], \"then_actions\": [{\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"triggering_event_object\", \"arguments\": {}}, \"node_name\": \"scenario\"}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": {\"template\": \"triggering_node_name\", \"arguments\": {}}, \"key\": \"from\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}], \"else_actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"to\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"orchestrator\"}}}}], \"then_actions\": [{\"template\": \"if_then_else_multiple_functions\", \"arguments\": {}, \"paragraphs\": {\"if_conditions\": [{\"template\": \"simple_condition\", \"arguments\": {\"condition\": {\"template\": \"string_comparison\", \"arguments\": {\"left\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, \"operator\": \"=\", \"right\": \"play\"}}}}], \"then_actions\": [{\"template\": \"run_game_session\", \"arguments\": {}}], \"else_actions\": []}}], \"else_actions\": [{\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"triggering_event_object\", \"arguments\": {}}, \"node_name\": {\"template\": \"object_get_string\", \"arguments\": {\"key\": \"to\", \"object\": {\"template\": \"triggering_event_object\", \"arguments\": {}}}}}}]}}]}}]}"
+  }
+},
+{
+  "model": "editor.rule",
+  "pk": 383,
+  "fields": {
+    "rule_set": 1,
+    "index": 9,
+    "name": "On pause",
+    "content": "{\"triggers\": [{\"template\": \"session_pause\", \"arguments\": {}}], \"conditions\": [], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"orchestrator\", \"key\": \"from\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"pause\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"scenario\"}}]}"
+  }
+},
+{
+  "model": "editor.rule",
+  "pk": 384,
+  "fields": {
+    "rule_set": 1,
+    "index": 10,
+    "name": "On resume",
+    "content": "{\"triggers\": [{\"template\": \"session_resume\", \"arguments\": {}}], \"conditions\": [], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"orchestrator\", \"key\": \"from\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"resume\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"scenario\"}}]}"
+  }
+},
+{
+  "model": "editor.rule",
+  "pk": 386,
+  "fields": {
+    "rule_set": 1,
+    "index": 8,
+    "name": "On start",
+    "content": "{\"triggers\": [{\"template\": \"session_start\", \"arguments\": {}}], \"conditions\": [], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"orchestrator\", \"key\": \"from\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"start\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"scenario\"}}]}"
+  }
+},
+{
+  "model": "editor.rule",
+  "pk": 387,
+  "fields": {
+    "rule_set": 1,
+    "index": 10,
+    "name": "On reset",
+    "content": "{\"triggers\": [{\"template\": \"session_reset\", \"arguments\": {}}], \"conditions\": [], \"actions\": [{\"template\": \"create_a_new_object\", \"arguments\": {}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"orchestrator\", \"key\": \"from\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"save_string_in_object\", \"arguments\": {\"value\": \"reset\", \"key\": \"category\", \"object\": {\"template\": \"last_created_object\", \"arguments\": {}}}}, {\"template\": \"send_event_object\", \"arguments\": {\"event\": {\"template\": \"last_created_object\", \"arguments\": {}}, \"node_name\": \"scenario\"}}]}"
   }
 }
 ]
