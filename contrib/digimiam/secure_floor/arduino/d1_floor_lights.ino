@@ -8,6 +8,7 @@
 #define PROTOCOL_LED_SET_COLOR_ORANGE "o"
 #define PROTOCOL_LED_SET_COLOR_RED "r"
 #define PROTOCOL_LED_SET_COLOR_WHITE "w"
+#define PROTOCOL_LED_SET_COLOR_WHITE_TO_RED "w2r"
 #define PROTOCOL_LED_STRIP_BIT_MASK "s"
 
 #define N_STRIPS 2
@@ -136,6 +137,18 @@ void onEvent() {
           light_rgb_target_freq[i][1] = 50;
           light_rgb_target_freq[i][2] = 50;
           light_rgb_target_freq_step[i][0] = 0.5;
+          light_rgb_target_freq_step[i][1] = 0.5;
+          light_rgb_target_freq_step[i][2] = 0.5;
+        }
+        current_strip_bit = current_strip_bit << 1;
+      }
+    } else if (category == PROTOCOL_LED_SET_COLOR_WHITE_TO_RED) {
+      for (int i = 0 ; i < N_STRIPS ; i++) {
+        if ((led_strip_bit_mask & current_strip_bit) == current_strip_bit) {
+          light_rgb_target_freq[i][0] = 50;
+          light_rgb_target_freq[i][1] = 0;
+          light_rgb_target_freq[i][2] = 0;
+          light_rgb_target_freq_step[i][0] = 0;
           light_rgb_target_freq_step[i][1] = 0.5;
           light_rgb_target_freq_step[i][2] = 0.5;
         }

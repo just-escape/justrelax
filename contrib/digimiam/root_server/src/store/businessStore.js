@@ -158,7 +158,7 @@ let store = new Vuex.Store({
       state.playingMarmitronAnimation = animationId
     },
     finalAnimation (state) {
-      state.playingMarmitronAnimation = 'final'
+      state.playingMarmitronAnimation = 'liberation'
       setTimeout(store.commit, 400, 'hidePasswordRecoveryWindow')
       setTimeout(store.commit, 500, 'hidePasswordWindow')
       setTimeout(store.commit, 12000, 'playOverlayVideo', 'ms_pepper_mad')

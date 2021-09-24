@@ -1,6 +1,5 @@
 import time
 import uuid
-import copy
 
 from twisted.internet import reactor
 
@@ -91,12 +90,13 @@ class AMG88XX:
 
         max_value = max(max(v) for v in differential_matrix)
 
+        logger.debug(f"Max value is {max_value}")
+
         is_activated = max_value > self.threshold
         if is_activated is self.last_state:
             return
 
-        logger.debug(f"Differential matrix is {differential_matrix}")
-        logger.debug(f"Max value is {max_value}")
+        # logger.debug(f"Differential matrix is {differential_matrix}")
 
         self.last_state = is_activated
 
@@ -157,6 +157,7 @@ class ArduinoProtocol:
     SET_COLOR_ORANGE = 'o'
     SET_COLOR_RED = 'r'
     SET_COLOR_WHITE = 'w'
+    SET_COLOR_WHITE_TO_RED = 'w2r'
     STRIP_BIT_MASK = 's'
 
 
@@ -194,8 +195,6 @@ class SecureFloor(MagicNode):
             if sensor['led_strip']:
                 self.leds[sensor['led_strip']] = 'black'
 
-        self.sleep_mode_task = None
-
         # Init once we are sure the serial port will be able to receive data
         reactor.callLater(3, self.set_led_color, "black", sum(self.leds.keys()))
 
@@ -206,6 +205,7 @@ class SecureFloor(MagicNode):
             'orange': ArduinoProtocol.SET_COLOR_ORANGE,
             'red': ArduinoProtocol.SET_COLOR_RED,
             'white': ArduinoProtocol.SET_COLOR_WHITE,
+            'white_to_red': ArduinoProtocol.SET_COLOR_WHITE_TO_RED,
         }
 
         event_color = color_mapping.get(color, ArduinoProtocol.SET_COLOR_BLACK)
@@ -219,19 +219,9 @@ class SecureFloor(MagicNode):
             ArduinoProtocol.STRIP_BIT_MASK: bit_mask,
         })
 
-    def sleep_mode(self):
-        logger.info("900 seconds with no activity detected: turning off led")
-        self.event_set_all_leds_color('black')
-
     @on_event(filter={'category': 'set_led_color'})
     def event_set_led_color(self, color: str, bit_mask: int):
         self.set_led_color(color, bit_mask)
-
-        if self.sleep_mode_task and self.sleep_mode_task.active():
-            self.sleep_mode_task.cancel()
-
-        if color != 'black':
-            self.sleep_mode_task = reactor.callLater(900, self.sleep_mode)
 
     @on_event(filter={'category': 'set_all_leds_color'})
     def event_set_all_leds_color(self, color: str):
@@ -260,9 +250,6 @@ class SecureFloor(MagicNode):
 
         if self.clear_alarm_task and self.clear_alarm_task.active():
             self.clear_alarm_task.cancel()
-
-        if self.sleep_mode_task and self.sleep_mode_task.active():
-            self.sleep_mode_task.cancel()
 
         for _, task in self.toggle_tasks.items():
             if task and task.active():
@@ -307,6 +294,10 @@ class SecureFloor(MagicNode):
         else:
             logger.warning("Node is in success mode: ignoring set status to '{}'".format(status))
 
+    @on_event(filter={'category': 'forced_alarm'})
+    def event_forced_alarm(self):
+        self.event_set_all_leds_color('white_to_red')
+
     @on_event(filter={'category': 'success'})
     def event_success(self):
         if self.success is False:
@@ -324,9 +315,6 @@ class SecureFloor(MagicNode):
         self.toggle_tasks[sensor_id] = reactor.callLater(0.5, self._on_sensor_toggle, activated, led_strip)
 
     def _on_sensor_toggle(self, activated, led_strip):
-        if self.sleep_mode_task and self.sleep_mode_task.active():
-            self.sleep_mode_task.cancel()
-
         if self.status == 'playing':
             if activated and led_strip and self.leds[led_strip] == 'black':
                 self.event_set_led_color('orange', led_strip)

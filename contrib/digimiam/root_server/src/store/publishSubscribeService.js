@@ -81,6 +81,8 @@ const publishSubscribeService = new Vuex.Store({
         businessStore.commit('displayDangerWindow')
       } else if (event.category === 'availability') {
         businessStore.commit('notifyAvailability', {mealId: event.id, missingIngredients: event.missing_ingredients})
+      } else if (event.category === "force_success") {
+        businessStore.commit('success')
       }
     },
     SOCKET_RECONNECT (state, count) {

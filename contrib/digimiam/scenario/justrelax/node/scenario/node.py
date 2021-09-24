@@ -879,22 +879,51 @@ class Scenario(MagicNode):
     def root_server_event_success(self):
         self.publish_prefix({'category': 'stop_sending_fog_forever'}, 'fog_machine')
 
+        self.publish_prefix(
+            {'category': 'set_volume', 'track_id': 'track8', 'volume': 35, 'duration': 5}, 'music_player')
+        self.register_delayed_task(
+            16, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track8', 'volume': 0, 'duration': 10},
+            'music_player')
+        self.register_delayed_task(26, self.publish_prefix, {'category': 'stop', 'track_id': 'track8'}, 'music_player')
+
+        # Note: track91 will stop by itself since it's not configured in loop mode
+        self.publish_prefix(
+            {'category': 'set_volume', 'track_id': 'track91', 'volume': 0, 'duration': 0}, 'music_player')
+        self.publish_prefix({'category': 'play', 'track_id': 'track91'}, 'music_player')
+        self.publish_prefix(
+            {'category': 'set_volume', 'track_id': 'track91', 'volume': 50, 'duration': 5}, 'music_player')
+
+        self.register_delayed_task(
+            16, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track92', 'volume': 0, 'duration': 0},
+            'music_player')
+        self.register_delayed_task(
+            16, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track92', 'volume': 50, 'duration': 2},
+            'music_player')
+        self.register_delayed_task(
+            16, self.publish_prefix, {'category': 'play', 'track_id': 'track92'}, 'music_player')
+
+        # Just in case
+        self.register_delayed_task(
+            100, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track92', 'volume': 0, 'duration': 5},
+            'music_player')
+        self.register_delayed_task(
+            105, self.publish_prefix, {'category': 'stop', 'track_id': 'track92'}, 'music_player')
+
         def post_delay():
             self.publish_prefix({'category': 'set_marmitron_visibility', 'show': False}, 'orders')
             self.publish_prefix({'category': 'final_animation'}, 'root_server')
 
-        self.register_delayed_task(0.5, post_delay)
+        self.register_delayed_task(2, post_delay)
 
     @on_event(filter={'from': 'root_server', 'category': 'ms_pepper_mad_end'})
     def root_server_event_ms_pepper_mad_end(self):
-        def post_delay():
-            self.publish_prefix({'category': 'display_danger_window'}, 'synchronizer')
-            self.publish_prefix({'category': 'display_danger_window'}, 'orders')
-            self.publish_prefix({'category': 'display_danger_window'}, 'inventory')
-            self.publish_prefix({'category': 'display_danger_window'}, 'root_server')
-            self.publish_prefix({'category': 'alarm', 'activated': True}, 'relays')
-
-        self.register_delayed_task(2, post_delay)
+        self.publish_prefix({'category': 'display_danger_window'}, 'synchronizer')
+        self.publish_prefix({'category': 'display_danger_window'}, 'orders')
+        self.publish_prefix({'category': 'display_danger_window'}, 'inventory')
+        self.publish_prefix({'category': 'display_danger_window'}, 'root_server')
+        self.publish_prefix({'category': 'alarm', 'activated': True}, 'relays')
+        self.publish_prefix({'category': 'forced_alarm'}, 'secure_floor')
+        self.publish_prefix({'category': 'set_status', 'status': 'disabled'}, 'human_authenticator')
 
     @on_event(filter={'widget_id': 'front_door_open'})
     def button_front_door_open(self):
@@ -1557,6 +1586,28 @@ class Scenario(MagicNode):
             'dxl_id': dxl_id,
             'position': position,
         }, 'niryo')
+
+    @on_event(filter={'widget_id': 'root_server_reset'})
+    def root_server_reset(self):
+        self.publish_prefix({'category': 'reset'}, 'root_server')
+
+    @on_event(filter={'widget_id': 'root_server_show_ui'})
+    def root_server_show_ui(self):
+        self.publish_prefix({'category': 'show_ui'}, 'root_server')
+        self.register_delayed_task(
+            3, self.publish_prefix, {'category': 'display_password_window'}, 'root_server')
+
+    @on_event(filter={'widget_id': 'root_server_success'})
+    def root_server_success(self):
+        self.publish_prefix({'category': 'force_success'}, 'root_server')
+
+    @on_event(filter={'widget_id': 'root_server_display_danger_window'})
+    def root_server_display_danger_window(self):
+        self.publish_prefix({'category': 'display_danger_window'}, 'root_server')
+
+    @on_event(filter={'widget_id': 'root_server_play_animation'})
+    def root_server_play_animation(self, animation_id: str):
+        self.publish_prefix({'category': 'play_animation', 'animation': animation_id}, 'root_server')
 
 
 class ScenarioD1(Scenario):
