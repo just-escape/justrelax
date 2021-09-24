@@ -20,9 +20,12 @@
     <div class="d-flex flex-row justify-content-between align-items-center">
       <div style="font-style: italic">Disponibilité ingrédients</div>
       <div class="position-relative">
-        <ButtonBlue @click="click">
-          <span class="align-self-center">VÉRIFIER</span>
-        </ButtonBlue>
+        <div style="width: 100px; height: 30px" class="d-flex align-items-center justify-content-center">
+          <div v-if="loading" class="loading"></div>
+          <ButtonBlue v-else @click="click">
+            <span class="align-self-center">VÉRIFIER</span>
+          </ButtonBlue>
+        </div>
         <BadgeNotification v-for="n in notifications" :key="n.id" :message="n.message" :fadeDelay="n.fadeDelay" :theme="n.theme"/>
       </div>
     </div>
@@ -42,6 +45,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       notificationsCounter: 0,
       notifications: []
     }
@@ -71,6 +75,7 @@ export default {
       this.notifications.filter(n => n.id !== id)
     },
     click() {
+      this.loading = true 
       businessStore.commit('checkAvailability', this.mealIndex)
     },
     watchQuality() {
@@ -85,6 +90,7 @@ export default {
     availabilityNotificationSignal() {
       for (let meal of businessStore.state.meals) {
         if (meal.id === businessStore.state.availabilityNotificationId) {
+          this.loading = false
           let thisId = this.notificationsCounter++
           let message = businessStore.state.availabilityNotificationMissingIngredients ? "Au moins une capsule pour<br/>" : "Toutes les capsules pour<br/>"
           message += "produire des " + meal.labelPlural + "<br/>"
@@ -104,3 +110,22 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 4px solid rgba(0, 209, 182, .3);
+  border-radius: 50%;
+  border-top-color: #00d1b6;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+</style>
