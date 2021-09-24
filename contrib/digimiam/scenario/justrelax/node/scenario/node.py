@@ -840,6 +840,11 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             5, self.publish_prefix, {'category': 'set_display_order_recap_notification', 'value': False}, 'orders')
 
+        # Disable the payment module at this point for players not to think it could be useful in the last room with
+        # other human authenticators
+        self.register_delayed_task(
+            10, self.publish_prefix, {'category': 'set_status', 'status': 'disabled'}, 'payment_module')
+
     @on_event(filter={'from': 'secure_floor', 'category': 'clear'})
     def secure_floor_event_clear(self):
         self.publish_prefix({'category': 'playing'}, 'laser_maze')
