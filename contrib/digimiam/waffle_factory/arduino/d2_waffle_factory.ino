@@ -147,7 +147,7 @@ bool checkMotorMoveValues(int nPulses, unsigned long stepDelay, int liminaryNPul
         error = true;
     }
 
-    if (100 > stepDelay || stepDelay > 20000) {
+    if (200 > stepDelay || stepDelay > 20000) {
         error = true;
     }
 
@@ -200,7 +200,7 @@ void updateMotorClocks() {
             (motorLiminaryNPulses[i] > 0 && motorDecelerationNPulses[i] > 0)
         ) {
             if (digitalRead(motorStepPins[i])) {
-                if (currentMicros - motorPreviousMicros[i] >= 100) {
+                if (currentMicros - motorPreviousMicros[i] >= 200) {
                     digitalWrite(motorStepPins[i], LOW);
                     motorPreviousMicros[i] = currentMicros;
 
@@ -238,7 +238,7 @@ void updateMotorClocks() {
                     }
                 }
             } else {
-                if (currentMicros - motorPreviousMicros[i] >= motorCurrentStepDelays[i] - 100) {
+                if (currentMicros - motorPreviousMicros[i] >= motorCurrentStepDelays[i] - 200) {
                     digitalWrite(motorStepPins[i], HIGH);
                     motorPreviousMicros[i] = currentMicros;
                 }
