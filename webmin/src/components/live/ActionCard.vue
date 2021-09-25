@@ -11,6 +11,7 @@
     <ul v-else class="list-unstyled mb-0">
       <li v-for="(row, index) in cardRows" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
         <WidgetButtonsGroup v-if="row.widget === 'buttons_group'" :row="row" :defaultChannel="roomDefaultChannel"/>
+        <WidgetSessionData v-if="row.widget === 'session_data'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
         <WidgetLogPrompt v-else-if="row.widget === 'log_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
         <WidgetInstructionPrompt v-else-if="row.widget === 'instruction_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
         <WidgetLasers v-else-if="row.widget === 'lasers'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
@@ -22,6 +23,7 @@
 
 <script>
 import WidgetButtonsGroup from "@/components/live/WidgetButtonsGroup.vue"
+import WidgetSessionData from "@/components/live/WidgetSessionData.vue"
 import WidgetLogPrompt from "@/components/live/WidgetLogPrompt.vue"
 import WidgetInstructionPrompt from "@/components/live/WidgetInstructionPrompt.vue"
 import WidgetLasers from "@/components/live/WidgetLasers.vue"
@@ -33,6 +35,7 @@ export default {
   name: "ActionCard",
   components: {
     WidgetButtonsGroup,
+    WidgetSessionData,
     WidgetLogPrompt,
     WidgetInstructionPrompt,
     WidgetLasers,

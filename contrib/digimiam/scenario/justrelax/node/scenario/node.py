@@ -1,3 +1,4 @@
+import json
 import time
 import uuid
 
@@ -151,7 +152,13 @@ class SessionTimer:
 class Scenario(MagicNode):
     DIFFICULTIES = {'easy', 'normal', 'hard'}
 
-    MS_PEPPER_HERE_YOU_ARE_DURATION = 0  # 35
+    MS_PEPPER_INTRO_DURATION = 35
+
+    PERSISTENT_SCENARIO_SETTINGS = [
+        'niryo_animation',
+        'ms_pepper_intro',
+        'epileptic_mode',
+    ]
 
     def __init__(self, *args, **kwargs):
         super(Scenario, self).__init__(*args, **kwargs)
@@ -167,8 +174,11 @@ class Scenario(MagicNode):
         # Those delayed calls are canceled on a room reset
         self.registered_delayed_tasks = {}
 
+        with open(self.config['persistent_settings'], 'r') as fh:
+            self.persistent_settings = json.load(fh)
+
         self.timers = {
-            'modify_fx': Timer(self.MS_PEPPER_HERE_YOU_ARE_DURATION + 18.285, False, self.modify_fx),
+            'modify_fx': Timer(0, False, self.modify_fx),  # 0 because the delay is computed in start_room
             'track1_light_animation_1_first_trigger': Timer(21.25, False, self.track1_light_animation_1),
             'track1_light_animation_1_second_trigger': Timer(220.107125, False, self.track1_light_animation_1),
             'track1_light_animation_1_loop_trigger': Timer(120.678563, False, self.track1_light_animation_1),
@@ -216,8 +226,6 @@ class Scenario(MagicNode):
             'track1_light_animation_7_loop_trigger',
         ]
 
-        self.epileptic_mode = False
-
         self.holomenu_slide = None
         self.holomenu_x = None
         self.holomenu_y = None
@@ -237,6 +245,8 @@ class Scenario(MagicNode):
             ],
         ]
 
+        self.is_control_panel_in_manual_mode = False
+
     def publish_prefix(self, event, channel):
         self.publish(event, "{}{}".format(self.publication_channel_prefix, channel))
 
@@ -255,6 +265,8 @@ class Scenario(MagicNode):
         self.publish_game_time_to_webmin()
 
     def on_first_connection(self):
+        for key in self.PERSISTENT_SCENARIO_SETTINGS:
+            self._record_session_data(key, self.persistent_settings[key])
         self.publish_prefix({'category': 'request_node_session_data'}, 'broadcast')
 
     @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'run'})
@@ -276,7 +288,7 @@ class Scenario(MagicNode):
             self.publish_prefix(
                 {
                     'category': 'play',
-                    'video_id': 'ads_glitch' if self.initial_difficulty == 'hard' else 'waffresco_ad_loop',
+                    'video_id': 'ads_glitch'  # if self.initial_difficulty == 'hard' else 'waffresco_ad_loop',
                 },
                 'advertiser'
             )
@@ -286,18 +298,6 @@ class Scenario(MagicNode):
         def open_the_door():
             self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
             self.session_timer.start()
-
-        def ajust_fx():
-            self.schedule_track1_light_animations()
-            self.publish_prefix({'category': 'on', 'color': 'blue'}, 'refectory_lights')
-            self.publish_prefix(
-                {'category': 'set_volume', 'track_id': 'track1', 'volume': 50, 'duration': 30}, 'music_player')
-            self.register_delayed_task(
-                85,
-                self.publish_prefix,
-                {'category': 'set_volume', 'track_id': 'track1', 'volume': 40, 'duration': 60},
-                'music_player'
-            )
 
         self.publish_prefix({'category': 'on', 'color': 'orange'}, 'refectory_lights')
         self.publish_prefix({'category': 'on', 'color': 'green'}, 'refectory_lights')
@@ -312,15 +312,18 @@ class Scenario(MagicNode):
         self.publish_prefix(
             {
                 'category': 'pause',
-                'video_id': 'ads_glitch' if self.initial_difficulty == 'hard' else 'waffresco_ad_loop',
+                'video_id': 'ads_glitch'  # if self.initial_difficulty == 'hard' else 'waffresco_ad_loop',
             },
             'advertiser'
         )
-        # self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
 
-        self.register_delayed_task(self.MS_PEPPER_HERE_YOU_ARE_DURATION, after_ms_pepper_here_you_are)
+        if self.persistent_settings['ms_pepper_intro']:
+            self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
 
-        self.register_delayed_task(self.MS_PEPPER_HERE_YOU_ARE_DURATION + 5, open_the_door)
+        real_intro_duration = self.MS_PEPPER_INTRO_DURATION if self.persistent_settings['ms_pepper_intro'] else 0
+        self.timers['modify_fx'].delay = real_intro_duration + 18.285
+        self.register_delayed_task(real_intro_duration, after_ms_pepper_here_you_are)
+        self.register_delayed_task(real_intro_duration + 5, open_the_door)
 
         self.timers['modify_fx'].start()
 
@@ -380,43 +383,43 @@ class Scenario(MagicNode):
             self.timers[timer].resume()
 
     def track1_light_animation_1(self):
-        if not self.epileptic_mode:
+        if not self.persistent_settings['epileptic_mode']:
             self.publish_prefix(
                 {'category': 'play_animation', 'name': 'glitch1', 'color': 'all_but_white', 'duration': 2.01},
                 'refectory_lights')
 
     def track1_light_animation_2(self):
-        if not self.epileptic_mode:
+        if not self.persistent_settings['epileptic_mode']:
             self.publish_prefix(
                 {'category': 'play_animation', 'name': 'glitch_off_on', 'color': 'all_but_white', 'duration': 1.75},
                 'refectory_lights')
 
     def track1_light_animation_3(self):
-        if not self.epileptic_mode:
+        if not self.persistent_settings['epileptic_mode']:
             self.publish_prefix(
                 {'category': 'play_animation', 'name': 'glitch_off_on', 'color': 'all_but_white', 'duration': 2.5},
                 'refectory_lights')
 
     def track1_light_animation_4(self):
-        if not self.epileptic_mode:
+        if not self.persistent_settings['epileptic_mode']:
             self.publish_prefix(
                 {'category': 'play_animation', 'name': 'glitch2', 'color': 'all_but_white', 'duration': 1.01},
                 'refectory_lights')
 
     def track1_light_animation_5(self):
-        if not self.epileptic_mode:
+        if not self.persistent_settings['epileptic_mode']:
             self.publish_prefix(
                 {'category': 'play_animation', 'name': 'glitch3', 'color': 'all_but_white', 'duration': 1.01},
                 'refectory_lights')
 
     def track1_light_animation_6(self):
-        if not self.epileptic_mode:
+        if not self.persistent_settings['epileptic_mode']:
             self.publish_prefix(
                 {'category': 'play_animation', 'name': 'glitch_off_on', 'color': 'all_but_white', 'duration': 0.5},
                 'refectory_lights')
 
     def track1_light_animation_7(self):
-        if not self.epileptic_mode:
+        if not self.persistent_settings['epileptic_mode']:
             self.publish_prefix(
                 {'category': 'play_animation', 'name': 'glitch4', 'color': 'all_but_white', 'duration': 1.01},
                 'refectory_lights')
@@ -453,8 +456,6 @@ class Scenario(MagicNode):
         # Note: the table is not automatically reset
         self.publish_prefix({'category': 'reset'}, 'broadcast')
 
-        self.epileptic_mode = False
-
         self.holomenu_slide = None
         self.holomenu_x = None
         self.holomenu_y = None
@@ -471,6 +472,14 @@ class Scenario(MagicNode):
 
     @on_event(filter={'category': 'set_session_data'})
     def set_session_data(self, key: str, data):
+        self._record_session_data(key, data)
+
+        if key in self.PERSISTENT_SCENARIO_SETTINGS:
+            self.persistent_settings[key] = data
+            with open(self.config['persistent_settings'], 'w') as fh:
+                json.dump(self.persistent_settings, fh)
+
+    def _record_session_data(self, key, data):
         self.session_data[key] = data
         self.publish_prefix(
             {"category": "set_session_data", "key": key, "data": data}, "webmin")
@@ -567,7 +576,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'set_slide', 'chapter_id': dish, 'slide_index': index}, 'holographic_menu')
 
     def light_service_success_animation(self):
-        if not self.epileptic_mode:
+        if not self.persistent_settings['epileptic_mode']:
             self.publish_prefix(
                 {'category': 'play_animation', 'name': 'refectory_repaired', 'color': 'all_but_white'},
                 'refectory_lights')
@@ -590,7 +599,7 @@ class Scenario(MagicNode):
     def synchronizer_event_services_synchronization_success(self):
         if self.timers['light_service_success_animation'].task:
             self.timers['light_service_success_animation'].cancel()
-            if not self.epileptic_mode:
+            if not self.persistent_settings['epileptic_mode']:
                 self.register_delayed_task(1, self.publish_prefix,
                     {'category': 'play_animation', 'name': 'refectory_repaired', 'color': 'all'}, 'refectory_lights')
             else:
@@ -598,7 +607,7 @@ class Scenario(MagicNode):
                     {'category': 'on', 'color': 'all'}, 'refectory_lights')
         else:
             self.timers['light_service_success_animation']
-            if not self.epileptic_mode:
+            if not self.persistent_settings['epileptic_mode']:
                 self.register_delayed_task(1, self.publish_prefix,
                     {'category': 'play_animation', 'name': 'refectory_repaired', 'color': 'white'}, 'refectory_lights')
             else:
@@ -1434,10 +1443,6 @@ class Scenario(MagicNode):
     def buttons_payment_status(self, status: str):
         self.publish_prefix({'category': 'set_status', 'status': status}, 'payment_module')
 
-    @on_event(filter={'widget_id': 'epiletic_mode'})
-    def buttons_epileptic_mode(self, value: bool):
-        self.epileptic_mode = value
-
     @on_event(filter={'widget_id': 'menu_graduation_texts'})
     def buttons_menu_graduation_texts(self, display: bool):
         self.publish_prefix({'category': 'display_graduations', 'display': display}, 'synchronizer')
@@ -1608,6 +1613,10 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'root_server_play_animation'})
     def root_server_play_animation(self, animation_id: str):
         self.publish_prefix({'category': 'play_animation', 'animation': animation_id}, 'root_server')
+
+    @on_event(filter={'widget_type': 'session_data', 'action': 'set'})
+    def widget_session_data_set_data(self, key: str, value):
+        self.set_session_data(key, value)
 
 
 class ScenarioD1(Scenario):
