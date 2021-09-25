@@ -6,6 +6,7 @@ from editor.models import RuleSet
 
 WIDGET_TYPES = (
     ('buttons_group', 'buttons_group'),
+    ('session_data', 'session_data'),
     ('log_prompt', 'log_prompt'),
     ('instruction_prompt', 'instruction_prompt'),
     ('lasers', 'lasers'),
