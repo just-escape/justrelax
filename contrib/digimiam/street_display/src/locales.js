@@ -5,11 +5,10 @@ Vue.use(VueI18n)
 
 const locales = {
   fr: {
-    easy: 'Facile',
-    normal: 'Normal',
-    hard: 'Difficile',
     play: 'Jouer',
-    in: 'en',
+    run: 'Lancer',
+    the: 'la',
+    game: 'partie',
     question_mark: '&nbsp;?',
     yes: 'Oui',
     no: 'Non',
@@ -19,11 +18,10 @@ const locales = {
     open_the_door: 'Ouvrir la porte',
   },
   en: {
-    easy: 'Easy',
-    normal: 'Normal',
-    hard: 'Hard',
     play: 'Play',
-    in: 'in',
+    run: 'Run',
+    the: 'the',
+    game: 'game',
     question_mark: '?',
     yes: 'Yes',
     no: 'No',

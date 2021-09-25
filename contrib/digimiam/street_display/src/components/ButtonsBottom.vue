@@ -1,30 +1,10 @@
 <template>
   <div class="frame mt-5 position-relative">
-    <div class="d-flex flex-row justify-content-between position-absolute w-100 pointer-events-none">
+    <div class="d-flex flex-row justify-content-end position-absolute w-100 pointer-events-none">
       <div>
         <FramedButton
-          :style="{'transform': 'translateX(' + easyTranslateX + 'px)'}"
-          class="text-l mr-2 transition-transform pointer-events-auto"
-          :fill="difficulty === 'easy'" :label="$t('easy')"
-          @mousedown="setDifficulty('easy')"
-        />
-        <FramedButton
-          :style="{'transform': 'translateX(' + normalTranslateX + 'px)'}"
-          class="text-l mx-2 transition-transform pointer-events-auto"
-          :fill="difficulty === 'normal'" :label="$t('normal')"
-          @mousedown="setDifficulty('normal')"
-        />
-        <FramedButton
-          :style="{'transform': 'translateX(' + hardTranslateX + 'px)'}"
-          class="text-l ml-2 transition-transform pointer-events-auto"
-          :fill="difficulty === 'hard'" :label="$t('hard')"
-          @mousedown="setDifficulty('hard')"
-        />
-      </div>
-      <div>
-        <FramedButton
-          :style="{'transform': 'translateX(' + playButtonTranslateX + 'px)'}"
-          class="text-l transition-transform pointer-events-auto"
+          :style="{'transform': 'translateX(' + playButtonTranslateX + 'px)', 'width': '350px'}"
+          class="text-l transition-transform pointer-events-auto text-center"
           color="orange" :fill="true" :label="$t('play')"
           @mousedown="play"
         />
@@ -34,16 +14,17 @@
     <div class="position-absolute d-flex flex-row justify-content-between w-100 pointer-events-none">
       <div class="text-l align-self-center">
         <div
-          :style="{'transform': 'translateX(' + playWordTranslateX + 'px)'}"
+          :style="{'transform': 'translateX(' + runWordTranslateX + 'px)'}"
           class="d-inline-block transition-transform"
-        >{{ $t('play') }}</div>&nbsp;
+        >{{ $t('run') }}</div>&nbsp;
         <div
-          :style="{'transform': 'translateX(' + inTranslateX + 'px)'}"
+          :style="{'transform': 'translateX(' + theTranslateX + 'px)'}"
           class="d-inline-block transition-transform"
-        >{{ $t('in') }}</div>&nbsp;
+        >{{ $t('the') }}</div>&nbsp;
         <div
-          :style="{'transform': 'translateX(' + difficultyTranslateX + 'px)'}"
-          class="d-inline-block transition-transform text-teal">{{ $t(difficulty) }}</div>
+          :style="{'transform': 'translateX(' + gameTranslateX + 'px)'}"
+          class="d-inline-block transition-transform"
+        >{{ $t('game') }}</div>
         <div
           :style="{'transform': 'translateX(' + questionMarkTranslateX + 'px)'}"
           class="d-inline-block transition-transform"
@@ -91,15 +72,11 @@ export default {
   },
   data() {
     return {
-      difficulty: 'normal',
       areActionsLocked: false,
-      easyTranslateX: 0,
-      normalTranslateX: 0,
-      hardTranslateX: 0,
       playButtonTranslateX: 0,
-      playWordTranslateX: -1080,
-      inTranslateX: -1080,
-      difficultyTranslateX: -1080,
+      runWordTranslateX: -1080,
+      theTranslateX: -1080,
+      gameTranslateX: -1080,
       questionMarkTranslateX: -1080,
       yesTranslateX: -1080,
       noTranslateX: -1080,
@@ -137,39 +114,28 @@ export default {
     }
   },
   methods: {
-    setDifficulty(difficulty) {
-      if (!this.areActionsLocked) {
-        this.difficulty = difficulty
-      }
-    },
     play() {
       if (!this.areActionsLocked) {
-        setTimeout(this.setData, 200, 'easyTranslateX', -1080)
-        setTimeout(this.setData, 400, 'normalTranslateX', -1080)
-        setTimeout(this.setData, 600, 'hardTranslateX', -1080)
-        setTimeout(this.setData, 800, 'playButtonTranslateX', -1080)
+        setTimeout(this.setData, 200, 'playButtonTranslateX', -1080)
 
-        setTimeout(this.setData, 1400, 'playWordTranslateX', 0)
-        setTimeout(this.setData, 1600, 'inTranslateX', 0)
-        setTimeout(this.setData, 1800, 'difficultyTranslateX', 0)
-        setTimeout(this.setData, 2000, 'questionMarkTranslateX', 0)
-        setTimeout(this.setData, 2200, 'yesTranslateX', 0)
-        setTimeout(this.setData, 2400, 'noTranslateX', 0)
+        setTimeout(this.setData, 800, 'runWordTranslateX', 0)
+        setTimeout(this.setData, 1000, 'theTranslateX', 0)
+        setTimeout(this.setData, 1200, 'gameTranslateX', 0)
+        setTimeout(this.setData, 1400, 'questionMarkTranslateX', 0)
+        setTimeout(this.setData, 1600, 'yesTranslateX', 0)
+        setTimeout(this.setData, 1800, 'noTranslateX', 0)
       }
     },
     cancel() {
       if (!this.areActionsLocked) {
-        setTimeout(this.setData, 200, 'playWordTranslateX', -1080)
-        setTimeout(this.setData, 400, 'inTranslateX', -1080)
-        setTimeout(this.setData, 600, 'difficultyTranslateX', -1080)
+        setTimeout(this.setData, 200, 'runWordTranslateX', -1080)
+        setTimeout(this.setData, 400, 'theTranslateX', -1080)
+        setTimeout(this.setData, 600, 'gameTranslateX', -1080)
         setTimeout(this.setData, 800, 'questionMarkTranslateX', -1080)
         setTimeout(this.setData, 1000, 'yesTranslateX', -1080)
         setTimeout(this.setData, 1200, 'noTranslateX', -1080)
 
-        setTimeout(this.setData, 1800, 'easyTranslateX', 0)
-        setTimeout(this.setData, 2000, 'normalTranslateX', 0)
-        setTimeout(this.setData, 2200, 'hardTranslateX', 0)
-        setTimeout(this.setData, 2400, 'playButtonTranslateX', 0)
+        setTimeout(this.setData, 1800, 'playButtonTranslateX', 0)
       }
     },
     confirm() {
@@ -177,9 +143,9 @@ export default {
 
       this.areActionsLocked = true
 
-      setTimeout(this.setData, 200, 'playWordTranslateX', -1080)
-      setTimeout(this.setData, 400, 'inTranslateX', -1080)
-      setTimeout(this.setData, 600, 'difficultyTranslateX', -1080)
+      setTimeout(this.setData, 200, 'runWordTranslateX', -1080)
+      setTimeout(this.setData, 400, 'theTranslateX', -1080)
+      setTimeout(this.setData, 600, 'gameTranslateX', -1080)
       setTimeout(this.setData, 800, 'questionMarkTranslateX', -1080)
       setTimeout(this.setData, 1000, 'yesTranslateX', -1080)
       setTimeout(this.setData, 1200, 'noTranslateX', -1080)
@@ -198,14 +164,10 @@ export default {
     sessionTime() {
       // No matter the current configuration step, everything is hidden except the session time that is displayed
       this.areActionsLocked = true
-      this.easyTranslateX = -1080
-      this.playWordTranslateX = -1080
-      this.normalTranslateX = -1080
-      this.hardTranslateX = -1080
       this.playButtonTranslateX = -1080
-      this.playWordTranslateX = -1080
-      this.inTranslateX = -1080
-      this.difficultyTranslateX = -1080
+      this.runWordTranslateX = -1080
+      this.theTranslateX = -1080
+      this.gameTranslateX = -1080
       this.questionMarkTranslateX = -1080
       this.yesTranslateX = -1080
       this.noTranslateX = -1080
