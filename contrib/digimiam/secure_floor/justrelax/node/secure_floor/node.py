@@ -58,10 +58,8 @@ class AMG88XX:
         self.on_toggle = on_toggle
         self.led_strip = led_strip
 
-    def new_matrix(self, matrix):
-        max_value = max(matrix)
-
-        is_activated = max_value > self.threshold
+    def new_max(self, value):
+        is_activated = value > self.threshold
         if is_activated is self.last_state:
             return
 
@@ -96,7 +94,7 @@ class ArduinoProtocolAMG88XX:
     CATEGORY = "c"
 
     ERROR = "e"
-    MATRIX = "m"
+    MAX = "m"
 
     CALIBRATE = "c"
     CALIBRATION_SAMPLES = "s"
@@ -178,10 +176,9 @@ class SecureFloor(MagicNode):
     def event_set_all_leds_color(self, color: str):
         self.set_led_color(color, sum(self.leds.keys()))
 
-    @on_event(filter={ArduinoProtocolAMG88XX.CATEGORY: ArduinoProtocolAMG88XX.MATRIX})
-    def serial_event_amg88xx_new_matrix(self, port, /, m):
-        if port == '/dev/amg88xx':
-            self.amg88xx.new_matrix(m)
+    @on_event(channel='/dev/amg88xx', filter={ArduinoProtocolAMG88XX.CATEGORY: ArduinoProtocolAMG88XX.MAX})
+    def serial_event_amg88xx_new_matrix(self, m):
+        self.amg88xx.new_max(m)
 
     @on_event(filter={'category': 'set_amg88xx_acquisition_params'})
     def event_set_acquisition_params(self, samples: int = 1, delay: int = 0, inter_acquisition_delay: int = 1000):
@@ -200,7 +197,7 @@ class SecureFloor(MagicNode):
     def event_calibrate(self):
         logger.info("Calibration sensors")
 
-        if self.amg88xx:
+        if self.amg88xx is not None:
             self.send_serial(
                 {
                     ArduinoProtocolAMG88XX.CATEGORY: ArduinoProtocolAMG88XX.CALIBRATE,

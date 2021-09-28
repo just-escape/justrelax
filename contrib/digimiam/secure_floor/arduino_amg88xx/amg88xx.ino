@@ -1,10 +1,11 @@
+#include <Melopero_AMG8833.h>
 #include <ArduinoJson.h>
 
 #define PROTOCOL_CATEGORY "c"
 
 // Sent events
 #define PROTOCOL_ERROR "e"
-#define PROTOCOL_MATRIX "m"
+#define PROTOCOL_MAX "m"
 
 // Received events
 #define PROTOCOL_CALIBRATE "c"
@@ -31,17 +32,20 @@ int acquisitionSamples = 1;
 DynamicJsonDocument receivedDocument(JSON_OBJECT_SIZE(20));
 String receivedEvent = "";
 
-void pushMatrix() {
-  DynamicJsonDocument event(18 + 64 * 8);
-  JsonArray array = event.createNestedArray(PROTOCOL_MATRIX);
+void pushMax() {
+  StaticJsonDocument<JSON_OBJECT_SIZE(2)> event;
 
+  float max = 0;
   for (i = 0 ; i < 8 ; i++) {
     for (j = 0 ; j < 8 ; j++) {
-      array.add(acquisitionMatrix[j][i]);
+      if ((i == 0 && j == 0) || acquisitionMatrix[j][i] > max) {
+        max = acquisitionMatrix[j][i];
+      }
     }
   }
 
-  event[PROTOCOL_CATEGORY] = PROTOCOL_MATRIX;
+  event[PROTOCOL_MAX] = max;
+  event[PROTOCOL_CATEGORY] = PROTOCOL_MAX;
 
   serializeJson(event, Serial);
   Serial.println();
@@ -118,7 +122,7 @@ void setup() {
 
 void loop() {
   acquire(acquisitionSamples, acquisitionDelay);
-  pushMatrix();
+  pushMax();
 
   delay(interAcquisitionDelay);
 }
