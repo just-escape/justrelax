@@ -6,7 +6,9 @@ subscriptions:
   - d1.broadcast
 
 serials:
-  - port: /dev/ttyUSB0
+  - port: /dev/floor
+    baud_rate: 9600
+  - port: /dev/amg88xx
     baud_rate: 9600
 
 clear_alarm_delay: 4

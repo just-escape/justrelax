@@ -3,9 +3,6 @@ import uuid
 
 from twisted.internet import reactor
 
-import busio
-import board
-import adafruit_amg88xx
 from gpiozero import OutputDevice, InputDevice
 
 from justrelax.core.logging_utils import logger
@@ -56,47 +53,17 @@ class AMG88XX:
         self.sensor_id = sensor_id
 
         self.threshold = threshold
-        i2c_bus = busio.I2C(board.SCL, board.SDA)
-        self.sensor = adafruit_amg88xx.AMG88XX(i2c_bus)
 
         self.last_state = False
         self.on_toggle = on_toggle
         self.led_strip = led_strip
 
-        # The initial calibration matrix has 100°C in all cells because room temperature will never be that hot
-        # So, before any manual calibration is performed, the computed differential matrix will never trigger any
-        # activation.
-        self.calibration_matrix = [[100] * 8] * 8
-        self.calibration_task = None
-
-        reactor.callLater(0, self.check_myself)
-
-    def check_myself(self):
-        reactor.callLater(1, self.check_myself)
-
-        if self.calibration_task and self.calibration_task.active():
-            # Nothing to do while calibration is ongoing
-            return
-
-        try:
-            snapped_matrix = self.sensor.pixels
-        except Exception:
-            return
-
-        differential_matrix = [[0] * 8] * 8
-        for x in range(0, 8):
-            for y in range(0, 8):
-                differential_matrix[x][y] = snapped_matrix[x][y] - self.calibration_matrix[x][y]
-
-        max_value = max(max(v) for v in differential_matrix)
-
-        logger.debug(f"Max value is {max_value}")
+    def new_matrix(self, matrix):
+        max_value = max(matrix)
 
         is_activated = max_value > self.threshold
         if is_activated is self.last_state:
             return
-
-        # logger.debug(f"Differential matrix is {differential_matrix}")
 
         self.last_state = is_activated
 
@@ -107,42 +74,6 @@ class AMG88XX:
             logger.info("AMG88XX (led_strip={}) has been deactivated".format(self.led_strip))
             self.on_toggle(False, self.led_strip, self.sensor_id)
 
-    def calibrate(self):
-        if self.calibration_task and self.calibration_task.active():
-            self.calibration_task.cancel()
-
-        self._calibrate(additive_matrix=[[0] * 8] * 8)
-
-    def _calibrate(self, additive_matrix, remaining_samples=10):
-        try:
-            snapped_matrix = self.sensor.pixels
-        except Exception:
-            logger.warning("Unable to snap pixels: skipping this calibration read", exc_info=True)
-            self.calibration_task = reactor.callLater(
-                1, self._calibrate, additive_matrix, remaining_samples=remaining_samples)
-            return
-
-        logger.debug(f"Snapping a calibration matrix {snapped_matrix}")
-
-        new_additive_matrix = [[0] * 8] * 8
-        for x in range(0, 8):
-            for y in range(0, 8):
-                new_additive_matrix[x][y] = additive_matrix[x][y] + snapped_matrix[x][y]
-        logger.debug(f"Additive matrix is now {new_additive_matrix}")
-
-        remaining_samples -= 1
-        if remaining_samples > 0:
-            self.calibration_task = reactor.callLater(
-                1, self._calibrate, new_additive_matrix, remaining_samples=remaining_samples)
-        else:
-            calibration_matrix = [[0] * 8] * 8
-            for x in range(0, 8):
-                for y in range(0, 8):
-                    calibration_matrix[x][y] = new_additive_matrix[x][y] / 10
-
-            self.calibration_matrix = calibration_matrix
-            logger.debug(f"Calibration matrix is now {self.calibration_matrix}")
-
     def __bool__(self):
         return self.last_state
 
@@ -150,7 +81,7 @@ class AMG88XX:
         return 'amg88xx'
 
 
-class ArduinoProtocol:
+class ArduinoProtocolFloor:
     CATEGORY = 'c'
 
     SET_COLOR_BLACK = 'b'
@@ -159,6 +90,22 @@ class ArduinoProtocol:
     SET_COLOR_WHITE = 'w'
     SET_COLOR_WHITE_TO_RED = 'w2r'
     STRIP_BIT_MASK = 's'
+
+
+class ArduinoProtocolAMG88XX:
+    CATEGORY = "c"
+
+    ERROR = "e"
+    MATRIX = "m"
+
+    CALIBRATE = "c"
+    CALIBRATION_SAMPLES = "s"
+    CALIBRATION_DELAY = "d"
+
+    SET_ACQUISITION_PARAMS = "ap"
+    ACQUISITION_SAMPLES = "as"
+    ACQUISITION_DELAY = "ad"
+    INTER_ACQUISITION_DELAY = "iad"
 
 
 class SecureFloor(MagicNode):
@@ -176,6 +123,7 @@ class SecureFloor(MagicNode):
         self.calibration = OutputDevice(self.config['calibration_pin'])
         self.calibration.off()
 
+        self.amg88xx = None
         self.leds = {}
         self.sensors = []
         self.toggle_tasks = {}
@@ -185,8 +133,8 @@ class SecureFloor(MagicNode):
                 self.sensors.append(Cell(sensor_id, sensor['pin'], self.on_sensor_toggle, sensor['led_strip']))
             elif sensor['type'] == 'amg88xx':
                 amg88xx = AMG88XX(sensor_id, sensor['threshold'], self.on_sensor_toggle, sensor['led_strip'])
-                reactor.callLater(5, amg88xx.calibrate)  # Let AMG88XX the time to initialize
                 self.sensors.append(amg88xx)
+                self.amg88xx = amg88xx
             else:
                 continue
 
@@ -202,22 +150,25 @@ class SecureFloor(MagicNode):
         logger.info("Setting led bit_mask={} color={}".format(bit_mask, color))
 
         color_mapping = {
-            'orange': ArduinoProtocol.SET_COLOR_ORANGE,
-            'red': ArduinoProtocol.SET_COLOR_RED,
-            'white': ArduinoProtocol.SET_COLOR_WHITE,
-            'white_to_red': ArduinoProtocol.SET_COLOR_WHITE_TO_RED,
+            'orange': ArduinoProtocolFloor.SET_COLOR_ORANGE,
+            'red': ArduinoProtocolFloor.SET_COLOR_RED,
+            'white': ArduinoProtocolFloor.SET_COLOR_WHITE,
+            'white_to_red': ArduinoProtocolFloor.SET_COLOR_WHITE_TO_RED,
         }
 
-        event_color = color_mapping.get(color, ArduinoProtocol.SET_COLOR_BLACK)
+        event_color = color_mapping.get(color, ArduinoProtocolFloor.SET_COLOR_BLACK)
 
         for led_index in self.leds.keys():
             if led_index & bit_mask:
                 self.leds[led_index] = color
 
-        self.send_serial({
-            ArduinoProtocol.CATEGORY: event_color,
-            ArduinoProtocol.STRIP_BIT_MASK: bit_mask,
-        })
+        self.send_serial(
+            {
+                ArduinoProtocolFloor.CATEGORY: event_color,
+                ArduinoProtocolFloor.STRIP_BIT_MASK: bit_mask,
+            },
+            '/dev/floor'
+        )
 
     @on_event(filter={'category': 'set_led_color'})
     def event_set_led_color(self, color: str, bit_mask: int):
@@ -227,11 +178,37 @@ class SecureFloor(MagicNode):
     def event_set_all_leds_color(self, color: str):
         self.set_led_color(color, sum(self.leds.keys()))
 
+    @on_event(filter={ArduinoProtocolAMG88XX.CATEGORY: ArduinoProtocolAMG88XX.MATRIX})
+    def serial_event_amg88xx_new_matrix(self, port, /, m):
+        if port == '/dev/amg88xx':
+            self.amg88xx.new_matrix(m)
+
+    @on_event(filter={'category': 'set_amg88xx_acquisition_params'})
+    def event_set_acquisition_params(self, samples: int = 1, delay: int = 0, inter_acquisition_delay: int = 1000):
+        logger.info(f"Setting acquisition params (samples={samples}), (delay={delay}), iad={inter_acquisition_delay}")
+        self.send_serial(
+            {
+                ArduinoProtocolAMG88XX.CATEGORY: ArduinoProtocolAMG88XX.SET_ACQUISITION_PARAMS,
+                ArduinoProtocolAMG88XX.ACQUISITION_SAMPLES: samples,
+                ArduinoProtocolAMG88XX.ACQUISITION_DELAY: delay,
+                ArduinoProtocolAMG88XX.INTER_ACQUISITION_DELAY: inter_acquisition_delay,
+            },
+            '/dev/amg88xx'
+        )
+
     @on_event(filter={'category': 'calibrate'})
     def event_calibrate(self):
         logger.info("Calibration sensors")
-        for sensor in self.sensors:
-            sensor.calibrate()
+
+        if self.amg88xx:
+            self.send_serial(
+                {
+                    ArduinoProtocolAMG88XX.CATEGORY: ArduinoProtocolAMG88XX.CALIBRATE,
+                    ArduinoProtocolAMG88XX.CALIBRATION_SAMPLES: 10,
+                    ArduinoProtocolAMG88XX.CALIBRATION_DELAY: 100,
+                },
+                '/dev/amg88xx'
+            )
 
         logger.info("Triggering calibration rising edge...")
         self.calibration.on()
