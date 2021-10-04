@@ -49,14 +49,16 @@ class HolographicMenu(MagicNode):
             raise ValueError("Video has only {} slides ({} is out of range): skipping".format(
                 len(self.player.slides), slide_index))
 
-        if chapter_id not in self.player.chapters:
+        concatenated_chapter_id = f"{chapter_id}_{slide_index + 1}"
+
+        if concatenated_chapter_id not in self.player.chapters:
             raise ValueError("Video has no chapter id={}: skipping".format(
-                chapter_id))
+                concatenated_chapter_id))
 
         logger.info("Setting chapter id={} in slide index={}".format(
-            chapter_id, slide_index))
+            concatenated_chapter_id, slide_index))
 
-        self.player.set_slide(slide_index, chapter_id)
+        self.player.set_slide(slide_index, concatenated_chapter_id)
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):

@@ -8,60 +8,213 @@ subscriptions:
 path: /home/pi/menu.mp4
 
 initial_slides:
-  - error
-  - error
-  - error
-  - error
+  - error_1
+  - error_2
+  - error_3
+  - error_4
 
 chapters:
-  - id: salade_flamande
+  - id: salade_flamande_1
     start: 0
     end: 11.56
-  - id: insectosteak
+  - id: insectosteak_1
     start: 12.96
     end: 21
-  - id: pizzalgue
+  - id: pizzalgue_1
     start: 21.96
     end: 33.96
-  - id: pizzaliere
+  - id: pizzaliere_1
     start: 34.96
     end: 46.92
-  - id: steakfie
+  - id: steakfie_1
     start: 47.96
     end: 59.92
-  - id: potjevleesch
+  - id: potjevleesch_1
     start: 61.04
     end: 72
-  - id: pizzage
+  - id: pizzage_1
     start: 72.96
     end: 82.52
-  - id: cambraisienne
+  - id: cambraisienne_1
     start: 84.16
     end: 95.48
-  - id: chtite_gelee
+  - id: chtite_gelee_1
     start: 96.64
     end: 106.44
-  - id: flubber
+  - id: flubber_1
     start: 107.68
     end: 119.52
-  - id: protobulle
+  - id: protobulle_1
     start: 120.84
     end: 130.52
-  - id: spider_gaufre
+  - id: spider_gaufre_1
     start: 131.56
     end: 141.52
-  - id: puddy_puddy
+  - id: puddy_puddy_1
     start: 142.40
     end: 154.44
-  - id: nano_gaufre
+  - id: nano_gaufre_1
     start: 155.64
     end: 163.96
-  - id: gaufresque
+  - id: gaufresque_1
     start: 164.72
     end: 174.68
-  - id: algaufre
+  - id: algaufre_1
     start: 175.84
     end: 185.64
-  - id: error
+  - id: error_1
     start: 186.60
     end: 196.52
+  - id: salade_flamande_2
+    start: 198.68
+    end: 210.24
+  - id: insectosteak_2
+    start: 211.64
+    end: 219.68
+  - id: pizzalgue_2
+    start: 220.64
+    end: 232.64
+  - id: pizzaliere_2
+    start: 233.64
+    end: 245.60
+  - id: steakfie_2
+    start: 246.64
+    end: 258.60
+  - id: potjevleesch_2
+    start: 259.72
+    end: 270.68
+  - id: pizzage_2
+    start: 271.64
+    end: 281.20
+  - id: cambraisienne_2
+    start: 282.84
+    end: 294.16
+  - id: chtite_gelee_2
+    start: 295.32
+    end: 305.12
+  - id: flubber_2
+    start: 306.36
+    end: 318.20
+  - id: protobulle_2
+    start: 319.52
+    end: 329.20
+  - id: spider_gaufre_2
+    start: 330.24
+    end: 340.20
+  - id: puddy_puddy_2
+    start: 341.08
+    end: 353.12
+  - id: nano_gaufre_2
+    start: 354.32
+    end: 362.64
+  - id: gaufresque_2
+    start: 363.40
+    end: 373.36
+  - id: algaufre_2
+    start: 374.52
+    end: 384.32
+  - id: error_2
+    start: 385.32
+    end: 395.24
+  - id: salade_flamande_3
+    start: 397.40
+    end: 408.92
+  - id: insectosteak_3
+    start: 410.32
+    end: 418.36
+  - id: pizzalgue_3
+    start: 419.32
+    end: 431.32
+  - id: pizzaliere_3
+    start: 432.32
+    end: 444.28
+  - id: steakfie_3
+    start: 445.32
+    end: 457.28
+  - id: potjevleesch_3
+    start: 458.40
+    end: 469.36
+  - id: pizzage_3
+    start: 470.32
+    end: 479.88
+  - id: cambraisienne_3
+    start: 481.52
+    end: 492.84
+  - id: chtite_gelee_3
+    start: 494
+    end: 503.80
+  - id: flubber_3
+    start: 505.04
+    end: 516.88
+  - id: protobulle_3
+    start: 518.92
+    end: 527.88
+  - id: spider_gaufre_3
+    start: 528.92
+    end: 538.88
+  - id: puddy_puddy_3
+    start: 539.76
+    end: 551.80
+  - id: nano_gaufre_3
+    start: 553
+    end: 561.32
+  - id: gaufresque_3
+    start: 562.08
+    end: 572.04
+  - id: algaufre_3
+    start: 573.20
+    end: 583
+  - id: error_3
+    start: 583.80
+    end: 593.64
+  - id: salade_flamande_4
+    start: 596.08
+    end: 607.60
+  - id: insectosteak_4
+    start: 609
+    end: 617.04
+  - id: pizzalgue_4
+    start: 618
+    end: 630
+  - id: pizzaliere_4
+    start: 631
+    end: 642.96
+  - id: steakfie_4
+    start: 644
+    end: 655.96
+  - id: potjevleesch_4
+    start: 657.08
+    end: 668.04
+  - id: pizzage_4
+    start: 669
+    end: 678.56
+  - id: cambraisienne_4
+    start: 680
+    end: 691.52
+  - id: chtite_gelee_4
+    start: 692.68
+    end: 702.48
+  - id: flubber_4
+    start: 703.72
+    end: 715.56
+  - id: protobulle_4
+    start: 716.88
+    end: 726.56
+  - id: spider_gaufre_4
+    start: 727.6
+    end: 737.56
+  - id: puddy_puddy_4
+    start: 738.44
+    end: 750.48
+  - id: nano_gaufre_4
+    start: 751.68
+    end: 760
+  - id: gaufresque_4
+    start: 760.76
+    end: 770.72
+  - id: algaufre_4
+    start: 771.88
+    end: 781.68
+  - id: error_4
+    start: 782.64
+    end: 792.44
