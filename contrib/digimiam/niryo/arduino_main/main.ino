@@ -132,7 +132,6 @@ void pulseMotors() {
               isMotorInHomingMode[i] = false;
             }
             motorNPulses[i] = 0;
-            return;
           }
         }
 
