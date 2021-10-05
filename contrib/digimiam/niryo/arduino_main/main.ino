@@ -305,10 +305,11 @@ void onEvent() {
 void onDynamixelEvent() {
   DeserializationError error = deserializeJson(receivedDocument, dynamixelReceivedEvent);
   if (error != DeserializationError::Ok) {
-    StaticJsonDocument<JSON_OBJECT_SIZE(2)> errorEvent;
+    StaticJsonDocument<JSON_OBJECT_SIZE(3)> errorEvent;
 
     errorEvent[PROTOCOL_CATEGORY] = PROTOCOL_ERROR;
     errorEvent[PROTOCOL_ERROR] = error.c_str();
+    errorEvent[PROTOCOL_FROM] = "dxl";
 
     serializeJson(errorEvent, RPI_SERIAL);
     RPI_SERIAL.println();
