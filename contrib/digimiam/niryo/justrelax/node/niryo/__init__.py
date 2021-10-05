@@ -1,1 +1,1 @@
-from justrelax.node.niryo.node import run_node
+from justrelax.node.niryo.node import Niryo
