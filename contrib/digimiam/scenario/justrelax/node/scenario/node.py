@@ -1065,9 +1065,9 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'stop_playing'}, 'laser_maze')
         self.publish_prefix({'category': 'set_status', 'status': 'disabled'}, 'human_authenticator')
 
-    @on_event(filter={'widget_id': 'secure_floor_tare'})
-    def button_secure_floor_tare(self):
-        self.publish_prefix({'category': 'tare'}, 'secure_floor')
+    @on_event(filter={'widget_id': 'secure_floor_calibrate'})
+    def button_secure_floor_calibrate(self):
+        self.publish_prefix({'category': 'calibrate'}, 'secure_floor')
 
     @on_event(filter={'widget_id': 'maze_success'})
     def button_maze_success(self):
@@ -1384,6 +1384,14 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'stop_glitch', 'color': 'blue'}, 'street_lights')
         self.publish_prefix({'category': 'stop_glitch', 'color': 'orange'}, 'street_lights')
 
+    @on_event(filter={'widget_id': 'waffle_factory_play_animation'})
+    def button_waffle_factory_play_animation(self, animation: str):
+        self.publish_prefix({'category': 'play_animation', 'animation': animation}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'waffle_factory_pause_animation'})
+    def button_waffle_factory_pause_animation(self):
+        self.publish_prefix({'category': 'pause_animation'}, 'waffle_factory')
+
     @on_event(filter={'widget_id': 'holomenu_set_part'})
     def buttons_holomenu_set_part(self, part: str, **kwargs):
         if part == 'slide':
@@ -1427,7 +1435,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'widget_id': 'niryo_magnetize'})
     def button_niryo_magnetize(self, value: bool):
-        self.publish_prefix({'category': 'niryo_magnetize', 'value': value}, 'niryo')
+        self.publish_prefix({'category': 'electromagnet', 'magnetize': value}, 'niryo')
 
     @on_event(filter={'widget_id': 'payment_authenticate'})
     def button_payment_authenticate(self):
