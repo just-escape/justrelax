@@ -96,7 +96,23 @@ export default {
   },
   data() {
     return {
-      niryoMotors: [
+      niryoDynamixels: [
+        {
+          name: "Niryo servo radius",
+          id: "radius",
+          position: undefined,
+        },
+        {
+          name: "Niryo servo main",
+          id: "hand",
+          position: undefined,
+        },
+      ],
+    }
+  },
+  computed: {
+    niryoMotors() {
+      let motors = [
         {
           name: "Convoyeur Niryo",
           id: "niryo",
@@ -142,6 +158,26 @@ export default {
           nLiminarySteps: 0,
           liminaryStepDelay: 3000,
         },
+      ]
+
+      if (this.defaultChannel === 'd1.scenario') {
+        // Hack, should be in widget params in the database, but it is so specific that... I got lazy
+        motors = [
+          ...motors,
+          {
+            name: "Tirette podium (d1)",
+            id: "podium",
+            channel: 'waffle_factory',
+            nSteps: 100,
+            stepDelay: 2000,
+            nLiminarySteps: 0,
+            liminaryStepDelay: 3000,
+          },
+        ]
+      }
+
+      motors = [
+        ...motors,
         {
           name: "Tirette de fin",
           id: "finisher",
@@ -178,19 +214,9 @@ export default {
           nLiminarySteps: 0,
           liminaryStepDelay: 3000,
         },
-      ],
-      niryoDynamixels: [
-        {
-          name: "Niryo servo avant-bras",
-          id: "forearm",
-          position: undefined,
-        },
-        {
-          name: "Niryo servo main",
-          id: "hand",
-          position: undefined,
-        },
-      ],
+      ]
+
+      return motors
     }
   },
   methods: {

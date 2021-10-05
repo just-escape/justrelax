@@ -19,7 +19,7 @@ motors:
     index: 2
 
 dynamixels:
-  forearm:
+  radius:
     index: 1
   hand:
     index: 0

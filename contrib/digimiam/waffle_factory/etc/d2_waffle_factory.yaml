@@ -28,6 +28,47 @@ motors:
   finisher:
     index: 5
 
+animations:
+  niryo:
+    0:
+      motor: niryo
+      direction: backward
+      n_pulses: 1000
+      step_delay: 800
+      liminary_n_pulses: 1000
+      liminary_step_delay: 2400
+    10:
+      motor: niryo
+      direction: homing
+      n_pulses: 1000
+      step_delay: 800
+      liminary_n_pulses: 1000
+      liminary_step_delay: 2400
+  first_waffle:
+    0:
+      motor: short_one
+      direction: backward
+      n_pulses: 1000
+      step_delay: 800
+      liminary_n_pulses: 1000
+      liminary_step_delay: 2400
+  second_waffle:
+    0:
+      motor: short_one
+      direction: backward
+      n_pulses: 1000
+      step_delay: 800
+      liminary_n_pulses: 1000
+      liminary_step_delay: 2400
+  homing:
+    0:
+      motor: niryo
+      direction: homing
+      n_pulses: 2000
+      step_delay: 800
+      liminary_n_pulses: 1000
+      liminary_step_delay: 2400
+
 light_led:
   niryo:
     index: 1
