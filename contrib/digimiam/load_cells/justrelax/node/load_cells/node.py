@@ -1,9 +1,11 @@
-from gpiozero import InputDevice
+import time
+
+from gpiozero import OutputDevice, InputDevice
 
 from twisted.internet.reactor import callLater
 
 from justrelax.core.logging_utils import logger
-from justrelax.core.node import MagicNode
+from justrelax.core.node import MagicNode, on_event
 
 
 class Cell:
@@ -106,6 +108,9 @@ class LoadCells(MagicNode):
         super(LoadCells, self).__init__(*args, **kwargs)
         self.colors = {}
 
+        self.calibration = OutputDevice(self.config['calibration_pin'])
+        self.calibration.off()
+
     def on_first_connection(self):
         deactivation_delay = self.config['deactivation_delay']
 
@@ -116,3 +121,18 @@ class LoadCells(MagicNode):
 
     def notify(self, color, id_, activated):
         self.publish({'category': 'load_cell', 'color': color, 'id': id_, 'activated': activated})
+
+    @on_event(filter={'category': 'calibrate'})
+    def event_calibrate(self):
+        logger.info("Calibration sensors")
+
+        logger.info("Triggering calibration rising edge...")
+        self.calibration.on()
+
+        # Blocking sleep (no reactor.callLater), because load cell pins will not behave deterministically during this
+        # operation. It has not a huge impact on the whole system, and this way, in the hypothetical case in which
+        # players toggle cells states (on/off), it should be transparent after the sleep.
+        time.sleep(0.5)
+
+        logger.info("Triggering calibration falling edge...")
+        self.calibration.off()
