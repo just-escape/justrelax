@@ -11,6 +11,7 @@ WIDGET_TYPES = (
     ('instruction_prompt', 'instruction_prompt'),
     ('lasers', 'lasers'),
     ('waffle_factory', 'waffle_factory'),
+    ('synchronizer_lights', 'synchronizer_lights'),
 )
 
 
