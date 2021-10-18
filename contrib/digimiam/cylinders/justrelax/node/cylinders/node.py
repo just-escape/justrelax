@@ -40,6 +40,8 @@ class Cylinders(MagicNode):
 
         self.post_success_task = None
 
+        self.check_availability_tasks = []
+
     @on_event(filter={ArduinoProtocol.CATEGORY: ArduinoProtocol.READ})
     def serial_event_read(self, port, /, i: int, t):
         reader_index = i
@@ -75,6 +77,12 @@ class Cylinders(MagicNode):
         self.difficulty = "normal"
         if self.post_success_task and self.post_success_task.active():
             self.post_success_task.cancel()
+
+        for check_availability_task in self.check_availability_tasks:
+            if check_availability_task and check_availability_task.active():
+                check_availability_task.cancel()
+        self.check_availability_tasks = []
+
         self.update_leds()
 
     @on_event(filter={'category': 'set_difficulty'})
@@ -141,6 +149,13 @@ class Cylinders(MagicNode):
             logger.error(f"Unknown recipe {id}: ignoring")
             return
 
+        self.turn_off_all_led()
+
+        for check_availability_task in self.check_availability_tasks:
+            if check_availability_task and check_availability_task.active():
+                check_availability_task.cancel()
+        self.check_availability_tasks = []
+
         available_ingredients = []
 
         def animate_and_check(step, ingredients):
@@ -148,8 +163,11 @@ class Cylinders(MagicNode):
 
             if step > 0:
                 last_cylinder_id = ingredients[step - 1]
-                self.slots[last_cylinder_id]['green_led'].off()
-                self.slots[last_cylinder_id]['red_led'].off()
+
+                self.check_availability_tasks.append(reactor.callLater(
+                    60, self.slots[last_cylinder_id]['green_led'].off))
+                self.check_availability_tasks.append(reactor.callLater(
+                    60, self.slots[last_cylinder_id]['red_led'].off))
 
             if step < len(ingredients):
                 cylinder_id = ingredients[step]
@@ -157,15 +175,15 @@ class Cylinders(MagicNode):
                 is_available = self.slots[cylinder_id]['current_tag'] == self.slots[cylinder_id]['expected_tag']
                 available_ingredients.append(is_available)
 
-                logger.info(
-                    f"{cylinder_id} available={is_available}")
+                logger.info(f"{cylinder_id} available={is_available}")
 
                 if is_available:
                     self.slots[cylinder_id]['green_led'].on()
                 else:
                     self.slots[cylinder_id]['red_led'].on()
 
-                reactor.callLater(0.2, animate_and_check, step + 1, ingredients)
+                self.check_availability_tasks.append(reactor.callLater(
+                    0.2, animate_and_check, step + 1, ingredients))
 
             else:
                 self.publish({
