@@ -1,3 +1,5 @@
+import time
+
 import pyglet
 
 from twisted.internet.task import LoopingCall
@@ -33,17 +35,7 @@ class MusicPlayer(MagicNode):
                 "Bad player value ({}). Possible values are vlc or "
                 "pyglet.".format(player))
 
-        try:
-            self.master_volume = MasterVolume(
-                initial_volume=initial_master_volume,
-                mixer=master_volume_mixer,
-            )
-        except Exception:
-            logger.exception()
-            logger.warning(
-                "Unable to initialize the master volume controller. Further "
-                "actions on the master volume will be ignored.")
-            self.master_volume = None
+        self.master_volume = self.get_master_volume_handler(initial_master_volume, master_volume_mixer)
 
         self.tracks = {}
         for track in self.config.get('tracks', []):
@@ -75,6 +67,35 @@ class MusicPlayer(MagicNode):
     def pyglet_loop(self):
         pyglet.clock.tick()
         pyglet.app.platform_event_loop.dispatch_posted_events()
+
+    @staticmethod
+    def get_master_volume_handler(initial_master_volume, master_volume_mixer):
+        retry = True
+        master_volume = None
+        try_counter = 3
+
+        while retry:
+            try:
+                master_volume = MasterVolume(
+                    initial_volume=initial_master_volume,
+                    mixer=master_volume_mixer,
+                )
+            except Exception:
+                logger.error("", exc_info=True)
+                try_counter -= 1
+                if try_counter == 0:
+                    logger.warning(
+                        "Unable to initialize the master volume controller for the third time in a row: continuing."
+                        "Further actions on the master volume will be ignored.")
+                    retry = False
+                else:
+                    logger.warning(
+                        "Error trying to initialize the master volume controller: retrying in 3 seconds")
+                    time.sleep(3)
+            else:
+                retry = False
+
+        return master_volume
 
     def play_pause_stop(self, action, method, track_id):
         logger.info("{} track id={}".format(action, track_id))
