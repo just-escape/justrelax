@@ -1,7 +1,7 @@
 <template>
   <div
     class="cursor"
-    :style="{top: cursorTop + 'px', opacity: opacity}"
+    :style="{top: cursorTop + 'px', opacity: success ? 0 : 1}"
   />
 </template>
 
@@ -10,36 +10,12 @@ import menuStore from '@/store/menuStore.js'
 
 export default {
   name: "MenuItemCursor",
-  data() {
-    return {
-      cursorTop: 5,
-      opacity: 1,
-    }
-  },
   computed: {
-    cursorPosition() {
-      return menuStore.state.cursorPosition
+    cursorTop() {
+      return 5 + 51 * menuStore.state.cursorPosition
     },
     success() {
       return menuStore.state.success
-    },
-  },
-  watch: {
-    cursorPosition(newValue) {
-      this.$anime({
-        targets: this,
-        cursorTop: 5 + 51 * newValue,
-        duration: 1000,
-        easing: 'easeOutQuint',
-      })
-    },
-    success() {
-      this.$anime({
-        targets: this,
-        opacity: 0,
-        duration: 4000,
-        easing: 'easeOutQuint',
-      })
     },
   },
 }
@@ -66,5 +42,6 @@ export default {
     2.5px 3px,
     0% 3px
   );
+  transition: top 1s ease-in-out, opacity 4s ease-in-out;
 }
 </style>

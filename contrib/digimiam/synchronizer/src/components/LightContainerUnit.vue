@@ -82,23 +82,23 @@ export default {
 
       if (this.color === "pink") {
         if (counter === 4) {
-          return 8
+          return 25
         } else if (counter === 5) {
-          return 16
+          return 30
         } else if (counter === 6) {
-          return 32
+          return 40
         } else {
-          return 4
+          return 8
         }
       } else {
         if (counter === 2) {
-          return 8
+          return 25
         } else if (counter === 3) {
-          return 16
+          return 30
         } else if (counter >= 4) {
-          return 32
+          return 40
         } else {
-          return 4
+          return 8
         }
       }
     },

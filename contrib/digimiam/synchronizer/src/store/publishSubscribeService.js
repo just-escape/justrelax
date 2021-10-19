@@ -15,6 +15,7 @@ Vue.use(Vuex)
 
 const publishSubscribeService = new Vuex.Store({
   state: {
+    isWebSocketOpened: false,
     name: "synchronizer",
     subscriptionChannels: [],
     publicationChannel: undefined,
@@ -28,6 +29,8 @@ const publishSubscribeService = new Vuex.Store({
     },
     // eslint-disable-next-line
     SOCKET_ONOPEN (state, event) {
+      state.isWebSocketOpened = true
+
       Vue.prototype.$socket = event.currentTarget
 
       let query = JSON.parse(JSON.stringify(router.app.$route.query))
@@ -119,6 +122,16 @@ const publishSubscribeService = new Vuex.Store({
         menuStore.commit('setDisplayGraduationTexts', event.display)
       } else if (event.category === 'set_auto_validate_dishes') {
         menuStore.commit('setAutoValidateDishes', event.value)
+      } else if (event.category === 'set_color_disabled') {
+        lightStore.commit('setColorDisabled', {color: event.color, isDisabled: event.is_disabled})
+      } else if (event.category === 'request_node_session_data') {
+        publishSubscribeService.commit('publish',
+          {
+            'category': 'set_session_data',
+            'key': 'synchronizer_disabled_colors',
+            'data': lightStore.state.disabledColors,
+          }
+        )
       }
     },
     SOCKET_RECONNECT (state, count) {

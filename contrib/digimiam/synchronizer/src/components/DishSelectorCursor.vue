@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="cursor"
+    class="cursor d-flex flex-row justify-content-center align-items-center"
     @mousedown="cursorPress"
     @touchstart="cursorPress"
     :style="{
@@ -12,6 +12,10 @@
       filter: filter,
     }"
   >
+    <div style="font-size: 18px; transform: translateY(2px)">
+      {{ id }}
+    </div>
+
     <div class="edge"></div>
     <div class="edge flip-vertically"></div>
     <div class="edge flip-horizontally"></div>
@@ -46,6 +50,9 @@ export default {
     },
     height: function() {
       return this.item.cursorHeight + 'px'
+    },
+    id() {
+      return this.item.id
     },
     item: function() {
       return menuStore.state.menuItems[this.itemIndex]

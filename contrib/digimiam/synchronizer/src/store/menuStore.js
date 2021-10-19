@@ -7,7 +7,7 @@ import menuLogStore from '@/store/menuLogStore.js'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+let store = new Vuex.Store({
   state: {
     glitches: {},
     selectableAreas: [
@@ -33,49 +33,45 @@ export default new Vuex.Store({
     selectableAreaWidth: 15, // percentage
     menuItems: [
       {
+        id: 1,
         cursorLeft: 190,
         cursorTop: 190,
-        cursorWidth: 30,
-        cursorHeight: 30,
+        cursorWidth: 40,
+        cursorHeight: 40,
         selectorZIndex: 10,
-        wireX2: 803,
-        wireY2: 154,
         dish: null,
         isDishValidated: false,
         price: 10,
       },
       {
+        id: 2,
         cursorLeft: 535,
         cursorTop: 300,
-        cursorWidth: 30,
-        cursorHeight: 30,
+        cursorWidth: 40,
+        cursorHeight: 40,
         selectorZIndex: 10,
-        wireX2: 803,
-        wireY2: 205,
         dish: null,
         isDishValidated: false,
         price: 11,
       },
       {
+        id: 3,
         cursorLeft: 362,
         cursorTop: 40,
-        cursorWidth: 30,
-        cursorHeight: 30,
+        cursorWidth: 40,
+        cursorHeight: 40,
         selectorZIndex: 10,
-        wireX2: 803,
-        wireY2: 256,
         dish: null,
         isDishValidated: false,
         price: 12,
       },
       {
+        id: 4,
         cursorLeft: 545,
         cursorTop: 210,
-        cursorWidth: 30,
-        cursorHeight: 30,
+        cursorWidth: 40,
+        cursorHeight: 40,
         selectorZIndex: 10,
-        wireX2: 803,
-        wireY2: 307,
         dish: null,
         isDishValidated: false,
         price: 4,
@@ -272,6 +268,9 @@ export default new Vuex.Store({
       state.menuItems[id].zIndex = state.zIndexCounter
     },
     appCursorRelease (state) {
+      if (state.dragging !== null) {
+        store.commit("pushMenuEntry", {itemIndex: state.dragging, getters: store.getters})  // TODO: do it elsewhere
+      }
       state.lastMouseX = null
       state.lastMouseY = null
       state.dragging = null
@@ -387,3 +386,5 @@ export default new Vuex.Store({
     },
   },
 })
+
+export default store

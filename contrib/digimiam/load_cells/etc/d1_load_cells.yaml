@@ -10,11 +10,11 @@ deactivation_delay: 0.1
 calibration_pin: 12
 
 cells:
-  6: blue
+  6: white
   12: blue
-  13: white
+  13: green
   16: white
-  19: green
-  20: red
-  21: orange
-  26: orange
+  19: orange
+  20: orange
+  21: blue
+  26: red

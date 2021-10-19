@@ -35,7 +35,15 @@ var store = new Vuex.Store({
     ],
     sequenceIndex: 0,
     progressionStep: 22,
-    isPinkEnabled: false,
+    isPinkAllowed: false, // Enabled from a difficulty point of view
+    disabledColors: { // Disabled from an admin point of view (because of load cell sensors not working)
+      blue: false,
+      orange: false,
+      red: false,
+      white: false,
+      green: false,
+      pink: false,
+    },
     givePinkClueTask: undefined,
     hasPinkClueBeenGiven: false,
     difficulty: NORMAL,
@@ -50,8 +58,8 @@ var store = new Vuex.Store({
       let currentColor = state.sequence[0].color
       if (difficulty === 'easy') {
         clearTimeout(state.givePinkClueTask)
-        state.isPinkEnabled = false
-        while (currentColor === 'pink') {
+        state.isPinkAllowed = false
+        while (currentColor === 'pink' || state.disabledColors[currentColor]) {
           state.sequenceIndex++
           currentColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
         }
@@ -62,15 +70,47 @@ var store = new Vuex.Store({
       state.progression = Math.max(0, Math.min(100, state.progression + amount))
 
       if (state.progression === 0) {
-        state.isPinkEnabled = false
+        state.isPinkAllowed = false
       }
     },
     setRestaurantInManualMode (state) {
       state.isRestaurantInManualMode = true
-      state.giveSwitchClueTask = setTimeout(() => store.commit('giveSwitchClue'), 300000)
+      state.giveSwitchClueTask = setTimeout(() => store.commit('giveSwitchClue'), 180000)
     },
     giveSwitchClue () {
       lightLogStore.commit('processLog', {logMessage: 'floor_switches_are_idle', level: 'info', useLocale: true})
+    },
+    setColorDisabled (state, {color, isDisabled}) {
+      let alreadyEnabledColorsCountExceptPink = 0
+      for (let checkedColor of ["white", "orange", "blue", "green", "red"]) {
+        if (!state.disabledColors[checkedColor]) {
+          alreadyEnabledColorsCountExceptPink++
+        }
+      }
+      if (color != "pink" && alreadyEnabledColorsCountExceptPink <= 2 && isDisabled) {
+        // We don't want to disable too many colors. At least 2 colors except pink must always be enabled.
+        return
+      }
+
+      state.disabledColors[color] = isDisabled
+      localStorage.setItem('disabledColors', JSON.stringify(state.disabledColors))
+      publishSubscribeService.commit('publish',
+        {
+          'category': 'set_session_data',
+          'key': 'synchronizer_disabled_colors',
+          'data': state.disabledColors,
+        }
+      )
+
+      if (isDisabled === true) {
+        let currentColor = state.sequence[0].color
+        while ((currentColor === 'pink' && (state.difficulty == EASY || !state.isPinkAllowed)) || state.disabledColors[currentColor]) {
+          state.sequenceIndex++
+          currentColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
+        }
+
+        state.sequence = [{id: state.sequenceIndex, color: currentColor, completeness: 0, activable: true}]
+      }
     },
     updateCompleteness(state, {sequenceId, deltaCompleteness}) {
       for (let i in state.sequence) {
@@ -108,27 +148,18 @@ var store = new Vuex.Store({
 
       if (state.success) {
         nextColor = 'black'
-      } else if (state.difficulty != EASY && !state.isPinkEnabled && state.progression > 100 - 2 * state.progressionStep) {
+      } else if (state.difficulty != EASY && !state.isPinkAllowed && !state.disabledColors.pink && state.progression > 100 - 2 * state.progressionStep) {
         // If difficulty allows pink (no pink in EASY mode), force pink the first time the progression is above a certain level
         // Pink is also allowed in further iterations
-        state.isPinkEnabled = true
+        state.isPinkAllowed = true
         nextColor = 'pink'
       } else {
         nextColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
-        if (state.difficulty == EASY || !state.isPinkEnabled) {
-          // Pick a non-pink color if difficulty does not allow pink or if pink is not yet allowed
-          while (nextColor === 'pink') {
-            state.sequenceIndex++
-            nextColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
-          }
-        } else {
-          if (state.sequence[0].color === 'pink') {
-            // We don't want pink twice in a row
-            while (nextColor === 'pink') {
-              state.sequenceIndex++
-              nextColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
-            }
-          }
+
+        // Pick a non-pink color if difficulty does not allow pink or if pink is not yet allowed. We don't want any color twice in a row, nor a disabled color
+        while ((nextColor === 'pink' && (state.difficulty == EASY || !state.isPinkAllowed)) || state.sequence[0].color === nextColor || state.disabledColors[nextColor]) {
+          state.sequenceIndex++
+          nextColor = state.colorSequence[state.sequenceIndex % state.colorSequence.length]
         }
       }
 

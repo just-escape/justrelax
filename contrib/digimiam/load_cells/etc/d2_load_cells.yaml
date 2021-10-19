@@ -11,8 +11,8 @@ calibration_pin: 12
 
 cells:
   0: blue
-  5: green
-  20: white
+  5: red
+  20: orange
   21: white
-  19: red
-  26: orange
+  19: green
+  26: white

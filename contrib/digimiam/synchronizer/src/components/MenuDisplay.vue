@@ -11,19 +11,26 @@
           {{ date }}
         </div>
 
-        <div class="d-flex flex-row justify-content-between mb-3" style="font-style: italic; font-size: 18px">
-          <div class="pl-4">Plat</div>
-          <div class="pr-1">Prix</div>
-        </div>
-
-        <div class="position-relative">
-          <MenuItemCursor class="position-absolute"/>
-          <MenuItem
-            v-for="(item, itemIndex) in menuItems"
-            class="pl-4"
-            :key="item.id"
-            :itemIndex="itemIndex"
-          />
+        <div class="mb-5">
+          <div class="d-flex flex-row justify-content-center mb-4" style="font-style: italic; font-size: 18px">
+            <div>Projection holographique</div>
+          </div>
+          <div class="position-relative d-flex flex-row justify-content-center mb-3">
+            <div
+              :key="item.id" v-for="item in menuItems"
+              class="position-relative d-flex flex-row justify-content-center align-items-center"
+              style="background: rgba(0, 209, 182, 0.6); width: 45px; height: 45px; margin: 0px 20px; font-size: 26px"
+            >
+              <div class="position-absolute" style="top: 5px">
+                {{ item.id }}
+              </div>
+            </div>
+            <div
+              class="position-absolute"
+              style="border: 3px white solid; width: 61px; height: 80px; left: 39px; top: -16px; transition: left 1s ease-in-out"
+              :style="{left: cursorLeft + 'px'}"
+            ></div>
+          </div>
         </div>
 
         <MenuLoadingWidget :startAnimationSignal="startAnimationSignal"/>
@@ -40,18 +47,18 @@
 
 <script>
 import ButtonValidate from '@/components/ButtonValidate.vue'
-import MenuItemCursor from '@/components/MenuItemCursor.vue'
+//import MenuItemCursor from '@/components/MenuItemCursor.vue'
 import MenuLoadingWidget from '@/components/MenuLoadingWidget.vue'
-import MenuItem from '@/components/MenuItem.vue'
+//import MenuItem from '@/components/MenuItem.vue'
 import menuStore from '@/store/menuStore.js'
 
 export default {
   name: 'MenuDisplay',
   components: {
     ButtonValidate,
-    MenuItemCursor,
+    // MenuItemCursor,
     MenuLoadingWidget,
-    MenuItem,
+    // MenuItem,
   },
   data() {
     return {
@@ -60,6 +67,9 @@ export default {
     }
   },
   computed: {
+    cursorLeft() {
+      return menuStore.state.cursorPosition * 85 + 38
+    },
     autoValidateDishes: function() {
       return menuStore.state.autoValidateDishes
     },

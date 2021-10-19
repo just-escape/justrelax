@@ -2,7 +2,7 @@
   <div class="d-flex h-100 d-flex flex-column mx-3">
     <div class="selector-frame glowing-container position-relative w-100 h-100 mb-4">
 
-      <DishSelector
+      <DishSelectorCursor
         v-for="(item, itemIndex) in menuItems"
         :key="item.id"
         :itemIndex="itemIndex"
@@ -105,14 +105,14 @@
 </template>
 
 <script>
-import DishSelector from '@/components/DishSelector.vue'
+import DishSelectorCursor from '@/components/DishSelectorCursor.vue'
 import menuStore from '@/store/menuStore.js'
 import difficultyStore from '@/store/difficultyStore.js'
 
 export default {
   name: 'DishMatrix',
   components: {
-    DishSelector,
+    DishSelectorCursor,
   },
   computed: {
     displaySelectableAreas() {

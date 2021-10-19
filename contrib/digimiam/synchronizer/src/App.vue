@@ -6,9 +6,30 @@
 
 <script>
 import publishSubscribeService from '@/store/publishSubscribeService.js'
+import lightStore from '@/store/lightStore.js'
 
 export default {
   name: "app",
+  computed: {
+    isWebSocketOpened() {
+      return publishSubscribeService.state.isWebSocketOpened
+    },
+  },
+  watch: {
+    isWebSocketOpened(newValue) {
+      if (newValue) {
+        let disabledColors = localStorage.getItem('disabledColors')
+        if (disabledColors === null) {
+          disabledColors = {"white": false, "orange": false, "blue": false, "green": false, "red": false, "pink": false}
+        } else {
+          disabledColors = JSON.parse(disabledColors)
+        }
+        for (let color in disabledColors) {
+          lightStore.commit('setColorDisabled', {color: color, isDisabled: disabledColors[color]})
+        }
+      }
+    },
+  },
   mounted() {
     // Disable longtap (right click) menu to appear
     window.oncontextmenu = function() {
