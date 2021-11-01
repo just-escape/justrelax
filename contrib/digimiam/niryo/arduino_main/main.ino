@@ -27,10 +27,12 @@
 #define PROTOCOL_MAGNETIZE "m"
 
 #define RPI_SERIAL Serial
-#define DYNAMIXEL_SERIAL Serial2
+#define DYNAMIXEL_RADIUS_WRIST_SERIAL Serial2
+#define DYNAMIXEL_THUMB_SERIAL Serial3
 
 String receivedEvent = "";
-String dynamixelReceivedEvent = "";
+String dynamixelRadiusWristReceivedEvent = "";
+String dynamixelThumbReceivedEvent = "";
 DynamicJsonDocument receivedDocument(JSON_OBJECT_SIZE(20));
 
 unsigned long currentMicros = 0;
@@ -71,7 +73,8 @@ void sendHomingFailedEvent(int motorIndex) {
 
 void setup() {
   RPI_SERIAL.begin(9600);
-  DYNAMIXEL_SERIAL.begin(9600);
+  DYNAMIXEL_RADIUS_WRIST_SERIAL.begin(9600);
+  DYNAMIXEL_THUMB_SERIAL.begin(9600);
 
   pinMode(ELECTROMAGNET_PIN, OUTPUT);
   digitalWrite(ELECTROMAGNET_PIN, LOW);
@@ -132,6 +135,8 @@ void pulseMotors() {
               isMotorInHomingMode[i] = false;
             }
             motorNPulses[i] = 0;
+            motorAccelerationNPulses[i] = 0;
+            motorDecelerationNPulses[i] = 0;
           }
         }
 
@@ -201,9 +206,12 @@ void onEvent() {
   } else {
     String to = receivedDocument[PROTOCOL_TO];
 
-    if (to == "dxl") {
-      serializeJson(receivedDocument, DYNAMIXEL_SERIAL);
-      DYNAMIXEL_SERIAL.println();
+    if (to == "dxl_radius_wrist") {
+      serializeJson(receivedDocument, DYNAMIXEL_RADIUS_WRIST_SERIAL);
+      DYNAMIXEL_RADIUS_WRIST_SERIAL.println();
+    } else if (to == "dxl_thumb") {
+      serializeJson(receivedDocument, DYNAMIXEL_THUMB_SERIAL);
+      DYNAMIXEL_THUMB_SERIAL.println();
     } else {
       String category = receivedDocument[PROTOCOL_CATEGORY];
 
@@ -302,19 +310,37 @@ void onEvent() {
   }
 }
 
-void onDynamixelEvent() {
-  DeserializationError error = deserializeJson(receivedDocument, dynamixelReceivedEvent);
+void onDynamixelRadiusWristEvent() {
+  DeserializationError error = deserializeJson(receivedDocument, dynamixelRadiusWristReceivedEvent);
   if (error != DeserializationError::Ok) {
     StaticJsonDocument<JSON_OBJECT_SIZE(3)> errorEvent;
 
     errorEvent[PROTOCOL_CATEGORY] = PROTOCOL_ERROR;
     errorEvent[PROTOCOL_ERROR] = error.c_str();
-    errorEvent[PROTOCOL_FROM] = "dxl";
+    errorEvent[PROTOCOL_FROM] = "dxl_radius_wrist";
 
     serializeJson(errorEvent, RPI_SERIAL);
     RPI_SERIAL.println();
   } else {
-    receivedDocument[PROTOCOL_FROM] = "dxl";
+    receivedDocument[PROTOCOL_FROM] = "dxl_radius_wrist";
+    serializeJson(receivedDocument, RPI_SERIAL);
+    RPI_SERIAL.println();
+  }
+}
+
+void onDynamixelThumbEvent() {
+  DeserializationError error = deserializeJson(receivedDocument, dynamixelThumbReceivedEvent);
+  if (error != DeserializationError::Ok) {
+    StaticJsonDocument<JSON_OBJECT_SIZE(3)> errorEvent;
+
+    errorEvent[PROTOCOL_CATEGORY] = PROTOCOL_ERROR;
+    errorEvent[PROTOCOL_ERROR] = error.c_str();
+    errorEvent[PROTOCOL_FROM] = "dxl_thumb";
+
+    serializeJson(errorEvent, RPI_SERIAL);
+    RPI_SERIAL.println();
+  } else {
+    receivedDocument[PROTOCOL_FROM] = "dxl_thumb";
     serializeJson(receivedDocument, RPI_SERIAL);
     RPI_SERIAL.println();
   }
@@ -335,15 +361,27 @@ void loop() {
     }
   }
 
-  while (DYNAMIXEL_SERIAL.available()) {
+  while (DYNAMIXEL_RADIUS_WRIST_SERIAL.available()) {
     char inChar = (char)
-    DYNAMIXEL_SERIAL.read();
+    DYNAMIXEL_RADIUS_WRIST_SERIAL.read();
 
     if (inChar == '\n') {
-      onDynamixelEvent();
-      dynamixelReceivedEvent = "";
+      onDynamixelRadiusWristEvent();
+      dynamixelRadiusWristReceivedEvent = "";
     } else {
-      dynamixelReceivedEvent += inChar;
+      dynamixelRadiusWristReceivedEvent += inChar;
+    }
+  }
+
+  while (DYNAMIXEL_THUMB_SERIAL.available()) {
+    char inChar = (char)
+    DYNAMIXEL_THUMB_SERIAL.read();
+
+    if (inChar == '\n') {
+      onDynamixelThumbEvent();
+      dynamixelThumbReceivedEvent = "";
+    } else {
+      dynamixelThumbReceivedEvent += inChar;
     }
   }
 }
