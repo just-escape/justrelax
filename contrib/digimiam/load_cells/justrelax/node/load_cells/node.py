@@ -108,8 +108,9 @@ class LoadCells(MagicNode):
         super(LoadCells, self).__init__(*args, **kwargs)
         self.colors = {}
 
-        self.calibration = OutputDevice(self.config['calibration_pin'])
-        self.calibration.off()
+        self.calibration_pins = [OutputDevice(calibration_pin) for calibration_pin in self.config['calibration_pins']]
+        for calibration_pin in self.calibration_pins:
+            calibration_pin.off()
 
     def on_first_connection(self):
         deactivation_delay = self.config['deactivation_delay']
@@ -126,13 +127,15 @@ class LoadCells(MagicNode):
     def event_calibrate(self):
         logger.info("Calibration sensors")
 
-        logger.info("Triggering calibration rising edge...")
-        self.calibration.on()
+        logger.info("Triggering calibration rising edges...")
+        for calibration_pin in self.calibration_pins:
+            calibration_pin.on()
 
         # Blocking sleep (no reactor.callLater), because load cell pins will not behave deterministically during this
         # operation. It has not a huge impact on the whole system, and this way, in the hypothetical case in which
         # players toggle cells states (on/off), it should be transparent after the sleep.
-        time.sleep(0.5)
+        time.sleep(5)
 
-        logger.info("Triggering calibration falling edge...")
-        self.calibration.off()
+        logger.info("Triggering calibration falling edges...")
+        for calibration_pin in self.calibration_pins:
+            calibration_pin.off()

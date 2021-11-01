@@ -7,7 +7,11 @@ subscriptions:
 
 deactivation_delay: 0.1
 
-calibration_pin: 12
+calibration_pins:
+  - 25
+  - 8
+  - 7
+  - 1
 
 cells:
   6: white

@@ -1,15 +1,16 @@
 #include <HX711-multi.h>
 
-#define N_SCALES 2
+#define N_SCALES 1
 
 #define HX711_CLK 2
-byte HX711_DOUT_PINS[N_SCALES] = {3, 4};
+byte HX711_DOUT_PINS[N_SCALES] = {3};
 long int hx711Measures[N_SCALES];
 HX711MULTI hx711Scales(N_SCALES, HX711_DOUT_PINS, HX711_CLK);
-float THRESHOLDS[N_SCALES] = {1, 1};
-int CALIBRATIONS[N_SCALES] = {30000, 30000};
+float THRESHOLDS[N_SCALES] = {30};
+long int CALIBRATIONS[N_SCALES] = {1000};
+long int CALIBRATION_OFFSET[N_SCALES] = {0};
 
-byte OUTPUT_PINS[N_SCALES] = {5, 6};
+byte OUTPUT_PINS[N_SCALES] = {5};
 
 #define TARE_PIN 11
 bool isTarePinActivated = true;
@@ -21,11 +22,15 @@ void hx711_tare() {
 
     unsigned long tareStartTime = millis();
     while (!isTareSuccessful && millis() < (tareStartTime + tareTimeout)) {
-        isTareSuccessful = hx711Scales.tare(20, 10000);
+        isTareSuccessful = hx711Scales.tare(20, 0);
     }
+    Serial.print("TARE SUCCESS=");
+    Serial.println(isTareSuccessful);
 }
 
 void setup() {
+    Serial.begin(9600);
+
     hx711_tare();
 
     for (int i = 0 ; i < N_SCALES ; i++) {
@@ -33,8 +38,6 @@ void setup() {
     }
 
     pinMode(TARE_PIN, INPUT);
-
-    Serial.begin(9600);
 
     delay(100);
 }
@@ -45,7 +48,7 @@ void loop() {
         Serial.print("Scale index=");
         Serial.print(i);
         Serial.print(" [");
-        if (hx711Measures[i] / CALIBRATIONS[i] >= THRESHOLDS[i]) {
+        if ((hx711Measures[i] - CALIBRATION_OFFSET[i]) / CALIBRATIONS[i] >= THRESHOLDS[i]) {
             Serial.print("HIGH");
             digitalWrite(OUTPUT_PINS[i], HIGH);
         } else {
@@ -53,7 +56,9 @@ void loop() {
             digitalWrite(OUTPUT_PINS[i], LOW);
         }
         Serial.print("] (");
-        Serial.print(hx711Measures[i] / CALIBRATIONS[i]);
+        Serial.print((hx711Measures[i] - CALIBRATION_OFFSET[i]) / CALIBRATIONS[i]);
+        Serial.print(", ");
+        Serial.print(hx711Measures[i] - CALIBRATION_OFFSET[i]);
         Serial.println(")");
     }
     Serial.println();
