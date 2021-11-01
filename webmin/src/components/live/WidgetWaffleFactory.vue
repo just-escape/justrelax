@@ -103,8 +103,13 @@ export default {
           position: undefined,
         },
         {
-          name: "Niryo servo main",
-          id: "hand",
+          name: "Niryo servo poignet",
+          id: "wrist",
+          position: undefined,
+        },
+        {
+          name: "Niryo servo pouce",
+          id: "thumb",
           position: undefined,
         },
       ],

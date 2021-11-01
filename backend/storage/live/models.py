@@ -12,6 +12,7 @@ WIDGET_TYPES = (
     ('lasers', 'lasers'),
     ('waffle_factory', 'waffle_factory'),
     ('synchronizer_lights', 'synchronizer_lights'),
+    ('textarea', 'textarea'),
 )
 
 

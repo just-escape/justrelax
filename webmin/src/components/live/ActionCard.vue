@@ -16,6 +16,8 @@
         <WidgetInstructionPrompt v-else-if="row.widget === 'instruction_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
         <WidgetLasers v-else-if="row.widget === 'lasers'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
         <WidgetWaffleFactory v-else-if="row.widget === 'waffle_factory'" :row="row" :defaultChannel="roomDefaultChannel"/>
+        <WidgetSynchronizerLights v-else-if="row.widget === 'synchronizer_lights'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+        <WidgetTextArea v-else-if="row.widget === 'textarea'" :row="row" :defaultChannel="roomDefaultChannel"/>
       </li>
     </ul>
   </b-card>
@@ -28,6 +30,8 @@ import WidgetLogPrompt from "@/components/live/WidgetLogPrompt.vue"
 import WidgetInstructionPrompt from "@/components/live/WidgetInstructionPrompt.vue"
 import WidgetLasers from "@/components/live/WidgetLasers.vue"
 import WidgetWaffleFactory from "@/components/live/WidgetWaffleFactory.vue"
+import WidgetSynchronizerLights from "@/components/live/WidgetSynchronizerLights.vue"
+import WidgetTextArea from "@/components/live/WidgetTextArea.vue"
 import roomStore from "@/store/roomStore.js"
 import notificationStore from '@/store/notificationStore.js'
 
@@ -40,6 +44,8 @@ export default {
     WidgetInstructionPrompt,
     WidgetLasers,
     WidgetWaffleFactory,
+    WidgetSynchronizerLights,
+    WidgetTextArea,
   },
   data() {
     return {
