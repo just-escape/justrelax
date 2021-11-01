@@ -104,6 +104,10 @@ const publishSubscribeService = new Vuex.Store({
         lightStore.dispatch('toggleColor', {color, id, activated})
       } else if (event.category === 'restaurant_in_manual_mode') {
         lightStore.commit('setRestaurantInManualMode')
+        menuStore.commit('pushMenuEntry', {itemIndex: 3, getters: menuStore.getters})
+        menuStore.commit('pushMenuEntry', {itemIndex: 2, getters: menuStore.getters})
+        menuStore.commit('pushMenuEntry', {itemIndex: 1, getters: menuStore.getters})
+        menuStore.commit('pushMenuEntry', {itemIndex: 0, getters: menuStore.getters})
       } else if (event.category === 'display_danger_window') {
         progressionStore.commit('displayDangerWindow')
       } else if (event.category === 'play_overlay_video') {
