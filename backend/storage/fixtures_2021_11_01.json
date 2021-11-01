@@ -417,6 +417,15 @@
   }
 },
 {
+  "model": "live.card",
+  "pk": 61,
+  "fields": {
+    "rule_set": 1,
+    "name": "Root server",
+    "index": 12
+  }
+},
+{
   "model": "live.cardrow",
   "pk": 2,
   "fields": {
@@ -831,7 +840,7 @@
     "name": "Labyrinthe",
     "index": 5,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"maze_playing\",\"icon\":\"fa-fw fas fa-gamepad\"},{\"id\":\"maze_alarm\",\"icon\":\"fa-fw fas fa-bell\"}, {\"id\":\"secure_floor_tare\",\"icon\":\"fa-fw fas fa-balance-scale\"},{\"id\":\"maze_success\",\"icon\":\"fa-fw fas fa-check\"},{\"id\":\"maze_reset\",\"icon\":\"fa-fw fas fa-undo-alt\"}]"
+    "widget_params": "[{\"id\":\"maze_playing\",\"icon\":\"fa-fw fas fa-gamepad\"},{\"id\":\"maze_alarm\",\"icon\":\"fa-fw fas fa-bell\"}, {\"id\":\"secure_floor_calibrate\",\"icon\":\"fa-fw fas fa-balance-scale\"},{\"id\":\"maze_success\",\"icon\":\"fa-fw fas fa-check\"},{\"id\":\"maze_reset\",\"icon\":\"fa-fw fas fa-undo-alt\"}]"
   }
 },
 {
@@ -1026,21 +1035,10 @@
   "pk": 287,
   "fields": {
     "card": 54,
-    "name": "Imprimante (1/2)",
-    "index": 9,
+    "name": "Imprimante contrôles",
+    "index": 23,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"waffle_factory_printer\",\"icon\":\"fa-fw fas fa-play\", \"extra\": {\"action\": \"resume\"}}, {\"id\":\"waffle_factory_printer\",\"icon\":\"fa-fw fas fa-pause\", \"extra\": {\"action\": \"halt\"}}, {\"id\":\"waffle_factory_printer_move\",\"icon\":\"fa-fw fas fa-chevron-up\", \"extra\": {\"direction\": \"rear\"}},{\"id\":\"waffle_factory_printer\",\"icon\":\"fa-fw fas fa-undo-alt\", \"extra\": {\"action\": \"stop\"}}]"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 288,
-  "fields": {
-    "card": 54,
-    "name": "Imprimante (2/2)",
-    "index": 10,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"waffle_factory_printer_move\",\"icon\":\"fa-fw fas fa-chevron-left\", \"extra\": {\"direction\": \"left\"}},{\"id\":\"waffle_factory_printer_move\",\"icon\":\"fa-fw fas fa-chevron-down\", \"extra\": {\"direction\": \"front\"}},{\"id\":\"waffle_factory_printer_move\",\"icon\":\"fa-fw fas fa-chevron-right\", \"extra\": {\"direction\": \"right\"}}]"
+    "widget_params": "[{\"id\":\"waffle_factory_printer\",\"icon\":\"fa-fw fas fa-play\", \"extra\": {\"action\": \"resume\"}}, {\"id\":\"waffle_factory_printer\",\"icon\":\"fa-fw fas fa-pause\", \"extra\": {\"action\": \"halt\"}}, {\"id\":\"waffle_factory_printer\",\"icon\":\"fa-fw fas fa-undo-alt\", \"extra\": {\"action\": \"stop\"}}]"
   }
 },
 {
@@ -1292,8 +1290,8 @@
     "card": 58,
     "name": "Mode épileptique",
     "index": 0,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"epiletic_mode\",\"icon\":\"fa-fw fas fa-user-shield\", \"extra\": {\"value\": true}}, {\"id\":\"epiletic_mode\",\"icon\":\"fa-fw fas fa-user\", \"extra\": {\"value\": false}}]"
+    "widget": "session_data",
+    "widget_params": "{\"widget\": \"checkbox\", \"key\": \"epileptic_mode\"}"
   }
 },
 {
@@ -1412,7 +1410,7 @@
   "fields": {
     "card": 54,
     "name": "Moteurs",
-    "index": 14,
+    "index": 22,
     "widget": "waffle_factory",
     "widget_params": "\"\""
   }
@@ -1492,6 +1490,226 @@
     "index": 1,
     "widget": "buttons_group",
     "widget_params": "[{\"id\":\"d2_poweroff\",\"icon\":\"fa-fw fas fa-power-off\",\"extra\":{\"category\":\"shutdown\",\"channel\":\"d2.broadcast\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 332,
+  "fields": {
+    "card": 61,
+    "name": "Status",
+    "index": 0,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"root_server_reset\",\"icon\":\"fa-fw fas fa-undo-alt\"}, {\"id\": \"root_server_show_ui\",\"icon\":\"fa-fw fas fa-gamepad\"}, {\"id\": \"root_server_success\", \"icon\": \"fa-fw fas fa-check\"}, {\"id\": \"root_server_display_danger_window\", \"icon\": \"fa-fw fas fa-exclamation-triangle\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 333,
+  "fields": {
+    "card": 61,
+    "name": "Animations",
+    "index": 1,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"root_server_play_animation\",\"icon\":\"fa-fw fas fa-dice-one\",\"extra\":{\"animation_id\":\"reponse\"}}, {\"id\":\"root_server_play_animation\",\"icon\":\"fa-fw fas fa-dice-two\",\"extra\":{\"animation_id\":\"beer\"}}, {\"id\":\"root_server_play_animation\",\"icon\":\"fa-fw fas fa-dice-three\",\"extra\":{\"animation_id\":\"liberation\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 334,
+  "fields": {
+    "card": 58,
+    "name": "Niryo animation",
+    "index": 2,
+    "widget": "session_data",
+    "widget_params": "{\"widget\": \"checkbox\", \"key\": \"niryo_animation\"}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 335,
+  "fields": {
+    "card": 58,
+    "name": "Intro Mme Poivre",
+    "index": 3,
+    "widget": "session_data",
+    "widget_params": "{\"widget\": \"checkbox\", \"key\": \"ms_pepper_intro\"}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 336,
+  "fields": {
+    "card": 54,
+    "name": "Animation rails stop",
+    "index": 13,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"waffle_factory_play_animation\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"animation\":\"reset\"}}, {\"id\":\"waffle_factory_pause_animation\",\"icon\":\"fa-fw fas fa-pause\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 337,
+  "fields": {
+    "card": 58,
+    "name": "Final par réfectoire",
+    "index": 4,
+    "widget": "session_data",
+    "widget_params": "{\"widget\": \"checkbox\", \"key\": \"final_by_refectory\"}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 338,
+  "fields": {
+    "card": 1,
+    "name": "Calibration dalles",
+    "index": 8,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"load_cells_calibrate\",\"icon\": \"fa-fw fas fa-balance-scale\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 339,
+  "fields": {
+    "card": 1,
+    "name": "Lumières désactivées",
+    "index": 9,
+    "widget": "synchronizer_lights",
+    "widget_params": "\"\""
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 340,
+  "fields": {
+    "card": 54,
+    "name": "Positions Niryo",
+    "index": 20,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"animation\": \"anim1\"}}, {\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"animation\": \"anim2\"}}, {\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"animation\": \"anim3\"}},{\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-four\", \"extra\": {\"animation\": \"anim4\"}},{\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-five\", \"extra\": {\"animation\": \"anim5\"}},{\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-six\", \"extra\": {\"animation\": \"anim6\"}},\r\n{\"id\": \"niryo_pause_animation\",\"icon\":\"fa-fw fas fa-pause\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 341,
+  "fields": {
+    "card": 54,
+    "name": "Animation rails Niryo",
+    "index": 14,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"waffle_factory_play_animation\",\"icon\":\"fa-fw fas fa-dice-one\",\"extra\":{\"animation\":\"niryo_init\"}}, {\"id\":\"waffle_factory_play_animation\",\"icon\":\"fa-fw fas fa-dice-two\",\"extra\":{\"animation\":\"niryo_end\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 342,
+  "fields": {
+    "card": 54,
+    "name": "Animation rails gaufre 1",
+    "index": 15,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"waffle_factory_play_animation\",\"icon\":\"fa-fw fas fa-dice-one\",\"extra\":{\"animation\":\"first_waffle_init\"}}, {\"id\":\"waffle_factory_play_animation\",\"icon\":\"fa-fw fas fa-dice-two\",\"extra\":{\"animation\":\"first_waffle_end\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 343,
+  "fields": {
+    "card": 54,
+    "name": "Animation rails gaufre 2",
+    "index": 16,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"waffle_factory_play_animation\",\"icon\":\"fa-fw fas fa-dice-one\",\"extra\":{\"animation\":\"second_waffle_init\"}}, {\"id\":\"waffle_factory_play_animation\",\"icon\":\"fa-fw fas fa-dice-two\",\"extra\":{\"animation\":\"second_waffle_end\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 344,
+  "fields": {
+    "card": 5,
+    "name": "Alarme",
+    "index": 16,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-play\",\"extra\":{\"action\":\"play\",\"track_id\":\"alarm\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-pause\",\"extra\":{\"action\":\"pause\",\"track_id\":\"alarm\"}},{\"id\":\"music_player\",\"icon\":\"fa-fw fas fa-undo-alt\",\"extra\":{\"action\":\"stop\",\"track_id\":\"alarm\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-mute\",\"extra\":{\"volume\":0,\"track_id\":\"alarm\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-off\",\"extra\":{\"volume\":40,\"track_id\":\"alarm\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-down\",\"extra\":{\"volume\":70,\"track_id\":\"alarm\"}},{\"id\":\"music_player_set_volume\",\"icon\":\"fa-fw fas fa-volume-up\",\"extra\":{\"volume\":100,\"track_id\":\"alarm\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 345,
+  "fields": {
+    "card": 5,
+    "name": "Sons",
+    "index": 17,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-barcode\", \"extra\": {\"sound_id\": \"scan\"}},{\"id\":\"play_sound\",\"icon\":\"fa-fw far fa-bell\", \"extra\": {\"sound_id\": \"laser\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 346,
+  "fields": {
+    "card": 54,
+    "name": "Positions Niryo (7-12)",
+    "index": 21,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"animation\": \"anim7\"}}, {\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"animation\": \"anim8\"}}, {\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"animation\": \"anim9\"}},{\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-four\", \"extra\": {\"animation\": \"anim10\"}},{\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-five\", \"extra\": {\"animation\": \"anim11\"}},{\"id\":\"niryo_animation\",\"icon\":\"fa-fw fas fa-dice-six\", \"extra\": {\"animation\": \"anim12\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 347,
+  "fields": {
+    "card": 54,
+    "name": "Print abcdef",
+    "index": 24,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"pattern\": \"a\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"pattern\": \"b\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"pattern\": \"c\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-four\", \"extra\": {\"pattern\": \"d\"}},  {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-five\", \"extra\": {\"pattern\": \"e\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-six\", \"extra\": {\"pattern\": \"f\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 348,
+  "fields": {
+    "card": 54,
+    "name": "Print ghijkl",
+    "index": 25,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"pattern\": \"g\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"pattern\": \"h\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"pattern\": \"i\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-four\", \"extra\": {\"pattern\": \"j\"}},  {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-five\", \"extra\": {\"pattern\": \"k\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-six\", \"extra\": {\"pattern\": \"l\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 349,
+  "fields": {
+    "card": 54,
+    "name": "Print mnopqr",
+    "index": 26,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"pattern\": \"m\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"pattern\": \"n\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"pattern\": \"o\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-four\", \"extra\": {\"pattern\": \"p\"}},  {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-five\", \"extra\": {\"pattern\": \"q\"}}, {\"id\":\"print_pattern\",\"icon\":\"fa-fw fas fa-dice-six\", \"extra\": {\"pattern\": \"r\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 350,
+  "fields": {
+    "card": 54,
+    "name": "Code GRBL",
+    "index": 27,
+    "widget": "textarea",
+    "widget_params": "{\"id\": \"printer_instructions\"}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 351,
+  "fields": {
+    "card": 51,
+    "name": "Cylindres difficulté",
+    "index": 2,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"set_cylinders_difficulty\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"difficulty\": \"easy\"}}, {\"id\":\"set_cylinders_difficulty\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"difficulty\": \"normal\"}},{\"id\":\"set_cylinders_difficulty\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"difficulty\": \"hard\"}}]"
   }
 },
 {
