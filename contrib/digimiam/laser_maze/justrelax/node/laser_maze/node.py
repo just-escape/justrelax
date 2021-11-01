@@ -32,9 +32,9 @@ class LaserMaze(MagicNode):
 
         super(LaserMaze, self).__init__(*args, **kwargs)
 
+        self._difficulty = self.config['default_difficulty']
         self.laser_prefix = self.config['laser_prefix']
 
-        self.default_difficulty = self.config['default_difficulty']
         self.difficulty_settings = self.config['difficulty_settings']
 
         try:
@@ -44,8 +44,6 @@ class LaserMaze(MagicNode):
             logger.error("Unable to load deactivation file", exc_info=True)
             self.deactivated_lasers = []
         self.laser_alarm_counters = {}
-
-        reactor.callLater(3, self.init_arduino)
 
     def on_first_connection(self):
         self.publish_session_data()
@@ -147,9 +145,6 @@ class LaserMaze(MagicNode):
         self.laser_alarm_counters[laser_index] += 1
         self.publish_laser_alarm_counters()
 
-    def init_arduino(self):
-        self.difficulty = self.default_difficulty
-
     @on_event(filter={'category': 'laser_on'})
     def event_laser_on(
             self, bitmask: int = 0, dynamic_bitmask: int = 0, dynamic_downtime: int = 0,
@@ -216,6 +211,6 @@ class LaserMaze(MagicNode):
     def event_reset(self):
         logger.info("Resetting")
         self.event_set_success(False)
-        self.difficulty = self.default_difficulty
+        self.event_stop_playing()
         self.laser_alarm_counters = {}
         self.publish_laser_alarm_counters()
