@@ -36,7 +36,7 @@ class SoundPlayer(MagicNode):
                 mixer=master_volume_mixer,
             )
         except Exception:
-            logger.exception()
+            logger.error("", exc_info=True)
             logger.warning(
                 "Unable to initialize the master volume controller. Further "
                 "actions on the master volume will be ignored.")

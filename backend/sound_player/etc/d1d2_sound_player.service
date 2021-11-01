@@ -1,0 +1,19 @@
+[Unit]
+Description=Sound player node daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
+Environment="DISPLAY=:0"
+
+User=justescape
+Group=justescape
+
+ExecStart=/home/justescape/venv_justrelax/bin/start-node-sound-player -c /etc/justrelax/sound_player.yaml --host d1broker.justescape --port 3032 --log-file /var/log/justrelax/sound_player.log -t
+
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

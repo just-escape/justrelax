@@ -8,6 +8,8 @@ subscriptions:
 master_volume: 80
 default_volume: 50
 
+mixer: Master
+
 sounds:
   - id: sound
     path: /path/to/sound.wav
