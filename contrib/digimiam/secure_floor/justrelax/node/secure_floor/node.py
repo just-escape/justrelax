@@ -107,12 +107,12 @@ class ArduinoProtocolAMG88XX:
 
 
 class SecureFloor(MagicNode):
-    STATUSES = {'playing', 'alarm'}
+    STATUSES = {'not_playing', 'playing', 'alarm'}
 
     def __init__(self, *args, **kwargs):
         super(SecureFloor, self).__init__(*args, **kwargs)
 
-        self.status = 'playing'
+        self.status = 'not_playing'
         self.success = False
 
         self.clear_alarm_delay = self.config['clear_alarm_delay']
@@ -213,7 +213,7 @@ class SecureFloor(MagicNode):
         # Blocking sleep (no reactor.callLater), because load cell pins will not behave deterministically during this
         # operation. It has not a huge impact on the whole system, and this way, in the hypothetical case in which
         # players toggle cells states (on/off), it should be transparent after the sleep.
-        time.sleep(0.5)
+        time.sleep(5)
 
         logger.info("Triggering calibration falling edge...")
         self.calibration.off()
@@ -230,9 +230,8 @@ class SecureFloor(MagicNode):
                 task.cancel()
 
         self.success = False
-        self.set_led_color("black", sum(self.leds.keys()))
         self.event_calibrate()
-        self.event_set_status('playing')
+        self.event_set_status('not_playing')
 
     @on_event(filter={'category': 'set_status'})
     def event_set_status(self, status: str):
@@ -242,12 +241,8 @@ class SecureFloor(MagicNode):
                     logger.info(f"Status is already {self.status} : skipping")
                     return
 
-                logger.info("Setting status to '{}'".format(status))
-                self.status = status
                 if status == 'alarm':
-                    self.event_set_led_color(
-                        'red',
-                        sum(led_strip for led_strip, led_color in self.leds.items() if led_color != 'black'))
+                    self.event_set_led_color('red', sum(self.leds.keys()))
 
                     # If all sensors are deactivated while an alarm has been raised. This case should not happen because
                     # players are supposed to be walking on the floor to raise an alarm. But there might be corner cases
@@ -258,10 +253,15 @@ class SecureFloor(MagicNode):
                             self.clear_alarm_delay, self.event_set_status, "playing")
 
                 elif status == 'playing':
-                    self.event_set_led_color(
-                        'orange',
-                        sum(led_strip for led_strip, led_color in self.leds.items() if led_color != 'black'))
-                    self.notify_clear()
+                    if self.status == 'alarm':  # checking old status. If old status is not_playing, nothing to do
+                        self.event_set_led_color('orange', sum(self.leds.keys()))
+                        self.notify_clear()
+
+                elif status == 'not_playing':
+                    self.event_set_led_color('black', sum(self.leds.keys()))
+
+                self.status = status
+                logger.info("Status is now '{}'".format(status))
 
             else:
                 logger.warning("Unknown status '{}': skipping".format(status))
