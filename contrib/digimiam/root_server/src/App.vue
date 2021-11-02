@@ -123,6 +123,10 @@ button:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+.bg-black-09-transparent {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
 .bottom-right {
   bottom: 5px;
   right: 5px;

@@ -1,17 +1,17 @@
 <template>
   <div
-    class="danger-window z-index-20 position-absolute"
+    class="alarm-window z-index-20 position-absolute"
     :style="{top: top, left: left, transform: transform}"
   >
-    <Window :title="$t('danger')" class="text-light text-code-new-roman" theme="danger">
-      <div class="d-flex flex-column h-100 justify-content-center align-items-center bg-black-transparent">
+    <Window :title="$t('danger')" theme="danger">
+      <div class="d-flex flex-column h-100 justify-content-center align-items-center bg-black-09-transparent">
         <div class="d-flex flex-column align-items-center">
-          <i class="text-red fa fa-biohazard mb-4 text-big" :style="{opacity: opacity}"/>
+          <i class="text-red fa fa-exclamation-triangle mb-4 text-big" :style="{opacity: opacity}"/>
           <div style="font-size: 50px">
-            {{ $t('toxic_air_detected') }}
+            Instrusion détectée
           </div>
           <div style="font-size: 40px">
-            {{ $t('immediate_evac') }}
+            Évacuation <span class="text-red" style="font-weight: bold">complète</span> de la salle requise
           </div>
         </div>
       </div>
@@ -21,10 +21,10 @@
 
 <script>
 import Window from '@/components/Window.vue'
-import progressionStore from '@/store/progressionStore.js'
+import businessStore from '@/store/businessStore.js'
 
 export default {
-  name: "DangerWindow",
+  name: "AlarmWindow",
   components: {
     Window,
   },
@@ -48,7 +48,7 @@ export default {
       return "scaleX(" + this.scaleX + ") scaleY(" + this.scaleY + ")"
     },
     displayed() {
-      return progressionStore.state.displayDangerWindow
+      return businessStore.state.displayAlarmWindow
     },
   },
   methods: {
@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style scoped>
-.danger-window {
+.alarm-window {
   width: 1080px;
   height: 720px;
 }

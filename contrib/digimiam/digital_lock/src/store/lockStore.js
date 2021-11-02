@@ -108,6 +108,7 @@ var store = new Vuex.Store({
     enableSuccess: false,
     boxOffsetTop: 0,
     boxOffsetLeft: 0,
+    displayAlarmWindow: false,
   },
   mutations: {
     setBoxOffset(state, {top, left}) {
@@ -224,7 +225,10 @@ var store = new Vuex.Store({
       state.connections = []
       state.showErrorOnRealse = false
       state.success = false
-    }
+    },
+    displayAlarmWindow (state, display) {
+      state.displayAlarmWindow = display
+    },
   },
 })
 

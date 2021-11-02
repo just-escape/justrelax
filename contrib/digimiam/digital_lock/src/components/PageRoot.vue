@@ -9,6 +9,7 @@
     <Title class="mt-4"/>
     <DrawBox class="mt-3"/>
     <TextBottom class="align-self-end mr-4"/>
+    <AlarmWindow/>
   </div>
 </template>
 
@@ -16,6 +17,7 @@
 import Title from '@/components/Title.vue'
 import TextBottom from '@/components/TextBottom.vue'
 import DrawBox from '@/components/DrawBox.vue'
+import AlarmWindow from '@/components/AlarmWindow.vue'
 import lockStore from '@/store/lockStore.js'
 
 export default {
@@ -24,6 +26,7 @@ export default {
     Title,
     DrawBox,
     TextBottom,
+    AlarmWindow,
   },
   methods: {
     mousemove(event) {

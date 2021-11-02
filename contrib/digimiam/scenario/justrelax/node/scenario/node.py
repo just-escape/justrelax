@@ -874,7 +874,9 @@ class Scenario(MagicNode):
     def secure_floor_event_clear(self):
         self.publish_prefix({'category': 'playing'}, 'laser_maze')
         self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'human_authenticator')
-        self.publish_prefix({'category': 'set_volume', 'track_id': 'alarm', 'volume': 0}, 'music_player')
+        self.publish_prefix({'category': 'set_volume', 'track_id': 'alarm', 'volume': 0, 'duration': 1}, 'music_player')
+        self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'root_server')
+        self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'digital_lock')
         self.timers['stop_track_alarm'].start()
 
     def stop_track_alarm(self):
@@ -889,12 +891,16 @@ class Scenario(MagicNode):
         self.timers['stop_track_alarm'].cancel()
         self.publish_prefix({'category': 'set_volume', 'track_id': 'alarm', 'volume': 40}, 'music_player')
         self.publish_prefix({'category': 'play', 'track_id': 'alarm'}, 'music_player')
+        self.publish_prefix({'category': 'display_alarm_window', 'display': True}, 'root_server')
+        self.publish_prefix({'category': 'display_alarm_window', 'display': True}, 'digital_lock')
 
     @on_event(filter={'from': 'human_authenticator', 'category': 'success'})
     def human_authenticator_event_success(self):
         self.publish_prefix({'category': 'set_success', 'value': True}, 'laser_maze')
         self.publish_prefix({'category': 'success'}, 'secure_floor')
         self.publish_prefix({'category': 'show_ui'}, 'root_server')
+        self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'root_server')
+        self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'digital_lock')
         self.register_delayed_task(
             3, self.publish_prefix, {'category': 'display_password_window'}, 'root_server')
         self.register_delayed_task(
@@ -1110,6 +1116,9 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'reset'}, 'laser_maze')
         self.publish_prefix({'category': 'reset'}, 'secure_floor')
         self.publish_prefix({'category': 'reset'}, 'human_authenticator')
+        self.publish_prefix({'category': 'set_volume', 'track_id': 'alarm', 'volume': 0}, 'music_player')
+        self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'root_server')
+        self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'digital_lock')
 
     @on_event(filter={'widget_id': 'set_lasers_difficulty_easy'})
     def button_set_lasers_difficulty_easy(self):

@@ -41,6 +41,7 @@
 
     <PasswordWindow/>
     <PasswordRecoveryWindow/>
+    <AlarmWindow/>
     <DangerWindow/>
     <OverlayVideo/>
 
@@ -52,6 +53,7 @@
 import BackgroundLines from '@/components/BackgroundLines.vue'
 import PasswordWindow from '@/components/PasswordWindow.vue'
 import PasswordRecoveryWindow from '@/components/PasswordRecoveryWindow.vue'
+import AlarmWindow from '@/components/AlarmWindow.vue'
 import DangerWindow from '@/components/DangerWindow.vue'
 import ExpandableVideos from '@/components/ExpandableVideos.vue'
 import MarmitronWindow from '@/components/MarmitronWindow.vue'
@@ -70,6 +72,7 @@ export default {
     ExpandableVideos,
     PasswordWindow,
     PasswordRecoveryWindow,
+    AlarmWindow,
     DangerWindow,
     MarmitronWindow,
     ServicesWindow,

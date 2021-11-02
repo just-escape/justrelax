@@ -18,6 +18,7 @@ let store = new Vuex.Store({
     crSignal: false,
     displayPasswordWindow: false,
     displayPasswordRecoveryWindow: false,
+    displayAlarmWindow: false,
     displayDangerWindow: false,
     showUI: false,
     success: false,
@@ -136,6 +137,9 @@ let store = new Vuex.Store({
     },
     displayDangerWindow (state) {
       state.displayDangerWindow = true
+    },
+    displayAlarmWindow (state, display) {
+      state.displayAlarmWindow = display
     },
     // eslint-disable-next-line
     passwordTry(state, password) {

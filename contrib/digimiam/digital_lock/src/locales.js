@@ -6,11 +6,13 @@ Vue.use(VueI18n)
 const locales = {
   en: {
     server_room: 'SERVER ROOM',
-    high_security_access: 'High-security access', 
+    high_security_access: 'High-security access',
+    alarm: 'ALARM',
   },
   fr: {
     server_room: 'SALLE SERVEUR',
     high_security_access: 'Accès hautement sécurisé',
+    alarm: 'ALARME',
   },
 }
 

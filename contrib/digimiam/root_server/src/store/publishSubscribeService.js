@@ -79,6 +79,8 @@ const publishSubscribeService = new Vuex.Store({
         businessStore.commit('finalAnimation')
       } else if (event.category === 'display_danger_window') {
         businessStore.commit('displayDangerWindow')
+      } else if (event.category === 'display_alarm_window') {
+        businessStore.commit('displayAlarmWindow', event.display)
       } else if (event.category === 'availability') {
         businessStore.commit('notifyAvailability', {mealId: event.id, missingIngredients: event.missing_ingredients})
       } else if (event.category === "force_success") {

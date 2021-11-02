@@ -70,6 +70,8 @@ const publishSubscribeService = new Vuex.Store({
         }
       } else if (event.category === 'enable') {
         lockStore.commit('enable')
+      } else if (event.category === 'display_alarm_window') {
+        lockStore.commit('displayAlarmWindow', event.display)
       }
     },
     SOCKET_RECONNECT (state, count) {

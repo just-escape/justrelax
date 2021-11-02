@@ -7,10 +7,10 @@
       <div class="d-flex flex-column h-100 justify-content-center align-items-center bg-black-transparent">
         <div class="d-flex flex-column align-items-center">
           <i class="text-red fa fa-biohazard mb-4 text-big" :style="{opacity: opacity}"/>
-          <div>
+          <div style="font-size: 50px">
             {{ $t('toxic_air_detected') }}
           </div>
-          <div>
+          <div style="font-size: 30px">
             {{ $t('immediate_evac') }}
           </div>
         </div>

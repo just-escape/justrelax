@@ -77,7 +77,7 @@ video {
 }
 
 .bg-black-transparent {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
 .bg-black {
