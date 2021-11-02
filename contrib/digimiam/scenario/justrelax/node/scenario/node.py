@@ -817,6 +817,10 @@ class Scenario(MagicNode):
     def cylinder_tag(self):
         self.publish_prefix({'category': 'play', 'sound_id': 'scan'}, 'sound_player')
 
+    @on_event(filter={'from': 'cylinders', 'category': 'check_availability_scan'})
+    def cylinder_check_availability_scan(self):
+        self.publish_prefix({'category': 'play', 'sound_id': 'scan'}, 'sound_player')
+
     @on_event(filter={'from': 'cylinders', 'category': 'success'})
     def cylinders_success(self):
         self.publish_prefix(
@@ -1672,6 +1676,18 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'play_sound'})
     def buttons_play_sound(self, sound_id: str):
         self.publish_prefix({'category': 'play', 'sound_id': sound_id}, 'sound_player')
+
+    @on_event(filter={'widget_id': 'set_cylinders_difficulty'})
+    def buttons_cylinders_set_difficulty(self, difficulty: str):
+        self.publish_prefix({'category': 'set_difficulty', 'difficulty': difficulty}, 'cylinders')
+
+    @on_event(filter={'widget_id': 'reset_cylinders'})
+    def button_cylinders_reset(self):
+        self.publish_prefix({'category': 'reset'}, 'cylinders')
+
+    @on_event(filter={'widget_id': 'check_cylinders_availability'})
+    def buttons_cylinders_check_availability(self, id: str):
+        self.publish_prefix({'category': 'check_availability', 'id': id}, 'cylinders')
 
 
 class ScenarioD1(Scenario):

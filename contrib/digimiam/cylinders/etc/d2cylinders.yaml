@@ -59,6 +59,8 @@ slots:
     red_pin: 8
     green_pin: 25
 
+check_availability_scan_delay: 0.4
+check_availability_off_delay: 60
 ingredients:
   potjevleesch:
     - 3

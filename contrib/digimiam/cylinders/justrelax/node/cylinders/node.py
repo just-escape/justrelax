@@ -36,6 +36,8 @@ class Cylinders(MagicNode):
                 'delayed_task': None,
             }
 
+        self.check_availability_scan_delay = self.config['check_availability_scan_delay']
+        self.check_availability_off_delay = self.config['check_availability_off_delay']
         self.ingredients = self.config['ingredients']
 
         self.post_success_task = None
@@ -63,12 +65,18 @@ class Cylinders(MagicNode):
             delay = self.delay
         else:
             delay = 0
-        self.slots[global_reader_index]['current_tag'] = serialized_tag
 
         if self.slots[global_reader_index]['delayed_task'] and self.slots[global_reader_index]['delayed_task'].active():
             self.slots[global_reader_index]['delayed_task'].cancel()
 
-        self.slots[global_reader_index]['delayed_task'] = reactor.callLater(delay, self.update_leds)
+        self.slots[global_reader_index]['delayed_task'] = reactor.callLater(
+            delay, self.confirm_tag, serialized_tag, global_reader_index)
+
+    def confirm_tag(self, tag, global_reader_index):
+        self.update_leds()
+        if self.slots[global_reader_index]['current_tag'] != tag:
+            self.slots[global_reader_index]['current_tag'] = tag
+            self.publish({'category': 'tag', 'tag': tag, 'chamber': global_reader_index})
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
@@ -165,9 +173,9 @@ class Cylinders(MagicNode):
                 last_cylinder_id = ingredients[step - 1]
 
                 self.check_availability_tasks.append(reactor.callLater(
-                    60, self.slots[last_cylinder_id]['green_led'].off))
+                    self.check_availability_off_delay, self.slots[last_cylinder_id]['green_led'].off))
                 self.check_availability_tasks.append(reactor.callLater(
-                    60, self.slots[last_cylinder_id]['red_led'].off))
+                    self.check_availability_off_delay, self.slots[last_cylinder_id]['red_led'].off))
 
             if step < len(ingredients):
                 cylinder_id = ingredients[step]
@@ -181,9 +189,15 @@ class Cylinders(MagicNode):
                     self.slots[cylinder_id]['green_led'].on()
                 else:
                     self.slots[cylinder_id]['red_led'].on()
+                self.publish({
+                    'category': 'check_availability_scan',
+                    'id': id,
+                    'cylinder_id': cylinder_id,
+                    'is_available': is_available,
+                })
 
                 self.check_availability_tasks.append(reactor.callLater(
-                    0.2, animate_and_check, step + 1, ingredients))
+                    self.check_availability_scan_delay, animate_and_check, step + 1, ingredients))
 
             else:
                 self.publish({
