@@ -1,6 +1,6 @@
 [Unit]
 Description=Sound player node daemon
-After=network-online.target
+After=multi-user.target
 
 [Service]
 Type=simple
@@ -16,4 +16,4 @@ ExecStart=/home/justescape/venv_justrelax/bin/start-node-sound-player -c /etc/ju
 TimeoutStopSec=15
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
