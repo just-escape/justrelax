@@ -73,10 +73,10 @@ class Cylinders(MagicNode):
             delay, self.confirm_tag, serialized_tag, global_reader_index)
 
     def confirm_tag(self, tag, global_reader_index):
-        self.update_leds()
         if self.slots[global_reader_index]['current_tag'] != tag:
             self.slots[global_reader_index]['current_tag'] = tag
             self.publish({'category': 'tag', 'tag': tag, 'chamber': global_reader_index})
+        self.update_leds()
 
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
