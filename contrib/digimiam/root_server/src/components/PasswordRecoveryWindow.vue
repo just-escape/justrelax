@@ -32,7 +32,8 @@
             <ButtonOrange class="mr-4" @click="validate">
               {{ $t('confirm') }}
             </ButtonOrange>
-            <ButtonOrange @click="hidePasswordRecoveryWindow">
+            <!-- display: none because some players tend not to pay attention to that window -->
+            <ButtonOrange class="d-none" @click="hidePasswordRecoveryWindow">
               {{ $t('cancel') }}
             </ButtonOrange>
           </div>
