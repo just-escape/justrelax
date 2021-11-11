@@ -118,14 +118,10 @@ const publishSubscribeService = new Vuex.Store({
         progressionStore.commit('playMsPepperOverlayVideo', event.video_id)
       } else if (event.category === 'stop_ms_pepper_overlay_video') {
         progressionStore.commit('stopMsPepperOverlayVideo')
-      } else if (event.category === 'display_selectable_areas') {
-        menuStore.commit('setDisplaySelectableAreas', event.display)
-      } else if (event.category === 'display_graduations') {
-        menuStore.commit('setDisplayGraduations', event.display)
-      } else if (event.category === 'display_graduation_texts') {
-        menuStore.commit('setDisplayGraduationTexts', event.display)
       } else if (event.category === 'set_auto_validate_dishes') {
         menuStore.commit('setAutoValidateDishes', event.value)
+      } else if (event.category === 'display_price') {
+        menuStore.commit('setDisplayPrice', event.display)
       } else if (event.category === 'set_color_disabled') {
         lightStore.commit('setColorDisabled', {color: event.color, isDisabled: event.is_disabled})
       } else if (event.category === 'request_node_session_data') {

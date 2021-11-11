@@ -1495,13 +1495,9 @@ class Scenario(MagicNode):
     def buttons_payment_status(self, status: str):
         self.publish_prefix({'category': 'set_status', 'status': status}, 'payment_module')
 
-    @on_event(filter={'widget_id': 'menu_graduation_texts'})
-    def buttons_menu_graduation_texts(self, display: bool):
-        self.publish_prefix({'category': 'display_graduations', 'display': display}, 'synchronizer')
-
-    @on_event(filter={'widget_id': 'menu_selectable_areas'})
-    def buttons_menu_selectable_areas(self, display: bool):
-        self.publish_prefix({'category': 'display_selectable_areas', 'display': display}, 'synchronizer')
+    @on_event(filter={'widget_id': 'synchronizer_display_price'})
+    def buttons_synchronizer_display_price(self, display: bool):
+        self.publish_prefix({'category': 'display_price', 'display': display}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'auto_validate_dishes'})
     def buttons_auto_validate_dishes(self, value: bool):

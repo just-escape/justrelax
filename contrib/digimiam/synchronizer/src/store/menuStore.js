@@ -95,9 +95,7 @@ let store = new Vuex.Store({
     validating: false,
     success: false,
     autoValidateDishes: false,
-    displaySelectableAreas: true,
-    displayGraduations: true,
-    displayGraduationTexts: true,
+    displayPrice: false,
     allDishesAreGoodButWrongPriceCounter: -1,
     wrongDishesCounter: -3,
   },
@@ -170,14 +168,8 @@ let store = new Vuex.Store({
         }
       }
     },
-    setDisplaySelectableAreas (state, value) {
-      state.displaySelectableAreas = value
-    },
-    setDisplayGraduations (state, value) {
-      state.displayGraduations = value
-    },
-    setDisplayGraduationTexts (state, value) {
-      state.displayGraduationTexts = value
+    setDisplayPrice (state, value) {
+      state.displayPrice = value
     },
     // eslint-disable-next-line
     appCursorMove (state, event) {

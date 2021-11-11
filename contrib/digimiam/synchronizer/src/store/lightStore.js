@@ -34,7 +34,7 @@ var store = new Vuex.Store({
       "orange", "blue", "red", "green", "pink", "blue", "white",
     ],
     sequenceIndex: 0,
-    progressionStep: 22,
+    progressionStep: 17,
     isPinkAllowed: false, // Enabled from a difficulty point of view
     disabledColors: { // Disabled from an admin point of view (because of load cell sensors not working)
       blue: false,

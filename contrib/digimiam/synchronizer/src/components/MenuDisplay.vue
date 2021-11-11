@@ -24,16 +24,21 @@
               <div class="position-absolute" style="top: 5px">
                 {{ item.id }}
               </div>
+              <div :style="{opacity: displayPrice ? 1 : 0}" class="position-absolute" style="bottom: -35px; font-size: 16px; transition: opacity 1s ease-in-out">
+                {{ item.price }} nF
+              </div>
             </div>
             <div
               class="position-absolute"
-              style="border: 3px white solid; width: 61px; height: 80px; left: 39px; top: -16px; transition: left 1s ease-in-out"
-              :style="{left: cursorLeft + 'px'}"
+              style="border: 3px white solid; width: 61px; left: 39px; top: -16px; transition: left 1s ease-in-out, height 1s linear"
+              :style="{left: cursorLeft + 'px', height: displayPrice ? '105px' : '80px'}"
             ></div>
           </div>
         </div>
 
-        <MenuLoadingWidget :startAnimationSignal="startAnimationSignal"/>
+        <div class="pt-5">
+          <MenuLoadingWidget :startAnimationSignal="startAnimationSignal"/>
+        </div>
       </div>
 
       <div class="position-relative" :style="{opacity: autoValidateDishes ? 0 : 1}" style="transition: opacity 4s ease-in-out">
@@ -72,6 +77,9 @@ export default {
     },
     autoValidateDishes: function() {
       return menuStore.state.autoValidateDishes
+    },
+    displayPrice: function() {
+      return menuStore.state.displayPrice
     },
     dragging: function() {
       return menuStore.state.dragging

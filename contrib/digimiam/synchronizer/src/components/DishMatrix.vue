@@ -8,66 +8,66 @@
         :itemIndex="itemIndex"
       />
 
-      <div class="position-absolute d-flex flex-row w-100" style="top: calc(100% + 1px); transition: opacity 4s ease-in-out" :style="{opacity: displayGraduations ? 1 : 0}">
+      <div class="position-absolute d-flex flex-row w-100" style="top: calc(100% + 1px)">
         <div class="position-relative w-25 text-center">
           <div class="position-absolute dash dash-vertical"></div>
           <div class="mt-2">
-            <i class="fa-fw fas fa-drumstick-bite" :class="{'mr-1': displayGraduationTexts}" style="opacity: 0.7"/>
-            <span v-if="displayGraduationTexts">Viande</span>
+            <i class="fa-fw fas fa-drumstick-bite" style="opacity: 0.7"/>
+            <span>Viande</span>
           </div>
         </div>
         <div class="position-relative w-25 text-center">
           <div class="position-absolute dash dash-vertical"></div>
           <div class="mt-2">
-            <i class="fa-fw fas fa-pizza-slice" :class="{'mr-1': displayGraduationTexts}" style="opacity: 0.7"/>
-            <span v-if="displayGraduationTexts">Pizza</span>
+            <i class="fa-fw fas fa-pizza-slice" style="opacity: 0.7"/>
+            <span>Pizza</span>
           </div>
         </div>
         <div class="position-relative w-25 text-center">
           <div class="position-absolute dash dash-vertical"></div>
           <div class="mt-2">
-            <img src="@/assets/img/waffle.png" :class="{'mr-1': displayGraduationTexts}" style="opacity: 0.7" height="16px"/>
-            <span v-if="displayGraduationTexts">Gaufre</span>
+            <img src="@/assets/img/waffle.png" style="opacity: 0.7" height="16px"/>
+            <span>Gaufre</span>
           </div>
         </div>
         <div class="position-relative w-25 text-center">
           <div class="position-absolute dash dash-vertical"></div>
           <div class="mt-2">
-            <img src="@/assets/img/jelly.svg" :class="{'mr-1': displayGraduationTexts}" style="opacity: 0.7" height="16px"/>
-            <span v-if="displayGraduationTexts">Gelée</span>
+            <img src="@/assets/img/jelly.svg" style="opacity: 0.7" height="16px"/>
+            <span>Gelée</span>
           </div>
         </div>
       </div>
 
-      <div class="position-absolute d-flex flex-column h-100" style="left: -11px; width: 10px; transition: opacity 4s ease-in-out" :style="{opacity: displayGraduations ? 1 : 0}">
+      <div class="position-absolute d-flex flex-column h-100" style="left: -11px; width: 10px">
         <div class="position-relative h-25 d-flex">
           <div class="position-absolute dash dash-horizontal"></div>
           <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
             <i
-              class="fa-fw fas fa-smile" :class="{'ml-1': displayGraduationTexts}"
-              style="opacity: 0.7" :style="{transform: displayGraduationTexts ? 'rotate(90deg)' : 'rotate(-180deg)'}"
+              class="fa-fw fas fa-smile"
+              style="opacity: 0.7; transform: rotate(90deg)"
             />
-            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Portrait</div>
+            <div>Portrait</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">
           <div class="position-absolute dash dash-horizontal"></div>
           <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
             <i
-              class="fa-fw fas fa-bug" :class="{'ml-1': displayGraduationTexts}"
-              style="opacity: 0.7" :style="{transform: displayGraduationTexts ? 'rotate(90deg)' : 'rotate(-180deg)'}"
+              class="fa-fw fas fa-bug"
+              style="opacity: 0.7; transform: rotate(90deg)"
             />
-            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Insecte</div>
+            <div>Insecte</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">
           <div class="position-absolute dash dash-horizontal"></div>
           <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
             <i
-              class="fa-fw fas fa-search" :class="{'ml-1': displayGraduationTexts}"
-              style="opacity: 0.7" :style="{transform: displayGraduationTexts ? 'rotate(90deg)' : 'rotate(-180deg)'}"
+              class="fa-fw fas fa-search"
+              style="opacity: 0.7; transform: rotate(90deg)"
             />
-            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Micro-</div>
+            <div>Micro-</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">
@@ -75,9 +75,9 @@
           <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
             <img
               src="@/assets/img/seaweed.png" height="16px"
-              :class="{'mb-1': displayGraduationTexts}" style="opacity: 0.7" :style="{transform: displayGraduationTexts ? 'rotate(90deg)' : 'rotate(-180deg)'}"
+              style="opacity: 0.7; rotate(90deg)"
             />
-            <div v-if="displayGraduationTexts" :class="{'mt-1': displayGraduationTexts}">Algue</div>
+            <div>Algue</div>
           </div>
         </div>
       </div>
@@ -85,13 +85,11 @@
       <div
         v-for="area in selectableAreas" :key="area.id"
         class="selectable-area"
-        style="transition: opacity 4s ease-in-out"
         :style="{
           top: area.top + '%',
           left: area.left + '%',
           height: selectableAreaHeight,
           width: selectableAreaWidth,
-          opacity: displaySelectableAreas ? 1 : 0,
         }">
       </div>
     </div>
@@ -115,15 +113,6 @@ export default {
     DishSelectorCursor,
   },
   computed: {
-    displaySelectableAreas() {
-      return menuStore.state.displaySelectableAreas
-    },
-    displayGraduations() {
-      return menuStore.state.displayGraduations
-    },
-    displayGraduationTexts() {
-      return menuStore.state.displayGraduationTexts
-    },
     selectableAreas() {
       return menuStore.state.selectableAreas
     },
