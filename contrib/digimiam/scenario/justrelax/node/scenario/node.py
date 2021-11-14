@@ -296,8 +296,10 @@ class Scenario(MagicNode):
             )
             self.publish_prefix({'category': 'set_volume', 'track_id': 'track1', 'volume': 75}, 'music_player')
             self.publish_prefix({'category': 'play', 'track_id': 'track1'}, 'music_player')
+            self.publish_prefix({'category': 'play', 'track_id': 'chaotic_atmosphere'}, 'music_player')
 
         def open_the_door():
+            self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
             self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
             self.session_timer.start()
 
@@ -326,7 +328,7 @@ class Scenario(MagicNode):
         real_intro_duration = self.MS_PEPPER_INTRO_DURATION if self.persistent_settings['ms_pepper_intro'] else 0
         self.timers['modify_fx'].delay = real_intro_duration + 18.285
         self.register_delayed_task(real_intro_duration, after_ms_pepper_here_you_are)
-        self.register_delayed_task(real_intro_duration + 5, open_the_door)
+        self.register_delayed_task(real_intro_duration + 3, open_the_door)
 
         self.timers['modify_fx'].start()
 
@@ -489,7 +491,15 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'street_display', 'category': 'unlock_front_door'})
     def street_display_event_unlock_front_door(self):
+        self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
         self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
+
+    @on_event(filter={'from': 'chopsticks', 'category': 'set_color'})
+    def chopsticks_event_set_color(self, new_color: str):
+        if new_color == 'blue':
+            self.publish_prefix({'category': 'play', 'sound_id': 'ambiant_light_blue'}, 'sound_player')
+        elif new_color == 'orange':
+            self.publish_prefix({'category': 'play', 'sound_id': 'ambiant_light_orange'}, 'sound_player')
 
     @on_event(filter={'from': 'chopsticks', 'category': 'success'})
     def chopsticks_event_success(self):
@@ -497,9 +507,14 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'control_panel', 'category': 'first_manual_mode'})
     def control_panel_event_manual_mode(self):
+        self.slide_counter = 0
         self.cancel_track1_light_animations()
         self.publish_prefix({'category': 'stop', 'track_id': 'track1'}, 'music_player')
+        self.publish_prefix({'category': 'stop', 'track_id': 'chaotic_atmosphere'}, 'music_player')
         self.publish_prefix({'category': 'play', 'track_id': 'track2'}, 'music_player')
+        self.register_delayed_task(
+            5, self.publish_prefix, {'category': 'play', 'track_id': 'atmosphere'}, 'music_player')
+        self.publish_prefix({'category': 'play', 'sound_id': 'on_manual_mode'}, 'sound_player')
         self.publish_prefix({'category': 'play_overlay_video', 'video_id': 'glitching_less'}, 'orders')
         self.publish_prefix({'category': 'stop_overlay_video'}, 'synchronizer')
         self.publish_prefix({'category': 'play', 'video_id': 'ads_loop'}, 'advertiser')
@@ -574,8 +589,13 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             0.2, self.publish_prefix, {'category': 'stop_glitch', 'color': 'orange'}, 'refectory_lights')
 
+    slide_counter = 0
+
     @on_event(filter={'from': 'synchronizer', 'category': 'set_menu_entry'})
     def synchronizer_event_set_menu_entry(self, dish: str, index: int):
+        self.slide_counter += 1
+        if self.slide_counter > 4:
+            self.register_delayed_task(0.1, self.publish_prefix, {'category': 'play', 'sound_id': 'hologram_set_slide'}, 'sound_player')
         self.publish_prefix({'category': 'set_slide', 'chapter_id': dish, 'slide_index': index}, 'holographic_menu')
 
     def light_service_success_animation(self):
@@ -600,23 +620,25 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'synchronizer', 'category': 'services_synchronization_success'})
     def synchronizer_event_services_synchronization_success(self):
+        self.publish_prefix({'category': 'play', 'sound_id': 'on_restaurant_start'}, 'sound_player')
+
         if self.timers['light_service_success_animation'].task:
             self.timers['light_service_success_animation'].cancel()
             if not self.persistent_settings['epileptic_mode']:
                 self.register_delayed_task(
-                    1, self.publish_prefix,
+                    5, self.publish_prefix,
                     {'category': 'play_animation', 'name': 'refectory_repaired', 'color': 'all'}, 'refectory_lights')
             else:
                 self.register_delayed_task(
-                    1, self.publish_prefix, {'category': 'on', 'color': 'all'}, 'refectory_lights')
+                    5, self.publish_prefix, {'category': 'on', 'color': 'all'}, 'refectory_lights')
         else:
             if not self.persistent_settings['epileptic_mode']:
                 self.register_delayed_task(
-                    1, self.publish_prefix,
+                    5, self.publish_prefix,
                     {'category': 'play_animation', 'name': 'refectory_repaired', 'color': 'white'}, 'refectory_lights')
             else:
                 self.register_delayed_task(
-                    1, self.publish_prefix, {'category': 'on', 'color': 'white'}, 'refectory_lights')
+                    5, self.publish_prefix, {'category': 'on', 'color': 'white'}, 'refectory_lights')
 
         self.publish_prefix({'category': 'stop_glitch', 'color': 'blue'}, 'street_lights')
         self.publish_prefix({'category': 'stop_glitch', 'color': 'orange'}, 'street_lights')
@@ -627,13 +649,13 @@ class Scenario(MagicNode):
 
         self.publish_prefix({'category': 'set_volume', 'track_id': 'track3', 'volume': 30}, 'music_player')
         self.register_delayed_task(
-            2, self.publish_prefix,
+            6, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track3', 'volume': 50, 'duration': 3}, 'music_player')
-        self.register_delayed_task(2, self.publish_prefix, {'category': 'play', 'track_id': 'track3'}, 'music_player')
+        self.register_delayed_task(6, self.publish_prefix, {'category': 'play', 'track_id': 'track3'}, 'music_player')
 
         self.register_delayed_task(
-            4, self.publish_prefix, {'category': 'set_status', 'status': 'playing'}, 'payment_module')
-        self.register_delayed_task(4, self.publish_prefix, {'category': 'stop_overlay_video'}, 'orders')
+            8, self.publish_prefix, {'category': 'set_status', 'status': 'playing'}, 'payment_module')
+        self.register_delayed_task(8, self.publish_prefix, {'category': 'stop_overlay_video'}, 'orders')
 
         self.register_delayed_task(
             6, self.publish_prefix, {'category': 'play_overlay_video', 'video_id': 'ads_loop'}, 'synchronizer')
@@ -775,9 +797,21 @@ class Scenario(MagicNode):
     def payment_module_event_set_credits(self, value):
         self.publish_prefix({'category': 'set_credits', 'value': value}, 'orders')
 
+    @on_event(filter={'from': 'ventilation_panel', 'category': 'good_connection'})
+    def ventilation_panel_event_good_connection(self, sequence_cursor: int):
+        if 0 <= sequence_cursor <= 8:
+            self.publish_prefix(
+                {'category': 'play', 'sound_id': f'ventilation_combo_{sequence_cursor}'}, 'sound_player')
+
+    @on_event(filter={'from': 'ventilation_panel', 'category': 'bad_move'})
+    def ventilation_panel_event_bad_move(self):
+        self.publish_prefix({'category': 'play', 'sound_id': 'ventilation_error'}, 'sound_player')
+
     @on_event(filter={'from': 'ventilation_panel', 'category': 'start_new_round'})
     def ventilation_panel_event_start_new_round(self, round: int):
         self.publish_prefix({'category': 'set_ventilation_panel_round', 'round': round}, 'orders')
+        if round > 1:
+            self.publish_prefix({'category': 'play', 'sound_id': 'ventilation_round_success'}, 'sound_player')
 
     @on_event(filter={'from': 'ventilation_panel', 'category': 'set_status'})
     def ventilation_panel_event_set_status(self, status: str):
@@ -795,6 +829,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'ventilation_panel', 'category': 'success'})
     def ventilation_panel_success(self):
+        self.publish_prefix({'category': 'play', 'sound_id': 'ventilation_round_success'}, 'sound_player')
         self.publish_prefix({'category': 'on'}, 'fog_machine')
         self.publish_prefix({'category': 'unlock'}, 'vents_locker')
         self.publish_prefix({'category': 'display_black_screen', 'display': False}, 'inventory')
@@ -814,12 +849,15 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'control', 'name': name, 'pressed': pressed}, 'inventory')
 
     @on_event(filter={'from': 'cylinders', 'category': 'tag'})
-    def cylinder_tag(self):
-        self.publish_prefix({'category': 'play', 'sound_id': 'scan'}, 'sound_player')
+    def cylinder_tag(self, tag):
+        if tag:
+            self.publish_prefix({'category': 'play', 'sound_id': 'cylinder_scan'}, 'sound_player')
+            self.register_delayed_task(0.4, self.publish_prefix, {'category': 'play', 'sound_id': 'scan'}, 'sound_player')
 
     @on_event(filter={'from': 'cylinders', 'category': 'check_availability_scan'})
     def cylinder_check_availability_scan(self):
-        self.publish_prefix({'category': 'play', 'sound_id': 'scan'}, 'sound_player')
+        self.publish_prefix({'category': 'play', 'sound_id': 'cylinder_scan'}, 'sound_player')
+        self.register_delayed_task(0.4, self.publish_prefix, {'category': 'play', 'sound_id': 'scan'}, 'sound_player')
 
     @on_event(filter={'from': 'cylinders', 'category': 'success'})
     def cylinders_success(self):
@@ -863,6 +901,8 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             1, self.publish_prefix, {'category': 'unlock', 'magnet_id': 'stock_to_machine'}, 'emergency_exit')
         self.register_delayed_task(
+            1, self.publish_prefix, {'category': 'play', 'sound_id': 'server_door_open'}, 'sound_player')
+        self.register_delayed_task(
             5, self.publish_prefix, {'category': 'set_display_order_recap_notification', 'value': False}, 'orders')
 
         # Disable the payment module at this point for players not to think it could be useful in the last room with
@@ -887,7 +927,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'stop_playing'}, 'laser_maze')
         self.publish_prefix({'category': 'set_status', 'status': 'alarm'}, 'secure_floor')
         self.publish_prefix({'category': 'set_status', 'status': 'disabled'}, 'human_authenticator')
-        self.publish_prefix({'category': 'play', 'sound_id': 'laser'}, 'sound_player')
+        self.publish_prefix({'category': 'play', 'sound_id': 'laser_trigger'}, 'sound_player')
         self.timers['stop_track_alarm'].cancel()
         self.publish_prefix({'category': 'set_volume', 'track_id': 'alarm', 'volume': 40}, 'music_player')
         self.publish_prefix({'category': 'play', 'track_id': 'alarm'}, 'music_player')
@@ -963,14 +1003,17 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'forced_alarm'}, 'secure_floor')
         self.publish_prefix({'category': 'set_status', 'status': 'disabled'}, 'human_authenticator')
         self.publish_prefix({'category': 'send_fog', 'duration': 20}, 'fog_machine')
+        self.publish_prefix({'category': 'play', 'sound_id': 'gaz'}, 'sound_player')
 
         if self.persistent_settings['final_by_refectory']:
+            self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
             self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
         else:
             self.publish_prefix({'category': 'unlock', 'magnet_id': 'to_outside', 'relock': True}, 'emergency_exit')
 
     @on_event(filter={'widget_id': 'front_door_open'})
     def button_front_door_open(self):
+        self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
         self.publish_prefix({'category': 'unlock'}, 'front_door_magnet')
 
     @on_event(filter={'widget_id': 'front_door_close'})
@@ -1138,6 +1181,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'widget_id': 'emergency_exit_unlock_stock_to_machine'})
     def button_emergency_exit_unlock_stock_to_machine(self):
+        self.publish_prefix({'category': 'play', 'sound_id': 'server_door_open'}, 'sound_player')
         self.publish_prefix({'category': 'unlock', 'magnet_id': 'stock_to_machine'}, 'emergency_exit')
 
     @on_event(filter={'widget_id': 'emergency_exit_unlock'})
@@ -1449,6 +1493,8 @@ class Scenario(MagicNode):
 
         if self.holomenu_slide is not None:
             if self.holomenu_error is not None:
+                self.publish_prefix({'category': 'play', 'sound_id': 'hologram_set_slide'}, 'sound_player')
+
                 self.publish_prefix(
                     {
                         'category': 'set_slide',
@@ -1463,6 +1509,8 @@ class Scenario(MagicNode):
                 self.holomenu_error = None
 
             if self.holomenu_x is not None and self.holomenu_y is not None:
+                self.publish_prefix({'category': 'play', 'sound_id': 'hologram_set_slide'}, 'sound_player')
+
                 chapter_id = self.holomenu_slides_mapping[self.holomenu_x][self.holomenu_y]
                 self.publish_prefix(
                     {
