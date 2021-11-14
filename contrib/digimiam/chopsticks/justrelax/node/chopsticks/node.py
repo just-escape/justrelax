@@ -20,7 +20,9 @@ class ArduinoProtocol:
 
 
 class Letter:
-    def __init__(self, index, on_plug_callback, on_unplug_callback, reaction_pin, led_pin, success_color):
+    def __init__(self, service, index, on_plug_callback, on_unplug_callback, reaction_pin, led_pin, success_color):
+        self.service = service
+
         self._color = None
 
         self.index = index
@@ -61,8 +63,10 @@ class Letter:
     def reaction_toggle_blue_orange(self):
         if self.color == "blue":
             self.color = "orange"
+            self.service.publish({'category': 'set_color', 'new_color': self.color, 'letter_index': self.index})
         elif self.color == "orange":
             self.color = "blue"
+            self.service.publish({'category': 'set_color', 'new_color': self.color, 'letter_index': self.index})
         else:
             logger.info("Color is {}: nothing to do".format(self.color))
 
@@ -91,6 +95,7 @@ class Chopsticks(MagicNode):
         self.letters = []
         for letter_index, letter_conf in enumerate(self.letters_configuration):
             letter = Letter(
+                self,
                 letter_index, self.on_chopstick_plug, self.on_chopstick_unplug,
                 letter_conf['reaction_pin'], letter_conf['led_pin'], letter_conf['led_success_color'])
             self.letters.append(letter)
@@ -146,18 +151,24 @@ class Chopsticks(MagicNode):
     @on_event(filter={'category': 'emulate_chopstick_plug'})
     def on_chopstick_plug(self, letter_index: int):
         logger.info("Letter {} chopstick plugged".format(letter_index))
-        reaction = self.letters_configuration[letter_index].get('chopstick_plug_reactions', {}).get(
-            self.difficulty, 'do_nothing')
-        reaction_callable = getattr(self.letters[letter_index], 'reaction_{}'.format(reaction))
-        reaction_callable()
+        if self.success:
+            logger.info("Puzzle already in success mode: skipping")
+        else:
+            reaction = self.letters_configuration[letter_index].get('chopstick_plug_reactions', {}).get(
+                self.difficulty, 'do_nothing')
+            reaction_callable = getattr(self.letters[letter_index], 'reaction_{}'.format(reaction))
+            reaction_callable()
 
     @on_event(filter={'category': 'emulate_chopstick_unplug'})
     def on_chopstick_unplug(self, letter_index: int):
         logger.info("Letter {} chopstick unplugged".format(letter_index))
-        reaction = self.letters_configuration[letter_index].get('chopstick_unplug_reactions', {}).get(
-            self.difficulty, 'do_nothing')
-        reaction_callable = getattr(self.letters[letter_index], 'reaction_{}'.format(reaction))
-        reaction_callable()
+        if self.success:
+            logger.info("Puzzle already in success mode: skipping")
+        else:
+            reaction = self.letters_configuration[letter_index].get('chopstick_unplug_reactions', {}).get(
+                self.difficulty, 'do_nothing')
+            reaction_callable = getattr(self.letters[letter_index], 'reaction_{}'.format(reaction))
+            reaction_callable()
 
     @on_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
