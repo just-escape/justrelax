@@ -2,10 +2,10 @@
   <Window :title="$t('configuration')" class="h-100">
     <div class="d-flex h-100">
       <div class="d-flex flex-column lh-1 mx-4 justify-content-center h-100 w-100">
-        <div class="d-flex flex-row mb-4 justify-content-between align-items-center">
+        <!--<div class="d-flex flex-row mb-4 justify-content-between align-items-center">
             <div>{{ $t('mode') }}</div>
             <OnOffSwitch :editable="false" :initiallyOn="false" :width="124" :onText="$t('marmitron')" :offText="$t('manual')"/>
-        </div>
+        </div>-->
         <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>{{ $t('security') }}</div>
             <OnOffSwitch :editable="false" :initiallyOn="true"/>
@@ -20,7 +20,7 @@
         </div>
         <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>{{ $t('supply') }}</div>
-            <OnOffSwitch :initiallyOn="true" :width="124" :onText="$t('marmitron')" :offText="$t('manual')"/>
+            <OnOffSwitch :initiallyOn="true" :width="124" :onText="$t('marmitron')" :offText="'défaut'"/>
         </div>
         <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>{{ $t('food_hydroinflation') }}</div>

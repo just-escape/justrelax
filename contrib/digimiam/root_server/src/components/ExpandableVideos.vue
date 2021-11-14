@@ -22,12 +22,13 @@
           disablePictureInPicture
           controlslist="nodownload"
         />
+        <!--
         <b-btn v-if="!video.isExpanded" @click="expandVideo(videoIndex)" class="position-absolute lh-1 bottom-right" size="sm" variant="outline-info">
           <i class="text-teal fas fa-expand"/>
         </b-btn>
         <b-btn v-if="video.isExpanded" @click="reduceVideo(videoIndex)" class="position-absolute lh-1 upper-top-right" size="sm" variant="outline-info">
           <i class="text-teal fas fa-times"/>
-        </b-btn>
+        </b-btn>-->
       </div>
     </div>
   </div>

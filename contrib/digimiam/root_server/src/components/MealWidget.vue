@@ -88,9 +88,10 @@ export default {
       this.$refs.qualityInput.value = businessStore.state.meals[this.mealIndex].quality
     },
     availabilityNotificationSignal() {
-      for (let meal of businessStore.state.meals) {
+      this.loading = false
+
+      /*for (let meal of businessStore.state.meals) {
         if (meal.id === businessStore.state.availabilityNotificationId) {
-          this.loading = false
           let thisId = this.notificationsCounter++
           let message = businessStore.state.availabilityNotificationMissingIngredients ? "Au moins une capsule pour<br/>" : "Toutes les capsules pour<br/>"
           message += "produire des " + meal.labelPlural + "<br/>"
@@ -99,7 +100,7 @@ export default {
           this.notifications.push({id: thisId, message: message, fadeDelay: 3000, theme: theme})
           setTimeout(this.cleanNotificationFromId, 3100, thisId)
         }
-      }
+      }*/
     },
   },
   mounted() {
