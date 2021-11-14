@@ -1,0 +1,62 @@
+name: sound_player
+
+default_publication_channel: d1.scenario
+subscriptions:
+  - d1.sound_player
+  - d1.broadcast
+
+master_volume: 80
+default_volume: 50
+player: vlc
+
+mixer: Master
+
+sounds:
+  - id: front_door_open
+    path: /home/justescape/sounds/front_door_open.wav
+    volume: 80
+  - id: server_door_open
+    path: /home/justescape/sounds/server_door_open.wav
+  - id: ambiant_light_blue
+    path: /home/justescape/sounds/ambiant_light_blue.wav
+    volume: 70
+  - id: ambiant_light_orange
+    path: /home/justescape/sounds/ambiant_light_orange.wav
+  - id: on_manual_mode
+    path: /home/justescape/sounds/on_manual_mode.wav
+  - id: hologram_set_slide
+    path: /home/justescape/sounds/hologram_set_slide.wav
+  - id: on_restaurant_start
+    path: /home/justescape/sounds/on_restaurant_start.wav
+  - id: ventilation_combo_0
+    path: /home/justescape/sounds/ventilation_combo_0.wav
+  - id: ventilation_combo_1
+    path: /home/justescape/sounds/ventilation_combo_1.wav
+  - id: ventilation_combo_2
+    path: /home/justescape/sounds/ventilation_combo_2.wav
+  - id: ventilation_combo_3
+    path: /home/justescape/sounds/ventilation_combo_3.wav
+  - id: ventilation_combo_4
+    path: /home/justescape/sounds/ventilation_combo_4.wav
+  - id: ventilation_combo_5
+    path: /home/justescape/sounds/ventilation_combo_5.wav
+  - id: ventilation_combo_6
+    path: /home/justescape/sounds/ventilation_combo_6.wav
+  - id: ventilation_combo_7
+    path: /home/justescape/sounds/ventilation_combo_7.wav
+  - id: ventilation_combo_8
+    path: /home/justescape/sounds/ventilation_combo_8.wav
+  - id: ventilation_error
+    path: /home/justescape/sounds/ventilation_error.wav
+  - id: ventilation_round_success
+    path: /home/justescape/sounds/ventilation_round_success.wav
+  - id: cylinder_scan
+    path: /home/justescape/sounds/cylinder_scan.wav
+  - id: scan
+    path: /home/justescape/sounds/scan.mp3
+  - id: laser_trigger
+    path: /home/justescape/sounds/laser_trigger.wav
+  - id: gaz
+    path: /home/justescape/sounds/gaz.wav
+  - id: typing
+    path: /home/justescape/sounds/typing.wav

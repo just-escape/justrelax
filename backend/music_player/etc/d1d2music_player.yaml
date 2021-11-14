@@ -19,16 +19,21 @@ tracks:
   - id: track2
     path: /home/justescape/music/track2-ll.wav
     mode: loop
+    volume: 45
     loop_a: 150
     loop_b: 450
   - id: track3
     path: /home/justescape/music/track3-ll.wav
     mode: loop
-    volume: 50
+    volume: 53
     loop_a: 55
     loop_b: 165
   - id: track35
-    path: /home/justescape/music/track35.mp3
+    path: /home/justescape/music/track35-ll.mp3
+    mode: loop
+    volume: 25
+    loop_a: 66.057
+    loop_b: 192.172
   - id: track4
     path: /home/justescape/music/track4-ill.wav
     mode: loop
@@ -69,3 +74,21 @@ tracks:
     volume: 50
     loop_a: 8
     loop_b: 24
+  - id: alarm
+    path: /home/justescape/music/alarm-ll.wav
+    mode: loop
+    volume: 40
+    loop_a: 4.104
+    loop_b: 12.312
+  - id: atmosphere
+    path: /home/justescape/music/atmosphere-ll.wav
+    mode: loop
+    volume: 40
+    loop_a: 129
+    loop_b: 387
+  - id: chaotic_atmosphere
+    path: /home/justescape/music/chaotic_atmosphere-ll.wav
+    mode: loop
+    volume: 40
+    loop_a: 25.750
+    loop_b: 77.250

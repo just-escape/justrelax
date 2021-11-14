@@ -16,4 +16,4 @@ ExecStart=/home/justescape/venv_justrelax/bin/start-node-sound-player -c /etc/ju
 TimeoutStopSec=15
 
 [Install]
-WantedBy=default.target
+WantedBy=sound.target
