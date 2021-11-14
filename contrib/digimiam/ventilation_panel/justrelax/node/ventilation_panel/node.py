@@ -236,6 +236,7 @@ class VentilationController:
                     self.bad_move_failure_animation()
 
                 else:
+                    self.service.good_connection(self.sequence_cursor)
                     logger.info("Good connection")
                     air_duct.fan.on()
                     air_duct.last_connected_sources.append(air_source)  # Keep track of the good history
@@ -532,6 +533,8 @@ class VentilationController:
     def bad_move_failure_animation(self):
         logger.info("Running bad move failure animation")
 
+        self.service.bad_move()
+
         self.skip_skippable_animations()
 
         for ad in self.air_ducts.values():
@@ -659,6 +662,12 @@ class VentilationPanel(MagicNode):
     @on_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
         self.vc.difficulty = difficulty
+
+    def good_connection(self, sequence_cursor):
+        self.publish({'category': 'good_connection', 'sequence_cursor': sequence_cursor})
+
+    def bad_move(self):
+        self.publish({'category': 'bad_move'})
 
     @on_event(filter={'category': 'restart_round'})
     def event_restart_round(self):
