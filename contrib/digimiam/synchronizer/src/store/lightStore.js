@@ -78,7 +78,7 @@ var store = new Vuex.Store({
       state.giveSwitchClueTask = setTimeout(() => store.commit('giveSwitchClue'), 180000)
     },
     giveSwitchClue () {
-      lightLogStore.commit('processLog', {logMessage: 'floor_switches_are_idle', level: 'info', useLocale: true})
+      lightLogStore.commit('processLog', {logMessage: 'floor_switches_are_idle', level: 'info', useLocale: true, withSound: true})
     },
     setColorDisabled (state, {color, isDisabled}) {
       let alreadyEnabledColorsCountExceptPink = 0
@@ -172,7 +172,7 @@ var store = new Vuex.Store({
     givePinkClue(state) {
       if (!state.hasPinkClueBeenGiven) {
         state.hasPinkClueBeenGiven = true
-        lightLogStore.commit('processLog', {logMessage: 'pink_clue', level: 'info', useLocale: true})
+        lightLogStore.commit('processLog', {logMessage: 'pink_clue', level: 'info', useLocale: true, withSound: true})
       }
     },
     // eslint-disable-next-line

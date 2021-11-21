@@ -507,7 +507,6 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'control_panel', 'category': 'first_manual_mode'})
     def control_panel_event_manual_mode(self):
-        self.slide_counter = 0
         self.cancel_track1_light_animations()
         self.publish_prefix({'category': 'stop', 'track_id': 'track1'}, 'music_player')
         self.publish_prefix({'category': 'stop', 'track_id': 'chaotic_atmosphere'}, 'music_player')
@@ -528,6 +527,7 @@ class Scenario(MagicNode):
                 'message': 'lights_have_been_reset',
                 'level': 'warning',
                 'use_locale': True,
+                'with_sound': False,
             },
             'synchronizer'
         )
@@ -537,6 +537,7 @@ class Scenario(MagicNode):
                 'message': 'lights_have_been_turned_off',
                 'level': 'info',
                 'use_locale': True,
+                'with_sound': False,
             },
             'synchronizer'
         )
@@ -546,6 +547,7 @@ class Scenario(MagicNode):
                 'message': 'lights_can_be_turned_on_manually',
                 'level': 'info',
                 'use_locale': True,
+                'with_sound': False,
             },
             'synchronizer'
         )
@@ -555,6 +557,7 @@ class Scenario(MagicNode):
                 'message': 'waiting_lights_to_be_resync',
                 'level': 'info',
                 'use_locale': True,
+                'with_sound': False,
             },
             'synchronizer'
         )
@@ -564,6 +567,7 @@ class Scenario(MagicNode):
                 'message': 'menu_is_messed_up',
                 'level': 'warning',
                 'use_locale': True,
+                'with_sound': False,
             },
             'synchronizer'
         )
@@ -573,6 +577,7 @@ class Scenario(MagicNode):
                 'message': 'waiting_dishes_to_be_configured',
                 'level': 'info',
                 'use_locale': True,
+                'with_sound': False,
             },
             'synchronizer'
         )
@@ -589,12 +594,9 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             0.2, self.publish_prefix, {'category': 'stop_glitch', 'color': 'orange'}, 'refectory_lights')
 
-    slide_counter = 0
-
     @on_event(filter={'from': 'synchronizer', 'category': 'set_menu_entry'})
-    def synchronizer_event_set_menu_entry(self, dish: str, index: int):
-        self.slide_counter += 1
-        if self.slide_counter > 4:
+    def synchronizer_event_set_menu_entry(self, dish: str, index: int, on_manual_mode: bool):
+        if not on_manual_mode:
             self.register_delayed_task(0.1, self.publish_prefix, {'category': 'play', 'sound_id': 'hologram_set_slide'}, 'sound_player')
         self.publish_prefix({'category': 'set_slide', 'chapter_id': dish, 'slide_index': index}, 'holographic_menu')
 
@@ -724,20 +726,75 @@ class Scenario(MagicNode):
         self.register_delayed_task(1, post_delay)
 
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "waffresco_order", "level": "warning"}, "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "waffresco_order",
+                "level": "warning",
+                "with_sound": False
+            },
+            "inventory"
+        )
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "analysis", "level": "info"}, "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "analysis",
+                "level": "info",
+                "with_sound": False
+            },
+            "inventory"
+        )
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "temperature_control_ok", "level": "info"}, "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "temperature_control_ok",
+                "level": "info",
+                "with_sound": False
+            },
+            "inventory"
+        )
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "humidity_control_ok", "level": "info"}, "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "humidity_control_ok",
+                "level": "info",
+                "with_sound": False
+            },
+            "inventory"
+        )
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "stocks_control_error", "level": "warning"}, "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "stocks_control_error",
+                "level": "warning",
+                "with_sound": False
+            },
+            "inventory"
+        )
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "nutrients_missing", "level": "warning"}, "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "nutrients_missing",
+                "level": "warning",
+                "with_sound": False
+            },
+            "inventory"
+        )
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "human_intervention_required", "level": "info"},
-            "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "human_intervention_required",
+                "level": "info",
+                "with_sound": False
+            },
+            "inventory"
+        )
 
     @on_event(filter={'from': 'orders', 'category': 'resume_order'})
     def orders_resume_order(self):
@@ -860,12 +917,35 @@ class Scenario(MagicNode):
     @on_event(filter={'from': 'cylinders', 'category': 'success'})
     def cylinders_success(self):
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "stocks_control_ok", "level": "info"}, "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "stocks_control_ok",
+                "level": "info",
+                "with_sound": True
+            },
+            "inventory"
+        )
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "orders_can_resume", "level": "info"}, "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "orders_can_resume",
+                "level": "info",
+                "with_sound": False
+            },
+            "inventory"
+        )
         self.publish_prefix(
-            {"category": "log", "use_locale": True, "message": "waiting_customer_validation", "level": "info"},
-            "inventory")
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "waiting_customer_validation",
+                "level": "info",
+                "with_sound": False
+            },
+            "inventory"
+        )
         self.publish_prefix({"category": "set_stocks_status", "status": True}, "inventory")
         self.publish_prefix({'category': 'set_display_resume_order_notification', 'value': True}, 'orders')
 
@@ -1565,8 +1645,13 @@ class Scenario(MagicNode):
     def localize(self, value: str):
         self.publish_prefix({'category': 'set_locale', 'locale': value}, 'broadcast')
 
+    @on_event(filter={'category': 'process_log'})
+    def process_log(self, with_sound: bool):
+        if with_sound:
+            self.publish_prefix({'category': 'play', 'sound_id': 'typing'}, 'sound_player')
+
     @on_event(filter={'widget_type': 'log_prompt'})
-    def log_prompt(self, message: str, level: str, use_locale: bool, widget_id: str):
+    def log_prompt(self, message: str, level: str, use_locale: bool, widget_id: str, with_sound: bool = True):
         if widget_id == 'light_log':
             category = 'light_log'
             channel = 'synchronizer'
@@ -1583,7 +1668,15 @@ class Scenario(MagicNode):
             return
 
         self.publish_prefix(
-            {'category': category, 'message': message, 'level': level, 'use_locale': use_locale}, channel)
+            {
+                'category': category,
+                'message': message,
+                'level': level,
+                'use_locale': use_locale,
+                'with_sound': with_sound,
+            },
+            channel
+        )
 
     @on_event(filter={'widget_type': 'instruction_prompt'})
     def instruction_prompt(self, message: str, use_locale: bool):
@@ -1595,6 +1688,8 @@ class Scenario(MagicNode):
             },
             'orders'
         )
+        if message:
+            self.publish_prefix({'category': 'play', 'sound_id': 'typing'}, 'sound_player')
 
     @on_event(filter={'category': 'get_session_time'})
     def get_session_time(self):

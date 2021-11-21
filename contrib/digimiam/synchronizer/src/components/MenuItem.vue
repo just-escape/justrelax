@@ -368,7 +368,7 @@ export default {
         if (this.dishLabel !== null) {
           this.createNotif()
         }
-        menuStore.commit("pushMenuEntry", {itemIndex: this.itemIndex, getters: menuStore.getters})
+        menuStore.commit("pushMenuEntry", {itemIndex: this.itemIndex, onManualMode: false, getters: menuStore.getters})
       }
     },
   },

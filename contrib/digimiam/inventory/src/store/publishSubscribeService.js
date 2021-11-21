@@ -73,7 +73,8 @@ const publishSubscribeService = new Vuex.Store({
         let logMessage = event.message
         let level = event.level
         let useLocale = event.use_locale
-        logStore.commit('processLog', {logMessage, level, useLocale})
+        let withSound = event.with_sound === undefined ? true : event.with_sound
+        logStore.commit('processLog', {logMessage, level, useLocale, withSound})
       } else if (event.category === 'lock_difficulty') {
         sokobanStore.commit('lockDifficulty')
       } else if (event.category === 'set_difficulty') {

@@ -38,7 +38,7 @@ export default {
 
 <style scoped>
 .sequence-item {
-  transition: all 1s linear;
+  transition: all 0.7s linear;
 }
 
 .sequence-enter {

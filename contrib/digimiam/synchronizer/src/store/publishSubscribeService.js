@@ -85,12 +85,14 @@ const publishSubscribeService = new Vuex.Store({
         let logMessage = event.message
         let level = event.level
         let useLocale = event.use_locale
-        menuLogStore.commit('processLog', {logMessage, level, useLocale})
+        let withSound = event.with_sound === undefined ? true : event.with_sound
+        menuLogStore.commit('processLog', {logMessage, level, useLocale, withSound})
       } else if (event.category === 'light_log') {
         let logMessage = event.message
         let level = event.level
         let useLocale = event.use_locale
-        lightLogStore.commit('processLog', {logMessage, level, useLocale})
+        let withSound = event.with_sound === undefined ? true : event.with_sound
+        lightLogStore.commit('processLog', {logMessage, level, useLocale, withSound})
       } else if (event.category === 'set_menu_cursor_position') {
         menuStore.commit('setMenuCursorPosition', event.position)
       } else if (event.category === 'force_menu_success') {
@@ -104,10 +106,10 @@ const publishSubscribeService = new Vuex.Store({
         lightStore.dispatch('toggleColor', {color, id, activated})
       } else if (event.category === 'restaurant_in_manual_mode') {
         lightStore.commit('setRestaurantInManualMode')
-        menuStore.commit('pushMenuEntry', {itemIndex: 3, getters: menuStore.getters})
-        menuStore.commit('pushMenuEntry', {itemIndex: 2, getters: menuStore.getters})
-        menuStore.commit('pushMenuEntry', {itemIndex: 1, getters: menuStore.getters})
-        menuStore.commit('pushMenuEntry', {itemIndex: 0, getters: menuStore.getters})
+        menuStore.commit('pushMenuEntry', {itemIndex: 3, onManualMode: true, getters: menuStore.getters})
+        menuStore.commit('pushMenuEntry', {itemIndex: 2, onManualMode: true, getters: menuStore.getters})
+        menuStore.commit('pushMenuEntry', {itemIndex: 1, onManualMode: true, getters: menuStore.getters})
+        menuStore.commit('pushMenuEntry', {itemIndex: 0, onManualMode: true, getters: menuStore.getters})
       } else if (event.category === 'display_danger_window') {
         progressionStore.commit('displayDangerWindow')
       } else if (event.category === 'play_overlay_video') {

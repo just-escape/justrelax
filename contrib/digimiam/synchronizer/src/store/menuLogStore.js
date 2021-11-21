@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 
 import i18n from '@/locales.js'
 
+import publishSubscribeService from '@/store/publishSubscribeService.js'
+
 Vue.use(Vuex)
 
 var store = new Vuex.Store({
@@ -17,7 +19,7 @@ var store = new Vuex.Store({
     },
   },
   mutations: {
-    processLog (state, {logMessage, level, useLocale}) {
+    processLog (state, {logMessage, level, useLocale, withSound}) {
       for (var i = 0 ; i < Object.keys(state).length ; i++) {
         var lang = Object.keys(state)[i]
 
@@ -33,6 +35,9 @@ var store = new Vuex.Store({
           message: message,
           displayedMessage: '',
           displayedChars: -1,
+          originalMessage: logMessage,
+          useLocale: useLocale,
+          withSound: withSound,
         })
         updateDisplayedMessages(lang)
       }
@@ -61,6 +66,20 @@ function updateDisplayedMessages(lang) {
 
 function _updateDisplayedMessages(lang) {
   for (var i = 0 ; i < store.state[lang].logs.length ; i++) {
+    if (store.state[lang].logs[i].displayedChars == -1 && lang == i18n.locale && store.state[lang].logs[i].withSound) {
+      publishSubscribeService.commit(
+        "publish",
+        {
+          "category": "process_log",
+          "context": "menu",
+          "message": store.state[lang].logs[i].originalMessage,
+          "use_locale": store.state[lang].logs[i].useLocale,
+          "level": store.state[lang].logs[i].level,
+          "with_sound": store.state[lang].logs[i].withSound,
+        }
+      )
+    }
+
     if (store.state[lang].logs[i].displayedChars < store.state[lang].logs[i].message.length - 1) {
       var logIndex = i
       store.commit('typeOneChar', {lang, logIndex})

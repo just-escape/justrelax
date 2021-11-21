@@ -61,7 +61,7 @@ let store = new Vuex.Store({
       if (!state.lightServiceSuccess) {
         state.lightServiceSuccess = true
         publishSubscribeService.commit("publish", {"category": "light_service_success"})
-        lightLogStore.commit("processLog", {logMessage: "light_sync_complete", level: "info", useLocale: true})
+        lightLogStore.commit("processLog", {logMessage: "light_sync_complete", level: "info", useLocale: true, withSound: false})
 
         if (state.menuServiceSuccess) {
           publishSubscribeService.commit("publish", {"category": "services_synchronization_success"})
@@ -72,7 +72,7 @@ let store = new Vuex.Store({
       if (!state.menuServiceSuccess) {
         state.menuServiceSuccess = true
         publishSubscribeService.commit("publish", {"category": "menu_service_success"})
-        menuLogStore.commit("processLog", {logMessage: "menu_reconfig_complete", level: "info", useLocale: true})
+        menuLogStore.commit("processLog", {logMessage: "menu_reconfig_complete", level: "info", useLocale: true, withSound: false})
 
         if (state.lightServiceSuccess) {
           publishSubscribeService.commit("publish", {"category": "services_synchronization_success"})

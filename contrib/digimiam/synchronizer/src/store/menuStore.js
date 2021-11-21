@@ -261,7 +261,7 @@ let store = new Vuex.Store({
     },
     appCursorRelease (state) {
       if (state.dragging !== null) {
-        store.commit("pushMenuEntry", {itemIndex: state.dragging, getters: store.getters})  // TODO: do it elsewhere
+        store.commit("pushMenuEntry", {itemIndex: state.dragging, onManualMode: false, getters: store.getters})  // TODO: do it elsewhere
       }
       state.lastMouseX = null
       state.lastMouseY = null
@@ -289,7 +289,7 @@ let store = new Vuex.Store({
       state.glitches[animationId].redShadow = false
       state.glitches[animationId].animation.seek(0)
     },
-    pushMenuEntry (state, {itemIndex, getters}) {
+    pushMenuEntry (state, {itemIndex, onManualMode, getters}) {
       var dish
       if (state.menuItems[itemIndex].dish) {
         dish = state.menuItems[itemIndex].dish
@@ -301,6 +301,7 @@ let store = new Vuex.Store({
         category: "set_menu_entry",
         index: itemIndex,
         dish: dish,
+        on_manual_mode: onManualMode,
       })
 
       if (state.autoValidateDishes) {
@@ -316,7 +317,7 @@ let store = new Vuex.Store({
           if (dish != "error") {
             let hintLog = getters.hintLog
             if (hintLog) {
-              menuLogStore.commit("processLog", {logMessage: hintLog, level: "warning", useLocale: true})
+              menuLogStore.commit("processLog", {logMessage: hintLog, level: "warning", useLocale: true, withSound: true})
             }
           }
         }
@@ -342,7 +343,7 @@ let store = new Vuex.Store({
       } else {
         let hintLog = getters.hintLog
         if (hintLog) {
-          menuLogStore.commit("processLog", {logMessage: hintLog, level: "warning", useLocale: true})
+          menuLogStore.commit("processLog", {logMessage: hintLog, level: "warning", useLocale: true, withSound: true})
         }
       }
     },

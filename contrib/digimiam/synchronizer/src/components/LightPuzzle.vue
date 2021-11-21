@@ -31,7 +31,7 @@ export default {
     click() {
       this.clickCounter++
       if (this.clickCounter === 10) {
-        lightLogStore.commit("processLog", {logMessage: "interface_is_not_tactile", level: "warning", useLocale: true})
+        lightLogStore.commit("processLog", {logMessage: "interface_is_not_tactile", level: "warning", useLocale: true, withSound: true})
       }
     }
   }
