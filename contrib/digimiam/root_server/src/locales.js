@@ -5,9 +5,6 @@ Vue.use(VueI18n)
 
 const locales = {
   en: {
-    ads: 'ADVERTISEMENTS',
-    'gaufresque.mp6': 'gaufresque.mp6',
-    'zéphyr_3000 (1).mp6': 'zéphyr_3000 (1).mp6',
     configuration: 'CONFIGURATION',
     mode: 'Mode',
     marmitron: 'Marmitron',
@@ -49,9 +46,6 @@ const locales = {
     that_is_not_the_right_answer: 'That is not the right answer.',
   },
   fr: {
-    ads: 'PUBLICITÉS',
-    'gaufresque.mp6': 'gaufresque.mp6',
-    'zéphyr_3000 (1).mp6': 'zéphyr_3000 (1).mp6',
     configuration: 'CONFIGURATION',
     mode: 'Mode',
     marmitron: 'Marmitron',

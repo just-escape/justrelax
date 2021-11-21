@@ -73,6 +73,8 @@ const publishSubscribeService = new Vuex.Store({
         businessStore.commit('showUI')
       } else if (event.category === 'display_password_window') {
         businessStore.commit('displayPasswordWindow')
+      } else if (event.category === 'display_password_recovery_window') {
+        businessStore.commit('displayPasswordRecoveryWindow')
       } else if (event.category === 'play_animation') {
         businessStore.commit('playAnimation', event.animation)
       } else if (event.category === 'final_animation') {

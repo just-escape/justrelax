@@ -200,4 +200,18 @@ input[type=range]::-webkit-slider-runnable-track {
   background: rgba(0, 209, 182, 0.6);
   border-radius: 2px;
 }
+
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 4px solid rgba(0, 209, 182, .3);
+  border-radius: 50%;
+  border-top-color: #00d1b6;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
 </style>

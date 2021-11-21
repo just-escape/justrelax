@@ -25,13 +25,19 @@
           <div
             @click="displayPasswordRecoveryWindow"
             class="align-self-end text-underline"
+            :class="{blinking: failedAttempts >= 2 && !isRecoveryWindowDisplayed}"
           >
             {{ $t('forgot_your_password') }}
           </div>
         </div>
         <div class="d-flex flex-row justify-content-between">
           <div class="text-red align-self-center" :style="{opacity: errorMessageOpacity}">
-            {{ $t('incorrect_password') }}
+            <div>
+              {{ $t('incorrect_password') }}
+            </div>
+            <div>
+              Nombre d'échecs : {{ failedAttempts }}.
+            </div>
           </div>
           <div>
             <ButtonOrange @click="validate" class="mr-4" >
@@ -66,6 +72,7 @@ export default {
       scaleY: 0,
       password: '',
       fullBlockOpacity: 1,
+      failedAttempts: 0,
       errorMessageOpacity: 0,
       errorMessageOpacityAnimation: this.$anime({}),
     }
@@ -73,6 +80,9 @@ export default {
   computed: {
     displayed() {
       return businessStore.state.displayPasswordWindow
+    },
+    isRecoveryWindowDisplayed() {
+      return businessStore.state.displayPasswordRecoveryWindow
     },
     top() {
       return "calc(0px + " + this.topOffset + "px)"
@@ -98,6 +108,7 @@ export default {
   },
   methods: {
     validate() {
+      this.failedAttempts++
       this.errorMessageOpacityAnimation.pause()
       this.errorMessageOpacity = 1
       this.errorMessageOpacityAnimation = this.$anime({
@@ -108,6 +119,9 @@ export default {
       })
       this.password = ''
       businessStore.commit('passwordTry', this.password)
+      if (this.failedAttempts == 3) {
+        this.displayPasswordRecoveryWindow()
+      }
     },
     displayPasswordRecoveryWindow() {
       businessStore.state.displayPasswordRecoveryWindow = true
@@ -181,3 +195,16 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+@keyframes blinker {
+  0% {color: #fd7e14;}
+  50% {color: var(--light);}
+  100% {color: #fd7e14;}
+}
+
+.blinking {
+  color: #fd7e14;
+  animation: blinker 1s infinite;
+}
+</style>

@@ -84,22 +84,19 @@ let store = new Vuex.Store({
         verificationStatus: 'ko',
       },
     ],
-    availabilityNotificationSignal: false,
-    availabilityNotificationId: undefined,
-    availabilityNotificationMissingIngredients: false,
+    availabilityLoading: false,
   },
   mutations: {
     checkAvailability(state, mealIndex) {
+      state.availabilityLoading = true
       let event = {
         category: 'check_availability',
         id: state.meals[mealIndex].id,
       }
       publishSubscribeService.commit('publish', event)
     },
-    notifyAvailability(state, {mealId, missingIngredients}) {
-      state.availabilityNotificationSignal = !state.availabilityNotificationSignal
-      state.availabilityNotificationId = mealId
-      state.availabilityNotificationMissingIngredients = missingIngredients
+    notifyAvailability(state) {
+      state.availabilityLoading = false
     },
     setQuality (state, {mealIndex, value}) {
       state.meals[mealIndex].quality = value

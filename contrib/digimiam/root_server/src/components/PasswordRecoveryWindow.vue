@@ -136,8 +136,8 @@ export default {
           easing: 'easeInQuad',
         })
         .add({
-          leftOffset: 110,
-          topOffset: 340,
+          leftOffset: 170,
+          topOffset: 400,
           duration: 700,
           easing: 'easeOutQuad',
         }, '-=700')

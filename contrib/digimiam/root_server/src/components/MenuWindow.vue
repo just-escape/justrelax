@@ -1,7 +1,7 @@
 <template>
-  <Window :title="'INGRÉDIENTS'">
+  <Window :title="'GESTION INGRÉDIENTS'">
     <div class="d-flex flex-column align-items-center mx-4 h-100">
-      <div class="d-flex flex-row justify-content-center w-100 align-items-center mb-3 mt-4" style="font-style: italic; font-size: 20px">
+      <div class="d-flex flex-row justify-content-center w-100 align-items-center mb-4 mt-4" style="font-style: italic; font-size: 20px">
         <div>Plats du menu</div>
       </div>
       <div class="position-relative d-flex flex-row justify-content-center mb-5">
@@ -20,12 +20,15 @@
           :style="{left: cursorLeft + 'px'}"
         >
           <div class="position-relative h-100">
-            <div class="position-absolute" style="height: 29px; background: linear-gradient(white, rgba(0, 209, 182, 0.5)); width: 3px; bottom: -32px; left: 27px">
+            <div class="position-absolute" style="height: 38px; background: linear-gradient(white, rgba(0, 209, 182, 0.5)); width: 3px; bottom: -41px; left: 27px">
             </div>
           </div>
         </div>
       </div>
-      <MealWidget :mealIndex="selectedMealIndex"/>
+      <MealWidget :mealIndex="selectedMealIndex" class="mt-2 mb-5" style="flex-shrink: 1"/>
+      <div class="position-relative w-100 h-100" style="flex-grow: 1">
+        <InventoryWidget/>
+      </div>
     </div>
   </Window>
 </template>
@@ -33,6 +36,7 @@
 <script>
 import Window from '@/components/Window.vue'
 import MealWidget from '@/components/MealWidget.vue'
+import InventoryWidget from '@/components/InventoryWidget.vue'
 import businessStore from '@/store/businessStore'
 
 export default {
@@ -40,6 +44,7 @@ export default {
   components: {
     Window,
     MealWidget,
+    InventoryWidget,
   },
   data() {
     return {

@@ -14,6 +14,10 @@
             <div>{{ $t('ongoing_maintenance') }}</div>
             <OnOffSwitch :editable="false" :initiallyOn="true" :onText="$t('yes')" :offText="$t('no')"/>
         </div>
+        <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
+            <div>Mise à jour en cours</div>
+            <OnOffSwitch :editable="false" :initiallyOn="false" :onText="$t('yes')" :offText="$t('no')"/>
+        </div>
         <div class="d-flex flex-row mb-4 justify-content-between align-items-center">
             <div>{{ $t('open') }}</div>
             <OnOffSwitch :editable="false" :initiallyOn="false" :onText="$t('yes')" :offText="$t('no')"/>
@@ -26,9 +30,17 @@
             <div>{{ $t('food_hydroinflation') }}</div>
             <OnOffSwitch :initiallyOn="true" :onText="$t('yes')" :offText="$t('no')"/>
         </div>
-        <div class="d-flex flex-row justify-content-between align-items-center">
+        <div class="d-flex flex-row mb-4 justify-content-between align-items-center">
             <div>{{ $t('air_quality') }}</div>
             <OnOffSwitch :initiallyOn="false" :width="131" :onText="$t('optimal')" :offText="$t('economic')"/>
+        </div>
+        <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
+            <div>Cuisson</div>
+            <OnOffSwitch :initiallyOn="false" :width="95" :onText="'court'" :offText="'rapide'"/>
+        </div>
+        <div class="d-flex flex-row justify-content-between align-items-center">
+            <div>Cryonie</div>
+            <OnOffSwitch :initiallyOn="false" :onText="'on'" :offText="'off'"/>
         </div>
       </div>
     </div>

@@ -30,12 +30,7 @@
       </div>
 
       <div class="d-flex flex-column w-25 pl-4" style="transition: opacity 5s ease-in-out" :style="{opacity: UIOpacity}" :class="{'d-none': !UIOpacity}">
-        <div class="d-flex flex-row h-50 mb-4">
-          <MenuWindow/>
-        </div>
-        <div class="d-flex flex-row h-50 mt-4">
-          <AdsWindow/>
-        </div>
+        <MenuWindow/>
       </div>
     </div>
 
@@ -44,8 +39,6 @@
     <AlarmWindow/>
     <DangerWindow/>
     <OverlayVideo/>
-
-    <ExpandableVideos/>
   </div>
 </template>
 
@@ -55,11 +48,9 @@ import PasswordWindow from '@/components/PasswordWindow.vue'
 import PasswordRecoveryWindow from '@/components/PasswordRecoveryWindow.vue'
 import AlarmWindow from '@/components/AlarmWindow.vue'
 import DangerWindow from '@/components/DangerWindow.vue'
-import ExpandableVideos from '@/components/ExpandableVideos.vue'
 import MarmitronWindow from '@/components/MarmitronWindow.vue'
 import ServicesWindow from '@/components/ServicesWindow.vue'
 import ConfigurationWindow from '@/components/ConfigurationWindow.vue'
-import AdsWindow from '@/components/AdsWindow.vue'
 import MenuWindow from '@/components/MenuWindow.vue'
 import Keyboard from '@/components/Keyboard.vue'
 import OverlayVideo from '@/components/OverlayVideo.vue'
@@ -69,7 +60,6 @@ export default {
   name: 'PageRoot',
   components: {
     BackgroundLines,
-    ExpandableVideos,
     PasswordWindow,
     PasswordRecoveryWindow,
     AlarmWindow,
@@ -77,7 +67,6 @@ export default {
     MarmitronWindow,
     ServicesWindow,
     ConfigurationWindow,
-    AdsWindow,
     MenuWindow,
     Keyboard,
     OverlayVideo,
