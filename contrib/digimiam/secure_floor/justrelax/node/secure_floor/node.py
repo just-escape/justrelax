@@ -49,7 +49,7 @@ class Cell:
 
 
 class AMG88XX:
-    def __init__(self, sensor_id, threshold, on_toggle, led_strip):
+    def __init__(self, sensor_id, threshold, on_toggle, led_strip, clear_alarm_delay):
         self.sensor_id = sensor_id
 
         self.threshold = threshold
@@ -58,8 +58,37 @@ class AMG88XX:
         self.on_toggle = on_toggle
         self.led_strip = led_strip
 
+        self.last_five_values = [0, 0, 0, 0, 0]
+
+        self.watcher_task_delay = clear_alarm_delay
+        self.watcher_task = None
+
+    def force_deactivation(self):
+        logger.info(f"AMG has not sent any values for {self.watcher_task_delay} seconds")
+        if self.last_state is True:
+            logger.warning("Forcing deactivation")
+            self.last_state = False
+
+            logger.info("AMG88XX (led_strip={}) has been deactivated".format(self.led_strip))
+            self.on_toggle(False, self.led_strip, self.sensor_id)
+
     def new_max(self, value):
-        is_activated = value > self.threshold
+        if self.watcher_task and self.watcher_task.active():
+            self.watcher_task.cancel()
+        self.watcher_task = reactor.callLater(self.watcher_task_delay, self.force_deactivation)
+
+        self.last_five_values.append(value)
+        self.last_five_values = self.last_five_values[-5:]
+
+        if len(self.last_five_values) == self.last_five_values.count(self.last_five_values[0]):
+            logger.info(
+                "AMG last five values max values are identical. There might be a connectivity issue.")
+            if self.last_state is True:
+                logger.warning("Forcing deactivation")
+            is_activated = False
+        else:
+            is_activated = value > self.threshold
+
         if is_activated is self.last_state:
             return
 
@@ -130,7 +159,8 @@ class SecureFloor(MagicNode):
             if sensor['type'] == 'load_cell':
                 self.sensors.append(Cell(sensor_id, sensor['pin'], self.on_sensor_toggle, sensor['led_strip']))
             elif sensor['type'] == 'amg88xx':
-                amg88xx = AMG88XX(sensor_id, sensor['threshold'], self.on_sensor_toggle, sensor['led_strip'])
+                amg88xx = AMG88XX(
+                    sensor_id, sensor['threshold'], self.on_sensor_toggle, sensor['led_strip'], self.clear_alarm_delay)
                 self.sensors.append(amg88xx)
                 self.amg88xx = amg88xx
             else:
