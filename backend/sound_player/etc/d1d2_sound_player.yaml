@@ -52,8 +52,6 @@ sounds:
     path: /home/justescape/sounds/ventilation_round_success.wav
   - id: cylinder_scan
     path: /home/justescape/sounds/cylinder_scan.wav
-  - id: scan
-    path: /home/justescape/sounds/scan.mp3
   - id: laser_trigger
     path: /home/justescape/sounds/laser_trigger.wav
   - id: gaz

@@ -852,12 +852,10 @@ class Scenario(MagicNode):
     def cylinder_tag(self, tag):
         if tag:
             self.publish_prefix({'category': 'play', 'sound_id': 'cylinder_scan'}, 'sound_player')
-            self.register_delayed_task(0.4, self.publish_prefix, {'category': 'play', 'sound_id': 'scan'}, 'sound_player')
 
     @on_event(filter={'from': 'cylinders', 'category': 'check_availability_scan'})
     def cylinder_check_availability_scan(self):
         self.publish_prefix({'category': 'play', 'sound_id': 'cylinder_scan'}, 'sound_player')
-        self.register_delayed_task(0.4, self.publish_prefix, {'category': 'play', 'sound_id': 'scan'}, 'sound_player')
 
     @on_event(filter={'from': 'cylinders', 'category': 'success'})
     def cylinders_success(self):
@@ -1425,6 +1423,10 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'printer_resume'}, 'waffle_factory')
         elif action == 'stop':
             self.publish_prefix({'category': 'printer_stop'}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'printer_homing'})
+    def button_printer_homing(self):
+        self.publish_prefix({'category': 'printer_homing'}, 'waffle_factory')
 
     @on_event(filter={'widget_id': 'chopsticks_success'})
     def buttons_chopsticks_success(self):
