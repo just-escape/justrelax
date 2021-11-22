@@ -30,26 +30,37 @@ sounds:
     path: /home/justescape/sounds/on_restaurant_start.wav
   - id: ventilation_combo_0
     path: /home/justescape/sounds/ventilation_combo_0.wav
+    volume: 60
   - id: ventilation_combo_1
     path: /home/justescape/sounds/ventilation_combo_1.wav
+    volume: 60
   - id: ventilation_combo_2
     path: /home/justescape/sounds/ventilation_combo_2.wav
+    volume: 60
   - id: ventilation_combo_3
     path: /home/justescape/sounds/ventilation_combo_3.wav
+    volume: 60
   - id: ventilation_combo_4
     path: /home/justescape/sounds/ventilation_combo_4.wav
+    volume: 60
   - id: ventilation_combo_5
     path: /home/justescape/sounds/ventilation_combo_5.wav
+    volume: 60
   - id: ventilation_combo_6
     path: /home/justescape/sounds/ventilation_combo_6.wav
+    volume: 60
   - id: ventilation_combo_7
     path: /home/justescape/sounds/ventilation_combo_7.wav
+    volume: 60
   - id: ventilation_combo_8
     path: /home/justescape/sounds/ventilation_combo_8.wav
+    volume: 60
   - id: ventilation_error
     path: /home/justescape/sounds/ventilation_error.wav
+    volume: 60
   - id: ventilation_round_success
     path: /home/justescape/sounds/ventilation_round_success.wav
+    volume: 65
   - id: cylinder_scan
     path: /home/justescape/sounds/cylinder_scan.wav
   - id: laser_trigger
