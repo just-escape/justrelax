@@ -864,11 +864,14 @@ class Scenario(MagicNode):
     def ventilation_panel_event_bad_move(self):
         self.publish_prefix({'category': 'play', 'sound_id': 'ventilation_error'}, 'sound_player')
 
+    @on_event(filter={'from': 'ventilation_panel', 'category': 'round_complete'})
+    def ventilation_panel_event_round_complete(self):
+        self.register_delayed_task(
+            0.5, self.publish_prefix, {'category': 'play', 'sound_id': 'ventilation_round_success'}, 'sound_player')
+
     @on_event(filter={'from': 'ventilation_panel', 'category': 'start_new_round'})
     def ventilation_panel_event_start_new_round(self, round: int):
         self.publish_prefix({'category': 'set_ventilation_panel_round', 'round': round}, 'orders')
-        if round > 1:
-            self.publish_prefix({'category': 'play', 'sound_id': 'ventilation_round_success'}, 'sound_player')
 
     @on_event(filter={'from': 'ventilation_panel', 'category': 'set_status'})
     def ventilation_panel_event_set_status(self, status: str):
@@ -886,12 +889,10 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'ventilation_panel', 'category': 'success'})
     def ventilation_panel_success(self):
-        self.publish_prefix({'category': 'play', 'sound_id': 'ventilation_round_success'}, 'sound_player')
         self.publish_prefix({'category': 'on'}, 'fog_machine')
         self.publish_prefix({'category': 'unlock'}, 'vents_locker')
         self.publish_prefix({'category': 'display_black_screen', 'display': False}, 'inventory')
 
-        # TODO: fade?
         self.register_delayed_task(1, self.publish_prefix, {'category': 'stop', 'track_id': 'track35'}, 'music_player')
         self.register_delayed_task(1, self.publish_prefix, {'category': 'play', 'track_id': 'track4'}, 'music_player')
 

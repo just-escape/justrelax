@@ -273,6 +273,7 @@ class VentilationController:
         logger.info("Round {} complete".format(self.round))
 
         def step1():
+            self.service.notify_round_complete(self.round)
             self.good_move_animation()
             self.unskippable_animation_task = callLater(1.3, step2)
 
@@ -679,6 +680,10 @@ class VentilationPanel(MagicNode):
     def notify_start_new_round(self, round_):
         # Local rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
         self.publish({"category": "start_new_round", "round": round_ + 1})
+
+    def notify_round_complete(self, round_):
+        # Local rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
+        self.publish({"category": "round_complete", "round": round_ + 1})
 
     def notify_instruction(self, instruction):
         self.publish({"category": "notify_instruction", "instruction": instruction})
