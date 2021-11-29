@@ -248,4 +248,17 @@ thead {
   -webkit-box-orient: vertical;
   display: -webkit-box;
 }
+
+@media (pointer: coarse), (hover: none) {
+  [title]:active::after {
+    content: attr(title);
+    position: absolute;
+    top: 90%;
+    color: var(--light);
+    background-color: var(--dark);
+    border: 1px solid;
+    width: fit-content;
+    padding: 3px;
+  }
+}
 </style>

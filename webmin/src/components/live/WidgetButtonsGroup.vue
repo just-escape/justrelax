@@ -8,7 +8,9 @@
         v-for="(button, index) in row.widget_params"
         :key="index"
         @click="click(button)"
+        :title="button.help"
       >
+        <!-- title is undefined, so does not exist in case help is not defined -->
         <i :class="button.icon"></i>
       </ButtonJaffa>
     </b-button-group>
