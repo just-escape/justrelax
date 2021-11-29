@@ -456,7 +456,7 @@ var store = new Vuex.Store({
             state.currentBlocks = {
               left: JSON.parse(JSON.stringify(INITIAL_BLOCKS_TUTORIAL_1)),
               front: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_11_UPSIDE_DOWN)),
-              top: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_11)),
+              top: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_28)),
             }
           }
         }
