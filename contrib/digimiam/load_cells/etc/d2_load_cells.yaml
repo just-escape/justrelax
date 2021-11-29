@@ -5,7 +5,7 @@ subscriptions:
   - d2.load_cells
   - d2.broadcast
 
-deactivation_delay: 0.2
+deactivation_delay: 0
 
 calibration_pins:
   - 8
