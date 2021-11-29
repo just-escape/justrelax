@@ -66,7 +66,7 @@ export default {
           duration: 72000,
         },
         helpEn: {
-          video: require('@/assets/videos/idle_help_idle_fr.webm'),
+          video: require('@/assets/videos/idle_help_idle_en.webm'),
           ref: 'animationHelpEn',
           opacity: 0,
           duration: 72000,

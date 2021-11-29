@@ -68,10 +68,11 @@ let store = new Vuex.Store({
       }
 
       // Not clean :|
+      // But it ensures a perfect continuity between Marmitron's idle animation and the help animation
       if (videoId === 'ms_pepper_says_thanks') {
         let ms_pepper_says_thanks_duration = 16960
         let idle_duration = 8000
-        let delay_between_animations = 3000
+        let delay_between_animations = 2400
         setTimeout(
           store.commit,
           ms_pepper_says_thanks_duration - (idle_duration - delay_between_animations),
