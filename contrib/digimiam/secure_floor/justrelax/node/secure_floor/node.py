@@ -263,6 +263,10 @@ class SecureFloor(MagicNode):
         self.event_calibrate()
         self.event_set_status('not_playing')
 
+        # Should be handled by set_status, but we ensure it is done here because if status is already not_playing
+        # it won't work
+        self.event_set_led_color('black', sum(self.leds.keys()))
+
     @on_event(filter={'category': 'set_status'})
     def event_set_status(self, status: str):
         if self.success is False:
