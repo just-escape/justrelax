@@ -29,11 +29,11 @@ tracks:
     loop_a: 55
     loop_b: 165
   - id: track35
-    path: /home/justescape/music/track35-ll.mp3
+    path: /home/justescape/music/track35-ll.wav
     mode: loop
-    volume: 25
-    loop_a: 66.057
-    loop_b: 192.172
+    volume: 35
+    loop_a: 32
+    loop_b: 96
   - id: track4
     path: /home/justescape/music/track4-ill.wav
     mode: loop
@@ -51,18 +51,16 @@ tracks:
     path: /home/justescape/music/track61-le.wav
   - id: track62
     path: /home/justescape/music/track62.wav
-  - id: track63
-    path: /home/justescape/music/track63.wav
-    volume: 30
   - id: track7
-    path: /home/justescape/music/track7-ll.wav
+    path: /home/justescape/music/track7-ill.wav
     mode: loop
     volume: 50
-    loop_a: 64.5
-    loop_b: 193.5
+    loop_a: 100.324
+    loop_b: 221.784
   - id: track8
     path: /home/justescape/music/track8-ill.wav
     mode: loop
+    volume: 60
     loop_a: 129.369
     loop_b: 346.369
   - id: track91
