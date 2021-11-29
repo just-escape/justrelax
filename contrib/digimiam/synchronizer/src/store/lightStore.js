@@ -177,16 +177,24 @@ var store = new Vuex.Store({
     },
     // eslint-disable-next-line
     toggleColor (state, {color, id, activated}) {
+      if (activated) {
+        Vue.set(state.activatedSensorIds, id, color)
+      } else {
+        state.activatedSensorIds = Object.fromEntries(Object.entries(state.activatedSensorIds).map(([key, value]) => [key, value == color ? undefined : value]))
+
+        for (let sensorId in state.activatedSensorIds) {
+          if (state.activatedSensorIds[sensorId] == color) {
+            // If at least one sensor of the same color is still activated we don't want to continue, which would turn off the color
+            return
+          }
+        }
+      }
+
       if (activated != state.activatedSensors[color]) {
         publishSubscribeService.commit('publish', {"category": activated ? "on" : "off", "color": color})
       }
 
       state.activatedSensors[color] = activated
-      if (activated) {
-        Vue.set(state.activatedSensorIds, id, color)
-      } else {
-        state.activatedSensorIds = Object.fromEntries(Object.entries(state.activatedSensorIds).map(([key, value]) => [key, value == color ? undefined : value]))
-      }
     },
   },
   actions: {
