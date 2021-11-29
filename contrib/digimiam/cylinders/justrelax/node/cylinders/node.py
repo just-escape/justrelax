@@ -148,6 +148,13 @@ class Cylinders(MagicNode):
             slot['green_led'].off()
             slot['red_led'].off()
 
+    @on_event(filter={'category': 'force_success'})
+    def force_success(self):
+        if not self.success:
+            self.success = True
+            self.post_success_task = reactor.callLater(10, self.turn_off_all_led)
+            self.notify_success()
+
     def notify_success(self):
         self.publish({"category": "success"})
 
