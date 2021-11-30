@@ -1,5 +1,5 @@
 <template>
-  <Window :title="'GESTION INGRÉDIENTS'">
+  <Window :title="'DISPONIBILITÉ INGRÉDIENTS'">
     <div class="d-flex flex-column align-items-center mx-4 h-100">
       <div class="d-flex flex-row justify-content-center w-100 align-items-center mb-4 mt-4" style="font-style: italic; font-size: 20px">
         <div>Plats du menu</div>

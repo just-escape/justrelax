@@ -24,10 +24,10 @@
           </div>
           <div
             @click="displayPasswordRecoveryWindow"
-            class="align-self-end text-underline"
-            :class="{blinking: failedAttempts >= 2 && !isRecoveryWindowDisplayed}"
+            class="align-self-end text-underline position-relative"
           >
             {{ $t('forgot_your_password') }}
+            <div :class="{pulsate: (failedAttempts >= 2 || forcePulsate) && !isRecoveryWindowDisplayed}"></div>
           </div>
         </div>
         <div class="d-flex flex-row justify-content-between">
@@ -75,6 +75,7 @@ export default {
       failedAttempts: 0,
       errorMessageOpacity: 0,
       errorMessageOpacityAnimation: this.$anime({}),
+      forcePulsate: false,
     }
   },
   computed: {
@@ -123,6 +124,9 @@ export default {
         this.displayPasswordRecoveryWindow()
       }
     },
+    setForcePulsate(value) {
+      this.forcePulsate = value
+    },
     displayPasswordRecoveryWindow() {
       businessStore.state.displayPasswordRecoveryWindow = true
     },
@@ -134,6 +138,7 @@ export default {
   watch: {
     displayed(newValue) {
       if (newValue) {
+        setTimeout(this.setForcePulsate, 45000, true)
         this.$anime.timeline({
           targets: this,
         })
@@ -197,14 +202,33 @@ export default {
 </script>
 
 <style scoped>
-@keyframes blinker {
-  0% {color: #fd7e14;}
-  50% {color: var(--light);}
-  100% {color: #fd7e14;}
+.pulsate {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #fd7e14;
+  animation: pulser 1.4s linear infinite;
+  opacity: 0;
 }
 
-.blinking {
-  color: #fd7e14;
-  animation: blinker 1s infinite;
+@keyframes pulser {
+	0% {
+		transform: scale(1);
+		opacity: 0;
+	}
+  20% {
+		transform: scale(1);
+		opacity: 0;
+	}
+	60% {
+		transform: scale(1.07);
+		opacity: 0.25;
+	}
+	100% {
+		transform: scale(1.18);
+		opacity: 0;
+	}
 }
 </style>
