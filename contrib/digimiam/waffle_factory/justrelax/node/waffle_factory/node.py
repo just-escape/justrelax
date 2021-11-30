@@ -1,5 +1,5 @@
 import os
-from copy import copy
+from copy import copy, deepcopy
 
 from twisted.internet import reactor
 
@@ -49,7 +49,10 @@ class WaffleFactory(MagicNode):
 
         self.load_printer_patterns()
 
-        reactor.callLater(3, self.event_reset)
+        self.animations = self.config['animations']
+        self.animation_tasks = []
+
+        # reactor.callLater(3, self.event_reset)
 
     def load_printer_patterns(self):
         patterns_directory = self.config['printer_patterns_directory']
@@ -73,6 +76,48 @@ class WaffleFactory(MagicNode):
                 self.event_light_on(light_led_id)
             else:
                 self.event_light_off(light_led_id)
+
+    @on_event(filter={'category': 'play_animation'})
+    def event_play_animation(self, animation: str):
+        logger.info(f"Playing animation {animation}")
+
+        for animation_task in self.animation_tasks:
+            if animation_task and animation_task.active():
+                logger.info("An animation is still going on: aborting")
+        self.animation_tasks = []
+
+        animation_instructions = self.animations.get(animation, None)
+        if animation_instructions is None:
+            logger.info(f"Animation {animation} not found: aborting")
+            return
+
+        direction_name_to_function_mapping = {
+            'forward': self.event_motor_forward,
+            'backward': self.event_motor_backward,
+            'homing': self.event_motor_homing,
+        }
+
+        for instruction_kwargs in deepcopy(animation_instructions):
+            instruction_t = instruction_kwargs.pop('t')
+            motor_id = instruction_kwargs.pop('motor')
+            direction = instruction_kwargs.pop('direction')
+            function = direction_name_to_function_mapping.get(direction, None)
+            if function is None:
+                logger.warning(f"Unknown direction {direction}: ignoring")
+                continue
+            self.animation_tasks.append(reactor.callLater(
+                instruction_t, function, motor_id=motor_id, **instruction_kwargs))
+
+    @on_event(filter={'category': 'pause_animation'})
+    def event_pause_animation(self):
+        logger.info("Stopping animation: stopping all motors and canceling all animation tasks")
+        for motor_id in self.motors:
+            self.event_motor_stop(motor_id)
+
+        for animation_task in self.animation_tasks:
+            if animation_task and animation_task.active():
+                animation_task.cancel()
+        self.animation_tasks = []
 
     @on_event(filter={'category': 'motor_homing'})
     def event_motor_homing(
@@ -150,7 +195,7 @@ class WaffleFactory(MagicNode):
         )
 
     @on_event(filter={'category': 'motor_stop'})
-    def event_stop_motor(self, motor_id: str):
+    def event_motor_stop(self, motor_id: str):
         logger.info("Stopping motor {}".format(motor_id))
         motor_index = self.motors[motor_id]['index']
         self.send_serial(
@@ -241,14 +286,32 @@ class WaffleFactory(MagicNode):
 
         if event == "Grbl 1.1f ['$' for help]":
             # This message is sent after the serial port is connected
-            pass
+            return
+        elif event == "[MSG:Caution: Unlocked]":
+            return
+        elif event == "[MSG:'$H'|'$X' to unlock]":
+            logger.info(f"Received {event} from printer: unlocking")
+            self.process_gcode_instructions(['$X'])
+            return
+        elif event == "ALARM:1":
+            return
+        elif event == "[MSG:Reset to continue]":
+            logger.info(f"Received {event} from printer: resetting")
+            self.process_gcode_instruction((24).to_bytes(2, byteorder='big').decode())
+            return
         elif event == "[MSG:Pgm End]":
             logger.info(f"Received {event}: command M30 must have been executed properly")
-        elif event != "ok":
-            logger.error("Unknown serial event '{}': skipping".format(event))
+        elif event == "ok":
+            logger.info(f"Received {event} from printer: processing next instruction")
+        elif event == '':
+            return
+        else:
+            logger.error(f"Unknown serial event '{event}': skipping")
             return
 
-        logger.info("Received ok from printer: processing next instruction")
+        if not self.printer_gcode_instructions:
+            return
+
         self.printer_gcode_instructions.pop(0)  # This instruction is the one being acknowledged by the 'ok'
 
         if not self.printer_gcode_instructions:
@@ -298,6 +361,19 @@ class WaffleFactory(MagicNode):
 
         next_instruction = self.printer_gcode_instructions[0]
         self.process_gcode_instruction(next_instruction)
+
+    @on_event(filter={'category': 'printer_homing'})
+    def event_printer_homing(self):
+        self.process_gcode_instruction("G01 Y25 F200")
+        reactor.callLater(12, self.process_gcode_instruction, "G01 Y0 F200")
+        reactor.callLater(13, self.process_gcode_instruction, "G92 Y0")
+        reactor.callLater(14, self.process_gcode_instruction, "G01 Y-10 F200")
+        reactor.callLater(19, self.process_gcode_instruction, "G92 Y0")
+        reactor.callLater(24, self.process_gcode_instruction, "G01 X-15 F200")
+        reactor.callLater(30, self.process_gcode_instruction, "G01 X0 F200")
+        reactor.callLater(31, self.process_gcode_instruction, "G92 X0")
+        reactor.callLater(32, self.process_gcode_instruction, "G01 X10 F200")
+        reactor.callLater(37, self.process_gcode_instruction, "G92 X0")
 
     @on_event(filter={'category': 'printer_stop'})
     def event_printer_stop(self):
