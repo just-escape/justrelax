@@ -893,15 +893,15 @@ class Scenario(MagicNode):
             {'category': 'play_animation', 'animation': 'first_waffle_init'}, 'waffle_factory')
 
         delay += self.first_waffle_init_conveyor_duration
-        self.register_delayed_task(
-            delay, self.publish_prefix,
-            {'category': 'print_pattern', 'pattern': 'b'}, 'waffle_factory')
-
-        delay += self.first_pattern_print_duration
         if self.persistent_settings['dry_print'] is False:
             self.register_delayed_task(
                 delay, self.publish_prefix,
-                {'category': 'play_animation', 'animation': 'first_waffle_end'}, 'waffle_factory')
+                {'category': 'print_pattern', 'pattern': 'a'}, 'waffle_factory')
+
+        delay += self.first_pattern_print_duration
+        self.register_delayed_task(
+            delay, self.publish_prefix,
+            {'category': 'play_animation', 'animation': 'first_waffle_end'}, 'waffle_factory')
 
         delay += self.first_waffle_end_conveyor_duration
         self.register_delayed_task(
