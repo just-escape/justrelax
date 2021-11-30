@@ -24,10 +24,13 @@ sounds:
     path: /home/justescape/sounds/ambiant_light_orange.wav
   - id: on_manual_mode
     path: /home/justescape/sounds/on_manual_mode.wav
+    volume: 75
   - id: hologram_set_slide
     path: /home/justescape/sounds/hologram_set_slide.wav
+    volume: 60
   - id: on_restaurant_start
     path: /home/justescape/sounds/on_restaurant_start.wav
+    volume: 70
   - id: ventilation_combo_0
     path: /home/justescape/sounds/ventilation_combo_0.wav
     volume: 60
@@ -125,7 +128,7 @@ sounds:
     volume: 70
   - id: marmitron_1
     path: /home/justescape/sounds/marmitron_1.mp3
-    volume: 70
+    volume: 80
   - id: marmitron_2
     path: /home/justescape/sounds/marmitron_2.mp3
     volume: 70

@@ -31,20 +31,19 @@ tracks:
   - id: track35
     path: /home/justescape/music/track35-ll.wav
     mode: loop
-    volume: 35
+    volume: 40
     loop_a: 32
     loop_b: 96
   - id: track4
     path: /home/justescape/music/track4-ill.wav
     mode: loop
-    volume: 35
+    volume: 45
     loop_a: 177.775
     loop_b: 415.775
-  - id: track5glitch
-    path: /home/justescape/music/track5-glitch.wav
   - id: track5
     path: /home/justescape/music/track5-ll.wav
     mode: loop
+    volume: 55
     loop_a: 93.5
     loop_b: 280.5
   - id: track61
@@ -54,7 +53,7 @@ tracks:
   - id: track7
     path: /home/justescape/music/track7-ill.wav
     mode: loop
-    volume: 50
+    volume: 40
     loop_a: 100.324
     loop_b: 221.784
   - id: track8
@@ -65,17 +64,17 @@ tracks:
     loop_b: 346.369
   - id: track91
     path: /home/justescape/music/track91.wav
-    volume: 50
+    volume: 60
   - id: track92
     path: /home/justescape/music/track92-ll.wav
     mode: loop
-    volume: 50
+    volume: 55
     loop_a: 8
     loop_b: 24
   - id: alarm
     path: /home/justescape/music/alarm-ll.wav
     mode: loop
-    volume: 40
+    volume: 55
     loop_a: 4.104
     loop_b: 12.312
   - id: atmosphere
