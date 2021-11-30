@@ -114,7 +114,7 @@ export default {
       let this_ = this
       this.$anime.timeline({
         targets: this,
-        delay: 2000,
+        delay: 500,
         complete: this_.waffrescoFloatAnimation,
       })
       .add({
@@ -126,7 +126,7 @@ export default {
 
       this.$anime.timeline({
         targets: this,
-        delay: 3000,
+        delay: 1500,
         complete: this_.dotsFloatAnimation,
       })
       .add({
@@ -138,7 +138,7 @@ export default {
 
       this.$anime.timeline({
         targets: this,
-        delay: 4000,
+        delay: 2500,
         complete: this_.patternFloatAnimation,
       })
       .add({
@@ -152,7 +152,7 @@ export default {
         targets: this,
       })
       .add({
-        delay: 3000,
+        delay: 1500,
         transparencyFactor: 40,
         easing: 'easeOutSine',
         duration: 2000,
