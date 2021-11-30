@@ -153,18 +153,29 @@ class Scenario(MagicNode):
     DIFFICULTIES = {'easy', 'normal', 'hard'}
 
     MS_PEPPER_INTRO_DURATION = 35
+    NIRYO_BUGGED_ANIMATION_DURATION = 23
 
     PERSISTENT_SCENARIO_SETTINGS = [
         'niryo_animation',
         'ms_pepper_intro',
         'epileptic_mode',
         'final_by_refectory',
+        'dry_print',
     ]
 
     def __init__(self, *args, **kwargs):
         super(Scenario, self).__init__(*args, **kwargs)
 
         self.publication_channel_prefix = self.config['publication_channel_prefix']
+
+        self.niryo_animation_duration = self.config['niryo_animation_duration']
+        self.niryo_end_conveyor_duration = self.config['niryo_end_conveyor_duration']
+        self.oven_cooking_duration = self.config['oven_cooking_duration']
+        self.first_waffle_init_conveyor_duration = self.config['first_waffle_init_conveyor_duration']
+        self.first_pattern_print_duration = self.config['first_pattern_print_duration']
+        self.first_waffle_end_conveyor_duration = self.config['first_waffle_end_conveyor_duration']
+        self.basket_led_blinking_time = self.config['basket_led_blinking_time']
+        self.delay_before_ms_pepper_says_thanks = self.config['delay_before_ms_pepper_says_thanks']
 
         self.session_timer = SessionTimer(self.tic_tac_callback)
         self.session_time = None
@@ -278,6 +289,32 @@ class Scenario(MagicNode):
     @on_event(filter={'from': 'street_display', 'category': 'play'})
     def run_room_from_street_display(self):
         self.run_room()
+
+    @on_event(filter={'widget_id': 'start_synchronized'})
+    def start_synchronized(self):
+        self.set_session_data('ms_pepper_intro', True)
+        if self.session_timer.state == STATE_NOT_STARTED:
+            self.start_room()
+
+    @on_event(filter={'widget_id': 'play_ms_pepper_here_you_are'})
+    def play_ms_pepper_here_you_are(self):
+        self.publish_prefix(
+            {
+                'category': 'pause',
+                'video_id': 'ads_glitch'  # if self.initial_difficulty == 'hard' else 'waffresco_ad_loop',
+            },
+            'advertiser'
+        )
+        self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
+
+        self.register_delayed_task(
+            self.MS_PEPPER_INTRO_DURATION, self.publish_prefix,
+            {
+                'category': 'play',
+                'video_id': 'ads_glitch'  # if self.initial_difficulty == 'hard' else 'waffresco_ad_loop',
+            },
+            'advertiser'
+        )
 
     def run_room(self):
         if self.session_timer.state == STATE_NOT_STARTED:
@@ -685,32 +722,49 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             1, self.publish_prefix, {'category': 'light_on', 'led_id': 'niryo'}, 'waffle_factory')
         self.register_delayed_task(
-            1.5, self.publish_prefix, {'category': 'play', 'track_id': 'track5glitch'}, 'music_player')
+            1, self.publish_prefix, {'category': 'play', 'track_id': 'track5'}, 'music_player')
 
         self.register_delayed_task(
-            1.5, self.publish_prefix, {'category': 'move_position', 'position': 'zero'}, 'niryo')
+            1.5, self.publish_prefix, {'category': 'off', 'color': 'white'}, 'refectory_lights')
         self.register_delayed_task(
-            8, self.publish_prefix, {'category': 'move_position', 'position': 'one'}, 'niryo')
-        self.register_delayed_task(
-            10, self.publish_prefix, {'category': 'move_position', 'position': 'zero'}, 'niryo')
-        self.register_delayed_task(
-            12, self.publish_prefix, {'category': 'learning_mode', 'activate': True}, 'niryo')
+            1.5, self.publish_prefix, {'category': 'off', 'color': 'blue'}, 'refectory_lights')
 
-        self.register_delayed_task(17, self.publish_prefix, {'category': 'play', 'track_id': 'track3'}, 'music_player')
         self.register_delayed_task(
-            17, self.publish_prefix,
+            6, self.publish_prefix, {'category': 'play_animation', 'animation': 'bugged_animation'}, 'niryo')
+        self.register_delayed_task(
+            6, self.publish_prefix, {'category': 'play_animation', 'animation': 'niryo_init'}, 'waffle_factory')
+
+        self.register_delayed_task(
+            self.NIRYO_BUGGED_ANIMATION_DURATION + 6, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track3', 'volume': 35, 'duration': 1}, 'music_player')
         self.register_delayed_task(
-            18, self.publish_prefix, {'category': 'play_overlay_video', 'video_id': 'ms_pepper_stock'}, 'orders')
+            self.NIRYO_BUGGED_ANIMATION_DURATION + 6, self.publish_prefix,
+            {'category': 'set_volume', 'track_id': 'track5', 'volume': 0, 'duration': 1}, 'music_player')
         self.register_delayed_task(
-            18, self.publish_prefix, {'category': 'play_ms_pepper_overlay_video', 'video_id': 'ms_pepper_stock'},
-            'synchronizer')
+            self.NIRYO_BUGGED_ANIMATION_DURATION + 6.5,
+            self.publish_prefix, {'category': 'on', 'color': 'white'}, 'refectory_lights')
         self.register_delayed_task(
-            17, self.publish_prefix, {'category': 'stop', 'video_id': 'street_idle'}, 'advertiser')
+            self.NIRYO_BUGGED_ANIMATION_DURATION + 6.5,
+            self.publish_prefix, {'category': 'on', 'color': 'blue'}, 'refectory_lights')
         self.register_delayed_task(
-            18, self.publish_prefix, {'category': 'play', 'video_id': 'ms_pepper_stock'}, 'advertiser')
+            self.NIRYO_BUGGED_ANIMATION_DURATION + 6 + 1, self.publish_prefix,
+            {'category': 'stop', 'track_id': 'track5'}, 'music_player')
         self.register_delayed_task(
-            46, self.publish_prefix, {'category': 'play', 'video_id': 'street_idle'}, 'advertiser')
+            self.NIRYO_BUGGED_ANIMATION_DURATION + 7, self.publish_prefix,
+            {'category': 'play_overlay_video', 'video_id': 'ms_pepper_stock'}, 'orders')
+        self.register_delayed_task(
+            self.NIRYO_BUGGED_ANIMATION_DURATION + 7, self.publish_prefix,
+            {'category': 'play_ms_pepper_overlay_video', 'video_id': 'ms_pepper_stock'}, 'synchronizer')
+        self.register_delayed_task(
+            self.NIRYO_BUGGED_ANIMATION_DURATION + 6, self.publish_prefix,
+            {'category': 'stop', 'video_id': 'street_idle'}, 'advertiser')
+        self.register_delayed_task(
+            self.NIRYO_BUGGED_ANIMATION_DURATION + 7, self.publish_prefix,
+            {'category': 'play', 'video_id': 'ms_pepper_stock'}, 'advertiser')
+        ms_pepper_tells_to_go_in_stock_duration = 27.25
+        self.register_delayed_task(
+            self.NIRYO_BUGGED_ANIMATION_DURATION + ms_pepper_tells_to_go_in_stock_duration + 7 + 1,  # + 1 to be sure
+            self.publish_prefix, {'category': 'play', 'video_id': 'street_idle'}, 'advertiser')
 
     @on_event(filter={'from': 'orders', 'category': 'ms_pepper_has_told_to_go_in_stock'})
     def ms_pepper_has_told_to_go_in_stock(self):
@@ -718,10 +772,14 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'ventilation_panel')
 
             self.publish_prefix(
-                {'category': 'set_volume', 'track_id': 'track3', 'volume': 0, 'duration': 30}, 'music_player')
+                {'category': 'set_volume', 'track_id': 'track3', 'volume': 0, 'duration': 5}, 'music_player')
 
+            self.publish_prefix({'category': 'set_volume', 'track_id': 'track35', 'volume': 0}, 'music_player')
             self.register_delayed_task(
-                20, self.publish_prefix, {'category': 'play', 'track_id': 'track35'}, 'music_player')
+                2.5, self.publish_prefix, {'category': 'play', 'track_id': 'track35'}, 'music_player')
+            self.register_delayed_task(
+                2.5, self.publish_prefix,
+                {'category': 'set_volume', 'track_id': 'track35', 'volume': 40, 'duration': 1}, 'music_player')
 
         self.register_delayed_task(1, post_delay)
 
@@ -798,53 +856,116 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from': 'orders', 'category': 'resume_order'})
     def orders_resume_order(self):
-        self.publish_prefix(
+        self.register_delayed_task(
+            0.5, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track3', 'volume': 0, 'duration': 2}, 'music_player')
         self.register_delayed_task(
-            1.5, self.publish_prefix, {'category': 'play', 'track_id': 'track5'}, 'music_player')
+            1, self.publish_prefix,
+            {'category': 'play', 'track_id': 'track5'}, 'music_player')
+        self.register_delayed_task(
+            1, self.publish_prefix,
+            {'category': 'set_volume', 'track_id': 'track5', 'volume': 55, 'duration': 1}, 'music_player')
 
         self.register_delayed_task(
-            2, self.publish_prefix, {'category': 'move_position', 'position': 'zero'}, 'niryo')
+            1.5, self.publish_prefix, {'category': 'off', 'color': 'white'}, 'refectory_lights')
         self.register_delayed_task(
-            4, self.publish_prefix, {'category': 'move_position', 'position': 'one'}, 'niryo')
+            1.5, self.publish_prefix, {'category': 'off', 'color': 'blue'}, 'refectory_lights')
+
+        delay = 4
         self.register_delayed_task(
-            6, self.publish_prefix, {'category': 'move_position', 'position': 'zero'}, 'niryo')
+            delay, self.publish_prefix, {'category': 'play_animation', 'animation': 'animation'}, 'niryo')
+
+        delay += self.niryo_animation_duration
         self.register_delayed_task(
-            8, self.publish_prefix, {'category': 'learning_mode', 'activate': True}, 'niryo')
+            delay, self.publish_prefix, {'category': 'play_animation', 'animation': 'niryo_end'}, 'waffle_factory')
+
+        delay += self.niryo_end_conveyor_duration
+        self.register_delayed_task(
+            delay, self.publish_prefix, {'category': 'oven_turn_on'}, 'waffle_factory')
+
+        delay += self.oven_cooking_duration
+        self.register_delayed_task(
+            delay, self.publish_prefix, {'category': 'oven_turn_off'}, 'waffle_factory')
+        self.register_delayed_task(
+            max(0, delay - 1), self.publish_prefix, {'category': 'light_on', 'led_id': 'printer'}, 'waffle_factory')
+        self.register_delayed_task(
+            delay + 0.5, self.publish_prefix,
+            {'category': 'play_animation', 'animation': 'first_waffle_init'}, 'waffle_factory')
+
+        delay += self.first_waffle_init_conveyor_duration
+        self.register_delayed_task(
+            delay, self.publish_prefix,
+            {'category': 'print_pattern', 'pattern': 'b'}, 'waffle_factory')
+
+        delay += self.first_pattern_print_duration
+        if self.persistent_settings['dry_print'] is False:
+            self.register_delayed_task(
+                delay, self.publish_prefix,
+                {'category': 'play_animation', 'animation': 'first_waffle_end'}, 'waffle_factory')
+
+        delay += self.first_waffle_end_conveyor_duration
+        self.register_delayed_task(
+            delay, self.publish_prefix,
+            {'category': 'basket_led_blink'}, 'waffle_factory')
 
         self.register_delayed_task(
-            9, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track5', 'volume': 0, 'duration': 2},
-            'music_player')
-        self.register_delayed_task(10, self.publish_prefix, {'category': 'play', 'track_id': 'track62'}, 'music_player')
+            delay + self.basket_led_blinking_time, self.publish_prefix,
+            {'category': 'basket_led_off'}, 'waffle_factory')
+
+        delay += self.delay_before_ms_pepper_says_thanks
+        self.register_delayed_task(
+            delay - 1.5, self.publish_prefix,
+            {'category': 'set_volume', 'track_id': 'track5', 'volume': 0, 'duration': 1}, 'music_player')
+        self.register_delayed_task(
+            delay - 1.5 + 0.5, self.publish_prefix,
+            {'category': 'on', 'color': 'white'}, 'refectory_lights')
+        self.register_delayed_task(
+            delay - 1.5 + 0.5, self.publish_prefix,
+            {'category': 'on', 'color': 'blue'}, 'refectory_lights')
+        self.register_delayed_task(
+            delay, self.publish_prefix,
+            {'category': 'play', 'track_id': 'track62'}, 'music_player')
 
         self.register_delayed_task(
-            10, self.publish_prefix, {'category': 'play_overlay_video', 'video_id': 'ms_pepper_says_thanks'}, 'orders')
+            delay, self.publish_prefix,
+            {'category': 'play_overlay_video', 'video_id': 'ms_pepper_says_thanks'}, 'orders')
         self.register_delayed_task(
-            10, self.publish_prefix, {'category': 'play_ms_pepper_overlay_video', 'video_id': 'ms_pepper_says_thanks'},
-            'synchronizer')
+            delay, self.publish_prefix,
+            {'category': 'play_ms_pepper_overlay_video', 'video_id': 'ms_pepper_says_thanks'}, 'synchronizer')
         self.register_delayed_task(
-            9, self.publish_prefix, {'category': 'stop', 'video_id': 'street_idle'}, 'advertiser')
+            delay - 1, self.publish_prefix,
+            {'category': 'stop', 'video_id': 'street_idle'}, 'advertiser')
         self.register_delayed_task(
-            10, self.publish_prefix, {'category': 'play', 'video_id': 'ms_pepper_says_thanks'}, 'advertiser')
+            delay, self.publish_prefix,
+            {'category': 'play', 'video_id': 'ms_pepper_says_thanks'}, 'advertiser')
+
+        ms_pepper_says_thanks_duration = 17
         self.register_delayed_task(
-            27, self.publish_prefix, {'category': 'play', 'video_id': 'street_idle'}, 'advertiser')
+            delay + ms_pepper_says_thanks_duration + 1,  # + 1 just to be sure
+            self.publish_prefix, {'category': 'play', 'video_id': 'street_idle'}, 'advertiser')
 
         self.register_delayed_task(
-            11, self.publish_prefix, {'category': 'set_restaurant_status', 'closed': True}, 'orders')
-        self.register_delayed_task(11, self.publish_prefix, {'category': 'reset_order'}, 'orders')  # Empty the cart
+            delay + 1, self.publish_prefix,
+            {'category': 'set_restaurant_status', 'closed': True}, 'orders')
+        self.register_delayed_task(
+            delay + 1, self.publish_prefix,
+            {'category': 'reset_order'}, 'orders')  # Empty the cart
 
     @on_event(filter={'from': 'orders', 'category': 'ms_pepper_has_said_thanks'})
     def orders_ms_pepper_has_said_thanks(self):
         self.publish_prefix(
             {'category': 'set_volume', 'track_id': 'track62', 'volume': 0, 'duration': 10}, 'music_player')
-        self.register_delayed_task(5, self.publish_prefix, {'category': 'play', 'track_id': 'track63'}, 'music_player')
+        self.register_delayed_task(1.5, self.publish_prefix, {'category': 'play', 'track_id': 'track7'}, 'music_player')
+        self.register_delayed_task(
+            37.5 + 1.5, self.publish_prefix,
+            {'category': 'set_volume', 'track_id': 'track7', 'volume': 55, 'duration': 1}, 'music_player')
+        self.register_delayed_task(
+            37.5 + 25 + 1.5, self.publish_prefix,
+            {'category': 'set_volume', 'track_id': 'track7', 'volume': 45, 'duration': 10}, 'music_player')
 
     @on_event(filter={'from': 'orders', 'category': 'marmitron_has_asked_for_help'})
     def orders_marmitron_has_asked_for_help(self):
-        # self.publish_prefix(
-        #     {'category': 'set_volume', 'track_id': 'track63', 'volume': 0, 'duration': 2}, 'music_player')
         self.publish_prefix({'category': 'enable'}, 'digital_lock')
-        self.register_delayed_task(1, self.publish_prefix, {'category': 'play', 'track_id': 'track7'}, 'music_player')
         self.publish_prefix({'category': 'calibrate'}, 'secure_floor')
         self.register_delayed_task(3, self.publish_prefix, {'category': 'send_fog', 'duration': 20}, 'fog_machine')
         self.register_delayed_task(
@@ -956,7 +1077,7 @@ class Scenario(MagicNode):
 
         self.register_delayed_task(
             4, self.publish_prefix,
-            {'category': 'set_volume', 'track_id': 'track3', 'volume': 50, 'duration': 6},
+            {'category': 'set_volume', 'track_id': 'track3', 'volume': 53, 'duration': 6},
             'music_player')
         self.register_delayed_task(6, self.publish_prefix, {'category': 'low'}, 'stock_lights')
 
@@ -974,7 +1095,7 @@ class Scenario(MagicNode):
         self.register_delayed_task(1, self.publish_prefix, {'category': 'play', 'track_id': 'track8'}, 'music_player')
         self.register_delayed_task(
             0.3, self.publish_prefix,
-            {'category': 'set_volume', 'track_id': 'track8', 'volume': 40, 'duration': 30}, 'music_player')
+            {'category': 'set_volume', 'track_id': 'track8', 'volume': 50, 'duration': 30}, 'music_player')
         self.register_delayed_task(
             0.6, self.publish_prefix, {'category': 'low'}, 'stock_lights')
         self.register_delayed_task(
@@ -1048,23 +1169,22 @@ class Scenario(MagicNode):
             {'category': 'set_volume', 'track_id': 'track91', 'volume': 0, 'duration': 0}, 'music_player')
         self.publish_prefix({'category': 'play', 'track_id': 'track91'}, 'music_player')
         self.publish_prefix(
-            {'category': 'set_volume', 'track_id': 'track91', 'volume': 50, 'duration': 5}, 'music_player')
+            {'category': 'set_volume', 'track_id': 'track91', 'volume': 60, 'duration': 5}, 'music_player')
 
         self.register_delayed_task(
             16, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track92', 'volume': 0, 'duration': 0},
             'music_player')
         self.register_delayed_task(
-            16, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track92', 'volume': 50, 'duration': 2},
+            16, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track92', 'volume': 55, 'duration': 2},
             'music_player')
         self.register_delayed_task(
             16, self.publish_prefix, {'category': 'play', 'track_id': 'track92'}, 'music_player')
 
-        # Just in case
         self.register_delayed_task(
-            100, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track92', 'volume': 0, 'duration': 5},
+            50, self.publish_prefix, {'category': 'set_volume', 'track_id': 'track92', 'volume': 0, 'duration': 5},
             'music_player')
         self.register_delayed_task(
-            105, self.publish_prefix, {'category': 'stop', 'track_id': 'track92'}, 'music_player')
+            55, self.publish_prefix, {'category': 'stop', 'track_id': 'track92'}, 'music_player')
 
         def post_delay():
             self.publish_prefix({'category': 'set_marmitron_visibility', 'show': False}, 'orders')
@@ -1081,14 +1201,24 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'alarm', 'activated': True}, 'relays')
         self.publish_prefix({'category': 'forced_alarm'}, 'secure_floor')
         self.publish_prefix({'category': 'set_status', 'status': 'disabled'}, 'human_authenticator')
-        self.publish_prefix({'category': 'send_fog', 'duration': 20}, 'fog_machine')
+        self.publish_prefix({'category': 'send_fog', 'duration': 10}, 'fog_machine')
         self.publish_prefix({'category': 'play', 'sound_id': 'gaz'}, 'sound_player')
+        self.register_delayed_task(2, self.publish_prefix, {'category': 'play', 'track_id': 'alarm'}, 'music_player')
+        self.register_delayed_task(
+            30, self.publish_prefix, {'category': 'set_volume', 'track_id': 'alarm', 'volume': 0, 'duration': 5},
+            'music_player')
+        self.register_delayed_task(
+            35, self.publish_prefix, {'category': 'stop', 'track_id': 'alarm'}, 'music_player')
 
         if self.persistent_settings['final_by_refectory']:
-            self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
-            self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
+            self.register_delayed_task(
+                10, self.publish_prefix, {'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
+            self.register_delayed_task(
+                10, self.publish_prefix, {'category': 'unlock', 'relock': True}, 'front_door_magnet')
         else:
             self.publish_prefix({'category': 'unlock', 'magnet_id': 'to_outside', 'relock': True}, 'emergency_exit')
+
+        self.session_timer.pause()
 
     @on_event(filter={'widget_id': 'front_door_open'})
     def button_front_door_open(self):
@@ -1836,6 +1966,10 @@ class Scenario(MagicNode):
     def button_cylinders_reset(self):
         self.publish_prefix({'category': 'reset'}, 'cylinders')
 
+    @on_event(filter={'widget_id': 'force_cylinders_success'})
+    def button_force_cylinders_success(self):
+        self.publish_prefix({'category': 'force_success'}, 'cylinders')
+
     @on_event(filter={'widget_id': 'check_cylinders_availability'})
     def buttons_cylinders_check_availability(self, id: str):
         self.publish_prefix({'category': 'check_availability', 'id': id}, 'cylinders')
@@ -1847,3 +1981,4 @@ class ScenarioD1(Scenario):
 
 class ScenarioD2(Scenario):
     pass
+

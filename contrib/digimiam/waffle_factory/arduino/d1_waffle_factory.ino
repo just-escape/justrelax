@@ -190,6 +190,8 @@ void updateMotorClocks() {
               isMotorInHomingMode[i] = false;
             }
             motorNPulses[i] = 0;
+            motorAccelerationNPulses[i] = 0;
+            motorDecelerationNPulses[i] = 0;
           }
         }
 

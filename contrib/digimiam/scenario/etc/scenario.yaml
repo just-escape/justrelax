@@ -1,8 +1,0 @@
-name: scenario
-
-subscriptions:
-  - d1.scenario
-
-publication_channel_prefix: d1.
-
-persistent_settings: /etc/justrelax/scenario_persistent_settings.json

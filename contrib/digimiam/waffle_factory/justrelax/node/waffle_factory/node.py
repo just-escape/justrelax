@@ -52,7 +52,7 @@ class WaffleFactory(MagicNode):
         self.animations = self.config['animations']
         self.animation_tasks = []
 
-        # reactor.callLater(3, self.event_reset)
+        reactor.callLater(3, self.event_reset)
 
     def load_printer_patterns(self):
         patterns_directory = self.config['printer_patterns_directory']
@@ -338,7 +338,7 @@ class WaffleFactory(MagicNode):
         instructions = copy(self.printer_patterns.get(pattern))
         if instructions is None:
             logger.info("Unknown pattern '{}'. It must be one of {}: ignoring".format(
-                ",".join(self.printer_patterns), pattern))
+                pattern, ",".join(self.printer_patterns)))
             return
 
         self.process_gcode_instructions(instructions)
@@ -364,16 +364,9 @@ class WaffleFactory(MagicNode):
 
     @on_event(filter={'category': 'printer_homing'})
     def event_printer_homing(self):
-        self.process_gcode_instruction("G01 Y25 F200")
-        reactor.callLater(12, self.process_gcode_instruction, "G01 Y0 F200")
-        reactor.callLater(13, self.process_gcode_instruction, "G92 Y0")
-        reactor.callLater(14, self.process_gcode_instruction, "G01 Y-10 F200")
-        reactor.callLater(19, self.process_gcode_instruction, "G92 Y0")
-        reactor.callLater(24, self.process_gcode_instruction, "G01 X-15 F200")
-        reactor.callLater(30, self.process_gcode_instruction, "G01 X0 F200")
-        reactor.callLater(31, self.process_gcode_instruction, "G92 X0")
-        reactor.callLater(32, self.process_gcode_instruction, "G01 X10 F200")
-        reactor.callLater(37, self.process_gcode_instruction, "G92 X0")
+        # Note: quick and dirty, because there is no lock
+        for instruction in self.config['printer_homing_sequence']:
+            reactor.callLater(instruction['t'], self.process_gcode_instruction, instruction['gcode'])
 
     @on_event(filter={'category': 'printer_stop'})
     def event_printer_stop(self):

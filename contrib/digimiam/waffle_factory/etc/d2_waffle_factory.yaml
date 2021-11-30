@@ -28,46 +28,122 @@ motors:
   finisher:
     index: 5
 
+printer_homing_sequence:
+  - t: 0
+    gcode: G01 Y25 F200
+  - t: 12
+    gcode: G01 Y0 F200
+  - t: 13
+    gcode: G92 Y0
+  - t: 14
+    gcode: G01 Y-13.9 F200
+  - t: 24
+    gcode: G01 X-15 F200
+  - t: 30
+    gcode: G01 X0 F200
+  - t: 31
+    gcode: G92 X0
+  - t: 32
+    gcode: G01 X6.5 F200
+  - t: 37
+    gcode: G92 X0Y0Z0
+
 animations:
-  niryo:
-    0:
+  niryo_init:
+    - t: 0
       motor: niryo
       direction: backward
-      n_pulses: 1000
-      step_delay: 800
-      liminary_n_pulses: 1000
-      liminary_step_delay: 2400
-    10:
+      n_pulses: 1810
+      step_delay: 1100
+      liminary_n_pulses: 300
+      liminary_step_delay: 2500
+  niryo_end:
+    - t: 0
       motor: niryo
-      direction: homing
-      n_pulses: 1000
-      step_delay: 800
-      liminary_n_pulses: 1000
-      liminary_step_delay: 2400
-  first_waffle:
-    0:
+      direction: backward
+      n_pulses: 840
+      step_delay: 1100
+      liminary_n_pulses: 300
+      liminary_step_delay: 2500
+  first_waffle_init:
+    - t: 0
+      motor: printer
+      direction: forward
+      n_pulses: 2400
+      step_delay: 1100
+      liminary_n_pulses: 300
+      liminary_step_delay: 2500
+  waffle_end:
+    - t: 0
+      motor: printer
+      direction: forward
+      n_pulses: 3104
+      step_delay: 1100
+      liminary_n_pulses: 300
+      liminary_step_delay: 2500
+    - t: 6
+      motor: extractor
+      direction: forward
+      n_pulses: 2154
+      step_delay: 2000
+    - t: 12
+      motor: extractor
+      direction: backward
+      n_pulses: 2150
+      step_delay: 2000
+    - t: 13
       motor: short_one
       direction: backward
-      n_pulses: 1000
-      step_delay: 800
-      liminary_n_pulses: 1000
-      liminary_step_delay: 2400
-  second_waffle:
-    0:
-      motor: short_one
+      n_pulses: 1154
+      step_delay: 2000
+      liminary_n_pulses: 200
+      liminary_step_delay: 3000
+    - t: 18
+      motor: finisher
       direction: backward
-      n_pulses: 1000
-      step_delay: 800
-      liminary_n_pulses: 1000
-      liminary_step_delay: 2400
-  homing:
-    0:
+      n_pulses: 1550
+      step_delay: 2000
+    - t: 24
+      motor: short_one
+      direction: forward
+      n_pulses: 1550
+      step_delay: 2000
+    - t: 24
+      motor: finisher
+      direction: forward
+      n_pulses: 1554
+      step_delay: 2000
+  second_waffle_init:
+    - t: 0
+      motor: reloader
+      direction: forward
+      n_pulses: 1500
+      step_delay: 2000
+    - t: 4
+      motor: reloader
+      direction: backward
+      n_pulses: 1504
+      step_delay: 2000
+    - t: 4
+      motor: printer
+      direction: backward
+      n_pulses: 3100
+      step_delay: 1100
+      liminary_n_pulses: 300
+      liminary_step_delay: 2500
+  reset:
+    - t: 0
       motor: niryo
-      direction: homing
-      n_pulses: 2000
-      step_delay: 800
-      liminary_n_pulses: 1000
-      liminary_step_delay: 2400
+      direction: forward
+      n_pulses: 3854
+      step_delay: 2000
+    - t: 0
+      motor: printer
+      direction: backward
+      n_pulses: 6100
+      step_delay: 1100
+      liminary_n_pulses: 300
+      liminary_step_delay: 2500
 
 light_led:
   niryo:
