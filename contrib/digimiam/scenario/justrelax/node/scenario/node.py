@@ -901,7 +901,7 @@ class Scenario(MagicNode):
         delay += self.first_pattern_print_duration
         self.register_delayed_task(
             delay, self.publish_prefix,
-            {'category': 'play_animation', 'animation': 'first_waffle_end'}, 'waffle_factory')
+            {'category': 'play_animation', 'animation': 'waffle_end'}, 'waffle_factory')
 
         delay += self.first_waffle_end_conveyor_duration
         self.register_delayed_task(
