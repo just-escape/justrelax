@@ -57,7 +57,7 @@ animations:
     - t: 0
       motor: niryo
       direction: forward
-      n_pulses: 1795
+      n_pulses: 1825
       step_delay: 1100
       liminary_n_pulses: 300
       liminary_step_delay: 2500
@@ -65,7 +65,7 @@ animations:
     - t: 0
       motor: niryo
       direction: forward
-      n_pulses: 805
+      n_pulses: 775
       step_delay: 1100
       liminary_n_pulses: 300
       liminary_step_delay: 2500
