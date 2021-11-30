@@ -43,7 +43,7 @@ tracks:
   - id: track5
     path: /home/justescape/music/track5-ll.wav
     mode: loop
-    volume: 55
+    volume: 45
     loop_a: 93.5
     loop_b: 280.5
   - id: track61
@@ -59,7 +59,7 @@ tracks:
   - id: track8
     path: /home/justescape/music/track8-ill.wav
     mode: loop
-    volume: 60
+    volume: 65
     loop_a: 129.369
     loop_b: 346.369
   - id: track91
