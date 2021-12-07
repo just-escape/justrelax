@@ -13,7 +13,7 @@ niryo_animation_duration: 25
 niryo_end_conveyor_duration: 3
 oven_cooking_duration: 5
 first_waffle_init_conveyor_duration: 5
-first_pattern_print_duration: 20
+first_pattern_print_duration: 60
 first_waffle_end_conveyor_duration: 40
 basket_led_blinking_time: 10
 delay_before_ms_pepper_says_thanks: 5
