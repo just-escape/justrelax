@@ -260,6 +260,10 @@ class Scenario(MagicNode):
 
         self.is_control_panel_in_manual_mode = False
 
+    def ping(self):
+        # Not useful to ping something because session data cannot exist if this node is not up
+        pass
+
     def publish_prefix(self, event, channel):
         self.publish(event, "{}{}".format(self.publication_channel_prefix, channel))
 
