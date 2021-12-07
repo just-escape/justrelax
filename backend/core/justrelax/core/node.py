@@ -289,7 +289,7 @@ class MagicNode(EventFilterMixin, Node):
 
     def publish(self, event, channel=..., log=True):
         if isinstance(event, dict):
-            event['from'] = self._name
+            event['from_'] = self._name
         super().publish(event, channel if channel is not ... else self._default_publication_channel, log)
 
     def log_published_error(self, message):
