@@ -105,6 +105,10 @@ body {
   color: #f38d40;
 }
 
+.text-mulberry {
+  color: #cb4299;
+}
+
 .text-grey {
   color: #949497;
 }

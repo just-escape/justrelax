@@ -138,7 +138,7 @@ export default {
   watch: {
     displayed(newValue) {
       if (newValue) {
-        setTimeout(this.setForcePulsate, 45000, true)
+        setTimeout(this.setForcePulsate, 25000, true)
         this.$anime.timeline({
           targets: this,
         })
@@ -223,11 +223,11 @@ export default {
 		opacity: 0;
 	}
 	60% {
-		transform: scale(1.07);
-		opacity: 0.25;
+		transform: scale(1.4);
+		opacity: 0.4;
 	}
 	100% {
-		transform: scale(1.18);
+		transform: scale(1.50);
 		opacity: 0;
 	}
 }

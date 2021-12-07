@@ -42,7 +42,7 @@ const locales = {
     cancel: 'CANCEL',
     fallback_authentication: 'FALLBACK AUTHENTICATION',
     fallback_authentication_is_enabled: 'Fallback authentication is enabled. You can authenticate yourself by answering your secret question:',
-    what_is_the_secret_ingredient: 'What is the secret ingredient of Digimiam recipes?',
+    what_is_the_secret_ingredient: 'What is the secret ingredient of all Digimiam recipes?',
     that_is_not_the_right_answer: 'That is not the right answer.',
   },
   fr: {
@@ -83,7 +83,7 @@ const locales = {
     cancel: 'ANNULER',
     fallback_authentication: 'AUTHENTIFICATION AUXILIAIRE',
     fallback_authentication_is_enabled: 'L\'authentification de secours est activée. Vous pouvez vous authentifier en répondant à votre question secrète :',
-    what_is_the_secret_ingredient: 'Quel est l\'ingrédient secret des recettes du Digimiam ?',
+    what_is_the_secret_ingredient: 'Quel est l\'ingrédient secret de toutes les recettes du Digimiam ?',
     that_is_not_the_right_answer: 'Ce n\'est pas la bonne réponse.',
   },
 }

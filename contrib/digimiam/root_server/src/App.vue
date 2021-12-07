@@ -9,6 +9,12 @@ import publishSubscribeService from '@/store/publishSubscribeService.js'
 
 export default {
   name: 'app',
+  methods: {
+    ping() {
+      setTimeout(this.ping, 5000)
+      publishSubscribeService.commit('publish', {category: "ping"})
+    }
+  },
   mounted() {
     // Disable longtap (right click) menu to appear
     window.oncontextmenu = function() {
@@ -31,6 +37,8 @@ export default {
     } else {
       this.$connect('ws://localhost:3031')
     }
+
+    setTimeout(this.ping, 5000)
   },
 }
 </script>

@@ -180,7 +180,7 @@ var store = new Vuex.Store({
       if (activated) {
         Vue.set(state.activatedSensorIds, id, color)
       } else {
-        state.activatedSensorIds = Object.fromEntries(Object.entries(state.activatedSensorIds).map(([key, value]) => [key, value == color ? undefined : value]))
+        state.activatedSensorIds = Object.fromEntries(Object.entries(state.activatedSensorIds).map(([key, value]) => [key, value == color && id == key ? undefined : value]))
 
         for (let sensorId in state.activatedSensorIds) {
           if (state.activatedSensorIds[sensorId] == color) {

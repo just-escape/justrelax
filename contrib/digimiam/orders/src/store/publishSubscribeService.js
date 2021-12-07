@@ -118,7 +118,7 @@ const publishSubscribeService = new Vuex.Store({
     },
     // eslint-disable-next-line
     publish (state, event) {
-      event.from = state.name
+      event.from_ = state.name
       let json = JSON.stringify({action: "publish", channel: state.publicationChannel, event: event})
       Vue.prototype.$socket.send(json)
     },

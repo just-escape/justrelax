@@ -10,6 +10,12 @@ import lightStore from '@/store/lightStore.js'
 
 export default {
   name: "app",
+  methods: {
+    ping() {
+      setTimeout(this.ping, 5000)
+      publishSubscribeService.commit('publish', {category: "ping"})
+    }
+  },
   computed: {
     isWebSocketOpened() {
       return publishSubscribeService.state.isWebSocketOpened
@@ -52,6 +58,8 @@ export default {
     } else {
       this.$connect("ws://localhost:3031");
     }
+
+    setTimeout(this.ping, 5000)
   }
 };
 </script>

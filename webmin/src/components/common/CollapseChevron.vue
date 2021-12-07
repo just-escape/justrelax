@@ -1,10 +1,16 @@
 <template>
-  <i class='fas fa-chevron-down fa-lg pointer'></i>
+  <i class='fas fa-chevron-down pointer' :class="{'fa-lg': size == 'fa-lg'}"></i>
 </template>
 
 <script>
 export default {
-  name: 'CollapseChevron'
+  name: 'CollapseChevron',
+  props: {
+    size: {
+      type: String,
+      default: "fa-lg",
+    }
+  }
 }
 </script>
 

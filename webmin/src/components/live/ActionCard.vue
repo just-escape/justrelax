@@ -18,6 +18,7 @@
         <WidgetWaffleFactory v-else-if="row.widget === 'waffle_factory'" :row="row" :defaultChannel="roomDefaultChannel"/>
         <WidgetSynchronizerLights v-else-if="row.widget === 'synchronizer_lights'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
         <WidgetTextArea v-else-if="row.widget === 'textarea'" :row="row" :defaultChannel="roomDefaultChannel"/>
+        <WidgetNodeRegister v-else-if="row.widget === 'node_register'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
       </li>
     </ul>
   </b-card>
@@ -32,6 +33,7 @@ import WidgetLasers from "@/components/live/WidgetLasers.vue"
 import WidgetWaffleFactory from "@/components/live/WidgetWaffleFactory.vue"
 import WidgetSynchronizerLights from "@/components/live/WidgetSynchronizerLights.vue"
 import WidgetTextArea from "@/components/live/WidgetTextArea.vue"
+import WidgetNodeRegister from "@/components/live/WidgetNodeRegister.vue"
 import roomStore from "@/store/roomStore.js"
 import notificationStore from '@/store/notificationStore.js'
 
@@ -46,6 +48,7 @@ export default {
     WidgetWaffleFactory,
     WidgetSynchronizerLights,
     WidgetTextArea,
+    WidgetNodeRegister,
   },
   data() {
     return {
