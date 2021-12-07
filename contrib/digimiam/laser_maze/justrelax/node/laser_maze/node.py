@@ -1,7 +1,5 @@
 import json
 
-from twisted.internet import reactor
-
 from justrelax.core.logging_utils import logger
 from justrelax.core.node import MagicNode, on_event
 
@@ -137,7 +135,7 @@ class LaserMaze(MagicNode):
         laser_index = i
 
         logger.info("Alarm from laser index={}".format(laser_index))
-        self.publish({"category": "alarm", "laser": "{}{}".format(self.laser_prefix, laser_index)})
+        self.publish({"category": "laser_alarm", "laser": "{}{}".format(self.laser_prefix, laser_index)})
 
         if laser_index not in self.laser_alarm_counters:
             self.laser_alarm_counters[laser_index] = 0

@@ -1122,7 +1122,7 @@ class Scenario(MagicNode):
     def stop_track_alarm(self):
         self.publish_prefix({'category': 'stop', 'track_id': 'alarm'}, 'music_player')
 
-    @on_event(filter={'from': 'laser_maze', 'category': 'alarm'})
+    @on_event(filter={'category': 'laser_alarm'})
     def laser_maze_event_alarm(self):
         self.publish_prefix({'category': 'stop_playing'}, 'laser_maze')
         self.publish_prefix({'category': 'set_status', 'status': 'alarm'}, 'secure_floor')

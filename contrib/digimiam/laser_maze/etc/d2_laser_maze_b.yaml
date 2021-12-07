@@ -1,4 +1,4 @@
-name: laser_maze
+name: laser_maze_b
 
 default_publication_channel: d2.scenario
 subscriptions:
