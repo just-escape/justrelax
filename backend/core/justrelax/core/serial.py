@@ -20,7 +20,7 @@ class Serial:
         self.reconnection_delay = 10
 
         self.buffering_queue = []
-        self.buffering_interval = 0.1
+        self.buffering_interval = buffering_interval
         self.buffering_task = None
 
         self.protocol = None

@@ -3,7 +3,6 @@ import json
 import inspect
 import socket
 import argparse
-from copy import deepcopy
 
 import yaml
 from gpiozero import Device
@@ -86,8 +85,9 @@ class Node(WebSocketClientFactory, ReconnectingClientFactory):
         logger.error('Connection failed. Reason: {}'.format(reason))
         ReconnectingClientFactory.clientConnectionFailed(self, connector, reason)
 
-    def publish(self, event, channel):
-        logger.info("{} >>> {}".format(channel, event))
+    def publish(self, event, channel, log=True):
+        if log:
+            logger.info("{} >>> {}".format(channel, event))
         self.protocol.send_message({'action': 'publish', 'channel': channel, 'event': event})
 
     def process_event(self, event, channel):
@@ -269,7 +269,12 @@ class MagicNode(EventFilterMixin, Node):
 
         if not self._first_connection:
             self._first_connection = True
+            self.ping()
             self.on_first_connection()
+
+    def ping(self):
+        reactor.callLater(5, self.ping)
+        self.publish({"category": "ping"}, log=False)
 
     def on_first_connection(self):
         pass
@@ -282,10 +287,10 @@ class MagicNode(EventFilterMixin, Node):
             }
         )
 
-    def publish(self, event, channel=...):
+    def publish(self, event, channel=..., log=True):
         if isinstance(event, dict):
             event['from'] = self._name
-        super().publish(event, channel if channel is not ... else self._default_publication_channel)
+        super().publish(event, channel if channel is not ... else self._default_publication_channel, log)
 
     def log_published_error(self, message):
         logger.error(message)
