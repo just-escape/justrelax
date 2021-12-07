@@ -1,6 +1,7 @@
 import json
 import time
 import uuid
+from datetime import datetime, timezone
 
 from twisted.internet import reactor
 
@@ -286,11 +287,11 @@ class Scenario(MagicNode):
             self._record_session_data(key, self.persistent_settings[key])
         self.publish_prefix({'category': 'request_node_session_data'}, 'broadcast')
 
-    @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'run'})
+    @on_event(filter={'from_': 'webmin', 'widget_id': 'start_stop', 'action': 'run'})
     def run_room_from_webmin(self):
         self.run_room()
 
-    @on_event(filter={'from': 'street_display', 'category': 'play'})
+    @on_event(filter={'from_': 'street_display', 'category': 'play'})
     def run_room_from_street_display(self):
         self.run_room()
 
@@ -475,14 +476,14 @@ class Scenario(MagicNode):
         for timer_name, timer in self.timers.items():
             timer.session_resume()
 
-    @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'halt'})
+    @on_event(filter={'from_': 'webmin', 'widget_id': 'start_stop', 'action': 'halt'})
     def halt_room(self):
         if self.session_timer.state in [STATE_NOT_STARTED, STATE_TICKING]:
             for timer_name, timer in self.timers.items():
                 timer.session_pause()
             self.session_timer.pause()
 
-    @on_event(filter={'from': 'webmin', 'widget_id': 'start_stop', 'action': 'reset'})
+    @on_event(filter={'from_': 'webmin', 'widget_id': 'start_stop', 'action': 'reset'})
     def reset_room(self):
         if self.session_timer.state != STATE_PAUSED:
             return
@@ -507,7 +508,7 @@ class Scenario(MagicNode):
         self.holomenu_y = None
         self.holomenu_error = None
 
-    @on_event(filter={'from': 'webmin', 'category': 'request_session_data_for_webmin'})
+    @on_event(filter={'from_': 'webmin', 'category': 'request_session_data_for_webmin'})
     def on_request_session_data(self):
         self.publish_game_time_to_webmin()
         for key, value in self.session_data.items():
@@ -529,6 +530,12 @@ class Scenario(MagicNode):
         self.session_data[key] = data
         self.publish_prefix(
             {"category": "set_session_data", "key": key, "data": data}, "webmin")
+
+    @on_event(filter={'category': 'ping'})
+    def event_ping(self, from_: str):
+        node_register = self.session_data.get("node_register", {})
+        node_register[from_] = datetime.now(tz=timezone.utc).isoformat()
+        self._record_session_data("node_register", node_register)
 
     @on_event(filter={'from': 'street_display', 'category': 'unlock_front_door'})
     def street_display_event_unlock_front_door(self):
@@ -858,7 +865,7 @@ class Scenario(MagicNode):
             "inventory"
         )
 
-    @on_event(filter={'from': 'orders', 'category': 'resume_order'})
+    @on_event(filter={'from_': 'orders', 'category': 'resume_order'})
     def orders_resume_order(self):
         self.register_delayed_task(
             0.5, self.publish_prefix,
@@ -955,7 +962,7 @@ class Scenario(MagicNode):
             delay + 1, self.publish_prefix,
             {'category': 'reset_order'}, 'orders')  # Empty the cart
 
-    @on_event(filter={'from': 'orders', 'category': 'ms_pepper_has_said_thanks'})
+    @on_event(filter={'from_': 'orders', 'category': 'ms_pepper_has_said_thanks'})
     def orders_ms_pepper_has_said_thanks(self):
         self.publish_prefix(
             {'category': 'set_volume', 'track_id': 'track62', 'volume': 0, 'duration': 10}, 'music_player')
@@ -967,7 +974,7 @@ class Scenario(MagicNode):
             37.5 + 25 + 1.5, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track7', 'volume': 45, 'duration': 10}, 'music_player')
 
-    @on_event(filter={'from': 'orders', 'category': 'marmitron_has_asked_for_help'})
+    @on_event(filter={'from_': 'orders', 'category': 'marmitron_has_asked_for_help'})
     def orders_marmitron_has_asked_for_help(self):
         self.publish_prefix({'category': 'enable'}, 'digital_lock')
         self.publish_prefix({'category': 'calibrate'}, 'secure_floor')
@@ -975,44 +982,44 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             10, self.publish_prefix, {'category': 'set_display_order_recap_notification', 'value': True}, 'orders')
 
-    @on_event(filter={'from': 'payment_module', 'category': 'set_credits'})
+    @on_event(filter={'from_': 'payment_module', 'category': 'set_credits'})
     def payment_module_event_set_credits(self, value):
         self.publish_prefix({'category': 'set_credits', 'value': value}, 'orders')
 
-    @on_event(filter={'from': 'ventilation_panel', 'category': 'good_connection'})
+    @on_event(filter={'from_': 'ventilation_panel', 'category': 'good_connection'})
     def ventilation_panel_event_good_connection(self, sequence_cursor: int):
         if 0 <= sequence_cursor <= 8:
             self.publish_prefix(
                 {'category': 'play', 'sound_id': f'ventilation_combo_{sequence_cursor}'}, 'sound_player')
 
-    @on_event(filter={'from': 'ventilation_panel', 'category': 'bad_move'})
+    @on_event(filter={'from_': 'ventilation_panel', 'category': 'bad_move'})
     def ventilation_panel_event_bad_move(self):
         self.publish_prefix({'category': 'play', 'sound_id': 'ventilation_error'}, 'sound_player')
 
-    @on_event(filter={'from': 'ventilation_panel', 'category': 'round_complete'})
+    @on_event(filter={'from_': 'ventilation_panel', 'category': 'round_complete'})
     def ventilation_panel_event_round_complete(self):
         self.register_delayed_task(
             0.5, self.publish_prefix, {'category': 'play', 'sound_id': 'ventilation_round_success'}, 'sound_player')
 
-    @on_event(filter={'from': 'ventilation_panel', 'category': 'start_new_round'})
+    @on_event(filter={'from_': 'ventilation_panel', 'category': 'start_new_round'})
     def ventilation_panel_event_start_new_round(self, round: int):
         self.publish_prefix({'category': 'set_ventilation_panel_round', 'round': round}, 'orders')
 
-    @on_event(filter={'from': 'ventilation_panel', 'category': 'set_status'})
+    @on_event(filter={'from_': 'ventilation_panel', 'category': 'set_status'})
     def ventilation_panel_event_set_status(self, status: str):
         if status == 'playing':
             self.publish_prefix({'category': 'set_documentation_visibility', 'show': True}, 'orders')
         else:
             self.publish_prefix({'category': 'set_documentation_visibility', 'show': False}, 'orders')
 
-    @on_event(filter={'from': 'ventilation_panel', 'category': 'notify_instruction'})
+    @on_event(filter={'from_': 'ventilation_panel', 'category': 'notify_instruction'})
     def ventilation_panel_notify_instruction(self, instruction):
         self.publish_prefix(
             {'category': 'set_documentation_current_instruction', 'message': instruction, 'use_locale': True},
             'orders'
         )
 
-    @on_event(filter={'from': 'ventilation_panel', 'category': 'success'})
+    @on_event(filter={'from_': 'ventilation_panel', 'category': 'success'})
     def ventilation_panel_success(self):
         self.publish_prefix({'category': 'on'}, 'fog_machine')
         self.publish_prefix({'category': 'unlock'}, 'vents_locker')
@@ -1023,24 +1030,24 @@ class Scenario(MagicNode):
 
         self.register_delayed_task(4, self.publish_prefix, {'category': 'high'}, 'stock_lights')
 
-    @on_event(filter={'from': 'orders', 'category': 'restart_round'})
+    @on_event(filter={'from_': 'orders', 'category': 'restart_round'})
     def ventilation_panel_restart_round(self):
         self.publish_prefix({'category': 'restart_round'}, 'ventilation_panel')
 
-    @on_event(filter={'from': 'sokoban_controls', 'category': 'control'})
+    @on_event(filter={'from_': 'sokoban_controls', 'category': 'control'})
     def sokoban_controls_event(self, name: str, pressed: bool):
         self.publish_prefix({'category': 'control', 'name': name, 'pressed': pressed}, 'inventory')
 
-    @on_event(filter={'from': 'cylinders', 'category': 'tag'})
+    @on_event(filter={'from_': 'cylinders', 'category': 'tag'})
     def cylinder_tag(self, tag):
         if tag:
             self.publish_prefix({'category': 'play', 'sound_id': 'cylinder_scan'}, 'sound_player')
 
-    @on_event(filter={'from': 'cylinders', 'category': 'check_availability_scan'})
+    @on_event(filter={'from_': 'cylinders', 'category': 'check_availability_scan'})
     def cylinder_check_availability_scan(self):
         self.publish_prefix({'category': 'play', 'sound_id': 'cylinder_scan'}, 'sound_player')
 
-    @on_event(filter={'from': 'cylinders', 'category': 'success'})
+    @on_event(filter={'from_': 'cylinders', 'category': 'success'})
     def cylinders_success(self):
         self.publish_prefix(
             {
@@ -1085,7 +1092,7 @@ class Scenario(MagicNode):
             'music_player')
         self.register_delayed_task(6, self.publish_prefix, {'category': 'low'}, 'stock_lights')
 
-    @on_event(filter={'from': 'digital_lock', 'category': 'success'})
+    @on_event(filter={'from_': 'digital_lock', 'category': 'success'})
     def digital_lock_success(self):
         self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'secure_floor')
         self.publish_prefix({'category': 'playing'}, 'laser_maze')
@@ -1114,7 +1121,7 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             10, self.publish_prefix, {'category': 'set_status', 'status': 'disabled'}, 'payment_module')
 
-    @on_event(filter={'from': 'secure_floor', 'category': 'clear'})
+    @on_event(filter={'from_': 'secure_floor', 'category': 'clear'})
     def secure_floor_event_clear(self):
         self.publish_prefix({'category': 'playing'}, 'laser_maze')
         self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'human_authenticator')
@@ -1138,7 +1145,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'display_alarm_window', 'display': True}, 'root_server')
         self.publish_prefix({'category': 'display_alarm_window', 'display': True}, 'digital_lock')
 
-    @on_event(filter={'from': 'human_authenticator', 'category': 'success'})
+    @on_event(filter={'from_': 'human_authenticator', 'category': 'success'})
     def human_authenticator_event_success(self):
         self.publish_prefix({'category': 'set_success', 'value': True}, 'laser_maze')
         self.publish_prefix({'category': 'success'}, 'secure_floor')
@@ -1150,16 +1157,16 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             4.5, self.publish_prefix, {'category': 'play_animation', 'animation': 'reponse'}, 'root_server')
 
-    @on_event(filter={'from': 'root_server', 'category': 'check_availability'})
+    @on_event(filter={'from_': 'root_server', 'category': 'check_availability'})
     def root_server_check_availability(self, id: str):
         self.publish_prefix({'category': 'check_availability', 'id': id}, 'cylinders')
 
-    @on_event(filter={'from': 'cylinders', 'category': 'availability'})
+    @on_event(filter={'from_': 'cylinders', 'category': 'availability'})
     def cylinders_availability(self, id: str, missing_ingredients: int):
         self.publish_prefix(
             {'category': 'availability', 'id': id, 'missing_ingredients': missing_ingredients}, 'root_server')
 
-    @on_event(filter={'from': 'root_server', 'category': 'success'})
+    @on_event(filter={'from_': 'root_server', 'category': 'success'})
     def root_server_event_success(self):
         self.publish_prefix(
             {'category': 'set_volume', 'track_id': 'track8', 'volume': 35, 'duration': 5}, 'music_player')
@@ -1196,7 +1203,7 @@ class Scenario(MagicNode):
 
         self.register_delayed_task(2, post_delay)
 
-    @on_event(filter={'from': 'root_server', 'category': 'ms_pepper_mad_end'})
+    @on_event(filter={'from_': 'root_server', 'category': 'ms_pepper_mad_end'})
     def root_server_event_ms_pepper_mad_end(self):
         self.publish_prefix({'category': 'display_danger_window'}, 'synchronizer')
         self.publish_prefix({'category': 'display_danger_window'}, 'orders')
