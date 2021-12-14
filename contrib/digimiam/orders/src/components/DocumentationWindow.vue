@@ -44,7 +44,7 @@
               </div>
               <VentilationSequenceButton
                 class="mb-4"
-                style="margin-left: 3.5rem"
+                :style="{'margin-left': ventilationButtonOffset ? '3.5rem' : '0px'}"
                 :display="displayVentilationSequenceButton"
                 @mousedown="restartRound"
               />
@@ -187,6 +187,9 @@ export default {
     }
   },
   computed: {
+    ventilationButtonOffset() {
+      return this.$route.query.ventilation_button_offset && this.$route.query.ventilation_button_offset != '0'
+    },
     top() {
       return "calc(0px + " + this.topOffset + "px)"
     },
