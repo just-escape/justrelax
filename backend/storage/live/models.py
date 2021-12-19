@@ -14,6 +14,7 @@ WIDGET_TYPES = (
     ('synchronizer_lights', 'synchronizer_lights'),
     ('textarea', 'textarea'),
     ('node_register', 'node_register'),
+    ('chopsticks', 'chopsticks'),
 )
 
 
