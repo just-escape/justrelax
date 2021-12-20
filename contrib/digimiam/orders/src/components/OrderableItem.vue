@@ -23,8 +23,10 @@
     />
     <!-- Conditionning the customizer not only to the fact that a waffresco is displayed, but also to its visibility forces it to be regenerated.
          Otherwise there would be synchronization issues between the 2 waffresco customizers. -->
+    <!-- d-none because the feature has been abandonned -->
     <WaffrescoCustomizer
       v-if="itemId === 'gaufresque' && isVisible"
+      class="d-none"
       :clickable="orderable && !isOrderOnHold && !showDocumentation && !isRestaurantClosed"
       :gray="isRestaurantClosed"
       :collapseSignal="JSON.stringify([scrollSignal, orderSignal])"

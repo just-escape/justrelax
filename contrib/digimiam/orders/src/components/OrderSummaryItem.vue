@@ -1,7 +1,8 @@
 <template>
   <div class="position-relative">
     <div class="position-absolute price bg-info rounded">{{ price }} {{ $t('nF') }}</div>
-    <div v-if="variationSrc" class="position-absolute bg-info rounded" style="height: 21px; bottom: 10px; left: 20px; padding: 0px 2px; opacity: 0.85; filter: drop-shadow(0px 0px 3px rgba(23, 162, 184, 0.75))">
+    <!-- d-none because the feature has been abandonned -->
+    <div v-if="variationSrc" class="d-none position-absolute bg-info rounded" style="height: 21px; bottom: 10px; left: 20px; padding: 0px 2px; opacity: 0.85; filter: drop-shadow(0px 0px 3px rgba(23, 162, 184, 0.75))">
       <img :src="variationSrc" height="17px" width="17px" style="margin-bottom: 4px">
     </div>
     <img :src="src" class="img-fluid">
@@ -15,8 +16,6 @@ export default {
   name: "OrderSummaryItem",
   computed: {
     variationSrc() {
-      console.log(this.variation)
-      console.log(orderStore.state.waffrescoVariations[this.variation])
       return orderStore.state.waffrescoVariations[this.variation]
     },
     src() {
