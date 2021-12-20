@@ -59,10 +59,6 @@ export default {
 </script>
 
 <style scoped>
-.min-width-100px {
-  min-width: 100px;
-}
-
 .mr-1-not-last:not(:last-child) {
   margin-right: 0.25rem;
 }

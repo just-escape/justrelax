@@ -1,12 +1,16 @@
 name: scenario
 
 subscriptions:
-  - d1.scenario
+  - d2.scenario
   - digimiam.scenario
 
-publication_channel_prefix: d1.
+publication_channel_prefix: d2.
 
 persistent_settings: /etc/justrelax/scenario_persistent_settings.json
+
+# chopsticks
+chopsticks_voice_clue_1_delay: 180
+chopsticks_voice_clue_2_delay: 225
 
 # first waffle
 niryo_animation_duration: 25
@@ -17,3 +21,15 @@ first_pattern_print_duration: 60
 first_waffle_end_conveyor_duration: 40
 basket_led_blinking_time: 10
 delay_before_ms_pepper_says_thanks: 5
+
+# root_server
+initial_fog_duration: 22
+boost_fog_delay: 60
+boost_fog_duration: 2
+
+do_not_log_publication_filters:
+  - category: set_session_data
+    key: node_register
+
+do_not_log_reception_filters:
+  - category: ping

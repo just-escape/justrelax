@@ -63,10 +63,10 @@ class Letter:
     def reaction_toggle_blue_orange(self):
         if self.color == "blue":
             self.color = "orange"
-            self.service.publish({'category': 'set_color', 'new_color': self.color, 'letter_index': self.index})
+            self.service.move(self.index, self.color)
         elif self.color == "orange":
             self.color = "blue"
-            self.service.publish({'category': 'set_color', 'new_color': self.color, 'letter_index': self.index})
+            self.service.move(self.index, self.color)
         else:
             logger.info("Color is {}: nothing to do".format(self.color))
 
@@ -101,6 +101,7 @@ class Chopsticks(MagicNode):
             self.letters.append(letter)
 
         self.difficulty = self.config['difficulty']['initial']
+        self.moves = 0
         self.success = False
 
         callLater(3, self.configure)
@@ -132,13 +133,41 @@ class Chopsticks(MagicNode):
         )
         self.event_reset()
 
+    @on_event(filter={'category': 'request_node_session_data'})
+    def publish_session_data(self):
+        self.publish_chopsticks_moves()
+        self.publish_chopsticks_colors()
+
+    def publish_chopsticks_colors(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'chopsticks_colors',
+                'data': [letter.color for letter in self.letters],
+            }
+        )
+
+    def publish_chopsticks_moves(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'chopsticks_moves',
+                'data': self.moves,
+            }
+        )
+
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Reset")
         self.success = False
+        self.moves = 0
         self.send_serial({ArduinoProtocol.CATEGORY: ArduinoProtocol.PLAYING})
         for letter in self.letters:
             letter.color = self.letters_configuration[letter.index]['led_initial_color']
+
+        self.publish({"category": "reset"})
+        self.publish_chopsticks_moves()
+        self.publish_session_data()
 
     def check_chopsticks(self):
         for letter in self.letters:
@@ -173,6 +202,18 @@ class Chopsticks(MagicNode):
     @on_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
         self.difficulty = difficulty
+
+    def move_plus_plus(self):
+        if self.moves == 0:
+            self.publish({'category': 'first_move'})
+        self.moves += 1
+        self.publish_chopsticks_moves()
+
+    def move(self, letter_index: int, color: str):
+        if not self.success:
+            self.publish({'category': 'set_color', 'new_color': color, 'letter_index': letter_index})
+            self.move_plus_plus()
+            self.publish_chopsticks_colors()
 
     @on_event(filter={'category': 'force_success'})
     def on_success(self):

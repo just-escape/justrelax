@@ -36,8 +36,6 @@ export default {
   },
   computed: {
     nodeRegister() {
-                // eslint-disable-next-line
-        console.log(JSON.stringify(roomStore.state.sessionData[this.roomId]["node_register"]))
       return roomStore.state.sessionData[this.roomId]["node_register"] || {}
     },
     nRegisteredNodes() {
@@ -55,13 +53,9 @@ export default {
   },
   methods: {
     updatePingTable() {
-        // eslint-disable-next-line
-        console.log("updatepingtable")
       setTimeout(this.updatePingTable, 5000)
       let now = new Date()
       this.recentDt = new Date(now.getTime() - 10 * 1000)
-        // eslint-disable-next-line
-        console.log(this.recentDt.getTime())
     }
   },
   mounted() {
@@ -76,10 +70,6 @@ export default {
 </script>
 
 <style scoped>
-.min-width-100px {
-  min-width: 100px;
-}
-
 .rows-striped:nth-child(odd) {
   background: #4d4d4f;
 }

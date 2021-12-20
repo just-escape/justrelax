@@ -265,4 +265,8 @@ thead {
     padding: 3px;
   }
 }
+
+.min-width-100px {
+  min-width: 100px;
+}
 </style>

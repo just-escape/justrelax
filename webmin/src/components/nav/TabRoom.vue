@@ -7,7 +7,7 @@
         </a>
       </div>
       <div class="d-flex flex-row">
-        <Clock class="mr-2" :roomId="room.id" :data="'game_time'" :displayZero="true"/>
+        <Clock class="mr-2" :seconds="gameTime" :displayZero="true"/>
         <CollapseChevron class="align-self-center" v-b-toggle="'collapse-rooms-' + room.id"/>
       </div>
     </div>
@@ -31,6 +31,7 @@
 import Tab from '@/components/nav/Tab.vue'
 import CollapseChevron from '@/components/common/CollapseChevron.vue'
 import Clock from '@/components/common/Clock.vue'
+import roomStore from '@/store/roomStore.js'
 
 export default {
   name: 'TabRoom',
@@ -42,6 +43,13 @@ export default {
   computed: {
     isVisible: function() {
       return this.$route.params.roomId == this.room.id
+    },
+    gameTime() {
+      if (roomStore.state.sessionData[this.roomId]) {
+        return roomStore.state.sessionData[this.roomId].game_time
+      } else {
+        return undefined
+      }
     },
   },
   props: {

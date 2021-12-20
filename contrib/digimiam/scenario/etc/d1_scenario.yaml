@@ -8,12 +8,29 @@ publication_channel_prefix: d1.
 
 persistent_settings: /etc/justrelax/scenario_persistent_settings.json
 
+# chopsticks
+chopsticks_voice_clue_1_delay: 180
+chopsticks_voice_clue_2_delay: 225
+
 # first waffle
 niryo_animation_duration: 25
 niryo_end_conveyor_duration: 3
 oven_cooking_duration: 5
 first_waffle_init_conveyor_duration: 5
 first_pattern_print_duration: 60
-first_waffle_end_conveyor_duration: 40
-basket_led_blinking_time: 10
-delay_before_ms_pepper_says_thanks: 5
+basket_led_blink_delay: 20
+basket_led_blinking_time: 40
+ms_pepper_says_thanks_delay: 0
+second_waffle_init_conveyor_duration: 6
+
+# root_server
+initial_fog_duration: 22
+boost_fog_delay: 60
+boost_fog_duration: 2
+
+do_not_log_publication_filters:
+  - category: set_session_data
+    key: node_register
+
+do_not_log_reception_filters:
+  - category: ping

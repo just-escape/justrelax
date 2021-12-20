@@ -5,14 +5,9 @@
 </template>
 
 <script>
-import roomStore from '@/store/roomStore.js'
-
 export default {
   name: 'Clock',
   computed: {
-    seconds() {
-      return roomStore.state.sessionData[this.roomId][this.data]
-    },
     formattedTime() {
       function pad(num) {
         return ("0" + num).slice(-2);
@@ -42,6 +37,6 @@ export default {
       return time
     }
   },
-  props: ["roomId", "data", 'displayZero']
+  props: ["seconds", 'displayZero']
 }
 </script>

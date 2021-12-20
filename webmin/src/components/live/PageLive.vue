@@ -25,7 +25,7 @@
       <StartStop :channel="room.default_publication_channel" class="my-auto"/>
     </div>
     <div class="d-flex flex-row" slot="header-right">
-      <Clock :roomId="room.id" :data="'game_time'" :displayZero="true" class="size-25 big-noodle mr-3"/>
+      <Clock :seconds="gameTime" :displayZero="true" class="size-25 big-noodle mr-3"/>
       <NotificationButton class="my-auto"/>
     </div>
 
@@ -82,6 +82,9 @@ export default {
 
       return null
     },
+    gameTime() {
+      return roomStore.state.sessionData[this.roomId].game_time
+    }
   },
   props: ['roomId']
 }

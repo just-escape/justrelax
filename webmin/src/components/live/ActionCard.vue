@@ -19,6 +19,9 @@
         <WidgetSynchronizerLights v-else-if="row.widget === 'synchronizer_lights'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
         <WidgetTextArea v-else-if="row.widget === 'textarea'" :row="row" :defaultChannel="roomDefaultChannel"/>
         <WidgetNodeRegister v-else-if="row.widget === 'node_register'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+        <WidgetChopsticks v-else-if="row.widget === 'chopsticks'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+        <WidgetTimer v-else-if="row.widget === 'timer'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+        <WidgetControlPanel v-else-if="row.widget === 'control_panel'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
       </li>
     </ul>
   </b-card>
@@ -34,6 +37,9 @@ import WidgetWaffleFactory from "@/components/live/WidgetWaffleFactory.vue"
 import WidgetSynchronizerLights from "@/components/live/WidgetSynchronizerLights.vue"
 import WidgetTextArea from "@/components/live/WidgetTextArea.vue"
 import WidgetNodeRegister from "@/components/live/WidgetNodeRegister.vue"
+import WidgetChopsticks from "@/components/live/WidgetChopsticks.vue"
+import WidgetControlPanel from "@/components/live/WidgetControlPanel.vue"
+import WidgetTimer from "@/components/live/WidgetTimer.vue"
 import roomStore from "@/store/roomStore.js"
 import notificationStore from '@/store/notificationStore.js'
 
@@ -49,6 +55,9 @@ export default {
     WidgetSynchronizerLights,
     WidgetTextArea,
     WidgetNodeRegister,
+    WidgetChopsticks,
+    WidgetControlPanel,
+    WidgetTimer,
   },
   data() {
     return {

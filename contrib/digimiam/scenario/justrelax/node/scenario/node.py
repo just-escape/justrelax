@@ -1,26 +1,30 @@
+from enum import Enum
 import json
 import time
 import uuid
 from datetime import datetime, timezone
 
+from coolname import generate_slug
 from twisted.internet import reactor
 
 from justrelax.core.logging_utils import logger
 from justrelax.core.node import MagicNode, on_event
 
-STATE_NOT_STARTED = 'not_started'
-STATE_TICKING = 'ticking'
-STATE_PAUSED = 'paused'
+
+class TimerState(Enum):
+    NOT_STARTED = 'NOT_STARTED'
+    TICKING = 'TICKING'
+    PAUSED = 'PAUSED'
 
 
 class Timer:
-    def __init__(self, delay, repeat=False, callback=None, *args, **kwargs):
+    def __init__(self, delay, callback=None, *args, **kwargs):
         self.delay = delay
-        self.repeat = repeat
         self.callback = callback
         self.callback_args = args
         self.callback_kwargs = kwargs
 
+        self.state = TimerState.NOT_STARTED
         self.task = None
         self.last_computed_delay = 0.
         self.last_schedule_timestamp = 0.
@@ -42,7 +46,7 @@ class Timer:
 
         self.last_computed_delay = self.delay
         self.last_schedule_timestamp = now
-        self.task = reactor.callLater(self.delay, self.perform_task)
+        self.task = reactor.callLater(self.delay, self.execute_callback)
 
     def manual_pause(self):
         self.manual_pause = True
@@ -78,76 +82,152 @@ class Timer:
         if self.task and not self.task.active() and not self.manual_pause:
             now = time.monotonic()
             self.last_schedule_timestamp = now
-            self.task = reactor.callLater(self.last_computed_delay, self.perform_task)
+            self.task = reactor.callLater(self.last_computed_delay, self.execute_callback)
 
     def cancel(self):
         if self.task and self.task.active():
             self.task.cancel()
             self.task = None
 
-    def perform_task(self):
-        if self.repeat:
-            self.start()
-        else:
-            self.task = None
-
+    def execute_callback(self):
+        self.task = None
         self.callback(*self.callback_args, **self.callback_kwargs)
 
 
-class SessionTimer:
-    def __init__(self, tic_tac_callback=None):
-        self.tic_tac_callback = tic_tac_callback
-
+class TickingTimer:
+    def __init__(self):
+        self.elapsed_time = 0.
         self.tic_tac_period = 1  # seconds
 
-        self.state = STATE_NOT_STARTED
-        self.session_time = 0.
-
+        self.state = TimerState.NOT_STARTED
         self.task = None
         self.last_computed_delay = 0.
         self.last_schedule_timestamp = 0.
 
     def start(self):
-        if self.state == STATE_NOT_STARTED:
+        if self.state == TimerState.NOT_STARTED:
             self.last_schedule_timestamp = time.monotonic()
             self.schedule_next_tic_tac()
-            self.state = STATE_TICKING
+            self.state = TimerState.TICKING
 
     def schedule_next_tic_tac(self):
         now = time.monotonic()
         delta_since_last_schedule = now - self.last_schedule_timestamp
         self.last_schedule_timestamp = now
 
-        self.session_time += delta_since_last_schedule
-        delay_before_next_call = self.tic_tac_period - self.session_time % self.tic_tac_period
+        self.elapsed_time += delta_since_last_schedule
+        delay_before_next_call = self.tic_tac_period - self.elapsed_time % self.tic_tac_period
         self.task = reactor.callLater(delay_before_next_call, self.tic_tac)
-
-    def pause(self):
-        if self.state == STATE_TICKING:
-            delta_since_last_schedule = time.monotonic() - self.last_schedule_timestamp
-            self.last_computed_delay = self.tic_tac_period - delta_since_last_schedule
-            self.session_time += delta_since_last_schedule
-            self.task.cancel()
-            self.state = STATE_PAUSED
-        elif self.state == STATE_NOT_STARTED:
-            self.state = STATE_PAUSED
-
-    def resume(self):
-        if self.state == STATE_PAUSED:
-            now = time.monotonic()
-            self.last_schedule_timestamp = now
-            self.task = reactor.callLater(self.last_computed_delay, self.tic_tac)
-            self.state = STATE_TICKING
-
-    def cancel(self):
-        if self.state == STATE_PAUSED:
-            self.session_time = 0.
-            self.state = STATE_NOT_STARTED
 
     def tic_tac(self):
         self.schedule_next_tic_tac()
+        self.on_tic_tac()
+
+    def on_tic_tac(self):
+        pass
+
+    def pause(self):
+        if self.state == TimerState.TICKING:
+            delta_since_last_schedule = time.monotonic() - self.last_schedule_timestamp
+            self.last_computed_delay = self.tic_tac_period - delta_since_last_schedule
+            self.elapsed_time += delta_since_last_schedule
+            if self.task and self.task.active():
+                self.task.cancel()
+            self.state = TimerState.PAUSED
+            self.on_pause()
+        elif self.state == TimerState.NOT_STARTED:
+            self.state = TimerState.PAUSED
+
+    def on_pause(self):
+        pass
+
+    def resume(self):
+        if self.state == TimerState.PAUSED:
+            now = time.monotonic()
+            self.last_schedule_timestamp = now
+            self.task = reactor.callLater(self.last_computed_delay, self.tic_tac)
+            self.state = TimerState.TICKING
+            self.on_resume()
+
+    def on_resume(self):
+        pass
+
+    def cancel(self):
+        if self.state == TimerState.PAUSED:
+            self.elapsed_time = 0.
+            self.last_computed_delay = 0.
+            self.last_schedule_timestamp = 0.
+            self.state = TimerState.NOT_STARTED
+            self.on_cancel()
+
+    def on_cancel(self):
+        pass
+
+
+class SessionTimer(TickingTimer):
+    def __init__(self, tic_tac_callback=None):
+        TickingTimer.__init__(self)
+        self.tic_tac_callback = tic_tac_callback
+
+    def on_tic_tac(self):
         if self.tic_tac_callback:
-            self.tic_tac_callback(self.session_time)
+            self.tic_tac_callback(self)
+
+
+class TrackedTimer(TickingTimer):
+    def __init__(self, delay, name, scenario, callback=None, *callback_args, **callback_kwargs):
+        TickingTimer.__init__(self)
+        self.delay = delay
+        self.name = name
+        self.scenario = scenario
+        self.callback = callback
+        self.callback_args = callback_args
+        self.callback_kwargs = callback_kwargs
+
+        self.remaining_time = round(self.delay)
+        self.is_manually_paused = False
+        self.executed = None
+
+        self.scenario.register_tracked_timer(self)
+
+    def on_start(self):
+        self.executed = None
+
+    def manual_pause(self):
+        self.is_manually_paused = True
+        logger.info(f"man pause {self.name}")
+        self.pause()
+        self.on_pause()  # Just to be sure to update the manual_pause property
+
+    def on_pause(self):
+        self.scenario.update_tracked_timer(self)
+
+    def manual_resume(self):
+        self.is_manually_paused = False
+        self.resume()
+
+    def on_cancel(self):
+        self.remaining_time = round(self.delay)
+        self.is_manually_paused = False
+        self.scenario.update_tracked_timer(self)
+
+    def on_tic_tac(self):
+        self.remaining_time = round(self.delay - self.elapsed_time)
+
+        if self.remaining_time <= 0:
+            self.execute_callback()
+        else:
+            self.scenario.update_tracked_timer(self)
+
+    def execute_callback(self):
+        self.remaining_time = 0
+        if self.task and self.task.active():
+            self.task.cancel()
+        if self.callback:
+            self.callback(*self.callback_args, **self.callback_kwargs)
+        self.executed = self.scenario.session_time or 0
+
+        self.scenario.update_tracked_timer(self)
 
 
 class Scenario(MagicNode):
@@ -162,6 +242,7 @@ class Scenario(MagicNode):
         'epileptic_mode',
         'final_by_refectory',
         'dry_print',
+        'order_with_niryo_and_printer',
     ]
 
     def __init__(self, *args, **kwargs):
@@ -169,14 +250,22 @@ class Scenario(MagicNode):
 
         self.publication_channel_prefix = self.config['publication_channel_prefix']
 
+        self.chopsticks_voice_clue_1_delay = self.config['chopsticks_voice_clue_1_delay']
+        self.chopsticks_voice_clue_2_delay = self.config['chopsticks_voice_clue_2_delay']
+
         self.niryo_animation_duration = self.config['niryo_animation_duration']
         self.niryo_end_conveyor_duration = self.config['niryo_end_conveyor_duration']
         self.oven_cooking_duration = self.config['oven_cooking_duration']
         self.first_waffle_init_conveyor_duration = self.config['first_waffle_init_conveyor_duration']
         self.first_pattern_print_duration = self.config['first_pattern_print_duration']
-        self.first_waffle_end_conveyor_duration = self.config['first_waffle_end_conveyor_duration']
+        self.basket_led_blink_delay = self.config['basket_led_blink_delay']
         self.basket_led_blinking_time = self.config['basket_led_blinking_time']
-        self.delay_before_ms_pepper_says_thanks = self.config['delay_before_ms_pepper_says_thanks']
+        self.ms_pepper_says_thanks_delay = self.config['ms_pepper_says_thanks_delay']
+        self.second_waffle_init_conveyor_duration = self.config['second_waffle_init_conveyor_duration']
+
+        self.initial_fog_duration = self.config['initial_fog_duration']
+        self.boost_fog_delay = self.config['boost_fog_delay']
+        self.boost_fog_duration = self.config['boost_fog_duration']
 
         self.session_timer = SessionTimer(self.tic_tac_callback)
         self.session_time = None
@@ -190,55 +279,39 @@ class Scenario(MagicNode):
         with open(self.config['persistent_settings'], 'r') as fh:
             self.persistent_settings = json.load(fh)
 
-        self.timers = {
-            'modify_fx': Timer(0, False, self.modify_fx),  # 0 because the delay is computed in start_room
-            'track1_light_animation_1_first_trigger': Timer(21.25, False, self.track1_light_animation_1),
-            'track1_light_animation_1_second_trigger': Timer(220.107125, False, self.track1_light_animation_1),
-            'track1_light_animation_1_loop_trigger': Timer(120.678563, False, self.track1_light_animation_1),
-            'track1_light_animation_2_first_trigger': Timer(29.75, False, self.track1_light_animation_2),
-            'track1_light_animation_2_second_trigger': Timer(228.607125, False, self.track1_light_animation_2),
-            'track1_light_animation_2_loop_trigger': Timer(129.178563, False, self.track1_light_animation_2),
-            'track1_light_animation_3_first_trigger': Timer(51.75, False, self.track1_light_animation_3),
-            'track1_light_animation_3_second_trigger': Timer(250.607125, False, self.track1_light_animation_3),
-            'track1_light_animation_3_loop_trigger': Timer(151.178563, False, self.track1_light_animation_3),
-            'track1_light_animation_4_first_trigger': Timer(82.25, False, self.track1_light_animation_4),
-            'track1_light_animation_4_second_trigger': Timer(281.107125, False, self.track1_light_animation_4),
-            'track1_light_animation_4_loop_trigger': Timer(181.678563, False, self.track1_light_animation_4),
-            'track1_light_animation_5_first_trigger': Timer(90, False, self.track1_light_animation_5),
-            'track1_light_animation_5_second_trigger': Timer(288.857125, False, self.track1_light_animation_5),
-            'track1_light_animation_5_loop_trigger': Timer(189.428563, False, self.track1_light_animation_5),
-            'track1_light_animation_6_first_trigger': Timer(161.5, False, self.track1_light_animation_6),
-            'track1_light_animation_6_loop_trigger': Timer(62.071438, False, self.track1_light_animation_6),
-            'track1_light_animation_7_first_trigger': Timer(182.5, False, self.track1_light_animation_7),
-            'track1_light_animation_7_loop_trigger': Timer(83.071438, False, self.track1_light_animation_7),
-            'light_service_success_animation': Timer(1, False, self.light_service_success_animation),
-            'stop_track_alarm': Timer(1, False, self.stop_track_alarm)
-        }
+        self._timers = {}
+        self.chopsticks_voice_clue_1 = TrackedTimer(
+            self.chopsticks_voice_clue_1_delay, 'chopsticks_voice_clue_1', self, self.play_sound, "pepper_1")
+        self.chopsticks_voice_clue_2 = TrackedTimer(
+            self.chopsticks_voice_clue_2_delay, 'chopsticks_voice_clue_2', self, self.play_sound, "pepper_2")
+        self.boost_fog_timer = TrackedTimer(
+            self.boost_fog_delay, 'boost_fog_timer', self, self.boost_fog)
 
-        self.track1_light_first_timers = [
-            'track1_light_animation_1_first_trigger',
-            'track1_light_animation_1_second_trigger',
-            'track1_light_animation_2_first_trigger',
-            'track1_light_animation_2_second_trigger',
-            'track1_light_animation_3_first_trigger',
-            'track1_light_animation_3_second_trigger',
-            'track1_light_animation_4_first_trigger',
-            'track1_light_animation_4_second_trigger',
-            'track1_light_animation_5_first_trigger',
-            'track1_light_animation_5_second_trigger',
-            'track1_light_animation_6_first_trigger',
-            'track1_light_animation_7_first_trigger',
-        ]
+        self.modify_fx_task = None
 
-        self.track1_light_loop_timers = [
-            'track1_light_animation_1_loop_trigger',
-            'track1_light_animation_2_loop_trigger',
-            'track1_light_animation_3_loop_trigger',
-            'track1_light_animation_4_loop_trigger',
-            'track1_light_animation_5_loop_trigger',
-            'track1_light_animation_6_loop_trigger',
-            'track1_light_animation_7_loop_trigger',
-        ]
+        self.track1_light_animation_1_first_task = None
+        self.track1_light_animation_1_second_task = None
+        self.track1_light_animation_2_first_task = None
+        self.track1_light_animation_2_second_task = None
+        self.track1_light_animation_3_first_task = None
+        self.track1_light_animation_3_second_task = None
+        self.track1_light_animation_4_first_task = None
+        self.track1_light_animation_4_second_task = None
+        self.track1_light_animation_5_first_task = None
+        self.track1_light_animation_5_second_task = None
+        self.track1_light_animation_6_first_task = None
+        self.track1_light_animation_7_first_task = None
+
+        self.track1_light_animation_1_loop_task = None
+        self.track1_light_animation_2_loop_task = None
+        self.track1_light_animation_3_loop_task = None
+        self.track1_light_animation_4_loop_task = None
+        self.track1_light_animation_5_loop_task = None
+        self.track1_light_animation_6_loop_task = None
+        self.track1_light_animation_7_loop_task = None
+
+        self.light_service_success_animation_task = None
+        self.synchronizer_light_service_repaired = False
 
         self.holomenu_slide = None
         self.holomenu_x = None
@@ -261,12 +334,17 @@ class Scenario(MagicNode):
 
         self.is_control_panel_in_manual_mode = False
 
+    def new_session_id(self):
+        session_id = generate_slug(3)
+        self.set_session_data('session_id', session_id)
+
     def ping(self):
         # Not useful to ping something because session data cannot exist if this node is not up
         pass
 
-    def publish_prefix(self, event, channel):
-        self.publish(event, "{}{}".format(self.publication_channel_prefix, channel))
+    def publish_prefix(self, event, channel, log=True):
+        event['sid'] = self.session_data.get('session_id', None)
+        self.publish(event, "{}{}".format(self.publication_channel_prefix, channel), log=log)
 
     def register_delayed_task(self, delay, callable, *callable_args, **callable_kwargs):
         task_id = str(uuid.uuid4())
@@ -276,15 +354,40 @@ class Scenario(MagicNode):
             callable(*callable_args, **callable_kwargs)
 
         self.registered_delayed_tasks[task_id] = reactor.callLater(delay, unregistered_and_call)
+        return task_id
 
-    def tic_tac_callback(self, seconds):
-        self.session_time = int(seconds) if seconds else seconds
+    def cancel_delayed_task(self, task_id):
+        if task_id in self.registered_delayed_tasks:
+            task = self.registered_delayed_tasks.pop(task_id)
+            task.cancel()
+
+    def tic_tac_callback(self, session_timer):
+        elapsed_time = session_timer.elapsed_time
+        self.session_time = round(elapsed_time) if elapsed_time else None
         self.publish_prefix({'category': 'set_session_time', 'seconds': self.session_time}, 'street_display')
         self.publish_game_time_to_webmin()
+
+    def register_tracked_timer(self, timer):
+        self._timers[timer.name] = timer
+
+    def update_tracked_timer(self, timer):
+        timer_data = {
+            "remaining_time": timer.remaining_time,
+            "manually_paused": timer.is_manually_paused,
+            "executed": timer.executed,
+            "delay": timer.delay,
+            "state": timer.state.value,
+        }
+        self.set_session_data(timer.name, timer_data)
 
     def on_first_connection(self):
         for key in self.PERSISTENT_SCENARIO_SETTINGS:
             self._record_session_data(key, self.persistent_settings[key])
+        for timer_name, timer in self._timers.items():
+            self.update_tracked_timer(timer)
+
+        self.set_session_data('session_id', None)
+
         self.publish_prefix({'category': 'request_node_session_data'}, 'broadcast')
 
     @on_event(filter={'from_': 'webmin', 'widget_id': 'start_stop', 'action': 'run'})
@@ -298,7 +401,7 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'start_synchronized'})
     def start_synchronized(self):
         self.set_session_data('ms_pepper_intro', True)
-        if self.session_timer.state == STATE_NOT_STARTED:
+        if self.session_timer.state == TimerState.NOT_STARTED:
             self.start_room()
 
     @on_event(filter={'widget_id': 'play_ms_pepper_here_you_are'})
@@ -322,12 +425,14 @@ class Scenario(MagicNode):
         )
 
     def run_room(self):
-        if self.session_timer.state == STATE_NOT_STARTED:
+        if self.session_timer.state == TimerState.NOT_STARTED:
             self.start_room()
-        elif self.session_timer.state == STATE_PAUSED:
+        elif self.session_timer.state == TimerState.PAUSED:
             self.resume_room()
 
     def start_room(self):
+        self.new_session_id()
+
         def after_ms_pepper_here_you_are():
             self.publish_prefix(
                 {
@@ -344,6 +449,8 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
             self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
             self.session_timer.start()
+            self.chopsticks_voice_clue_1.start()
+            self.chopsticks_voice_clue_2.start()
 
         self.publish_prefix({'category': 'calibrate'}, 'load_cells')
         self.publish_prefix({'category': 'on', 'color': 'orange'}, 'refectory_lights')
@@ -368,11 +475,9 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
 
         real_intro_duration = self.MS_PEPPER_INTRO_DURATION if self.persistent_settings['ms_pepper_intro'] else 0
-        self.timers['modify_fx'].delay = real_intro_duration + 18.285
+        self.modify_fx_task = self.register_delayed_task(real_intro_duration + 18.285, self.modify_fx)
         self.register_delayed_task(real_intro_duration, after_ms_pepper_here_you_are)
         self.register_delayed_task(real_intro_duration + 3, open_the_door)
-
-        self.timers['modify_fx'].start()
 
     def modify_fx(self):
         self.schedule_track1_light_animations()
@@ -387,47 +492,89 @@ class Scenario(MagicNode):
         )
 
     def schedule_track1_light_animations(self):
-        for timer in self.track1_light_first_timers:
-            logger.info("triggering in {} seconds".format(self.timers[timer].delay))
-            self.timers[timer].start()
-
-    def cancel_track1_light_animations(self):
-        self.timers['modify_fx'].cancel()
-
-        for timer in self.track1_light_first_timers:
-            self.timers[timer].cancel()
-
-        for timer in self.track1_light_loop_timers:
-            self.timers[timer].cancel()
+        self.track1_light_animation_1_first_task = (
+            self.register_delayed_task(21.25, self.track1_light_animation_1)
+        )
+        self.track1_light_animation_1_second_task = (
+            self.register_delayed_task(220.107125, self.track1_light_animation_1)
+        )
+        self.track1_light_animation_2_first_task = (
+            self.register_delayed_task(29.75, self.track1_light_animation_2)
+        )
+        self.track1_light_animation_2_second_task = (
+            self.register_delayed_task(228.607125, self.track1_light_animation_2)
+        )
+        self.track1_light_animation_3_first_task = (
+            self.register_delayed_task(51.75, self.track1_light_animation_3)
+        )
+        self.track1_light_animation_3_second_task = (
+            self.register_delayed_task(151.178563, self.track1_light_animation_3)
+        )
+        self.track1_light_animation_4_first_task = (
+            self.register_delayed_task(82.25, self.track1_light_animation_4)
+        )
+        self.track1_light_animation_4_second_task = (
+            self.register_delayed_task(281.107125, self.track1_light_animation_4)
+        )
+        self.track1_light_animation_5_first_task = (
+            self.register_delayed_task(90, self.track1_light_animation_5)
+        )
+        self.track1_light_animation_5_second_task = (
+            self.register_delayed_task(288.857125, self.track1_light_animation_5)
+        )
+        self.track1_light_animation_6_first_task = (
+            self.register_delayed_task(161.5, self.track1_light_animation_6)
+        )
+        self.track1_light_animation_7_first_task = (
+            self.register_delayed_task(182.5, self.track1_light_animation_7)
+        )
 
     @on_event(filter={'category': 'track_loop', 'track_id': 'track1'})
     def track_1_has_looped(self):
-        for timer in self.track1_light_loop_timers:
-            self.timers[timer].start()
-
-    @on_event(filter={'category': 'track_pause', 'track_id': 'track1'})
-    def track_1_has_paused(self):
-        for timer in self.track1_light_first_timers:
-            self.timers[timer].pause()
-
-        for timer in self.track1_light_loop_timers:
-            self.timers[timer].pause()
+        self.track1_light_animation_1_loop_task = (
+            self.register_delayed_task(120.678563, self.track1_light_animation_1)
+        )
+        self.track1_light_animation_2_loop_task = (
+            self.register_delayed_task(129.178563, self.track1_light_animation_2)
+        )
+        self.track1_light_animation_3_loop_task = (
+            self.register_delayed_task(151.178563, self.track1_light_animation_3)
+        )
+        self.track1_light_animation_4_loop_task = (
+            self.register_delayed_task(181.678563, self.track1_light_animation_4)
+        )
+        self.track1_light_animation_5_loop_task = (
+            self.register_delayed_task(189.428563, self.track1_light_animation_5)
+        )
+        self.track1_light_animation_6_loop_task = (
+            self.register_delayed_task(62.071438, self.track1_light_animation_6)
+        )
+        self.track1_light_animation_7_loop_task = (
+            self.register_delayed_task(83.071438, self.track1_light_animation_7)
+        )
 
     @on_event(filter={'category': 'track_stop', 'track_id': 'track1'})
     def track_1_has_stopped(self):
-        for timer in self.track1_light_first_timers:
-            self.timers[timer].cancel()
+        self.cancel_delayed_task(self.track1_light_animation_1_first_task)
+        self.cancel_delayed_task(self.track1_light_animation_1_second_task)
+        self.cancel_delayed_task(self.track1_light_animation_2_first_task)
+        self.cancel_delayed_task(self.track1_light_animation_2_second_task)
+        self.cancel_delayed_task(self.track1_light_animation_3_first_task)
+        self.cancel_delayed_task(self.track1_light_animation_3_second_task)
+        self.cancel_delayed_task(self.track1_light_animation_4_first_task)
+        self.cancel_delayed_task(self.track1_light_animation_4_second_task)
+        self.cancel_delayed_task(self.track1_light_animation_5_first_task)
+        self.cancel_delayed_task(self.track1_light_animation_5_second_task)
+        self.cancel_delayed_task(self.track1_light_animation_6_first_task)
+        self.cancel_delayed_task(self.track1_light_animation_7_first_task)
 
-        for timer in self.track1_light_loop_timers:
-            self.timers[timer].cancel()
-
-    @on_event(filter={'category': 'track_resume', 'track_id': 'track1'})
-    def track_1_has_resumed(self):
-        for timer in self.track1_light_first_timers:
-            self.timers[timer].resume()
-
-        for timer in self.track1_light_loop_timers:
-            self.timers[timer].resume()
+        self.cancel_delayed_task(self.track1_light_animation_1_loop_task)
+        self.cancel_delayed_task(self.track1_light_animation_2_loop_task)
+        self.cancel_delayed_task(self.track1_light_animation_3_loop_task)
+        self.cancel_delayed_task(self.track1_light_animation_4_loop_task)
+        self.cancel_delayed_task(self.track1_light_animation_5_loop_task)
+        self.cancel_delayed_task(self.track1_light_animation_6_loop_task)
+        self.cancel_delayed_task(self.track1_light_animation_7_loop_task)
 
     def track1_light_animation_1(self):
         if not self.persistent_settings['epileptic_mode']:
@@ -473,22 +620,22 @@ class Scenario(MagicNode):
 
     def resume_room(self):
         self.session_timer.resume()
-        for timer_name, timer in self.timers.items():
-            timer.session_resume()
+        for timer_name, timer in self._timers.items():
+            timer.resume()
 
     @on_event(filter={'from_': 'webmin', 'widget_id': 'start_stop', 'action': 'halt'})
     def halt_room(self):
-        if self.session_timer.state in [STATE_NOT_STARTED, STATE_TICKING]:
-            for timer_name, timer in self.timers.items():
-                timer.session_pause()
+        if self.session_timer.state in [TimerState.NOT_STARTED, TimerState.TICKING]:
+            for timer_name, timer in self._timers.items():
+                timer.pause()
             self.session_timer.pause()
 
     @on_event(filter={'from_': 'webmin', 'widget_id': 'start_stop', 'action': 'reset'})
     def reset_room(self):
-        if self.session_timer.state != STATE_PAUSED:
+        if self.session_timer.state != TimerState.PAUSED:
             return
 
-        for timer_name, timer in self.timers.items():
+        for timer_name, timer in self._timers.items():
             timer.cancel()
         self.session_timer.cancel()
         self.session_time = None
@@ -500,9 +647,12 @@ class Scenario(MagicNode):
 
         self.publish_game_time_to_webmin()
 
-        # Note: the table is not automatically reset
+        # Note: the table is not automatically reset, as well as the Niryo and the printer
         self.publish_prefix({'category': 'reset'}, 'broadcast')
 
+        self.set_session_data('session_id', None)
+
+        self.synchronizer_light_service_repaired = False
         self.holomenu_slide = None
         self.holomenu_x = None
         self.holomenu_y = None
@@ -528,8 +678,12 @@ class Scenario(MagicNode):
 
     def _record_session_data(self, key, data):
         self.session_data[key] = data
+        if key == "node_register":
+            log = False
+        else:
+            log = True
         self.publish_prefix(
-            {"category": "set_session_data", "key": key, "data": data}, "webmin")
+            {"category": "set_session_data", "key": key, "data": data}, "webmin", log=log)
 
     @on_event(filter={'category': 'ping'})
     def event_ping(self, from_: str):
@@ -537,25 +691,46 @@ class Scenario(MagicNode):
         node_register[from_] = datetime.now(tz=timezone.utc).isoformat()
         self._record_session_data("node_register", node_register)
 
-    @on_event(filter={'from': 'street_display', 'category': 'unlock_front_door'})
+    @on_event(filter={'from_': 'street_display', 'category': 'unlock_front_door'})
     def street_display_event_unlock_front_door(self):
         self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
         self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
 
-    @on_event(filter={'from': 'chopsticks', 'category': 'set_color'})
+    @on_event(filter={'from_': 'chopsticks', 'category': 'reset'})
+    def chopsticks_reset(self):
+        self.set_session_data('chopsticks_success_time', None)
+        self.set_session_data('chopsticks_first_move_time', None)
+
+        self.chopsticks_voice_clue_1.pause()
+        self.chopsticks_voice_clue_1.cancel()
+        self.chopsticks_voice_clue_2.pause()
+        self.chopsticks_voice_clue_2.cancel()
+
+    @on_event(filter={'from_': 'chopsticks', 'category': 'first_move'})
+    def chopsticks_first_move(self):
+        self.set_session_data('chopsticks_first_move_time', self.session_time or 0)
+        self.chopsticks_voice_clue_1.pause()
+        self.chopsticks_voice_clue_2.pause()
+
+    @on_event(filter={'from_': 'chopsticks', 'category': 'set_color'})
     def chopsticks_event_set_color(self, new_color: str):
         if new_color == 'blue':
             self.publish_prefix({'category': 'play', 'sound_id': 'ambiant_light_blue'}, 'sound_player')
         elif new_color == 'orange':
             self.publish_prefix({'category': 'play', 'sound_id': 'ambiant_light_orange'}, 'sound_player')
 
-    @on_event(filter={'from': 'chopsticks', 'category': 'success'})
+    @on_event(filter={'from_': 'chopsticks', 'category': 'success'})
     def chopsticks_event_success(self):
+        # In case the success is forced
+        self.chopsticks_voice_clue_1.pause()
+        self.chopsticks_voice_clue_2.pause()
+
+        self.set_session_data('chopsticks_success_time', self.session_time or 0)
         self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'control_panel')
 
-    @on_event(filter={'from': 'control_panel', 'category': 'first_manual_mode'})
+    @on_event(filter={'from_': 'control_panel', 'category': 'first_manual_mode'})
     def control_panel_event_manual_mode(self):
-        self.cancel_track1_light_animations()
+        self.cancel_delayed_task(self.modify_fx_task)
         self.publish_prefix({'category': 'stop', 'track_id': 'track1'}, 'music_player')
         self.publish_prefix({'category': 'stop', 'track_id': 'chaotic_atmosphere'}, 'music_player')
         self.publish_prefix({'category': 'play', 'track_id': 'track2'}, 'music_player')
@@ -642,7 +817,7 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             0.2, self.publish_prefix, {'category': 'stop_glitch', 'color': 'orange'}, 'refectory_lights')
 
-    @on_event(filter={'from': 'synchronizer', 'category': 'set_menu_entry'})
+    @on_event(filter={'from_': 'synchronizer', 'category': 'set_menu_entry'})
     def synchronizer_event_set_menu_entry(self, dish: str, index: int, on_manual_mode: bool):
         if not on_manual_mode:
             self.register_delayed_task(0.1, self.publish_prefix, {'category': 'play', 'sound_id': 'hologram_set_slide'}, 'sound_player')
@@ -659,21 +834,22 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'on', 'color': 'all_but_white'}, 'refectory_lights')
             self.publish_prefix({'category': 'off', 'color': 'white'}, 'refectory_lights')
 
-    @on_event(filter={'from': 'synchronizer', 'category': 'light_service_success'})
+    @on_event(filter={'from_': 'synchronizer', 'category': 'light_service_success'})
     def synchronizer_event_light_service_success(self):
-        self.timers['light_service_success_animation'].start()
+        self.synchronizer_light_service_repaired = True
+        self.light_service_success_animation_task = self.register_delayed_task(1, self.light_service_success_animation)
         self.publish_prefix({'category': 'set_lights_service_status', 'repaired': True}, 'control_panel')
 
-    @on_event(filter={'from': 'synchronizer', 'category': 'menu_service_success'})
+    @on_event(filter={'from_': 'synchronizer', 'category': 'menu_service_success'})
     def synchronizer_event_menu_service_success(self):
         self.publish_prefix({'category': 'set_menu_service_status', 'repaired': True}, 'control_panel')
 
-    @on_event(filter={'from': 'synchronizer', 'category': 'services_synchronization_success'})
+    @on_event(filter={'from_': 'synchronizer', 'category': 'services_synchronization_success'})
     def synchronizer_event_services_synchronization_success(self):
         self.publish_prefix({'category': 'play', 'sound_id': 'on_restaurant_start'}, 'sound_player')
 
-        if self.timers['light_service_success_animation'].task:
-            self.timers['light_service_success_animation'].cancel()
+        if self.synchronizer_light_service_repaired:
+            self.cancel_delayed_task(self.light_service_success_animation_task)
             if not self.persistent_settings['epileptic_mode']:
                 self.register_delayed_task(
                     5, self.publish_prefix,
@@ -710,74 +886,85 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             6, self.publish_prefix, {'category': 'play_overlay_video', 'video_id': 'ads_loop'}, 'synchronizer')
 
-    @on_event(filter={'from': 'holographic_menu', 'category': 'play_slide'})
+    @on_event(filter={'from_': 'holographic_menu', 'category': 'play_slide'})
     def holographic_menu_event_play_slide(self, slide: int):
         self.publish_prefix({'category': 'set_menu_cursor_position', 'position': slide}, 'synchronizer')
 
-    @on_event(filter={'from': 'load_cells', 'category': 'load_cell'})
+    @on_event(filter={'from_': 'load_cells', 'category': 'load_cell'})
     def load_cells_event_load_cell(self, color: str, id: int, activated: bool):
         self.publish_prefix({'category': 'load_cell', 'color': color, 'id': id, 'activated': activated}, 'synchronizer')
 
-    @on_event(filter={'from': 'synchronizer', 'category': 'on'})
+    @on_event(filter={'from_': 'synchronizer', 'category': 'on'})
     def synchronizer_event_on(self, color: str):
         self.publish_prefix({'category': 'on', 'color': color}, 'refectory_lights')
 
-    @on_event(filter={'from': 'synchronizer', 'category': 'off'})
+    @on_event(filter={'from_': 'synchronizer', 'category': 'off'})
     def synchronizer_event_off(self, color: str):
         self.publish_prefix({'category': 'off', 'color': color}, 'refectory_lights')
 
-    @on_event(filter={'from': 'orders', 'category': 'first_order'})
-    def orders_first_order(self):
-        self.publish_prefix(
-            {'category': 'set_volume', 'track_id': 'track3', 'volume': 0, 'duration': 2}, 'music_player')
+    def first_order_niryo_light_on(self):
         self.register_delayed_task(
             1, self.publish_prefix, {'category': 'light_on', 'led_id': 'niryo'}, 'waffle_factory')
-        self.register_delayed_task(
-            1, self.publish_prefix, {'category': 'play', 'track_id': 'track5'}, 'music_player')
+
+    @on_event(filter={'from_': 'orders', 'category': 'first_order'})
+    def orders_first_order(self):
+        if self.persistent_settings['order_with_niryo_and_printer']:
+            self.publish_prefix(
+                {'category': 'set_volume', 'track_id': 'track3', 'volume': 0, 'duration': 2}, 'music_player')
+            self.first_order_niryo_light_on()
+            self.register_delayed_task(
+                1, self.publish_prefix, {'category': 'play', 'track_id': 'track5'}, 'music_player')
+
+            self.register_delayed_task(
+                0.5, self.publish_prefix, {'category': 'off', 'color': 'white'}, 'refectory_lights')
+            self.register_delayed_task(
+                0.5, self.publish_prefix, {'category': 'off', 'color': 'blue'}, 'refectory_lights')
+
+            self.register_delayed_task(
+                6, self.publish_prefix, {'category': 'play_animation', 'animation': 'bugged_animation'}, 'niryo')
+            self.register_delayed_task(
+                6, self.publish_prefix, {'category': 'play_animation', 'animation': 'niryo_init'}, 'waffle_factory')
+
+            self.register_delayed_task(
+                self.NIRYO_BUGGED_ANIMATION_DURATION + 6, self.publish_prefix,
+                {'category': 'set_volume', 'track_id': 'track3', 'volume': 35, 'duration': 1}, 'music_player')
+            self.register_delayed_task(
+                self.NIRYO_BUGGED_ANIMATION_DURATION + 6, self.publish_prefix,
+                {'category': 'set_volume', 'track_id': 'track5', 'volume': 0, 'duration': 1}, 'music_player')
+            self.register_delayed_task(
+                self.NIRYO_BUGGED_ANIMATION_DURATION + 6.5,
+                self.publish_prefix, {'category': 'on', 'color': 'white'}, 'refectory_lights')
+            self.register_delayed_task(
+                self.NIRYO_BUGGED_ANIMATION_DURATION + 6.5,
+                self.publish_prefix, {'category': 'on', 'color': 'blue'}, 'refectory_lights')
+            self.register_delayed_task(
+                self.NIRYO_BUGGED_ANIMATION_DURATION + 6 + 1, self.publish_prefix,
+                {'category': 'stop', 'track_id': 'track5'}, 'music_player')
+            delay = self.NIRYO_BUGGED_ANIMATION_DURATION + 6
+        else:
+            delay = 1
+            self.register_delayed_task(
+                0.5, self.publish_prefix,
+                {'category': 'set_volume', 'track_id': 'track3', 'volume': 40, 'duration': 2}, 'music_player')
 
         self.register_delayed_task(
-            1.5, self.publish_prefix, {'category': 'off', 'color': 'white'}, 'refectory_lights')
-        self.register_delayed_task(
-            1.5, self.publish_prefix, {'category': 'off', 'color': 'blue'}, 'refectory_lights')
-
-        self.register_delayed_task(
-            6, self.publish_prefix, {'category': 'play_animation', 'animation': 'bugged_animation'}, 'niryo')
-        self.register_delayed_task(
-            6, self.publish_prefix, {'category': 'play_animation', 'animation': 'niryo_init'}, 'waffle_factory')
-
-        self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + 6, self.publish_prefix,
-            {'category': 'set_volume', 'track_id': 'track3', 'volume': 35, 'duration': 1}, 'music_player')
-        self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + 6, self.publish_prefix,
-            {'category': 'set_volume', 'track_id': 'track5', 'volume': 0, 'duration': 1}, 'music_player')
-        self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + 6.5,
-            self.publish_prefix, {'category': 'on', 'color': 'white'}, 'refectory_lights')
-        self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + 6.5,
-            self.publish_prefix, {'category': 'on', 'color': 'blue'}, 'refectory_lights')
-        self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + 6 + 1, self.publish_prefix,
-            {'category': 'stop', 'track_id': 'track5'}, 'music_player')
-        self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + 7, self.publish_prefix,
+            delay, self.publish_prefix,
             {'category': 'play_overlay_video', 'video_id': 'ms_pepper_stock'}, 'orders')
         self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + 7, self.publish_prefix,
+            delay, self.publish_prefix,
             {'category': 'play_ms_pepper_overlay_video', 'video_id': 'ms_pepper_stock'}, 'synchronizer')
         self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + 6, self.publish_prefix,
+            delay - 1, self.publish_prefix,
             {'category': 'stop', 'video_id': 'street_idle'}, 'advertiser')
         self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + 7, self.publish_prefix,
+            delay, self.publish_prefix,
             {'category': 'play', 'video_id': 'ms_pepper_stock'}, 'advertiser')
         ms_pepper_tells_to_go_in_stock_duration = 27.25
         self.register_delayed_task(
-            self.NIRYO_BUGGED_ANIMATION_DURATION + ms_pepper_tells_to_go_in_stock_duration + 7 + 1,  # + 1 to be sure
+            delay + ms_pepper_tells_to_go_in_stock_duration + 1,  # + 1 to be sure
             self.publish_prefix, {'category': 'play', 'video_id': 'street_idle'}, 'advertiser')
 
-    @on_event(filter={'from': 'orders', 'category': 'ms_pepper_has_told_to_go_in_stock'})
+    @on_event(filter={'from_': 'orders', 'category': 'ms_pepper_has_told_to_go_in_stock'})
     def ms_pepper_has_told_to_go_in_stock(self):
         def post_delay():
             self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'ventilation_panel')
@@ -865,74 +1052,79 @@ class Scenario(MagicNode):
             "inventory"
         )
 
+    def resume_order_niryo_catch_attention(self):
+        pass
+
     @on_event(filter={'from_': 'orders', 'category': 'resume_order'})
     def orders_resume_order(self):
         self.register_delayed_task(
             0.5, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track3', 'volume': 0, 'duration': 2}, 'music_player')
-        self.register_delayed_task(
-            1, self.publish_prefix,
-            {'category': 'play', 'track_id': 'track5'}, 'music_player')
-        self.register_delayed_task(
-            1, self.publish_prefix,
-            {'category': 'set_volume', 'track_id': 'track5', 'volume': 55, 'duration': 1}, 'music_player')
 
-        self.register_delayed_task(
-            1.5, self.publish_prefix, {'category': 'off', 'color': 'white'}, 'refectory_lights')
-        self.register_delayed_task(
-            1.5, self.publish_prefix, {'category': 'off', 'color': 'blue'}, 'refectory_lights')
+        if self.persistent_settings['order_with_niryo_and_printer']:
+            self.register_delayed_task(
+                1, self.publish_prefix,
+                {'category': 'play', 'track_id': 'track5'}, 'music_player')
+            self.register_delayed_task(
+                1, self.publish_prefix,
+                {'category': 'set_volume', 'track_id': 'track5', 'volume': 55, 'duration': 1}, 'music_player')
 
-        delay = 4
-        self.register_delayed_task(
-            delay, self.publish_prefix, {'category': 'play_animation', 'animation': 'animation'}, 'niryo')
+            self.resume_order_niryo_catch_attention()
 
-        delay += self.niryo_animation_duration
-        self.register_delayed_task(
-            delay, self.publish_prefix, {'category': 'play_animation', 'animation': 'niryo_end'}, 'waffle_factory')
+            self.register_delayed_task(
+                0.5, self.publish_prefix, {'category': 'off', 'color': 'white'}, 'refectory_lights')
+            self.register_delayed_task(
+                0.5, self.publish_prefix, {'category': 'off', 'color': 'blue'}, 'refectory_lights')
 
-        delay += self.niryo_end_conveyor_duration
-        self.register_delayed_task(
-            delay, self.publish_prefix, {'category': 'oven_turn_on'}, 'waffle_factory')
+            delay = 4
+            self.register_delayed_task(
+                delay, self.publish_prefix, {'category': 'play_animation', 'animation': 'animation'}, 'niryo')
 
-        delay += self.oven_cooking_duration
-        self.register_delayed_task(
-            delay, self.publish_prefix, {'category': 'oven_turn_off'}, 'waffle_factory')
-        self.register_delayed_task(
-            max(0, delay - 1), self.publish_prefix, {'category': 'light_on', 'led_id': 'printer'}, 'waffle_factory')
-        self.register_delayed_task(
-            delay + 0.5, self.publish_prefix,
-            {'category': 'play_animation', 'animation': 'first_waffle_init'}, 'waffle_factory')
+            delay += self.niryo_animation_duration
+            self.register_delayed_task(
+                delay, self.publish_prefix, {'category': 'play_animation', 'animation': 'niryo_end'}, 'waffle_factory')
 
-        delay += self.first_waffle_init_conveyor_duration
-        if self.persistent_settings['dry_print'] is False:
+            delay += self.niryo_end_conveyor_duration
+            self.register_delayed_task(
+                delay, self.publish_prefix, {'category': 'oven_turn_on'}, 'waffle_factory')
+
+            delay += self.oven_cooking_duration
+            self.register_delayed_task(
+                delay, self.publish_prefix, {'category': 'oven_turn_off'}, 'waffle_factory')
+            self.register_delayed_task(
+                max(0, delay - 1), self.publish_prefix, {'category': 'light_on', 'led_id': 'printer'}, 'waffle_factory')
+            self.register_delayed_task(
+                delay + 0.5, self.publish_prefix,
+                {'category': 'play_animation', 'animation': 'first_waffle_init'}, 'waffle_factory')
+
+            delay += self.first_waffle_init_conveyor_duration
+            if self.persistent_settings['dry_print'] is False:
+                self.register_delayed_task(
+                    delay, self.publish_prefix,
+                    {'category': 'print_pattern', 'pattern': 'b'}, 'waffle_factory')
+
+            delay += self.first_pattern_print_duration
             self.register_delayed_task(
                 delay, self.publish_prefix,
-                {'category': 'print_pattern', 'pattern': 'a'}, 'waffle_factory')
+                {'category': 'play_animation', 'animation': 'waffle_end'}, 'waffle_factory')
 
-        delay += self.first_pattern_print_duration
-        self.register_delayed_task(
-            delay, self.publish_prefix,
-            {'category': 'play_animation', 'animation': 'waffle_end'}, 'waffle_factory')
+            basket_led_blink_delay = delay + self.basket_led_blink_delay
+            self.register_delayed_task(
+                basket_led_blink_delay, self.publish_prefix,
+                {'category': 'basket_led_blink'}, 'waffle_factory')
 
-        delay += self.first_waffle_end_conveyor_duration
-        self.register_delayed_task(
-            delay, self.publish_prefix,
-            {'category': 'basket_led_blink'}, 'waffle_factory')
+            self.register_delayed_task(
+                basket_led_blink_delay + self.basket_led_blinking_time, self.publish_prefix,
+                {'category': 'basket_led_off'}, 'waffle_factory')
 
-        self.register_delayed_task(
-            delay + self.basket_led_blinking_time, self.publish_prefix,
-            {'category': 'basket_led_off'}, 'waffle_factory')
+            delay += self.ms_pepper_says_thanks_delay
+            self.register_delayed_task(
+                delay - 1.5, self.publish_prefix,
+                {'category': 'set_volume', 'track_id': 'track5', 'volume': 0, 'duration': 1}, 'music_player')
 
-        delay += self.delay_before_ms_pepper_says_thanks
-        self.register_delayed_task(
-            delay - 1.5, self.publish_prefix,
-            {'category': 'set_volume', 'track_id': 'track5', 'volume': 0, 'duration': 1}, 'music_player')
-        self.register_delayed_task(
-            delay - 1.5 + 0.5, self.publish_prefix,
-            {'category': 'on', 'color': 'white'}, 'refectory_lights')
-        self.register_delayed_task(
-            delay - 1.5 + 0.5, self.publish_prefix,
-            {'category': 'on', 'color': 'blue'}, 'refectory_lights')
+        else:
+            delay = self.ms_pepper_says_thanks_delay + 1
+
         self.register_delayed_task(
             delay, self.publish_prefix,
             {'category': 'play', 'track_id': 'track62'}, 'music_player')
@@ -970,15 +1162,32 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             37.5 + 1.5, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track7', 'volume': 55, 'duration': 1}, 'music_player')
+        if self.persistent_settings['order_with_niryo_and_printer']:
+            self.register_delayed_task(
+                37.5 + 1.5 + 2, self.publish_prefix,
+                {'category': 'play_animation', 'animation': 'second_waffle_init'}, 'waffle_factory')
+            if self.persistent_settings['dry_print'] is False:
+                self.register_delayed_task(
+                    37.5 + 1.5 + 2 + self.second_waffle_init_conveyor_duration,
+                    self.publish_prefix, {'category': 'print_pattern', 'pattern': 'a'}, 'waffle_factory')
         self.register_delayed_task(
             37.5 + 25 + 1.5, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track7', 'volume': 45, 'duration': 10}, 'music_player')
+
+    def boost_fog(self):
+        self.publish_prefix({'category': 'send_fog', 'duration': self.boost_fog_duration}, 'fog_machine')
+        self.boost_fog_timer.pause()
+        self.boost_fog_timer.cancel()
+        self.boost_fog_timer.start()
 
     @on_event(filter={'from_': 'orders', 'category': 'marmitron_has_asked_for_help'})
     def orders_marmitron_has_asked_for_help(self):
         self.publish_prefix({'category': 'enable'}, 'digital_lock')
         self.publish_prefix({'category': 'calibrate'}, 'secure_floor')
-        self.register_delayed_task(3, self.publish_prefix, {'category': 'send_fog', 'duration': 20}, 'fog_machine')
+        self.register_delayed_task(
+            3, self.publish_prefix,
+            {'category': 'send_fog', 'duration': self.initial_fog_duration}, 'fog_machine')
+        self.boost_fog_timer.start()
         self.register_delayed_task(
             10, self.publish_prefix, {'category': 'set_display_order_recap_notification', 'value': True}, 'orders')
 
@@ -1128,9 +1337,6 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'set_volume', 'track_id': 'alarm', 'volume': 0, 'duration': 1}, 'music_player')
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'root_server')
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'digital_lock')
-        self.timers['stop_track_alarm'].start()
-
-    def stop_track_alarm(self):
         self.publish_prefix({'category': 'stop', 'track_id': 'alarm'}, 'music_player')
 
     @on_event(filter={'category': 'laser_alarm'})
@@ -1139,7 +1345,6 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'set_status', 'status': 'alarm'}, 'secure_floor')
         self.publish_prefix({'category': 'set_status', 'status': 'disabled'}, 'human_authenticator')
         self.publish_prefix({'category': 'play', 'sound_id': 'laser_trigger'}, 'sound_player')
-        self.timers['stop_track_alarm'].cancel()
         self.publish_prefix({'category': 'set_volume', 'track_id': 'alarm', 'volume': 40}, 'music_player')
         self.publish_prefix({'category': 'play', 'track_id': 'alarm'}, 'music_player')
         self.publish_prefix({'category': 'display_alarm_window', 'display': True}, 'root_server')
@@ -1147,6 +1352,8 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from_': 'human_authenticator', 'category': 'success'})
     def human_authenticator_event_success(self):
+        self.boost_fog_timer.pause()
+        self.boost_fog_timer.cancel()
         self.publish_prefix({'category': 'set_success', 'value': True}, 'laser_maze')
         self.publish_prefix({'category': 'success'}, 'secure_floor')
         self.publish_prefix({'category': 'show_ui'}, 'root_server')
@@ -1203,6 +1410,8 @@ class Scenario(MagicNode):
 
         self.register_delayed_task(2, post_delay)
 
+        self.session_timer.pause()
+
     @on_event(filter={'from_': 'root_server', 'category': 'ms_pepper_mad_end'})
     def root_server_event_ms_pepper_mad_end(self):
         self.publish_prefix({'category': 'display_danger_window'}, 'synchronizer')
@@ -1223,13 +1432,42 @@ class Scenario(MagicNode):
 
         if self.persistent_settings['final_by_refectory']:
             self.register_delayed_task(
-                10, self.publish_prefix, {'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
+                5, self.publish_prefix, {'category': 'play', 'sound_id': 'marmitron_7'}, 'sound_player')
             self.register_delayed_task(
-                10, self.publish_prefix, {'category': 'unlock', 'relock': True}, 'front_door_magnet')
+                8, self.publish_prefix, {'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
+            self.register_delayed_task(
+                8, self.publish_prefix, {'category': 'unlock', 'relock': True}, 'front_door_magnet')
         else:
-            self.publish_prefix({'category': 'unlock', 'magnet_id': 'to_outside', 'relock': True}, 'emergency_exit')
+            self.register_delayed_task(
+                2, self.publish_prefix, {'category': 'play', 'sound_id': 'marmitron_7'}, 'sound_player')
+            self.register_delayed_task(
+                5, self.publish_prefix,
+                {'category': 'unlock', 'magnet_id': 'to_outside', 'relock': True}, 'emergency_exit')
+            self.register_delayed_task(
+                5, self.publish_prefix, {'category': 'unlock', 'relock': True}, 'front_door_magnet')
 
-        self.session_timer.pause()
+    @on_event(filter={'widget_type': 'timer', 'action': 'start'})
+    def tracked_timer_start(self, name: str):
+        if name in self._timers:
+            if self._timers[name].state == TimerState.NOT_STARTED:
+                self._timers[name].start()
+            elif self._timers[name].state == TimerState.PAUSED:
+                self._timers[name].manual_resume()
+
+    @on_event(filter={'widget_type': 'timer', 'action': 'pause'})
+    def tracked_timer_pause(self, name: str):
+        if name in self._timers:
+            self._timers[name].manual_pause()
+
+    @on_event(filter={'widget_type': 'timer', 'action': 'cancel'})
+    def tracked_timer_cancel(self, name: str):
+        if name in self._timers:
+            self._timers[name].cancel()
+
+    @on_event(filter={'widget_type': 'timer', 'action': 'execute'})
+    def tracked_timer_execute(self, name: str):
+        if name in self._timers:
+            self._timers[name].execute_callback()
 
     @on_event(filter={'widget_id': 'front_door_open'})
     def button_front_door_open(self):
@@ -1456,14 +1694,6 @@ class Scenario(MagicNode):
     def button_fog_machine_send_fog(self):
         self.publish_prefix({'category': 'send_fog'}, 'fog_machine')
 
-    @on_event(filter={'widget_id': 'fog_machine_continuous_fog'})
-    def button_fog_machine_continuous_fog(self):
-        self.publish_prefix({'category': 'send_fog_forever'}, 'fog_machine')
-
-    @on_event(filter={'widget_id': 'fog_machine_stop_fog'})
-    def button_fog_machine_stop_fog(self):
-        self.publish_prefix({'category': 'stop_sending_fog_forever'}, 'fog_machine')
-
     @on_event(filter={'widget_id': 'control_force_manual_mode'})
     def button_control_force_manual_mode(self):
         self.publish_prefix({'category': 'force_manual_mode'}, 'control_panel')
@@ -1650,25 +1880,17 @@ class Scenario(MagicNode):
     def button_printer_homing(self):
         self.publish_prefix({'category': 'printer_homing'}, 'waffle_factory')
 
-    @on_event(filter={'widget_id': 'chopsticks_success'})
-    def buttons_chopsticks_success(self):
+    @on_event(filter={'widget_id': 'chopsticks', 'action': 'force_success'})
+    def widget_chopsticks_success(self):
         self.publish_prefix({'category': 'force_success'}, 'chopsticks')
 
-    @on_event(filter={'widget_id': 'chopsticks_reset'})
-    def buttons_chopsticks_reset(self):
+    @on_event(filter={'widget_id': 'chopsticks', 'action': 'reset'})
+    def widget_chopsticks_reset(self):
         self.publish_prefix({'category': 'reset'}, 'chopsticks')
 
-    @on_event(filter={'widget_id': 'set_chopsticks_difficulty'})
-    def buttons_chopsticks_set_difficulty(self, difficulty: str):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': difficulty}, 'chopsticks')
-
-    @on_event(filter={'widget_id': 'chopsticks_emulate_plug'})
-    def buttons_chopsticks_emulate_plug(self, letter_index: int):
+    @on_event(filter={'widget_id': 'chopsticks', 'action': 'emulate_chopstick_plug'})
+    def widget_emulate_plug(self, letter_index: int):
         self.publish_prefix({'category': 'emulate_chopstick_plug', 'letter_index': letter_index}, 'chopsticks')
-
-    @on_event(filter={'widget_id': 'chopsticks_emulate_unplug'})
-    def buttons_chopsticks_emulate_unplug(self, letter_index: int):
-        self.publish_prefix({'category': 'emulate_chopstick_unplug', 'letter_index': letter_index}, 'chopsticks')
 
     @on_event(filter={'widget_id': 'oven_turn_on'})
     def button_oven_turn_on(self):
@@ -1836,7 +2058,7 @@ class Scenario(MagicNode):
     @on_event(filter={'category': 'get_session_time'})
     def get_session_time(self):
         # Could be more personalized but it's ok for now
-        self.tic_tac_callback(self.session_time)
+        self.tic_tac_callback(self.session_timer)
 
     @on_event(filter={'widget_type': 'lasers'})
     def toggle_permanent_laser_activation(self, action: str, laser_maze_channel: str, laser_index: int):
@@ -1966,7 +2188,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'set_color_disabled', 'color': color, 'is_disabled': disabled}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'play_sound'})
-    def buttons_play_sound(self, sound_id: str):
+    def play_sound(self, sound_id: str):
         self.publish_prefix({'category': 'play', 'sound_id': sound_id}, 'sound_player')
 
     @on_event(filter={'widget_id': 'set_cylinders_difficulty'})
@@ -1987,9 +2209,100 @@ class Scenario(MagicNode):
 
 
 class ScenarioD1(Scenario):
-    pass
+    def first_order_niryo_light_on(self):
+        self.register_delayed_task(
+            1, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            1.2, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            1.5, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            1.7, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            2, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            2.2, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            2.5, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            2.7, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            3, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            3.2, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            3.5, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            3.7, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            4, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            4.2, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            4.5, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            4.7, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            5, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+
+    def resume_order_niryo_catch_attention(self):
+        self.register_delayed_task(
+            0.5, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            0.7, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            1, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            1.2, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            1.5, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            1.7, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            2, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            2.2, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            2.5, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            2.8, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            3, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
+        self.register_delayed_task(
+            3.2, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 1.1}, 'waffle_factory')
+        self.register_delayed_task(
+            3.5, self.publish_prefix,
+            {'category': 'light_set_freq', 'led_id': 'niryo', 'value': 49.9}, 'waffle_factory')
 
 
 class ScenarioD2(Scenario):
     pass
-

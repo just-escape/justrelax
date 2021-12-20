@@ -72,10 +72,6 @@ export default {
 </script>
 
 <style scoped>
-.min-width-100px {
-  min-width: 100px;
-}
-
 .rows-striped:nth-child(odd) {
   background: #4d4d4f;
 }
