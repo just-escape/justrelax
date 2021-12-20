@@ -15,6 +15,7 @@ WIDGET_TYPES = (
     ('textarea', 'textarea'),
     ('node_register', 'node_register'),
     ('chopsticks', 'chopsticks'),
+    ('control_panel', 'control_panel'),
     ('timer', 'timer'),
 )
 
