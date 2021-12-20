@@ -108,7 +108,7 @@
   "pk": 14,
   "fields": {
     "app_label": "editor",
-    "model": "template"
+    "model": "ruleset"
   }
 },
 {
@@ -116,7 +116,7 @@
   "pk": 15,
   "fields": {
     "app_label": "editor",
-    "model": "variable"
+    "model": "template"
   }
 },
 {
@@ -124,7 +124,7 @@
   "pk": 16,
   "fields": {
     "app_label": "editor",
-    "model": "templatelink"
+    "model": "variable"
   }
 },
 {
@@ -132,7 +132,7 @@
   "pk": 17,
   "fields": {
     "app_label": "editor",
-    "model": "templatecontextparagraph"
+    "model": "templatelink"
   }
 },
 {
@@ -140,7 +140,7 @@
   "pk": 18,
   "fields": {
     "app_label": "editor",
-    "model": "rule"
+    "model": "templatecontextparagraph"
   }
 },
 {
@@ -148,7 +148,7 @@
   "pk": 19,
   "fields": {
     "app_label": "editor",
-    "model": "ruleset"
+    "model": "rule"
   }
 },
 {
@@ -364,15 +364,6 @@
 },
 {
   "model": "live.card",
-  "pk": 55,
-  "fields": {
-    "rule_set": 1,
-    "name": "Baguettes",
-    "index": 11
-  }
-},
-{
-  "model": "live.card",
   "pk": 56,
   "fields": {
     "rule_set": 3,
@@ -423,6 +414,24 @@
     "rule_set": 1,
     "name": "Root server",
     "index": 12
+  }
+},
+{
+  "model": "live.card",
+  "pk": 62,
+  "fields": {
+    "rule_set": 1,
+    "name": "Interjections Mme Poivre",
+    "index": 10
+  }
+},
+{
+  "model": "live.card",
+  "pk": 63,
+  "fields": {
+    "rule_set": 1,
+    "name": "Interjections Marmitron",
+    "index": 11
   }
 },
 {
@@ -774,7 +783,7 @@
     "name": "Machine à fumée",
     "index": 1,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"fog_machine_turn_on\",\"icon\":\"fa-fw fas fa-temperature-high\"},{\"id\": \"fog_machine_turn_off\",\"icon\": \"fa-fw fas fa-power-off\"},{\"id\": \"fog_machine_send_fog\",\"icon\":\"fa-fw fas fa-smog\"},{\"id\":\"fog_machine_continuous_fog\",\"icon\":\"fa-fw fas fa-infinity\"},{\"id\":\"fog_machine_stop_fog\",\"icon\":\"fa-fw fas fa-ban\"}]"
+    "widget_params": "[{\"id\":\"fog_machine_turn_on\",\"icon\":\"fa-fw fas fa-temperature-high\"},{\"id\": \"fog_machine_turn_off\",\"icon\": \"fa-fw fas fa-power-off\"},{\"id\": \"fog_machine_send_fog\",\"icon\":\"fa-fw fas fa-smog\"}]"
   }
 },
 {
@@ -1043,105 +1052,6 @@
 },
 {
   "model": "live.cardrow",
-  "pk": 289,
-  "fields": {
-    "card": 55,
-    "name": "Difficulté",
-    "index": 1,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"set_chopsticks_difficulty\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"difficulty\": \"easy\"}}, {\"id\":\"set_chopsticks_difficulty\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"difficulty\": \"normal\"}},{\"id\":\"set_chopsticks_difficulty\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"difficulty\": \"hard\"}}]"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 290,
-  "fields": {
-    "card": 55,
-    "name": "Status",
-    "index": 0,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"chopsticks_success\",\"icon\":\"fa-fw fas fa-check\"},{\"id\":\"chopsticks_reset\",\"icon\":\"fa-fw fas fa-undo-alt\"}]"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 291,
-  "fields": {
-    "card": 55,
-    "name": "C",
-    "index": 2,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 0}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 0}}]"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 292,
-  "fields": {
-    "card": 55,
-    "name": "O",
-    "index": 3,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 1}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 1}}]"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 293,
-  "fields": {
-    "card": 55,
-    "name": "N",
-    "index": 4,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 2}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 2}}]"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 294,
-  "fields": {
-    "card": 55,
-    "name": "T",
-    "index": 5,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 3}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 3}}]"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 295,
-  "fields": {
-    "card": 55,
-    "name": "R",
-    "index": 6,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 4}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 4}}]"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 296,
-  "fields": {
-    "card": 55,
-    "name": "O",
-    "index": 7,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 5}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 5}}]"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 297,
-  "fields": {
-    "card": 55,
-    "name": "L",
-    "index": 8,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"chopsticks_emulate_plug\",\"icon\": \"fa-fw fas fa-long-arrow-alt-up\", \"extra\": {\"letter_index\": 6}},{\"id\":\"chopsticks_emulate_unplug\",\"icon\":\"fa-fw fas fa-long-arrow-alt-down\", \"extra\": {\"letter_index\": 6}}]"
-  }
-},
-{
-  "model": "live.cardrow",
   "pk": 298,
   "fields": {
     "card": 54,
@@ -1292,17 +1202,6 @@
     "index": 0,
     "widget": "session_data",
     "widget_params": "{\"widget\": \"checkbox\", \"key\": \"epileptic_mode\"}"
-  }
-},
-{
-  "model": "live.cardrow",
-  "pk": 314,
-  "fields": {
-    "card": 52,
-    "name": "Texte des graduations",
-    "index": 9,
-    "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"menu_graduation_texts\",\"icon\":\"fa-fw fas fa-ban\", \"extra\": {\"display\": false}}, {\"id\":\"menu_graduation_texts\",\"icon\":\"fa-fw fas fa-check\", \"extra\": {\"display\": true}}]"
   }
 },
 {
@@ -1709,7 +1608,381 @@
     "name": "Cylindres difficulté",
     "index": 2,
     "widget": "buttons_group",
-    "widget_params": "[{\"id\":\"set_cylinders_difficulty\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"difficulty\": \"easy\"}}, {\"id\":\"set_cylinders_difficulty\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"difficulty\": \"normal\"}},{\"id\":\"set_cylinders_difficulty\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"difficulty\": \"hard\"}}]"
+    "widget_params": "[{\"id\":\"force_cylinders_success\",\"icon\":\"fa-fw fas fa-check\"}, {\"id\":\"reset_cylinders\",\"icon\":\"fa-fw fas fa-undo-alt\"}, {\"id\":\"set_cylinders_difficulty\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"difficulty\": \"easy\"}}, {\"id\":\"set_cylinders_difficulty\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"difficulty\": \"normal\"}},{\"id\":\"set_cylinders_difficulty\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"difficulty\": \"hard\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 352,
+  "fields": {
+    "card": 51,
+    "name": "Cylindres check",
+    "index": 3,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"check_cylinders_availability\",\"icon\":\"fa-fw fas fa-dice-one\", \"extra\": {\"id\": \"potjevleesch\"}}, {\"id\":\"check_cylinders_availability\",\"icon\":\"fa-fw fas fa-dice-two\", \"extra\": {\"id\": \"salade_flamande\"}}, {\"id\":\"check_cylinders_availability\",\"icon\":\"fa-fw fas fa-dice-three\", \"extra\": {\"id\": \"cambraisienne\"}},{\"id\":\"check_cylinders_availability\",\"icon\":\"fa-fw fas fa-dice-four\", \"extra\": {\"id\": \"gaufresque\"}}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 353,
+  "fields": {
+    "card": 62,
+    "name": "Configurez lumières",
+    "index": 3,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_3\"}, \"help\": \"Configurez la bonne combinaison de couleur des lumières pour ouvrir le pannel de contrôle.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 354,
+  "fields": {
+    "card": 62,
+    "name": "Passez en mode manuel",
+    "index": 4,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_4\"}, \"help\": \"N'oubliez pas de passer le restaurant en mode manuel grâce au câble de contrôle !\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 355,
+  "fields": {
+    "card": 62,
+    "name": "Indications utiles à lire",
+    "index": 5,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_5\"}, \"help\": \"L'écran de maintenance donne des indications qui peuvent se révèler utiles à lire.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 356,
+  "fields": {
+    "card": 62,
+    "name": "Retrouvez les plats/prix",
+    "index": 6,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_6\"}, \"help\": \"Ce satané Marmitron a déréglé le menu du Digimiam, en cherchant dans le restaurant vous deriez retrouver les plats du menu et leur prix.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 357,
+  "fields": {
+    "card": 62,
+    "name": "Emballages dans la poubelle",
+    "index": 7,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_7\"}, \"help\": \"Êtes-vous sûr d'avoir trouvé tous les plats du restaurant ? Les emballages dans la poubelle pourraient vous aider.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 358,
+  "fields": {
+    "card": 62,
+    "name": "Il reste des tickets de caisse",
+    "index": 8,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_8\"}, \"help\": \"Êtes-vous sûr d'avoir trouvé tous les plats du restaurant ? Il doit bien rester des tickets de caisse !\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 359,
+  "fields": {
+    "card": 62,
+    "name": "Aidez-vous des pubs",
+    "index": 9,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_9\"}, \"help\": \"Êtes-vous sûr d'avoir trouvé tous les plats du restaurant ? Aidez-vous des publicités !\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 360,
+  "fields": {
+    "card": 62,
+    "name": "Regardez sous vos pieds",
+    "index": 10,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_10\"}, \"help\": \"Les interrupteurs de synchronisation des lumières sont situés dans la salle, regardez bien sous vos pieds !\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 361,
+  "fields": {
+    "card": 62,
+    "name": "Concentrez-vous sur 1 lumière",
+    "index": 11,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_11\"}, \"help\": \"Le restaurant n'a pas assez de puissance pour synchroniser toutes les lumières simultanément, concentrez-vous sur une lumière à la fois pour aller plus vite.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 362,
+  "fields": {
+    "card": 62,
+    "name": "Commande hauteur moyen",
+    "index": 12,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_12\"}, \"help\": \"Vous devriez peut-être réaliser une commande à la hauteur de vos moyens...\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 363,
+  "fields": {
+    "card": 62,
+    "name": "Module de ventilation",
+    "index": 13,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_13\"}, \"help\": \"Vous devez ouvrir la trappe de ventilation grâce au module situé en haut à gauche de celle-ci.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 364,
+  "fields": {
+    "card": 62,
+    "name": "Plus vite plus loin",
+    "index": 14,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_14\"}, \"help\": \"Seul on va plus vite, ensemble on va plus loin.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 365,
+  "fields": {
+    "card": 62,
+    "name": "Enclenchement rotation",
+    "index": 15,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_15\"}, \"help\": \"Le logiciel de maintenance indique que les capsules alimentaires doivent être enclenchées grâce à une rotation dans le sens horaire.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 366,
+  "fields": {
+    "card": 62,
+    "name": "Déplacez-vous deuxième niveau",
+    "index": 16,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_16\"}, \"help\": \"Vous n'avez pas fini d'organiser les capsules virtuelles, déplacez-vous dans le deuxième niveau grâce à la flèche.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 367,
+  "fields": {
+    "card": 62,
+    "name": "Logiciel aide orga virtuelle",
+    "index": 17,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_17\"}, \"help\": \"Le logiciel de maintenance va vous donner un coup de pouce pour organiser les capsules virtuelles.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 368,
+  "fields": {
+    "card": 62,
+    "name": "Rdv dans le réfectoire",
+    "index": 18,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"pepper_18\"}, \"help\": \"Le stock alimentaire est fonctionnel. Rendez-vous dans le réfectoire du restaurant pour relancer la commande de test.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 369,
+  "fields": {
+    "card": 63,
+    "name": "Transférez néofrancs bague",
+    "index": 0,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"marmitron_1\"}, \"help\": \"Vous pouvez transférer des néofrancs grâce à votre bague sur le terminal d'identification.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 370,
+  "fields": {
+    "card": 63,
+    "name": "J'ai imprimé le code de la porte",
+    "index": 2,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"marmitron_2\"}, \"help\": \"Je suis détenu dans la salle serveur ! Je vous ai imprimé le code de la porte.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 371,
+  "fields": {
+    "card": 63,
+    "name": "Désactiver alarme sortez",
+    "index": 3,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"marmitron_3\"}, \"help\": \"Je ne peux désactiver l'alarme que si vous sortez tous de la pièce.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 372,
+  "fields": {
+    "card": 63,
+    "name": "Deux modules pour désarmer",
+    "index": 4,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"marmitron_4\"}, \"help\": \"Placez-vous sur les deux modules d'identification pour désarmer le système de sécurité.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 373,
+  "fields": {
+    "card": 63,
+    "name": "Fonction mot de passe oublié",
+    "index": 5,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"marmitron_5\"}, \"help\": \"Madame Poivre a configuré le mot de passe, seule elle le connait ! Mmmh... Je viens de voir qu'il y a une fonction mot de passe oublié.\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 374,
+  "fields": {
+    "card": 63,
+    "name": "Ingrédient secret disponibilité",
+    "index": 6,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"marmitron_6\"}, \"help\": \"J'utilise un ingrédient secret dans toutes mes recettes, le module de disponibilité vous aidera pour le découvrir !\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 375,
+  "fields": {
+    "card": 58,
+    "name": "Intro seulement",
+    "index": 9,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_ms_pepper_here_you_are\",\"icon\":\"fa-fw fas fa-play\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 376,
+  "fields": {
+    "card": 58,
+    "name": "Dry print",
+    "index": 5,
+    "widget": "session_data",
+    "widget_params": "{\"widget\": \"checkbox\", \"key\": \"dry_print\"}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 377,
+  "fields": {
+    "card": 56,
+    "name": "Registre",
+    "index": 2,
+    "widget": "node_register",
+    "widget_params": "{\"nodes\": [{\"name\": \"chopsticks\"}, {\"name\": \"control_panel\"}, {\"name\": \"holographic_menu\"}, {\"name\": \"load_cells\"}, {\"name\": \"advertiser\"}, {\"name\": \"street_display\"}, {\"name\": \"ventilation_panel\"}, {\"name\": \"payment_module\"}, {\"name\": \"vents_locker\"}, {\"name\": \"refectory_lights\"}, {\"name\": \"street_lights\"}, {\"name\": \"front_door_magnet\"}, {\"name\": \"orders\"}, {\"name\": \"synchronizer\"}, {\"name\": \"root_server\"}, {\"name\": \"inventory\"}, {\"name\": \"digital_lock\"}, {\"name\": \"sokoban_controls\"}, {\"name\": \"emergency_exit\"}, {\"name\": \"stock_lights\"}, {\"name\": \"cylinders\"}, {\"name\": \"secure_floor\"}, {\"name\": \"fog_machine\"}, {\"name\": \"niryo\"}, {\"name\": \"laser_maze\"}, {\"name\": \"relays\"}, {\"name\": \"human_authenticator\"}, {\"name\": \"waffle_factory\"}, {\"name\": \"digital_lock_shutdown\"}, {\"name\": \"music_player\"}, {\"name\": \"sound_player\"}, {\"name\": \"d1_c1_shutdown\"}, {\"name\": \"d1_c2_shutdown\"}, {\"name\": \"d1_c3_shutdown\"}]}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 378,
+  "fields": {
+    "card": 59,
+    "name": "Registre",
+    "index": 2,
+    "widget": "node_register",
+    "widget_params": "{\"nodes\": [{\"name\": \"chopsticks\"}, {\"name\": \"control_panel\"}, {\"name\": \"holographic_menu\"}, {\"name\": \"load_cells\"}, {\"name\": \"advertiser\"}, {\"name\": \"street_display\"}, {\"name\": \"ventilation_panel\"}, {\"name\": \"payment_module\"}, {\"name\": \"vents_locker\"}, {\"name\": \"refectory_lights\"}, {\"name\": \"street_lights\"}, {\"name\": \"front_door_magnet\"}, {\"name\": \"orders\"}, {\"name\": \"synchronizer\"}, {\"name\": \"root_server\"}, {\"name\": \"inventory\"}, {\"name\": \"digital_lock\"}, {\"name\": \"sokoban_controls\"}, {\"name\": \"emergency_exit\"}, {\"name\": \"stock_lights\"}, {\"name\": \"cylinders\"}, {\"name\": \"secure_floor\"}, {\"name\": \"fog_machine\"}, {\"name\": \"niryo\"}, {\"name\": \"laser_maze_a\"}, {\"name\": \"laser_maze_b\"}, {\"name\": \"relays\"}, {\"name\": \"human_authenticator\"}, {\"name\": \"waffle_factory\"}, {\"name\": \"digital_lock_shutdown\"}, {\"name\": \"music_player\"}, {\"name\": \"sound_player\"}, {\"name\": \"d2_c1_shutdown\"}, {\"name\": \"d2_c2_shutdown\"}, {\"name\": \"d2_c3_shutdown\"}]}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 379,
+  "fields": {
+    "card": 63,
+    "name": "Vite, sortez !",
+    "index": 7,
+    "widget": "buttons_group",
+    "widget_params": "[{\"id\":\"play_sound\",\"icon\":\"fa-fw fas fa-volume-up\", \"extra\": {\"sound_id\": \"marmitron_7\"}, \"help\": \"Vite, sortez ! Merci à vous et fuyez vite !\"}]"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 380,
+  "fields": {
+    "card": 58,
+    "name": "Animation Niryo et imprimante",
+    "index": 6,
+    "widget": "session_data",
+    "widget_params": "{\"widget\": \"checkbox\", \"key\": \"order_with_niryo_and_printer\"}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 381,
+  "fields": {
+    "card": 4,
+    "name": "Baguettes",
+    "index": 0,
+    "widget": "chopsticks",
+    "widget_params": "\"\""
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 382,
+  "fields": {
+    "card": 4,
+    "name": "Rappel CONTROL",
+    "index": 7,
+    "widget": "timer",
+    "widget_params": "{\"name\": \"chopsticks_voice_clue_1\", \"execute_help\": \"Je vous rappelle que vous devez acceder au pannel de controle pour désactiver le marmitron.\"}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 383,
+  "fields": {
+    "card": 4,
+    "name": "Tige pour CONTROL",
+    "index": 8,
+    "widget": "timer",
+    "widget_params": "{\"name\": \"chopsticks_voice_clue_2\", \"execute_help\": \"Le logiciel de maintenance indique que vous avez besoin d'une tige pour enclencher les mécanismes du panel de contrôle.\"}"
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 384,
+  "fields": {
+    "card": 4,
+    "name": "Panel de contrôle",
+    "index": 10,
+    "widget": "control_panel",
+    "widget_params": "\"\""
+  }
+},
+{
+  "model": "live.cardrow",
+  "pk": 385,
+  "fields": {
+    "card": 16,
+    "name": "Fumée continue",
+    "index": 6,
+    "widget": "timer",
+    "widget_params": "{\"name\": \"boost_fog_timer\", \"execute_help\": \"Envoie périodiquement de la fumée.\"}"
   }
 },
 {
