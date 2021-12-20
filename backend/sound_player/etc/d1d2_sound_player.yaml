@@ -70,7 +70,7 @@ sounds:
     path: /home/justescape/sounds/laser_trigger.wav
   - id: gaz
     path: /home/justescape/sounds/gaz.wav
-    volume: 90
+    volume: 80
   - id: typing
     path: /home/justescape/sounds/typing.wav
   - id: pepper_1
