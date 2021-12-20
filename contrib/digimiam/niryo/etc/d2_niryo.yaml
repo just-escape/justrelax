@@ -91,7 +91,7 @@ animations:
     - t: 0
       motor: shoulder
       direction: forward
-      n_pulses: 1540
+      n_pulses: 1560
       step_delay: 1700
       liminary_n_pulses: 200
       liminary_step_delay: 3500
@@ -111,7 +111,7 @@ animations:
     - t: 4.8
       motor: arm
       direction: backward
-      n_pulses: 280
+      n_pulses: 240
       step_delay: 3000
       liminary_n_pulses: 100
       liminary_step_delay: 6000
@@ -150,7 +150,7 @@ animations:
     - t: 0
       motor: arm
       direction: forward
-      n_pulses: 280
+      n_pulses: 240
       step_delay: 3000
       liminary_n_pulses: 100
       liminary_step_delay: 6000
@@ -160,7 +160,7 @@ animations:
     - t: 2
       motor: shoulder
       direction: backward
-      n_pulses: 1540
+      n_pulses: 1560
       step_delay: 1700
       liminary_n_pulses: 200
       liminary_step_delay: 3500
@@ -184,7 +184,7 @@ animations:
       liminary_step_delay: 5000
     - t: 1.5
       dynamixel: thumb
-      position: 545
+      position: 560
     - t: 1.3
       motor: arm
       direction: backward
@@ -382,7 +382,7 @@ animations:
     - t: 10.5
       motor: shoulder
       direction: forward
-      n_pulses: 1540
+      n_pulses: 1560
       step_delay: 1700
       liminary_n_pulses: 200
       liminary_step_delay: 3500
@@ -402,7 +402,7 @@ animations:
     - t: 15.3
       motor: arm
       direction: backward
-      n_pulses: 280
+      n_pulses: 240
       step_delay: 3000
       liminary_n_pulses: 100
       liminary_step_delay: 6000
@@ -440,7 +440,7 @@ animations:
     - t: 21
       motor: arm
       direction: forward
-      n_pulses: 280
+      n_pulses: 240
       step_delay: 3000
       liminary_n_pulses: 100
       liminary_step_delay: 6000
@@ -450,7 +450,7 @@ animations:
     - t: 23
       motor: shoulder
       direction: backward
-      n_pulses: 1540
+      n_pulses: 1560
       step_delay: 1700
       liminary_n_pulses: 200
       liminary_step_delay: 3500
@@ -473,7 +473,7 @@ animations:
       liminary_step_delay: 5000
     - t: 29.5
       dynamixel: thumb
-      position: 545
+      position: 560
     - t: 29.3
       motor: arm
       direction: backward

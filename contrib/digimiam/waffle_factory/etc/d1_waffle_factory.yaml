@@ -32,19 +32,25 @@ motors:
 
 printer_homing_sequence:
   - t: 0
+    gcode: $21=1
+  - t: 1
+    gcode: G01 X-6 F100
+  - t: 2
     gcode: G01 Y25 F200
   - t: 8
-    gcode: G01 Y-20 F200
+    gcode: $21=0
   - t: 9
     gcode: G92 Y0
   - t: 12
     gcode: G01 Y-23 F200
   - t: 20
     gcode: G01 Y-7.1 F200
+  - t: 25
+    gcode: $21=1
   - t: 26
     gcode: G01 X-15 F200
   - t: 32
-    gcode: G01 X0 F200
+    gcode: $21=0
   - t: 33
     gcode: G92 X0
   - t: 34
@@ -73,7 +79,7 @@ animations:
     - t: 0
       motor: printer
       direction: forward
-      n_pulses: 2020
+      n_pulses: 2040
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -85,75 +91,75 @@ animations:
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
-    - t: 6
+    - t: 4.5
       motor: extractor
       direction: forward
-      n_pulses: 2064
-      step_delay: 2000
-    - t: 6
+      n_pulses: 2104
+      step_delay: 200
+    - t: 4.5
       motor: finisher
       direction: forward
       n_pulses: 2000
-      step_delay: 2000
-    - t: 12
+      step_delay: 200
+    - t: 6.5
       motor: extractor
       direction: backward
-      n_pulses: 2060
-      step_delay: 2000
-    - t: 13
+      n_pulses: 2100
+      step_delay: 200
+    - t: 6.5
       motor: short_one
       direction: forward
       n_pulses: 2339
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
-    - t: 17
+    - t: 9.5
       motor: finisher
       direction: backward
       n_pulses: 2004
-      step_delay: 2000
-    - t: 21
+      step_delay: 200
+    - t: 10.5
       motor: podium
       direction: backward
       n_pulses: 2304
-      step_delay: 2000
-    - t: 27
+      step_delay: 200
+    - t: 12
       motor: finisher
       direction: forward
       n_pulses: 2600
-      step_delay: 2000
-    - t: 28
+      step_delay: 200
+    - t: 12
       motor: short_one
       direction: backward
       n_pulses: 2335
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
-    - t: 32
+    - t: 14
       motor: podium
       direction: forward
       n_pulses: 2300
-      step_delay: 2000
-    - t: 35
+      step_delay: 200
+    - t: 15
       motor: finisher
       direction: backward
       n_pulses: 2604
-      step_delay: 2000
+      step_delay: 200
   second_waffle_init:
     - t: 0
       motor: reloader
       direction: forward
       n_pulses: 1900
-      step_delay: 2000
-    - t: 5.5
+      step_delay: 200
+    - t: 1.5
       motor: reloader
       direction: backward
       n_pulses: 1904
-      step_delay: 2000
-    - t: 5.5
+      step_delay: 200
+    - t: 1.5
       motor: printer
       direction: backward
-      n_pulses: 2700
+      n_pulses: 2680
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
