@@ -11,12 +11,12 @@
     </div>
 
     <div class="d-flex flex-row h-100 p-5">
-      <div class="d-flex flex-column w-25 pr-4" style="transition: opacity 5s ease-in-out" :style="{opacity: UIOpacity}" :class="{'d-none': !UIOpacity}">
+      <div class="d-flex flex-column w-25 pr-4" style="transition: opacity 5s ease-in-out" :style="{opacity: UIOpacity}">
         <div class="d-flex flex-row h-50 mb-4">
-          <ServicesWindow/>
+          <ServicesWindow :class="{'d-none': !UIOpacity}"/>
         </div>
         <div class="d-flex flex-row h-50 mt-4">
-          <ConfigurationWindow/>
+          <ConfigurationWindow :class="{'d-none': !UIOpacity}"/>
         </div>
       </div>
 
@@ -25,12 +25,12 @@
           <MarmitronWindow/>
         </div>
         <div class="d-flex flex-row h-25">
-          <Keyboard/>
+          <Keyboard :class="{'d-none': !UIOpacity}"/>
         </div>
       </div>
 
-      <div class="d-flex flex-column w-25 pl-4" style="transition: opacity 5s ease-in-out" :style="{opacity: UIOpacity}" :class="{'d-none': !UIOpacity}">
-        <MenuWindow/>
+      <div class="d-flex flex-column w-25 pl-4" style="transition: opacity 5s ease-in-out" :style="{opacity: UIOpacity}">
+        <MenuWindow :class="{'d-none': !UIOpacity}"/>
       </div>
     </div>
 
