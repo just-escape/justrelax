@@ -398,12 +398,6 @@ class Scenario(MagicNode):
     def run_room_from_street_display(self):
         self.run_room()
 
-    @on_event(filter={'widget_id': 'start_synchronized'})
-    def start_synchronized(self):
-        self.set_session_data('ms_pepper_intro', True)
-        if self.session_timer.state == TimerState.NOT_STARTED:
-            self.start_room()
-
     @on_event(filter={'widget_id': 'play_ms_pepper_here_you_are'})
     def play_ms_pepper_here_you_are(self):
         self.publish_prefix(
@@ -1188,8 +1182,14 @@ class Scenario(MagicNode):
             3, self.publish_prefix,
             {'category': 'send_fog', 'duration': self.initial_fog_duration}, 'fog_machine')
         self.boost_fog_timer.start()
+
+        if self.persistent_settings['order_with_niryo_and_printer'] and not self.persistent_settings['dry_print']:
+            display_order_recap_delay = self.config['display_order_recap_delay']
+        else:
+            display_order_recap_delay = 1
         self.register_delayed_task(
-            10, self.publish_prefix, {'category': 'set_display_order_recap_notification', 'value': True}, 'orders')
+            display_order_recap_delay, self.publish_prefix,
+            {'category': 'set_display_order_recap_notification', 'value': True}, 'orders')
 
     @on_event(filter={'from_': 'payment_module', 'category': 'set_credits'})
     def payment_module_event_set_credits(self, value):
@@ -1610,7 +1610,7 @@ class Scenario(MagicNode):
     def button_maze_success(self):
         self.publish_prefix({'category': 'success'}, 'secure_floor')
         self.publish_prefix({'category': 'set_success', 'value': True}, 'laser_maze')
-        self.publish_prefix({'set_status': 'category', 'status': 'success'}, 'human_authenticator')
+        self.publish_prefix({'category': 'set_status', 'status': 'success'}, 'human_authenticator')
 
     @on_event(filter={'widget_id': 'maze_reset'})
     def button_maze_reset(self):

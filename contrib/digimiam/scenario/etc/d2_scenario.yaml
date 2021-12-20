@@ -21,6 +21,7 @@ first_pattern_print_duration: 60
 first_waffle_end_conveyor_duration: 40
 basket_led_blinking_time: 10
 delay_before_ms_pepper_says_thanks: 5
+display_order_recap_delay: 10  # is forced to 1 if printer has not printed anything
 
 # root_server
 initial_fog_duration: 22

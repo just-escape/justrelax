@@ -22,6 +22,7 @@ basket_led_blink_delay: 20
 basket_led_blinking_time: 40
 ms_pepper_says_thanks_delay: 0
 second_waffle_init_conveyor_duration: 6
+display_order_recap_delay: 10  # is forced to 1 if printer has not printed anything
 
 # root_server
 initial_fog_duration: 22
