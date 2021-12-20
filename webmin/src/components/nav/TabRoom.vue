@@ -45,8 +45,8 @@ export default {
       return this.$route.params.roomId == this.room.id
     },
     gameTime() {
-      if (roomStore.state.sessionData[this.roomId]) {
-        return roomStore.state.sessionData[this.roomId].game_time
+      if (roomStore.state.sessionData[this.room.id]) {
+        return roomStore.state.sessionData[this.room.id].game_time
       } else {
         return undefined
       }

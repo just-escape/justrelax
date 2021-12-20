@@ -39,6 +39,13 @@ export default new Vuex.Store({
       }
       Vue.set(state, 'rooms', rooms)
     },*/
+    setRoomDefaultPublicationChannel(state, {roomId, defaultPublicationChannel}) {
+      for (var room of state.rooms) {
+        if (room.id == roomId) {
+          room.default_publication_channel = defaultPublicationChannel
+        }
+      }
+    },
     processEvent(state, {channel, event}) {
       for (var room of state.rooms) {
         if (room.subscription_channels.includes(channel)) {

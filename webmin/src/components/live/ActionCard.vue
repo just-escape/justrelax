@@ -1,29 +1,41 @@
 <template>
-  <b-card
-    :header="card.name"
-    header-tag="h3"
-    header-class="big-noodle text-jaffa text-center"
-    class="bgc-dark border-jaffa h-100"
-  >
-    <div v-if="cardRows === undefined">
-      Loading...
-    </div>
-    <ul v-else class="list-unstyled mb-0">
-      <li v-for="(row, index) in cardRows" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
-        <WidgetButtonsGroup v-if="row.widget === 'buttons_group'" :row="row" :defaultChannel="roomDefaultChannel"/>
-        <WidgetSessionData v-if="row.widget === 'session_data'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
-        <WidgetLogPrompt v-else-if="row.widget === 'log_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
-        <WidgetInstructionPrompt v-else-if="row.widget === 'instruction_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
-        <WidgetLasers v-else-if="row.widget === 'lasers'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
-        <WidgetWaffleFactory v-else-if="row.widget === 'waffle_factory'" :row="row" :defaultChannel="roomDefaultChannel"/>
-        <WidgetSynchronizerLights v-else-if="row.widget === 'synchronizer_lights'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
-        <WidgetTextArea v-else-if="row.widget === 'textarea'" :row="row" :defaultChannel="roomDefaultChannel"/>
-        <WidgetNodeRegister v-else-if="row.widget === 'node_register'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
-        <WidgetChopsticks v-else-if="row.widget === 'chopsticks'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
-        <WidgetTimer v-else-if="row.widget === 'timer'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
-        <WidgetControlPanel v-else-if="row.widget === 'control_panel'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
-      </li>
-    </ul>
+  <b-card class="bgc-dark border-jaffa h-100" no-body>
+    <b-card-header>
+      <div class="d-flex flex-row justify-content-between align-items-center text-jaffa">
+        <div>
+        </div>
+        <h3 class="big-noodle text-center mb-0">
+          {{ card.name }}
+        </h3>
+        <div>
+          <CollapseChevron class="align-self-center" v-b-toggle="'collapse-card-' + roomId + '-' + card.id"/>
+        </div>
+      </div>
+    </b-card-header>
+
+    <b-collapse :id="'collapse-card-' + roomId + '-' + card.id" :visible="true">
+      <b-card-body>
+        <div v-if="cardRows === undefined">
+          Loading...
+        </div>
+        <ul v-else class="list-unstyled mb-0">
+          <li v-for="(row, index) in cardRows" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
+            <WidgetButtonsGroup v-if="row.widget === 'buttons_group'" :row="row" :defaultChannel="roomDefaultChannel"/>
+            <WidgetSessionData v-if="row.widget === 'session_data'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+            <WidgetLogPrompt v-else-if="row.widget === 'log_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
+            <WidgetInstructionPrompt v-else-if="row.widget === 'instruction_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
+            <WidgetLasers v-else-if="row.widget === 'lasers'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+            <WidgetWaffleFactory v-else-if="row.widget === 'waffle_factory'" :row="row" :defaultChannel="roomDefaultChannel"/>
+            <WidgetSynchronizerLights v-else-if="row.widget === 'synchronizer_lights'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+            <WidgetTextArea v-else-if="row.widget === 'textarea'" :row="row" :defaultChannel="roomDefaultChannel"/>
+            <WidgetNodeRegister v-else-if="row.widget === 'node_register'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+            <WidgetChopsticks v-else-if="row.widget === 'chopsticks'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+            <WidgetTimer v-else-if="row.widget === 'timer'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+            <WidgetControlPanel v-else-if="row.widget === 'control_panel'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+          </li>
+        </ul>
+      </b-card-body>
+    </b-collapse>
   </b-card>
 </template>
 
@@ -40,6 +52,7 @@ import WidgetNodeRegister from "@/components/live/WidgetNodeRegister.vue"
 import WidgetChopsticks from "@/components/live/WidgetChopsticks.vue"
 import WidgetControlPanel from "@/components/live/WidgetControlPanel.vue"
 import WidgetTimer from "@/components/live/WidgetTimer.vue"
+import CollapseChevron from '@/components/common/CollapseChevron.vue'
 import roomStore from "@/store/roomStore.js"
 import notificationStore from '@/store/notificationStore.js'
 
@@ -58,6 +71,7 @@ export default {
     WidgetChopsticks,
     WidgetControlPanel,
     WidgetTimer,
+    CollapseChevron,
   },
   data() {
     return {

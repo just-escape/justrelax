@@ -1,6 +1,23 @@
 <template>
   <div>
-    <h2 class="big-noodle text-jaffa text-center">Actions</h2>
+    <div class="d-flex flex-row justify-content-between">
+      <div style="flex: 1 1 0"></div>
+      <h2 style="flex: 1 1 0" class="big-noodle text-jaffa text-center">Actions</h2>
+      <div class="d-flex justify-content-end" style="flex: 1 1 0">
+        <div class="min-width-100px mr-3">
+          <b-form-select
+            class="form-control"
+            v-model="selected"
+            :options="{
+              'd1.scenario': 'Digimiam zone 1',
+              'd2.scenario': 'Digimiam zone 2',
+              'digimiam.scenario': 'Digimiam zone 1 et 2',
+            }"
+            :html="true"
+          />
+        </div>
+      </div>
+    </div>
     <div class="container-fluid">
       <div v-if="cards === undefined">
         Loading...
@@ -24,6 +41,7 @@
 <script>
 import ActionCard from '@/components/live/ActionCard.vue'
 import notificationStore from '@/store/notificationStore.js'
+import roomStore from '@/store/roomStore.js'
 
 export default {
   name: 'Actions',
@@ -33,6 +51,22 @@ export default {
   data() {
     return {
       cards: undefined,
+      selected: null,
+    }
+  },
+  watch: {
+    selected(newValue) {
+      roomStore.commit(
+        'setRoomDefaultPublicationChannel',
+        {roomId: this.roomId, defaultPublicationChannel: newValue}
+      )
+    },
+  },
+  created() {
+    for (var room of roomStore.state.rooms) {
+      if (room.id == this.roomId) {
+        this.selected = room.default_publication_channel
+      }
     }
   },
   mounted() {
