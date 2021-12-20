@@ -43,8 +43,6 @@ class NodeProtocol(WebSocketClientProtocol):
         # message could be validated here with something like pydantic
 
         try:
-            logger.info("{} <<< {}".format(message['channel'], message['event']))
-
             self.factory.process_event(message['event'], message['channel'])
         except Exception:
             logger.error("Error while trying to process message={}".format(message), exc_info=True)
@@ -87,7 +85,7 @@ class Node(WebSocketClientFactory, ReconnectingClientFactory):
 
     def publish(self, event, channel, log=True):
         if log:
-            logger.info("{} >>> {}".format(channel, event))
+            logger.info("{} <<< {}".format(channel, event))
         self.protocol.send_message({'action': 'publish', 'channel': channel, 'event': event})
 
     def process_event(self, event, channel):
@@ -214,6 +212,21 @@ class EventFilterMixin:
         return args, kwargs
 
     def process_event(self, event, channel):
+        if isinstance(event, dict):
+            log = True
+            for filter_ in self._do_not_log_reception_filters:
+                for key, value in filter_.items():
+                    if key not in event or event[key] != value:
+                        break
+                else:
+                    log = False
+                    break
+        else:
+            log = True
+
+        if log:
+            logger.info("{} >>> {}".format(channel, event))
+
         callbacks = self._get_callbacks(event, channel)
 
         for callback in callbacks:
@@ -235,6 +248,8 @@ class MagicNode(EventFilterMixin, Node):
         self._name = self.config.get('name', 'default_name')
         self._default_publication_channel = self.config.get('default_publication_channel', 'default_channel')
         self._subscriptions = self.config.get('subscriptions', [])
+        self._do_not_log_publication_filters = self.config.get('do_not_log_publication_filters', [])
+        self._do_not_log_reception_filters = self.config.get('do_not_log_reception_filters', [])
 
         rpi_detected = False
         try:
@@ -290,6 +305,13 @@ class MagicNode(EventFilterMixin, Node):
     def publish(self, event, channel=..., log=True):
         if isinstance(event, dict):
             event['from_'] = self._name
+            for filter_ in self._do_not_log_publication_filters:
+                for key, value in filter_.items():
+                    if key not in event or event[key] != value:
+                        break
+                else:
+                    log = False
+                    break
         super().publish(event, channel if channel is not ... else self._default_publication_channel, log)
 
     def log_published_error(self, message):
