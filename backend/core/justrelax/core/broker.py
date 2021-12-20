@@ -80,7 +80,7 @@ class BrokerFactory(WebSocketServerFactory):
         self.nodes.discard(protocol)
 
     def publish(self, event, channel):
-        logger.info("{} <<< {}".format(channel, event))
+        logger.debug("{} <<< {}".format(channel, event))
         message = {'channel': channel, 'event': event}
         for node in self.nodes:
             if node.is_subscribed_to(channel):
