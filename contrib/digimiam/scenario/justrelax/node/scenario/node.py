@@ -1095,7 +1095,7 @@ class Scenario(MagicNode):
             if self.persistent_settings['dry_print'] is False:
                 self.register_delayed_task(
                     delay, self.publish_prefix,
-                    {'category': 'print_pattern', 'pattern': 'b'}, 'waffle_factory')
+                    {'category': 'print_pattern', 'pattern': 'heart'}, 'waffle_factory')
 
             delay += self.first_pattern_print_duration
             self.register_delayed_task(
@@ -1163,7 +1163,7 @@ class Scenario(MagicNode):
             if self.persistent_settings['dry_print'] is False:
                 self.register_delayed_task(
                     37.5 + 1.5 + 2 + self.second_waffle_init_conveyor_duration,
-                    self.publish_prefix, {'category': 'print_pattern', 'pattern': 'a'}, 'waffle_factory')
+                    self.publish_prefix, {'category': 'print_pattern', 'pattern': 'M'}, 'waffle_factory')
         self.register_delayed_task(
             37.5 + 25 + 1.5, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track7', 'volume': 45, 'duration': 10}, 'music_player')
