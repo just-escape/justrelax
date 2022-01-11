@@ -39,15 +39,15 @@ printer_homing_sequence:
     gcode: G01 Y25 F200
   - t: 8
     gcode: $21=0
-  - t: 9
-    gcode: G92 Y0
   - t: 12
+    gcode: G92 Y0
+  - t: 13
     gcode: G01 Y-23 F200
-  - t: 20
+  - t: 21
     gcode: G01 Y-7.1 F200
-  - t: 25
+  - t: 27
     gcode: $21=1
-  - t: 26
+  - t: 28
     gcode: G01 X-15 F200
   - t: 32
     gcode: $21=0
