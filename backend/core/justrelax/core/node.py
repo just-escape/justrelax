@@ -84,9 +84,13 @@ class Node(WebSocketClientFactory, ReconnectingClientFactory):
         ReconnectingClientFactory.clientConnectionFailed(self, connector, reason)
 
     def publish(self, event, channel, log=True):
-        if log:
-            logger.info("{} <<< {}".format(channel, event))
-        self.protocol.send_message({'action': 'publish', 'channel': channel, 'event': event})
+        if self.protocol:
+            self.protocol.send_message({'action': 'publish', 'channel': channel, 'event': event})
+            if log:
+                logger.info("{} <<< {}".format(channel, event))
+        else:
+            if log:
+                logger.error(f"Connection error : not sending to channel {channel} event {event}")
 
     def process_event(self, event, channel):
         pass
@@ -312,7 +316,11 @@ class MagicNode(EventFilterMixin, Node):
                 else:
                     log = False
                     break
-        super().publish(event, channel if channel is not ... else self._default_publication_channel, log)
+        super().publish(
+            event,
+            channel if channel is not ... else self._default_publication_channel,
+            log=log,
+        )
 
     def log_published_error(self, message):
         logger.error(message)
