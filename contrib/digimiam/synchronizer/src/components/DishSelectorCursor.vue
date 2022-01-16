@@ -81,7 +81,7 @@ export default {
     0% 70%,
     0% 30%
   );
-  transition: filter 4s ease-in-out;
+  transition: filter 2s ease-in-out;
 }
 
 .edge {
@@ -97,7 +97,7 @@ export default {
     4px 30%,
     0% 30%
   );
-  transition: filter 4s ease-in-out;
+  transition: filter 2s ease-in-out;
 }
 
 .flip-vertically {

@@ -245,6 +245,13 @@ class Scenario(MagicNode):
         'order_with_niryo_and_printer',
     ]
 
+    EXPECTED_MENU = [
+        "potjevleesch",
+        "salade_flamande",
+        "cambraisienne",
+        "gaufresque",
+    ]
+
     def __init__(self, *args, **kwargs):
         super(Scenario, self).__init__(*args, **kwargs)
 
@@ -333,6 +340,10 @@ class Scenario(MagicNode):
         ]
 
         self.is_control_panel_in_manual_mode = False
+
+        self.menu_last_log_hint_time = time.monotonic()
+        self.wrong_dishes_counter = -3
+        self.all_dishes_are_good_but_wrong_price_counter = -1
 
     def new_session_id(self):
         session_id = generate_slug(3)
@@ -652,6 +663,9 @@ class Scenario(MagicNode):
         self.holomenu_y = None
         self.holomenu_error = None
 
+        self.wrong_dishes_counter = -3
+        self.all_dishes_are_good_but_wrong_price_counter = -1
+
     @on_event(filter={'from_': 'webmin', 'category': 'request_session_data_for_webmin'})
     def on_request_session_data(self):
         self.publish_game_time_to_webmin()
@@ -883,6 +897,48 @@ class Scenario(MagicNode):
     @on_event(filter={'from_': 'holographic_menu', 'category': 'play_slide'})
     def holographic_menu_event_play_slide(self, slide: int):
         self.publish_prefix({'category': 'set_menu_cursor_position', 'position': slide}, 'synchronizer')
+
+    @on_event(filter={'from_': 'synchronizer', 'category': 'check_for_menu_hint_log'})
+    def check_for_menu_hint_log(self, dishes: list, auto_validate_dishes: bool):
+        now = time.monotonic()
+
+        if now - self.menu_last_log_hint_time < 40:
+            return
+
+        good_dishes_wrong_price_counter = 0
+        for dish in dishes:
+            if dish in self.EXPECTED_MENU:
+                good_dishes_wrong_price_counter += 1
+
+        hint = None
+        if good_dishes_wrong_price_counter < 4:
+            self.wrong_dishes_counter += 1
+            modulus = 8 if auto_validate_dishes else 3
+            threshold = 1 if auto_validate_dishes else 0
+            if self.wrong_dishes_counter % modulus == 0 and self.wrong_dishes_counter >= threshold:
+                if good_dishes_wrong_price_counter == 0:
+                    self.menu_last_log_hint_time = time.monotonic()
+                    hint = 'no_dishes_can_be_produced'
+                else:
+                    self.menu_last_log_hint_time = time.monotonic()
+                    hint = 'some_dishes_cannot_be_produced'
+        else:
+            self.all_dishes_are_good_but_wrong_price_counter += 1
+            if self.all_dishes_are_good_but_wrong_price_counter % 3 == 0:
+                self.menu_last_log_hint_time = time.monotonic()
+                hint = 'dishes_need_to_have_good_prices'
+
+        if hint:
+            self.publish_prefix(
+                {
+                    'category': 'menu_log',
+                    'message': hint,
+                    'level': 'warning',
+                    'use_locale': True,
+                    'with_sound': True,
+                },
+                'synchronizer',
+            )
 
     @on_event(filter={'from_': 'load_cells', 'category': 'load_cell'})
     def load_cells_event_load_cell(self, color: str, id: int, activated: bool):
@@ -1992,6 +2048,22 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'synchronizer_display_price'})
     def buttons_synchronizer_display_price(self, display: bool):
         self.publish_prefix({'category': 'display_price', 'display': display}, 'synchronizer')
+
+    @on_event(filter={'widget_id': 'price_matters'})
+    def buttons_price_matters(self, value: bool):
+        self.publish_prefix({'category': 'set_price_matters', 'value': value}, 'synchronizer')
+
+    @on_event(filter={'widget_id': 'explicit_menu_instruction'})
+    def buttons_explicit_menu_instruction(self, value: bool):
+        self.publish_prefix({'category': 'set_display_menu_explicit_instruction', 'value': value}, 'synchronizer')
+
+    @on_event(filter={'widget_id': 'light_strict_loading_mode'})
+    def buttons_light_strict_loading_mode(self, value: bool):
+        self.publish_prefix({'category': 'set_strict_loading_mode', 'value': value}, 'synchronizer')
+
+    @on_event(filter={'widget_id': 'display_light_explicit_instruction'})
+    def buttons_display_light_explicit_instruction(self, value: bool):
+        self.publish_prefix({'category': 'set_display_light_explicit_instruction', 'value': value}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'auto_validate_dishes'})
     def buttons_auto_validate_dishes(self, value: bool):

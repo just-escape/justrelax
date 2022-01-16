@@ -5,7 +5,7 @@
       class="text font-italic position-relative"
       :style="{
         color: isDishValidated ? 'green' : 'rgb(' + dish.color.r + ', ' + dish.color.g + ', ' + dish.color.b + ')',
-        transition: isDishValidated ? 'color 4s ease-in-out' : '',
+        transition: isDishValidated ? 'color 2s ease-in-out' : '',
       }"
     >
       <div class="d-flex flex-row collision-tutor">
@@ -52,7 +52,7 @@
       class="price"
       :style="{
         color: isDishValidated ? 'green' : 'rgb(' + dish.color.r + ', ' + dish.color.g + ', ' + dish.color.b + ')',
-        transition: isDishValidated ? 'color 4s ease-in-out' : '',
+        transition: isDishValidated ? 'color 2s ease-in-out' : '',
       }"
     >
       {{ price }} NéoFrancs

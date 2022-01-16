@@ -45,9 +45,9 @@
           <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
             <i
               class="fa-fw fas fa-smile"
-              style="opacity: 0.7; transform: rotate(90deg)"
+              style="opacity: 0.7; transform: rotate(90deg); margin-left: 3px"
             />
-            <div>Portrait</div>
+            <div style="margin-top: 2px">Portrait</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">
@@ -55,9 +55,9 @@
           <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
             <i
               class="fa-fw fas fa-bug"
-              style="opacity: 0.7; transform: rotate(90deg)"
+              style="opacity: 0.7; transform: rotate(90deg); margin-left: 3px"
             />
-            <div>Insecte</div>
+            <div style="margin-top: 2px">Insecte</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">
@@ -65,9 +65,9 @@
           <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
             <i
               class="fa-fw fas fa-search"
-              style="opacity: 0.7; transform: rotate(90deg)"
+              style="opacity: 0.7; transform: rotate(90deg); margin-left: 3px"
             />
-            <div>Micro-</div>
+            <div style="margin-top: 2px">Micro-</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">
@@ -75,9 +75,9 @@
           <div class="position-absolute h-100 d-flex justify-content-center" style="writing-mode: vertical-lr; transform: rotate(180deg); left: -20px">
             <img
               src="@/assets/img/seaweed.png" height="16px"
-              style="opacity: 0.7; rotate(90deg)"
+              style="opacity: 0.7; transform: rotate(90deg)"
             />
-            <div>Algue</div>
+            <div class="mt-2">Algue</div>
           </div>
         </div>
       </div>
@@ -94,15 +94,23 @@
       </div>
     </div>
 
-    <div class="d-flex flex-row justify-content-center">
+    <div
+      class="d-flex flex-row"
+      :class="{'justify-content-around': !autoValidateDishes, 'justify-content-center': autoValidateDishes}"
+      style="margin-top: 15px"
+    >
       <div class="button-like-frame generator-matrix-title position-relative">
         {{ $t('dish_generator_matrix') }}
+      </div>
+      <div :class="{'d-none': autoValidateDishes}" style="width: 33%">
+        <ButtonValidate @click="validate" class="btn-block" :disabled="success || autoValidateDishes"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ButtonValidate from '@/components/ButtonValidate.vue'
 import DishSelectorCursor from '@/components/DishSelectorCursor.vue'
 import menuStore from '@/store/menuStore.js'
 import difficultyStore from '@/store/difficultyStore.js'
@@ -110,9 +118,18 @@ import difficultyStore from '@/store/difficultyStore.js'
 export default {
   name: 'DishMatrix',
   components: {
+    ButtonValidate,
     DishSelectorCursor,
   },
+  data() {
+    return {
+      lockButton: false,
+    }
+  },
   computed: {
+    autoValidateDishes: function() {
+      return menuStore.state.autoValidateDishes
+    },
     selectableAreas() {
       return menuStore.state.selectableAreas
     },
@@ -128,7 +145,26 @@ export default {
     difficulty() {
       return difficultyStore.state.difficulty
     },
+    success() {
+      return menuStore.state.success
+    },
   },
+  methods: {
+    validate() {
+      if (menuStore.state.success || menuStore.state.validating || this.lockButton) {
+        return
+      }
+      this.lockButton = true
+
+      menuStore.commit("lockValidate")
+      setTimeout(this.validatePostAnimation, 1550)
+    },
+    validatePostAnimation() {
+      this.lockButton = false
+      menuStore.commit("unlockValidate")
+      menuStore.commit("validateMenu", menuStore.getters)
+    },
+  }
 }
 </script>
 
@@ -151,7 +187,6 @@ export default {
 }
 
 .generator-matrix-title {
-  top: 15px;
   color: rgba(255, 255, 255, 0.65);
   background-color: rgba(00, 45, 80, 0.6);
   font-size: 20px;
@@ -214,5 +249,22 @@ export default {
   top: 50%;
   height: 1px;
   width: 5px;
+}
+
+.glowing-wire {
+  position: absolute;
+  height: 24px;
+  width: 1px;
+  bottom: 40px;
+  border-left: 1px solid #00d1b6;
+  box-shadow: 1px 0px 3px 0.01px rgba(0, 209, 182, 0.7);
+}
+
+.left-wire {
+  left: 20%;
+}
+
+.right-wire {
+  right: 20%;
 }
 </style>

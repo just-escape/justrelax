@@ -73,6 +73,10 @@ export default {
       return lightStore.state.activatedSensors[this.color]
     },
     activationSpeed() {
+      if (!lightStore.state.strictLoadingMode) {
+        return 8
+      }
+
       let counter = 0
       for (let k in lightStore.state.activatedSensors) {
         if (lightStore.state.activatedSensors[k]) {

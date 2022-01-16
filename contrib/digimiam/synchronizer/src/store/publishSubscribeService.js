@@ -134,6 +134,14 @@ const publishSubscribeService = new Vuex.Store({
             'data': lightStore.state.disabledColors,
           }
         )
+      } else if (event.category === 'set_price_matters') {
+        menuStore.commit('setPriceMatters', event.value)
+      } else if (event.category === 'set_display_menu_explicit_instruction') {
+        menuStore.commit('setDisplayMenuExplicitInstruction', event.value)
+      } else if (event.category === 'set_display_light_explicit_instruction') {
+        lightStore.commit('setDisplayLightExplicitInstruction', event.value)
+      } else if (event.category === 'set_strict_loading_mode') {
+        lightStore.commit('setStrictLoadingMode', event.value)
       }
     },
     SOCKET_RECONNECT (state, count) {

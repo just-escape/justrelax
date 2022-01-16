@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 
 import publishSubscribeService from '@/store/publishSubscribeService.js'
 import progressionStore from '@/store/progressionStore.js'
-import menuLogStore from '@/store/menuLogStore.js'
 
 Vue.use(Vuex)
 
@@ -84,7 +83,7 @@ let store = new Vuex.Store({
       "gaufresque",
     ],
     cursorPosition: 0,
-    selectorHeight: 410,
+    selectorHeight: 395,
     selectorWidth: 756,
     mouseX: 0,
     lastMouseX: null,
@@ -96,50 +95,34 @@ let store = new Vuex.Store({
     success: false,
     autoValidateDishes: false,
     displayPrice: false,
-    allDishesAreGoodButWrongPriceCounter: -1,
-    wrongDishesCounter: -3,
+    priceMatters: true,
+    displayMenuExplicitInstruction: false,
   },
   getters: {
     isSuccess (state) {
-      for (var menuItemIndex in state.menuItems) {
-        if (state.menuItems[menuItemIndex].dish !== state.expectedMenu[menuItemIndex]) {
-          return false
+      if (state.priceMatters) {
+        for (var menuItemIndex in state.menuItems) {
+          if (state.menuItems[menuItemIndex].dish !== state.expectedMenu[menuItemIndex]) {
+            return false
+          }
+        }
+      } else {
+        for (let expectedMenuItem of state.expectedMenu) {
+          if (!state.menuItems.map(menuItem => menuItem.dish).includes(expectedMenuItem)) {
+            return false
+          }
         }
       }
       return true
     },
-    hintLog (state) {
-      let goodDishesWrongPriceCounter = 0
-      for (var menuItemIndex in state.menuItems) {
-        if (state.expectedMenu.includes(state.menuItems[menuItemIndex].dish)) {
-          goodDishesWrongPriceCounter++
-        }
-      }
-
-      if (goodDishesWrongPriceCounter < 4) {
-        state.wrongDishesCounter++
-
-        var modulus = state.autoValidateDishes ? 8 : 3
-        var counterThreshold = state.autoValidateDishes ? 1 : 0
-
-        if (state.wrongDishesCounter % modulus === 0 && state.wrongDishesCounter >= counterThreshold) {
-          if (goodDishesWrongPriceCounter === 0) {
-            return 'no_dishes_can_be_produced'
-          } else {
-            return 'some_dishes_cannot_be_produced'
-          }
-        }
-      } else {
-        state.allDishesAreGoodButWrongPriceCounter++
-        if (state.allDishesAreGoodButWrongPriceCounter % 3 === 0) {
-          return 'dishes_need_to_have_good_prices'
-        }
-      }
-
-      return null
-    },
   },
   mutations: {
+    setDisplayMenuExplicitInstruction(state, value) {
+      state.displayMenuExplicitInstruction = value
+    },
+    setPriceMatters(state, value) {
+      state.priceMatters = value
+    },
     setAutoValidateDishes (state, value) {
       state.autoValidateDishes = value
 
@@ -315,13 +298,17 @@ let store = new Vuex.Store({
         } else {
           // Only take in consideration dishes that are not errors. Otherwise it would spam all the time.
           if (dish != "error") {
-            let hintLog = getters.hintLog
-            if (hintLog) {
-              menuLogStore.commit("processLog", {logMessage: hintLog, level: "warning", useLocale: true, withSound: true})
-            }
+            store.commit('checkForMenuHintLog')
           }
         }
       }
+    },
+    checkForMenuHintLog(state) {
+      publishSubscribeService.commit('publish', {
+        'category': 'check_for_menu_hint_log',
+        'dishes': state.menuItems.map(menuItem => menuItem.dish),
+        'auto_validate_dishes': state.autoValidateDishes,
+      })
     },
     lockValidate (state) {
       state.validating = true
@@ -341,10 +328,7 @@ let store = new Vuex.Store({
         }
         progressionStore.commit("setMenuServiceSuccess")
       } else {
-        let hintLog = getters.hintLog
-        if (hintLog) {
-          menuLogStore.commit("processLog", {logMessage: hintLog, level: "warning", useLocale: true, withSound: true})
-        }
+        store.commit('checkForMenuHintLog')
       }
     },
     forceSuccess (state) {

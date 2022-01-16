@@ -50,7 +50,7 @@ button {
   border-right: 3px solid rgba(0, 209, 182, 0.4);
   border-left: 3px solid rgba(0, 209, 182, 0.4);
   border-radius: 0px;
-  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, filter 4s ease-in-out;
+  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out, filter 2s ease-in-out;
   font-size: 20px;
   padding: 0.375rem 0.75rem 0.275rem 0.75rem;
 }

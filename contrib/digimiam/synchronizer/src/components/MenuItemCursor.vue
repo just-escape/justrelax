@@ -42,6 +42,6 @@ export default {
     2.5px 3px,
     0% 3px
   );
-  transition: top 1s ease-in-out, opacity 4s ease-in-out;
+  transition: top 1s ease-in-out, opacity 2s ease-in-out;
 }
 </style>

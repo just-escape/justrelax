@@ -48,8 +48,16 @@ var store = new Vuex.Store({
     hasPinkClueBeenGiven: false,
     difficulty: NORMAL,
     giveSwitchClueTask: null,
+    displayLightExplicitInstruction: false,
+    strictLoadingMode: true,
   },
   mutations: {
+    setStrictLoadingMode(state, value) {
+      state.strictLoadingMode = value
+    },
+    setDisplayLightExplicitInstruction(state, value) {
+      state.displayLightExplicitInstruction = value
+    },
     setDifficulty(state, difficulty) {
       if ([EASY, NORMAL, HARD].includes(difficulty)) {
         state.difficulty = difficulty

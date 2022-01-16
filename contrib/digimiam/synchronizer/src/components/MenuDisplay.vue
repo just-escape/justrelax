@@ -1,7 +1,7 @@
 <template>
   <div class="position-relative h-100">
     <div class="d-flex flex-column h-100">
-      <div class="menu-container px-2 pb-1 position-relative mb-4 h-100">
+      <div class="menu-container px-2 pb-1 position-relative h-100">
         <div class="menu-frame"></div>
         <div class="menu-background"></div>
         <div class="menu-title-ribbon mb-2 text-right p-2">
@@ -18,8 +18,9 @@
           <div class="position-relative d-flex flex-row justify-content-center mb-3">
             <div
               :key="item.id" v-for="item in menuItems"
-              class="position-relative d-flex flex-row justify-content-center align-items-center"
-              style="background: rgba(0, 209, 182, 0.6); width: 45px; height: 45px; margin: 0px 20px; font-size: 26px"
+              class="position-relative d-flex flex-row justify-content-center align-items-center transition-filter-2s"
+              style="background: rgba(0, 209, 182, 0.6); width: 45px; height: 45px; margin: 0px 20px; font-size: 26px;"
+              :style="{filter: filter(item)}"
             >
               <div class="position-absolute" style="top: 5px">
                 {{ item.id }}
@@ -39,19 +40,20 @@
         <div class="pt-5">
           <MenuLoadingWidget :startAnimationSignal="startAnimationSignal"/>
         </div>
-      </div>
-
-      <div class="position-relative" :style="{opacity: autoValidateDishes ? 0 : 1}" style="transition: opacity 4s ease-in-out">
-        <div class="glowing-wire left-wire"></div>
-        <div class="glowing-wire right-wire"></div>
-        <ButtonValidate @click="validate" class="btn-block" :disabled="success || autoValidateDishes"/>
+        <div
+          v-if="!menuSuccess && displayMenuExplicitInstruction"
+          style="margin-top: 70px; background: rgba(255, 69, 0, 0.65); height: 104px"
+          class="p-1 d-flex flex-row justify-content-center align-items-center pulse-opacity text-center"
+        >
+          <div v-if="priceMatters">Affichage du menu holographique erroné. Matrice en attente de sélection des<br/>plats au bon prix.</div>
+          <div v-else>Affichage du menu holographique erroné. Matrice en attente de sélection des<br/>bons plats.</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ButtonValidate from '@/components/ButtonValidate.vue'
 //import MenuItemCursor from '@/components/MenuItemCursor.vue'
 import MenuLoadingWidget from '@/components/MenuLoadingWidget.vue'
 //import MenuItem from '@/components/MenuItem.vue'
@@ -60,7 +62,6 @@ import menuStore from '@/store/menuStore.js'
 export default {
   name: 'MenuDisplay',
   components: {
-    ButtonValidate,
     // MenuItemCursor,
     MenuLoadingWidget,
     // MenuItem,
@@ -72,52 +73,58 @@ export default {
     }
   },
   computed: {
+    displayMenuExplicitInstruction() {
+      return menuStore.state.displayMenuExplicitInstruction
+    },
+    priceMatters() {
+      return menuStore.state.priceMatters
+    },
+    validating() {
+      return menuStore.state.validating
+    },
     cursorLeft() {
       return menuStore.state.cursorPosition * 85 + 38
     },
-    autoValidateDishes: function() {
-      return menuStore.state.autoValidateDishes
+    displayPrice() {
+      return menuStore.state.displayPrice && menuStore.state.priceMatters
     },
-    displayPrice: function() {
-      return menuStore.state.displayPrice
-    },
-    dragging: function() {
+    dragging() {
       return menuStore.state.dragging
     },
-    lang: function() {
+    lang() {
       return this.$i18n.locale
     },
-    menuItems: function() {
+    menuItems() {
       return menuStore.state.menuItems
     },
-    success: function() {
+    menuSuccess() {
       return menuStore.state.success
+    },
+    filter() {
+      return (item) => {
+        if (item.isDishValidated) {
+          return 'hue-rotate(-40deg) brightness(0.65) contrast(0.95)'
+        } else {
+          return ''
+        }
+      }
     },
   },
   methods: {
-    refreshDate: function() {
+    refreshDate() {
       var date = new Date()
       date.setFullYear(2080)
       this.$moment.locale(this.lang)
       this.date = this.$moment(date).format('LL')
     },
-    validate: function() {
-      if (menuStore.state.success || menuStore.state.validating) {
-        return
-      }
-
-      this.startAnimationSignal = !this.startAnimationSignal
-
-      menuStore.commit("lockValidate")
-      setTimeout(this.validatePostAnimation, 1550)
-    },
-    validatePostAnimation: function() {
-      menuStore.commit("unlockValidate")
-      menuStore.commit("validateMenu", menuStore.getters)
-    },
   },
   watch: {
-    lang: function() {
+    validating(newValue) {
+      if (newValue) {
+        this.startAnimationSignal = !this.startAnimationSignal
+      }
+    },
+    lang() {
       this.refreshDate()
     }
   },
@@ -223,20 +230,7 @@ export default {
   z-index: 11;
 }
 
-.glowing-wire {
-  position: absolute;
-  height: 24px;
-  width: 1px;
-  bottom: 40px;
-  border-left: 1px solid #00d1b6;
-  box-shadow: 1px 0px 3px 0.01px rgba(0, 209, 182, 0.7);
-}
-
-.left-wire {
-  left: 20%;
-}
-
-.right-wire {
-  right: 20%;
+.transition-filter-2s {
+  transition: filter 2s ease-in-out;
 }
 </style>

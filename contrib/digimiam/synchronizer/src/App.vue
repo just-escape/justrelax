@@ -147,4 +147,20 @@ video {
   border-bottom: 1px dotted #ffffff;
   margin-bottom: 3px;
 }
+
+.pulse-opacity {
+  animation: pulser 2s ease-in infinite;
+}
+
+@keyframes pulser {
+	0% {
+		opacity: 1;
+	}
+	60% {
+		opacity: 0.3;
+	}
+	100% {
+		opacity: 1;
+	}
+}
 </style>
