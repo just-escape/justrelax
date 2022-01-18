@@ -1,6 +1,6 @@
 import gpiozero
 
-from twisted.internet.reactor import callLater
+from twisted.internet import reactor
 
 from justrelax.core.node import MagicNode, on_event
 from justrelax.core.logging_utils import logger
