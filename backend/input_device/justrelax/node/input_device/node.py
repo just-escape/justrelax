@@ -12,7 +12,8 @@ class InputDevice(MagicNode):
 
         pin = self.config["pin"]
         self.name = self.config['name']
-        self.device = gpiozero.InputDevice(pin)
+        pull_up = self.config.get('pull_up', False)
+        self.device = gpiozero.InputDevice(pin, pull_up=pull_up)
         self.device_state = self.device.is_active
 
         self.check_myself()

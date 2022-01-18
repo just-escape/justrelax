@@ -6,3 +6,4 @@ subscriptions:
   - d1.broadcast
 
 pin: 3
+pull_up: yes
