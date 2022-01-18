@@ -23,8 +23,8 @@ class InputDevice(MagicNode):
         new_device_state = self.device.is_active
         has_state_changed = new_device_state != self.device_state
         if has_state_changed:
-            self.publish({'category': 'state_change', 'state': device_state})
-            self.device_state = device_state
+            self.publish({'category': 'state_change', 'state': new_device_state})
+            self.device_state = new_device_state
 
         return has_state_changed
 
