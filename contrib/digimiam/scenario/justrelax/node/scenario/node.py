@@ -1914,6 +1914,14 @@ class Scenario(MagicNode):
     def buttons_waffle_trapdoor_close(self):
         self.publish_prefix({'category': 'high'}, 'waffle_trapdoor')
 
+    @on_event(filter={'widget_id': 'backstage_trapdoor_open'})
+    def buttons_backstage_trapdoor_open(self):
+        self.publish_prefix({'category': 'low'}, 'backstage_trapdoor')
+
+    @on_event(filter={'widget_id': 'backstage_trapdoor_close'})
+    def buttons_backstage_trapdoor_close(self):
+        self.publish_prefix({'category': 'high'}, 'backstage_trapdoor')
+
     @on_event(filter={'widget_id': 'printer_instructions'})
     def widget_printer_instructions(self, value: str):
         instructions = value.split('\n')
