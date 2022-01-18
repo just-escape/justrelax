@@ -1,0 +1,8 @@
+name: waffle_limit_switch
+
+default_publication_channel: d1.scenario
+subscriptions:
+  - d1.waffle_limit_switch
+  - d1.broadcast
+
+pin: 3
