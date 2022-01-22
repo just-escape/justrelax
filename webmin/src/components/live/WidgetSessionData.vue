@@ -11,6 +11,15 @@
         <i v-if="getData" class="position-absolute text-jaffa fa fa-xs fa-fw fa-check" style="bottom: 0; right: 0"></i>
       </div>
     </div>
+    <div v-else-if="row.widget_params.widget === 'input_device'">
+      <div
+        v-if="getData !== undefined"
+        class="border mr-1 position-relative"
+        style="border-color: #ef8649 !important; height: 17px; width: 17px"
+      >
+        <i v-if="getData" class="position-absolute text-jaffa fa fa-xs fa-fw fa-check" style="bottom: 0; right: 0"></i>
+      </div>
+    </div>
   </div>
 </template>
 
