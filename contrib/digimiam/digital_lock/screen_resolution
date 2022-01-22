@@ -1,0 +1,13 @@
+`/boot/config.txt`
+
+```
+    # https://www.waveshare.com/wiki/5inch_HDMI_LCD_(H)
+    hdmi_group=2
+    hdmi_mode=1
+    hdmi_mode=87
+    hdmi_cvt 1024 600 60 6 0 0 0
+    hdmi_drive=2
+    hdmi_force_hotplug=1
+    max_usb_current=1
+    display_rotate=3
+```
