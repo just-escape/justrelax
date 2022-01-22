@@ -311,6 +311,10 @@ class ControlPanel(MagicNode):
     def on_first_connection(self):
         self.controller.status = "inactive"
 
+    @on_event(filter={'category': 'request_node_session_data'})
+    def publish_session_data(self):
+        self._notify_electromagnet(bool(self.controller.electromagnet))
+
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
         self.controller.reset()
@@ -343,6 +347,18 @@ class ControlPanel(MagicNode):
     @on_event(filter={'category': 'force_manual_mode'})
     def event_force_manual_mode(self):
         self.controller.on_manual_mode()
+
+    def _notify_electromagnet(self, value):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'control_panel_electromagnet',
+                'value': value,
+            }
+        )
+
+    def notify_electromagnet(self, electromagnet):
+        self._notify_electromagnet(bool(electromagnet))
 
     def notify_status(self, status):
         self.publish({"category": "set_status", "status": status})

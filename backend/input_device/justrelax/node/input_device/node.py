@@ -30,6 +30,9 @@ class InputDevice(MagicNode):
 
 
 class PersistentInputDevice(InputDevice):
+    def on_first_connection(self):
+        self.publish_session_data()
+
     def check_myself(self):
         has_state_changed = super().check_myself()
         if has_state_changed:
