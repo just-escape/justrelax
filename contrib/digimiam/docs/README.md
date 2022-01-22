@@ -36,3 +36,6 @@ Small monitors:
 ```
 https://www.waveshare.com/wiki/Main_Page
 ```
+
+# Use a deterministic audio source for d1tower
+pactl set-default-sink alsa_output.pci-0000_0c_00.4.analog-stereo
