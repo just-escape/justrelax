@@ -278,6 +278,7 @@ void onEvent() {
     String category = receivedDocument[PROTOCOL_CATEGORY];
 
     if (category == PROTOCOL_STATUS_PLAYING) {
+      isSomethingBeingSent = false;
       status = "playing";
     } else if (category == PROTOCOL_STATUS_DISABLED) {
       isSomethingBeingSent = false;
