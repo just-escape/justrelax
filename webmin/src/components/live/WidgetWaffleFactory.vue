@@ -7,21 +7,21 @@
             <b-button-group>
             <ButtonJaffa
                 size="sm"
-                :class="{disabled: parseInt(motor.stepDelay) > parseInt(motor.liminaryStepDelay) && parseInt(motor.nLiminarySteps) > 0}"
+                :disabled="parseInt(motor.stepDelay) > parseInt(motor.liminaryStepDelay) && parseInt(motor.nLiminarySteps) > 0"
                 @click="() => motorMove(motor.channel, 'motor_forward', motor.id, parseInt(motor.nSteps), parseInt(motor.stepDelay), parseInt(motor.nLiminarySteps), parseInt(motor.liminaryStepDelay))"
             >
                 <i :class="'fa-fw fas fa-angle-double-left'"></i>
             </ButtonJaffa>
             <ButtonJaffa
                 size="sm"
-                :class="{disabled: parseInt(motor.stepDelay) > parseInt(motor.liminaryStepDelay) && parseInt(motor.nLiminarySteps) > 0}"
+                :disabled="parseInt(motor.stepDelay) > parseInt(motor.liminaryStepDelay) && parseInt(motor.nLiminarySteps) > 0"
                 @click="() => motorMove(motor.channel, 'motor_homing', motor.id, parseInt(motor.nSteps), parseInt(motor.stepDelay), parseInt(motor.nLiminarySteps), parseInt(motor.liminaryStepDelay))"
             >
                 <i :class="'fa-fw fas fa-home'"></i>
             </ButtonJaffa>
             <ButtonJaffa
                 size="sm"
-                :class="{disabled: parseInt(motor.stepDelay) > parseInt(motor.liminaryStepDelay) && parseInt(motor.nLiminarySteps) > 0}"
+                :disabled="parseInt(motor.stepDelay) > parseInt(motor.liminaryStepDelay) && parseInt(motor.nLiminarySteps) > 0"
                 @click="() => motorMove(motor.channel, 'motor_backward', motor.id, parseInt(motor.nSteps), parseInt(motor.stepDelay), parseInt(motor.nLiminarySteps), parseInt(motor.liminaryStepDelay))"
             >
                 <i :class="'fa-fw fas fa-angle-double-right'"></i>
@@ -73,7 +73,7 @@
             </ButtonJaffa>
             <ButtonJaffa
                 size="sm"
-                :class="{disabled: !Number.isInteger(parseInt(dxl.position))}"
+                :disabled="!Number.isInteger(parseInt(dxl.position))"
                 @click="() => dxlMove(dxl.id, parseInt(dxl.position))"
             >
                 <i :class="'fa-fw fas fa-play'"></i>

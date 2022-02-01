@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import publishSubscribeService from '@/store/publishSubscribeService.js'
+
+
 Vue.use(Vuex)
 
 const cornerTopLeft = {
@@ -420,18 +423,41 @@ var store = new Vuex.Store({
       front: [],
       top: [],
     },
+    movesPerLevel: {
+      0: {
+        sinceLastReset: 0,
+        total: 0,
+      },
+      1: {
+        sinceLastReset: 0,
+        total: 0,
+      },
+      2: {
+        sinceLastReset: 0,
+        total: 0,
+      },
+    },
     currentFace: 'left',
     currentLevel: 0,
     rows: 7,
     cols: 7,
-    queuedMove: null,
+    queuedMoves: [],
+    checkQueuedMovesTask: undefined,
     moveLock: false,
     animationLock: false,
     success: false,
+    hasChangedFaceAtLeastOnce: false,
   },
   mutations: {
-    moveUnlock(state) {
-      state.moveLock = false
+    publishSessionData(state) {
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_current_face', data: state.currentFace})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_current_level', data: state.currentLevel})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_difficulty', data: state.difficulty})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_lock_difficulty', data: state.lockDifficulty})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_blocks_positions', data: state.currentBlocks})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_moves_per_level', data: state.movesPerLevel})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_success', data: state.success})
     },
     animationUnlock(state) {
       state.animationLock = false
@@ -459,130 +485,210 @@ var store = new Vuex.Store({
               top: JSON.parse(JSON.stringify(INITIAL_BLOCKS_SOKOGEN_28)),
             }
           }
+          publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_difficulty', data: state.difficulty})
+          publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_blocks_positions', data: state.currentBlocks})
         }
       }
     },
-    lockDifficulty(state) {
-      state.lockDifficulty = true
+    queueMoves(state, moves) {
+      state.queuedMoves = moves
+      state.disableMoveLock = true
+      clearTimeout(state.checkQueuedMovesTask)
+      store.commit('checkQueuedMoves')
     },
-    checkQueuedMove(state) {
-      state.moveLock = false
-      let queuedMove = state.queuedMove
-      state.queuedMove = null
-
-      if (["left", "right", "up", "down"].includes(queuedMove)) {
-        store.commit('move', queuedMove)
+    checkQueuedMoves(state) {
+      let queuedMove = state.queuedMoves.shift()
+      if (queuedMove === undefined) {
+        state.moveLock = false
+      } else {
+        store.commit('move', {direction: queuedMove, fromQueue: true})
       }
     },
     control(state, {name, pressed}) {
       if (pressed) {
-        if (name === 'reset') {
-          store.commit('reset')
-        } else if (["left", "right", "up", "down"].includes(name)) {
-          store.commit('move', name)
+        if (["left", "right", "up", "down", "reset"].includes(name)) {
+          store.commit('move', {direction: name, fromQueue: false})
         }
       }
     },
-    move(state, direction) {
+    move(state, {direction, fromQueue}) {
       if (state.animationLock) {
         return
       }
 
-      if (state.moveLock) {
-        state.queuedMove = direction
+      if (!["left", "right", "up", "down", "reset"].includes(direction)) {
+        return
+      }
+
+      state.checkQueuedMovesTask = setTimeout(store.commit, 400, "checkQueuedMoves")
+      if (!fromQueue && state.moveLock) {
+        if (state.queuedMoves.length === 0) {
+          state.queuedMoves.push(direction)
+        }
 
         return
       }
 
       state.moveLock = true
 
-      setTimeout(store.commit, 400, "checkQueuedMove")
-
-      if (["left", "right", "up", "down"].includes(direction)) {
+      if (["left", "right", "up", "down"].includes(direction) && !state.lockDifficulty) {
         // The first move locks difficulty to ensure the map will not be changed during a game
         state.lockDifficulty = true
+        publishSubscribeService.commit('publish', {category: 'sokoban_start_level', level: state.currentLevel})
+        publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_lock_difficulty', data: state.lockDifficulty})
       }
 
-      if (direction === "left") {
-        let xAfterLeft = state.currentMarmitronPositions[state.currentFace].x - 1
-        if (!isWalkableAt(xAfterLeft, state.currentMarmitronPositions[state.currentFace].y, "left", true)) {
+      if (direction === 'reset') {
+        if (state.currentFace === 'left' && state.currentLevel >= 1) {
           return
-        } else {
-          state.currentMarmitronPositions[state.currentFace].x = xAfterLeft
-          moveBlockIfExist(
-            state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y,
-            state.currentMarmitronPositions[state.currentFace].x - 1, state.currentMarmitronPositions[state.currentFace].y,
-          )
-        }
-      } else if (direction === "right") {
-        let xAfterRight = state.currentMarmitronPositions[state.currentFace].x + 1
-        if (!isWalkableAt(xAfterRight, state.currentMarmitronPositions[state.currentFace].y, "right", true)) {
+        } else if (state.currentFace === 'front' && state.currentLevel >= 2) {
           return
-        } else {
-          state.currentMarmitronPositions[state.currentFace].x = xAfterRight
-          moveBlockIfExist(
-            state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y,
-            state.currentMarmitronPositions[state.currentFace].x + 1, state.currentMarmitronPositions[state.currentFace].y,
-          )
-        }
-      } else if (direction === "up") {
-        let yAfterUp = state.currentMarmitronPositions[state.currentFace].y - 1
-        if (!isWalkableAt(state.currentMarmitronPositions[state.currentFace].x, yAfterUp, "up", true)) {
+        } else if (state.currentFace === 'top' && state.success) {
           return
-        } else {
-          state.currentMarmitronPositions[state.currentFace].y = yAfterUp
-          moveBlockIfExist(
-            state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y,
-            state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y - 1,
-          )
         }
-      } else if (direction === "down") {
-        let yAfterDown = state.currentMarmitronPositions[state.currentFace].y + 1
-        if (!isWalkableAt(state.currentMarmitronPositions[state.currentFace].x, yAfterDown, "down", true)) {
-          return
-        } else {
-          state.currentMarmitronPositions[state.currentFace].y = yAfterDown
-          moveBlockIfExist(
-            state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y,
-            state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y + 1,
-          )
-        }
-      }
 
-      if (state.currentLevel === 0) {
-        if (checkSuccess("left")) {
-          state.animationLock = true
-          setTimeout(store.commit, 1000, "addFaceAnimationFlag", {face: "left", flag: "turnCylinders"})
-          setTimeout(store.commit, 3000, "addFaceAnimationFlag", {face: "left", flag: "displayFood"})
-          setTimeout(store.commit, 4500, "addFaceAnimationFlag", {face: "left", flag: "displayChamberIds"})
-          setTimeout(store.commit, 5500, "addFaceAnimationFlag", {face: "left", flag: "activateGates"})
-          setTimeout(store.commit, 5500, "setCurrentLevel", 1)
+        for (var i = 0 ; i < state.initialBlocks[state.difficulty][state.currentFace].length ; i++) {
+          state.currentBlocks[state.currentFace][i].x = state.initialBlocks[state.difficulty][state.currentFace][i].x
+          state.currentBlocks[state.currentFace][i].y = state.initialBlocks[state.difficulty][state.currentFace][i].y
         }
-      } else if (state.currentLevel === 1) {
-        if (checkSuccess("front")) {
-          state.animationLock = true
-          setTimeout(store.commit, 1000, "addFaceAnimationFlag", {face: "front", flag: "turnCylinders"})
-          setTimeout(store.commit, 3000, "addFaceAnimationFlag", {face: "front", flag: "displayFood"})
-          setTimeout(store.commit, 4500, "addFaceAnimationFlag", {face: "front", flag: "displayChamberIds"})
-          setTimeout(store.commit, 5500, "addFaceAnimationFlag", {face: "front", flag: "activateGates"})
-          setTimeout(store.commit, 5500, "setCurrentLevel", 2)
-        }
-      } else if (state.currentLevel === 2 && state.success === false) {
-        if (checkSuccess("top")) {
-          state.animationLock = true
-          setTimeout(store.commit, 1000, "addFaceAnimationFlag", {face: "top", flag: "turnCylinders"})
-          setTimeout(store.commit, 3000, "addFaceAnimationFlag", {face: "top", flag: "displayFood"})
-          setTimeout(store.commit, 4500, "addFaceAnimationFlag", {face: "top", flag: "displayChamberIds"})
-          setTimeout(store.commit, 5500, "success")
-        }
-      }
 
-      store.commit('checkPassage')
+        if (state.currentFace === 'left') {
+          // The first grid is the same for all difficulty levels
+          state.currentMarmitronPositions[state.currentFace].x = 3
+          state.currentMarmitronPositions[state.currentFace].y = 3
+        } else if (state.currentFace === 'front') {
+          let initialFrontPosition = getSpecialPosition(state.currentFace, 'gate-left')
+
+          state.currentMarmitronPositions[state.currentFace].x = initialFrontPosition.x + 1
+          state.currentMarmitronPositions[state.currentFace].y = initialFrontPosition.y
+        } else {
+          // Current face is top
+          let initialFrontPosition = getSpecialPosition(state.currentFace, 'gate-bottom')
+
+          state.currentMarmitronPositions[state.currentFace].x = initialFrontPosition.x
+          state.currentMarmitronPositions[state.currentFace].y = initialFrontPosition.y - 1
+        }
+
+        publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+        publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_blocks_positions', data: state.currentBlocks})
+
+        state.movesPerLevel[state.currentLevel].sinceLastReset = 0
+        publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_moves_per_level', data: state.movesPerLevel})
+      } else {
+        if (direction === "left") {
+          let xAfterLeft = state.currentMarmitronPositions[state.currentFace].x - 1
+          if (!isWalkableAt(xAfterLeft, state.currentMarmitronPositions[state.currentFace].y, "left", true)) {
+            return
+          } else {
+            state.currentMarmitronPositions[state.currentFace].x = xAfterLeft
+            moveBlockIfExist(
+              state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y,
+              state.currentMarmitronPositions[state.currentFace].x - 1, state.currentMarmitronPositions[state.currentFace].y,
+            )
+            publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+            publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_blocks_positions', data: state.currentBlocks})
+
+            if (!state.success) {
+              state.movesPerLevel[state.currentLevel].sinceLastReset += 1
+              state.movesPerLevel[state.currentLevel].total += 1
+              publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_moves_per_level', data: state.movesPerLevel})
+            }
+          }
+        } else if (direction === "right") {
+          let xAfterRight = state.currentMarmitronPositions[state.currentFace].x + 1
+          if (!isWalkableAt(xAfterRight, state.currentMarmitronPositions[state.currentFace].y, "right", true)) {
+            return
+          } else {
+            state.currentMarmitronPositions[state.currentFace].x = xAfterRight
+            moveBlockIfExist(
+              state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y,
+              state.currentMarmitronPositions[state.currentFace].x + 1, state.currentMarmitronPositions[state.currentFace].y,
+            )
+            publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+            publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_blocks_positions', data: state.currentBlocks})
+
+            if (!state.success) {
+              state.movesPerLevel[state.currentLevel].sinceLastReset += 1
+              state.movesPerLevel[state.currentLevel].total += 1
+              publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_moves_per_level', data: state.movesPerLevel})
+            }
+          }
+        } else if (direction === "up") {
+          let yAfterUp = state.currentMarmitronPositions[state.currentFace].y - 1
+          if (!isWalkableAt(state.currentMarmitronPositions[state.currentFace].x, yAfterUp, "up", true)) {
+            return
+          } else {
+            state.currentMarmitronPositions[state.currentFace].y = yAfterUp
+            moveBlockIfExist(
+              state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y,
+              state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y - 1,
+            )
+            publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+            publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_blocks_positions', data: state.currentBlocks})
+
+            if (!state.success) {
+              state.movesPerLevel[state.currentLevel].sinceLastReset += 1
+              state.movesPerLevel[state.currentLevel].total += 1
+              publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_moves_per_level', data: state.movesPerLevel})
+            }
+          }
+        } else if (direction === "down") {
+          let yAfterDown = state.currentMarmitronPositions[state.currentFace].y + 1
+          if (!isWalkableAt(state.currentMarmitronPositions[state.currentFace].x, yAfterDown, "down", true)) {
+            return
+          } else {
+            state.currentMarmitronPositions[state.currentFace].y = yAfterDown
+            moveBlockIfExist(
+              state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y,
+              state.currentMarmitronPositions[state.currentFace].x, state.currentMarmitronPositions[state.currentFace].y + 1,
+            )
+            publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+            publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_blocks_positions', data: state.currentBlocks})
+
+            if (!state.success) {
+              state.movesPerLevel[state.currentLevel].sinceLastReset += 1
+              state.movesPerLevel[state.currentLevel].total += 1
+              publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_moves_per_level', data: state.movesPerLevel})
+            }
+          }
+        }
+
+        if (state.currentLevel === 0) {
+          if (checkSuccess("left")) {
+            state.animationLock = true
+            setTimeout(store.commit, 1000, "addFaceAnimationFlag", {face: "left", flag: "turnCylinders"})
+            setTimeout(store.commit, 3000, "addFaceAnimationFlag", {face: "left", flag: "displayFood"})
+            setTimeout(store.commit, 4500, "addFaceAnimationFlag", {face: "left", flag: "displayChamberIds"})
+            setTimeout(store.commit, 5500, "addFaceAnimationFlag", {face: "left", flag: "activateGates"})
+            setTimeout(store.commit, 5500, "setCurrentLevel", 1)
+          }
+        } else if (state.currentLevel === 1) {
+          if (checkSuccess("front")) {
+            state.animationLock = true
+            setTimeout(store.commit, 1000, "addFaceAnimationFlag", {face: "front", flag: "turnCylinders"})
+            setTimeout(store.commit, 3000, "addFaceAnimationFlag", {face: "front", flag: "displayFood"})
+            setTimeout(store.commit, 4500, "addFaceAnimationFlag", {face: "front", flag: "displayChamberIds"})
+            setTimeout(store.commit, 5500, "addFaceAnimationFlag", {face: "front", flag: "activateGates"})
+            setTimeout(store.commit, 5500, "setCurrentLevel", 2)
+          }
+        } else if (state.currentLevel === 2 && state.success === false) {
+          if (checkSuccess("top")) {
+            state.animationLock = true
+            setTimeout(store.commit, 1000, "addFaceAnimationFlag", {face: "top", flag: "turnCylinders"})
+            setTimeout(store.commit, 3000, "addFaceAnimationFlag", {face: "top", flag: "displayFood"})
+            setTimeout(store.commit, 4500, "addFaceAnimationFlag", {face: "top", flag: "displayChamberIds"})
+            setTimeout(store.commit, 5500, "success")
+          }
+        }
+
+        store.commit('checkPassage')
+      }
     },
     setCurrentLevel(state, level) {
       if (state.currentLevel < level) {
         state.currentLevel = level
         state.animationLock = false
+        publishSubscribeService.commit('publish', {category: 'sokoban_start_level', level: state.currentLevel})
       }
     },
     addFaceAnimationFlag(state, {face, flag}) {
@@ -592,6 +698,7 @@ var store = new Vuex.Store({
       if (state.success === false) {
         state.animationLock = false
         state.success = true
+        publishSubscribeService.commit('publish', {category: 'success'})
       }
     },
     checkPassage(state) {
@@ -606,6 +713,12 @@ var store = new Vuex.Store({
         state.currentMarmitronPositions.front.y = passageDestinationPosition.y
         state.currentMarmitronPositions.front.exist = true
 
+        publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+        if (!state.hasChangedFaceAtLeastOnce) {
+          state.hasChangedFaceAtLeastOnce = true
+          publishSubscribeService.commit('publish', {category: 'first_face_change'})
+        }
+
         setTimeout(store.commit, 400, "setFace", 'front')
       } else if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX].type === 'gate-left') {
         state.animationLock = true
@@ -614,6 +727,8 @@ var store = new Vuex.Store({
         state.currentMarmitronPositions.left.x = passageDestinationPosition.x
         state.currentMarmitronPositions.left.y = passageDestinationPosition.y
         state.currentMarmitronPositions.left.exist = true
+
+        publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
 
         setTimeout(store.commit, 400, "setFace", 'left')
       } else if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX].type === 'gate-top') {
@@ -624,6 +739,8 @@ var store = new Vuex.Store({
         state.currentMarmitronPositions.top.y = passageDestinationPosition.y
         state.currentMarmitronPositions.top.exist = true
 
+        publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+
         setTimeout(store.commit, 400, "setFace", 'top')
       } else if (state.grids[state.difficulty][state.currentFace][marmitronY][marmitronX].type === 'gate-bottom') {
         state.animationLock = true
@@ -633,6 +750,8 @@ var store = new Vuex.Store({
         state.currentMarmitronPositions.front.y = passageDestinationPosition.y
         state.currentMarmitronPositions.front.exist = true
 
+        publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+
         setTimeout(store.commit, 400, "setFace", 'front')
       }
     },
@@ -641,6 +760,7 @@ var store = new Vuex.Store({
       state.currentMarmitronPositions[originFace].exist = false
 
       state.currentFace = face
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_current_face', data: state.currentFace})
 
       setTimeout(store.commit, 800, "moveMarmitronOutOfPassage", originFace)
     },
@@ -655,42 +775,9 @@ var store = new Vuex.Store({
         state.currentMarmitronPositions[state.currentFace].y--
       }
 
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'sokoban_marmitron_positions', data: state.currentMarmitronPositions})
+
       setTimeout(store.commit, 400, "animationUnlock")
-    },
-    reset(state) {
-      if (state.animationLock === true) {
-        return
-      }
-
-      if (state.currentFace === 'left' && state.currentLevel >= 1) {
-        return
-      } else if (state.currentFace === 'front' && state.currentLevel >= 2) {
-        return
-      } else if (state.currentFace === 'top' && state.success) {
-        return
-      }
-
-      for (var i = 0 ; i < state.initialBlocks[state.difficulty][state.currentFace].length ; i++) {
-        state.currentBlocks[state.currentFace][i].x = state.initialBlocks[state.difficulty][state.currentFace][i].x
-        state.currentBlocks[state.currentFace][i].y = state.initialBlocks[state.difficulty][state.currentFace][i].y
-      }
-
-      if (state.currentFace === 'left') {
-        // The first grid is the same for all difficulty levels
-        state.currentMarmitronPositions[state.currentFace].x = 3
-        state.currentMarmitronPositions[state.currentFace].y = 3
-      } else if (state.currentFace === 'front') {
-        let initialFrontPosition = getSpecialPosition(state.currentFace, 'gate-left')
-
-        state.currentMarmitronPositions[state.currentFace].x = initialFrontPosition.x + 1
-        state.currentMarmitronPositions[state.currentFace].y = initialFrontPosition.y
-      } else {
-        // Current face is top
-        let initialFrontPosition = getSpecialPosition(state.currentFace, 'gate-bottom')
-
-        state.currentMarmitronPositions[state.currentFace].x = initialFrontPosition.x
-        state.currentMarmitronPositions[state.currentFace].y = initialFrontPosition.y - 1
-      }
     },
   },
 })

@@ -38,6 +38,8 @@ const publishSubscribeService = new Vuex.Store({
         }
         Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
       }
+
+      sokobanStore.commit('publishSessionData')
     },
     SOCKET_ONCLOSE (state, event) {
       // eslint-disable-next-line
@@ -75,12 +77,12 @@ const publishSubscribeService = new Vuex.Store({
         let useLocale = event.use_locale
         let withSound = event.with_sound === undefined ? true : event.with_sound
         logStore.commit('processLog', {logMessage, level, useLocale, withSound})
-      } else if (event.category === 'lock_difficulty') {
-        sokobanStore.commit('lockDifficulty')
       } else if (event.category === 'set_difficulty') {
         sokobanStore.commit('setDifficulty', event.difficulty)
       } else if (event.category === 'control') {
         sokobanStore.commit('control', {name: event.name, pressed: event.pressed})
+      } else if (event.category === 'queue_moves') {
+        sokobanStore.commit('queueMoves', event.moves || [])
       } else if (event.category === 'display_danger_window') {
         progressionStore.commit('displayDangerWindow')
       } else if (event.category === 'display_black_screen') {
@@ -88,6 +90,8 @@ const publishSubscribeService = new Vuex.Store({
         progressionStore.commit('displayBlackScreen', display)
       } else if (event.category === 'set_stocks_status') {
         progressionStore.commit('setIsStocksOk', event.status)
+      } else if (event.category === 'request_node_session_data') {
+        sokobanStore.commit('publishSessionData')
       }
     },
     SOCKET_RECONNECT (state, count) {

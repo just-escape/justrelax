@@ -345,6 +345,13 @@ class Scenario(MagicNode):
         self.wrong_dishes_counter = -3
         self.all_dishes_are_good_but_wrong_price_counter = -1
 
+        self.set_session_data('sokoban_first_move_time_0', None)
+        self.set_session_data('sokoban_first_move_time_1', None)
+        self.set_session_data('sokoban_first_move_time_2', None)
+        self.set_session_data('sokoban_success_time_0', None)
+        self.set_session_data('sokoban_success_time_1', None)
+        self.set_session_data('sokoban_success_time_2', None)
+
     def new_session_id(self):
         session_id = generate_slug(3)
         self.set_session_data('session_id', session_id)
@@ -665,6 +672,13 @@ class Scenario(MagicNode):
 
         self.wrong_dishes_counter = -3
         self.all_dishes_are_good_but_wrong_price_counter = -1
+
+        self.set_session_data('sokoban_first_move_time_0', None)
+        self.set_session_data('sokoban_first_move_time_1', None)
+        self.set_session_data('sokoban_first_move_time_2', None)
+        self.set_session_data('sokoban_success_time_0', None)
+        self.set_session_data('sokoban_success_time_1', None)
+        self.set_session_data('sokoban_success_time_2', None)
 
     @on_event(filter={'from_': 'webmin', 'category': 'request_session_data_for_webmin'})
     def on_request_session_data(self):
@@ -1304,6 +1318,30 @@ class Scenario(MagicNode):
     def sokoban_controls_event(self, name: str, pressed: bool):
         self.publish_prefix({'category': 'control', 'name': name, 'pressed': pressed}, 'inventory')
 
+    @on_event(filter={'widget_id': 'sokoban', 'action': 'set_difficulty'})
+    def sokoban_set_difficulty(self, difficulty: str):
+        self.publish_prefix({'category': 'set_difficulty', 'difficulty': difficulty}, 'inventory')
+
+    @on_event(filter={'widget_id': 'sokoban', 'action': 'queue_moves'})
+    def sokoban_queue_moves(self, moves: list):
+        self.publish_prefix({'category': 'queue_moves', 'moves': moves}, 'inventory')
+
+    @on_event(filter={'from_': 'inventory', 'category': 'sokoban_start_level'})
+    def sokoban_start_level(self, level: int):
+        self.set_session_data(f'sokoban_first_move_time_{level}', self.session_time or 0)
+        if level > 0:
+            self.set_session_data(f'sokoban_success_time_{level - 1}', self.session_time or 0)
+
+    @on_event(filter={'from_': 'inventory', 'category': 'success'})
+    def sokoban_success(self):
+        self.set_session_data('sokoban_success_time_2', self.session_time or 0)
+        self.set_session_data('sokoban_success', True)
+
+    @on_event(filter={'from_': 'inventory', 'category': 'first_face_change'})
+    def sokoban_first_face_change(self):
+        # TODO: cancel timer
+        pass
+
     @on_event(filter={'from_': 'cylinders', 'category': 'tag'})
     def cylinder_tag(self, tag):
         if tag:
@@ -1803,25 +1841,15 @@ class Scenario(MagicNode):
     def buttons_music_player_set_master_volume(self, volume: int):
         self.publish_prefix({'category': 'set_volume', 'volume': volume, 'duration': 10}, 'music_player')
 
-    @on_event(filter={'widget_id': 'set_inventory_difficulty_easy'})
-    def button_set_inventory_difficulty_easy(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'easy'}, 'inventory')
-
-    @on_event(filter={'widget_id': 'set_inventory_difficulty_normal'})
-    def button_set_inventory_difficulty_normal(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'normal'}, 'inventory')
-
-    @on_event(filter={'widget_id': 'set_inventory_difficulty_hard'})
-    def button_set_inventory_difficulty_hard(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'hard'}, 'inventory')
-
     @on_event(filter={'widget_id': 'reset_inventory'})
     def button_reset_inventory(self):
         self.publish_prefix({'category': 'reset'}, 'inventory')
-
-    @on_event(filter={'widget_id': 'display_inventory_danger_window'})
-    def button_inventory_display_danger_window(self):
-        self.publish_prefix({'category': 'display_danger_window'}, 'inventory')
+        self.set_session_data('sokoban_first_move_time_0', None)
+        self.set_session_data('sokoban_first_move_time_1', None)
+        self.set_session_data('sokoban_first_move_time_2', None)
+        self.set_session_data('sokoban_success_time_0', None)
+        self.set_session_data('sokoban_success_time_1', None)
+        self.set_session_data('sokoban_success_time_2', None)
 
     @on_event(filter={'widget_id': 'inventory_black_screen'})
     def buttons_inventory_black_screen(self, display: bool):

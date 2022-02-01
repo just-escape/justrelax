@@ -7,7 +7,7 @@
         <b-btn @click="move('up')" class="mr-2">haut</b-btn>
         <b-btn @click="move('right')" class="mr-5">droite</b-btn>
 
-        <b-btn @click="reset()">reset</b-btn>
+        <b-btn @click="move('reset')">reset</b-btn>
       </div>
 
       <div
@@ -144,7 +144,7 @@ export default {
   },
   methods: {
     move(direction) {
-      sokobanStore.commit('move', direction)
+      sokobanStore.commit('move', {direction: direction, fromQueue: false})
     },
     keypress(e) {
       if (e.code === "KeyA") {
@@ -156,11 +156,8 @@ export default {
       } else if (e.code === "KeyW") {
         this.move('up')
       } else if (e.code === "KeyR") {
-        this.reset('reset')
+        this.move('reset')
       }
-    },
-    reset() {
-      sokobanStore.commit('reset')
     },
   },
   mounted() {

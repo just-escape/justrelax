@@ -1,5 +1,5 @@
 <template>
-  <b-button :size="size" @click="$emit('click')">
+  <b-button :size="size" :disabled="disabled" @click="$emit('click')" :class="{activated: active}">
     <slot></slot>
   </b-button>
 </template>
@@ -7,7 +7,7 @@
 <script>
 export default {
   name: 'ButtonJaffa',
-  props: ['size']
+  props: {'size': {default: 'sm'}, 'disabled': {default: false}, 'active': {default: false}}
 }
 </script>
 
@@ -37,7 +37,15 @@ button:not(:disabled):not(.disabled):active {
 }
 
 button:focus, button:not(:disabled):not(.disabled):active:focus {
+    background-color: transparent;
+    color: #ef8649;
+    border-color: #ef8649;
     box-shadow: none;
+}
+
+button.activated, button.activated:disabled {
+  background-color: #ef8649;
+  color: #3c3c3e;
 }
 
 .btn-group > .btn:not(:last-child):disabled,
