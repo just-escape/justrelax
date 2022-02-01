@@ -139,19 +139,21 @@ export default {
       }
     },
     confirm() {
-      publishSubscribeService.commit('publish', {category: 'play'})
+      if (!this.areActionsLocked) {
+        this.areActionsLocked = true
 
-      this.areActionsLocked = true
+        publishSubscribeService.commit('publish', {category: 'play'})
 
-      setTimeout(this.setData, 200, 'runWordTranslateX', -1080)
-      setTimeout(this.setData, 400, 'theTranslateX', -1080)
-      setTimeout(this.setData, 600, 'gameTranslateX', -1080)
-      setTimeout(this.setData, 800, 'questionMarkTranslateX', -1080)
-      setTimeout(this.setData, 1000, 'yesTranslateX', -1080)
-      setTimeout(this.setData, 1200, 'noTranslateX', -1080)
+        setTimeout(this.setData, 200, 'runWordTranslateX', -1080)
+        setTimeout(this.setData, 400, 'theTranslateX', -1080)
+        setTimeout(this.setData, 600, 'gameTranslateX', -1080)
+        setTimeout(this.setData, 800, 'questionMarkTranslateX', -1080)
+        setTimeout(this.setData, 1000, 'yesTranslateX', -1080)
+        setTimeout(this.setData, 1200, 'noTranslateX', -1080)
 
-      setTimeout(this.setData, 6000, 'openTranslateX', 0)
-      setTimeout(this.setData, 6000, 'sessionTimeTranslateX', 0)
+        setTimeout(this.setData, 6000, 'openTranslateX', 0)
+        setTimeout(this.setData, 6000, 'sessionTimeTranslateX', 0)
+      }
     },
     setData(key, value) {
       this[key] = value

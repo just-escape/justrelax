@@ -259,6 +259,11 @@ void updateLeds() {
 void loop() {
   if (status == "playing") {
     checkRFID();
+  } else {
+    // flush
+    while (rfidReader.available() > 0) {
+      rfidReader.read();
+    }
   }
 
   updateLeds();
@@ -283,6 +288,8 @@ void onEvent() {
     } else if (category == PROTOCOL_STATUS_DISABLED) {
       isSomethingBeingSent = false;
       loadingStep = 0;
+      lastReadTag = 0;
+      pushEvent(PROTOCOL_CANCEL_AUTHENTICATION);
       status = "disabled";
     } else if (category == PROTOCOL_STATUS_SUCCESS) {
       isSomethingBeingSent = false;

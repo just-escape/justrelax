@@ -5,7 +5,7 @@ subscriptions:
   - d1.music_player
   - d1.broadcast
 
-master_volume: 100
+master_volume: 80
 default_volume: 40
 mixer: Master
 player: vlc

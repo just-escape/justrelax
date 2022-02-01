@@ -748,7 +748,8 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'play_overlay_video', 'video_id': 'glitching_less'}, 'orders')
         self.publish_prefix({'category': 'stop_overlay_video'}, 'synchronizer')
         self.publish_prefix({'category': 'play', 'video_id': 'ads_loop'}, 'advertiser')
-        self.publish_prefix({'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
+        self.register_delayed_task(  # One second later to avoid seeing rpi's desktop during loading time
+            1, self.publish_prefix, {'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
         self.publish_prefix({'category': 'stop', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
 
         self.publish_prefix({'category': 'restaurant_in_manual_mode'}, 'synchronizer')

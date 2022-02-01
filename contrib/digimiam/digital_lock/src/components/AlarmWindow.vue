@@ -8,7 +8,7 @@
         <div class="d-flex flex-column align-items-center">
           <i class="text-red fa fa-exclamation-triangle mb-4 blink" style="font-size: 300px"/>
           <div style="font-size: 40px; color: var(--light)">
-            Instrusion détectée
+            Intrusion détectée
           </div>
           <div style="font-size: 24px; color: var(--light)">
             Évacuation <span class="text-red" style="font-weight: bold">complète</span> de la salle requise
