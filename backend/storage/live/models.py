@@ -17,6 +17,7 @@ WIDGET_TYPES = (
     ('chopsticks', 'chopsticks'),
     ('control_panel', 'control_panel'),
     ('timer', 'timer'),
+    ('sokoban', 'sokoban'),
 )
 
 
