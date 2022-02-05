@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column min-width-100px">
     <div class="text-one-line-ellipsis mb-1">{{ row.name }}</div>
-    <div v-for="laser in row.widget_params" :key="laser.index" class="d-flex flex-row justify-content-between rows-striped px-2">
+    <div v-for="(laser, laserIndex) in row.widget_params" :key="roomId + '-' + laserIndex" class="d-flex flex-row justify-content-between rows-striped px-2">
       <div class="d-flex flex-row align-items-center">
         <div
           class="border mr-1 position-relative pointer"

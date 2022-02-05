@@ -32,7 +32,7 @@
     <div slot="main">
       <Cameras :roomId="room.id" class="mb-4"/>
       <!--<Timeline :room="room" class="mb-4"/>-->
-      <PublishEvent :defaultChannel="room.default_publication_channel" class="mb-4"/>
+      <PublishEvent v-if="isInMaintenanceMode" :defaultChannel="room.default_publication_channel" class="mb-4"/>
       <Actions :roomId="room.id"/>
     </div>
   </AppContent>
@@ -49,6 +49,7 @@ import Cameras from '@/components/live/Cameras.vue'
 import PublishEvent from '@/components/live/PublishEvent.vue'
 import Actions from '@/components/live/Actions.vue'
 import roomStore from '@/store/roomStore.js'
+import preferenceStore from '@/store/preferenceStore.js'
 
 export default {
   name: 'PageLive',
@@ -64,6 +65,9 @@ export default {
     Actions,
   },
   computed: {
+    isInMaintenanceMode() {
+      return preferenceStore.state.isInMaintenanceMode
+    },
     room() {
       if (roomStore.state.rooms === undefined) {
         return undefined

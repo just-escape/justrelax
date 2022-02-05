@@ -24,6 +24,7 @@ class CardRowSerializer(ModelSerializer):
             'card',
             'name',
             'index',
+            'maintenance',
             'widget',
             'widget_params',
         )

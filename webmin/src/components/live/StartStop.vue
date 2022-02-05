@@ -1,12 +1,12 @@
 <template>
   <b-button-group>
-    <ButtonJaffa @click="action('run')">
+    <ButtonJaffa size="md" @click="action('run')">
       <i class="fas fa-play"></i>
     </ButtonJaffa>
-    <ButtonJaffa @click="action('halt')">
+    <ButtonJaffa size="md" @click="action('halt')">
       <i class="fas fa-pause"></i>
     </ButtonJaffa>
-    <ButtonJaffa @click="action('reset')">
+    <ButtonJaffa size="md" @click="action('reset')">
       <i class="fas fa-undo-alt"></i>
     </ButtonJaffa>
   </b-button-group>

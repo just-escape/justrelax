@@ -5,7 +5,7 @@
     <b-button-group>
       <ButtonJaffa
         size="sm"
-        v-for="(button, index) in row.widget_params"
+        v-for="(button, index) in row.widget_params.filter(b => isInMaintenanceMode || !b.maintenance)"
         :key="index"
         @click="click(button)"
         :title="button.help"
@@ -20,11 +20,17 @@
 <script>
 import ButtonJaffa from "@/components/common/ButtonJaffa.vue"
 import roomStore from "@/store/roomStore.js"
+import preferenceStore from '@/store/preferenceStore.js'
 
 export default {
   name: "WidgetButtonsList",
   components: {
     ButtonJaffa,
+  },
+  computed: {
+    isInMaintenanceMode() {
+      return preferenceStore.state.isInMaintenanceMode
+    },
   },
   methods: {
     click(button) {

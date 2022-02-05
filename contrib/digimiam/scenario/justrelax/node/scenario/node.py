@@ -1647,18 +1647,6 @@ class Scenario(MagicNode):
     def button_orders_hide_marmitron(self):
         self.publish_prefix({'category': 'set_marmitron_visibility', 'show': False}, 'orders')
 
-    @on_event(filter={'widget_id': 'set_synchronizer_difficulty_easy'})
-    def button_set_synchronizer_difficulty_easy(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'easy'}, 'synchronizer')
-
-    @on_event(filter={'widget_id': 'set_synchronizer_difficulty_normal'})
-    def button_set_synchronizer_difficulty_normal(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'normal'}, 'synchronizer')
-
-    @on_event(filter={'widget_id': 'set_synchronizer_difficulty_hard'})
-    def button_set_synchronizer_difficulty_hard(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'hard'}, 'synchronizer')
-
     @on_event(filter={'widget_id': 'reset_synchronizer'})
     def button_reset_synchronizer(self):
         self.publish_prefix({'category': 'reset'}, 'synchronizer')
@@ -1682,10 +1670,6 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'stop_synchronizer_overlay_video'})
     def button_stop_synchronizer_overlay_video(self):
         self.publish_prefix({'category': 'stop_overlay_video'}, 'synchronizer')
-
-    @on_event(filter={'widget_id': 'display_synchronizer_danger_window'})
-    def button_display_synchronizer_danger_window(self):
-        self.publish_prefix({'category': 'display_danger_window'}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'maze_playing'})
     def button_maze_playing(self):
@@ -1799,22 +1783,6 @@ class Scenario(MagicNode):
     def button_synchronizer_restaurant_in_manual_mode(self):
         self.publish_prefix({'category': 'restaurant_in_manual_mode'}, 'synchronizer')
 
-    @on_event(filter={'widget_id': 'control_menu_set_status_repaired_0'})
-    def button_control_menu_set_status_repaired_0(self):
-        self.publish_prefix({'category': 'set_menu_service_status', 'repaired': False}, 'control_panel')
-
-    @on_event(filter={'widget_id': 'control_menu_set_status_repaired_1'})
-    def button_control_menu_set_status_repaired_1(self):
-        self.publish_prefix({'category': 'set_menu_service_status', 'repaired': True}, 'control_panel')
-
-    @on_event(filter={'widget_id': 'control_lights_set_status_repaired_0'})
-    def button_control_lights_set_status_repaired_0(self):
-        self.publish_prefix({'category': 'set_lights_service_status', 'repaired': False}, 'control_panel')
-
-    @on_event(filter={'widget_id': 'control_lights_set_status_repaired_1'})
-    def button_control_lights_set_status_repaired_1(self):
-        self.publish_prefix({'category': 'set_lights_service_status', 'repaired': True}, 'control_panel')
-
     @on_event(filter={'widget_id': 'control_set_status_inactive'})
     def button_control_set_status_inactive(self):
         self.publish_prefix({'category': 'set_status', 'status': 'inactive'}, 'control_panel')
@@ -1864,10 +1832,6 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'stop_orders_overlay_video'})
     def button_stop_orders_overlay_video(self):
         self.publish_prefix({'category': 'stop_overlay_video'}, 'orders')
-
-    @on_event(filter={'widget_id': 'display_orders_danger_window'})
-    def button_display_orders_danger_window(self):
-        self.publish_prefix({'category': 'display_danger_window'}, 'orders')
 
     @on_event(filter={'widget_id': 'set_ventilation_panel_difficulty_easy'})
     def button_set_ventilation_panel_difficulty_easy(self):
@@ -2273,10 +2237,6 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'root_server_success'})
     def root_server_success(self):
         self.publish_prefix({'category': 'force_success'}, 'root_server')
-
-    @on_event(filter={'widget_id': 'root_server_display_danger_window'})
-    def root_server_display_danger_window(self):
-        self.publish_prefix({'category': 'display_danger_window'}, 'root_server')
 
     @on_event(filter={'widget_id': 'root_server_play_animation'})
     def root_server_play_animation(self, animation_id: str):

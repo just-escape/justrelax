@@ -5,12 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    displayNotificationPanel: false
+    displayNotificationPanel: false,
+    isInMaintenanceMode: false,
   },
   mutations: {
     toggleDisplayNotificationPanel (state) {
       state.displayNotificationPanel = !state.displayNotificationPanel
-    }
+    },
+    setMaintenanceMode (state, value) {
+      state.isInMaintenanceMode = value
+    },
   },
   actions: {
     toggleDisplayNotificationPanel (context) {

@@ -19,7 +19,7 @@
           Loading...
         </div>
         <ul v-else class="list-unstyled mb-0">
-          <li v-for="(row, index) in cardRows" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
+          <li v-for="(row, index) in cardRows.filter(cr => isInMaintenanceMode || !cr.maintenance)" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
             <WidgetButtonsGroup v-if="row.widget === 'buttons_group'" :row="row" :defaultChannel="roomDefaultChannel"/>
             <WidgetSessionData v-if="row.widget === 'session_data'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
             <WidgetLogPrompt v-else-if="row.widget === 'log_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
@@ -57,6 +57,7 @@ import WidgetSokoban from "@/components/live/WidgetSokoban.vue"
 import CollapseChevron from '@/components/common/CollapseChevron.vue'
 import roomStore from "@/store/roomStore.js"
 import notificationStore from '@/store/notificationStore.js'
+import preferenceStore from '@/store/preferenceStore.js'
 
 export default {
   name: "ActionCard",
@@ -82,6 +83,9 @@ export default {
     }
   },
   computed: {
+    isInMaintenanceMode() {
+      return preferenceStore.state.isInMaintenanceMode
+    },
     roomDefaultChannel() {
       for (let room of roomStore.state.rooms) {
         if (room.id === this.roomId) {
