@@ -40,6 +40,7 @@ class CardRow(models.Model):
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
     index = models.IntegerField()
+    maintenance = models.BooleanField(default=False)
     widget = models.CharField(choices=WIDGET_TYPES, default=WIDGET_TYPES[0][0], max_length=32)
     widget_params = models.TextField()
 
@@ -50,4 +51,4 @@ class CardRow(models.Model):
 class CardRowForm(forms.ModelForm):
     class Meta:
         model = CardRow
-        fields = ('card', 'name', 'index', 'widget', 'widget_params',)
+        fields = ('card', 'name', 'index', 'maintenance', 'widget', 'widget_params',)
