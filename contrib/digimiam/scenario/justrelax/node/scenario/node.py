@@ -243,6 +243,7 @@ class Scenario(MagicNode):
         'final_by_refectory',
         'dry_print',
         'order_with_niryo_and_printer',
+        'autostart_timers',
     ]
 
     EXPECTED_MENU = [
@@ -461,8 +462,9 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
             self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
             self.session_timer.start()
-            self.chopsticks_voice_clue_1.start()
-            self.chopsticks_voice_clue_2.start()
+            if self.persistent_settings['autostart_timers']:
+                self.chopsticks_voice_clue_1.start()
+                self.chopsticks_voice_clue_2.start()
 
         self.publish_prefix({'category': 'calibrate'}, 'load_cells')
         self.publish_prefix({'category': 'on', 'color': 'orange'}, 'refectory_lights')
