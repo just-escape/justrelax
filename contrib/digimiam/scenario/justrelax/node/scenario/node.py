@@ -1404,6 +1404,8 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'playing'}, 'laser_maze')
         self.publish_prefix({'category': 'playing'}, 'human_authenticator')
 
+        self.publish_prefix({'category': 'play_animation', 'animation': 'waffle_end'}, 'waffle_factory')
+
         self.publish_prefix(
             {'category': 'set_volume', 'track_id': 'track7', 'volume': 0, 'duration': 5}, 'music_player')
         self.register_delayed_task(5, self.publish_prefix, {'category': 'stop', 'track_id': 'track7'}, 'music_player')
