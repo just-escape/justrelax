@@ -55,6 +55,7 @@ let store = new Vuex.Store({
       music: require('@/assets/img/music.svg'),
     },
     selectedWaffrescoPatternId: 'happy',
+    displayProcessingOrderNotification: false,
     displayResumeOrderNotification: false,
     displayOrderRecapNotification: false,
     displayEmptyCartHelp: false,
@@ -101,6 +102,9 @@ let store = new Vuex.Store({
         state.hasFirstOrderBeenIssued = true
         publishSubscribeService.commit('publish', {'category': 'first_order'})
       }
+    },
+    setDisplayProcessingOrderNotification (state, value) {
+      state.displayProcessingOrderNotification = value
     },
     setDisplayResumeOrderNotification (state, value) {
       state.displayResumeOrderNotification = value

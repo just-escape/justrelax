@@ -53,6 +53,7 @@ const locales = {
     danger: 'DANGER',
     toxic_air_detected: 'Toxic air detected',
     immediate_evac: 'Humans are required to evacuate immediately',
+    ORDER: 'ORDER',
   },
   fr: {
     nF: 'nF',
@@ -104,6 +105,7 @@ const locales = {
     danger: 'DANGER',
     toxic_air_detected: 'Air toxique détecté',
     immediate_evac: 'Évacuation immédiate des humains requise',
+    ORDER: 'COMMANDE',
   }
 }
 

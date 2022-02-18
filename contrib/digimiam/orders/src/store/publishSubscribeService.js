@@ -105,6 +105,8 @@ const publishSubscribeService = new Vuex.Store({
         orderStore.commit('setDisplayOrderRecapNotification', event.value)
       } else if (event.category === 'reset_order') {
         orderStore.commit('resetOrder')
+      } else if (event.category === 'set_display_processing_order_notification') {
+        orderStore.commit('setDisplayProcessingOrderNotification', event.value)
       }
     },
     SOCKET_RECONNECT (state, count) {

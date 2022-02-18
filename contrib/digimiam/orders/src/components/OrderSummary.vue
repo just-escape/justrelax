@@ -2,6 +2,7 @@
   <div class="position-relative d-flex flex-column flex-grow-1">
     <CreditsNotification class="position-absolute" :displayed="displayCreditsNotification" @ok="acknowledgeCreditsNotification" :class="{'shaking-more': creditsNotificationShaking}"/>
     <ResumeOrderNotification class="position-absolute" :displayed="displayResumeOrderNotification" @ok="acknowledgeResumeNotification"/>
+    <ProcessingOrderNotification class="position-absolute" :displayed="displayProcessingOrderNotification"/>
     <OrderRecapNotification class="position-absolute" :displayed="displayOrderRecapNotification"/>
 
     <div class="overflow-hidden p-4">
@@ -94,6 +95,7 @@
 import OrderSummaryItem from '@/components/OrderSummaryItem.vue'
 import OrderConfirmButton from '@/components/OrderConfirmButton.vue'
 import ResumeOrderNotification from '@/components/ResumeOrderNotification.vue'
+import ProcessingOrderNotification from '@/components/ProcessingOrderNotification.vue'
 import OrderRecapNotification from '@/components/OrderRecapNotification.vue'
 import CreditsNotification from '@/components/CreditsNotification.vue'
 import orderStore from '@/store/orderStore.js'
@@ -106,6 +108,7 @@ export default {
     OrderSummaryItem,
     OrderConfirmButton,
     ResumeOrderNotification,
+    ProcessingOrderNotification,
     OrderRecapNotification,
     CreditsNotification,
   },
@@ -149,6 +152,9 @@ export default {
     },
     isRestaurantClosed: function() {
       return progressionStore.state.isRestaurantClosed
+    },
+    displayProcessingOrderNotification() {
+      return orderStore.state.displayProcessingOrderNotification
     },
     displayResumeOrderNotification: function() {
       return orderStore.state.displayResumeOrderNotification

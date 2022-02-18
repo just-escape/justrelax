@@ -234,7 +234,7 @@ class Scenario(MagicNode):
     DIFFICULTIES = {'easy', 'normal', 'hard'}
 
     MS_PEPPER_INTRO_DURATION = 35
-    NIRYO_BUGGED_ANIMATION_DURATION = 23
+    NIRYO_BUGGED_ANIMATION_DURATION = 23 - 10  # - 10 in order to trigger Ms Pepper's speech earlier
 
     PERSISTENT_SCENARIO_SETTINGS = [
         'niryo_animation',
@@ -983,6 +983,9 @@ class Scenario(MagicNode):
                 1, self.publish_prefix, {'category': 'play', 'track_id': 'track5'}, 'music_player')
 
             self.register_delayed_task(
+                0.5, self.publish_prefix, {'category': 'set_display_processing_order_notification', 'value': True},
+                'orders')
+            self.register_delayed_task(
                 0.5, self.publish_prefix, {'category': 'off', 'color': 'white'}, 'refectory_lights')
             self.register_delayed_task(
                 0.5, self.publish_prefix, {'category': 'off', 'color': 'blue'}, 'refectory_lights')
@@ -1007,6 +1010,9 @@ class Scenario(MagicNode):
             self.register_delayed_task(
                 self.NIRYO_BUGGED_ANIMATION_DURATION + 6 + 1, self.publish_prefix,
                 {'category': 'stop', 'track_id': 'track5'}, 'music_player')
+            self.register_delayed_task(
+                self.NIRYO_BUGGED_ANIMATION_DURATION + 6 + 1, self.publish_prefix,
+                {'category': 'set_display_processing_order_notification', 'value': False}, 'orders')
             delay = self.NIRYO_BUGGED_ANIMATION_DURATION + 6
         else:
             delay = 1
@@ -1128,7 +1134,43 @@ class Scenario(MagicNode):
             0.5, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track3', 'volume': 0, 'duration': 2}, 'music_player')
 
+        self.publish_prefix(
+            {
+                "category": "log",
+                "use_locale": True,
+                "message": "resume_order",
+                "level": "info",
+                "with_sound": False,
+            },
+            "inventory"
+        )
+
         if self.persistent_settings['order_with_niryo_and_printer']:
+            self.publish_prefix(
+                {
+                    "category": "log",
+                    "use_locale": True,
+                    "message": "robotic_arm_activation",
+                    "level": "info",
+                    "with_sound": False,
+                },
+                "inventory"
+            )
+            self.publish_prefix(
+                {
+                    "category": "log",
+                    "use_locale": True,
+                    "message": "printer_activation",
+                    "level": "info",
+                    "with_sound": False,
+                },
+                "inventory"
+            )
+
+            self.register_delayed_task(
+                1, self.publish_prefix, {'category': 'set_display_processing_order_notification', 'value': True},
+                'orders')
+
             self.register_delayed_task(
                 1, self.publish_prefix,
                 {'category': 'play', 'track_id': 'track5'}, 'music_player')
@@ -1188,6 +1230,10 @@ class Scenario(MagicNode):
             self.register_delayed_task(
                 delay - 1.5, self.publish_prefix,
                 {'category': 'set_volume', 'track_id': 'track5', 'volume': 0, 'duration': 1}, 'music_player')
+
+            self.register_delayed_task(
+                delay + 1, self.publish_prefix, {'category': 'set_display_processing_order_notification',
+                'value': False}, 'orders')
 
         else:
             delay = self.ms_pepper_says_thanks_delay + 1
@@ -1521,6 +1567,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'forced_alarm'}, 'secure_floor')
         self.publish_prefix({'category': 'set_status', 'status': 'disabled'}, 'human_authenticator')
         self.publish_prefix({'category': 'send_fog', 'duration': 10}, 'fog_machine')
+        self.register_delayed_task(15, self.publish_prefix, {'category': 'off'}, 'fog_machine')
         self.publish_prefix({'category': 'play', 'sound_id': 'gaz'}, 'sound_player')
         self.register_delayed_task(2, self.publish_prefix, {'category': 'play', 'track_id': 'alarm'}, 'music_player')
         self.register_delayed_task(
