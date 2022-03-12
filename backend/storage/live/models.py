@@ -4,23 +4,6 @@ from django import forms
 from editor.models import RuleSet
 
 
-WIDGET_TYPES = (
-    ('buttons_group', 'buttons_group'),
-    ('session_data', 'session_data'),
-    ('log_prompt', 'log_prompt'),
-    ('instruction_prompt', 'instruction_prompt'),
-    ('lasers', 'lasers'),
-    ('waffle_factory', 'waffle_factory'),
-    ('synchronizer_lights', 'synchronizer_lights'),
-    ('textarea', 'textarea'),
-    ('node_register', 'node_register'),
-    ('chopsticks', 'chopsticks'),
-    ('control_panel', 'control_panel'),
-    ('timer', 'timer'),
-    ('sokoban', 'sokoban'),
-)
-
-
 class Card(models.Model):
     rule_set = models.ForeignKey(RuleSet, on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
@@ -41,7 +24,7 @@ class CardRow(models.Model):
     name = models.CharField(max_length=32)
     index = models.IntegerField()
     maintenance = models.BooleanField(default=False)
-    widget = models.CharField(choices=WIDGET_TYPES, default=WIDGET_TYPES[0][0], max_length=32)
+    widget = models.CharField(max_length=32)
     widget_params = models.TextField()
 
     def __str__(self):
