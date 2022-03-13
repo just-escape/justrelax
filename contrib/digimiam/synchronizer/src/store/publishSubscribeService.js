@@ -137,6 +137,8 @@ const publishSubscribeService = new Vuex.Store({
             'data': lightStore.state.disabledColors,
           }
         )
+        menuStore.commit('publishSessionData')
+        lightStore.commit('publishSessionData')
       } else if (event.category === 'set_price_matters') {
         menuStore.commit('setPriceMatters', event.value)
       } else if (event.category === 'set_display_menu_explicit_instruction') {

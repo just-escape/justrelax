@@ -37,7 +37,7 @@ printer_homing_sequence:
     gcode: G01 X-6 F100
   - t: 2
     gcode: G01 Y25 F200
-  - t: 8
+  - t: 11
     gcode: $21=0
   - t: 12
     gcode: G92 Y0
@@ -47,9 +47,9 @@ printer_homing_sequence:
     gcode: G01 Y-7.1 F200
   - t: 27
     gcode: $21=1
-  - t: 28
-    gcode: G01 X-15 F200
-  - t: 32
+  - t: 27.5
+    gcode: G01 X-20 F200
+  - t: 32.5
     gcode: $21=0
   - t: 33
     gcode: G92 X0
@@ -79,7 +79,7 @@ animations:
     - t: 0
       motor: printer
       direction: forward
-      n_pulses: 2040
+      n_pulses: 2010
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -87,14 +87,14 @@ animations:
     - t: 0
       motor: printer
       direction: forward
-      n_pulses: 2704
+      n_pulses: 2804
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
     - t: 4.5
       motor: extractor
       direction: forward
-      n_pulses: 2104
+      n_pulses: 2154
       step_delay: 200
     - t: 4.5
       motor: finisher
@@ -109,7 +109,7 @@ animations:
     - t: 6.5
       motor: short_one
       direction: forward
-      n_pulses: 2339
+      n_pulses: 2369
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -131,7 +131,7 @@ animations:
     - t: 12
       motor: short_one
       direction: backward
-      n_pulses: 2335
+      n_pulses: 2290
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -143,7 +143,7 @@ animations:
     - t: 15
       motor: finisher
       direction: backward
-      n_pulses: 2604
+      n_pulses: 2654
       step_delay: 200
   second_waffle_init:
     - t: 0
@@ -154,12 +154,12 @@ animations:
     - t: 1.5
       motor: reloader
       direction: backward
-      n_pulses: 1904
+      n_pulses: 1954
       step_delay: 200
     - t: 1.5
       motor: printer
       direction: backward
-      n_pulses: 2680
+      n_pulses: 2710
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
