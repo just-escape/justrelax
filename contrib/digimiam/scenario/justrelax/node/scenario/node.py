@@ -1509,6 +1509,24 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             4.5, self.publish_prefix, {'category': 'play_animation', 'animation': 'reponse'}, 'root_server')
 
+    @on_event(filter={'widget_id': 'synchronizer', 'action': 'set'})
+    def widget_synchronizer(self, key: str, value: bool):
+        if key == 'synchronizer_display_holographic_update_on_change':
+            self.publish_prefix(
+                {'category': 'set_display_holographic_update_on_change', 'value': value}, 'synchronizer')
+        elif key == 'synchronizer_auto_validate_dishes':
+            self.publish_prefix({'category': 'set_auto_validate_dishes', 'value': value}, 'synchronizer')
+        elif key == 'synchronizer_display_price':
+            self.publish_prefix({'category': 'display_price', 'display': value}, 'synchronizer')
+        elif key == 'synchronizer_price_matters':
+            self.publish_prefix({'category': 'set_price_matters', 'value': value}, 'synchronizer')
+        elif key == 'synchronizer_display_menu_explicit_instruction':
+            self.publish_prefix({'category': 'set_display_menu_explicit_instruction', 'value': value}, 'synchronizer')
+        elif key == 'synchronizer_strict_loading_mode':
+            self.publish_prefix({'category': 'set_strict_loading_mode', 'value': value}, 'synchronizer')
+        elif key == 'synchronizer_display_light_explicit_instruction':
+            self.publish_prefix({'category': 'set_display_light_explicit_instruction', 'value': value}, 'synchronizer')
+
     @on_event(filter={'widget_id': 'root_server', 'action': 'set'})
     def root_server_set_session_data_value(self, key: str, value: bool):
         if key == 'root_server_simplified_ui':
@@ -2105,30 +2123,6 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'payment_status'})
     def buttons_payment_status(self, status: str):
         self.publish_prefix({'category': 'set_status', 'status': status}, 'payment_module')
-
-    @on_event(filter={'widget_id': 'synchronizer_display_price'})
-    def buttons_synchronizer_display_price(self, display: bool):
-        self.publish_prefix({'category': 'display_price', 'display': display}, 'synchronizer')
-
-    @on_event(filter={'widget_id': 'price_matters'})
-    def buttons_price_matters(self, value: bool):
-        self.publish_prefix({'category': 'set_price_matters', 'value': value}, 'synchronizer')
-
-    @on_event(filter={'widget_id': 'explicit_menu_instruction'})
-    def buttons_explicit_menu_instruction(self, value: bool):
-        self.publish_prefix({'category': 'set_display_menu_explicit_instruction', 'value': value}, 'synchronizer')
-
-    @on_event(filter={'widget_id': 'light_strict_loading_mode'})
-    def buttons_light_strict_loading_mode(self, value: bool):
-        self.publish_prefix({'category': 'set_strict_loading_mode', 'value': value}, 'synchronizer')
-
-    @on_event(filter={'widget_id': 'display_light_explicit_instruction'})
-    def buttons_display_light_explicit_instruction(self, value: bool):
-        self.publish_prefix({'category': 'set_display_light_explicit_instruction', 'value': value}, 'synchronizer')
-
-    @on_event(filter={'widget_id': 'auto_validate_dishes'})
-    def buttons_auto_validate_dishes(self, value: bool):
-        self.publish_prefix({'category': 'set_auto_validate_dishes', 'value': value}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'vents_locker'})
     def buttons_vents_locker(self, lock: bool):
