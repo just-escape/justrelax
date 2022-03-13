@@ -72,9 +72,11 @@ class Letter:
 
     def reaction_set_blue(self):
         self.color = "blue"
+        self.service.move(self.index, self.color)
 
     def reaction_set_orange(self):
         self.color = "orange"
+        self.service.move(self.index, self.color)
 
     def reaction_switch_off(self):
         self.color = "switched_off"
@@ -135,8 +137,18 @@ class Chopsticks(MagicNode):
 
     @on_event(filter={'category': 'request_node_session_data'})
     def publish_session_data(self):
+        self.publish_difficulty()
         self.publish_chopsticks_moves()
         self.publish_chopsticks_colors()
+
+    def publish_difficulty(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'chopsticks_difficulty',
+                'data': self.difficulty,
+            }
+        )
 
     def publish_chopsticks_colors(self):
         self.publish(
@@ -159,6 +171,7 @@ class Chopsticks(MagicNode):
     @on_event(filter={'category': 'reset'})
     def event_reset(self):
         logger.info("Reset")
+        self.difficulty = self.config['difficulty']['initial']
         self.success = False
         self.moves = 0
         self.send_serial({ArduinoProtocol.CATEGORY: ArduinoProtocol.PLAYING})
@@ -166,6 +179,7 @@ class Chopsticks(MagicNode):
             letter.color = self.letters_configuration[letter.index]['led_initial_color']
 
         self.publish({"category": "reset"})
+        self.publish_difficulty()
         self.publish_chopsticks_moves()
         self.publish_session_data()
 
@@ -202,6 +216,7 @@ class Chopsticks(MagicNode):
     @on_event(filter={'category': 'set_difficulty'})
     def event_set_difficulty(self, difficulty: str):
         self.difficulty = difficulty
+        self.publish_difficulty()
 
     def move_plus_plus(self):
         if self.moves == 0:

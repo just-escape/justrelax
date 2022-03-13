@@ -1,5 +1,23 @@
 <template>
   <div class="w-100">
+    <div class="d-flex flex-row justify-content-between mb-2">
+      <div>Difficulté</div>
+
+      <b-button-group>
+        <ButtonJaffa
+          size="sm" @click="setDifficulty('easy')"
+          :active="difficulty === 'easy'"
+        >
+          <i class="fa fa-fw fa-dice-one"></i>
+        </ButtonJaffa>
+        <ButtonJaffa
+          size="sm" @click="setDifficulty('normal')"
+          :active="difficulty === 'normal'"
+        >
+          <i class="fa fa-fw fa-dice-two"></i>
+        </ButtonJaffa>
+      </b-button-group>
+    </div>
     <div class="border-deepdark rounded p-3 d-flex flex-row justify-content-around mb-2">
         <div class="d-flex flex-column">
             <div style="height: 24px">
@@ -26,11 +44,11 @@
         </div>
         <div class="d-flex flex-column">
             <div class="text-primary">C</div>
-            <div class="text-jaffa">O</div>
-            <div class="text-jaffa">N</div>
+            <div class="text-jaffa">O<span v-if="difficulty === 'normal'">*</span></div>
+            <div class="text-jaffa">N<span v-if="difficulty === 'normal'">*</span></div>
             <div class="text-jaffa">T</div>
-            <div class="text-jaffa">R</div>
-            <div class="text-jaffa">O</div>
+            <div class="text-jaffa">R<span v-if="difficulty === 'normal'">*</span></div>
+            <div class="text-jaffa">O<span v-if="difficulty === 'normal'">*</span></div>
             <div class="text-jaffa">L</div>
         </div>
         <div class="d-flex flex-column">
@@ -93,15 +111,30 @@ export default {
     Clock,
     ButtonJaffa,
   },
+  data() {
+    return {
+      pluggedLetters: [false, false, false, false, false, false, false]
+    }
+  },
   methods: {
     toggleLetter(letterIndex) {
+      let action = "emulate_chopstick_plug"
+      if (this.difficulty === 'normal') {
+        if ([1, 2, 4, 5].includes(letterIndex)) {
+          if (this.pluggedLetters[letterIndex]) {
+            action = "emulate_chopstick_unplug"
+          }
+          this.pluggedLetters[letterIndex] = !this.pluggedLetters[letterIndex]
+        }
+      }
+
       roomStore.dispatch(
         'widgetAction',
         {
           channel: this.defaultChannel,
           widgetId: 'chopsticks',
           widgetType: 'chopsticks',
-          action: "emulate_chopstick_plug",
+          action: action,
           letter_index: letterIndex,
         }
       )
@@ -128,8 +161,23 @@ export default {
         }
       )
     },
+    setDifficulty(difficulty) {
+      roomStore.dispatch(
+        'widgetAction',
+        {
+          channel: this.defaultChannel,
+          widgetId: "chopsticks",
+          widgetType: "chopsticks",
+          action: "set_difficulty",
+          difficulty: difficulty,
+        }
+      )
+    }
   },
   computed: {
+    difficulty() {
+      return roomStore.state.sessionData[this.roomId].chopsticks_difficulty
+    },
     successTime() {
       return roomStore.state.sessionData[this.roomId].chopsticks_success_time
     },

@@ -2024,8 +2024,16 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'reset'}, 'chopsticks')
 
     @on_event(filter={'widget_id': 'chopsticks', 'action': 'emulate_chopstick_plug'})
-    def widget_emulate_plug(self, letter_index: int):
+    def widget_chopsticks_emulate_plug(self, letter_index: int):
         self.publish_prefix({'category': 'emulate_chopstick_plug', 'letter_index': letter_index}, 'chopsticks')
+
+    @on_event(filter={'widget_id': 'chopsticks', 'action': 'emulate_chopstick_unplug'})
+    def widget_chopsticks_emulate_unplug(self, letter_index: int):
+        self.publish_prefix({'category': 'emulate_chopstick_unplug', 'letter_index': letter_index}, 'chopsticks')
+
+    @on_event(filter={'widget_id': 'chopsticks', 'action': 'set_difficulty'})
+    def widget_chopsticks_set_difficulty(self, difficulty: str):
+        self.publish_prefix({'category': 'set_difficulty', 'difficulty': difficulty}, 'chopsticks')
 
     @on_event(filter={'widget_id': 'oven_turn_on'})
     def button_oven_turn_on(self):
