@@ -7,13 +7,13 @@
         <div class="menu-title-ribbon mb-2 text-right p-2">
           <img src="@/assets/img/pyramid.svg" class="mb-1" height="18px"/> {{ $t('digimiam_menu') }}
         </div>
-        <div class="date text-right mb-4 mt-2">
+        <div class="date text-right mb-2 mt-2">
           {{ date }}
         </div>
 
         <div class="mb-5">
           <div class="d-flex flex-row justify-content-center mb-4" style="font-style: italic; font-size: 18px">
-            <div>Projection holographique</div>
+            <div>Plats du menu</div>
           </div>
           <div class="position-relative d-flex flex-row justify-content-center mb-3">
             <div
@@ -37,7 +37,17 @@
           </div>
         </div>
 
-        <div class="pt-5">
+        <div class="d-flex w-100 justify-content-center pt-2">
+          <div
+            class="text-center py-2 px-3"
+            style="background: rgba(0, 209, 182, 0.6); transition: all 0.4s ease-in-out"
+            :style="{opacity: displayHolographicUpdateOnChange ? holographicDisplayUpdatedOpacity : 0}"
+          >
+            <div>Affichage holographique modifié</div>
+          </div>
+        </div>
+
+        <div class="pt-3">
           <MenuLoadingWidget :startAnimationSignal="startAnimationSignal"/>
         </div>
         <div
@@ -70,9 +80,17 @@ export default {
     return {
       date: undefined,
       startAnimationSignal: false,
+      holographicDisplayUpdatedOpacity: 0,
+      holographicDisplayUpdatedOpacityTask: null,
     }
   },
   computed: {
+    displayHolographicUpdateOnChange() {
+      return menuStore.state.displayHolographicUpdateOnChange
+    },
+    onMenuChangedSignal() {
+      return menuStore.state.onMenuChangedSignal
+    },
     displayMenuExplicitInstruction() {
       return menuStore.state.displayMenuExplicitInstruction
     },
@@ -119,6 +137,11 @@ export default {
     },
   },
   watch: {
+    onMenuChangedSignal() {
+      this.holographicDisplayUpdatedOpacity = 1
+      clearTimeout(this.holographicDisplayUpdatedOpacityTask)
+      this.holographicDisplayUpdatedOpacityTask = setTimeout((this_) => {this_.holographicDisplayUpdatedOpacity = 0}, 800, this)
+    },
     validating(newValue) {
       if (newValue) {
         this.startAnimationSignal = !this.startAnimationSignal

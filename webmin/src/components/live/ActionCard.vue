@@ -32,8 +32,9 @@
             <WidgetChopsticks v-else-if="row.widget === 'chopsticks'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
             <WidgetTimer v-else-if="row.widget === 'timer'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
             <WidgetControlPanel v-else-if="row.widget === 'control_panel'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
-            <WidgetSokoban v-else-if="row.widget === 'sokoban'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"></WidgetSokoban>
+            <WidgetSokoban v-else-if="row.widget === 'sokoban'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
             <WidgetRootServer v-else-if="row.widget === 'root_server'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
+            <WidgetSynchronizer v-else-if="row.widget === 'synchronizer'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
           </li>
         </ul>
       </b-card-body>
@@ -56,6 +57,7 @@ import WidgetControlPanel from "@/components/live/WidgetControlPanel.vue"
 import WidgetTimer from "@/components/live/WidgetTimer.vue"
 import WidgetSokoban from "@/components/live/WidgetSokoban.vue"
 import WidgetRootServer from "@/components/live/WidgetRootServer.vue"
+import WidgetSynchronizer from "@/components/live/WidgetSynchronizer.vue"
 import CollapseChevron from '@/components/common/CollapseChevron.vue'
 import roomStore from "@/store/roomStore.js"
 import notificationStore from '@/store/notificationStore.js'
@@ -79,6 +81,7 @@ export default {
     CollapseChevron,
     WidgetSokoban,
     WidgetRootServer,
+    WidgetSynchronizer,
   },
   data() {
     return {

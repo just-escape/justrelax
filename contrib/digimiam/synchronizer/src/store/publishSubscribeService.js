@@ -46,6 +46,9 @@ const publishSubscribeService = new Vuex.Store({
         }
         Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
       }
+
+      menuStore.commit('publishSessionData')
+      lightStore.commit('publishSessionData')
     },
     SOCKET_ONCLOSE (state, event) {
       // eslint-disable-next-line
@@ -142,6 +145,8 @@ const publishSubscribeService = new Vuex.Store({
         lightStore.commit('setDisplayLightExplicitInstruction', event.value)
       } else if (event.category === 'set_strict_loading_mode') {
         lightStore.commit('setStrictLoadingMode', event.value)
+      } else if (event.category === 'set_display_holographic_update_on_change') {
+        menuStore.commit('setDisplayHolographicUpdateOnChange', event.value)
       }
     },
     SOCKET_RECONNECT (state, count) {

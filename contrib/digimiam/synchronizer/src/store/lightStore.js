@@ -52,11 +52,17 @@ var store = new Vuex.Store({
     strictLoadingMode: true,
   },
   mutations: {
+    publishSessionData(state) {
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_light_explicit_instruction', data: state.displayLightExplicitInstruction})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_strict_loading_mode', data: state.strictLoadingMode})
+    },
     setStrictLoadingMode(state, value) {
       state.strictLoadingMode = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_strict_loading_mode', data: state.strictLoadingMode})
     },
     setDisplayLightExplicitInstruction(state, value) {
       state.displayLightExplicitInstruction = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_light_explicit_instruction', data: state.displayLightExplicitInstruction})
     },
     setDifficulty(state, difficulty) {
       if ([EASY, NORMAL, HARD].includes(difficulty)) {

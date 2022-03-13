@@ -97,6 +97,8 @@ let store = new Vuex.Store({
     displayPrice: false,
     priceMatters: true,
     displayMenuExplicitInstruction: false,
+    onMenuChangedSignal: false,
+    displayHolographicUpdateOnChange: true,
   },
   getters: {
     isSuccess (state) {
@@ -117,14 +119,28 @@ let store = new Vuex.Store({
     },
   },
   mutations: {
+    publishSessionData(state) {
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_holographic_update_on_change', data: state.displayHolographicUpdateOnChange})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_auto_validate_dishes', data: state.autoValidateDishes})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_price', data: state.displayPrice})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_price_matters', data: state.priceMatters})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_menu_explicit_instruction', data: state.displayMenuExplicitInstruction})
+    },
+    setDisplayHolographicUpdateOnChange(state, value) {
+      state.displayHolographicUpdateOnChange = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_holographic_update_on_change', data: state.displayHolographicUpdateOnChange})
+    },
     setDisplayMenuExplicitInstruction(state, value) {
       state.displayMenuExplicitInstruction = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_menu_explicit_instruction', data: state.displayMenuExplicitInstruction})
     },
     setPriceMatters(state, value) {
       state.priceMatters = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_price_matters', data: state.priceMatters})
     },
     setAutoValidateDishes (state, value) {
       state.autoValidateDishes = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_auto_validate_dishes', data: state.autoValidateDishes})
 
       if (!state.success) {
         // Update isDishValidated properties to remain consistant with the autoValidateDishes value
@@ -153,6 +169,7 @@ let store = new Vuex.Store({
     },
     setDisplayPrice (state, value) {
       state.displayPrice = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_price', data: state.displayPrice})
     },
     // eslint-disable-next-line
     appCursorMove (state, event) {
@@ -286,6 +303,8 @@ let store = new Vuex.Store({
         dish: dish,
         on_manual_mode: onManualMode,
       })
+
+      state.onMenuChangedSignal = !state.onMenuChangedSignal
 
       if (state.autoValidateDishes) {
         if (state.menuItems[itemIndex].dish == state.expectedMenu[itemIndex]) {
