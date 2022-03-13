@@ -1509,6 +1509,15 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             4.5, self.publish_prefix, {'category': 'play_animation', 'animation': 'reponse'}, 'root_server')
 
+    @on_event(filter={'widget_id': 'root_server', 'action': 'set'})
+    def root_server_set_session_data_value(self, key: str, value: bool):
+        if key == 'root_server_simplified_ui':
+            self.publish_prefix({'category': 'set_simplified_ui', 'value': value}, 'root_server')
+        elif key == 'root_server_display_ingredients':
+            self.publish_prefix({'category': 'set_display_ingredients', 'value': value}, 'root_server')
+        elif key == 'root_server_pulsate_check_availability_button':
+            self.publish_prefix({'category': 'set_pulsate_check_availability_button', 'value': value}, 'root_server')
+
     @on_event(filter={'from_': 'root_server', 'category': 'check_availability'})
     def root_server_check_availability(self, id: str):
         self.publish_prefix({'category': 'check_availability', 'id': id}, 'cylinders')
