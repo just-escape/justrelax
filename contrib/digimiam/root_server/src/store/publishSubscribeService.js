@@ -38,6 +38,8 @@ const publishSubscribeService = new Vuex.Store({
         }
         Vue.prototype.$socket.send(JSON.stringify(subscribeEvent))
       }
+
+      businessStore.commit('publishSessionData')
     },
     SOCKET_ONCLOSE (state, event) {
       // eslint-disable-next-line
@@ -75,6 +77,12 @@ const publishSubscribeService = new Vuex.Store({
         businessStore.commit('displayPasswordWindow')
       } else if (event.category === 'display_password_recovery_window') {
         businessStore.commit('displayPasswordRecoveryWindow')
+      } else if (event.category === 'set_simplified_ui') {
+        businessStore.commit('setSimplifiedUI', event.value)
+      } else if (event.category === 'set_display_ingredients') {
+        businessStore.commit('setDisplayIngredients', event.value)
+      } else if (event.category === 'set_pulsate_check_availability_button') {
+        businessStore.commit('setPulsateCheckAvailabilityButton', event.value)
       } else if (event.category === 'play_animation') {
         businessStore.commit('playAnimation', event.animation)
       } else if (event.category === 'final_animation') {
@@ -87,6 +95,8 @@ const publishSubscribeService = new Vuex.Store({
         businessStore.commit('notifyAvailability', {mealId: event.id, missingIngredients: event.missing_ingredients})
       } else if (event.category === "force_success") {
         businessStore.commit('success')
+      } else if (event.category === 'request_node_session_data') {
+        businessStore.commit('publishSessionData')
       }
     },
     SOCKET_RECONNECT (state, count) {

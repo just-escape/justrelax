@@ -18,6 +18,11 @@
     </svg>
     <div class="position-absolute w-100 h-100 top-left">
       <div class="d-flex justify-content-center align-items-center h-100">
+        <img :src="icon" style="width: 32px; height: 32px" class="transition-1s" :style="{opacity: displayIngredients ? (availabilityLoading ? 0.5 : 1) : 0}">
+      </div>
+    </div>
+    <div class="position-absolute w-100 h-100 top-left">
+      <div class="d-flex justify-content-center align-items-center h-100">
         <div v-if="availabilityLoading" class="loading"></div>
       </div>
     </div>
@@ -36,6 +41,9 @@ export default {
     }
   },
   computed: {
+    displayIngredients() {
+      return businessStore.state.displayIngredients
+    },
     availabilityLoading() {
       return businessStore.state.availabilityLoading
     },
@@ -71,6 +79,7 @@ export default {
     top: Number,
     right: Number,
     width: Number,
+    icon: String,
   },
 }
 </script>

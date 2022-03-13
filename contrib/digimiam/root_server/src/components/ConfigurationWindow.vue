@@ -24,23 +24,23 @@
         </div>
         <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>{{ $t('supply') }}</div>
-            <OnOffSwitch :initiallyOn="true" :width="124" :onText="$t('marmitron')" :offText="'défaut'"/>
+            <OnOffSwitch :editable="!simplifiedUI" :initiallyOn="true" :width="124" :onText="$t('marmitron')" :offText="'défaut'"/>
         </div>
         <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>{{ $t('food_hydroinflation') }}</div>
-            <OnOffSwitch :initiallyOn="true" :onText="$t('yes')" :offText="$t('no')"/>
+            <OnOffSwitch :editable="!simplifiedUI" :initiallyOn="true" :onText="$t('yes')" :offText="$t('no')"/>
         </div>
         <div class="d-flex flex-row mb-4 justify-content-between align-items-center">
             <div>{{ $t('air_quality') }}</div>
-            <OnOffSwitch :initiallyOn="false" :width="131" :onText="$t('optimal')" :offText="$t('economic')"/>
+            <OnOffSwitch :editable="!simplifiedUI" :initiallyOn="false" :width="131" :onText="$t('optimal')" :offText="$t('economic')"/>
         </div>
         <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
             <div>Cuisson</div>
-            <OnOffSwitch :initiallyOn="false" :width="95" :onText="'court'" :offText="'rapide'"/>
+            <OnOffSwitch :editable="!simplifiedUI" :initiallyOn="false" :width="95" :onText="'court'" :offText="'rapide'"/>
         </div>
         <div class="d-flex flex-row justify-content-between align-items-center">
             <div>Cryonie</div>
-            <OnOffSwitch :initiallyOn="false" :onText="'on'" :offText="'off'"/>
+            <OnOffSwitch :editable="!simplifiedUI" :initiallyOn="false" :onText="'on'" :offText="'off'"/>
         </div>
       </div>
     </div>
@@ -50,12 +50,18 @@
 <script>
 import Window from '@/components/Window.vue'
 import OnOffSwitch from '@/components/OnOffSwitch.vue'
+import businessStore from '@/store/businessStore.js'
 
 export default {
   name: "ConfigurationWindow",
   components: {
     Window,
     OnOffSwitch,
+  },
+  computed: {
+    simplifiedUI() {
+      return businessStore.state.simplifiedUI
+    }
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div :style="{filter: editable ? '' : 'grayscale(1)'}">
+  <div :style="{filter: editable ? '' : 'grayscale(1)'}" class="transition-1s">
     <input :id="'checkbox-' + id" v-model="checked" type="checkbox" class="checkbox" />
     <label :for="editable ? 'checkbox-' + id : ''" class="switch" :style="{width: width + 'px', color: editable ? 'white' : 'gray'}" style="margin-bottom: 0">
         <span class="switch__circle">

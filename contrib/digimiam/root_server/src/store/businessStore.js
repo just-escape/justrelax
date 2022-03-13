@@ -21,6 +21,9 @@ let store = new Vuex.Store({
     displayAlarmWindow: false,
     displayDangerWindow: false,
     showUI: false,
+    pulsateCheckAvailabilityButton: true,
+    displayIngredients: false,
+    simplifiedUI: true,
     success: false,
     overlayVideos: {
       ms_pepper_mad: {
@@ -87,6 +90,11 @@ let store = new Vuex.Store({
     availabilityLoading: false,
   },
   mutations: {
+    publishSessionData(state) {
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'root_server_pulsate_check_availability_button', data: state.pulsateCheckAvailabilityButton})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'root_server_display_ingredients', data: state.displayIngredients})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'root_server_simplified_ui', data: state.simplifiedUI})
+    },
     checkAvailability(state, mealIndex) {
       state.availabilityLoading = true
       let event = {
@@ -119,6 +127,18 @@ let store = new Vuex.Store({
     },
     showUI(state) {
       state.showUI = true
+    },
+    setDisplayIngredients(state, value) {
+      state.displayIngredients = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'root_server_display_ingredients', data: state.displayIngredients})
+    },
+    setPulsateCheckAvailabilityButton(state, value) {
+      state.pulsateCheckAvailabilityButton = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'root_server_pulsate_check_availability_button', data: state.pulsateCheckAvailabilityButton})
+    },
+    setSimplifiedUI(state, value) {
+      state.simplifiedUI = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'root_server_simplified_ui', data: state.simplifiedUI})
     },
     displayPasswordWindow (state) {
       state.displayPasswordWindow = true

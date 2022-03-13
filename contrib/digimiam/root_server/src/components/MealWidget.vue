@@ -14,15 +14,24 @@
       <div>{{cycles}} cycles</div>
     </div>
     <div class="d-flex flex-row justify-content-between mb-2">
-      <div style="font-style: italic">Qualité de production</div>
-      <div><input ref="qualityInput" type="range" min="0" max="100"></div>
+      <div v-if="!simplifiedUI" style="font-style: italic" class="transition-1s">Qualité de production</div>
+      <div v-if="!simplifiedUI" class="transition-1s"><input ref="qualityInput" type="range" min="0" max="100"></div>
     </div>
-    <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-      <div style="font-style: italic">Disponibilité ingrédients</div>
-      <div class="position-relative">
-        <div style="width: 100px; height: 30px" class="d-flex align-items-center justify-content-center">
+    <div class="d-flex justify-content-between align-items-center mb-2 w-100 transition-1s" :class="{'flex-column': simplifiedUI}">
+      <div class="transition-1s" :class="{'mb-2': simplifiedUI}" style="font-style: italic">Disponibilité ingrédients</div>
+      <div class="transition-1s position-relative" :class="{'w-100': simplifiedUI}">
+        <div
+          :style="{height: simplifiedUI ? '50px' : '32px', width: simplifiedUI ? '100%' : '100px'}"
+          class="transition-1s d-flex align-items-center justify-content-center"
+        >
+          <div :class="{pulsate: pulsate}" class="transition-1s"></div>
           <div v-if="availabilityLoading" class="loading"></div>
-          <ButtonBlue v-else @click="click">
+          <ButtonBlue v-else
+            @click="click"
+            :style="{height: simplifiedUI ? '50px' : '32px'}"
+            :class="{'w-100': simplifiedUI}"
+            class="transition-1s"
+          >
             <span class="align-self-center">VÉRIFIER</span>
           </ButtonBlue>
         </div>
@@ -50,6 +59,12 @@ export default {
     }
   },
   computed: {
+    pulsate() {
+      return businessStore.state.pulsateCheckAvailabilityButton
+    },
+    simplifiedUI() {
+      return businessStore.state.simplifiedUI
+    },
     availabilityLoading() {
       return businessStore.state.availabilityLoading
     },
@@ -74,10 +89,13 @@ export default {
       this.notifications.filter(n => n.id !== id)
     },
     click() {
+      businessStore.commit('setPulsateCheckAvailabilityButton', false)
       businessStore.commit('checkAvailability', this.mealIndex)
     },
     watchQuality() {
-      businessStore.commit('setQuality', {mealIndex: this.mealIndex, value: this.$refs.qualityInput.value})
+      if (!this.simplifiedUI) {
+        businessStore.commit('setQuality', {mealIndex: this.mealIndex, value: this.$refs.qualityInput.value})
+      }
       setTimeout(this.watchQuality, 10)
     }
   },
@@ -94,3 +112,35 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.pulsate {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 90, 180, 1);
+  animation: pulser 1.4s linear infinite;
+  opacity: 0;
+}
+
+@keyframes pulser {
+	0% {
+		transform: scale(1);
+		opacity: 0;
+	}
+  20% {
+		transform: scale(1);
+		opacity: 0;
+	}
+	60% {
+		transform: scale(1.4);
+		opacity: 0.4;
+	}
+	100% {
+		transform: scale(1.50);
+		opacity: 0;
+	}
+}
+</style>
