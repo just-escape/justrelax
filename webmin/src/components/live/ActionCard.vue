@@ -33,6 +33,7 @@
             <WidgetTimer v-else-if="row.widget === 'timer'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
             <WidgetControlPanel v-else-if="row.widget === 'control_panel'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
             <WidgetSokoban v-else-if="row.widget === 'sokoban'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"></WidgetSokoban>
+            <WidgetRootServer v-else-if="row.widget === 'root_server'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
           </li>
         </ul>
       </b-card-body>
@@ -54,6 +55,7 @@ import WidgetChopsticks from "@/components/live/WidgetChopsticks.vue"
 import WidgetControlPanel from "@/components/live/WidgetControlPanel.vue"
 import WidgetTimer from "@/components/live/WidgetTimer.vue"
 import WidgetSokoban from "@/components/live/WidgetSokoban.vue"
+import WidgetRootServer from "@/components/live/WidgetRootServer.vue"
 import CollapseChevron from '@/components/common/CollapseChevron.vue'
 import roomStore from "@/store/roomStore.js"
 import notificationStore from '@/store/notificationStore.js'
@@ -76,6 +78,7 @@ export default {
     WidgetTimer,
     CollapseChevron,
     WidgetSokoban,
+    WidgetRootServer,
   },
   data() {
     return {
