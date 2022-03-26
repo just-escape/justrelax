@@ -21,10 +21,10 @@ static_orange: 15
 letters:
   - chopstick_plug_reactions:
       easy: toggle_blue_orange
-      normal: toggle_blue_orange
+      normal: set_orange
     chopstick_unplug_reactions:
       easy: do_nothing
-      normal: do_nothing
+      normal: set_blue
     reaction_pin: 20
     led_pin: 24
     led_initial_color: blue
@@ -51,10 +51,10 @@ letters:
     led_success_color: orange
   - chopstick_plug_reactions:
       easy: toggle_blue_orange
-      normal: toggle_blue_orange
+      normal: set_blue
     chopstick_unplug_reactions:
       easy: do_nothing
-      normal: do_nothing
+      normal: set_orange
     reaction_pin: 19
     led_pin: 9
     led_initial_color: orange
@@ -81,10 +81,10 @@ letters:
     led_success_color: orange
   - chopstick_plug_reactions:
       easy: toggle_blue_orange
-      normal: toggle_blue_orange
+      normal: set_blue
     chopstick_unplug_reactions:
       easy: do_nothing
-      normal: do_nothing
+      normal: set_orange
     reaction_pin: 6
     led_pin: 22
     led_initial_color: orange
