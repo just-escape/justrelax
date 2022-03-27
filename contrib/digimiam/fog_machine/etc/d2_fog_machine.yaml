@@ -1,0 +1,15 @@
+name: fog_machine
+
+default_publication_channel: d2.scenario
+subscriptions:
+  - d2.fog_machine
+  - d2.broadcast
+
+machine_pin: 9
+fog_pin: 11
+
+on_by_default: no
+
+send_fog_default_duration: 1
+
+send_fog_forever_default_frequency: 15

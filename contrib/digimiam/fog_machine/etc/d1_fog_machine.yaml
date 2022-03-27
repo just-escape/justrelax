@@ -6,7 +6,7 @@ subscriptions:
   - d1.broadcast
 
 machine_pin: 9
-fog_pin: 11
+fog_pin: 26
 
 on_by_default: no
 
