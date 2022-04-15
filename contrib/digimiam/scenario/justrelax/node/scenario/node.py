@@ -295,6 +295,8 @@ class Scenario(MagicNode):
         self.boost_fog_timer = TrackedTimer(
             self.boost_fog_delay, 'boost_fog_timer', self, self.boost_fog)
 
+        self.second_waffle_print_timing = 0
+
         self.modify_fx_task = None
 
         self.track1_light_animation_1_first_task = None
@@ -658,6 +660,8 @@ class Scenario(MagicNode):
         for registered_delayed_task_id in registered_delayed_task_ids:
             task = self.registered_delayed_tasks.pop(registered_delayed_task_id)
             task.cancel()
+
+        self.second_waffle_print_timing = 0
 
         self.publish_game_time_to_webmin()
 
@@ -1269,6 +1273,10 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from_': 'orders', 'category': 'ms_pepper_has_said_thanks'})
     def orders_ms_pepper_has_said_thanks(self):
+        def print_m():
+            self.publish_prefix({'category': 'print_pattern', 'pattern': 'M'}, 'waffle_factory')
+            self.second_waffle_print_timing = self.session_time or 0
+
         self.publish_prefix(
             {'category': 'set_volume', 'track_id': 'track62', 'volume': 0, 'duration': 10}, 'music_player')
         self.register_delayed_task(1.5, self.publish_prefix, {'category': 'play', 'track_id': 'track7'}, 'music_player')
@@ -1282,7 +1290,7 @@ class Scenario(MagicNode):
             if self.persistent_settings['dry_print'] is False:
                 self.register_delayed_task(
                     37.5 + 1.5 + 2 + self.second_waffle_init_conveyor_duration,
-                    self.publish_prefix, {'category': 'print_pattern', 'pattern': 'M'}, 'waffle_factory')
+                    print_m)
         self.register_delayed_task(
             37.5 + 25 + 1.5, self.publish_prefix,
             {'category': 'set_volume', 'track_id': 'track7', 'volume': 45, 'duration': 10}, 'music_player')
@@ -1450,7 +1458,14 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'playing'}, 'laser_maze')
         self.publish_prefix({'category': 'playing'}, 'human_authenticator')
 
-        self.publish_prefix({'category': 'play_animation', 'animation': 'waffle_end'}, 'waffle_factory')
+        # If players rush the puzzle, the printer doesn't have enough time to finish printing. So we make sure
+        # players have waited enough time to send the waffle immediately, or we wait at least 5 seconds.
+        print_delta_time = (self.session_time or 0) - self.second_waffle_print_timing
+        safe_delay = max(48 - print_delta_time, 0)
+
+        self.register_delayed_task(
+            safe_delay,
+            self.publish_prefix, {'category': 'play_animation', 'animation': 'waffle_end'}, 'waffle_factory')
 
         self.publish_prefix(
             {'category': 'set_volume', 'track_id': 'track7', 'volume': 0, 'duration': 5}, 'music_player')
