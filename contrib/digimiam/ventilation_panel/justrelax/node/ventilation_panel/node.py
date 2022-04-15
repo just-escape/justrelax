@@ -73,7 +73,8 @@ class VentilationController:
 
         self.difficulties = difficulties
         self._difficulty = list(self.difficulties)[0]  # By default. Not reliable
-        self.difficulty = initial_difficulty
+        self.initial_difficulty = initial_difficulty
+        self.difficulty = self.initial_difficulty
 
         self.round_leds = round_leds
 
@@ -603,6 +604,7 @@ class VentilationController:
 
     def reset(self):
         self.status = "inactive"
+        self.difficulty = self.initial_difficulty
 
     def check_jacks(self):
         self.check_jacks_task = callLater(0.1, self.check_jacks)
