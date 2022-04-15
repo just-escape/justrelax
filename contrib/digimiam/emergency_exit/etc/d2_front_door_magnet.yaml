@@ -1,0 +1,17 @@
+name: front_door_magnet
+
+default_publication_channel: d2.scenario
+subscriptions:
+  - d2.front_door_magnet
+  - d2.broadcast
+
+magnet_pins:
+  front_door: 17
+
+emergency_magnets:
+  - front_door
+
+emergency_button_pin: 27
+emergency_button_hold_time: 1  # The button has to be pressed for 1 second to avoid mistakes
+
+relock_delay: 3

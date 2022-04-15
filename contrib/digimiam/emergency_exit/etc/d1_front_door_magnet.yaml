@@ -6,7 +6,7 @@ subscriptions:
   - d1.broadcast
 
 magnet_pins:
-  front_door: 4
+  front_door: 17
 
 emergency_magnets:
   - front_door
