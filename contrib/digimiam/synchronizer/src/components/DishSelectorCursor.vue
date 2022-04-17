@@ -13,13 +13,8 @@
     }"
   >
     <div style="font-size: 18px; transform: translateY(2px)">
-      {{ id }}
+      Plat {{ id }}
     </div>
-
-    <div class="edge"></div>
-    <div class="edge flip-vertically"></div>
-    <div class="edge flip-horizontally"></div>
-    <div class="edge flip-centrally"></div>
   </div>
 </template>
 
@@ -71,44 +66,7 @@ export default {
 .cursor {
   position: absolute;
   background-color: rgba(0, 45, 80, 0.8);
-  clip-path: polygon(
-    30% 0%,
-    70% 0%,
-    100% 30%,
-    100% 70%,
-    70% 100%,
-    30% 100%,
-    0% 70%,
-    0% 30%
-  );
   transition: filter 2s ease-in-out;
-}
-
-.edge {
-  position: absolute;
-  background-color: #00d1b6;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  clip-path: polygon(
-    30% 0%,
-    30% 4px,
-    4px 30%,
-    0% 30%
-  );
-  transition: filter 2s ease-in-out;
-}
-
-.flip-vertically {
-  transform: scaleX(-1);
-}
-
-.flip-horizontally {
-  transform: scaleY(-1);
-}
-
-.flip-centrally {
-  transform: scaleX(-1) scaleY(-1);
+  border: 3px solid rgba(0, 209, 182, 0.7);;
 }
 </style>

@@ -55,8 +55,8 @@
           style="margin-top: 70px; background: rgba(255, 69, 0, 0.65); height: 104px"
           class="p-1 d-flex flex-row justify-content-center align-items-center pulse-opacity text-center"
         >
-          <div v-if="priceMatters">Affichage du menu holographique erroné. Matrice en attente de sélection des<br/>plats au bon prix.</div>
-          <div v-else>Affichage du menu holographique erroné. Matrice en attente de sélection des<br/>bons plats.</div>
+          <div v-if="priceMatters">Le menu holographique n'affiche pas<br/>les bons plats. En attente de sélection<br/>des plats au bon prix.</div>
+          <div v-else>Le menu holographique n'affiche pas<br/>les bons plats. En attente de sélection<br/>des bons plats.</div>
         </div>
       </div>
     </div>
