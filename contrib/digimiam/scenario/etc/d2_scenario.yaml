@@ -9,8 +9,11 @@ publication_channel_prefix: d2.
 persistent_settings: /etc/justrelax/scenario_persistent_settings.json
 
 # chopsticks
-chopsticks_voice_clue_1_delay: 180
-chopsticks_voice_clue_2_delay: 225
+chopsticks_voice_clue_1_delay: 240
+chopsticks_voice_clue_2_delay: 300
+
+# ventilation_panel
+ventilation_panel_skip_delay: 2100
 
 # first waffle
 niryo_animation_duration: 25

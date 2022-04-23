@@ -261,6 +261,8 @@ class Scenario(MagicNode):
         self.chopsticks_voice_clue_1_delay = self.config['chopsticks_voice_clue_1_delay']
         self.chopsticks_voice_clue_2_delay = self.config['chopsticks_voice_clue_2_delay']
 
+        self.ventilation_panel_skip_delay = self.config['ventilation_panel_skip_delay']
+
         self.niryo_animation_duration = self.config['niryo_animation_duration']
         self.niryo_end_conveyor_duration = self.config['niryo_end_conveyor_duration']
         self.oven_cooking_duration = self.config['oven_cooking_duration']
@@ -292,6 +294,8 @@ class Scenario(MagicNode):
             self.chopsticks_voice_clue_1_delay, 'chopsticks_voice_clue_1', self, self.play_sound, "pepper_1")
         self.chopsticks_voice_clue_2 = TrackedTimer(
             self.chopsticks_voice_clue_2_delay, 'chopsticks_voice_clue_2', self, self.play_sound, "pepper_2")
+        self.ventilation_panel_skip = TrackedTimer(
+            self.ventilation_panel_skip_delay, 'ventilation_panel_skip_timer', self, self.set_ventilation_panel_skip)
         self.boost_fog_timer = TrackedTimer(
             self.boost_fog_delay, 'boost_fog_timer', self, self.boost_fog)
 
@@ -348,6 +352,7 @@ class Scenario(MagicNode):
         self.wrong_dishes_counter = -3
         self.all_dishes_are_good_but_wrong_price_counter = -1
 
+        self.set_session_data('ventilation_panel_skip', False)
         self.set_session_data('sokoban_first_move_time_0', None)
         self.set_session_data('sokoban_first_move_time_1', None)
         self.set_session_data('sokoban_first_move_time_2', None)
@@ -467,6 +472,7 @@ class Scenario(MagicNode):
             if self.persistent_settings['autostart_timers']:
                 self.chopsticks_voice_clue_1.start()
                 self.chopsticks_voice_clue_2.start()
+                self.ventilation_panel_skip.start()
 
         self.publish_prefix({'category': 'calibrate'}, 'load_cells')
         self.publish_prefix({'category': 'on', 'color': 'orange'}, 'refectory_lights')
@@ -1044,17 +1050,22 @@ class Scenario(MagicNode):
     @on_event(filter={'from_': 'orders', 'category': 'ms_pepper_has_told_to_go_in_stock'})
     def ms_pepper_has_told_to_go_in_stock(self):
         def post_delay():
-            self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'ventilation_panel')
+            self.ventilation_panel_skip.pause()
 
             self.publish_prefix(
                 {'category': 'set_volume', 'track_id': 'track3', 'volume': 0, 'duration': 5}, 'music_player')
 
-            self.publish_prefix({'category': 'set_volume', 'track_id': 'track35', 'volume': 0}, 'music_player')
-            self.register_delayed_task(
-                2.5, self.publish_prefix, {'category': 'play', 'track_id': 'track35'}, 'music_player')
-            self.register_delayed_task(
-                2.5, self.publish_prefix,
-                {'category': 'set_volume', 'track_id': 'track35', 'volume': 40, 'duration': 1}, 'music_player')
+            if not self.session_data['ventilation_panel_skip']:
+                self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'ventilation_panel')
+
+                self.publish_prefix({'category': 'set_volume', 'track_id': 'track35', 'volume': 0}, 'music_player')
+                self.register_delayed_task(
+                    2.5, self.publish_prefix, {'category': 'play', 'track_id': 'track35'}, 'music_player')
+                self.register_delayed_task(
+                    2.5, self.publish_prefix,
+                    {'category': 'set_volume', 'track_id': 'track35', 'volume': 40, 'duration': 1}, 'music_player')
+            else:
+                self.ventilation_panel_success()
 
         self.register_delayed_task(1, post_delay)
 
@@ -1322,6 +1333,9 @@ class Scenario(MagicNode):
     def payment_module_event_set_credits(self, value):
         self.publish_prefix({'category': 'set_credits', 'value': value}, 'orders')
 
+    def set_ventilation_panel_skip(self):
+        self.set_session_data('ventilation_panel_skip', True)
+
     @on_event(filter={'from_': 'ventilation_panel', 'category': 'good_connection'})
     def ventilation_panel_event_good_connection(self, sequence_cursor: int):
         if 0 <= sequence_cursor <= 8:
@@ -1360,6 +1374,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'on'}, 'fog_machine')
         self.publish_prefix({'category': 'unlock'}, 'vents_locker')
         self.publish_prefix({'category': 'display_black_screen', 'display': False}, 'inventory')
+        self.publish_prefix({'category': 'set_playing', 'value': True}, 'cylinders')
 
         self.register_delayed_task(1, self.publish_prefix, {'category': 'stop', 'track_id': 'track35'}, 'music_player')
         self.register_delayed_task(1, self.publish_prefix, {'category': 'play', 'track_id': 'track4'}, 'music_player')
@@ -1392,6 +1407,7 @@ class Scenario(MagicNode):
     def sokoban_success(self):
         self.set_session_data('sokoban_success_time_2', self.session_time or 0)
         self.set_session_data('sokoban_success', True)
+        self.publish_prefix({'category': 'is_sokoban_cleared', 'value': True}, 'cylinders')
 
     @on_event(filter={'from_': 'inventory', 'category': 'first_face_change'})
     def sokoban_first_face_change(self):
@@ -1399,9 +1415,10 @@ class Scenario(MagicNode):
         pass
 
     @on_event(filter={'from_': 'cylinders', 'category': 'tag'})
-    def cylinder_tag(self, tag):
+    def cylinder_tag(self, tag, ok: bool, chamber: int):
         if tag:
             self.publish_prefix({'category': 'play', 'sound_id': 'cylinder_scan'}, 'sound_player')
+        self.set_session_data(f'cylinders_chamber_{chamber}', {'inserted': tag is not None, 'ok': ok})
 
     @on_event(filter={'from_': 'cylinders', 'category': 'check_availability_scan'})
     def cylinder_check_availability_scan(self):
@@ -1542,6 +1559,19 @@ class Scenario(MagicNode):
         elif key == 'synchronizer_display_light_explicit_instruction':
             self.publish_prefix({'category': 'set_display_light_explicit_instruction', 'value': value}, 'synchronizer')
 
+    @on_event(filter={'widget_id': 'cylinders', 'action': 'set'})
+    def widget_cylinders_set(self, key: str, value: bool):
+        if key == 'cylinders_playing':
+            self.publish_prefix({'category': 'set_playing', 'value': value}, 'cylinders')
+        elif key == 'cylinders_reveal_mistakes':
+            self.publish_prefix({'category': 'set_reveal_mistakes', 'value': value}, 'cylinders')
+        elif key == 'cylinders_success' and value:
+            self.publish_prefix({'category': 'force_success'}, 'cylinders')
+
+    @on_event(filter={'widget_id': 'cylinders', 'action': 'reset'})
+    def widget_cylinders_reset(self):
+        self.publish_prefix({'category': 'reset'}, 'cylinders')
+
     @on_event(filter={'widget_id': 'root_server', 'action': 'set'})
     def root_server_set_session_data_value(self, key: str, value: bool):
         if key == 'root_server_simplified_ui':
@@ -1554,11 +1584,6 @@ class Scenario(MagicNode):
     @on_event(filter={'from_': 'root_server', 'category': 'check_availability'})
     def root_server_check_availability(self, id: str):
         self.publish_prefix({'category': 'check_availability', 'id': id}, 'cylinders')
-
-    @on_event(filter={'from_': 'cylinders', 'category': 'availability'})
-    def cylinders_availability(self, id: str, missing_ingredients: int):
-        self.publish_prefix(
-            {'category': 'availability', 'id': id, 'missing_ingredients': missing_ingredients}, 'root_server')
 
     @on_event(filter={'from_': 'root_server', 'category': 'success'})
     def root_server_event_success(self):
@@ -1633,6 +1658,8 @@ class Scenario(MagicNode):
                 {'category': 'unlock', 'magnet_id': 'to_outside', 'relock': True}, 'emergency_exit')
             self.register_delayed_task(
                 5, self.publish_prefix, {'category': 'unlock', 'relock': True}, 'front_door_magnet')
+
+        self.publish_prefix({'category': 'on', 'color': 'blue'}, 'refectory_lights')
 
     @on_event(filter={'widget_type': 'timer', 'action': 'start'})
     def tracked_timer_start(self, name: str):
@@ -1792,18 +1819,6 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'set_volume', 'track_id': 'alarm', 'volume': 0}, 'music_player')
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'root_server')
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'digital_lock')
-
-    @on_event(filter={'widget_id': 'set_lasers_difficulty_easy'})
-    def button_set_lasers_difficulty_easy(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'easy'}, 'laser_maze')
-
-    @on_event(filter={'widget_id': 'set_lasers_difficulty_normal'})
-    def button_set_lasers_difficulty_normal(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'normal'}, 'laser_maze')
-
-    @on_event(filter={'widget_id': 'set_lasers_difficulty_hard'})
-    def button_set_lasers_difficulty_hard(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'hard'}, 'laser_maze')
 
     @on_event(filter={'widget_id': 'emergency_exit_unlock_to_outside'})
     def button_emergency_exit_unlock_to_outside(self):
@@ -2336,18 +2351,6 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'play_sound'})
     def play_sound(self, sound_id: str):
         self.publish_prefix({'category': 'play', 'sound_id': sound_id}, 'sound_player')
-
-    @on_event(filter={'widget_id': 'set_cylinders_difficulty'})
-    def buttons_cylinders_set_difficulty(self, difficulty: str):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': difficulty}, 'cylinders')
-
-    @on_event(filter={'widget_id': 'reset_cylinders'})
-    def button_cylinders_reset(self):
-        self.publish_prefix({'category': 'reset'}, 'cylinders')
-
-    @on_event(filter={'widget_id': 'force_cylinders_success'})
-    def button_force_cylinders_success(self):
-        self.publish_prefix({'category': 'force_success'}, 'cylinders')
 
     @on_event(filter={'widget_id': 'check_cylinders_availability'})
     def buttons_cylinders_check_availability(self, id: str):
