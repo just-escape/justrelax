@@ -4,7 +4,7 @@
 
 for i in {1..30}
 do
-  wakeonlan -i 172.16.255.255 40:b0:76:47:ec:7d
+  wakeonlan -i 172.16.255.255 a8:5e:45:11:5d:08
   if [ $? -eq 0 ]
   then
     break
