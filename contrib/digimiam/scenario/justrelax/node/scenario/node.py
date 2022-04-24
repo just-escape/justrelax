@@ -1424,6 +1424,10 @@ class Scenario(MagicNode):
     def cylinder_check_availability_scan(self):
         self.publish_prefix({'category': 'play', 'sound_id': 'cylinder_scan'}, 'sound_player')
 
+    @on_event(filter={'from_': 'cylinders', 'category': 'availability'})
+    def cylinders_availability(self):
+        self.publish_prefix({'category': 'availability'}, 'root_server')
+
     @on_event(filter={'from_': 'cylinders', 'category': 'success'})
     def cylinders_success(self):
         self.publish_prefix(

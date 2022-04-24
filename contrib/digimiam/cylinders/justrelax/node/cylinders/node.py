@@ -273,4 +273,7 @@ class Cylinders(MagicNode):
                 self.check_availability_tasks.append(reactor.callLater(
                     self.check_availability_scan_delay, animate_and_check, step + 1, ingredients))
 
+            else:
+                self.publish({'category': 'availability'})
+
         animate_and_check(0, self.ingredients[id])
