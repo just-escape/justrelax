@@ -178,7 +178,7 @@ class Cylinders(MagicNode):
             self.update_leds()
 
     def update_leds(self):
-        if self.success:
+        if not self.playing or self.success:
             return
 
         logger.info("updating leds")
