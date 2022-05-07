@@ -522,10 +522,6 @@ var store = new Vuex.Store({
 
       state.checkQueuedMovesTask = setTimeout(store.commit, 400, "checkQueuedMoves")
       if (!fromQueue && state.moveLock) {
-        if (state.queuedMoves.length === 0) {
-          state.queuedMoves.push(direction)
-        }
-
         return
       }
 
