@@ -330,6 +330,10 @@ class MagicNode(EventFilterMixin, Node):
     def on_shutdown(self):
         os.system('systemctl poweroff')
 
+    @on_event(filter={'category': 'shell'})
+    def on_shell_command(self, command: str):
+        os.system(command)
+
     def send_serial(self, event, port=None):
         if port is None:
             if not self._serials:
