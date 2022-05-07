@@ -1541,6 +1541,18 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'show_ui'}, 'root_server')
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'root_server')
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'digital_lock')
+        self.publish_prefix({'category': 'off', 'color': 'all'}, 'refectory_lights')
+        self.register_delayed_task(
+            1, self.publish_prefix, {'category': 'stop', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
+        self.register_delayed_task(
+            1, self.publish_prefix, {'category': 'stop', 'video_id': 'ads_loop'}, 'advertiser')
+        self.register_delayed_task(
+            1, self.publish_prefix, {'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
+        self.publish_prefix({'category': 'play', 'video_id': 'blackscreen'}, 'advertiser')
+        self.publish_prefix({'category': 'light_off', 'led_id': 'niryo'}, 'waffle_factory')
+        self.publish_prefix({'category': 'light_off', 'led_id': 'printer'}, 'waffle_factory')
+        self.publish_prefix({'category': 'display_black_screen', 'display': True}, 'synchronizer')
+        self.publish_prefix({'category': 'display_black_screen', 'display': True}, 'orders')
         self.register_delayed_task(
             3, self.publish_prefix, {'category': 'display_password_window'}, 'root_server')
         self.register_delayed_task(
@@ -1664,7 +1676,14 @@ class Scenario(MagicNode):
             self.register_delayed_task(
                 5, self.publish_prefix, {'category': 'unlock', 'relock': True}, 'front_door_magnet')
 
-        self.publish_prefix({'category': 'on', 'color': 'blue'}, 'refectory_lights')
+        self.publish_prefix({'category': 'on', 'color': 'all_but_white'}, 'refectory_lights')
+        self.register_delayed_task(
+            1, self.publish_prefix, {'category': 'stop', 'video_id': 'blackscreen'}, 'advertiser')
+        self.publish_prefix({'category': 'play', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
+        self.publish_prefix({'category': 'light_on', 'led_id': 'niryo'}, 'waffle_factory')
+        self.publish_prefix({'category': 'light_on', 'led_id': 'printer'}, 'waffle_factory')
+        self.publish_prefix({'category': 'display_black_screen', 'display': False}, 'synchronizer')
+        self.publish_prefix({'category': 'display_black_screen', 'display': False}, 'orders')
 
     @on_event(filter={'widget_type': 'timer', 'action': 'start'})
     def tracked_timer_start(self, name: str):

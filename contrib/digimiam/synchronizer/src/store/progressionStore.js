@@ -12,6 +12,7 @@ let store = new Vuex.Store({
     lightServiceSuccess: false,
     menuServiceSuccess: false,
     displayDangerWindow: false,
+    displayBlackScreen: false,
     overlayVideos: {
       glitching: {
         fr: require('@/assets/videos/ads_glitch.webm'),
@@ -78,6 +79,9 @@ let store = new Vuex.Store({
           publishSubscribeService.commit("publish", {"category": "services_synchronization_success"})
         }
       }
+    },
+    displayBlackScreen(state, value) {
+      state.displayBlackScreen = value
     },
   }
 })

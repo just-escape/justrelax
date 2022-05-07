@@ -26,6 +26,7 @@
     <OverlayVideo class="position-absolute z-index-20"/>
     <MsPepperOverlayVideo class="position-absolute z-index-30"/>
     <DangerWindow/>
+    <BlackScreen/>
   </div>
 </template>
 
@@ -40,6 +41,7 @@ import LightLogs from '@/components/LightLogs.vue'
 import MenuLogs from '@/components/MenuLogs.vue'
 import menuStore from '@/store/menuStore.js'
 import progressionStore from '@/store/progressionStore.js'
+import BlackScreen from '@/components/BlackScreen.vue'
 
 export default {
   name: 'PageRoot',
@@ -52,6 +54,7 @@ export default {
     OverlayVideo,
     MsPepperOverlayVideo,
     DangerWindow,
+    BlackScreen,
   },
   data() {
     return {

@@ -14,6 +14,7 @@ let store = new Vuex.Store({
     isOrderOnHold: false,
     isRestaurantClosed: false,
     displayDangerWindow: false,
+    displayBlackScreen: false,
     overlayVideos: {
       glitching: {
         fr: require('@/assets/videos/orders_glitch.webm'),
@@ -102,6 +103,9 @@ let store = new Vuex.Store({
       state.currentInstructionStrings = message
       state.currentInstructionStringsUseLocale = useLocale
       state.currentInstructionLoop = loop
+    },
+    displayBlackScreen(state, value) {
+      state.displayBlackScreen = value
     },
   }
 })

@@ -6,6 +6,7 @@
     <DocumentationWindow class="position-absolute"/>
     <OverlayVideo class="position-absolute"/>
     <DangerWindow/>
+    <BlackScreen/>
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import DocumentationWindow from '@/components/DocumentationWindow.vue'
 import OverlayVideo from '@/components/OverlayVideo.vue'
 import DangerWindow from '@/components/DangerWindow.vue'
 import progressionStore from '@/store/progressionStore.js'
+import BlackScreen from '@/components/BlackScreen.vue'
 
 export default {
   name: 'PageRoot',
@@ -27,6 +29,7 @@ export default {
     DocumentationWindow,
     OverlayVideo,
     DangerWindow,
+    BlackScreen,
   },
   created() {
     var locale = this.$route.query.locale

@@ -32,6 +32,12 @@ videos:
     autoplay: no
     loop: yes
     display: 7
+  blackscreen:
+    layer: 1
+    path: /home/pi/videos/blackscreen.mp4
+    autoplay: no
+    loop: yes
+    display: 7
   ms_pepper_here_you_are:
     layer: 2
     path: /home/pi/videos/ms_pepper_here_you_are_fr.mp4

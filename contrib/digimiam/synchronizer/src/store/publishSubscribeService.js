@@ -149,6 +149,9 @@ const publishSubscribeService = new Vuex.Store({
         lightStore.commit('setStrictLoadingMode', event.value)
       } else if (event.category === 'set_display_holographic_update_on_change') {
         menuStore.commit('setDisplayHolographicUpdateOnChange', event.value)
+      } else if (event.category === 'display_black_screen') {
+        let display = event.display ? true : false
+        progressionStore.commit('displayBlackScreen', display)
       }
     },
     SOCKET_RECONNECT (state, count) {
