@@ -4,3 +4,11 @@ default_publication_channel: d1.scenario
 subscriptions:
   - d1.shutdown
   - d1.broadcast
+  - d1.c
+  - d1.c1
+  - d1.c2
+  - d1.c3
+  - d2.c
+  - d2.c1
+  - d2.c2
+  - d2.c3
