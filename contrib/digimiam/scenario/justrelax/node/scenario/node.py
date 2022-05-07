@@ -685,6 +685,7 @@ class Scenario(MagicNode):
         self.wrong_dishes_counter = -3
         self.all_dishes_are_good_but_wrong_price_counter = -1
 
+        self.set_session_data('ventilation_panel_skip', False)
         self.set_session_data('sokoban_first_move_time_0', None)
         self.set_session_data('sokoban_first_move_time_1', None)
         self.set_session_data('sokoban_first_move_time_2', None)
