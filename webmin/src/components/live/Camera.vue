@@ -1,5 +1,5 @@
 <template>
-    <div class="panel panel-default">
+    <div class="panel panel-default position-relative">
         <video
             class="rounded centered"
             :ref="opaqueId"
@@ -8,6 +8,9 @@
             autoplay
             playsinline
         ></video>
+        <div class="position-absolute" style="top: 5px; right: 5px">
+            <i @click="restart" class="fa fa-fw far fa-undo-alt pointer"></i>
+        </div>
         <div v-if="false" class="d-flex flex-row">
             <span v-if="showBitrate" class="label label-primary">{{bitrate}}</span>
             <span v-if="showResolution" class="label label-info">{{resolutionWidth}}x{{resolutionHeight}}</span>
@@ -17,6 +20,7 @@
 
 <script>
 import Janus from '@/janus.js'
+import roomStore from "@/store/roomStore.js"
 
 export default {
     name: 'Camera',
@@ -35,7 +39,27 @@ export default {
             bitrateTimer: null,
         }
     },
+    computed: {
+        roomDefaultChannel() {
+            for (let room of roomStore.state.rooms) {
+                if (room.id === this.roomId) {
+                return room.default_publication_channel
+                }
+            }
+
+            // Can never happen, because roomStore.state.rooms is always defined if this component exist
+            // This return statement just fixes a Vue compilation error
+            return 'default_channel'
+        },
+    },
     methods: {
+        restart() {
+            const paramsObject = JSON.parse(this.params)
+            roomStore.dispatch(
+                'widgetAction',
+                {channel: this.roomDefaultChannel, widgetId: "camera-" + paramsObject.channel, widgetType: 'camera', action: "restart", 'camera_id': paramsObject.id}
+            )
+        },
         initialize() {
             this.janus = new Janus(
                 {
@@ -148,6 +172,7 @@ export default {
     },
     props: {
         params: String,
+        roomId: Number,
     }
 }
 </script>

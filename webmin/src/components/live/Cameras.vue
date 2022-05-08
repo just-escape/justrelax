@@ -27,6 +27,7 @@
           <Camera
             v-if="camera.type === 'webrtc_janus'"
             :params="camera.params"
+            :roomId="roomId"
           />
           <!--<Camera :class="getCameraClasses" :url="'http://172.16.4.102:8088/janus'" :streamId="10"/>
           <Camera :class="getCameraClasses" :url="'http://172.16.4.103:8088/janus'" :streamId="10"/>-->
