@@ -1337,6 +1337,18 @@ class Scenario(MagicNode):
     def set_ventilation_panel_skip(self):
         self.set_session_data('ventilation_panel_skip', True)
 
+    @on_event(filter={'widget_id': 'ventilation_panel', 'action': 'set_round_difficulty'})
+    def ventilation_panel_set_difficulty(self, round_: int, difficulty_index: int, instruction_set_index: int):
+        self.publish_prefix(
+            {
+                'category': 'set_round_difficulty',
+                'round_': round_,
+                'difficulty_index': difficulty_index,
+                'instruction_set_index': instruction_set_index,
+            },
+            'ventilation_panel'
+        )
+
     @on_event(filter={'from_': 'ventilation_panel', 'category': 'good_connection'})
     def ventilation_panel_event_good_connection(self, sequence_cursor: int):
         if 0 <= sequence_cursor <= 8:

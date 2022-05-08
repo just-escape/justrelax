@@ -57,26 +57,44 @@ class AirDuct:
         return self.name
 
 
-class VentilationController:
+class VentilationPanel(MagicNode):
     STATUSES = {"inactive", "playing", "success"}
 
-    def __init__(
-            self, ventilation_panel_service, initial_difficulty, difficulties, round_leds, air_ducts, air_sources,
-            colors, magnet_pin, magnet_led_index,
-    ):
-        self.service = ventilation_panel_service
-
-        self.electromagnet = gpiozero.OutputDevice(magnet_pin)
-        self.electromagnet_led_index = magnet_led_index
-
+    def __init__(self, *args, **kwargs):
         self._status = None
 
-        self.difficulties = difficulties
-        self._difficulty = list(self.difficulties)[0]  # By default. Not reliable
-        self.initial_difficulty = initial_difficulty
-        self.difficulty = self.initial_difficulty
+        super(VentilationPanel, self).__init__(*args, **kwargs)
 
-        self.round_leds = round_leds
+        self.instructions = {}
+        for round_n, round_instruction_sets in self.config["instructions"].items():
+            transformed_round_instruction_sets = []
+            for difficulty_instruction_sets in round_instruction_sets:
+                transformed_difficulty_instruction_sets = []
+                for raw_sequence in difficulty_instruction_sets:
+                    elements = [e.strip() for e in raw_sequence.split(",")]
+                    sequence = []
+                    for element in elements:
+                        ad, _, color = element.partition('>')
+                        ad = ad.strip()
+                        color = color.strip()
+
+                        assert ad in self.config["air_ducts"], "{} is not declared as an air duct: aborting".format(ad)
+                        assert color in self.config["colors"], "{} is not declared as a color: aborting".format(color)
+
+                        sequence.append({"air_duct": ad, "color": color})
+                    transformed_difficulty_instruction_sets.append(sequence)
+
+                transformed_round_instruction_sets.append(transformed_difficulty_instruction_sets)
+
+            self.instructions[round_n] = transformed_round_instruction_sets
+
+        self.electromagnet = gpiozero.OutputDevice(self.config["lock"]["electromagnet_pin"])
+        self.electromagnet_led_index = self.config["lock"]["led_index"]
+
+        self.difficulties = self.config['difficulties']
+        self.instruction_set_indexes = self.config['first_instructions']
+
+        self.round_leds = self.config["round_leds"]
 
         self.led_strip = neopixel.NeoPixel(board.D18, 7)
 
@@ -87,33 +105,109 @@ class VentilationController:
         self.round = 0
 
         self.air_sources = {}
-        for as_name, as_ in air_sources.items():
+        for as_name, as_ in self.config["air_sources"].items():
             self.air_sources[as_name] = AirSource(as_name, as_["jack_port_pin"])
 
         self.air_ducts = {}
-        for ad_name, ad in air_ducts.items():
+        for ad_name, ad in self.config["air_ducts"].items():
             self.air_ducts[ad_name] = AirDuct(
                 ad_name, self, ad["fan_pin"], ad["jack_pin"], ad["led_index"])
 
-        self.colors = colors
-
-        self.wrong_order_counter = -1
+        self.colors = self.config["colors"]
 
         self.check_jacks_task = callLater(1, self.check_jacks)
         self.animation_tasks = {}
         self.unskippable_animation_task = None
 
-    @property
-    def difficulty(self):
-        return self._difficulty
+    @on_event(filter={'category': 'request_node_session_data'})
+    def publish_session_data(self):
+        self.publish_instructions()
+        self.publish_difficulties()
+        self.publish_instruction_set_indexes()
 
-    @difficulty.setter
-    def difficulty(self, value):
-        if value not in self.difficulties:
-            logger.warning("Difficulty {} not in {}: skipping".format(value, ", ".join(self.difficulties)))
-        else:
-            logger.info("Setting difficulty to {}".format(value))
-            self._difficulty = value
+    def publish_instructions(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'ventilation_panel_instructions',
+                'data': self.instructions,
+            }
+        )
+
+    def publish_difficulties(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'ventilation_panel_difficulties',
+                'data': self.difficulties,
+            }
+        )
+
+    def publish_instruction_set_indexes(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'ventilation_panel_instruction_set_indexes',
+                'data': self.instruction_set_indexes,
+            }
+        )
+
+    def on_first_connection(self):
+        self.status = "inactive"
+        self.publish_session_data()
+
+    @on_event(filter={'category': 'set_status'})
+    def event_set_status(self, status: str):
+        self.status = status
+
+    @on_event(filter={'category': 'set_round_difficulty'})
+    def event_set_round_difficulty(self, round_: int, difficulty_index: int, instruction_set_index: int):
+        if round_ not in [0, 1, 2]:
+            logger.error("round_ is not 0, 1 or 2")
+            return
+
+        safe_difficulty_index = max(
+            0,
+            min(
+                len(self.instructions[f"round{round_}"]) - 1,
+                difficulty_index
+            )
+        )
+        safe_cycle_index = max(
+            0,
+            min(
+                len(self.instructions[f"round{round_}"][safe_difficulty_index]) - 1,
+                instruction_set_index
+            )
+        )
+
+        self.difficulties[round_] = safe_difficulty_index
+        self.instruction_set_indexes[round_] = safe_cycle_index
+        self.publish_difficulties()
+        self.publish_instruction_set_indexes()
+
+    def good_connection(self, sequence_cursor):
+        self.publish({'category': 'good_connection', 'sequence_cursor': sequence_cursor})
+
+    def bad_move(self):
+        self.publish({'category': 'bad_move'})
+
+    def notify_status(self, status):
+        self.publish({"category": "set_status", "status": status})
+
+    def notify_start_new_round(self, round_):
+        # Local rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
+        self.publish({"category": "start_new_round", "round": round_ + 1})
+
+    def notify_round_complete(self, round_):
+        # Local rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
+        self.publish({"category": "round_complete", "round": round_ + 1})
+
+    def notify_instruction(self, instruction):
+        self.publish({"category": "notify_instruction", "instruction": instruction})
+
+    def notify_success(self):
+        self.publish({"category": "success"})
 
     @property
     def status(self):
@@ -149,7 +243,7 @@ class VentilationController:
         elif self._status == "success":
             self.on_success()
 
-        self.service.notify_status(self.status)
+        self.notify_status(self.status)
 
     def skip_skippable_animations(self):
         for ad in self.air_ducts.values():
@@ -182,13 +276,12 @@ class VentilationController:
         self.sequence_cursor = -1
         self.round = 0
         self.try_counters = {}
-        self.wrong_order_counter = -1
         # Force players to take an action before the game restarts
         self.display_connected_air_ducts_before_restart()
-        self.service.notify_start_new_round(self.round)
+        self.notify_start_new_round(self.round)
 
     def on_success(self):
-        self.service.notify_success()
+        self.notify_success()
 
     def on_connect(self, air_duct, air_source):
         logger.info("{} is connected to {}".format(air_duct, air_source))
@@ -202,17 +295,14 @@ class VentilationController:
                 logger.info("Sequence has not been entirely displayed: considering as an error")
                 self.sequence_cursor = -1
                 self.bad_move_failure_animation()
-                self.service.notify_instruction("wait_until_sequence_complete")
+                self.notify_instruction("wait_until_sequence_complete")
 
             if self.success_sequence[self.sequence_cursor]["air_duct"] != air_duct.name:
                 try:
                     for instruction_index, instruction in enumerate(self.success_sequence[self.sequence_cursor:]):
                         expected_air_sources = self.get_expected_sources(self.sequence_cursor + instruction_index)
                         if instruction["air_duct"] == air_duct.name and air_source in expected_air_sources:
-                            self.wrong_order_counter += 1
-                            if self.wrong_order_counter % 3 == 0:
-                                self.service.notify_instruction("order_matters")
-                            break
+                            self.notify_instruction("order_matters")
                 except Exception:
                     pass
 
@@ -237,7 +327,7 @@ class VentilationController:
                     self.bad_move_failure_animation()
 
                 else:
-                    self.service.good_connection(self.sequence_cursor)
+                    self.good_connection(self.sequence_cursor)
                     logger.info("Good connection")
                     air_duct.fan.on()
                     air_duct.last_connected_sources.append(air_source)  # Keep track of the good history
@@ -274,7 +364,7 @@ class VentilationController:
         logger.info("Round {} complete".format(self.round))
 
         def step1():
-            self.service.notify_round_complete(self.round)
+            self.notify_round_complete(self.round)
             self.good_move_animation()
             self.unskippable_animation_task = callLater(1.3, step2)
 
@@ -291,13 +381,15 @@ class VentilationController:
         def step4():
             if self.round < 2:
                 logger.info("Going to next round".format(self.round))
+
                 self.round += 1
-                self.service.notify_start_new_round(self.round)
+
+                self.notify_start_new_round(self.round)
                 self.display_connected_air_ducts_before_restart()
 
             else:
                 logger.info("All rounds have been completed: victory!")
-                self.service.notify_instruction(["all_sequences_are_correct", "digimiam_ducts_can_now_be_used"])
+                self.notify_instruction(["all_sequences_are_correct", "digimiam_ducts_can_now_be_used"])
                 self.success_animation(step5)
 
         def step5():
@@ -308,10 +400,8 @@ class VentilationController:
     def new_success_sequence(self):
         logger.info("Loading a new success sequence (try counter={})".format(self.try_counters[self.round]))
 
-        round_sequences = self.difficulties[self.difficulty][self.round]
-        sequence_index = (self.try_counters[self.round] - 1) % len(round_sequences)
-
-        self.success_sequence = round_sequences[sequence_index]
+        self.success_sequence = self.instructions[
+            f"round{self.round}"][self.difficulties[self.round]][self.instruction_set_indexes[self.round]]
 
         logger.info("The new success sequence is {}".format(self.success_sequence))
 
@@ -535,7 +625,7 @@ class VentilationController:
     def bad_move_failure_animation(self):
         logger.info("Running bad move failure animation")
 
-        self.service.bad_move()
+        self.bad_move()
 
         self.skip_skippable_animations()
 
@@ -572,6 +662,7 @@ class VentilationController:
             else:
                 ad.set_color("red")
 
+    @on_event(filter={'category': 'restart_round'})
     def restart_round(self):
         if self.status != "playing":
             logger.info("Game is not started yet: nothing to restart")
@@ -579,7 +670,7 @@ class VentilationController:
 
         if not all([ad.connected_source is None for ad in self.air_ducts.values()]):
             logger.info("Cannot restart round for some ducts remain plugged")
-            self.service.notify_instruction('unplug_before_intervention')
+            self.notify_instruction('unplug_before_intervention')
             return
 
         if self.unskippable_animation_task and self.unskippable_animation_task.active():
@@ -587,13 +678,22 @@ class VentilationController:
             return
 
         logger.info("Restarting round")
-        self.service.notify_instruction('')
+        self.notify_instruction('')
         for ad in self.air_ducts.values():
             ad.set_color("black")
             ad.last_connected_sources = []
 
         if self.round in self.try_counters:
             self.try_counters[self.round] += 1
+
+            if (
+                len(self.instructions[f"round{self.round}"][self.difficulties[self.round]]) - 1 >
+                self.instruction_set_indexes[self.round]
+            ):
+                # +1 only on second try, because first try is supposed to happen on the first instruction set
+                self.instruction_set_indexes[self.round] += 1
+                self.publish_instruction_set_indexes()
+
         else:
             self.try_counters[self.round] = 1
 
@@ -602,93 +702,15 @@ class VentilationController:
 
         self.animation_tasks['display_sequence'] = callLater(0.5, self.display_sequence)
 
+    @on_event(filter={'category': 'reset'})
     def reset(self):
         self.status = "inactive"
-        self.difficulty = self.initial_difficulty
+        self.difficulties = [0, 1, 1]
+        self.instruction_set_indexes = [0, 0, 0]
+        self.publish_session_data()
 
     def check_jacks(self):
         self.check_jacks_task = callLater(0.1, self.check_jacks)
         if not (self.unskippable_animation_task and self.unskippable_animation_task.active()):
             for ad in self.air_ducts.values():
                 ad.check_connection()
-
-
-class VentilationPanel(MagicNode):
-    def __init__(self, *args, **kwargs):
-        super(VentilationPanel, self).__init__(*args, **kwargs)
-
-        initial_difficulty = self.config["initial_difficulty"]
-        air_ducts = self.config["air_ducts"]
-        air_sources = self.config["air_sources"]
-        colors = self.config["colors"]
-        round_leds = self.config["round_leds"]
-        magnet_pin = self.config["lock"]["electromagnet_pin"]
-        magnet_led_index = self.config["lock"]["led_index"]
-
-        difficulties = {}
-        for difficulty, rounds in self.config["difficulties"].items():
-            difficulties[difficulty] = {}
-            for round_index in range(3):
-                round_ = "round{}".format(round_index)
-                sequences = []
-                for raw_sequence in rounds[round_]:
-                    elements = [e.strip() for e in raw_sequence.split(",")]
-                    sequence = []
-                    for element in elements:
-                        ad, _, color = element.partition('>')
-                        ad = ad.strip()
-                        color = color.strip()
-
-                        assert ad in air_ducts, "{} is not declared as an air duct: aborting".format(ad)
-                        assert color in colors, "{} is not declared as a color: aborting".format(color)
-
-                        sequence.append({"air_duct": ad, "color": color})
-                    sequences.append(sequence)
-
-                difficulties[difficulty][round_index] = sequences
-
-        self.vc = VentilationController(
-            self, initial_difficulty, difficulties, round_leds, air_ducts, air_sources, colors,
-            magnet_pin, magnet_led_index)
-
-    def on_first_connection(self):
-        self.vc.status = "inactive"
-
-    @on_event(filter={'category': 'reset'})
-    def event_reset(self):
-        self.vc.reset()
-
-    @on_event(filter={'category': 'set_status'})
-    def event_set_status(self, status: str):
-        self.vc.status = status
-
-    @on_event(filter={'category': 'set_difficulty'})
-    def event_set_difficulty(self, difficulty: str):
-        self.vc.difficulty = difficulty
-
-    def good_connection(self, sequence_cursor):
-        self.publish({'category': 'good_connection', 'sequence_cursor': sequence_cursor})
-
-    def bad_move(self):
-        self.publish({'category': 'bad_move'})
-
-    @on_event(filter={'category': 'restart_round'})
-    def event_restart_round(self):
-        self.vc.restart_round()
-
-    def notify_status(self, status):
-        self.publish({"category": "set_status", "status": status})
-
-    def notify_start_new_round(self, round_):
-        # Local rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
-        self.publish({"category": "start_new_round", "round": round_ + 1})
-
-    def notify_round_complete(self, round_):
-        # Local rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
-        self.publish({"category": "round_complete", "round": round_ + 1})
-
-    def notify_instruction(self, instruction):
-        self.publish({"category": "notify_instruction", "instruction": instruction})
-
-    def notify_success(self):
-        self.publish({"category": "success"})

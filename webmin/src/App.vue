@@ -150,7 +150,7 @@ a:hover {
 }
 
 .border-jaffa {
-  border-color: #f38d40;
+  border: 1px #f38d40 solid;
 }
 
 .size-25 {

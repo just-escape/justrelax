@@ -82,147 +82,43 @@ round_leds:
   - 1
   - 0
 
-initial_difficulty: normal
-
 difficulties:
-  easy:
-    round0:
+  - 0
+  - 1
+  - 1
+
+first_instructions:
+  - 0
+  - 0
+  - 0
+
+instructions:
+  round0:
+    -
       - ad0 > white, ad1 > white, ad2 > yellow
-      # - ad0 > yellow, ad1 > white, ad2 > white
-      # - ad2 > white, ad1 > yellow, ad0 > white
-      # - ad1 > yellow, ad0 > white, ad2 > yellow
-      # - ad0 > yellow, ad1 > yellow, ad2 > white
-      # - ad0 > white, ad1 > yellow, ad2 > yellow
-      # - ad1 > white, ad2 > yellow, ad0 > white
-      # - ad1 > yellow, ad2 > white, ad0 > yellow
-      # - ad2 > white, ad0 > yellow, ad1 > yellow
-      # - ad2 > yellow, ad1 > white, ad0 > white
-      # - ad2 > yellow, ad0 > yellow, ad1 > yellow
-    round1:
+  round1:
+    -
       - ad0 > white, ad1 > pink, ad2 > orange
-      # - ad1 > orange, ad0 > pink, ad1 > white, ad2 > yellow
-      # - ad1 > yellow, ad0 > orange, ad2 > pink, ad0 > orange
-      # - ad2 > white, ad0 > yellow, ad1 > orange, ad2 > pink
-      # - ad0 > white, ad1 > yellow, ad2 > pink, ad0 > orange
-      # - ad1 > orange, ad2 > orange, ad1 > white, ad0 > pink
-      # - ad0 > orange, ad2 > pink, ad0 > orange, ad1 > white
-      # - ad2 > white, ad1 > pink, ad0 > pink, ad2 > orange
-      # - ad2 > yellow, ad1 > yellow, ad2 > white, ad0 > yellow
-      # - ad2 > white, ad0 > orange, ad1 > pink, ad0 > orange
-      # - ad2 > orange, ad0 > pink, ad2 > white, ad1 > white
-    round2:
-      - ad0 > white, ad1 > purple, ad2 > yellow
-      # - ad0 > orange, ad1 > purple, ad2 > white, ad0 > pink
-      # - ad2 > white, ad0 > white, ad1 > purple, ad2 > orange
-      # - ad0 > yellow, ad2 > pink, ad0 > blue, ad1 > white
-      # - ad2 > pink, ad0 > pink, ad1 > orange, ad2 > purple
-      # - ad0 > purple, ad1 > white, ad0 > orange, ad2 > white
-      # - ad0 > purple, ad1 > yellow, ad2 > orange, ad1 > orange
-      # - ad1 > yellow, ad2 > yellow, ad0 > pink, ad2 > blue
-      # - ad1 > white, ad2 > purple, ad1 > orange, ad0 > white
-      # - ad1 > orange, ad0 > yellow, ad1 > purple, ad2 > orange
-      # - ad2 > white, ad0 > yellow, ad1 > white, ad0 > blue
-  normal:
-    round0:
-      - ad1 > yellow, ad0 > white, ad2 > white
-      # - ad0 > yellow, ad2 > white, ad1 > yellow
-      # - ad1 > white, ad0 > yellow, ad2 > white
-      # - ad0 > white, ad1 > yellow, ad2 > white
-      # - ad2 > yellow, ad1 > yellow, ad0 > white
-      # - ad2 > yellow, ad0 > yellow, ad1 > yellow
-      # - ad1 > white, ad2 > yellow, ad0 > white
-      # - ad2 > yellow, ad0 > white, ad1 > yellow
-      # - ad1 > yellow, ad2 > white, ad0 > white
-      # - ad0 > white, ad1 > yellow, ad2 > white
-    round1:
+    -
       - ad1 > orange, ad2 > yellow, ad0 > pink, ad2 > blue
-      # - ad0 > yellow, ad1 > yellow, ad2 > orange, ad0 > blue
-      # - ad1 > orange, ad0 > pink, ad2 > yellow, ad1 > blue
-      # - ad0 > yellow, ad2 > orange, ad1 > pink, ad2 > pink
-      # - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow
-      # - ad2 > yellow, ad0 > pink, ad1 > pink, ad0 > orange
-      # - ad2 > orange, ad0 > white, ad2 > blue, ad1 > orange
-      # - ad2 > white, ad0 > pink, ad2 > orange, ad1 > yellow
-      # - ad0 > white, ad2 > orange, ad1 > pink, ad2 > orange
-      # - ad0 > yellow, ad2 > orange, ad1 > orange, ad0 > orange
-    round2:
-      # - ad1 > white, ad0 > pink, ad1 > purple, ad0 > yellow # , ad2 > pink
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > blue # , ad0 > pink
-      - ad2 > yellow, ad1 > pink, ad0 > pink, ad1 > white # , ad0 > pink
-      # - ad2 > purple, ad1 > orange, ad2 > blue, ad1 > white # , ad0 > orange
-      # - ad2 > white, ad0 > pink, ad1 > pink, ad0 > purple # , ad2 > yellow
-      - ad1 > yellow, ad0 > yellow, ad2 > orange, ad1 > blue # , ad0 > orange
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink # , ad0 > pink
-      # - ad2 > yellow, ad0 > orange, ad2 > purple, ad0 > blue # , ad1 > yellow
-      # - ad0 > yellow, ad2 > pink, ad0 > purple, ad2 > blue # , ad1 > orange
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white # , ad2 > white
-  hard:
-    round0:
-      - ad1 > yellow, ad0 > yellow, ad2 > white, ad1 > white
-      - ad2 > yellow, ad0 > white, ad1 > white, ad2 > white
-      - ad0 > yellow, ad2 > yellow, ad1 > white, ad2 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > yellow
-#      - ad0 > white, ad1 > white, ad2 > white, ad1 > yellow
-#      - ad0 > white, ad2 > yellow, ad1 > yellow, ad2 > white
-#      - ad1 > white, ad0 > white, ad2 > yellow, ad0 > yellow
-#      - ad1 > white, ad2 > yellow, ad0 > yellow, ad1 > white
-#      - ad2 > yellow, ad1 > white, ad0 > white, ad1 > white
-#      - ad2 > yellow, ad1 > yellow, ad0 > white, ad1 > white
-    round1:
-      - ad1 > yellow, ad2 > yellow, ad0 > pink, ad2 > blue # , ad1 > orange
-      - ad0 > white, ad2 > orange, ad1 > pink, ad2 > yellow # , ad1 > blue
-      - ad2 > yellow, ad0 > white, ad2 > blue, ad1 > orange # , ad2 > pink
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow # , ad2 > orange
-#      - ad0 > yellow, ad2 > orange, ad1 > pink, ad0 > pink # , ad2 > white
-#      - ad0 > yellow, ad1 > yellow, ad2 > orange, ad0 > blue # , ad1 > orange
-#      - ad1 > orange, ad0 > pink, ad2 > yellow, ad1 > blue # , ad2 > orange
-#      - ad2 > yellow, ad0 > pink, ad1 > pink, ad0 > orange # , ad1 > white
-#      - ad2 > white, ad0 > pink, ad2 > orange, ad1 > yellow # , ad2 > white
-#      - ad0 > yellow, ad2 > orange, ad1 > orange, ad0 > orange # , ad1 > blue
-    round2:
-      # - ad1 > white, ad0 > pink, ad1 > purple, ad0 > yellow, ad1 > purple, ad0 > blue # , ad2 > orange
-      - ad1 > purple, ad2 > purple, ad0 > orange, ad2 > yellow, ad0 > purple, ad1 > white # , ad1 > blue
-      - ad2 > orange, ad1 > pink, ad0 > pink, ad2 > white, ad0 > pink, ad1 > blue # , ad2 > yellow
-      # - ad2 > purple, ad1 > yellow, ad2 > blue, ad1 > white, ad0 > purple, ad1 > purple # , ad2 > orange
-      - ad2 > white, ad0 > pink, ad1 > pink, ad0 > purple, ad2 > yellow, ad0 > orange # , ad1 > pink
-      - ad1 > yellow, ad0 > yellow, ad2 > orange, ad1 > blue, ad0 > white, ad2 > yellow # , ad2 > blue
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow # , ad0 > yellow
-      # - ad2 > yellow, ad0 > orange, ad2 > purple, ad0 > blue, ad0 > purple, ad1 > orange # , ad2 > orange
-#      - ad0 > yellow, ad2 > pink, ad0 > purple, ad2 > blue, ad1 > yellow, ad2 > pink # , ad1 > blue
-#      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white, ad2 > white, ad0 > blue # , ad1 > orange
+      - ad1 > yellow, ad2 > yellow, ad0 > pink, ad2 > blue
+      - ad0 > white, ad2 > orange, ad1 > pink, ad2 > yellow
+      - ad2 > yellow, ad0 > white, ad2 > blue, ad1 > orange
+      - ad2 > yellow, ad0 > orange, ad2 > blue, ad1 > yellow
+  round2:
+    -
+      - ad0 > white, ad1 > purple, ad2 > yellow
+    -
+      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > blue
+      - ad2 > yellow, ad1 > pink, ad0 > pink, ad1 > white
+      - ad1 > yellow, ad0 > yellow, ad2 > orange, ad1 > blue
+      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink
+      - ad1 > purple, ad2 > purple, ad0 > yellow, ad1 > white
+    -
+      - ad2 > white, ad0 > pink, ad1 > pink, ad0 > purple, ad2 > yellow
+    -
+      - ad1 > purple, ad2 > purple, ad0 > orange, ad2 > yellow, ad0 > purple, ad1 > white
+      - ad2 > orange, ad1 > pink, ad0 > pink, ad2 > white, ad0 > pink, ad1 > blue
+      - ad2 > white, ad0 > pink, ad1 > pink, ad0 > purple, ad2 > yellow, ad0 > orange
+      - ad1 > yellow, ad0 > yellow, ad2 > orange, ad1 > blue, ad0 > white, ad2 > yellow
+      - ad2 > orange, ad0 > yellow, ad2 > white, ad1 > pink, ad0 > pink, ad1 > yellow
