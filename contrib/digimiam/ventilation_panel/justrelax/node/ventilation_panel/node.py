@@ -297,7 +297,7 @@ class VentilationPanel(MagicNode):
                 self.bad_move_failure_animation()
                 self.notify_instruction("wait_until_sequence_complete")
 
-            if self.success_sequence[self.sequence_cursor]["air_duct"] != air_duct.name:
+            elif self.success_sequence[self.sequence_cursor]["air_duct"] != air_duct.name:
                 try:
                     for instruction_index, instruction in enumerate(self.success_sequence[self.sequence_cursor:]):
                         expected_air_sources = self.get_expected_sources(self.sequence_cursor + instruction_index)
