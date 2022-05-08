@@ -2380,6 +2380,10 @@ class Scenario(MagicNode):
     def buttons_cylinders_check_availability(self, id: str):
         self.publish_prefix({'category': 'check_availability', 'id': id}, 'cylinders')
 
+    @on_event(filter={'widget_type': 'camera', 'action': 'restart'})
+    def buttons_camera_restart(self, camera_id: str):
+        self.publish_prefix({'category': 'shell', 'command': 'sudo systemctl restart gstreamer.service'}, camera_id)
+
 
 class ScenarioD1(Scenario):
     def first_order_niryo_light_on(self):
