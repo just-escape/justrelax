@@ -121,9 +121,25 @@ class VentilationPanel(MagicNode):
 
     @on_event(filter={'category': 'request_node_session_data'})
     def publish_session_data(self):
+        self.publish_status()
         self.publish_instructions()
         self.publish_difficulties()
         self.publish_instruction_set_indexes()
+        self.notify_start_new_round(None if self.status == "inactive" else self.round)
+        self.publish_try_counters()
+        self.publish_sequence_cursor()
+        self.publish_success_sequence()
+        self.publish_is_sequence_being_displayed()
+        self.publish_air_ducts()
+
+    def publish_status(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'ventilation_panel_status',
+                'data': self.status,
+            }
+        )
 
     def publish_instructions(self):
         self.publish(
@@ -149,6 +165,55 @@ class VentilationPanel(MagicNode):
                 'category': 'set_session_data',
                 'key': 'ventilation_panel_instruction_set_indexes',
                 'data': self.instruction_set_indexes,
+            }
+        )
+
+    def publish_try_counters(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'ventilation_panel_try_counters',
+                'data': self.try_counters,
+            }
+        )
+
+    def publish_sequence_cursor(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'ventilation_panel_sequence_cursor',
+                'data': self.sequence_cursor,
+            }
+        )
+
+    def publish_success_sequence(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'ventilation_panel_success_sequence',
+                'data': self.success_sequence,
+            }
+        )
+
+    def publish_is_sequence_being_displayed(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'ventilation_panel_is_sequence_being_displayed',
+                'data': self.is_sequence_being_displayed,
+            }
+        )
+
+    def publish_air_ducts(self):
+        self.publish(
+            {
+                'category': 'set_session_data',
+                'key': 'ventilation_panel_air_ducts',
+                'data': {
+                    as_.name: as_.connected_source.name
+                    if as_.connected_source else None
+                    for as_ in self.air_ducts.values()
+                },
             }
         )
 
@@ -194,10 +259,10 @@ class VentilationPanel(MagicNode):
 
     def notify_status(self, status):
         self.publish({"category": "set_status", "status": status})
+        self.publish_status()
 
     def notify_start_new_round(self, round_):
-        # Local rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
-        self.publish({"category": "start_new_round", "round": round_ + 1})
+        self.publish({"category": "start_new_round", "round": round_})
 
     def notify_round_complete(self, round_):
         # Local rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
@@ -264,8 +329,11 @@ class VentilationPanel(MagicNode):
             ad.fan.off()
         self.led_strip.fill((0, 0, 0))
 
+        self.success_sequence = []
+        self.try_counters = {}
         self.electromagnet.on()
         self.led_strip[self.electromagnet_led_index] = self.get_color_rgb("light_red")
+        self.notify_start_new_round(None)
 
     def on_playing(self):
         self.led_strip.fill((0, 0, 0))
@@ -274,8 +342,10 @@ class VentilationPanel(MagicNode):
         self.led_strip[self.electromagnet_led_index] = self.get_color_rgb("light_green")
 
         self.sequence_cursor = -1
+        self.publish_sequence_cursor()
         self.round = 0
         self.try_counters = {}
+        self.publish_try_counters()
         # Force players to take an action before the game restarts
         self.display_connected_air_ducts_before_restart()
         self.notify_start_new_round(self.round)
@@ -285,6 +355,7 @@ class VentilationPanel(MagicNode):
 
     def on_connect(self, air_duct, air_source):
         logger.info("{} is connected to {}".format(air_duct, air_source))
+        self.publish_air_ducts()
 
         if self.status != "playing":
             logger.info("Game is not started yet: nothing to do")
@@ -294,6 +365,9 @@ class VentilationPanel(MagicNode):
             if self.is_sequence_being_displayed:
                 logger.info("Sequence has not been entirely displayed: considering as an error")
                 self.sequence_cursor = -1
+                self.publish_sequence_cursor()
+                self.is_sequence_being_displayed = False
+                self.publish_is_sequence_being_displayed()
                 self.bad_move_failure_animation()
                 self.notify_instruction("wait_until_sequence_complete")
 
@@ -309,6 +383,7 @@ class VentilationPanel(MagicNode):
                 logger.info("Expecting {} to be connected".format(
                     self.success_sequence[self.sequence_cursor]["air_duct"]))
                 self.sequence_cursor = -1
+                self.publish_sequence_cursor()
                 self.bad_move_failure_animation()
 
             else:
@@ -324,6 +399,7 @@ class VentilationPanel(MagicNode):
                     logger.info("Expecting connection with {}".format(
                         " or ".join([str(s) for s in expected_air_sources])))
                     self.sequence_cursor = -1
+                    self.publish_sequence_cursor()
                     self.bad_move_failure_animation()
 
                 else:
@@ -333,9 +409,11 @@ class VentilationPanel(MagicNode):
                     air_duct.last_connected_sources.append(air_source)  # Keep track of the good history
                     if self.sequence_cursor == len(self.success_sequence) - 1:
                         self.sequence_cursor = -1
+                        self.publish_sequence_cursor()
                         self.on_round_complete()
                     else:
                         self.sequence_cursor += 1
+                        self.publish_sequence_cursor()
                         logger.info("Expecting element {} (cursor is {})".format(
                             self.success_sequence[self.sequence_cursor], self.sequence_cursor))
                         self.good_move_animation()
@@ -346,6 +424,7 @@ class VentilationPanel(MagicNode):
 
     def on_disconnect(self, air_duct):
         logger.info("{} is not connected to any air source".format(air_duct))
+        self.publish_air_ducts()
 
         if self.status != "playing":
             logger.info("Game is not started yet: nothing to do")
@@ -356,6 +435,7 @@ class VentilationPanel(MagicNode):
             if self.success_sequence[self.sequence_cursor]["air_duct"] != air_duct.name:
                 logger.info("It was not necessary to disconnect this air duct: considering as an error")
                 self.sequence_cursor = -1
+                self.publish_sequence_cursor()
                 self.bad_move_failure_animation()
         else:  # Game is not running
             self.display_connected_air_ducts_before_restart()
@@ -402,6 +482,7 @@ class VentilationPanel(MagicNode):
 
         self.success_sequence = self.instructions[
             f"round{self.round}"][self.difficulties[self.round]][self.instruction_set_indexes[self.round]]
+        self.publish_success_sequence()
 
         logger.info("The new success sequence is {}".format(self.success_sequence))
 
@@ -411,6 +492,7 @@ class VentilationPanel(MagicNode):
         self.skip_skippable_animations()
 
         self.is_sequence_being_displayed = True
+        self.publish_is_sequence_being_displayed()
 
         def display_element(index=0):
             if index < len(self.success_sequence):
@@ -435,6 +517,7 @@ class VentilationPanel(MagicNode):
                 )
             else:
                 self.is_sequence_being_displayed = False
+                self.publish_is_sequence_being_displayed()
 
         self.animation_tasks['display_sequence'] = callLater(0.5, display_element)
 
@@ -673,6 +756,10 @@ class VentilationPanel(MagicNode):
             self.notify_instruction('unplug_before_intervention')
             return
 
+        if self.is_sequence_being_displayed:
+            logger.info("A sequence is still being displayed: aborting")
+            return
+
         if self.unskippable_animation_task and self.unskippable_animation_task.active():
             logger.info("Some unskippable animation task is running: aborting")
             return
@@ -685,6 +772,7 @@ class VentilationPanel(MagicNode):
 
         if self.round in self.try_counters:
             self.try_counters[self.round] += 1
+            self.publish_try_counters()
 
             if (
                 len(self.instructions[f"round{self.round}"][self.difficulties[self.round]]) - 1 >
@@ -696,17 +784,19 @@ class VentilationPanel(MagicNode):
 
         else:
             self.try_counters[self.round] = 1
+            self.publish_try_counters()
 
         self.new_success_sequence()
         self.sequence_cursor = 0
+        self.publish_sequence_cursor()
 
         self.animation_tasks['display_sequence'] = callLater(0.5, self.display_sequence)
 
     @on_event(filter={'category': 'reset'})
     def reset(self):
         self.status = "inactive"
-        self.difficulties = [0, 1, 1]
-        self.instruction_set_indexes = [0, 0, 0]
+        self.difficulties = self.config['difficulties']
+        self.instruction_set_indexes = self.config['first_instructions']
         self.publish_session_data()
 
     def check_jacks(self):

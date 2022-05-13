@@ -222,6 +222,10 @@ input.form-control::placeholder {
   border: 1px #2e2e2e solid;
 }
 
+.border-transparent {
+  border: 1px transparent solid;
+}
+
 table {
   width: auto;
 }

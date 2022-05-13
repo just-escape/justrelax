@@ -1365,8 +1365,11 @@ class Scenario(MagicNode):
             0.5, self.publish_prefix, {'category': 'play', 'sound_id': 'ventilation_round_success'}, 'sound_player')
 
     @on_event(filter={'from_': 'ventilation_panel', 'category': 'start_new_round'})
-    def ventilation_panel_event_start_new_round(self, round: int):
-        self.publish_prefix({'category': 'set_ventilation_panel_round', 'round': round}, 'orders')
+    def ventilation_panel_event_start_new_round(self, round):
+        # Ventilation panel rounds are 0, 1, 2. Documentation rounds are 1, 2, 3
+        if round is not None:
+            self.publish_prefix({'category': 'set_ventilation_panel_round', 'round': round + 1}, 'orders')
+        self.set_session_data('ventilation_panel_round', round)
 
     @on_event(filter={'from_': 'ventilation_panel', 'category': 'set_status'})
     def ventilation_panel_event_set_status(self, status: str):
@@ -1393,6 +1396,10 @@ class Scenario(MagicNode):
         self.register_delayed_task(1, self.publish_prefix, {'category': 'play', 'track_id': 'track4'}, 'music_player')
 
         self.register_delayed_task(4, self.publish_prefix, {'category': 'high'}, 'stock_lights')
+
+    @on_event(filter={'widget_id': 'ventilation_panel', 'action': 'restart_round'})
+    def ventilation_panel_restart_round_from_webmin(self):
+        self.publish_prefix({'category': 'restart_round'}, 'ventilation_panel')
 
     @on_event(filter={'from_': 'orders', 'category': 'restart_round'})
     def ventilation_panel_restart_round(self):
@@ -1975,29 +1982,9 @@ class Scenario(MagicNode):
     def button_stop_orders_overlay_video(self):
         self.publish_prefix({'category': 'stop_overlay_video'}, 'orders')
 
-    @on_event(filter={'widget_id': 'set_ventilation_panel_difficulty_easy'})
-    def button_set_ventilation_panel_difficulty_easy(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'easy'}, 'ventilation_panel')
-
-    @on_event(filter={'widget_id': 'set_ventilation_panel_difficulty_normal'})
-    def button_set_ventilation_panel_difficulty_normal(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'normal'}, 'ventilation_panel')
-
-    @on_event(filter={'widget_id': 'set_ventilation_panel_difficulty_hard'})
-    def button_set_ventilation_panel_difficulty_hard(self):
-        self.publish_prefix({'category': 'set_difficulty', 'difficulty': 'hard'}, 'ventilation_panel')
-
-    @on_event(filter={'widget_id': 'set_ventilation_panel_status_inactive'})
-    def button_set_ventilation_panel_status_inactive(self):
-        self.publish_prefix({'category': 'set_status', 'status': 'inactive'}, 'ventilation_panel')
-
-    @on_event(filter={'widget_id': 'set_ventilation_panel_status_playing'})
-    def button_set_ventilation_panel_status_playing(self):
-        self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'ventilation_panel')
-
-    @on_event(filter={'widget_id': 'set_ventilation_panel_status_success'})
-    def button_set_ventilation_panel_status_success(self):
-        self.publish_prefix({'category': 'set_status', 'status': 'success'}, 'ventilation_panel')
+    @on_event(filter={'widget_id': 'ventilation_panel', 'action': 'set_status'})
+    def ventilation_panel_set_status(self, status: str):
+        self.publish_prefix({'category': 'set_status', 'status': status}, 'ventilation_panel')
 
     @on_event(filter={'widget_id': 'control_table_up'})
     def button_control_table_up(self):
