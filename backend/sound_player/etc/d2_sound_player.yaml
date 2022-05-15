@@ -1,0 +1,147 @@
+name: sound_player
+
+default_publication_channel: d2.scenario
+subscriptions:
+  - d2.sound_player
+  - d2.broadcast
+
+master_volume: 80
+default_volume: 50
+player: vlc
+
+mixer: Master
+
+sounds:
+  - id: front_door_open
+    path: /home/justescape/sounds/front_door_open.wav
+    volume: 80
+  - id: server_door_open
+    path: /home/justescape/sounds/server_door_open.wav
+  - id: ambiant_light_blue
+    path: /home/justescape/sounds/ambiant_light_blue.wav
+    volume: 70
+  - id: ambiant_light_orange
+    path: /home/justescape/sounds/ambiant_light_orange.wav
+  - id: on_manual_mode
+    path: /home/justescape/sounds/on_manual_mode.wav
+    volume: 65
+  - id: hologram_set_slide
+    path: /home/justescape/sounds/hologram_set_slide.wav
+    volume: 60
+  - id: on_restaurant_start
+    path: /home/justescape/sounds/on_restaurant_start.wav
+    volume: 70
+  - id: ventilation_combo_0
+    path: /home/justescape/sounds/ventilation_combo_0.wav
+    volume: 60
+  - id: ventilation_combo_1
+    path: /home/justescape/sounds/ventilation_combo_1.wav
+    volume: 60
+  - id: ventilation_combo_2
+    path: /home/justescape/sounds/ventilation_combo_2.wav
+    volume: 60
+  - id: ventilation_combo_3
+    path: /home/justescape/sounds/ventilation_combo_3.wav
+    volume: 60
+  - id: ventilation_combo_4
+    path: /home/justescape/sounds/ventilation_combo_4.wav
+    volume: 60
+  - id: ventilation_combo_5
+    path: /home/justescape/sounds/ventilation_combo_5.wav
+    volume: 60
+  - id: ventilation_combo_6
+    path: /home/justescape/sounds/ventilation_combo_6.wav
+    volume: 60
+  - id: ventilation_combo_7
+    path: /home/justescape/sounds/ventilation_combo_7.wav
+    volume: 60
+  - id: ventilation_combo_8
+    path: /home/justescape/sounds/ventilation_combo_8.wav
+    volume: 60
+  - id: ventilation_error
+    path: /home/justescape/sounds/ventilation_error.wav
+    volume: 60
+  - id: ventilation_round_success
+    path: /home/justescape/sounds/ventilation_round_success.wav
+    volume: 65
+  - id: cylinder_scan
+    path: /home/justescape/sounds/cylinder_scan.wav
+  - id: laser_trigger
+    path: /home/justescape/sounds/laser_trigger.wav
+  - id: gaz
+    path: /home/justescape/sounds/gaz.wav
+    volume: 80
+  - id: typing
+    path: /home/justescape/sounds/typing.wav
+  - id: pepper_1
+    path: /home/justescape/sounds/pepper_1.mp3
+    volume: 75
+  - id: pepper_2
+    path: /home/justescape/sounds/pepper_2.mp3
+    volume: 75
+  - id: pepper_3
+    path: /home/justescape/sounds/pepper_3.mp3
+    volume: 75
+  - id: pepper_4
+    path: /home/justescape/sounds/pepper_4.mp3
+    volume: 75
+  - id: pepper_5
+    path: /home/justescape/sounds/pepper_5.mp3
+    volume: 75
+  - id: pepper_6
+    path: /home/justescape/sounds/pepper_6.mp3
+    volume: 75
+  - id: pepper_7
+    path: /home/justescape/sounds/pepper_7.mp3
+    volume: 75
+  - id: pepper_8
+    path: /home/justescape/sounds/pepper_8.mp3
+    volume: 75
+  - id: pepper_9
+    path: /home/justescape/sounds/pepper_9.mp3
+    volume: 75
+  - id: pepper_10
+    path: /home/justescape/sounds/pepper_10.mp3
+    volume: 75
+  - id: pepper_11
+    path: /home/justescape/sounds/pepper_11.mp3
+    volume: 75
+  - id: pepper_12
+    path: /home/justescape/sounds/pepper_12.mp3
+    volume: 75
+  - id: pepper_13
+    path: /home/justescape/sounds/pepper_13.mp3
+    volume: 75
+  - id: pepper_14
+    path: /home/justescape/sounds/pepper_14.mp3
+    volume: 75
+  - id: pepper_15
+    path: /home/justescape/sounds/pepper_15.mp3
+    volume: 75
+  - id: pepper_16
+    path: /home/justescape/sounds/pepper_16.mp3
+    volume: 75
+  - id: pepper_17
+    path: /home/justescape/sounds/pepper_17.mp3
+    volume: 75
+  - id: pepper_18
+    path: /home/justescape/sounds/pepper_18.mp3
+    volume: 75
+  - id: marmitron_1
+    path: /home/justescape/sounds/marmitron_1.mp3
+    volume: 90
+  - id: marmitron_2
+    path: /home/justescape/sounds/marmitron_2.mp3
+    volume: 100
+  - id: marmitron_3
+    path: /home/justescape/sounds/marmitron_3.mp3
+    volume: 100
+  - id: marmitron_4
+    path: /home/justescape/sounds/marmitron_4.mp3
+    volume: 100
+  - id: marmitron_5
+    path: /home/justescape/sounds/marmitron_5.mp3
+    volume: 90
+  - id: marmitron_6
+    path: /home/justescape/sounds/marmitron_6.mp3
+    volume: 90
