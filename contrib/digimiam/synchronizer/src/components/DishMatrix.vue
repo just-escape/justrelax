@@ -13,28 +13,28 @@
           <div class="position-absolute dash dash-vertical"></div>
           <div class="mt-2">
             <i class="fa-fw fas fa-drumstick-bite" style="opacity: 0.7"/>
-            <span>Viande</span>
+            <span>{{ $t('Viande') }}</span>
           </div>
         </div>
         <div class="position-relative w-25 text-center">
           <div class="position-absolute dash dash-vertical"></div>
           <div class="mt-2">
             <i class="fa-fw fas fa-pizza-slice" style="opacity: 0.7"/>
-            <span>Pizza</span>
+            <span>{{ $t('Pizza') }}</span>
           </div>
         </div>
         <div class="position-relative w-25 text-center">
           <div class="position-absolute dash dash-vertical"></div>
           <div class="mt-2">
             <img src="@/assets/img/waffle.png" style="opacity: 0.7" height="16px"/>
-            <span>Gaufre</span>
+            <span>{{ $t('Gaufre') }}</span>
           </div>
         </div>
         <div class="position-relative w-25 text-center">
           <div class="position-absolute dash dash-vertical"></div>
           <div class="mt-2">
             <img src="@/assets/img/jelly.svg" style="opacity: 0.7" height="16px"/>
-            <span>Gelée</span>
+            <span>{{ $t('Gelée') }}</span>
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@
               class="fa-fw fas fa-smile"
               style="opacity: 0.7; transform: rotate(90deg); margin-left: 3px"
             />
-            <div style="margin-top: 2px">Portrait</div>
+            <div style="margin-top: 2px">{{ $t('Portrait') }}</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">
@@ -57,7 +57,7 @@
               class="fa-fw fas fa-bug"
               style="opacity: 0.7; transform: rotate(90deg); margin-left: 3px"
             />
-            <div style="margin-top: 2px">Insecte</div>
+            <div style="margin-top: 2px">{{ $t('Insecte') }}</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">
@@ -67,7 +67,7 @@
               class="fa-fw fas fa-search"
               style="opacity: 0.7; transform: rotate(90deg); margin-left: 3px"
             />
-            <div style="margin-top: 2px">Micro-</div>
+            <div style="margin-top: 2px">{{ $t('Micro') }}</div>
           </div>
         </div>
         <div class="position-relative h-25 text-center">
@@ -77,7 +77,7 @@
               src="@/assets/img/seaweed.png" height="16px"
               style="opacity: 0.7; transform: rotate(90deg)"
             />
-            <div class="mt-2">Algue</div>
+            <div class="mt-2">{{ $t('Algue') }}</div>
           </div>
         </div>
       </div>

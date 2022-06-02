@@ -67,6 +67,7 @@ export default {
         this.blackScreenOpacity = 1
       } else {
         this.blackScreenOpacity = 0
+        this.videoLang = this.locale
       }
     },
   },

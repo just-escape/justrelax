@@ -13,7 +13,7 @@
     }"
   >
     <div style="font-size: 18px; transform: translateY(2px)">
-      Plat {{ id }}
+      {{ $t('Plat') }} {{ id }}
     </div>
   </div>
 </template>

@@ -10,10 +10,10 @@
           :class="{'p-1': !isColorActivated || areTooManyLightsActivated}"
         >
           <div v-if="!isColorActivated">
-            La lumière {{ colorIdToLocale[units[0].color] }} n'est pas allumée
+            {{ $t('La lumière ' + units[0].color + " n'est pas allumée") }}
           </div>
           <div v-else-if="areTooManyLightsActivated">
-            Plusieurs lumières sont allumées en même temps : synchronisation ralentie
+            {{ $t("Plusieurs lumières sont allumées en même temps : synchronisation ralentie") }}
           </div>
         </div>
       </div>
@@ -41,18 +41,6 @@ export default {
   components: {
     LightContainerUnit,
     LightProgressionBar,
-  },
-  data() {
-    return {
-      colorIdToLocale: {
-        'blue': 'bleue',
-        'orange': 'orange',
-        'green': 'verte',
-        'pink': 'rose',
-        'red': 'rouge',
-        'white': 'blanche',
-      }
-    }
   },
   computed: {
     displayLightExplicitInstruction() {

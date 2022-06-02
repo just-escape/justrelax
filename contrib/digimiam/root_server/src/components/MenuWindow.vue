@@ -1,8 +1,8 @@
 <template>
-  <Window :title="'DISPONIBILITÉ INGRÉDIENTS'">
+  <Window :title="$t('DISPONIBILITÉ INGRÉDIENTS')">
     <div class="d-flex flex-column align-items-center mx-4 h-100">
       <div class="d-flex flex-row justify-content-center w-100 align-items-center mb-4 mt-4" style="font-style: italic; font-size: 20px">
-        <div>Plats du menu</div>
+        <div>{{ $t('Plats du menu') }}</div>
       </div>
       <div class="position-relative d-flex flex-row justify-content-center mb-5">
         <div

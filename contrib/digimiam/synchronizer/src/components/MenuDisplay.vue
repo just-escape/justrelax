@@ -13,7 +13,7 @@
 
         <div class="mb-5">
           <div class="d-flex flex-row justify-content-center mb-4" style="font-style: italic; font-size: 18px">
-            <div>Plats du menu</div>
+            <div>{{ $t('Plats du menu') }}</div>
           </div>
           <div class="position-relative d-flex flex-row justify-content-center mb-3">
             <div
@@ -43,7 +43,7 @@
             style="background: rgba(0, 209, 182, 0.6); transition: all 0.4s ease-in-out"
             :style="{opacity: displayHolographicUpdateOnChange ? holographicDisplayUpdatedOpacity : 0}"
           >
-            <div>Affichage holographique modifié</div>
+            <div>{{ $t('Affichage holographique modifié') }}</div>
           </div>
         </div>
 
@@ -55,8 +55,8 @@
           style="margin-top: 70px; background: rgba(255, 69, 0, 0.65); height: 104px"
           class="p-1 d-flex flex-row justify-content-center align-items-center pulse-opacity text-center"
         >
-          <div v-if="priceMatters">Le menu holographique n'affiche pas<br/>les bons plats. En attente de sélection<br/>des plats au bon prix.</div>
-          <div v-else>Le menu holographique n'affiche pas<br/>les bons plats. En attente de sélection<br/>des bons plats.</div>
+          <div v-if="priceMatters" v-html="$t('holographic_menu_dishes_price')"></div>
+          <div v-else v-html="$t('holographic_menu_dishes')"></div>
         </div>
       </div>
     </div>
@@ -104,7 +104,7 @@ export default {
       return menuStore.state.cursorPosition * 85 + 38
     },
     displayPrice() {
-      return menuStore.state.displayPrice && menuStore.state.priceMatters
+      return menuStore.state.displayPrice
     },
     dragging() {
       return menuStore.state.dragging

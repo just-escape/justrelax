@@ -8,10 +8,9 @@
         <div class="d-flex flex-column align-items-center">
           <i class="text-red fa fa-exclamation-triangle mb-4 text-big" :style="{opacity: opacity}"/>
           <div style="font-size: 50px">
-            Intrusion détectée
+            {{ $t('Intrusion détectée') }}
           </div>
-          <div style="font-size: 40px">
-            Évacuation <span class="text-red" style="font-weight: bold">complète</span> de la salle requise
+          <div style="font-size: 40px" v-html="$t('immediate_evac_alarm')">
           </div>
         </div>
       </div>

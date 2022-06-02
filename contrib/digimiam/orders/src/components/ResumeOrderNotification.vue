@@ -12,19 +12,19 @@
         </div>
         <div class="media-body d-flex flex-column">
           <div class="mb-1">
-            Chers clients,
+            {{ $t('Chers clients,') }}
           </div>
           <div class="mb-1">
-            La production de votre commande a été interrompue suite à un incident.
+            {{ $t('La production de votre commande a été interrompue suite à un incident.') }}
           </div>
           <div class="mb-3">
-            La situation est maintenant résolue. Nos excuses pour la gêne occasionnée.
+            {{ $t('La situation est maintenant résolue. Nos excuses pour la gêne occasionnée.') }}
           </div>
           <b-btn
             variant="info"
             class="align-self-center py-2 px-5 mr-5"
             @click="$emit('ok')"
-          >Reprendre la commande</b-btn>
+          >{{ $t('Reprendre la commande') }}</b-btn>
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@
         </div>
         <div class="media-body d-flex flex-column">
           <div class="mb-1">
-            Votre commande est prête !
+            {{ $t('Votre commande est prête !') }}
           </div>
           <div class="ml-4">
             <Waffresco3D :display="displayed"/>

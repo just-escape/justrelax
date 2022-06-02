@@ -42,7 +42,7 @@ const locales = {
       printer_activation: 'Food printer: activated',
     },
     danger: 'DANGER',
-    toxic_air_detected: 'Toxic air detected',
+    toxic_air_detected: 'Mustard gas detected',
     immediate_evac: 'Humans are required to evacuate immediately',
   },
   fr: {
@@ -83,7 +83,7 @@ const locales = {
       printer_activation: 'Activation de l\'imprimante alimentaire',
     },
     danger: 'DANGER',
-    toxic_air_detected: 'Air toxique détecté',
+    toxic_air_detected: 'Gaz moutarde détecté',
     immediate_evac: 'Évacuation immédiate des humains requise',
   }
 }

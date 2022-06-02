@@ -20,7 +20,7 @@
 
         <div class="btn-group h-100" role="group" :class="{shaking: creditsShaking}" :style="{opacity: !cartItems.length || isRestaurantClosed ? 0.4 : 1}">
           <b-btn :variant="getCreditsVariant" class="text-left py-2" style="width: 110px" disabled>
-            {{ "Crédits" }}
+            {{ $t("Crédits") }}
           </b-btn>
           <b-btn :variant="getCreditsVariant" class="py-2 pr-0" style="width: 50px" disabled>
             {{ credits }}

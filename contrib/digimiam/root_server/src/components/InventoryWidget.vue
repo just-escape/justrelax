@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-center" style="font-style: italic; font-size: 20px">Chambres des ingrédients</div>
+    <div class="text-center" style="font-style: italic; font-size: 20px">{{ $t('Chambres des ingrédients') }}</div>
     <div class="mt-4 position-relative">
       <HexagonChamber
         v-for="(chamber, chamberIndex) in chambers" :key="'chamber-' + chamberIndex"

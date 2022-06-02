@@ -39,49 +39,49 @@ export default {
         {
           id: "gaufresque",
           translate: 0,
-          orderable: false,
+          orderable: true,
           isVisible: false,
         },
         {
           id: "potjevleesch",
           translate: 0,
-          orderable: false,
+          orderable: true,
           isVisible: false,
         },
         {
           id: "salade_flamande",
           translate: 0,
-          orderable: false,
+          orderable: true,
           isVisible: false,
         },
         {
           id: "cambraisienne",
           translate: 0,
-          orderable: false,
+          orderable: true,
           isVisible: false,
         },
         {
           id: "gaufresque",
           translate: 0,
-          orderable: false,
+          orderable: true,
           isVisible: false,
         },
         {
           id: "potjevleesch",
           translate: 0,
-          orderable: false,
+          orderable: true,
           isVisible: false,
         },
         {
           id: "salade_flamande",
           translate: 0,
-          orderable: false,
+          orderable: true,
           isVisible: false,
         },
         {
           id: "cambraisienne",
           translate: 0,
-          orderable: false,
+          orderable: true,
           isVisible: false,
         },
       ],
@@ -123,11 +123,7 @@ export default {
         this.items[i].translate = Math.abs(itemPositionFromCenter * 15)
 
         // Order button
-        if (-0.6 < itemPositionFromCenter && itemPositionFromCenter < 0.6) {
-          this.items[i].orderable = true
-        } else {
-          this.items[i].orderable = false
-        }
+        this.items[i].orderable = true
       }
     },
     order: function(itemIndex) {

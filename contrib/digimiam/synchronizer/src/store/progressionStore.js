@@ -20,8 +20,8 @@ let store = new Vuex.Store({
         loop: true,
       },
       ads_loop: {
-        fr: require('@/assets/videos/ads_loop.webm'),
-        en: require('@/assets/videos/ads_loop.webm'),
+        fr: require('@/assets/videos/waffresco_ad_loop.mp4'),
+        en: require('@/assets/videos/waffresco_ad_loop.mp4'),
         loop: true,
       },
     },

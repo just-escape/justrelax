@@ -36,7 +36,7 @@
               {{ $t('incorrect_password') }}
             </div>
             <div>
-              Nombre d'échecs : {{ failedAttempts }}.
+              {{ $t("Nombre d'échecs :") }} {{ failedAttempts }}.
             </div>
           </div>
           <div>

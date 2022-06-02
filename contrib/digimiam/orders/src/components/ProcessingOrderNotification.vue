@@ -12,10 +12,10 @@
         </div>
         <div class="media-body d-flex flex-column">
           <div class="mb-1">
-            Production de votre commande en cours.
+            {{ $t('Production de votre commande en cours.') }}
           </div>
           <div class="mb-1">
-            Vous pouvez observer son avancement sur votre droite.
+            {{ $t('Vous pouvez observer son avancement sur votre droite.') }}
           </div>
         </div>
       </div>

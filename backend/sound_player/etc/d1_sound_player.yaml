@@ -73,60 +73,114 @@ sounds:
     volume: 80
   - id: typing
     path: /home/justescape/sounds/typing.wav
-  - id: pepper_1
-    path: /home/justescape/sounds/pepper_1.mp3
+  - id: pepper_1_fr
+    path: /home/justescape/sounds/pepper_1_fr.mp3
     volume: 70
-  - id: pepper_2
-    path: /home/justescape/sounds/pepper_2.mp3
+  - id: pepper_1_en
+    path: /home/justescape/sounds/pepper_1_en.mp3
+    volume: 100
+  - id: pepper_2_fr
+    path: /home/justescape/sounds/pepper_2_fr.mp3
     volume: 70
-  - id: pepper_3
-    path: /home/justescape/sounds/pepper_3.mp3
+  - id: pepper_2_en
+    path: /home/justescape/sounds/pepper_2_en.mp3
+    volume: 100
+  - id: pepper_3_fr
+    path: /home/justescape/sounds/pepper_3_fr.mp3
     volume: 70
-  - id: pepper_4
-    path: /home/justescape/sounds/pepper_4.mp3
+  - id: pepper_3_en
+    path: /home/justescape/sounds/pepper_3_en.mp3
+    volume: 100
+  - id: pepper_4_fr
+    path: /home/justescape/sounds/pepper_4_fr.mp3
     volume: 70
-  - id: pepper_5
-    path: /home/justescape/sounds/pepper_5.mp3
+  - id: pepper_4_en
+    path: /home/justescape/sounds/pepper_4_en.mp3
+    volume: 100
+  - id: pepper_5_fr
+    path: /home/justescape/sounds/pepper_5_fr.mp3
     volume: 70
-  - id: pepper_6
-    path: /home/justescape/sounds/pepper_6.mp3
+  - id: pepper_5_en
+    path: /home/justescape/sounds/pepper_5_en.mp3
+    volume: 100
+  - id: pepper_6_fr
+    path: /home/justescape/sounds/pepper_6_fr.mp3
     volume: 70
-  - id: pepper_7
-    path: /home/justescape/sounds/pepper_7.mp3
+  - id: pepper_6_en
+    path: /home/justescape/sounds/pepper_6_en.mp3
+    volume: 100
+  - id: pepper_7_fr
+    path: /home/justescape/sounds/pepper_7_fr.mp3
     volume: 70
-  - id: pepper_8
-    path: /home/justescape/sounds/pepper_8.mp3
+  - id: pepper_7_en
+    path: /home/justescape/sounds/pepper_7_en.mp3
+    volume: 100
+  - id: pepper_8_fr
+    path: /home/justescape/sounds/pepper_8_fr.mp3
     volume: 70
-  - id: pepper_9
-    path: /home/justescape/sounds/pepper_9.mp3
+  - id: pepper_8_en
+    path: /home/justescape/sounds/pepper_8_en.mp3
+    volume: 100
+  - id: pepper_9_fr
+    path: /home/justescape/sounds/pepper_9_fr.mp3
     volume: 70
-  - id: pepper_10
-    path: /home/justescape/sounds/pepper_10.mp3
+  - id: pepper_9_en
+    path: /home/justescape/sounds/pepper_9_en.mp3
+    volume: 100
+  - id: pepper_10_fr
+    path: /home/justescape/sounds/pepper_10_fr.mp3
     volume: 70
-  - id: pepper_11
-    path: /home/justescape/sounds/pepper_11.mp3
+  - id: pepper_10_en
+    path: /home/justescape/sounds/pepper_10_en.mp3
+    volume: 100
+  - id: pepper_11_fr
+    path: /home/justescape/sounds/pepper_11_fr.mp3
     volume: 70
-  - id: pepper_12
-    path: /home/justescape/sounds/pepper_12.mp3
+  - id: pepper_11_en
+    path: /home/justescape/sounds/pepper_11_en.mp3
+    volume: 100
+  - id: pepper_12_fr
+    path: /home/justescape/sounds/pepper_12_fr.mp3
     volume: 70
-  - id: pepper_13
-    path: /home/justescape/sounds/pepper_13.mp3
+  - id: pepper_12_en
+    path: /home/justescape/sounds/pepper_12_en.mp3
+    volume: 100
+  - id: pepper_13_fr
+    path: /home/justescape/sounds/pepper_13_fr.mp3
     volume: 70
-  - id: pepper_14
-    path: /home/justescape/sounds/pepper_14.mp3
+  - id: pepper_13_en
+    path: /home/justescape/sounds/pepper_13_en.mp3
+    volume: 100
+  - id: pepper_14_fr
+    path: /home/justescape/sounds/pepper_14_fr.mp3
     volume: 70
-  - id: pepper_15
-    path: /home/justescape/sounds/pepper_15.mp3
+  - id: pepper_14_en
+    path: /home/justescape/sounds/pepper_14_en.mp3
+    volume: 100
+  - id: pepper_15_fr
+    path: /home/justescape/sounds/pepper_15_fr.mp3
     volume: 70
-  - id: pepper_16
-    path: /home/justescape/sounds/pepper_16.mp3
+  - id: pepper_15_en
+    path: /home/justescape/sounds/pepper_15_en.mp3
+    volume: 100
+  - id: pepper_16_fr
+    path: /home/justescape/sounds/pepper_16_fr.mp3
     volume: 70
-  - id: pepper_17
-    path: /home/justescape/sounds/pepper_17.mp3
+  - id: pepper_16_en
+    path: /home/justescape/sounds/pepper_16_en.mp3
+    volume: 100
+  - id: pepper_17_fr
+    path: /home/justescape/sounds/pepper_17_fr.mp3
     volume: 70
-  - id: pepper_18
-    path: /home/justescape/sounds/pepper_18.mp3
+  - id: pepper_17_en
+    path: /home/justescape/sounds/pepper_17_en.mp3
+    volume: 100
+  - id: pepper_18_fr
+    path: /home/justescape/sounds/pepper_18_fr.mp3
     volume: 70
+  - id: pepper_18_en
+    path: /home/justescape/sounds/pepper_18_en.mp3
+    volume: 100
   - id: marmitron_1
     path: /home/justescape/sounds/marmitron_1.mp3
     volume: 80
@@ -144,4 +198,7 @@ sounds:
     volume: 70
   - id: marmitron_6
     path: /home/justescape/sounds/marmitron_6.mp3
+    volume: 70
+  - id: marmitron_7
+    path: /home/justescape/sounds/marmitron_7.mp3
     volume: 70

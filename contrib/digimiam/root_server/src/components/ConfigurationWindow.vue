@@ -15,7 +15,7 @@
             <OnOffSwitch :editable="false" :initiallyOn="true" :onText="$t('yes')" :offText="$t('no')"/>
         </div>
         <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
-            <div>Mise à jour en cours</div>
+            <div>{{ $t('Mise à jour en cours') }}</div>
             <OnOffSwitch :editable="false" :initiallyOn="false" :onText="$t('yes')" :offText="$t('no')"/>
         </div>
         <div class="d-flex flex-row mb-4 justify-content-between align-items-center">
@@ -35,11 +35,11 @@
             <OnOffSwitch :editable="!simplifiedUI" :initiallyOn="false" :width="131" :onText="$t('optimal')" :offText="$t('economic')"/>
         </div>
         <div class="d-flex flex-row mb-2 justify-content-between align-items-center">
-            <div>Cuisson</div>
+            <div>{{ $t('Cuisson') }}</div>
             <OnOffSwitch :editable="!simplifiedUI" :initiallyOn="false" :width="95" :onText="'court'" :offText="'rapide'"/>
         </div>
         <div class="d-flex flex-row justify-content-between align-items-center">
-            <div>Cryonie</div>
+            <div>{{ $t('Cryonie') }}</div>
             <OnOffSwitch :editable="!simplifiedUI" :initiallyOn="false" :onText="'on'" :offText="'off'"/>
         </div>
       </div>

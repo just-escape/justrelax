@@ -44,9 +44,9 @@
 <script>
 export default {
   name: 'Bars',
-  data: function() {
-    return {
-      values: [
+  computed: {
+   values() {
+     return [
         {
           x: 6,
           percent: 50,
@@ -96,9 +96,7 @@ export default {
           deltaColor: '#00d1b6',
         },
       ]
-    }
-  },
-  computed: {
+   },
    getLabelX: function() {
       return function(index) {
         var textElement = document.getElementById('label-' + index)

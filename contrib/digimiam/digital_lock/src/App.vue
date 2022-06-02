@@ -72,4 +72,8 @@ export default {
   top: 0;
   z-index: -1;
 }
+
+.text-red {
+  color: rgb(230, 0, 40);
+}
 </style>

@@ -291,9 +291,9 @@ class Scenario(MagicNode):
 
         self._timers = {}
         self.chopsticks_voice_clue_1 = TrackedTimer(
-            self.chopsticks_voice_clue_1_delay, 'chopsticks_voice_clue_1', self, self.play_sound, "pepper_1")
+            self.chopsticks_voice_clue_1_delay, 'chopsticks_voice_clue_1', self, self.play_sound, "pepper_1", True)
         self.chopsticks_voice_clue_2 = TrackedTimer(
-            self.chopsticks_voice_clue_2_delay, 'chopsticks_voice_clue_2', self, self.play_sound, "pepper_2")
+            self.chopsticks_voice_clue_2_delay, 'chopsticks_voice_clue_2', self, self.play_sound, "pepper_2", True)
         self.ventilation_panel_skip = TrackedTimer(
             self.ventilation_panel_skip_delay, 'ventilation_panel_skip_timer', self, self.set_ventilation_panel_skip)
         self.boost_fog_timer = TrackedTimer(
@@ -352,6 +352,7 @@ class Scenario(MagicNode):
         self.wrong_dishes_counter = -3
         self.all_dishes_are_good_but_wrong_price_counter = -1
 
+        self.set_session_data('locale', 'fr')
         self.set_session_data('ventilation_panel_skip', False)
         self.set_session_data('sokoban_first_move_time_0', None)
         self.set_session_data('sokoban_first_move_time_1', None)
@@ -433,7 +434,13 @@ class Scenario(MagicNode):
             },
             'advertiser'
         )
-        self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
+        self.publish_prefix(
+            {
+                'category': 'play',
+                'video_id': f"""ms_pepper_here_you_are_{self.session_data["locale"]}"""
+            },
+            'advertiser'
+        )
 
         self.register_delayed_task(
             self.MS_PEPPER_INTRO_DURATION, self.publish_prefix,
@@ -494,7 +501,13 @@ class Scenario(MagicNode):
         )
 
         if self.persistent_settings['ms_pepper_intro']:
-            self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
+            self.publish_prefix(
+                {
+                    'category': 'play',
+                    'video_id': f"""ms_pepper_here_you_are_{self.session_data["locale"]}""",
+                },
+                'advertiser'
+            )
 
         real_intro_duration = self.MS_PEPPER_INTRO_DURATION if self.persistent_settings['ms_pepper_intro'] else 0
         self.modify_fx_task = self.register_delayed_task(real_intro_duration + 18.285, self.modify_fx)
@@ -685,6 +698,7 @@ class Scenario(MagicNode):
         self.wrong_dishes_counter = -3
         self.all_dishes_are_good_but_wrong_price_counter = -1
 
+        self.set_session_data('locale', 'fr')
         self.set_session_data('ventilation_panel_skip', False)
         self.set_session_data('sokoban_first_move_time_0', None)
         self.set_session_data('sokoban_first_move_time_1', None)
@@ -1504,9 +1518,10 @@ class Scenario(MagicNode):
         print_delta_time = (self.session_time or 0) - self.second_waffle_print_timing
         safe_delay = max(48 - print_delta_time, 0)
 
-        self.register_delayed_task(
-            safe_delay,
-            self.publish_prefix, {'category': 'play_animation', 'animation': 'waffle_end'}, 'waffle_factory')
+        if self.persistent_settings['order_with_niryo_and_printer']:
+            self.register_delayed_task(
+                safe_delay,
+                self.publish_prefix, {'category': 'play_animation', 'animation': 'waffle_end'}, 'waffle_factory')
 
         self.publish_prefix(
             {'category': 'set_volume', 'track_id': 'track7', 'volume': 0, 'duration': 5}, 'music_player')
@@ -1742,11 +1757,23 @@ class Scenario(MagicNode):
 
     @on_event(filter={'widget_id': 'advertiser_play_ms_pepper_here_you_are'})
     def button_advertiser_play_ms_pepper_here_you_are(self):
-        self.publish_prefix({'category': 'play', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
+        self.publish_prefix(
+            {
+                'category': 'play',
+                'video_id': f"""ms_pepper_here_you_are_{self.session_data["locale"]}""",
+            },
+            'advertiser'
+        )
 
     @on_event(filter={'widget_id': 'advertiser_stop_ms_pepper_here_you_are'})
     def button_advertiser_stop_ms_pepper_here_you_are(self):
-        self.publish_prefix({'category': 'stop', 'video_id': 'ms_pepper_here_you_are'}, 'advertiser')
+        self.publish_prefix(
+            {
+                'category': 'stop',
+                'video_id': f"""ms_pepper_here_you_are_{self.session_data["locale"]}""",
+            },
+            'advertiser'
+        )
 
     @on_event(filter={'widget_id': 'advertiser_play_ads_loop'})
     def button_advertiser_play_ads_loop(self):
@@ -2195,7 +2222,9 @@ class Scenario(MagicNode):
 
     @on_event(filter={'category': 'localize'})
     def localize(self, value: str):
-        self.publish_prefix({'category': 'set_locale', 'locale': value}, 'broadcast')
+        if value in ['fr', 'en']:
+            self.set_session_data('locale', value)
+            self.publish_prefix({'category': 'set_locale', 'locale': value}, 'broadcast')
 
     @on_event(filter={'category': 'process_log'})
     def process_log(self, with_sound: bool):
@@ -2372,8 +2401,15 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'set_color_disabled', 'color': color, 'is_disabled': disabled}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'play_sound'})
-    def play_sound(self, sound_id: str):
-        self.publish_prefix({'category': 'play', 'sound_id': sound_id}, 'sound_player')
+    def play_sound(self, sound_id: str, localized: bool = False):
+        suffix = f"_{self.session_data['locale']}" if localized else ""
+        self.publish_prefix(
+            {
+                'category': 'play',
+                'sound_id': f"{sound_id}{suffix}",
+            },
+            'sound_player'
+        )
 
     @on_event(filter={'widget_id': 'check_cylinders_availability'})
     def buttons_cylinders_check_availability(self, id: str):

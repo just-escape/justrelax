@@ -2,23 +2,23 @@
   <div class="glowing-container w-100 mb-4 p-3">
     <div class="d-flex flex-row justify-content-center mb-4" style="font-size: 20px">{{label}}</div>
     <div class="d-flex flex-row justify-content-between mb-2">
-      <div style="font-style: italic">Prix</div>
-      <div>{{price}} NéoFrancs</div>
+      <div style="font-style: italic">{{ $t('Prix') }}</div>
+      <div>{{price}} {{ $t('NéoFrancs') }}</div>
     </div>
     <div class="d-flex flex-row justify-content-between mb-2">
-      <div style="font-style: italic">Marge financière</div>
-      <div>{{margin}} NéoFrancs</div>
+      <div style="font-style: italic">{{ $t('Marge financière') }}</div>
+      <div>{{margin}} {{ $t('NéoFrancs') }}</div>
     </div>
     <div class="d-flex flex-row justify-content-between mb-2">
-      <div style="font-style: italic">Temps de production</div>
-      <div>{{cycles}} cycles</div>
+      <div style="font-style: italic">{{ $t('Temps de production') }}</div>
+      <div>{{cycles}} {{ $t('cycles') }}</div>
     </div>
     <div class="d-flex flex-row justify-content-between mb-2">
-      <div v-if="!simplifiedUI" style="font-style: italic" class="transition-1s">Qualité de production</div>
+      <div v-if="!simplifiedUI" style="font-style: italic" class="transition-1s">{{ $t('Qualité de production') }}</div>
       <div v-if="!simplifiedUI" class="transition-1s"><input ref="qualityInput" type="range" min="0" max="100"></div>
     </div>
     <div class="d-flex justify-content-between align-items-center mb-2 w-100 transition-1s" :class="{'flex-column': simplifiedUI}">
-      <div class="transition-1s" :class="{'mb-2': simplifiedUI}" style="font-style: italic">Disponibilité ingrédients</div>
+      <div class="transition-1s" :class="{'mb-2': simplifiedUI}" style="font-style: italic">{{ $t('Disponibilité ingrédients') }}</div>
       <div class="transition-1s position-relative" :class="{'w-100': simplifiedUI}">
         <div
           :style="{height: simplifiedUI ? '50px' : '32px', width: simplifiedUI ? '100%' : '100px'}"
@@ -32,7 +32,7 @@
             :class="{'w-100': simplifiedUI}"
             class="transition-1s"
           >
-            <span class="align-self-center">VÉRIFIER</span>
+            <span class="align-self-center">{{ $t('VÉRIFIER') }}</span>
           </ButtonBlue>
         </div>
         <BadgeNotification v-for="n in notifications" :key="n.id" :message="n.message" :fadeDelay="n.fadeDelay" :theme="n.theme"/>
