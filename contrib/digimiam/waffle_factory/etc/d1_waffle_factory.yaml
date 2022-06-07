@@ -110,20 +110,20 @@ animations:
       motor: short_one
       direction: forward
       n_pulses: 2369
-      step_delay: 1100
+      step_delay: 1300
       liminary_n_pulses: 200
       liminary_step_delay: 3000
-    - t: 9.5
+    - t: 10
       motor: finisher
       direction: backward
       n_pulses: 2004
       step_delay: 200
-    - t: 10.5
+    - t: 11
       motor: podium
       direction: backward
-      n_pulses: 2304
+      n_pulses: 2324
       step_delay: 200
-    - t: 12
+    - t: 12.5
       motor: finisher
       direction: forward
       n_pulses: 2600

@@ -330,30 +330,30 @@ animations:
     - t: 0
       motor: shoulder
       direction: forward
-      n_pulses: 1580
-      step_delay: 1500
-      liminary_n_pulses: 500
-      liminary_step_delay: 3500
+      n_pulses: 1795
+      step_delay: 1300
+      liminary_n_pulses: 400
+      liminary_step_delay: 3000
     - t: 0
       motor: arm
       direction: backward
-      n_pulses: 1870
+      n_pulses: 1900
       step_delay: 1900
       liminary_n_pulses: 300
       liminary_step_delay: 3500
     - t: 0
       motor: elbow
       direction: backward
-      n_pulses: 3095
+      n_pulses: 3100
       step_delay: 1000
       liminary_n_pulses: 500
       liminary_step_delay: 2800
     - t: 1
       dynamixel: thumb
-      position: 525
+      position: 540
     - t: 2
       dynamixel: wrist
-      position: 985
+      position: 995
     - t: 2.6
       dynamixel: radius
       position: 3100
@@ -503,7 +503,7 @@ animations:
     - t: 33
       motor: shoulder
       direction: backward
-      n_pulses: 1654
+      n_pulses: 1694
       step_delay: 1500
       liminary_n_pulses: 500
       liminary_step_delay: 3500
