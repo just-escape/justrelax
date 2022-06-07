@@ -1894,10 +1894,18 @@ class Scenario(MagicNode):
     def button_emergency_exit_unlock_to_outside(self):
         self.publish_prefix({'category': 'unlock', 'magnet_id': 'to_outside'}, 'emergency_exit')
 
+    @on_event(filter={'widget_id': 'emergency_exit_lock_to_outside'})
+    def button_emergency_exit_lock_to_outside(self):
+        self.publish_prefix({'category': 'lock', 'magnet_id': 'to_outside'}, 'emergency_exit')
+
     @on_event(filter={'widget_id': 'emergency_exit_unlock_stock_to_machine'})
     def button_emergency_exit_unlock_stock_to_machine(self):
         self.publish_prefix({'category': 'play', 'sound_id': 'server_door_open'}, 'sound_player')
         self.publish_prefix({'category': 'unlock', 'magnet_id': 'stock_to_machine'}, 'emergency_exit')
+
+    @on_event(filter={'widget_id': 'emergency_exit_lock_stock_to_machine'})
+    def button_emergency_exit_lock_stock_to_machine(self):
+        self.publish_prefix({'category': 'lock', 'magnet_id': 'stock_to_machine'}, 'emergency_exit')
 
     @on_event(filter={'widget_id': 'emergency_exit_unlock'})
     def button_emergency_exit_unlock(self):
@@ -1906,6 +1914,10 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'emergency_exit_lock'})
     def button_emergency_exit_lock(self):
         self.publish_prefix({'category': 'lock'}, 'emergency_exit')
+
+    @on_event(filter={'widget_id': 'set_secure_floor_all_leds_color'})
+    def button_set_secure_floor_all_leds_color(self, color: str):
+        self.publish_prefix({'category': 'set_all_leds_color', 'color': color}, 'secure_floor')
 
     @on_event(filter={'widget_id': 'stock_lights_high'})
     def button_stock_lights_high(self):
