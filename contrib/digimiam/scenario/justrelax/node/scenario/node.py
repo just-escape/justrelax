@@ -1696,14 +1696,14 @@ class Scenario(MagicNode):
 
         if self.persistent_settings['final_by_refectory']:
             self.register_delayed_task(
-                5, self.publish_prefix, {'category': 'play', 'sound_id': 'marmitron_7'}, 'sound_player')
+                5, self.play_sound, 'marmitron_7', True)
             self.register_delayed_task(
                 8, self.publish_prefix, {'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
             self.register_delayed_task(
                 8, self.publish_prefix, {'category': 'unlock', 'relock': True}, 'front_door_magnet')
         else:
             self.register_delayed_task(
-                2, self.publish_prefix, {'category': 'play', 'sound_id': 'marmitron_7'}, 'sound_player')
+                2, self.play_sound, 'marmitron_7', True)
             self.register_delayed_task(
                 5, self.publish_prefix,
                 {'category': 'unlock', 'magnet_id': 'to_outside', 'relock': True}, 'emergency_exit')

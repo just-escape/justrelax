@@ -181,24 +181,45 @@ sounds:
   - id: pepper_18_en
     path: /home/justescape/sounds/pepper_18_en.mp3
     volume: 100
-  - id: marmitron_1
-    path: /home/justescape/sounds/marmitron_1.mp3
+  - id: marmitron_1_fr
+    path: /home/justescape/sounds/marmitron_1_fr.mp3
     volume: 90
-  - id: marmitron_2
-    path: /home/justescape/sounds/marmitron_2.mp3
-    volume: 100
-  - id: marmitron_3
-    path: /home/justescape/sounds/marmitron_3.mp3
-    volume: 100
-  - id: marmitron_4
-    path: /home/justescape/sounds/marmitron_4.mp3
-    volume: 100
-  - id: marmitron_5
-    path: /home/justescape/sounds/marmitron_5.mp3
+  - id: marmitron_1_en
+    path: /home/justescape/sounds/marmitron_1_en.mp3
     volume: 90
-  - id: marmitron_6
-    path: /home/justescape/sounds/marmitron_6.mp3
+  - id: marmitron_2_fr
+    path: /home/justescape/sounds/marmitron_2_fr.mp3
+    volume: 100
+  - id: marmitron_2_en
+    path: /home/justescape/sounds/marmitron_2_en.mp3
+    volume: 100
+  - id: marmitron_3_fr
+    path: /home/justescape/sounds/marmitron_3_fr.mp3
+    volume: 100
+  - id: marmitron_3_en
+    path: /home/justescape/sounds/marmitron_3_en.mp3
+    volume: 100
+  - id: marmitron_4_fr
+    path: /home/justescape/sounds/marmitron_4_fr.mp3
+    volume: 100
+  - id: marmitron_4_en
+    path: /home/justescape/sounds/marmitron_4_en.mp3
+    volume: 100
+  - id: marmitron_5_fr
+    path: /home/justescape/sounds/marmitron_5_fr.mp3
     volume: 90
-  - id: marmitron_7
-    path: /home/justescape/sounds/marmitron_7.mp3
+  - id: marmitron_5_en
+    path: /home/justescape/sounds/marmitron_5_en.mp3
+    volume: 90
+  - id: marmitron_6_fr
+    path: /home/justescape/sounds/marmitron_6_fr.mp3
+    volume: 90
+  - id: marmitron_6_en
+    path: /home/justescape/sounds/marmitron_6_en.mp3
+    volume: 90
+  - id: marmitron_7_fr
+    path: /home/justescape/sounds/marmitron_7_fr.mp3
+    volume: 90
+  - id: marmitron_7_en
+    path: /home/justescape/sounds/marmitron_7_en.mp3
     volume: 90
