@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2 class="big-noodle text-jaffa text-center">Cameras</h2>
     <div class="container-fluid text-center">
       <!-- TODO: Implement again the focus widget, while not duplicating streams this time ^.^' -->
       <!--<div v-if="focusCamera && isFocusEnbaled" class="row">

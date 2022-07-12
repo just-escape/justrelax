@@ -1,10 +1,8 @@
 <template>
   <div>
-    <div class="d-flex flex-row justify-content-between">
-      <div style="flex: 1 1 0"></div>
-      <h2 style="flex: 1 1 0" class="big-noodle text-jaffa text-center">Actions</h2>
-      <div class="d-flex justify-content-end" style="flex: 1 1 0">
-        <div class="min-width-100px mr-3">
+    <div class="d-flex flex-row justify-content-end">
+      <div class="d-flex justify-content-end">
+        <div class="min-width-100px mr-1 mb-1">
           <b-form-select
             class="form-control"
             v-model="selected"
@@ -26,7 +24,7 @@
         <div
           v-for="card in cards"
           :key="card.id"
-          class="col-12 col-lg-6 col-xl-3 mb-4"
+          class="col-12 col-lg-6 col-xl-3 mb-1 px-1"
         >
           <ActionCard
             :roomId="roomId"

@@ -25,7 +25,7 @@
             <WidgetLogPrompt v-else-if="row.widget === 'log_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
             <WidgetInstructionPrompt v-else-if="row.widget === 'instruction_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
             <WidgetLasers v-else-if="row.widget === 'lasers'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
-            <WidgetWaffleFactory v-else-if="row.widget === 'waffle_factory'" :row="row" :defaultChannel="roomDefaultChannel"/>
+            <WidgetWaffleFactory v-else-if="row.widget === 'waffle_factory'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
             <WidgetSynchronizerLights v-else-if="row.widget === 'synchronizer_lights'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
             <WidgetTextArea v-else-if="row.widget === 'textarea'" :row="row" :defaultChannel="roomDefaultChannel"/>
             <WidgetNodeRegister v-else-if="row.widget === 'node_register'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>

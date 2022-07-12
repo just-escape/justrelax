@@ -1,33 +1,23 @@
 <template>
   <div class="d-flex flex-column flex-grow-1">
-    <header class="h-75px bgc-dark position-sticky top-0">
-      <div class="container-fluid h-100">
-        <div class="d-flex flex-row justify-content-between align-items-center w-100 h-100">
-          <slot name="header-left"></slot>
-          <slot name="header-right">
-            <NotificationButton/>
-          </slot>
-        </div>
-      </div>
+    <header class="bgc-dark">
+      <HeaderRoom class="container-fluid h-100"></HeaderRoom>
     </header>
     <main class="d-flex flex-row h-100">
-      <div class="container-fluid padding-bottom-10rem pt-2">
+      <div class="container-fluid padding-bottom-10rem px-0">
         <slot name="main"></slot>
       </div>
-      <NotificationPanel/>
     </main>
   </div>
 </template>
 
 <script>
-import NotificationButton from '@/components/notification/Button.vue'
-import NotificationPanel from '@/components/notification/Panel.vue'
+import HeaderRoom from "@/components/common/HeaderRoom.vue"
 
 export default {
   name: 'AppContent',
   components: {
-    NotificationButton,
-    NotificationPanel
+    HeaderRoom,
   }
 }
 </script>

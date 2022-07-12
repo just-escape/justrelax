@@ -26,9 +26,15 @@ videos:
     autoplay: no
     loop: yes
     display: 7
-  waffresco_ad_loop:
+  waffresco_ad_loop_fr:
     layer: 1
-    path: /home/pi/videos/waffresco_ad_loop.mp4
+    path: /home/pi/videos/waffresco_ad_loop_fr.mp4
+    autoplay: no
+    loop: yes
+    display: 7
+  waffresco_ad_loop_en:
+    layer: 1
+    path: /home/pi/videos/waffresco_ad_loop_en.mp4
     autoplay: no
     loop: yes
     display: 7
@@ -38,9 +44,14 @@ videos:
     autoplay: no
     loop: yes
     display: 7
-  ms_pepper_here_you_are:
+  ms_pepper_here_you_are_fr:
     layer: 2
     path: /home/pi/videos/ms_pepper_here_you_are_fr.mp4
+    loop: no
+    display: 2
+  ms_pepper_here_you_are_en:
+    layer: 2
+    path: /home/pi/videos/ms_pepper_here_you_are_en.mp4
     loop: no
     display: 2
   ms_pepper_stock:

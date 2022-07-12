@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2 class="big-noodle text-jaffa text-center">Publish event</h2>
     <div class="row">
       <div class="col-12 col-lg-12 col-xl-8">
         <b-form inline>

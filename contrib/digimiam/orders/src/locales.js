@@ -6,13 +6,13 @@ Vue.use(VueI18n)
 const locales = {
   en: {
     nF: 'nF',
-    salade_flamande: 'Flemish salad',
+    salade_flamande: 'Salade flamande',
     salade_flamande_desc: 'Less carbon, more algae.',
     cambraisienne: 'Cambraisienne',
     cambraisienne_desc: 'An entire pizza compacted in the form of a Bêtise de Cambrai.',
     potjevleesch: 'Potjevlesch',
     potjevleesch_desc: 'A classic revisited with delicate proteins.',
-    gaufresque: 'Waffresco',
+    gaufresque: 'Gaufresque',
     gaufresque_desc: '1000 possible faces to collect!',
     terminal: 'Terminal',
     display_instructions: 'Display instructions',

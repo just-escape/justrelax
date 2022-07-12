@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import publishSubscribeService from '@/store/publishSubscribeService.js'
-// import notificationStore from '@/store/notificationStore.js'
 
 Vue.use(Vuex)
 
@@ -11,12 +10,14 @@ export default new Vuex.Store({
       {
         id: 1,
         name: 'Digimiam zone 1',
+        toolbar: 'digimiam',
         default_publication_channel: 'd1.scenario',
         subscription_channels: ['d1.webmin'],
       },
       {
         id: 2,
         name: 'Digimiam zone 2',
+        toolbar: 'digimiam',
         default_publication_channel: 'd2.scenario',
         subscription_channels: ['d2.webmin'],
       },

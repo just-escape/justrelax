@@ -1,7 +1,5 @@
 <template>
   <div id="app" class="d-flex flex-row flex-grow-1">
-    <Nav class="flex-shrink-0"></Nav>
-
     <router-view class="bgc-softdark flex-grow-1"></router-view>
   </div>
 </template>
@@ -9,13 +7,12 @@
 <script>
 import Vue from 'vue'
 import axios from 'axios'
-import Nav from '@/components/nav/Nav.vue'
 import roomStore from '@/store/roomStore.js'
 import 'vue-select/dist/vue-select.css'
 
 export default {
   name: 'App',
-  components: {Nav},
+  components: {},
   created() {
     let storage_url = this.$route.query.storage_url
     if (storage_url) {

@@ -15,7 +15,6 @@
           >
             <i v-if="isInMaintenanceMode" class="position-absolute text-jaffa fa fa-xs fa-fw fa-check" style="bottom: 0; right: 0"></i>
           </div>
-          <!--<LocaleSelector></LocaleSelector>-->
         </div>
       </div>
     </div>
@@ -25,7 +24,6 @@
 <script>
 import Brand from '@/components/nav/Brand.vue'
 import Tabs from '@/components/nav/Tabs.vue'
-// import LocaleSelector from '@/components/nav/LocaleSelector.vue'
 
 import preferenceStore from '@/store/preferenceStore.js'
 
@@ -34,7 +32,6 @@ export default {
   components: {
     Brand,
     Tabs,
-    // LocaleSelector,
   },
   computed: {
     isInMaintenanceMode() {

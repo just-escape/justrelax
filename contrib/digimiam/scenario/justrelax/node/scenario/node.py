@@ -351,6 +351,8 @@ class Scenario(MagicNode):
         self.menu_last_log_hint_time = time.monotonic()
         self.wrong_dishes_counter = -3
         self.all_dishes_are_good_but_wrong_price_counter = -1
+        self.displaying_ads_loop = False
+        self.display_multiple_ads = False
 
         self.set_session_data('locale', 'fr')
         self.set_session_data('ventilation_panel_skip', False)
@@ -424,6 +426,9 @@ class Scenario(MagicNode):
     @on_event(filter={'from_': 'street_display', 'category': 'play'})
     def run_room_from_street_display(self):
         self.run_room()
+
+    def get_locale_suffix(self):
+        return f"_{self.session_data['locale']}"
 
     @on_event(filter={'widget_id': 'play_ms_pepper_here_you_are'})
     def play_ms_pepper_here_you_are(self):
@@ -697,6 +702,7 @@ class Scenario(MagicNode):
 
         self.wrong_dishes_counter = -3
         self.all_dishes_are_good_but_wrong_price_counter = -1
+        self.displaying_ads_loop = False
 
         self.set_session_data('locale', 'fr')
         self.set_session_data('ventilation_panel_skip', False)
@@ -706,6 +712,23 @@ class Scenario(MagicNode):
         self.set_session_data('sokoban_success_time_0', None)
         self.set_session_data('sokoban_success_time_1', None)
         self.set_session_data('sokoban_success_time_2', None)
+
+    @on_event(filter={'category': 'start_tidy'})
+    def start_tidy_room(self):
+        self.reset_room()
+        # ouvrir toutes les portes et refermer les verrous sans bruit
+        # ouvre les trappes de gaufre et les refermer
+        # allumer les lumières imprimante et bras
+        # reset panel de control et ventilation
+        # allumer lumière blanche stock
+        # afficher les écrans pour tester
+
+    @on_event(filter={'category': 'end_tidy'})
+    def end_tidy_room(self):
+        # TODO: detected bad lasers
+        self.publish_prefix({'category': 'table_up'}, 'control_panel')
+        self.publish_prefix({'category': 'play_animation', 'animation': 'reset'}, 'waffle_factory')
+        self.reset_room()
 
     @on_event(filter={'from_': 'webmin', 'category': 'request_session_data_for_webmin'})
     def on_request_session_data(self):
@@ -788,10 +811,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'play', 'sound_id': 'on_manual_mode'}, 'sound_player')
         self.publish_prefix({'category': 'play_overlay_video', 'video_id': 'glitching_less'}, 'orders')
         self.publish_prefix({'category': 'stop_overlay_video'}, 'synchronizer')
-        self.publish_prefix({'category': 'play', 'video_id': 'ads_loop'}, 'advertiser')
-        self.register_delayed_task(  # One second later to avoid seeing rpi's desktop during loading time
-            1, self.publish_prefix, {'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
-        self.publish_prefix({'category': 'stop', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
+        self.play_ads()
 
         self.publish_prefix({'category': 'restaurant_in_manual_mode'}, 'synchronizer')
         self.publish_prefix(
@@ -867,6 +887,29 @@ class Scenario(MagicNode):
         self.register_delayed_task(
             0.2, self.publish_prefix, {'category': 'stop_glitch', 'color': 'orange'}, 'refectory_lights')
 
+    def play_ads(self):
+        self.displaying_ads_loop = True
+        self.register_delayed_task(  # One second later to avoid seeing rpi's desktop during loading time
+            1, self.publish_prefix, {'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
+
+        if self.display_multiple_ads:
+            self.publish_prefix(
+                {
+                    'category': 'play',
+                    'video_id': 'ads_loop'
+                },
+                'advertiser'
+            )
+
+        else:
+            self.publish_prefix(
+                {
+                    'category': 'play',
+                    'video_id': f'waffresco_ad_loop{self.get_locale_suffix()}'
+                },
+                'advertiser'
+            )
+
     @on_event(filter={'from_': 'synchronizer', 'category': 'set_menu_entry'})
     def synchronizer_event_set_menu_entry(self, dish: str, index: int, on_manual_mode: bool):
         if not on_manual_mode:
@@ -934,7 +977,12 @@ class Scenario(MagicNode):
         self.register_delayed_task(8, self.publish_prefix, {'category': 'stop_overlay_video'}, 'orders')
 
         self.register_delayed_task(
-            6, self.publish_prefix, {'category': 'play_overlay_video', 'video_id': 'ads_loop'}, 'synchronizer')
+            6, self.publish_prefix, {
+                'category': 'play_overlay_video',
+                'video_id': 'ads_loop'
+            },
+            'synchronizer'
+        )
 
     @on_event(filter={'from_': 'holographic_menu', 'category': 'play_slide'})
     def holographic_menu_event_play_slide(self, slide: int):
@@ -1577,9 +1625,20 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'digital_lock')
         self.publish_prefix({'category': 'off', 'color': 'all'}, 'refectory_lights')
         self.register_delayed_task(
-            1, self.publish_prefix, {'category': 'stop', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
+            1,
+            self.publish_prefix, {'category': 'stop', 'video_id': 'ads_loop'},
+            'advertiser'
+        )
         self.register_delayed_task(
-            1, self.publish_prefix, {'category': 'stop', 'video_id': 'ads_loop'}, 'advertiser')
+            1,
+            self.publish_prefix, {'category': 'stop', 'video_id': 'waffresco_ad_loop_fr'},
+            'advertiser'
+        )
+        self.register_delayed_task(
+            1,
+            self.publish_prefix, {'category': 'stop', 'video_id': 'waffresco_ad_loop_en'},
+            'advertiser'
+        )
         self.register_delayed_task(
             1, self.publish_prefix, {'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
         self.publish_prefix({'category': 'play', 'video_id': 'blackscreen'}, 'advertiser')
@@ -1713,7 +1772,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'on', 'color': 'all_but_white'}, 'refectory_lights')
         self.register_delayed_task(
             1, self.publish_prefix, {'category': 'stop', 'video_id': 'blackscreen'}, 'advertiser')
-        self.publish_prefix({'category': 'play', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
+        self.play_ads()
         self.publish_prefix({'category': 'light_on', 'led_id': 'niryo'}, 'waffle_factory')
         self.publish_prefix({'category': 'light_on', 'led_id': 'printer'}, 'waffle_factory')
         self.publish_prefix({'category': 'display_black_screen', 'display': False}, 'synchronizer')
@@ -1777,11 +1836,31 @@ class Scenario(MagicNode):
 
     @on_event(filter={'widget_id': 'advertiser_play_ads_loop'})
     def button_advertiser_play_ads_loop(self):
-        self.publish_prefix({'category': 'play', 'video_id': 'ads_loop'}, 'advertiser')
+        self.play_ads()
 
     @on_event(filter={'widget_id': 'advertiser_stop_ads_loop'})
     def button_advertiser_stop_ads_loop(self):
-        self.publish_prefix({'category': 'stop', 'video_id': 'ads_loop'}, 'advertiser')
+        self.publish_prefix(
+            {
+                'category': 'stop',
+                'video_id': f'ads_loop'
+            },
+            'advertiser'
+        )
+        self.publish_prefix(
+            {
+                'category': 'stop',
+                'video_id': f'waffresco_ad_loop_fr'
+            },
+            'advertiser'
+        )
+        self.publish_prefix(
+            {
+                'category': 'stop',
+                'video_id': f'waffresco_ad_loop_en'
+            },
+            'advertiser'
+        )
 
     @on_event(filter={'widget_id': 'advertiser_play_ads_glitch'})
     def button_advertiser_play_ads_glitch(self):
@@ -1790,14 +1869,6 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'advertiser_stop_ads_glitch'})
     def button_advertiser_stop_ads_glitch(self):
         self.publish_prefix({'category': 'stop', 'video_id': 'ads_glitch'}, 'advertiser')
-
-    @on_event(filter={'widget_id': 'advertiser_play_waffresco_ad_loop'})
-    def button_advertiser_play_waffresco_ad_loop(self):
-        self.publish_prefix({'category': 'play', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
-
-    @on_event(filter={'widget_id': 'advertiser_stop_waffresco_ad_loop'})
-    def button_advertiser_stop_waffresco_ad_loop(self):
-        self.publish_prefix({'category': 'stop', 'video_id': 'waffresco_ad_loop'}, 'advertiser')
 
     @on_event(filter={'widget_id': 'advertiser_play_street_idle'})
     def button_advertiser_play_street_idle(self):
@@ -1840,7 +1911,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'reset'}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'synchronizer_overlay_video_glitch'})
-    def button_synchronizer_overlay_video_gltich(self):
+    def button_synchronizer_overlay_video_glitch(self):
         self.publish_prefix({'category': 'play_overlay_video', 'video_id': 'glitching'}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'synchronizer_overlay_video_ads'})
@@ -2235,8 +2306,23 @@ class Scenario(MagicNode):
     @on_event(filter={'category': 'localize'})
     def localize(self, value: str):
         if value in ['fr', 'en']:
+            if self.displaying_ads_loop:
+                if not self.display_multiple_ads:
+                    self.register_delayed_task(
+                        1,
+                        self.publish_prefix,
+                        {
+                            'category': 'stop',
+                            'video_id': f'waffresco_ad_loop{self.get_locale_suffix()}'
+                        },
+                        'advertiser'
+                    )
+
             self.set_session_data('locale', value)
             self.publish_prefix({'category': 'set_locale', 'locale': value}, 'broadcast')
+
+            if self.displaying_ads_loop:
+                self.play_ads()
 
     @on_event(filter={'category': 'process_log'})
     def process_log(self, with_sound: bool):
@@ -2300,20 +2386,6 @@ class Scenario(MagicNode):
     ):
         self.publish_prefix({
             'category': 'motor_forward',
-            'motor_id': motor_id,
-            'n_pulses': n_pulses,
-            'step_delay': step_delay,
-            'liminary_n_pulses': liminary_n_pulses,
-            'liminary_step_delay': liminary_step_delay,
-        }, motor_channel)
-
-    @on_event(filter={'widget_type': 'waffle_factory', 'action': 'motor_homing'})
-    def waffle_factory_motor_homing(
-            self, motor_channel: str, motor_id: str,
-            n_pulses: int, step_delay: int, liminary_n_pulses: int, liminary_step_delay: int,
-    ):
-        self.publish_prefix({
-            'category': 'motor_homing',
             'motor_id': motor_id,
             'n_pulses': n_pulses,
             'step_delay': step_delay,
@@ -2414,7 +2486,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'widget_id': 'play_sound'})
     def play_sound(self, sound_id: str, localized: bool = False):
-        suffix = f"_{self.session_data['locale']}" if localized else ""
+        suffix = self.get_locale_suffix() if localized else ""
         self.publish_prefix(
             {
                 'category': 'play',
@@ -2430,6 +2502,19 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_type': 'camera', 'action': 'restart'})
     def buttons_camera_restart(self, camera_id: str):
         self.publish_prefix({'category': 'shell', 'command': 'sudo systemctl restart gstreamer.service'}, camera_id)
+
+    @on_event(filter={'display_multiple_ads': 'display_multiple_ads'})
+    def button_set_display_multiple_ads(self, value: bool):
+        self.display_multiple_ads = value
+        # TODO: add interaction with control on the interface
+
+    @on_event(filter={'action': 'ack_motors_error'})
+    def waffle_factory_ack_motors_error(self):
+        self.publish_prefix({'category': 'ack_motors_error'}, 'waffle_factory')
+
+    @on_event(filter={'action': 'run_homing_and_purge'})
+    def waffle_factory_run_homing_and_purge(self):
+        self.publish_prefix({'category': 'printer_homing', 'purge': True}, 'waffle_factory')
 
 
 class ScenarioD1(Scenario):
