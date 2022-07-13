@@ -2512,6 +2512,10 @@ class Scenario(MagicNode):
     def waffle_factory_ack_motors_error(self):
         self.publish_prefix({'category': 'ack_motors_error'}, 'waffle_factory')
 
+    @on_event(filter={'action': 'ack_niryo_motors_error'})
+    def waffle_factory_ack_niryo_motors_error(self):
+        self.publish_prefix({'category': 'ack_motors_error'}, 'niryo')
+
     @on_event(filter={'action': 'run_homing_and_purge'})
     def waffle_factory_run_homing_and_purge(self):
         self.publish_prefix({'category': 'printer_homing', 'purge': True}, 'waffle_factory')

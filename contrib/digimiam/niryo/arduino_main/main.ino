@@ -8,9 +8,9 @@
 #define PROTOCOL_FROM "fr"
 #define PROTOCOL_TO "to"
 
-#define PROTOCOL_HOMING "h"
 #define PROTOCOL_FORWARD "f"
 #define PROTOCOL_BACKWARD "b"
+#define PROTOCOL_GET_SWITCHES_INFO "gsi"
 #define PROTOCOL_STEP_DELAY "sd"
 #define PROTOCOL_MOTOR_INDEX "i"
 #define PROTOCOL_N_PULSES "n"
@@ -18,10 +18,13 @@
 #define PROTOCOL_LIMINARY_N_PULSES "ln"
 #define PROTOCOL_STOP "stop"
 
-#define PROTOCOL_NO_HOMING "nh"
-#define PROTOCOL_HOMING_COMPLETE "hc"
-#define PROTOCOL_HOMING_REMAINING_STEPS "hrs"
-#define PROTOCOL_HOMING_FAILED "hf"
+#define PROTOCOL_LIMIT_REACHED "lrc"
+#define PROTOCOL_LIMIT_RELEASED "lrl"
+#define PROTOCOL_LIMIT_REMAINING_STEPS "lrs"
+#define PROTOCOL_MOVE_COMPLETED "mc"
+#define PROTOCOL_LIMIT_DIRECTION "ld"
+#define PROTOCOL_LIMIT_DIRECTION_FORWARD "f"
+#define PROTOCOL_LIMIT_DIRECTION_BACKWARD "b"
 
 #define PROTOCOL_ELECTROMAGNET "e"
 #define PROTOCOL_MAGNETIZE "m"
@@ -48,10 +51,11 @@ int motorLiminaryNPulses[N_MOTORS] = {0, 0, 0};
 int motorAccelerationNPulses[N_MOTORS] = {0, 0, 0};
 int motorNPulses[N_MOTORS] = {0, 0, 0};
 int motorDecelerationNPulses[N_MOTORS] = {0, 0, 0};
-bool isMotorInHomingMode[N_MOTORS] = {false, false, false};
-#define NO_LIMIT_SWITCH_PIN -1
-int motorLimitSwitchPin[N_MOTORS] = {24, 26, 28};
-bool motorIsHomingDirectionForward[N_MOTORS] = {false, true, true};
+#define NO_PIN -1
+int motorForwardLimitSwitchPin[N_MOTORS] = {NO_PIN, 26, 28};
+bool motorForwardLimitSwitchLastRead[N_MOTORS] = {false, false, false};
+int motorBackwardLimitSwitchPin[N_MOTORS] = {24, NO_PIN, NO_PIN};
+bool motorBackwardLimitSwitchLastRead[N_MOTORS] = {false, false, false};
 
 #define ELECTROMAGNET_PIN 52
 
@@ -63,12 +67,41 @@ void setMotorBackward(int motorIndex) {
   digitalWrite(motorDirPins[motorIndex], LOW);
 }
 
-void sendHomingFailedEvent(int motorIndex) {
-    StaticJsonDocument<JSON_OBJECT_SIZE(2)> homingFailedEvent;
-    homingFailedEvent[PROTOCOL_CATEGORY] = PROTOCOL_HOMING_FAILED;
-    homingFailedEvent[PROTOCOL_MOTOR_INDEX] = motorIndex;
-    serializeJson(homingFailedEvent, Serial);
+void sendMoveCompletedEvent(int motorIndex) {
+    StaticJsonDocument<JSON_OBJECT_SIZE(2)> moveCompletedEvent;
+    moveCompletedEvent[PROTOCOL_CATEGORY] = PROTOCOL_MOVE_COMPLETED;
+    moveCompletedEvent[PROTOCOL_MOTOR_INDEX] = motorIndex;
+    serializeJson(moveCompletedEvent, Serial);
     Serial.println();
+}
+
+void sendLimitReachedEvent(int motorIndex, String direction, int remainingSteps) {
+    StaticJsonDocument<JSON_OBJECT_SIZE(5)> limitReachedEvent;
+    limitReachedEvent[PROTOCOL_CATEGORY] = PROTOCOL_LIMIT_REACHED;
+    limitReachedEvent[PROTOCOL_MOTOR_INDEX] = motorIndex;
+    limitReachedEvent[PROTOCOL_LIMIT_DIRECTION] = direction;
+    limitReachedEvent[PROTOCOL_LIMIT_REMAINING_STEPS] = remainingSteps;
+    serializeJson(limitReachedEvent, Serial);
+    Serial.println();
+}
+
+void sendLimitReleasedEvent(int motorIndex, String direction, int remainingSteps) {
+    StaticJsonDocument<JSON_OBJECT_SIZE(5)> limitReleasedEvent;
+    limitReleasedEvent[PROTOCOL_CATEGORY] = PROTOCOL_LIMIT_RELEASED;
+    limitReleasedEvent[PROTOCOL_MOTOR_INDEX] = motorIndex;
+    limitReleasedEvent[PROTOCOL_LIMIT_DIRECTION] = direction;
+    limitReleasedEvent[PROTOCOL_LIMIT_REMAINING_STEPS] = remainingSteps;
+    serializeJson(limitReleasedEvent, Serial);
+    Serial.println();
+}
+
+bool isLimitSwitchPressed(int pin) {
+    if (pin == NO_PIN) {
+        return false;
+    }
+
+    // Limit switches are INPUT_PULLUP pins, so 0 means the switch is triggered
+    return !digitalRead(pin);
 }
 
 void setup() {
@@ -80,9 +113,14 @@ void setup() {
   digitalWrite(ELECTROMAGNET_PIN, LOW);
 
   for (int i = 0 ; i < N_MOTORS ; i++) {
-    if (motorLimitSwitchPin[i] != NO_LIMIT_SWITCH_PIN) {
-      pinMode(motorLimitSwitchPin[i], INPUT_PULLUP);
-    }
+        if (motorForwardLimitSwitchPin[i] != NO_PIN) {
+          pinMode(motorForwardLimitSwitchPin[i], INPUT_PULLUP);
+          motorForwardLimitSwitchLastRead[i] = isLimitSwitchPressed(motorForwardLimitSwitchPin[i]);
+        }
+        if (motorBackwardLimitSwitchPin[i] != NO_PIN) {
+          pinMode(motorBackwardLimitSwitchPin[i], INPUT_PULLUP);
+          motorBackwardLimitSwitchLastRead[i] = isLimitSwitchPressed(motorBackwardLimitSwitchPin[i]);
+        }
 
     pinMode(motorStepPins[i], OUTPUT);
     digitalWrite(motorStepPins[i], LOW);
@@ -122,29 +160,42 @@ void pulseMotors() {
     currentMicros = micros();
 
     for (int i = 0 ; i < N_MOTORS ; i++) {
-        if (motorIsHomingDirectionForward[i] == digitalRead(motorDirPins[i])) {
-          // This is an INPUT_PULLUP pin, so 0 means the switch is triggered
-          if (!digitalRead(motorLimitSwitchPin[i])) {
-            if (isMotorInHomingMode[i]) {
-              StaticJsonDocument<JSON_OBJECT_SIZE(3)> homingCompleteEvent;
-              homingCompleteEvent[PROTOCOL_CATEGORY] = PROTOCOL_HOMING_COMPLETE;
-              homingCompleteEvent[PROTOCOL_MOTOR_INDEX] = i;
-              homingCompleteEvent[PROTOCOL_HOMING_REMAINING_STEPS] = motorNPulses[i];
-              serializeJson(homingCompleteEvent, Serial);
-              Serial.println();
-              isMotorInHomingMode[i] = false;
-            }
-            motorNPulses[i] = 0;
-            motorAccelerationNPulses[i] = 0;
-            motorDecelerationNPulses[i] = 0;
-          }
-        }
-
-        if (
+        bool isMotorSupposedToMove = (
             (motorLiminaryNPulses[i] > 0 && motorAccelerationNPulses[i] > 0) ||
             (motorNPulses[i] > 0) ||
             (motorLiminaryNPulses[i] > 0 && motorDecelerationNPulses[i] > 0)
-        ) {
+        );
+        bool motorForwardLimitSwitchRead = isLimitSwitchPressed(motorForwardLimitSwitchPin[i]);
+        bool motorBackwardLimitSwitchRead = isLimitSwitchPressed(motorBackwardLimitSwitchPin[i]);
+        bool isDirectionForward = digitalRead(motorDirPins[i]);
+
+        bool hasForwardLimitSwitchJustBeenTriggered = motorForwardLimitSwitchRead && !motorForwardLimitSwitchLastRead[i];
+        if (hasForwardLimitSwitchJustBeenTriggered || (isMotorSupposedToMove && isDirectionForward && motorForwardLimitSwitchRead)) {
+            sendLimitReachedEvent(i, PROTOCOL_LIMIT_DIRECTION_FORWARD, motorAccelerationNPulses[i] + motorNPulses[i] + motorDecelerationNPulses[i]);
+        }
+
+        bool hasBackwardLimitSwitchJustBeenTriggered = motorBackwardLimitSwitchRead && !motorBackwardLimitSwitchLastRead[i];
+        if (hasBackwardLimitSwitchJustBeenTriggered || (isMotorSupposedToMove && !isDirectionForward && motorBackwardLimitSwitchRead)) {
+            sendLimitReachedEvent(i, PROTOCOL_LIMIT_DIRECTION_BACKWARD, motorAccelerationNPulses[i] + motorNPulses[i] + motorDecelerationNPulses[i]);
+        }
+
+        if ((motorForwardLimitSwitchRead && isDirectionForward) || (motorBackwardLimitSwitchRead && !isDirectionForward)) {
+            motorNPulses[i] = 0;
+            motorAccelerationNPulses[i] = 0;
+            motorDecelerationNPulses[i] = 0;
+        }
+
+        bool hasForwardLimitSwitchJustBeenReleased = !motorForwardLimitSwitchRead && motorForwardLimitSwitchLastRead[i];
+        if (hasForwardLimitSwitchJustBeenReleased) {
+            sendLimitReleasedEvent(i, PROTOCOL_LIMIT_DIRECTION_FORWARD, motorAccelerationNPulses[i] + motorNPulses[i] + motorDecelerationNPulses[i]);
+        }
+
+        bool hasBackwardLimitSwitchJustBeenReleased = !motorBackwardLimitSwitchRead && motorBackwardLimitSwitchLastRead[i];
+        if (hasBackwardLimitSwitchJustBeenReleased) {
+            sendLimitReleasedEvent(i, PROTOCOL_LIMIT_DIRECTION_BACKWARD, motorAccelerationNPulses[i] + motorNPulses[i] + motorDecelerationNPulses[i]);
+        }
+
+        if (isMotorSupposedToMove) {
             if (digitalRead(motorStepPins[i])) {
                 if (currentMicros - motorPreviousMicros[i] >= 200) {
                     digitalWrite(motorStepPins[i], LOW);
@@ -162,19 +213,15 @@ void pulseMotors() {
                       }
                     } else if (motorNPulses[i] > 0) {
                       motorNPulses[i]--;
-                      if (motorNPulses[i] == 0 && motorLiminaryNPulses[i] == 0 && isMotorInHomingMode[i]) {
-                        sendHomingFailedEvent(i);
-                        isMotorInHomingMode[i] = false;
+                      if (motorNPulses[i] == 0 && motorLiminaryNPulses[i] == 0) {
+                        sendMoveCompletedEvent(i);
                       }
                     } else {
                       // motorLiminaryNPulses[i] > 0 && motorDecelerationNPulses[i] > 0
                       // This is guaranteed by the big if above
                       motorDecelerationNPulses[i]--;
                       if (motorDecelerationNPulses[i] == 0) {
-                        if (isMotorInHomingMode[i]) {
-                          sendHomingFailedEvent(i);
-                          isMotorInHomingMode[i] = false;
-                        }
+                        sendMoveCompletedEvent(i);
                       } else {
                         motorCurrentStepDelays[i] =
                           (motorLiminaryStepDelays[i] - motorStepDelays[i]) *
@@ -190,6 +237,9 @@ void pulseMotors() {
                 }
             }
         }
+
+        motorForwardLimitSwitchLastRead[i] = motorForwardLimitSwitchRead;
+        motorBackwardLimitSwitchLastRead[i] = motorBackwardLimitSwitchRead;
     }
 }
 
@@ -215,41 +265,7 @@ void onEvent() {
     } else {
       String category = receivedDocument[PROTOCOL_CATEGORY];
 
-      if (category == PROTOCOL_HOMING) {
-        int motorIndex = receivedDocument[PROTOCOL_MOTOR_INDEX];
-        if (motorLimitSwitchPin[motorIndex] == NO_LIMIT_SWITCH_PIN) {
-          StaticJsonDocument<JSON_OBJECT_SIZE(2)> noHomingEvent;
-          noHomingEvent[PROTOCOL_CATEGORY] = PROTOCOL_NO_HOMING;
-          noHomingEvent[PROTOCOL_MOTOR_INDEX] = motorIndex;
-          serializeJson(noHomingEvent, Serial);
-          Serial.println();
-          return;
-        }
-        int nPulses = receivedDocument[PROTOCOL_N_PULSES];
-        unsigned long stepDelay = receivedDocument[PROTOCOL_STEP_DELAY];
-        int liminaryNPulses = receivedDocument[PROTOCOL_LIMINARY_N_PULSES];
-        unsigned long liminaryStepDelay = receivedDocument[PROTOCOL_LIMINARY_STEP_DELAY];
-        if (!checkMotorMoveValues(nPulses, stepDelay, liminaryNPulses, liminaryStepDelay)) {
-          return;
-        }
-        motorNPulses[motorIndex] = nPulses;
-        motorStepDelays[motorIndex] = stepDelay;
-        motorLiminaryNPulses[motorIndex] = liminaryNPulses;
-        motorAccelerationNPulses[motorIndex] = liminaryNPulses;
-        motorDecelerationNPulses[motorIndex] = liminaryNPulses;
-        motorLiminaryStepDelays[motorIndex] = liminaryStepDelay;
-        if (motorLiminaryNPulses[motorIndex]) {
-          motorCurrentStepDelays[motorIndex] = motorLiminaryStepDelays[motorIndex];
-        } else {
-          motorCurrentStepDelays[motorIndex] = motorStepDelays[motorIndex];
-        }
-        if (motorIsHomingDirectionForward[motorIndex]) {
-          setMotorForward(motorIndex);
-        } else {
-          setMotorBackward(motorIndex);
-        }
-        isMotorInHomingMode[motorIndex] = true;
-      } else if (category == PROTOCOL_FORWARD) {
+      if (category == PROTOCOL_FORWARD) {
         int motorIndex = receivedDocument[PROTOCOL_MOTOR_INDEX];
         int nPulses = receivedDocument[PROTOCOL_N_PULSES];
         unsigned long stepDelay = receivedDocument[PROTOCOL_STEP_DELAY];
@@ -270,7 +286,6 @@ void onEvent() {
           motorCurrentStepDelays[motorIndex] = motorStepDelays[motorIndex];
         }
         setMotorForward(motorIndex);
-        isMotorInHomingMode[motorIndex] = false;
       } else if (category == PROTOCOL_BACKWARD) {
         int motorIndex = receivedDocument[PROTOCOL_MOTOR_INDEX];
         int nPulses = receivedDocument[PROTOCOL_N_PULSES];
@@ -292,7 +307,19 @@ void onEvent() {
           motorCurrentStepDelays[motorIndex] = motorStepDelays[motorIndex];
         }
         setMotorBackward(motorIndex);
-        isMotorInHomingMode[motorIndex] = false;
+      } else if (category == PROTOCOL_GET_SWITCHES_INFO) {
+        StaticJsonDocument<JSON_OBJECT_SIZE(3 + 2 * N_MOTORS)> getSwitchesInfoEvent;
+        getSwitchesInfoEvent[PROTOCOL_CATEGORY] = PROTOCOL_GET_SWITCHES_INFO;
+        JsonArray forwardSwitches = getSwitchesInfoEvent.createNestedArray(PROTOCOL_LIMIT_DIRECTION_FORWARD);
+        JsonArray backwardSwitches = getSwitchesInfoEvent.createNestedArray(PROTOCOL_LIMIT_DIRECTION_BACKWARD);
+
+        for (int i = 0 ; i < N_MOTORS ; i++) {
+          forwardSwitches.add(isLimitSwitchPressed(motorForwardLimitSwitchPin[i]));
+          backwardSwitches.add(isLimitSwitchPressed(motorBackwardLimitSwitchPin[i]));
+        }
+
+        serializeJson(getSwitchesInfoEvent, Serial);
+        Serial.println();
       } else if (category == PROTOCOL_STOP) {
         int motorIndex = receivedDocument[PROTOCOL_MOTOR_INDEX];
         motorNPulses[motorIndex] = 0;

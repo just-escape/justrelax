@@ -13,10 +13,16 @@ motor_default_step_delay: 3000
 motors:
   shoulder:
     index: 0
+    forward_limit_switch: no
+    backward_limit_switch: yes
   arm:
     index: 1
+    forward_limit_switch: yes
+    backward_limit_switch: no
   elbow:
     index: 2
+    forward_limit_switch: yes
+    backward_limit_switch: no
 
 dynamixels:
   radius:
@@ -33,170 +39,30 @@ dynamixels:
     velocity: 50
 
 animations:
-  anim1:
-    - t: 0
-      motor: shoulder
-      direction: forward
-      n_pulses: 1455
-      step_delay: 1500
-      liminary_n_pulses: 500
-      liminary_step_delay: 3500
-    - t: 0
-      motor: arm
-      direction: backward
-      n_pulses: 1905
-      step_delay: 1940
-      liminary_n_pulses: 300
-      liminary_step_delay: 3500
-    - t: 0
+  test1:
+    - t: 0.2
       motor: elbow
       direction: backward
-      n_pulses: 2995
-      step_delay: 1000
-      liminary_n_pulses: 500
-      liminary_step_delay: 2800
-    - t: 1
-      dynamixel: thumb
-      position: 640
-    - t: 2
-      dynamixel: wrist
-      position: 10
-    - t: 2.6
-      dynamixel: radius
-      position: 600
-    - t: 5.9
-      electromagnet: on
-  anim2:
-    - t: 0
-      motor: arm
-      direction: forward
-      n_pulses: 500
-      step_delay: 3000
-      liminary_n_pulses: 100
-      liminary_step_delay: 5000
-    - t: 0.1
-      dynamixel: thumb
-      position: 650
-    - t: 0.4
-      motor: elbow
-      direction: forward
-      n_pulses: 800
-      step_delay: 2500
-      liminary_n_pulses: 200
-      liminary_step_delay: 5000
-    - t: 1.6
-      dynamixel: thumb
-      position: 700
-  anim3:
-    - t: 0
-      motor: shoulder
-      direction: backward
-      n_pulses: 1540
-      step_delay: 1700
-      liminary_n_pulses: 200
-      liminary_step_delay: 3500
-    - t: 0
-      motor: elbow
-      direction: forward
-      n_pulses: 1600
+      n_pulses: 200
       step_delay: 2000
-      liminary_n_pulses: 200
-      liminary_step_delay: 3500
-    - t: 0.7
-      dynamixel: thumb
-      position: 880
-    - t: 2
-      dynamixel: wrist
-      position: 10
-    - t: 4.8
-      motor: arm
-      direction: backward
-      n_pulses: 250
-      step_delay: 3000
-      liminary_n_pulses: 100
-      liminary_step_delay: 6000
-    - t: 5
-      dynamixel: thumb
-      position: 980
-    - t: 7.5
-      motor: arm
-      direction: forward
-      n_pulses: 20
-      step_delay: 3000
-      liminary_n_pulses: 20
-      liminary_step_delay: 6000
-    - t: 8
-      motor: arm
-      direction: backward
-      n_pulses: 20
-      step_delay: 3000
-      liminary_n_pulses: 20
-      liminary_step_delay: 6000
-    - t: 8.5
-      motor: arm
-      direction: forward
-      n_pulses: 20
-      step_delay: 3000
-      liminary_n_pulses: 20
-      liminary_step_delay: 6000
-    - t: 9
-      motor: arm
-      direction: backward
-      n_pulses: 20
-      step_delay: 3000
-      liminary_n_pulses: 20
-      liminary_step_delay: 6000
-  anim4:
-    - t: 0
-      motor: arm
-      direction: forward
-      n_pulses: 250
-      step_delay: 3000
-      liminary_n_pulses: 100
-      liminary_step_delay: 6000
-    - t: 0.5
-      dynamixel: thumb
-      position: 880
-    - t: 2
-      motor: shoulder
-      direction: forward
-      n_pulses: 1540
-      step_delay: 1700
-      liminary_n_pulses: 200
-      liminary_step_delay: 3500
-    - t: 2
+      callbacks:
+        limit_released:
+          timeout: 0.5
+          max_delta_steps: 80
+        move_completed:
+          timeout: 10  # not tuned
+          trigger: test2
+  test2:
+    - t: 0.2
       motor: elbow
-      direction: backward
-      n_pulses: 1600
+      direction: forward
+      n_pulses: 200
       step_delay: 2000
-      liminary_n_pulses: 200
-      liminary_step_delay: 3500
-    - t: 3
-      dynamixel: thumb
-      position: 700
-  anim5:
-    - t: 0
-      motor: elbow
-      direction: backward
-      n_pulses: 795
-      step_delay: 2500
-      liminary_n_pulses: 200
-      liminary_step_delay: 5000
-    - t: 1.5
-      dynamixel: thumb
-      position: 680
-    - t: 1.3
-      motor: arm
-      direction: backward
-      n_pulses: 495
-      step_delay: 3000
-      liminary_n_pulses: 100
-      liminary_step_delay: 6000
-    - t: 2.8
-      dynamixel: thumb
-      position: 640
-    - t: 3.5
-      electromagnet: off
+      callbacks:
+        limit_reached:
+          timeout: 2
+          trigger: test1
+
   bugged_animation:
     - t: 0
       motor: shoulder
@@ -547,3 +413,173 @@ animations:
     - t: 1.4
       dynamixel: radius
       position: 2600
+
+  anim1:
+    - t: 0
+      motor: shoulder
+      direction: forward
+      n_pulses: 1455
+      step_delay: 1500
+      liminary_n_pulses: 500
+      liminary_step_delay: 3500
+    - t: 0
+      motor: arm
+      direction: backward
+      n_pulses: 1905
+      step_delay: 1940
+      liminary_n_pulses: 300
+      liminary_step_delay: 3500
+    - t: 0
+      motor: elbow
+      direction: backward
+      n_pulses: 2995
+      step_delay: 1000
+      liminary_n_pulses: 500
+      liminary_step_delay: 2800
+    - t: 1
+      dynamixel: thumb
+      position: 640
+    - t: 2
+      dynamixel: wrist
+      position: 10
+    - t: 2.6
+      dynamixel: radius
+      position: 600
+    - t: 5.9
+      electromagnet: on
+
+##################
+# NOT MAINTAINED
+##################
+#
+#  anim2:
+#    - t: 0
+#      motor: arm
+#      direction: forward
+#      n_pulses: 500
+#      step_delay: 3000
+#      liminary_n_pulses: 100
+#      liminary_step_delay: 5000
+#    - t: 0.1
+#      dynamixel: thumb
+#      position: 650
+#    - t: 0.4
+#      motor: elbow
+#      direction: forward
+#      n_pulses: 800
+#      step_delay: 2500
+#      liminary_n_pulses: 200
+#      liminary_step_delay: 5000
+#    - t: 1.6
+#      dynamixel: thumb
+#      position: 700
+#  anim3:
+#    - t: 0
+#      motor: shoulder
+#      direction: backward
+#      n_pulses: 1540
+#      step_delay: 1700
+#      liminary_n_pulses: 200
+#      liminary_step_delay: 3500
+#    - t: 0
+#      motor: elbow
+#      direction: forward
+#      n_pulses: 1600
+#      step_delay: 2000
+#      liminary_n_pulses: 200
+#      liminary_step_delay: 3500
+#    - t: 0.7
+#      dynamixel: thumb
+#      position: 880
+#    - t: 2
+#      dynamixel: wrist
+#      position: 10
+#    - t: 4.8
+#      motor: arm
+#      direction: backward
+#      n_pulses: 250
+#      step_delay: 3000
+#      liminary_n_pulses: 100
+#      liminary_step_delay: 6000
+#    - t: 5
+#      dynamixel: thumb
+#      position: 980
+#    - t: 7.5
+#      motor: arm
+#      direction: forward
+#      n_pulses: 20
+#      step_delay: 3000
+#      liminary_n_pulses: 20
+#      liminary_step_delay: 6000
+#    - t: 8
+#      motor: arm
+#      direction: backward
+#      n_pulses: 20
+#      step_delay: 3000
+#      liminary_n_pulses: 20
+#      liminary_step_delay: 6000
+#    - t: 8.5
+#      motor: arm
+#      direction: forward
+#      n_pulses: 20
+#      step_delay: 3000
+#      liminary_n_pulses: 20
+#      liminary_step_delay: 6000
+#    - t: 9
+#      motor: arm
+#      direction: backward
+#      n_pulses: 20
+#      step_delay: 3000
+#      liminary_n_pulses: 20
+#      liminary_step_delay: 6000
+#  anim4:
+#    - t: 0
+#      motor: arm
+#      direction: forward
+#      n_pulses: 250
+#      step_delay: 3000
+#      liminary_n_pulses: 100
+#      liminary_step_delay: 6000
+#    - t: 0.5
+#      dynamixel: thumb
+#      position: 880
+#    - t: 2
+#      motor: shoulder
+#      direction: forward
+#      n_pulses: 1540
+#      step_delay: 1700
+#      liminary_n_pulses: 200
+#      liminary_step_delay: 3500
+#    - t: 2
+#      motor: elbow
+#      direction: backward
+#      n_pulses: 1600
+#      step_delay: 2000
+#      liminary_n_pulses: 200
+#      liminary_step_delay: 3500
+#    - t: 3
+#      dynamixel: thumb
+#      position: 700
+#  anim5:
+#    - t: 0
+#      motor: elbow
+#      direction: backward
+#      n_pulses: 795
+#      step_delay: 2500
+#      liminary_n_pulses: 200
+#      liminary_step_delay: 5000
+#    - t: 1.5
+#      dynamixel: thumb
+#      position: 680
+#    - t: 1.3
+#      motor: arm
+#      direction: backward
+#      n_pulses: 495
+#      step_delay: 3000
+#      liminary_n_pulses: 100
+#      liminary_step_delay: 6000
+#    - t: 2.8
+#      dynamixel: thumb
+#      position: 640
+#    - t: 3.5
+#      electromagnet: off

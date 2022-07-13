@@ -40,6 +40,21 @@
             <i class="fa fa-fw fa-times text-danger"></i>
         </div>
       </div>
+      <div class="d-flex flex-row justify-content-between align-items-center rows-striped">
+        <div>Moteurs niryo</div>
+        <div v-if="!niryoMotorsErrorMode">
+          <i class="fa fa-fw fa-check text-jaffa"></i>
+        </div>
+        <div v-else>
+            <ButtonJaffa
+                size="sm"
+                @click="ackNiryoMotorsError"
+            >
+                <i class="fa-fw fa fa-check"></i>
+            </ButtonJaffa>
+            <i class="fa fa-fw fa-times text-danger"></i>
+        </div>
+      </div>
     </div>
     <!--<div class="border-deepdark rounded p-3 d-flex flex-column mb-2">
       <div class="mb-1">États de l'imprimante</div>
@@ -98,12 +113,12 @@
             </ButtonJaffa>
             </b-button-group>
         </div>
-        <div class="d-flex mb-1">
+        <!--<div class="d-flex mb-1">
           <b-input class="w-25" v-model="motor.nSteps" placeholder="Steps" type="number" min="0" max="20000"></b-input>
           <b-input class="w-25" v-model="motor.stepDelay" placeholder="Délais inter-step (µs)" type="number" min="200" max="20000"></b-input>
           <b-input class="w-25" v-model="motor.nLiminarySteps" placeholder="Steps liminaires" type="number" min="0" max="20000"></b-input>
           <b-input class="w-25" v-model="motor.liminaryStepDelay" placeholder="Délais initial (µs)" type="number" min="200" max="20000"></b-input>
-        </div>
+        </div>-->
       </div>
 
       <div v-for="dxl in niryoDynamixels" :key="dxl.id">
@@ -212,6 +227,12 @@ export default {
     limitSwitches() {
       return roomStore.state.sessionData[this.roomId].waffle_factory_motors_limit_switches
     },
+    niryoLimitSwitches() {
+      return roomStore.state.sessionData[this.roomId].niryo_motors_limit_switches
+    },
+    niryoMotorsErrorMode() {
+      return roomStore.state.sessionData[this.roomId].niryo_motors_error_mode
+    },
     isInMaintenanceMode() {
       return preferenceStore.state.isInMaintenanceMode
     },
@@ -313,8 +334,8 @@ export default {
           stepDelay: 2000,
           nLiminarySteps: 0,
           liminaryStepDelay: 3000,
-          forwardHasLimitSwitch: null,
-          backwardHasLimitSwitch: null,
+          forwardHasLimitSwitch: this.niryoLimitSwitches ? this.niryoLimitSwitches.forward['shoulder'] : null,
+          backwardHasLimitSwitch: this.niryoLimitSwitches ? this.niryoLimitSwitches.backward['shoulder'] : null,
         },
         {
           name: "Niryo moteur bras",
@@ -324,8 +345,8 @@ export default {
           stepDelay: 2000,
           nLiminarySteps: 0,
           liminaryStepDelay: 3000,
-          forwardHasLimitSwitch: null,
-          backwardHasLimitSwitch: null,
+          forwardHasLimitSwitch: this.niryoLimitSwitches ? this.niryoLimitSwitches.forward['arm'] : null,
+          backwardHasLimitSwitch: this.niryoLimitSwitches ? this.niryoLimitSwitches.backward['arm'] : null,
         },
         {
           name: "Niryo moteur coude",
@@ -335,8 +356,8 @@ export default {
           stepDelay: 2000,
           nLiminarySteps: 0,
           liminaryStepDelay: 3000,
-          forwardHasLimitSwitch: null,
-          backwardHasLimitSwitch: null,
+          forwardHasLimitSwitch: this.niryoLimitSwitches ? this.niryoLimitSwitches.forward['elbow'] : null,
+          backwardHasLimitSwitch: this.niryoLimitSwitches ? this.niryoLimitSwitches.backward['elbow'] : null,
         },
       ]
 
@@ -352,6 +373,17 @@ export default {
           widgetId: 'waffle_factory',
           widgetType: 'waffle_factory',
           action: 'run_homing_and_purge',
+        }
+      )
+    },
+    ackNiryoMotorsError() {
+      roomStore.dispatch(
+        'widgetAction',
+        {
+          channel: this.defaultChannel,
+          widgetId: 'waffle_factory',
+          widgetType: 'waffle_factory',
+          action: 'ack_niryo_motors_error',
         }
       )
     },
