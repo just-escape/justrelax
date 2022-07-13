@@ -920,12 +920,15 @@ export default {
               "widget_params": [
                 {
                   "id": "front_door_open",
-                  "icon": "fa-fw fas fa-lock-open"
+                  "icon": "fa-fw fas fa-lock-open",
+                  "extra": {
+                    "with_sound": true
+                  }
                 },
                 {
-                  "id": "front_door_close",
-                  "icon": "fa-fw fas fa-lock"
-                }
+                  "id": "front_door_open",
+                  "icon": "fa-fw fas fa-volume-mute"
+                },
               ]
             },
             {
@@ -1189,17 +1192,6 @@ export default {
               ]
             },
             {
-              "name": "Fermer les portes stock/serveurs",
-              "maintenance": false,
-              "widget": "buttons_group",
-              "widget_params": [
-                {
-                  "id": "emergency_exit_lock",
-                  "icon": "fa-fw fas fa-lock"
-                }
-              ]
-            },
-            {
               "name": "Porte vers l'extérieur",
               "maintenance": false,
               "widget": "buttons_group",
@@ -1217,7 +1209,14 @@ export default {
               "widget_params": [
                 {
                   "id": "emergency_exit_unlock_stock_to_machine",
-                  "icon": "fa-fw fas fa-lock-open"
+                  "icon": "fa-fw fas fa-lock-open",
+                  "extra": {
+                    "with_sound": true
+                  }
+                },
+                {
+                  "id": "emergency_exit_unlock_stock_to_machine",
+                  "icon": "fa-fw fas fa-volume-mute"
                 }
               ]
             },
@@ -1482,10 +1481,6 @@ export default {
                 {
                   "id": "waffle_trapdoor_open",
                   "icon": "fa-fw fas fa-lock-open"
-                },
-                {
-                  "id": "waffle_trapdoor_close",
-                  "icon": "fa-fw fas fa-lock"
                 }
               ]
             },
@@ -2069,10 +2064,6 @@ export default {
                   "id": "backstage_trapdoor_open",
                   "icon": "fa-fw fas fa-lock-open"
                 },
-                {
-                  "id": "backstage_trapdoor_close",
-                  "icon": "fa-fw fas fa-lock"
-                }
               ]
             },
             {
@@ -3069,27 +3060,6 @@ export default {
                   }
                 }
               ]
-            },
-            {
-              "name": "Sons",
-              "maintenance": false,
-              "widget": "buttons_group",
-              "widget_params": [
-                {
-                  "id": "play_sound",
-                  "icon": "fa-fw fas fa-barcode",
-                  "extra": {
-                    "sound_id": "scan"
-                  }
-                },
-                {
-                  "id": "play_sound",
-                  "icon": "fa-fw far fa-bell",
-                  "extra": {
-                    "sound_id": "laser"
-                  }
-                }
-              ]
             }
           ]
         },
@@ -3104,283 +3074,162 @@ export default {
               "widget_params": [
                 {
                   "label": "1",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 0,
-                  "easy": true,
-                  "normal": true,
+                  "easy": false,
+                  "normal": false,
                   "hard": true,
                   "wall": false,
-                  "dynamic": true,
+                  "dynamic": false,
                   "prefix": "A"
                 },
                 {
                   "label": "2",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 1,
-                  "easy": true,
+                  "easy": false,
                   "normal": true,
                   "hard": true,
                   "wall": false,
-                  "dynamic": true,
+                  "dynamic": false,
                   "prefix": "A"
                 },
                 {
                   "label": "3",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 2,
                   "easy": true,
                   "normal": true,
                   "hard": true,
                   "wall": false,
-                  "dynamic": true,
+                  "dynamic": false,
                   "prefix": "A"
                 },
                 {
                   "label": "4",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 3,
-                  "easy": true,
+                  "easy": false,
                   "normal": true,
                   "hard": true,
                   "wall": false,
-                  "dynamic": true,
+                  "dynamic": false,
                   "prefix": "A"
                 },
                 {
                   "label": "5",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 4,
                   "easy": true,
                   "normal": true,
                   "hard": true,
                   "wall": false,
-                  "dynamic": true,
+                  "dynamic": false,
                   "prefix": "A"
                 },
                 {
                   "label": "6",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 5,
-                  "easy": true,
-                  "normal": true,
+                  "easy": false,
+                  "normal": false,
                   "hard": true,
                   "wall": false,
-                  "dynamic": true,
+                  "dynamic": false,
                   "prefix": "A"
                 },
                 {
                   "label": "7",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 6,
-                  "easy": true,
-                  "normal": true,
+                  "easy": false,
+                  "normal": false,
                   "hard": true,
-                  "wall": true,
+                  "wall": false,
                   "dynamic": false,
                   "prefix": "A"
                 },
                 {
                   "label": "8",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 7,
                   "easy": true,
                   "normal": true,
                   "hard": true,
-                  "wall": true,
+                  "wall": false,
                   "dynamic": false,
                   "prefix": "A"
                 },
                 {
                   "label": "9",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 8,
-                  "easy": true,
-                  "normal": true,
+                  "easy": false,
+                  "normal": false,
                   "hard": true,
-                  "wall": true,
+                  "wall": false,
                   "dynamic": false,
                   "prefix": "A"
                 },
                 {
                   "label": "10",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 9,
                   "easy": true,
                   "normal": true,
                   "hard": true,
-                  "wall": true,
-                  "dynamic": false,
+                  "wall": false,
+                  "dynamic": true,
                   "prefix": "A"
                 },
                 {
                   "label": "11",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 10,
                   "easy": true,
                   "normal": true,
                   "hard": true,
-                  "wall": true,
-                  "dynamic": false,
+                  "wall": false,
+                  "dynamic": true,
                   "prefix": "A"
                 },
                 {
                   "label": "12",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 11,
-                  "easy": false,
-                  "normal": false,
+                  "easy": true,
+                  "normal": true,
                   "hard": true,
                   "wall": false,
-                  "dynamic": false,
+                  "dynamic": true,
                   "prefix": "A"
                 },
                 {
                   "label": "13",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 12,
                   "easy": true,
-                  "normal": false,
+                  "normal": true,
                   "hard": true,
                   "wall": false,
-                  "dynamic": false,
+                  "dynamic": true,
                   "prefix": "A"
                 },
                 {
                   "label": "14",
-                  "node": "laser_maze.a",
+                  "node": "laser_maze",
                   "index": 13,
-                  "easy": false,
+                  "easy": true,
                   "normal": true,
                   "hard": true,
                   "wall": false,
-                  "dynamic": false,
+                  "dynamic": true,
                   "prefix": "A"
-                },
-                {
-                  "label": "15",
-                  "node": "laser_maze.a",
-                  "index": 14,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "16",
-                  "node": "laser_maze.b",
-                  "index": 0,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "17",
-                  "node": "laser_maze.b",
-                  "index": 1,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "18",
-                  "node": "laser_maze.b",
-                  "index": 2,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "19",
-                  "node": "laser_maze.b",
-                  "index": 3,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "20",
-                  "node": "laser_maze.b",
-                  "index": 4,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "21",
-                  "node": "laser_maze.b",
-                  "index": 5,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "22",
-                  "node": "laser_maze.b",
-                  "index": 6,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "B"
                 }
               ]
             },
             {
-              "id": 394,
-              "card": 59,
-              "name": "Verouillage trappe Niryo",
-              "index": 1,
-              "maintenance": false,
-              "widget": "session_data",
-              "widget_params": {
-                "widget": "input_device",
-                "key": "niryo_backstage_limit_switch"
-              }
-            },
-            {
-              "id": 396,
-              "card": 59,
-              "name": "Trappe de service Niryo",
-              "index": 1,
-              "maintenance": false,
-              "widget": "buttons_group",
-              "widget_params": [
-                {
-                  "id": "niryo_backstage_trapdoor_open",
-                  "icon": "fa-fw fas fa-lock-open"
-                },
-                {
-                  "id": "niryo_backstage_trapdoor_close",
-                  "icon": "fa-fw fas fa-lock"
-                }
-              ]
-            },
-            {
-              "id": 378,
-              "card": 59,
               "name": "Registre",
-              "index": 2,
               "maintenance": false,
               "widget": "node_register",
               "widget_params": {
@@ -3458,10 +3307,7 @@ export default {
                     "name": "niryo"
                   },
                   {
-                    "name": "laser_maze_a"
-                  },
-                  {
-                    "name": "laser_maze_b"
+                    "name": "laser_maze"
                   },
                   {
                     "name": "relays"
@@ -3494,19 +3340,13 @@ export default {
                     "name": "backstage_limit_switch"
                   },
                   {
-                    "name": "niryo_backstage_trapdoor"
+                    "name": "d1_c1_shutdown"
                   },
                   {
-                    "name": "niryo_backstage_limit_switch"
+                    "name": "d1_c2_shutdown"
                   },
                   {
-                    "name": "d2_c1_shutdown"
-                  },
-                  {
-                    "name": "d2_c2_shutdown"
-                  },
-                  {
-                    "name": "d2_c3_shutdown"
+                    "name": "d1_c3_shutdown"
                   }
                 ]
               }
@@ -3784,10 +3624,6 @@ export default {
                   "id": "niryo_backstage_trapdoor_open",
                   "icon": "fa-fw fas fa-lock-open"
                 },
-                {
-                  "id": "niryo_backstage_trapdoor_close",
-                  "icon": "fa-fw fas fa-lock"
-                }
               ]
             },
             {

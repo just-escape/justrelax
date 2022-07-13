@@ -41,7 +41,7 @@
           <div
             class="text-center py-2 px-3"
             style="background: rgba(0, 209, 182, 0.6); transition: all 0.4s ease-in-out"
-            :style="{opacity: displayHolographicUpdateOnChange ? holographicDisplayUpdatedOpacity : 0}"
+            :style="{opacity: holographicDisplayUpdatedOpacity}"
           >
             <div>{{ $t('Affichage holographique modifié') }}</div>
           </div>
@@ -85,9 +85,6 @@ export default {
     }
   },
   computed: {
-    displayHolographicUpdateOnChange() {
-      return menuStore.state.displayHolographicUpdateOnChange
-    },
     onMenuChangedSignal() {
       return menuStore.state.onMenuChangedSignal
     },

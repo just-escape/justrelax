@@ -98,7 +98,6 @@ let store = new Vuex.Store({
     priceMatters: true,
     displayMenuExplicitInstruction: false,
     onMenuChangedSignal: false,
-    displayHolographicUpdateOnChange: true,
   },
   getters: {
     isSuccess (state) {
@@ -120,15 +119,10 @@ let store = new Vuex.Store({
   },
   mutations: {
     publishSessionData(state) {
-      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_holographic_update_on_change', data: state.displayHolographicUpdateOnChange})
       publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_auto_validate_dishes', data: state.autoValidateDishes})
       publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_price', data: state.displayPrice})
       publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_price_matters', data: state.priceMatters})
       publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_menu_explicit_instruction', data: state.displayMenuExplicitInstruction})
-    },
-    setDisplayHolographicUpdateOnChange(state, value) {
-      state.displayHolographicUpdateOnChange = value
-      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_holographic_update_on_change', data: state.displayHolographicUpdateOnChange})
     },
     setDisplayMenuExplicitInstruction(state, value) {
       state.displayMenuExplicitInstruction = value

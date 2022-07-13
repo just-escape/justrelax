@@ -1653,10 +1653,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'widget_id': 'synchronizer', 'action': 'set'})
     def widget_synchronizer(self, key: str, value: bool):
-        if key == 'synchronizer_display_holographic_update_on_change':
-            self.publish_prefix(
-                {'category': 'set_display_holographic_update_on_change', 'value': value}, 'synchronizer')
-        elif key == 'synchronizer_auto_validate_dishes':
+        if key == 'synchronizer_auto_validate_dishes':
             self.publish_prefix({'category': 'set_auto_validate_dishes', 'value': value}, 'synchronizer')
         elif key == 'synchronizer_display_price':
             self.publish_prefix({'category': 'display_price', 'display': value}, 'synchronizer')
@@ -1802,13 +1799,10 @@ class Scenario(MagicNode):
             self._timers[name].execute_callback()
 
     @on_event(filter={'widget_id': 'front_door_open'})
-    def button_front_door_open(self):
-        self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
-        self.publish_prefix({'category': 'unlock'}, 'front_door_magnet')
-
-    @on_event(filter={'widget_id': 'front_door_close'})
-    def button_front_door_close(self):
-        self.publish_prefix({'category': 'lock'}, 'front_door_magnet')
+    def button_front_door_open(self, with_sound: bool = False):
+        if with_sound:
+            self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
+        self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
 
     @on_event(filter={'widget_id': 'street_display_reset'})
     def button_street_display_reset(self):
@@ -1963,16 +1957,17 @@ class Scenario(MagicNode):
 
     @on_event(filter={'widget_id': 'emergency_exit_unlock_to_outside'})
     def button_emergency_exit_unlock_to_outside(self):
-        self.publish_prefix({'category': 'unlock', 'magnet_id': 'to_outside'}, 'emergency_exit')
+        self.publish_prefix({'category': 'unlock', 'magnet_id': 'to_outside', 'relock': True}, 'emergency_exit')
 
     @on_event(filter={'widget_id': 'emergency_exit_lock_to_outside'})
     def button_emergency_exit_lock_to_outside(self):
         self.publish_prefix({'category': 'lock', 'magnet_id': 'to_outside'}, 'emergency_exit')
 
     @on_event(filter={'widget_id': 'emergency_exit_unlock_stock_to_machine'})
-    def button_emergency_exit_unlock_stock_to_machine(self):
-        self.publish_prefix({'category': 'play', 'sound_id': 'server_door_open'}, 'sound_player')
-        self.publish_prefix({'category': 'unlock', 'magnet_id': 'stock_to_machine'}, 'emergency_exit')
+    def button_emergency_exit_unlock_stock_to_machine(self, with_sound: bool = False):
+        if with_sound:
+            self.publish_prefix({'category': 'play', 'sound_id': 'server_door_open'}, 'sound_player')
+        self.publish_prefix({'category': 'unlock', 'magnet_id': 'stock_to_machine', 'relock': True}, 'emergency_exit')
 
     @on_event(filter={'widget_id': 'emergency_exit_lock_stock_to_machine'})
     def button_emergency_exit_lock_stock_to_machine(self):
@@ -1981,10 +1976,6 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'emergency_exit_unlock'})
     def button_emergency_exit_unlock(self):
         self.publish_prefix({'category': 'unlock'}, 'emergency_exit')
-
-    @on_event(filter={'widget_id': 'emergency_exit_lock'})
-    def button_emergency_exit_lock(self):
-        self.publish_prefix({'category': 'lock'}, 'emergency_exit')
 
     @on_event(filter={'widget_id': 'set_secure_floor_all_leds_color'})
     def button_set_secure_floor_all_leds_color(self, color: str):
@@ -2143,18 +2134,12 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'waffle_trapdoor_open'})
     def buttons_waffle_trapdoor_open(self):
         self.publish_prefix({'category': 'low'}, 'waffle_trapdoor')
-
-    @on_event(filter={'widget_id': 'waffle_trapdoor_close'})
-    def buttons_waffle_trapdoor_close(self):
-        self.publish_prefix({'category': 'high'}, 'waffle_trapdoor')
+        self.register_delayed_task(1, self.publish_prefix, {'category': 'high'}, 'waffle_trapdoor')
 
     @on_event(filter={'widget_id': 'backstage_trapdoor_open'})
     def buttons_backstage_trapdoor_open(self):
         self.publish_prefix({'category': 'low'}, 'backstage_trapdoor')
-
-    @on_event(filter={'widget_id': 'backstage_trapdoor_close'})
-    def buttons_backstage_trapdoor_close(self):
-        self.publish_prefix({'category': 'high'}, 'backstage_trapdoor')
+        self.register_delayed_task(1, self.publish_prefix, {'category': 'high'}, 'backstage_trapdoor')
 
     @on_event(filter={'widget_id': 'printer_instructions'})
     def widget_printer_instructions(self, value: str):
@@ -2621,7 +2606,4 @@ class ScenarioD2(Scenario):
     @on_event(filter={'widget_id': 'niryo_backstage_trapdoor_open'})
     def buttons_niryo_backstage_trapdoor_open(self):
         self.publish_prefix({'category': 'low'}, 'niryo_backstage_trapdoor')
-
-    @on_event(filter={'widget_id': 'niryo_backstage_trapdoor_close'})
-    def buttons_niryo_backstage_trapdoor_close(self):
-        self.publish_prefix({'category': 'high'}, 'niryo_backstage_trapdoor')
+        self.register_delayed_task(1, self.publish_prefix, {'category': 'high'}, 'niryo_backstage_trapdoor')

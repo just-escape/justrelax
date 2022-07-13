@@ -2,17 +2,6 @@
   <div>
     <div class="border-deepdark rounded p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <div class="text-one-line-ellipsis min-width-100px mb-1">Notif maj menu holographique</div>
-            <div
-                v-if="getData('synchronizer_display_holographic_update_on_change') !== undefined"
-                class="border mr-1 position-relative pointer"
-                style="border-color: #ef8649 !important; height: 17px; width: 17px"
-                @click="setData('synchronizer_display_holographic_update_on_change', !getData('synchronizer_display_holographic_update_on_change'))"
-            >
-                <i v-if="getData('synchronizer_display_holographic_update_on_change')" class="position-absolute text-jaffa fa fa-xs fa-fw fa-check" style="bottom: 0; right: 0"></i>
-            </div>
-        </div>
-        <div class="d-flex justify-content-between align-items-center">
             <div class="text-one-line-ellipsis min-width-100px mb-1">Validation plats auto</div>
             <div
                 v-if="getData('synchronizer_auto_validate_dishes') !== undefined"
