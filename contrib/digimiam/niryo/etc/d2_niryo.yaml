@@ -330,7 +330,7 @@ animations:
     - t: 0
       motor: shoulder
       direction: forward
-      n_pulses: 1795
+      n_pulses: 1810
       step_delay: 1300
       liminary_n_pulses: 400
       liminary_step_delay: 3000
@@ -344,7 +344,7 @@ animations:
     - t: 0
       motor: elbow
       direction: backward
-      n_pulses: 3100
+      n_pulses: 3180
       step_delay: 1000
       liminary_n_pulses: 500
       liminary_step_delay: 2800
@@ -496,14 +496,14 @@ animations:
     - t: 32.6
       motor: elbow
       direction: forward
-      n_pulses: 3154
+      n_pulses: 3194
       step_delay: 1000
       liminary_n_pulses: 500
       liminary_step_delay: 2800
     - t: 33
       motor: shoulder
       direction: backward
-      n_pulses: 1694
+      n_pulses: 1794
       step_delay: 1500
       liminary_n_pulses: 500
       liminary_step_delay: 3500

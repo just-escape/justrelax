@@ -344,7 +344,7 @@ animations:
     - t: 0
       motor: elbow
       direction: backward
-      n_pulses: 2995
+      n_pulses: 3125
       step_delay: 1000
       liminary_n_pulses: 500
       liminary_step_delay: 2800
@@ -496,7 +496,7 @@ animations:
     - t: 32.5
       motor: elbow
       direction: forward
-      n_pulses: 3004
+      n_pulses: 3134
       step_delay: 1000
       liminary_n_pulses: 500
       liminary_step_delay: 2800
