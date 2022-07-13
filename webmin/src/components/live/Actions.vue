@@ -46,25 +46,17 @@ export default {
     return {
       cards: [
         {
-          "id": 4,
           "name": "Contrôle",
-          "index": 0,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 381,
-              "card": 4,
               "name": "Baguettes",
-              "index": 0,
               "maintenance": false,
               "widget": "chopsticks",
               "widget_params": ""
             },
             {
-              "id": 113,
-              "card": 4,
               "name": "Status",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -79,10 +71,7 @@ export default {
               ]
             },
             {
-              "id": 8,
-              "card": 4,
               "name": "Table",
-              "index": 4,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -101,10 +90,7 @@ export default {
               ]
             },
             {
-              "id": 116,
-              "card": 4,
               "name": "Force manual mode",
-              "index": 5,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -115,10 +101,7 @@ export default {
               ]
             },
             {
-              "id": 382,
-              "card": 4,
               "name": "Rappel CONTROL",
-              "index": 7,
               "maintenance": false,
               "widget": "timer",
               "widget_params": {
@@ -127,10 +110,7 @@ export default {
               }
             },
             {
-              "id": 383,
-              "card": 4,
               "name": "Tige pour CONTROL",
-              "index": 8,
               "maintenance": false,
               "widget": "timer",
               "widget_params": {
@@ -139,10 +119,7 @@ export default {
               }
             },
             {
-              "id": 353,
-              "card": 4,
               "name": "Configurez lumières",
-              "index": 9,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -158,10 +135,7 @@ export default {
               ]
             },
             {
-              "id": 354,
-              "card": 4,
               "name": "Passez en mode manuel",
-              "index": 10,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -177,10 +151,7 @@ export default {
               ]
             },
             {
-              "id": 384,
-              "card": 4,
               "name": "Panel de contrôle",
-              "index": 20,
               "maintenance": false,
               "widget": "control_panel",
               "widget_params": ""
@@ -188,16 +159,11 @@ export default {
           ]
         },
         {
-          "id": 1,
           "name": "Lumières",
-          "index": 1,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 2,
-              "card": 1,
               "name": "Blanc",
-              "index": 2,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -220,10 +186,7 @@ export default {
               ]
             },
             {
-              "id": 3,
-              "card": 1,
               "name": "Bleu",
-              "index": 3,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -262,10 +225,7 @@ export default {
               ]
             },
             {
-              "id": 4,
-              "card": 1,
               "name": "Orange",
-              "index": 4,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -304,10 +264,7 @@ export default {
               ]
             },
             {
-              "id": 5,
-              "card": 1,
               "name": "Vert",
-              "index": 5,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -346,10 +303,7 @@ export default {
               ]
             },
             {
-              "id": 6,
-              "card": 1,
               "name": "Rouge",
-              "index": 6,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -388,10 +342,7 @@ export default {
               ]
             },
             {
-              "id": 7,
-              "card": 1,
               "name": "Rose",
-              "index": 7,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -430,10 +381,7 @@ export default {
               ]
             },
             {
-              "id": 338,
-              "card": 1,
               "name": "Calibration dalles",
-              "index": 8,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -444,10 +392,7 @@ export default {
               ]
             },
             {
-              "id": 339,
-              "card": 1,
               "name": "Lumières désactivées",
-              "index": 9,
               "maintenance": false,
               "widget": "synchronizer_lights",
               "widget_params": ""
@@ -455,16 +400,11 @@ export default {
           ]
         },
         {
-          "id": 52,
           "name": "Écran synchro",
-          "index": 3,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 265,
-              "card": 52,
               "name": "Status",
-              "index": 0,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -479,19 +419,13 @@ export default {
               ]
             },
             {
-              "id": 402,
-              "card": 52,
               "name": "Synchronizer",
-              "index": 0,
               "maintenance": false,
               "widget": "synchronizer",
               "widget_params": ""
             },
             {
-              "id": 311,
-              "card": 52,
               "name": "Overlay vidéo",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -512,10 +446,7 @@ export default {
               ]
             },
             {
-              "id": 301,
-              "card": 52,
               "name": "Menu : slide",
-              "index": 3,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -554,10 +485,7 @@ export default {
               ]
             },
             {
-              "id": 302,
-              "card": 52,
               "name": "Menu : X",
-              "index": 4,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -596,10 +524,7 @@ export default {
               ]
             },
             {
-              "id": 303,
-              "card": 52,
               "name": "Menu : Y",
-              "index": 5,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -638,10 +563,7 @@ export default {
               ]
             },
             {
-              "id": 304,
-              "card": 52,
               "name": "Menu : error",
-              "index": 7,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -655,10 +577,7 @@ export default {
               ]
             },
             {
-              "id": 312,
-              "card": 52,
               "name": "Succès forcé",
-              "index": 8,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -673,10 +592,7 @@ export default {
               ]
             },
             {
-              "id": 317,
-              "card": 52,
               "name": "Log lumières",
-              "index": 12,
               "maintenance": false,
               "widget": "log_prompt",
               "widget_params": {
@@ -742,10 +658,7 @@ export default {
               }
             },
             {
-              "id": 318,
-              "card": 52,
               "name": "Log menu",
-              "index": 13,
               "maintenance": false,
               "widget": "log_prompt",
               "widget_params": {
@@ -797,10 +710,7 @@ export default {
               }
             },
             {
-              "id": 355,
-              "card": 52,
               "name": "Indications utiles à lire",
-              "index": 30,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -816,10 +726,7 @@ export default {
               ]
             },
             {
-              "id": 356,
-              "card": 52,
               "name": "Retrouvez les plats/prix",
-              "index": 31,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -835,10 +742,7 @@ export default {
               ]
             },
             {
-              "id": 357,
-              "card": 52,
               "name": "Emballages dans la poubelle",
-              "index": 32,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -854,10 +758,7 @@ export default {
               ]
             },
             {
-              "id": 358,
-              "card": 52,
               "name": "Il reste des tickets de caisse",
-              "index": 33,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -873,10 +774,7 @@ export default {
               ]
             },
             {
-              "id": 359,
-              "card": 52,
               "name": "Aidez-vous des pubs",
-              "index": 34,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -892,10 +790,7 @@ export default {
               ]
             },
             {
-              "id": 360,
-              "card": 52,
               "name": "Regardez sous vos pieds",
-              "index": 35,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -911,10 +806,7 @@ export default {
               ]
             },
             {
-              "id": 361,
-              "card": 52,
               "name": "Concentrez-vous sur 1 lumière",
-              "index": 36,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -932,16 +824,11 @@ export default {
           ]
         },
         {
-          "id": 29,
           "name": "Rue / publicités",
-          "index": 4,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 272,
-              "card": 29,
               "name": "Vidéo Marmitron",
-              "index": 0,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -956,10 +843,7 @@ export default {
               ]
             },
             {
-              "id": 273,
-              "card": 29,
               "name": "Vidéo publicité glitchée",
-              "index": 1,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -974,10 +858,7 @@ export default {
               ]
             },
             {
-              "id": 329,
-              "card": 29,
               "name": "Vidéo pub gaufresque",
-              "index": 2,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -992,10 +873,7 @@ export default {
               ]
             },
             {
-              "id": 274,
-              "card": 29,
               "name": "Vidéo pubs",
-              "index": 3,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -1010,10 +888,7 @@ export default {
               ]
             },
             {
-              "id": 275,
-              "card": 29,
               "name": "Vidéo Mme Poivre",
-              "index": 4,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -1028,10 +903,7 @@ export default {
               ]
             },
             {
-              "id": 276,
-              "card": 29,
               "name": "Interface menu",
-              "index": 5,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -1042,10 +914,7 @@ export default {
               ]
             },
             {
-              "id": 277,
-              "card": 29,
               "name": "Porte",
-              "index": 6,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1060,10 +929,7 @@ export default {
               ]
             },
             {
-              "id": 300,
-              "card": 29,
               "name": "Lumières rue",
-              "index": 7,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -1090,16 +956,11 @@ export default {
           ]
         },
         {
-          "id": 53,
           "name": "Écran commandes",
-          "index": 5,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 11,
-              "card": 53,
               "name": "Status",
-              "index": 0,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1114,10 +975,7 @@ export default {
               ]
             },
             {
-              "id": 307,
-              "card": 53,
               "name": "Module de paiement",
-              "index": 6,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -1146,10 +1004,7 @@ export default {
               ]
             },
             {
-              "id": 319,
-              "card": 53,
               "name": "Instruction doc ventil",
-              "index": 8,
               "maintenance": false,
               "widget": "instruction_prompt",
               "widget_params": {
@@ -1194,10 +1049,7 @@ export default {
               }
             },
             {
-              "id": 369,
-              "card": 53,
               "name": "Transférez néofrancs bague",
-              "index": 100,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1213,10 +1065,7 @@ export default {
               ]
             },
             {
-              "id": 362,
-              "card": 53,
               "name": "Commande hauteur moyen",
-              "index": 101,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1234,16 +1083,11 @@ export default {
           ]
         },
         {
-          "id": 2,
           "name": "Ventilation",
-          "index": 6,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 405,
-              "card": 2,
               "name": "Ignorer le panel de ventilation",
-              "index": 0,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -1252,10 +1096,7 @@ export default {
               }
             },
             {
-              "id": 406,
-              "card": 2,
               "name": "Timer ignorer le panel",
-              "index": 0,
               "maintenance": false,
               "widget": "timer",
               "widget_params": {
@@ -1264,10 +1105,7 @@ export default {
               }
             },
             {
-              "id": 323,
-              "card": 2,
               "name": "Conduit",
-              "index": 3,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1288,10 +1126,7 @@ export default {
               ]
             },
             {
-              "id": 363,
-              "card": 2,
               "name": "Module de ventilation",
-              "index": 10,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1307,10 +1142,7 @@ export default {
               ]
             },
             {
-              "id": 364,
-              "card": 2,
               "name": "Plus vite plus loin",
-              "index": 11,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1326,10 +1158,7 @@ export default {
               ]
             },
             {
-              "id": 407,
-              "card": 2,
               "name": "Ventilation",
-              "index": 20,
               "maintenance": false,
               "widget": "ventilation_panel",
               "widget_params": ""
@@ -1337,16 +1166,11 @@ export default {
           ]
         },
         {
-          "id": 51,
           "name": "Stock",
-          "index": 7,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 257,
-              "card": 51,
               "name": "Lumières",
-              "index": 0,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1365,10 +1189,7 @@ export default {
               ]
             },
             {
-              "id": 258,
-              "card": 51,
               "name": "Fermer les portes stock/serveurs",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1379,10 +1200,7 @@ export default {
               ]
             },
             {
-              "id": 408,
-              "card": 51,
               "name": "Porte vers l'extérieur",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1393,10 +1211,7 @@ export default {
               ]
             },
             {
-              "id": 409,
-              "card": 51,
               "name": "Porte stock<->salle serveurs",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1407,19 +1222,13 @@ export default {
               ]
             },
             {
-              "id": 404,
-              "card": 51,
               "name": "Cylindres",
-              "index": 2,
               "maintenance": false,
               "widget": "cylinders",
               "widget_params": ""
             },
             {
-              "id": 352,
-              "card": 51,
               "name": "Cylindres check",
-              "index": 3,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -1454,10 +1263,7 @@ export default {
               ]
             },
             {
-              "id": 365,
-              "card": 51,
               "name": "Enclenchement rotation",
-              "index": 10,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1473,10 +1279,7 @@ export default {
               ]
             },
             {
-              "id": 368,
-              "card": 51,
               "name": "Rdv dans le réfectoire",
-              "index": 12,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1494,16 +1297,11 @@ export default {
           ]
         },
         {
-          "id": 3,
           "name": "Sokoban",
-          "index": 8,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 12,
-              "card": 3,
               "name": "Reset (énigme entière)",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1529,10 +1327,7 @@ export default {
               ]
             },
             {
-              "id": 219,
-              "card": 3,
               "name": "Contrôles (1/2)",
-              "index": 2,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1547,10 +1342,7 @@ export default {
               ]
             },
             {
-              "id": 220,
-              "card": 3,
               "name": "Contrôles (2/2)",
-              "index": 3,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1569,10 +1361,7 @@ export default {
               ]
             },
             {
-              "id": 320,
-              "card": 3,
               "name": "Log inventaire",
-              "index": 5,
               "maintenance": false,
               "widget": "log_prompt",
               "widget_params": {
@@ -1596,10 +1385,7 @@ export default {
               }
             },
             {
-              "id": 366,
-              "card": 3,
               "name": "Déplacez-vous deuxième niveau",
-              "index": 10,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1615,10 +1401,7 @@ export default {
               ]
             },
             {
-              "id": 367,
-              "card": 3,
               "name": "Logiciel aide orga virtuelle",
-              "index": 11,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1634,10 +1417,7 @@ export default {
               ]
             },
             {
-              "id": 397,
-              "card": 3,
               "name": "Sokoban",
-              "index": 20,
               "maintenance": false,
               "widget": "sokoban",
               "widget_params": ""
@@ -1645,16 +1425,11 @@ export default {
           ]
         },
         {
-          "id": 54,
           "name": "Usine à gaufres",
-          "index": 9,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 280,
-              "card": 54,
               "name": "Lumière Niryo",
-              "index": 6,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1677,10 +1452,7 @@ export default {
               ]
             },
             {
-              "id": 285,
-              "card": 54,
               "name": "Lumière imprimante",
-              "index": 7,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1703,10 +1475,7 @@ export default {
               ]
             },
             {
-              "id": 284,
-              "card": 54,
               "name": "Trappe",
-              "index": 8,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1721,10 +1490,7 @@ export default {
               ]
             },
             {
-              "id": 395,
-              "card": 54,
               "name": "Verouillage trappe",
-              "index": 8,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -1733,10 +1499,7 @@ export default {
               }
             },
             {
-              "id": 298,
-              "card": 54,
               "name": "Four",
-              "index": 11,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -1751,10 +1514,7 @@ export default {
               ]
             },
             {
-              "id": 305,
-              "card": 54,
               "name": "Niryo aimant",
-              "index": 12,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1775,10 +1535,7 @@ export default {
               ]
             },
             {
-              "id": 386,
-              "card": 54,
               "name": "Niryo animations",
-              "index": 12,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1818,10 +1575,7 @@ export default {
               ]
             },
             {
-              "id": 336,
-              "card": 54,
               "name": "Animation rails stop",
-              "index": 13,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1839,10 +1593,7 @@ export default {
               ]
             },
             {
-              "id": 341,
-              "card": 54,
               "name": "Animation rails Niryo",
-              "index": 14,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -1863,10 +1614,7 @@ export default {
               ]
             },
             {
-              "id": 342,
-              "card": 54,
               "name": "Animation rails gaufre 1",
-              "index": 15,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1887,10 +1635,7 @@ export default {
               ]
             },
             {
-              "id": 343,
-              "card": 54,
               "name": "Animation rails gaufre 2",
-              "index": 16,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1904,19 +1649,13 @@ export default {
               ]
             },
             {
-              "id": 324,
-              "card": 54,
               "name": "Moteurs",
-              "index": 22,
               "maintenance": false,
               "widget": "waffle_factory",
               "widget_params": ""
             },
             {
-              "id": 287,
-              "card": 54,
               "name": "Imprimante contrôles",
-              "index": 23,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1951,10 +1690,7 @@ export default {
               ]
             },
             {
-              "id": 347,
-              "card": 54,
               "name": "Impression patterns",
-              "index": 24,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -1982,10 +1718,7 @@ export default {
               ]
             },
             {
-              "id": 350,
-              "card": 54,
               "name": "Code GRBL",
-              "index": 27,
               "maintenance": true,
               "widget": "textarea",
               "widget_params": {
@@ -1995,16 +1728,11 @@ export default {
           ]
         },
         {
-          "id": 16,
           "name": "Salle serveur",
-          "index": 10,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 83,
-              "card": 16,
               "name": "Digicode",
-              "index": 0,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2019,10 +1747,7 @@ export default {
               ]
             },
             {
-              "id": 150,
-              "card": 16,
               "name": "Machine à fumée",
-              "index": 1,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -2041,10 +1766,7 @@ export default {
               ]
             },
             {
-              "id": 264,
-              "card": 16,
               "name": "Labyrinthe",
-              "index": 5,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2071,10 +1793,7 @@ export default {
               ]
             },
             {
-              "id": 326,
-              "card": 16,
               "name": "Relais",
-              "index": 5,
               "maintenance": true,
               "widget": "buttons_group",
               "widget_params": [
@@ -2095,10 +1814,7 @@ export default {
               ]
             },
             {
-              "id": 385,
-              "card": 16,
               "name": "Fumée continue",
-              "index": 6,
               "maintenance": false,
               "widget": "timer",
               "widget_params": {
@@ -2107,10 +1823,7 @@ export default {
               }
             },
             {
-              "id": 332,
-              "card": 16,
               "name": "Serveur root",
-              "index": 29,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2129,10 +1842,7 @@ export default {
               ]
             },
             {
-              "id": 333,
-              "card": 16,
               "name": "Animations",
-              "index": 30,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2146,19 +1856,13 @@ export default {
               ]
             },
             {
-              "id": 399,
-              "card": 16,
               "name": "Root server",
-              "index": 30,
               "maintenance": false,
               "widget": "root_server",
               "widget_params": ""
             },
             {
-              "id": 370,
-              "card": 16,
               "name": "J'ai imprimé le code de la porte",
-              "index": 100,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2174,10 +1878,7 @@ export default {
               ]
             },
             {
-              "id": 371,
-              "card": 16,
               "name": "Désactiver alarme sortez",
-              "index": 101,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2193,10 +1894,7 @@ export default {
               ]
             },
             {
-              "id": 372,
-              "card": 16,
               "name": "Deux modules pour désarmer",
-              "index": 102,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2212,10 +1910,7 @@ export default {
               ]
             },
             {
-              "id": 373,
-              "card": 16,
               "name": "Fonction mot de passe oublié",
-              "index": 103,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2231,10 +1926,7 @@ export default {
               ]
             },
             {
-              "id": 374,
-              "card": 16,
               "name": "Ingrédient secret disponibilité",
-              "index": 104,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2250,10 +1942,7 @@ export default {
               ]
             },
             {
-              "id": 379,
-              "card": 16,
               "name": "Vite, sortez !",
-              "index": 105,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2271,16 +1960,11 @@ export default {
           ]
         },
         {
-          "id": 58,
           "name": "Global",
-          "index": 12,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 313,
-              "card": 58,
               "name": "Mode épileptique",
-              "index": 0,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -2289,10 +1973,7 @@ export default {
               }
             },
             {
-              "id": 322,
-              "card": 58,
               "name": "Langue",
-              "index": 2,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2315,10 +1996,7 @@ export default {
               ]
             },
             {
-              "id": 334,
-              "card": 58,
               "name": "Niryo animation",
-              "index": 2,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -2327,10 +2005,7 @@ export default {
               }
             },
             {
-              "id": 335,
-              "card": 58,
               "name": "Intro Mme Poivre",
-              "index": 3,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -2339,10 +2014,7 @@ export default {
               }
             },
             {
-              "id": 337,
-              "card": 58,
               "name": "Final par réfectoire",
-              "index": 4,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -2351,10 +2023,7 @@ export default {
               }
             },
             {
-              "id": 376,
-              "card": 58,
               "name": "Dry print",
-              "index": 5,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -2363,10 +2032,7 @@ export default {
               }
             },
             {
-              "id": 380,
-              "card": 58,
               "name": "Animation Niryo et imprimante",
-              "index": 6,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -2375,10 +2041,7 @@ export default {
               }
             },
             {
-              "id": 375,
-              "card": 58,
               "name": "Intro seulement",
-              "index": 9,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2389,10 +2052,7 @@ export default {
               ]
             },
             {
-              "id": 398,
-              "card": 58,
               "name": "Indices auto",
-              "index": 15,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -2401,10 +2061,7 @@ export default {
               }
             },
             {
-              "id": 392,
-              "card": 58,
               "name": "Trappe de service",
-              "index": 20,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2419,10 +2076,7 @@ export default {
               ]
             },
             {
-              "id": 393,
-              "card": 58,
               "name": "Verouillage trappe de service",
-              "index": 21,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -2433,16 +2087,11 @@ export default {
           ]
         },
         {
-          "id": 5,
           "name": "Musique",
-          "index": 20,
           "roomIds": [1, 2],
           "rows": [
             {
-              "id": 14,
-              "card": 5,
               "name": "Volume master",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2477,10 +2126,7 @@ export default {
               ]
             },
             {
-              "id": 15,
-              "card": 5,
               "name": "Track 1",
-              "index": 2,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2543,10 +2189,7 @@ export default {
               ]
             },
             {
-              "id": 16,
-              "card": 5,
               "name": "Track 2",
-              "index": 3,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2609,10 +2252,7 @@ export default {
               ]
             },
             {
-              "id": 17,
-              "card": 5,
               "name": "Track 3",
-              "index": 4,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2675,10 +2315,7 @@ export default {
               ]
             },
             {
-              "id": 18,
-              "card": 5,
               "name": "Track 3.5",
-              "index": 5,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2741,10 +2378,7 @@ export default {
               ]
             },
             {
-              "id": 19,
-              "card": 5,
               "name": "Track 4",
-              "index": 6,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2807,10 +2441,7 @@ export default {
               ]
             },
             {
-              "id": 20,
-              "card": 5,
               "name": "Track 5",
-              "index": 7,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2873,10 +2504,7 @@ export default {
               ]
             },
             {
-              "id": 21,
-              "card": 5,
               "name": "Track 6.1",
-              "index": 8,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -2939,10 +2567,7 @@ export default {
               ]
             },
             {
-              "id": 22,
-              "card": 5,
               "name": "Track 6.2",
-              "index": 9,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -3005,10 +2630,7 @@ export default {
               ]
             },
             {
-              "id": 23,
-              "card": 5,
               "name": "Track 6.3",
-              "index": 10,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -3071,10 +2693,7 @@ export default {
               ]
             },
             {
-              "id": 24,
-              "card": 5,
               "name": "Track 7",
-              "index": 11,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -3137,10 +2756,7 @@ export default {
               ]
             },
             {
-              "id": 25,
-              "card": 5,
               "name": "Track 8",
-              "index": 12,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -3203,10 +2819,7 @@ export default {
               ]
             },
             {
-              "id": 26,
-              "card": 5,
               "name": "Track 9.1",
-              "index": 13,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -3269,10 +2882,7 @@ export default {
               ]
             },
             {
-              "id": 27,
-              "card": 5,
               "name": "Track 9.2",
-              "index": 14,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -3335,10 +2945,7 @@ export default {
               ]
             },
             {
-              "id": 325,
-              "card": 5,
               "name": "Track 5 glitch",
-              "index": 15,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -3401,10 +3008,7 @@ export default {
               ]
             },
             {
-              "id": 344,
-              "card": 5,
               "name": "Alarme",
-              "index": 16,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -3467,10 +3071,7 @@ export default {
               ]
             },
             {
-              "id": 345,
-              "card": 5,
               "name": "Sons",
-              "index": 17,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -3493,16 +3094,11 @@ export default {
           ]
         },
         {
-          "id": 56,
           "name": "Spécifique D1",
-          "index": 0,
           "roomIds": [1],
           "rows": [
             {
-              "id": 328,
-              "card": 59,
               "name": "Lasers",
-              "index": 0,
               "maintenance": false,
               "widget": "lasers",
               "widget_params": [
@@ -3918,16 +3514,11 @@ export default {
           ]
         },
         {
-          "id": 59,
           "name": "Spécifique D2",
-          "index": 0,
           "roomIds": [2],
           "rows": [
             {
-              "id": 328,
-              "card": 59,
               "name": "Lasers",
-              "index": 0,
               "maintenance": false,
               "widget": "lasers",
               "widget_params": [
@@ -4176,10 +3767,7 @@ export default {
               ]
             },
             {
-              "id": 394,
-              "card": 59,
               "name": "Verouillage trappe Niryo",
-              "index": 1,
               "maintenance": false,
               "widget": "session_data",
               "widget_params": {
@@ -4188,10 +3776,7 @@ export default {
               }
             },
             {
-              "id": 396,
-              "card": 59,
               "name": "Trappe de service Niryo",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4206,10 +3791,7 @@ export default {
               ]
             },
             {
-              "id": 378,
-              "card": 59,
               "name": "Registre",
-              "index": 2,
               "maintenance": false,
               "widget": "node_register",
               "widget_params": {
@@ -4343,16 +3925,11 @@ export default {
           ]
         },
         {
-          "id": 57,
           "name": "Casiers",
-          "index": 0,
           "roomIds": [3],
           "rows": [
             {
-              "id": 308,
-              "card": 57,
               "name": "Ouverture (1/3)",
-              "index": 0,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4386,10 +3963,7 @@ export default {
               ]
             },
             {
-              "id": 309,
-              "card": 57,
               "name": "Ouverture (2/3)",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4423,10 +3997,7 @@ export default {
               ]
             },
             {
-              "id": 310,
-              "card": 57,
               "name": "Ouverture (3/3)",
-              "index": 2,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4444,16 +4015,11 @@ export default {
           ]
         },
         {
-          "id": 60,
           "name": "Shutdown",
-          "index": 1,
           "roomIds": [3],
           "rows": [
             {
-              "id": 330,
-              "card": 60,
               "name": "D1",
-              "index": 0,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4468,10 +4034,7 @@ export default {
               ]
             },
             {
-              "id": 331,
-              "card": 60,
               "name": "D2",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4488,16 +4051,11 @@ export default {
           ]
         },
         {
-          "id": 61,
           "name": "Escape the Boom",
-          "index": 2,
           "roomIds": [3],
           "rows": [
             {
-              "id": 410,
-              "card": 61,
               "name": "Porte réfectoire",
-              "index": 0,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4512,10 +4070,7 @@ export default {
               ]
             },
             {
-              "id": 411,
-              "card": 61,
               "name": "Porte de secours",
-              "index": 1,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4530,10 +4085,7 @@ export default {
               ]
             },
             {
-              "id": 412,
-              "card": 61,
               "name": "Porte stock<->salle serveurs",
-              "index": 2,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4548,10 +4100,7 @@ export default {
               ]
             },
             {
-              "id": 429,
-              "card": 61,
               "name": "Conduit d'aération",
-              "index": 2,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4572,10 +4121,7 @@ export default {
               ]
             },
             {
-              "id": 413,
-              "card": 61,
               "name": "Blanc réfectoire",
-              "index": 3,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4598,10 +4144,7 @@ export default {
               ]
             },
             {
-              "id": 414,
-              "card": 61,
               "name": "Bleu réfectoire",
-              "index": 4,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4624,10 +4167,7 @@ export default {
               ]
             },
             {
-              "id": 415,
-              "card": 61,
               "name": "Orange réfectoire",
-              "index": 5,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4650,10 +4190,7 @@ export default {
               ]
             },
             {
-              "id": 416,
-              "card": 61,
               "name": "Vert réfectoire",
-              "index": 6,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4676,10 +4213,7 @@ export default {
               ]
             },
             {
-              "id": 417,
-              "card": 61,
               "name": "Rouge réfectoire",
-              "index": 6,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4702,10 +4236,7 @@ export default {
               ]
             },
             {
-              "id": 418,
-              "card": 61,
               "name": "Rose réfectoire",
-              "index": 7,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4728,10 +4259,7 @@ export default {
               ]
             },
             {
-              "id": 419,
-              "card": 61,
               "name": "Lumière stock",
-              "index": 8,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4750,10 +4278,7 @@ export default {
               ]
             },
             {
-              "id": 430,
-              "card": 61,
               "name": "Lumière salle serveurs",
-              "index": 8,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4788,10 +4313,7 @@ export default {
               ]
             },
             {
-              "id": 420,
-              "card": 61,
               "name": "Track 1",
-              "index": 9,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4854,10 +4376,7 @@ export default {
               ]
             },
             {
-              "id": 421,
-              "card": 61,
               "name": "Track 3.5",
-              "index": 10,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4920,10 +4439,7 @@ export default {
               ]
             },
             {
-              "id": 422,
-              "card": 61,
               "name": "Track 4",
-              "index": 11,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -4986,10 +4502,7 @@ export default {
               ]
             },
             {
-              "id": 423,
-              "card": 61,
               "name": "Track 7",
-              "index": 12,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -5052,10 +4565,7 @@ export default {
               ]
             },
             {
-              "id": 424,
-              "card": 61,
               "name": "Track 8",
-              "index": 13,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -5118,10 +4628,7 @@ export default {
               ]
             },
             {
-              "id": 426,
-              "card": 61,
               "name": "Chauffe machine à fumée",
-              "index": 14,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -5132,10 +4639,7 @@ export default {
               ]
             },
             {
-              "id": 427,
-              "card": 61,
               "name": "Stop chauffe machine à fumée",
-              "index": 15,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -5146,10 +4650,7 @@ export default {
               ]
             },
             {
-              "id": 428,
-              "card": 61,
               "name": "Envoyer de la fumée",
-              "index": 15,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
@@ -5160,10 +4661,7 @@ export default {
               ]
             },
             {
-              "id": 425,
-              "card": 61,
               "name": "Animation chambres stock",
-              "index": 16,
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
