@@ -293,11 +293,11 @@ animations:
     - t: 0
       motor: niryo
       direction: forward
-      n_pulses: 3854
+      n_pulses: 3874  # +20
       step_delay: 2000
       callbacks:
         limit_reached:
-          timeout: 10  # not tuned
+          timeout: 20  # not tuned
     - t: 0
       motor: printer
       direction: backward
