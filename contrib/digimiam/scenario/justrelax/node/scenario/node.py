@@ -716,16 +716,21 @@ class Scenario(MagicNode):
     @on_event(filter={'category': 'start_tidy'})
     def start_tidy_room(self):
         self.reset_room()
-        # ouvrir toutes les portes et refermer les verrous sans bruit
-        # ouvre les trappes de gaufre et les refermer
-        # allumer les lumières imprimante et bras
-        # reset panel de control et ventilation
-        # allumer lumière blanche stock
-        # afficher les écrans pour tester
+        self.register_delayed_task(1, self.front_door_open)
+        self.register_delayed_task(1, self.emergency_exit_unlock_to_outside)
+        self.register_delayed_task(1, self.emergency_exit_unlock_stock_to_machine)
+        self.register_delayed_task(1, self.waffle_trapdoor_open)
+        self.register_delayed_task(
+            1, self.publish_prefix, {'category': 'light_on', 'led_id': 'niryo'}, 'waffle_factory')
+        self.register_delayed_task(
+            1, self.publish_prefix, {'category': 'light_on', 'led_id': 'printer'}, 'waffle_factory')
+        self.register_delayed_task(1, self.publish_prefix, {'category': 'high'}, 'stock_lights')
+        self.register_delayed_task(1, self.set_cursor_visibility, True)
 
     @on_event(filter={'category': 'end_tidy'})
     def end_tidy_room(self):
         # TODO: detected bad lasers
+        self.register_delayed_task(1, self.set_cursor_visibility, False)
         self.publish_prefix({'category': 'table_up'}, 'control_panel')
         self.publish_prefix({'category': 'play_animation', 'animation': 'reset'}, 'waffle_factory')
         self.reset_room()
@@ -1799,7 +1804,7 @@ class Scenario(MagicNode):
             self._timers[name].execute_callback()
 
     @on_event(filter={'widget_id': 'front_door_open'})
-    def button_front_door_open(self, with_sound: bool = False):
+    def front_door_open(self, with_sound: bool = False):
         if with_sound:
             self.publish_prefix({'category': 'play', 'sound_id': 'front_door_open'}, 'sound_player')
         self.publish_prefix({'category': 'unlock', 'relock': True}, 'front_door_magnet')
@@ -1956,7 +1961,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'digital_lock')
 
     @on_event(filter={'widget_id': 'emergency_exit_unlock_to_outside'})
-    def button_emergency_exit_unlock_to_outside(self):
+    def emergency_exit_unlock_to_outside(self):
         self.publish_prefix({'category': 'unlock', 'magnet_id': 'to_outside', 'relock': True}, 'emergency_exit')
 
     @on_event(filter={'widget_id': 'emergency_exit_lock_to_outside'})
@@ -1964,7 +1969,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'lock', 'magnet_id': 'to_outside'}, 'emergency_exit')
 
     @on_event(filter={'widget_id': 'emergency_exit_unlock_stock_to_machine'})
-    def button_emergency_exit_unlock_stock_to_machine(self, with_sound: bool = False):
+    def emergency_exit_unlock_stock_to_machine(self, with_sound: bool = False):
         if with_sound:
             self.publish_prefix({'category': 'play', 'sound_id': 'server_door_open'}, 'sound_player')
         self.publish_prefix({'category': 'unlock', 'magnet_id': 'stock_to_machine', 'relock': True}, 'emergency_exit')
@@ -2107,14 +2112,6 @@ class Scenario(MagicNode):
     def buttons_refectory_lights(self, color: str, on: bool):
         self.publish_prefix({'category': 'on' if on else 'off', 'color': color}, 'refectory_lights')
 
-    @on_event(filter={'widget_id': 'refectory_lights_glitch'})
-    def buttons_refectory_lights_glitch(self, color: str):
-        self.publish_prefix({'category': 'glitch', 'color': color}, 'refectory_lights')
-
-    @on_event(filter={'widget_id': 'refectory_lights_stop_glitch'})
-    def buttons_refectory_lights_stop_glitch(self, color: str):
-        self.publish_prefix({'category': 'stop_glitch', 'color': color}, 'refectory_lights')
-
     @on_event(filter={'widget_id': 'waffle_factory_light'})
     def buttons_waffle_factory_light(self, led_id: str, on: bool):
         if on:
@@ -2132,7 +2129,7 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'basket_led_blink'}, 'waffle_factory')
 
     @on_event(filter={'widget_id': 'waffle_trapdoor_open'})
-    def buttons_waffle_trapdoor_open(self):
+    def waffle_trapdoor_open(self):
         self.publish_prefix({'category': 'low'}, 'waffle_trapdoor')
         self.register_delayed_task(1, self.publish_prefix, {'category': 'high'}, 'waffle_trapdoor')
 
@@ -2504,6 +2501,13 @@ class Scenario(MagicNode):
     @on_event(filter={'action': 'run_homing_and_purge'})
     def waffle_factory_run_homing_and_purge(self):
         self.publish_prefix({'category': 'printer_homing', 'purge': True}, 'waffle_factory')
+
+    @on_event(filter={'widget_id': 'set_cursor_visibility'})
+    def set_cursor_visibility(self, show: bool = False):
+        xserver_command = "X -s 0 -dpms" if show else "X -s 0 -dpms -nocursor"
+        self.on_shell_command(
+            f"""sudo sed -E -i -e "s/^(xserver-command=).*/\\1{xserver_command}/" -- /etc/lightdm/lightdm.conf &&"""
+            """sudo systemctl restart lightdm""")
 
 
 class ScenarioD1(Scenario):

@@ -15,8 +15,19 @@
           <ButtonJaffa size="md" @click="action('reset')">
             <i class="fas fa-undo-alt"></i>
           </ButtonJaffa>
-          <ButtonJaffa size="md" @click="action('run')">
+          <ButtonJaffa class="position-relative" size="md" @click="action('start_tidy')">
             <i class="fas fa-random"></i>
+            <i
+              class="fa-fw fas fa-dice-one position-absolute"
+              style="scale: 0.7; bottom: 0; right: 0"
+            ></i>
+          </ButtonJaffa>
+          <ButtonJaffa class="position-relative" size="md" @click="action('end_tidy')">
+            <i class="fas fa-random"></i>
+            <i
+              class="fa-fw fas fa-dice-two position-absolute"
+              style="scale: 0.7; bottom: 0; right: 0"
+            ></i>
           </ButtonJaffa>
         </b-button-group>
     </div>

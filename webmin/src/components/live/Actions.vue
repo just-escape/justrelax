@@ -191,22 +191,6 @@ export default {
               "widget": "buttons_group",
               "widget_params": [
                 {
-                  "id": "refectory_lights_glitch",
-                  "icon": "fa-fw fas fa-cloud-sun-rain",
-                  "extra": {
-                    "color": "blue"
-                  },
-                  "maintenance": true
-                },
-                {
-                  "id": "refectory_lights_stop_glitch",
-                  "icon": "fa-fw fas fa-check",
-                  "extra": {
-                    "color": "blue"
-                  },
-                  "maintenance": true
-                },
-                {
                   "id": "refectory_lights",
                   "icon": "fa-fw far fa-sun",
                   "extra": {
@@ -229,22 +213,6 @@ export default {
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
-                {
-                  "id": "refectory_lights_glitch",
-                  "icon": "fa-fw fas fa-cloud-sun-rain",
-                  "extra": {
-                    "color": "orange"
-                  },
-                  "maintenance": true
-                },
-                {
-                  "id": "refectory_lights_stop_glitch",
-                  "icon": "fa-fw fas fa-check",
-                  "extra": {
-                    "color": "orange"
-                  },
-                  "maintenance": true
-                },
                 {
                   "id": "refectory_lights",
                   "icon": "fa-fw far fa-sun",
@@ -269,22 +237,6 @@ export default {
               "widget": "buttons_group",
               "widget_params": [
                 {
-                  "id": "refectory_lights_glitch",
-                  "icon": "fa-fw fas fa-cloud-sun-rain",
-                  "extra": {
-                    "color": "green"
-                  },
-                  "maintenance": true
-                },
-                {
-                  "id": "refectory_lights_stop_glitch",
-                  "icon": "fa-fw fas fa-check",
-                  "extra": {
-                    "color": "green"
-                  },
-                  "maintenance": true
-                },
-                {
                   "id": "refectory_lights",
                   "icon": "fa-fw far fa-sun",
                   "extra": {
@@ -308,22 +260,6 @@ export default {
               "widget": "buttons_group",
               "widget_params": [
                 {
-                  "id": "refectory_lights_glitch",
-                  "icon": "fa-fw fas fa-cloud-sun-rain",
-                  "extra": {
-                    "color": "red"
-                  },
-                  "maintenance": true
-                },
-                {
-                  "id": "refectory_lights_stop_glitch",
-                  "icon": "fa-fw fas fa-check",
-                  "extra": {
-                    "color": "red"
-                  },
-                  "maintenance": true
-                },
-                {
                   "id": "refectory_lights",
                   "icon": "fa-fw far fa-sun",
                   "extra": {
@@ -346,22 +282,6 @@ export default {
               "maintenance": false,
               "widget": "buttons_group",
               "widget_params": [
-                {
-                  "id": "refectory_lights_glitch",
-                  "icon": "fa-fw fas fa-cloud-sun-rain",
-                  "extra": {
-                    "color": "pink"
-                  },
-                  "maintenance": true
-                },
-                {
-                  "id": "refectory_lights_stop_glitch",
-                  "icon": "fa-fw fas fa-check",
-                  "extra": {
-                    "color": "pink"
-                  },
-                  "maintenance": true
-                },
                 {
                   "id": "refectory_lights",
                   "icon": "fa-fw far fa-sun",
@@ -1986,6 +1906,27 @@ export default {
                   "extra": {
                     "category": "localize",
                     "value": "en"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Curseur écrans tactiles",
+              "maintenance": true,
+              "widget": "buttons_group",
+              "widget_params": [
+                {
+                  "id": "set_cursor_visibility",
+                  "icon": "fa-fw fas fa-mouse-pointer",
+                  "extra": {
+                    "show": true
+                  }
+                },
+                {
+                  "id": "set_cursor_visibility",
+                  "icon": "fa-fw fas fa-ban",
+                  "extra": {
+                    "show": false
                   }
                 }
               ]
