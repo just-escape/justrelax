@@ -26,7 +26,6 @@ export default {
     }
 
     roomStore.dispatch('fetchRooms')
-    // roomStore.dispatch('fetchRuleSets')
 
     let ws_url = this.$route.query.ws_url
     if (ws_url) {

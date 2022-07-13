@@ -1,24 +1,8 @@
 <template>
   <div>
     <div class="container-fluid text-center">
-      <!-- TODO: Implement again the focus widget, while not duplicating streams this time ^.^' -->
-      <!--<div v-if="focusCamera && isFocusEnbaled" class="row">
-        <div class="col text-center px-0">
-          <div class="position-absolute text-center w-100">
-            {{ focusCamera.name }}
-          </div>
-          <img
-            @click="collapseFocus()"
-            class="border-deepdark pointer"
-            :src="focusCamera.url"
-          >
-        </div>
-      </div>-->
-      <div v-if="cameras === undefined">
-        Loading...
-      </div>
-      <div v-else class="row">
-        <div v-for="camera in cameras" :key="camera.id" class="px-0 bordered col-4">
+      <div class="row">
+        <div v-for="camera in cameras.filter(camera => camera.room == roomId)" :key="camera.id" class="px-0 bordered col-4">
           <!-- TODO: handle the text color vs background color -->
           <!--<div class="position-absolute text-center w-100">
             {{ camera.name }} {{camera.type}}
@@ -28,8 +12,6 @@
             :params="camera.params"
             :roomId="roomId"
           />
-          <!--<Camera :class="getCameraClasses" :url="'http://172.16.4.102:8088/janus'" :streamId="10"/>
-          <Camera :class="getCameraClasses" :url="'http://172.16.4.103:8088/janus'" :streamId="10"/>-->
         </div>
         <!-- TODO: handle MJPEG type (alongside the Janus WebRTC type) -->
         <!--<div
@@ -53,7 +35,6 @@
 
 <script>
 import Camera from '@/components/live/Camera.vue'
-import notificationStore from '@/store/notificationStore.js'
 
 export default {
   name: 'Cameras',
@@ -62,49 +43,57 @@ export default {
   },
   data: function() {
     return {
-      cameras: undefined,
-      /*focusCameraIndex: -1,
-      isFocusEnbaled: false,*/
+      cameras: [
+        {
+          "id": 1,
+          "index": 0,
+          "room": 1,
+          "name": "d1c1",
+          "type": "webrtc_janus",
+          "params": "{\"url\": \"http://d1c1.justescape:8088/janus\", \"streamId\": 10, \"channel\": \"d1.c1\", \"id\": \"c1\"}"
+        },
+        {
+          "id": 2,
+          "index": 1,
+          "room": 1,
+          "name": "d1c2",
+          "type": "webrtc_janus",
+          "params": "{\"url\": \"http://d1c2.justescape:8088/janus\", \"streamId\": 10, \"channel\": \"d1.c2\", \"id\": \"c2\"}"
+        },
+        {
+          "id": 3,
+          "index": 2,
+          "room": 1,
+          "name": "d1c3",
+          "type": "webrtc_janus",
+          "params": "{\"url\": \"http://d1c3.justescape:8088/janus\", \"streamId\": 10, \"channel\": \"d1.c3\", \"id\": \"c3\"}"
+        },
+        {
+          "id": 4,
+          "index": 0,
+          "room": 2,
+          "name": "d2c1",
+          "type": "webrtc_janus",
+          "params": "{\"url\": \"http://d2c1.justescape:8088/janus\", \"streamId\": 10, \"channel\": \"d2.c1\", \"id\": \"c1\"}"
+        },
+        {
+          "id": 5,
+          "index": 1,
+          "room": 2,
+          "name": "d2c2",
+          "type": "webrtc_janus",
+          "params": "{\"url\": \"http://d2c2.justescape:8088/janus\", \"streamId\": 10, \"channel\": \"d2.c2\", \"id\": \"c2\"}"
+        },
+        {
+          "id": 6,
+          "index": 2,
+          "room": 2,
+          "name": "d2c3",
+          "type": "webrtc_janus",
+          "params": "{\"url\": \"http://d2c3.justescape:8088/janus\", \"streamId\": 10, \"channel\": \"d2.c3\", \"id\": \"c3\"}"
+        }
+      ],
     }
-  },
-  computed: {
-    /*getCameraClasses: function() {
-      var classes = ['px-0', 'bordered']
-      /*if (this.focusCamera) {
-        classes.push('col')
-      } else {
-        classes.push('col-4')
-      // }
-      return classes
-    },*/
-    /*focusCamera: function() {
-      if (this.focusCameraIndex < 0) {
-        return undefined
-      } else {
-        return this.cameras[this.focusCameraIndex]
-      }
-    },*/
-  },
-  /*methods: {
-    focus: function(cameraIndex) {
-      this.focusCameraIndex = cameraIndex
-    },
-    collapseFocus: function() {
-      this.focusCameraIndex = -1
-    },
-    toggleDisplayCameras: function() {
-      this.displayCameras = !this.displayCameras
-    },
-  },*/
-  mounted() {
-    let this_ = this
-    this.$justRestAPI.get('/camera/?room=' + this.roomId)
-      .then(function (response) {
-        this_.cameras = response.data
-      })
-      .catch(function (error) {
-        notificationStore.dispatch('pushError', 'Error while fetching cameras: ' + error)
-      })
   },
   props: ['roomId']
 }

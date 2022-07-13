@@ -15,11 +15,8 @@
 
     <b-collapse :id="'collapse-card-' + roomId + '-' + card.id" :visible="true">
       <b-card-body>
-        <div v-if="cardRows === undefined">
-          Loading...
-        </div>
-        <ul v-else class="list-unstyled mb-0">
-          <li v-for="(row, index) in cardRows.filter(cr => isInMaintenanceMode || !cr.maintenance)" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
+        <ul class="list-unstyled mb-0">
+          <li v-for="(row, index) in card.rows.filter(cr => isInMaintenanceMode || !cr.maintenance)" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
             <WidgetButtonsGroup v-if="row.widget === 'buttons_group'" :row="row" :defaultChannel="roomDefaultChannel"/>
             <WidgetSessionData v-if="row.widget === 'session_data'" :row="row" :defaultChannel="roomDefaultChannel" :roomId="roomId"/>
             <WidgetLogPrompt v-else-if="row.widget === 'log_prompt'" :row="row" :defaultChannel="roomDefaultChannel"/>
@@ -64,7 +61,6 @@ import WidgetCylinders from "@/components/live/WidgetCylinders.vue"
 import WidgetVentilationPanel from "@/components/live/WidgetVentilationPanel.vue"
 import CollapseChevron from '@/components/common/CollapseChevron.vue'
 import roomStore from "@/store/roomStore.js"
-import notificationStore from '@/store/notificationStore.js'
 import preferenceStore from '@/store/preferenceStore.js'
 
 export default {
@@ -89,11 +85,6 @@ export default {
     WidgetSynchronizer,
     WidgetVentilationPanel,
   },
-  data() {
-    return {
-      cardRows: undefined,
-    }
-  },
   computed: {
     isInMaintenanceMode() {
       return preferenceStore.state.isInMaintenanceMode
@@ -112,18 +103,8 @@ export default {
   },
   methods: {
     isLastRow (index) {
-      return index === Object.keys(this.cardRows).length - 1
+      return index === Object.keys(this.card.rows).length - 1
     },
-  },
-  mounted() {
-    let this_ = this
-    this.$justRestAPI.get('/card_row/?card=' + this.card.id)
-      .then(function (response) {
-        this_.cardRows = response.data
-      })
-      .catch(function (error) {
-        notificationStore.dispatch('pushError', 'Error while fetching card rows: ' + error)
-      })
   },
   props: ["roomId", "card"]
 }

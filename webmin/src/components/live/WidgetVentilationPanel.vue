@@ -200,6 +200,9 @@ export default {
     },
     getInstructionSetIndex() {
       return (round_) => {
+          if (!this.getData('ventilation_panel_instruction_set_indexes')) {
+            return 0
+          }
           let roundIndex
           if (round_ === 'round1') {
               roundIndex = 1
@@ -213,6 +216,9 @@ export default {
     },
     getDifficulty() {
       return (round_) => {
+          if (!this.getData('ventilation_panel_difficulties')) {
+            return 0
+          }
           let roundIndex
           if (round_ === 'round1') {
               roundIndex = 1
