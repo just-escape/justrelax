@@ -730,7 +730,6 @@ class Scenario(MagicNode):
 
     @on_event(filter={'category': 'end_tidy'})
     def end_tidy_room(self):
-        # TODO: detected bad lasers
         self.register_delayed_task(1, self.set_cursor_visibility, False)
         self.publish_prefix({'category': 'table_up'}, 'control_panel')
         self.publish_prefix({'category': 'play_animation', 'animation': 'reset'}, 'waffle_factory')
@@ -1753,6 +1752,9 @@ class Scenario(MagicNode):
         self.register_delayed_task(2, self.publish_prefix, {'category': 'play', 'track_id': 'alarm'}, 'music_player')
         self.register_delayed_task(
             30, self.publish_prefix, {'category': 'set_volume', 'track_id': 'alarm', 'volume': 0, 'duration': 5},
+            'music_player')
+        self.register_delayed_task(
+            10, self.publish_prefix, {'category': 'set_volume', 'track_id': 'atmosphere', 'volume': 0, 'duration': 5},
             'music_player')
         self.register_delayed_task(
             35, self.publish_prefix, {'category': 'stop', 'track_id': 'alarm'}, 'music_player')
