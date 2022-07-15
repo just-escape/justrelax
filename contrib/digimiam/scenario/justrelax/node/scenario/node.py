@@ -496,6 +496,7 @@ class Scenario(MagicNode):
         self.publish_prefix({'category': 'glitch', 'color': 'red'}, 'refectory_lights')
         self.publish_prefix({'category': 'glitch', 'color': 'green'}, 'refectory_lights')
         self.publish_prefix({'category': 'glitch', 'color': 'orange'}, 'refectory_lights')
+        self.publish_prefix({'category': 'set_status', 'status': 'auto_control'}, 'laser_maze')
 
         self.publish_prefix(
             {
@@ -733,6 +734,7 @@ class Scenario(MagicNode):
         self.register_delayed_task(1, self.set_cursor_visibility, False)
         self.publish_prefix({'category': 'table_up'}, 'control_panel')
         self.publish_prefix({'category': 'play_animation', 'animation': 'reset'}, 'waffle_factory')
+        self.halt_room()
         self.reset_room()
 
     @on_event(filter={'from_': 'webmin', 'category': 'request_session_data_for_webmin'})
@@ -1563,7 +1565,7 @@ class Scenario(MagicNode):
     @on_event(filter={'from_': 'digital_lock', 'category': 'success'})
     def digital_lock_success(self):
         self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'secure_floor')
-        self.publish_prefix({'category': 'playing'}, 'laser_maze')
+        self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'laser_maze')
         self.publish_prefix({'category': 'playing'}, 'human_authenticator')
 
         # If players rush the puzzle, the printer doesn't have enough time to finish printing. So we make sure
@@ -1601,7 +1603,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'from_': 'secure_floor', 'category': 'clear'})
     def secure_floor_event_clear(self):
-        self.publish_prefix({'category': 'playing'}, 'laser_maze')
+        self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'laser_maze')
         self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'human_authenticator')
         self.publish_prefix({'category': 'set_volume', 'track_id': 'alarm', 'volume': 0, 'duration': 1}, 'music_player')
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'root_server')
@@ -1610,7 +1612,7 @@ class Scenario(MagicNode):
 
     @on_event(filter={'category': 'laser_alarm'})
     def laser_maze_event_alarm(self):
-        self.publish_prefix({'category': 'stop_playing'}, 'laser_maze')
+        self.publish_prefix({'category': 'set_status', 'status': 'stop_playing'}, 'laser_maze')
         self.publish_prefix({'category': 'set_status', 'status': 'alarm'}, 'secure_floor')
         self.publish_prefix({'category': 'set_status', 'status': 'disabled'}, 'human_authenticator')
         self.publish_prefix({'category': 'play', 'sound_id': 'laser_trigger'}, 'sound_player')
@@ -1623,7 +1625,7 @@ class Scenario(MagicNode):
     def human_authenticator_event_success(self):
         self.boost_fog_timer.pause()
         self.boost_fog_timer.cancel()
-        self.publish_prefix({'category': 'set_success', 'value': True}, 'laser_maze')
+        self.publish_prefix({'category': 'set_status', 'status': 'success'}, 'laser_maze')
         self.publish_prefix({'category': 'success'}, 'secure_floor')
         self.publish_prefix({'category': 'show_ui'}, 'root_server')
         self.publish_prefix({'category': 'display_alarm_window', 'display': False}, 'root_server')
@@ -1932,13 +1934,13 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'maze_playing'})
     def button_maze_playing(self):
         self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'secure_floor')
-        self.publish_prefix({'category': 'playing'}, 'laser_maze')
+        self.publish_prefix({'category': 'set_status', 'status': 'playing'}, 'laser_maze')
         self.publish_prefix({'category': 'playing'}, 'human_authenticator')
 
     @on_event(filter={'widget_id': 'maze_alarm'})
     def button_maze_alarm(self):
         self.publish_prefix({'category': 'set_status', 'status': 'alarm'}, 'secure_floor')
-        self.publish_prefix({'category': 'stop_playing'}, 'laser_maze')
+        self.publish_prefix({'category': 'set_status', 'status': 'stop_playing'}, 'laser_maze')
         self.publish_prefix({'category': 'set_status', 'status': 'disabled'}, 'human_authenticator')
 
     @on_event(filter={'widget_id': 'secure_floor_calibrate'})
@@ -1948,7 +1950,7 @@ class Scenario(MagicNode):
     @on_event(filter={'widget_id': 'maze_success'})
     def button_maze_success(self):
         self.publish_prefix({'category': 'success'}, 'secure_floor')
-        self.publish_prefix({'category': 'set_success', 'value': True}, 'laser_maze')
+        self.publish_prefix({'category': 'set_status', 'status': 'success'}, 'laser_maze')
         self.publish_prefix({'category': 'set_status', 'status': 'success'}, 'human_authenticator')
 
     @on_event(filter={'widget_id': 'maze_reset'})
@@ -2357,9 +2359,28 @@ class Scenario(MagicNode):
         # Could be more personalized but it's ok for now
         self.tic_tac_callback(self.session_timer)
 
-    @on_event(filter={'widget_type': 'lasers'})
-    def toggle_permanent_laser_activation(self, action: str, laser_maze_channel: str, laser_index: int):
-        self.publish_prefix({'category': action, 'index': laser_index}, laser_maze_channel)
+    @on_event(filter={'widget_type': 'lasers', 'action': 'set_activated'})
+    def toggle_permanent_laser_activation(self, activated: bool, laser_maze_channel: str, laser_index: int):
+        self.publish_prefix(
+            {'category': 'set_activated', 'activated': activated, 'index': laser_index}, laser_maze_channel)
+
+    @on_event(filter={'widget_type': 'lasers', 'action': 'set_failures_to_auto_deactivate'})
+    def set_failures_to_auto_deactivate(self, n: int):
+        self.publish_prefix(
+            {'category': 'set_failures_to_auto_deactivate', 'n': n}, 'laser_maze')
+
+    @on_event(filter={'widget_type': 'lasers', 'action': 'set_check_sensors_delay'})
+    def set_check_sensors_delay(self, n: int):
+        self.publish_prefix(
+            {'category': 'set_sensors_delay', 'value': n}, 'laser_maze')
+
+    @on_event(filter={'widget_type': 'lasers', 'action': 'set_status'})
+    def laser_set_status(self, status: str):
+        self.publish_prefix({'category': 'set_status', 'status': status}, 'laser_maze')
+
+    @on_event(filter={'widget_type': 'lasers', 'action': 'set_dynamic_lasers_difficulty'})
+    def laser_set_dynamic_lasers_difficulty(self, difficulty: str):
+        self.publish_prefix({'category': 'set_dynamic_lasers_difficulty', 'difficulty': difficulty}, 'laser_maze')
 
     @on_event(filter={'widget_type': 'waffle_factory', 'action': 'motor_forward'})
     def waffle_factory_motor_forward(

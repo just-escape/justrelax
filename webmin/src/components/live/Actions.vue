@@ -19,13 +19,14 @@
     <div class="container-fluid">
       <div class="row">
         <div
-          v-for="card in cards.filter(card => card.roomIds.includes(roomId))"
-          :key="card.id"
+          v-for="(card, cardIndex) in cards.filter(card => card.roomIds.includes(roomId))"
+          :key="cardIndex"
           class="col-12 col-lg-6 col-xl-3 mb-1 px-1"
         >
           <ActionCard
             :roomId="roomId"
             :card="card"
+            :cardId="cardIndex"
           />
         </div>
       </div>
@@ -3012,162 +3013,165 @@ export default {
               "name": "Lasers",
               "maintenance": false,
               "widget": "lasers",
-              "widget_params": [
-                {
-                  "label": "1",
-                  "node": "laser_maze",
-                  "index": 0,
-                  "easy": false,
-                  "normal": false,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "2",
-                  "node": "laser_maze",
-                  "index": 1,
-                  "easy": false,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "3",
-                  "node": "laser_maze",
-                  "index": 2,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "4",
-                  "node": "laser_maze",
-                  "index": 3,
-                  "easy": false,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "5",
-                  "node": "laser_maze",
-                  "index": 4,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "6",
-                  "node": "laser_maze",
-                  "index": 5,
-                  "easy": false,
-                  "normal": false,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "7",
-                  "node": "laser_maze",
-                  "index": 6,
-                  "easy": false,
-                  "normal": false,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "8",
-                  "node": "laser_maze",
-                  "index": 7,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "9",
-                  "node": "laser_maze",
-                  "index": 8,
-                  "easy": false,
-                  "normal": false,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "10",
-                  "node": "laser_maze",
-                  "index": 9,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "11",
-                  "node": "laser_maze",
-                  "index": 10,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "12",
-                  "node": "laser_maze",
-                  "index": 11,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "13",
-                  "node": "laser_maze",
-                  "index": 12,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "14",
-                  "node": "laser_maze",
-                  "index": 13,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                }
-              ]
+              "widget_params": {
+                expected_prefixes: ['A'],
+                map: [
+                  {
+                    "label": "1",
+                    "node": "laser_maze",
+                    "index": 0,
+                    "easy": false,
+                    "normal": false,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "2",
+                    "node": "laser_maze",
+                    "index": 1,
+                    "easy": false,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "3",
+                    "node": "laser_maze",
+                    "index": 2,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "4",
+                    "node": "laser_maze",
+                    "index": 3,
+                    "easy": false,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "5",
+                    "node": "laser_maze",
+                    "index": 4,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "6",
+                    "node": "laser_maze",
+                    "index": 5,
+                    "easy": false,
+                    "normal": false,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "7",
+                    "node": "laser_maze",
+                    "index": 6,
+                    "easy": false,
+                    "normal": false,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "8",
+                    "node": "laser_maze",
+                    "index": 7,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "9",
+                    "node": "laser_maze",
+                    "index": 8,
+                    "easy": false,
+                    "normal": false,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "10",
+                    "node": "laser_maze",
+                    "index": 9,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "11",
+                    "node": "laser_maze",
+                    "index": 10,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "12",
+                    "node": "laser_maze",
+                    "index": 11,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "13",
+                    "node": "laser_maze",
+                    "index": 12,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "14",
+                    "node": "laser_maze",
+                    "index": 13,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  }
+                ]
+              }
             },
             {
               "name": "Registre",
@@ -3302,250 +3306,253 @@ export default {
               "name": "Lasers",
               "maintenance": false,
               "widget": "lasers",
-              "widget_params": [
-                {
-                  "label": "1",
-                  "node": "laser_maze.a",
-                  "index": 0,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "2",
-                  "node": "laser_maze.a",
-                  "index": 1,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "3",
-                  "node": "laser_maze.a",
-                  "index": 2,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "4",
-                  "node": "laser_maze.a",
-                  "index": 3,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "5",
-                  "node": "laser_maze.a",
-                  "index": 4,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "6",
-                  "node": "laser_maze.a",
-                  "index": 5,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": true,
-                  "prefix": "A"
-                },
-                {
-                  "label": "7",
-                  "node": "laser_maze.a",
-                  "index": 6,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "8",
-                  "node": "laser_maze.a",
-                  "index": 7,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "9",
-                  "node": "laser_maze.a",
-                  "index": 8,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "10",
-                  "node": "laser_maze.a",
-                  "index": 9,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "11",
-                  "node": "laser_maze.a",
-                  "index": 10,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "12",
-                  "node": "laser_maze.a",
-                  "index": 11,
-                  "easy": false,
-                  "normal": false,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "13",
-                  "node": "laser_maze.a",
-                  "index": 12,
-                  "easy": true,
-                  "normal": false,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "14",
-                  "node": "laser_maze.a",
-                  "index": 13,
-                  "easy": false,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "15",
-                  "node": "laser_maze.a",
-                  "index": 14,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "A"
-                },
-                {
-                  "label": "16",
-                  "node": "laser_maze.b",
-                  "index": 0,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "17",
-                  "node": "laser_maze.b",
-                  "index": 1,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "18",
-                  "node": "laser_maze.b",
-                  "index": 2,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "19",
-                  "node": "laser_maze.b",
-                  "index": 3,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "20",
-                  "node": "laser_maze.b",
-                  "index": 4,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "21",
-                  "node": "laser_maze.b",
-                  "index": 5,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": true,
-                  "dynamic": false,
-                  "prefix": "B"
-                },
-                {
-                  "label": "22",
-                  "node": "laser_maze.b",
-                  "index": 6,
-                  "easy": true,
-                  "normal": true,
-                  "hard": true,
-                  "wall": false,
-                  "dynamic": false,
-                  "prefix": "B"
-                }
-              ]
+              "widget_params": {
+                expected_prefixes: ['A', 'B'],
+                map: [
+                  {
+                    "label": "1",
+                    "node": "laser_maze.a",
+                    "index": 0,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "2",
+                    "node": "laser_maze.a",
+                    "index": 1,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "3",
+                    "node": "laser_maze.a",
+                    "index": 2,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "4",
+                    "node": "laser_maze.a",
+                    "index": 3,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "5",
+                    "node": "laser_maze.a",
+                    "index": 4,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "6",
+                    "node": "laser_maze.a",
+                    "index": 5,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": true,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "7",
+                    "node": "laser_maze.a",
+                    "index": 6,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "8",
+                    "node": "laser_maze.a",
+                    "index": 7,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "9",
+                    "node": "laser_maze.a",
+                    "index": 8,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "10",
+                    "node": "laser_maze.a",
+                    "index": 9,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "11",
+                    "node": "laser_maze.a",
+                    "index": 10,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "12",
+                    "node": "laser_maze.a",
+                    "index": 11,
+                    "easy": false,
+                    "normal": false,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "13",
+                    "node": "laser_maze.a",
+                    "index": 12,
+                    "easy": true,
+                    "normal": false,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "14",
+                    "node": "laser_maze.a",
+                    "index": 13,
+                    "easy": false,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "15",
+                    "node": "laser_maze.a",
+                    "index": 14,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "A"
+                  },
+                  {
+                    "label": "16",
+                    "node": "laser_maze.b",
+                    "index": 0,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "B"
+                  },
+                  {
+                    "label": "17",
+                    "node": "laser_maze.b",
+                    "index": 1,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "B"
+                  },
+                  {
+                    "label": "18",
+                    "node": "laser_maze.b",
+                    "index": 2,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "B"
+                  },
+                  {
+                    "label": "19",
+                    "node": "laser_maze.b",
+                    "index": 3,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "B"
+                  },
+                  {
+                    "label": "20",
+                    "node": "laser_maze.b",
+                    "index": 4,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "B"
+                  },
+                  {
+                    "label": "21",
+                    "node": "laser_maze.b",
+                    "index": 5,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": true,
+                    "dynamic": false,
+                    "prefix": "B"
+                  },
+                  {
+                    "label": "22",
+                    "node": "laser_maze.b",
+                    "index": 6,
+                    "easy": true,
+                    "normal": true,
+                    "hard": true,
+                    "wall": false,
+                    "dynamic": false,
+                    "prefix": "B"
+                  }
+                ],
+              }
             },
             {
               "name": "Verouillage trappe Niryo",

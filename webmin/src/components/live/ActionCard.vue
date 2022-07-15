@@ -8,12 +8,12 @@
           {{ card.name }}
         </h3>
         <div>
-          <CollapseChevron class="align-self-center" v-b-toggle="'collapse-card-' + roomId + '-' + card.id"/>
+          <CollapseChevron class="align-self-center" v-b-toggle="'collapse-card-' + roomId + '-' + cardId"/>
         </div>
       </div>
     </b-card-header>
 
-    <b-collapse :id="'collapse-card-' + roomId + '-' + card.id" :visible="true">
+    <b-collapse :id="'collapse-card-' + roomId + '-' + cardId" :visible="true">
       <b-card-body>
         <ul class="list-unstyled mb-0">
           <li v-for="(row, index) in card.rows.filter(cr => isInMaintenanceMode || !cr.maintenance)" :key="row.id" :class="{'mb-2': !isLastRow(index)}">
@@ -106,6 +106,6 @@ export default {
       return index === Object.keys(this.card.rows).length - 1
     },
   },
-  props: ["roomId", "card"]
+  props: ["roomId", "card", "cardId"]
 }
 </script>

@@ -6,8 +6,6 @@ subscriptions:
   - d2.laser_maze.a
   - d2.broadcast
 
-deactivation_file: /etc/justrelax/deactivated_lasers.json
-
 serials:
   - port: /dev/ttyUSB0
     baud_rate: 9600
@@ -15,83 +13,54 @@ serials:
 
 laser_prefix: A
 
-default_difficulty: hard
+check_sensors_delay: 10
 
-difficulty_settings:
+failures_to_auto_deactivate:
+  min: 1
+  default: 2
+  max: 4
+
+auto_control:
+  timeout: 5
+  failures_to_set_broken: 3
+  reactivate_delay: 1
+
+lasers:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+
+dynamic_lasers:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+
+dynamic_lasers_default_difficulty: hard
+dynamic_lasers_timings:
   easy:
-    lasers:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      - 8
-      - 9
-      - 10
-      - 12
-      - 14
-    dynamic_lasers:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-    dynamic_laser_downtime: 9000
-    dynamic_laser_uptime: 6000
-    dynamic_laser_incremental_offset: 1000
+    downtime: 9000
+    uptime: 6000
+    incremental_offset: 1000
   normal:
-    lasers:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      - 8
-      - 9
-      - 10
-      - 13
-      - 14
-    dynamic_lasers:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-    dynamic_laser_downtime: 3500
-    dynamic_laser_uptime: 5500
-    dynamic_laser_incremental_offset: 500
+    downtime: 3500
+    uptime: 5500
+    incremental_offset: 500
   hard:
-    lasers:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      - 8
-      - 9
-      - 10
-      - 11
-      - 12
-      - 13
-      - 14
-    dynamic_lasers:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-    dynamic_laser_downtime: 5300
-    dynamic_laser_uptime: 5800
-    dynamic_laser_incremental_offset: 800
+    downtime: 5300
+    uptime: 5800
+    incremental_offset: 800

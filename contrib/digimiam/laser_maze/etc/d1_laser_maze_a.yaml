@@ -12,73 +12,52 @@ serials:
 
 laser_prefix: A
 
-deactivation_file: /etc/justrelax/deactivated_lasers.json
+check_sensors_delay: 10
 
-default_difficulty: hard
+failures_to_auto_deactivate:
+  min: 1
+  default: 2
+  max: 4
 
-difficulty_settings:
+auto_control:
+  timeout: 5
+  failures_to_set_broken: 3
+  reactivate_delay: 1
+
+lasers:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+
+dynamic_lasers:
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+
+dynamic_lasers_default_difficulty: hard
+dynamic_lasers_timings:
   easy:
-    lasers:
-      - 2
-      - 4
-      - 7
-      - 9
-      - 10
-      - 11
-      - 12
-      - 13
-    dynamic_lasers:
-      - 9
-      - 10
-      - 11
-      - 12
-      - 13
-    dynamic_laser_downtime: 8000
-    dynamic_laser_uptime: 5000
-    dynamic_laser_incremental_offset: 1000
+    downtime: 8000
+    uptime: 5000
+    incremental_offset: 1000
   normal:
-    lasers:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 7
-      - 9
-      - 10
-      - 11
-      - 12
-      - 13
-    dynamic_lasers:
-      - 9
-      - 10
-      - 11
-      - 12
-      - 13
-    dynamic_laser_downtime: 4500
-    dynamic_laser_uptime: 5000
-    dynamic_laser_incremental_offset: 800
+    downtime: 4500
+    uptime: 5000
+    incremental_offset: 800
   hard:
-    lasers:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      - 8
-      - 9
-      - 10
-      - 11
-      - 12
-      - 13
-    dynamic_lasers:
-      - 9
-      - 10
-      - 11
-      - 12
-      - 13
-    dynamic_laser_downtime: 3000
-    dynamic_laser_uptime: 5000
-    dynamic_laser_incremental_offset: 500
+    downtime: 3000
+    uptime: 5000
+    incremental_offset: 500
