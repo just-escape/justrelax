@@ -82,7 +82,7 @@ animations:
       callbacks:
         limit_released:
           timeout: 0.5
-          max_delta_steps: 25
+          max_delta_steps: 55
         move_completed:
           timeout: 10  # not tuned
           trigger: test2
@@ -109,7 +109,7 @@ animations:
       callbacks:
         limit_released:
           timeout: 0.5
-          max_delta_steps: 15
+          max_delta_steps: 45
         move_completed:
           timeout: 10  # not tuned
 
@@ -241,7 +241,7 @@ animations:
       callbacks:
         limit_released:
           timeout: 0.5
-          max_delta_steps: 25
+          max_delta_steps: 55
         move_completed:
           timeout: 2
     - t: 0
@@ -295,7 +295,7 @@ animations:
       callbacks:
         limit_released:
           timeout: 0.5
-          max_delta_steps: 10
+          max_delta_steps: 40
         move_completed:
           timeout: 4.5
   waffle_end_06:
@@ -306,7 +306,7 @@ animations:
       step_delay: 200
       callbacks:
         limit_released:
-          max_delta_steps: 25
+          max_delta_steps: 55
           timeout: 0.5
         move_completed:
           timeout: 2
@@ -328,7 +328,7 @@ animations:
       callbacks:
         limit_released:
           timeout: 0.5
-          max_delta_steps: 20
+          max_delta_steps: 50
         move_completed:
           timeout: 1.5
           trigger: second_waffle_init_02
@@ -351,7 +351,7 @@ animations:
       callbacks:
         limit_released:
           timeout: 0.5
-          max_delta_steps: 35
+          max_delta_steps: 65
         move_completed:
           timeout: 10  # not tuned
 
@@ -374,7 +374,7 @@ animations:
       callbacks:
         limit_released:
           timeout: 0.5
-          max_delta_steps: 35
+          max_delta_steps: 65
         move_completed:
           timeout: 20  # not tuned
 
