@@ -1,0 +1,14 @@
+name: projection_mapping
+
+default_publication_channel: justescape
+subscriptions:
+  - justescape.projection_mapping
+  - justescape.broadcast
+
+videos:
+  street_idle:
+    path: /home/pi/Videos/mapping.mp4
+    layer: 1
+    autoplay: yes
+    loop: yes
+    display: 2
