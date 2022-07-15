@@ -35,7 +35,7 @@ class EmergencyExit(MagicNode):
             if not self.is_emergency_button_held:
                 logger.info(
                     "The emergency button has been held for {} second(s)".format(self.emergency_button_hold_time))
-                self.event_unlock()
+                self.event_unlock(relock=True)
         else:
             if self.is_emergency_button_held:
                 logger.info("The emergency button has been released")
