@@ -1982,10 +1982,6 @@ class Scenario(MagicNode):
     def button_emergency_exit_lock_stock_to_machine(self):
         self.publish_prefix({'category': 'lock', 'magnet_id': 'stock_to_machine'}, 'emergency_exit')
 
-    @on_event(filter={'widget_id': 'emergency_exit_unlock'})
-    def button_emergency_exit_unlock(self):
-        self.publish_prefix({'category': 'unlock'}, 'emergency_exit')
-
     @on_event(filter={'widget_id': 'set_secure_floor_all_leds_color'})
     def button_set_secure_floor_all_leds_color(self, color: str):
         self.publish_prefix({'category': 'set_all_leds_color', 'color': color}, 'secure_floor')
