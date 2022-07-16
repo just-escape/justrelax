@@ -1942,15 +1942,6 @@ export default {
               }
             },
             {
-              "name": "Intro Mme Poivre",
-              "maintenance": false,
-              "widget": "session_data",
-              "widget_params": {
-                "widget": "checkbox",
-                "key": "ms_pepper_intro"
-              }
-            },
-            {
               "name": "Final par réfectoire",
               "maintenance": false,
               "widget": "session_data",

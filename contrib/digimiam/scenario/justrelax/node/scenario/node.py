@@ -238,7 +238,6 @@ class Scenario(MagicNode):
 
     PERSISTENT_SCENARIO_SETTINGS = [
         'niryo_animation',
-        'ms_pepper_intro',
         'epileptic_mode',
         'final_by_refectory',
         'dry_print',
@@ -354,6 +353,7 @@ class Scenario(MagicNode):
         self.displaying_ads_loop = False
         self.display_multiple_ads = False
 
+        self.set_session_data('ms_pepper_intro', True)
         self.set_session_data('locale', 'fr')
         self.set_session_data('ventilation_panel_skip', False)
         self.set_session_data('sokoban_first_move_time_0', None)
@@ -506,7 +506,7 @@ class Scenario(MagicNode):
             'advertiser'
         )
 
-        if self.persistent_settings['ms_pepper_intro']:
+        if self.session_data['ms_pepper_intro']:
             self.publish_prefix(
                 {
                     'category': 'play',
@@ -515,7 +515,7 @@ class Scenario(MagicNode):
                 'advertiser'
             )
 
-        real_intro_duration = self.MS_PEPPER_INTRO_DURATION if self.persistent_settings['ms_pepper_intro'] else 0
+        real_intro_duration = self.MS_PEPPER_INTRO_DURATION if self.session_data['ms_pepper_intro'] else 0
         self.modify_fx_task = self.register_delayed_task(real_intro_duration + 18.285, self.modify_fx)
         self.register_delayed_task(real_intro_duration, after_ms_pepper_here_you_are)
         self.register_delayed_task(real_intro_duration + 3, open_the_door)
@@ -705,6 +705,7 @@ class Scenario(MagicNode):
         self.all_dishes_are_good_but_wrong_price_counter = -1
         self.displaying_ads_loop = False
 
+        self.set_session_data('ms_pepper_intro', True)
         self.set_session_data('locale', 'fr')
         self.set_session_data('ventilation_panel_skip', False)
         self.set_session_data('sokoban_first_move_time_0', None)
