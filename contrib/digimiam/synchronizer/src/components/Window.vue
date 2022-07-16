@@ -124,7 +124,7 @@ export default {
   top: 0;
   right: 0;
   border-bottom: 1px solid #00d1b6;
-  background-color: rgba(00, 45, 64, 0.6);
+  background-color: rgba(0, 0, 0, 0.9);
   font-size: 20px;
   clip-path: polygon(
     100% 0%,

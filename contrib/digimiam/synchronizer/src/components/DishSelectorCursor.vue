@@ -12,8 +12,9 @@
       filter: filter,
     }"
   >
-    <div style="font-size: 18px; transform: translateY(2px)">
-      {{ $t('Plat') }} {{ id }}
+    <div style="font-size: 18px; transform: translateY(2px); line-height: 1; text-align: center">
+      <div>{{ $t('Plat') }} {{ id }}</div>
+      <div v-if="displayPrice">{{ price }} nF</div>
     </div>
   </div>
 </template>
@@ -51,6 +52,12 @@ export default {
     },
     item: function() {
       return menuStore.state.menuItems[this.itemIndex]
+    },
+    price() {
+      return this.item.price
+    },
+    displayPrice() {
+      return menuStore.state.displayPrice
     },
   },
   methods: {

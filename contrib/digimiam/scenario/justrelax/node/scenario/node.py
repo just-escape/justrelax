@@ -1658,7 +1658,7 @@ class Scenario(MagicNode):
             4.5, self.publish_prefix, {'category': 'play_animation', 'animation': 'reponse'}, 'root_server')
 
     @on_event(filter={'widget_id': 'synchronizer', 'action': 'set'})
-    def widget_synchronizer(self, key: str, value: bool):
+    def widget_synchronizer(self, key: str, value):
         if key == 'synchronizer_auto_validate_dishes':
             self.publish_prefix({'category': 'set_auto_validate_dishes', 'value': value}, 'synchronizer')
         elif key == 'synchronizer_display_price':
@@ -1671,6 +1671,9 @@ class Scenario(MagicNode):
             self.publish_prefix({'category': 'set_strict_loading_mode', 'value': value}, 'synchronizer')
         elif key == 'synchronizer_display_light_explicit_instruction':
             self.publish_prefix({'category': 'set_display_light_explicit_instruction', 'value': value}, 'synchronizer')
+        elif key == 'synchronizer_explain_on_dish_changed_counter':
+            self.publish_prefix(
+                {'category': 'set_explain_on_dish_changed_counter', 'value': value}, 'synchronizer')
 
     @on_event(filter={'widget_id': 'cylinders', 'action': 'set'})
     def widget_cylinders_set(self, key: str, value: bool):

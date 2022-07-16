@@ -150,6 +150,8 @@ const publishSubscribeService = new Vuex.Store({
       } else if (event.category === 'display_black_screen') {
         let display = event.display ? true : false
         progressionStore.commit('displayBlackScreen', display)
+      } else if (event.category === 'set_explain_on_dish_changed_counter') {
+        menuStore.commit('setExplainOnDishChangedCounter', event.value || 0)
       }
     },
     SOCKET_RECONNECT (state, count) {

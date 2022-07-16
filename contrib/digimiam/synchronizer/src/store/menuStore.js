@@ -9,6 +9,7 @@ Vue.use(Vuex)
 let store = new Vuex.Store({
   state: {
     glitches: {},
+    lastChangedItemIndex: 0,
     selectableAreas: [
       // units in percent
       {top: 8, left: 8, dish: "steakfie"},
@@ -30,6 +31,24 @@ let store = new Vuex.Store({
     ],
     selectableAreaHeight: 15, // percentage
     selectableAreaWidth: 15, // percentage
+    dishesComposition: {
+      "steakfie": {rowIndex: 0, columnIndex: 0, rowLabel: 'Portrait', columnLabel: 'Viande', pronoun: 'un steakfie'},
+      "pizzage": {rowIndex: 0, columnIndex: 1, rowLabel: 'Portrait', columnLabel: 'Pizza', pronoun: 'une pizzage'},
+      "gaufresque": {rowIndex: 0, columnIndex: 2, rowLabel: 'Portrait', columnLabel: 'Gaufre', pronoun: 'une gaufresque'},
+      "puddy_puddy": {rowIndex: 0, columnIndex: 3, rowLabel: 'Portrait', columnLabel: 'Gelée', pronoun: 'un puddy puddy'},
+      "insectosteak": {rowIndex: 1, columnIndex: 0, rowLabel: 'Insecte', columnLabel: 'Viande', pronoun: 'un insectosteak'},
+      "pizzaliere": {rowIndex: 1, columnIndex: 1, rowLabel: 'Insecte', columnLabel: 'Pizza', pronoun: 'une pizzalière'},
+      "spider_gaufre": {rowIndex: 1, columnIndex: 2, rowLabel: 'Insecte', columnLabel: 'Gaufre', pronoun: 'une spidergaufre'},
+      "potjevleesch": {rowIndex: 1, columnIndex: 3, rowLabel: 'Insecte', columnLabel: 'Gelée', pronoun: 'un potjevleesch'},
+      "protobulle": {rowIndex: 2, columnIndex: 0, rowLabel: 'Micro', columnLabel: 'Viande', pronoun: 'une protobulle'},
+      "cambraisienne": {rowIndex: 2, columnIndex: 1, rowLabel: 'Micro', columnLabel: 'Pizza', pronoun: 'une cambraisienne'},
+      "nano_gaufre": {rowIndex: 2, columnIndex: 2, rowLabel: 'Micro', columnLabel: 'Gaufre', pronoun: 'une nano-gaufre'},
+      "chtite_gelee": {rowIndex: 2, columnIndex: 3, rowLabel: 'Micro', columnLabel: 'Gelée', pronoun: 'une cht\'tite gelée'},
+      "salade_flamande": {rowIndex: 3, columnIndex: 0, rowLabel: 'Algue', columnLabel: 'Viande', pronoun: 'une salade flamande'},
+      "pizzalgue": {rowIndex: 3, columnIndex: 1, rowLabel: 'Algue', columnLabel: 'Pizza', pronoun: 'une pizzalgue'},
+      "algaufre": {rowIndex: 3, columnIndex: 2, rowLabel: 'Algue', columnLabel: 'Gaufre', pronoun: 'une algaufre'},
+      "flubber": {rowIndex: 3, columnIndex: 3, rowLabel: 'Algue', columnLabel: 'Gelée', pronoun: 'un flubber'},
+    },
     menuItems: [
       {
         id: 1,
@@ -98,6 +117,7 @@ let store = new Vuex.Store({
     priceMatters: true,
     displayMenuExplicitInstruction: false,
     onMenuChangedSignal: false,
+    explainOnDishChangedCounter: 1,
   },
   getters: {
     isSuccess (state) {
@@ -118,11 +138,16 @@ let store = new Vuex.Store({
     },
   },
   mutations: {
+    setExplainOnDishChangedCounter(state, value) {
+      state.explainOnDishChangedCounter = value
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_explain_on_dish_changed_counter', data: state.explainOnDishChangedCounter})
+    },
     publishSessionData(state) {
       publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_auto_validate_dishes', data: state.autoValidateDishes})
       publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_price', data: state.displayPrice})
       publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_price_matters', data: state.priceMatters})
       publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_display_menu_explicit_instruction', data: state.displayMenuExplicitInstruction})
+      publishSubscribeService.commit('publish', {category: 'set_session_data', key: 'synchronizer_explain_on_dish_changed_counter', data: state.explainOnDishChangedCounter})
     },
     setDisplayMenuExplicitInstruction(state, value) {
       state.displayMenuExplicitInstruction = value
@@ -299,6 +324,7 @@ let store = new Vuex.Store({
       })
 
       state.onMenuChangedSignal = !state.onMenuChangedSignal
+      state.lastChangedItemIndex = itemIndex
 
       if (state.autoValidateDishes) {
         if (state.menuItems[itemIndex].dish == state.expectedMenu[itemIndex]) {

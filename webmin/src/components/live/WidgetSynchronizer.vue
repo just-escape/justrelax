@@ -1,6 +1,36 @@
 <template>
   <div>
     <div class="border-deepdark rounded p-3 mb-3">
+      <div class="d-flex flex-row justify-content-between mb-2">
+        <div>Répét. aide menu sur changement</div>
+            <div>
+            <b-button-group>
+                <ButtonJaffa
+                    size="sm"
+                    class="position-relative"
+                    :disabled="getData('synchronizer_explain_on_dish_changed_counter') === undefined || 0 >= getData('synchronizer_explain_on_dish_changed_counter')"
+                    @click="setData('synchronizer_explain_on_dish_changed_counter', getData('synchronizer_explain_on_dish_changed_counter') - 1)"
+                >
+                    <i class="fa-fw fa fa-minus"></i>
+                </ButtonJaffa>
+                <div
+                    style="border-top: 1px solid #f38d40; border-bottom: 1px solid #f38d40; line-height: 1"
+                    class="d-flex justify-content-center align-items-center px-2"
+                    :style="{'border-color': getData('synchronizer_explain_on_dish_changed_counter') === undefined ? '#949497' : '#f38d40', opacity: getData('synchronizer_explain_on_dish_changed_counter') === undefined ? 0.65 : 1}"
+                >
+                    <div>{{ getData('synchronizer_explain_on_dish_changed_counter') }}</div>
+                </div>
+                <ButtonJaffa
+                    size="sm"
+                    class="position-relative"
+                    :disabled="getData('synchronizer_explain_on_dish_changed_counter') === undefined || 10 <= getData('synchronizer_explain_on_dish_changed_counter')"
+                    @click="setData('synchronizer_explain_on_dish_changed_counter', getData('synchronizer_explain_on_dish_changed_counter') + 1)"
+                >
+                    <i class="fa-fw fa fa-plus"></i>
+                </ButtonJaffa>
+                </b-button-group>
+            </div>
+        </div>
         <div class="d-flex justify-content-between align-items-center">
             <div class="text-one-line-ellipsis min-width-100px mb-1">Validation plats auto</div>
             <div
@@ -74,10 +104,14 @@
 </template>
 
 <script>
+import ButtonJaffa from "@/components/common/ButtonJaffa.vue"
 import roomStore from "@/store/roomStore.js"
 
 export default {
   name: "WidgetSynchronizer",
+  components: {
+    ButtonJaffa,
+  },
   computed: {
     getData() {
       return (key) => { return roomStore.state.sessionData[this.roomId][key] }
