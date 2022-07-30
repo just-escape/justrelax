@@ -22,11 +22,11 @@ motors:
   short_one:
     index: 6
     forward_limit_switch: yes
-    backward_limit_switch: no
+    backward_limit_switch: yes
   printer:
     index: 0
     forward_limit_switch: yes
-    backward_limit_switch: no
+    backward_limit_switch: yes
   extractor:
     index: 1
     forward_limit_switch: yes
@@ -134,6 +134,9 @@ animations:
       liminary_n_pulses: 200
       liminary_step_delay: 3000
       callbacks:
+        limit_released:
+          timeout: 0.5
+          max_delta_steps: 100
         move_completed:
           timeout: 15  # not tuned
 
@@ -141,7 +144,7 @@ animations:
     - t: 0
       motor: printer
       direction: forward
-      n_pulses: 2804
+      n_pulses: 2824
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -163,7 +166,7 @@ animations:
     - t: 6.5
       motor: short_one
       direction: forward
-      n_pulses: 2369
+      n_pulses: 2389
       step_delay: 1300
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -175,7 +178,7 @@ animations:
     - t: 11
       motor: podium
       direction: backward
-      n_pulses: 2324
+      n_pulses: 4304
       step_delay: 200
     - t: 12.5
       motor: finisher
@@ -185,7 +188,7 @@ animations:
     - t: 12
       motor: short_one
       direction: backward
-      n_pulses: 2290
+      n_pulses: 2389
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -204,13 +207,13 @@ animations:
     - t: 0
       motor: printer
       direction: forward
-      n_pulses: 2804
+      n_pulses: 2824
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
       callbacks:
         limit_reached:
-          timeout: 5
+          timeout: 5.5
           trigger: waffle_end_02
   waffle_end_02:
     - t: 0
@@ -247,7 +250,7 @@ animations:
     - t: 0
       motor: short_one
       direction: forward
-      n_pulses: 2369
+      n_pulses: 2389
       step_delay: 1300
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -255,6 +258,9 @@ animations:
         limit_reached:
           timeout: 4.8
           trigger: waffle_end_04
+        limit_released:
+          timeout: 0.5
+          max_delta_steps: 100
     - t: 3.5
       motor: finisher
       direction: backward
@@ -267,11 +273,11 @@ animations:
     - t: 0
       motor: podium
       direction: backward
-      n_pulses: 2324
+      n_pulses: 4304  # +2000 because steps tend to fail on this one
       step_delay: 200
       callbacks:
         limit_reached:
-          timeout: 2
+          timeout: 10
           trigger: waffle_end_05
   waffle_end_05:
     - t: 0
@@ -288,7 +294,7 @@ animations:
     - t: 0
       motor: short_one
       direction: backward
-      n_pulses: 2290
+      n_pulses: 2389
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -296,7 +302,7 @@ animations:
         limit_released:
           timeout: 0.5
           max_delta_steps: 40
-        move_completed:
+        limit_reached:
           timeout: 4.5
   waffle_end_06:
     - t: 0
@@ -309,7 +315,7 @@ animations:
           max_delta_steps: 55
           timeout: 0.5
         move_completed:
-          timeout: 2
+          timeout: 5
     - t: 1
       motor: finisher
       direction: backward
@@ -367,7 +373,7 @@ animations:
     - t: 0
       motor: printer
       direction: backward
-      n_pulses: 5120
+      n_pulses: 5144
       step_delay: 1100
       liminary_n_pulses: 200
       liminary_step_delay: 3000
@@ -375,8 +381,8 @@ animations:
         limit_released:
           timeout: 0.5
           max_delta_steps: 65
-        move_completed:
-          timeout: 20  # not tuned
+        limit_reached:
+          timeout: 10
 
 light_led:
   niryo:

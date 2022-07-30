@@ -57,7 +57,7 @@ int motorDecelerationNPulses[N_MOTORS] = {0, 0, 0, 0, 0, 0, 0};
 #define NO_PIN -1
 int motorForwardLimitSwitchPin[N_MOTORS] = {24, 26, NO_PIN, NO_PIN, NO_PIN, NO_PIN, 36};
 bool motorForwardLimitSwitchLastRead[N_MOTORS] = {false, false, false, false, false, false, false};
-int motorBackwardLimitSwitchPin[N_MOTORS] = {NO_PIN, NO_PIN, 28, 30, 32, 34, NO_PIN};
+int motorBackwardLimitSwitchPin[N_MOTORS] = {37, NO_PIN, 28, 30, 32, 34, 35};
 bool motorBackwardLimitSwitchLastRead[N_MOTORS] = {false, false, false, false, false, false, false};
 
 #define N_LED 2
