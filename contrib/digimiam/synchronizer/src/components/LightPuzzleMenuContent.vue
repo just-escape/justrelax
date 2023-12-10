@@ -27,7 +27,7 @@
     </div>
     <div v-else-if="mapVersion === 2" class="d-flex flex-column justify-content-around h-100 py-5">
       <div class="d-flex flex-row justify-content-center">
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="red" :colorId="5"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white" :colorId="5"/>
       </div>
       <div class="d-flex flex-row justify-content-center">
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="blue" :colorId="0"/>
@@ -38,7 +38,7 @@
       <div class="d-flex flex-row justify-content-around" style="transform: translateY(10px) rotate(10deg)">
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white" :colorId="26"/>
         <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="orange" :colorId="20"/>
-        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="white" :colorId="21"/>
+        <LightMonitorUnitRectangle :longEdge="monitorUnitSizeS" :vertical="false" color="red" :colorId="21"/>
       </div>
     </div>
 
