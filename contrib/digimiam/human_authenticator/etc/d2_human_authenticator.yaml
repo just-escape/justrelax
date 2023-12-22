@@ -1,0 +1,14 @@
+name: human_authenticator
+
+default_publication_channel: d2.scenario
+subscriptions:
+  - d2.human_authenticator
+  - d2.broadcast
+
+serials:
+  - port: /dev/arduino1
+    baud_rate: 9600
+    buffering_interval: 0.1
+  - port: /dev/arduino2
+    baud_rate: 9600
+    buffering_interval: 0.1

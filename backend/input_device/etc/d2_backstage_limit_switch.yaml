@@ -1,0 +1,9 @@
+name: backstage_limit_switch
+
+default_publication_channel: d2.scenario
+subscriptions:
+  - d2.backstage_limit_switch
+  - d2.broadcast
+
+pin: 3
+pull_up: yes

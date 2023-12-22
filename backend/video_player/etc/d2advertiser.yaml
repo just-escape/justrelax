@@ -1,0 +1,66 @@
+name: advertiser
+
+default_publication_channel: d2.scenario
+subscriptions:
+  - d2.advertiser
+  - d2.broadcast
+
+videos:
+  street_idle:
+    path: /home/pi/videos/marmitron_street_idle.mp4
+    layer: 1
+    autoplay: yes
+    loop: yes
+    orientation: 270
+    window: 510 90 1660 990
+    display: 2
+  ads_glitch:
+    layer: 1
+    path: /home/pi/videos/ads_glitch.mp4
+    autoplay: yes
+    loop: yes
+    display: 7
+  ads_loop:
+    layer: 1
+    path: /home/pi/videos/ads_loop.mp4
+    autoplay: no
+    loop: yes
+    display: 7
+  waffresco_ad_loop_fr:
+    layer: 1
+    path: /home/pi/videos/waffresco_ad_loop_fr.mp4
+    autoplay: no
+    loop: yes
+    display: 7
+  waffresco_ad_loop_en:
+    layer: 1
+    path: /home/pi/videos/waffresco_ad_loop_en.mp4
+    autoplay: no
+    loop: yes
+    display: 7
+  blackscreen:
+    layer: 1
+    path: /home/pi/videos/blackscreen.mp4
+    autoplay: no
+    loop: yes
+    display: 7
+  ms_pepper_here_you_are_fr:
+    layer: 2
+    path: /home/pi/videos/ms_pepper_here_you_are_fr.mp4
+    loop: no
+    display: 2
+  ms_pepper_here_you_are_en:
+    layer: 2
+    path: /home/pi/videos/ms_pepper_here_you_are_en.mp4
+    loop: no
+    display: 2
+  ms_pepper_stock:
+    layer: 2
+    path: /home/pi/videos/ms_pepper_stock_muted.mp4
+    loop: no
+    display: 7
+  ms_pepper_says_thanks:
+    layer: 2
+    path: /home/pi/videos/ms_pepper_says_thanks_muted.mp4
+    loop: no
+    display: 7
