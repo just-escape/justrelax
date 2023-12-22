@@ -1,9 +1,9 @@
 name: stock_lights
 
-default_publication_channel: d1.scenario
+default_publication_channel: d2.scenario
 subscriptions:
-  - d1.stock_lights
-  - d1.broadcast
+  - d2.stock_lights
+  - d2.broadcast
 
 serials:
   - port: /dev/ttyUSB0
