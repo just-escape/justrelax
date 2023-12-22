@@ -1,0 +1,8 @@
+name: d1_c3_shutdown
+
+default_publication_channel: d1.scenario
+subscriptions:
+  - d1.shutdown
+  - d1.broadcast
+  - d1.c
+  - d1.c3

@@ -1,0 +1,6 @@
+name: digital_lock_shutdown
+
+default_publication_channel: d2.scenario
+subscriptions:
+  - d2.shutdown
+  - d2.broadcast
