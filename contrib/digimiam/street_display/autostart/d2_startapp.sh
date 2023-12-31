@@ -1,0 +1,2 @@
+#!/bin/bash
+export DISPLAY=:0;chromium-browser --kiosk --app="http://localhost:80?ws_url=d2broker.justescape%3A3032&channel_prefix=d2" --noerrdialogs --user-data-dir=/home/pi/street_display/chrome-data-dir --password-store=basic --autoplay-policy=no-user-gesture-required --disable-features=TranslateUI --disable-pinch --check-for-update-interval=315360000

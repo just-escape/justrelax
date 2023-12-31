@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/street_display/startapp.sh
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=street_display
+Comment[en_US]=No description
+X-GNOME-Autostart-Delay=3

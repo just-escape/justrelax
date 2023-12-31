@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=xrandr --output HDMI-1 --mode 1920x1080 --rotate left --output HDMI-2 --mode 1920x1080 --right-of HDMI-1
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=xrandr
+Comment[en_US]=No description
+X-GNOME-Autostart-Delay=0
