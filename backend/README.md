@@ -6,7 +6,30 @@ python setup.py develop
 Postgresql:
 apt install libpq-dev
 
-How to resize an sd card ?
+How resize a sd card before the copy ?
+
+```
+sudo umount /dev/sda1
+sudo umount /dev/sda2
+sudo gparted /dev/sda  # resize the partition to the minimum
+sudo fdisk -l /dev/sda
+
+Disk /dev/sda: 29.81 GiB, 32010928128 bytes, 62521344 sectors
+Disk model: Storage Device  
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xf420fa12
+
+Device     Boot  Start      End  Sectors  Size Id Type
+/dev/sda1         8192   532479   524288  256M  c W95 FAT32 (LBA)
+/dev/sda2       532480 19748863 19216384  9.2G 83 Linux
+
+sudo dd if=/dev/sda of=d1_node.img bs=512 count=$[19748863+1] conv=fsync status=progress
+```
+
+How to resize a sd card after the copy ?
 
 https://superuser.com/questions/610819/how-to-resize-img-file-created-with-dd
 
