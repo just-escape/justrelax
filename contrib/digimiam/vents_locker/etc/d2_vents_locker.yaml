@@ -8,6 +8,6 @@ subscriptions:
 power_pin: 0
 limit_switch_power_pin: 24
 limit_switch_pin: 5
-unlock_frequency: 5
-unlock_falling_edge_delay: 0.3
+unlock_frequency: 6
+unlock_falling_edge_delay: 4
 locked_by_default: yes
